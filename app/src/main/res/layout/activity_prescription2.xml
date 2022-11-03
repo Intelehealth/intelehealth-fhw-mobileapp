@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
+    android:layout_marginTop="-900dp"
     tools:context=".activities.visit.PrescriptionActivity">
 
     <!--Toolbar - start -->
@@ -941,7 +942,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/vitals_header_relative"
                         android:visibility="gone"
-                        tools:visibility="visible">
+                        tools:visibility="visible"
+                        >
 
                         <View
                             android:id="@+id/divider"
@@ -951,6 +953,7 @@
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:background="@color/notifi_divider_color" />
 
+                        <!--Visibility based - start-->
                         <!--Personal Sub-Child-->
                         <TextView
                             android:id="@+id/textView_content_complaint"
@@ -962,7 +965,72 @@
                             android:layout_below="@+id/divider"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
-                            android:layout_marginTop="@dimen/margin_16dp" />
+                            android:layout_marginTop="@dimen/margin_16dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
+
+                        <RelativeLayout
+                            android:id="@+id/followup_date_block"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible"
+                            tools:visibility="visible"
+                            android:layout_below="@+id/divider"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:layout_marginTop="@dimen/margin_16dp"
+                            android:layout_marginBottom="@dimen/fu_margin_start" >
+
+                            <RelativeLayout
+                                android:id="@+id/date_relative"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="15 May, 2022"
+                                android:textStyle="bold"
+                                android:layout_marginTop="@dimen/fu_margin_start"
+                                android:textSize="@dimen/edittext_textsize_16sp"
+                                android:textColor="@color/colorPrimary" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true">
+
+                                <ImageButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/no_small_btn"
+                                    android:layout_marginEnd="@dimen/fu_margin_start"
+                                    android:background="@null" />
+
+                                <ImageButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/yes_small_btn"
+                                    android:background="@null" />
+
+                            </LinearLayout>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/date_relative"
+                                android:layout_marginTop="@dimen/margin_16dp"
+                                android:textColor="@color/hint_text_color"
+                                android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?" />
+
+
+                        </RelativeLayout>
+                        <!--Visibility based - end -->
+
+                        
                     </RelativeLayout>
 
                 </RelativeLayout>
