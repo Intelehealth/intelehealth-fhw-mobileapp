@@ -73,6 +73,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginStart="@dimen/margin_5"
         android:layout_marginEnd="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_5"
         app:cardCornerRadius="@dimen/corner_radius_5dp"
         >
 
@@ -123,13 +124,33 @@
     </androidx.cardview.widget.CardView>
     <!--Card Header - end-->
 
+            <!--No Patient Found - Start -->
+            <include
+                layout="@layout/no_patient_found_placeholder"
+                android:id="@+id/no_patient_found_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="90dp"
+                android:visibility="visible"
+                android:layout_below="@+id/visit_received_card_header" />
+            <!--No Patient Found - End -->
+
+
+            <!--Main Block - Start -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@+id/visit_received_card_header">
+
+
             <!--Filter View - start -->
             <RelativeLayout
                 android:id="@+id/filter_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_below="@+id/visit_received_card_header">
 
@@ -346,8 +367,12 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/followup_list_item" />
 
+            </RelativeLayout>
+            <!--Main Block - End -->
+
             <include
                 android:id="@+id/filter_menu"
+                android:visibility="gone"
                 layout="@layout/filter_visitscreen" />
 
         </RelativeLayout>

@@ -101,7 +101,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/card_prescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
@@ -117,7 +117,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardView2"
+                android:id="@+id/card_prescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
@@ -186,7 +186,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+            app:layout_constraintTop_toBottomOf="@+id/card_prescription">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

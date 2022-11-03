@@ -60,6 +60,7 @@ public class HomeFragment_New extends Fragment {
 
         CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
         CardView closedVisitsCardView = view.findViewById(R.id.closedVisitsCardView);
+        CardView card_prescription = view.findViewById(R.id.card_prescription);
 
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +74,14 @@ public class HomeFragment_New extends Fragment {
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+                startActivity(intent);
+            }
+        });
+
+        card_prescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), VisitActivity.class);
                 startActivity(intent);
             }

@@ -91,71 +91,13 @@
         android:textSize="@dimen/fu_male_textsize"
         android:visibility="visible" />
 
-    <FrameLayout
-        android:id="@+id/view_nopatientfound"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_relative"
-        android:visibility="gone"
-        android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
-        android:layout_marginTop="@dimen/search_empty_margin_top">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
-
-            <ImageView
-                android:id="@+id/search_bg_icon"
-                android:layout_width="@dimen/search_icon_bg_dimens"
-                android:layout_height="@dimen/search_icon_bg_dimens"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_search_icon_background" />
-
-            <TextView
-                android:id="@+id/search_pat_not_found_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/search_bg_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
-                android:lineSpacingExtra="4sp"
-                android:text="@string/search_pat_not_found_txt"
-                android:textAppearance="@style/you_can_add"
-                android:textColor="@null"
-                android:textSize="@dimen/search_pat_notfound_txtsize"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/search_pat_hint_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/search_pat_not_found_txt"
-                android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="@dimen/fu_margin_start"
-                android:gravity="center_horizontal|top"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/search_pat_hint_txt"
-                android:textAppearance="@style/caption"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_name_txt_size"
-                android:translationY="-1.58sp" />
-
-            <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10007"
-                android:layout_width="@dimen/search_addbtn_width"
-                android:layout_height="@dimen/search_add_btn_height"
-                android:layout_marginTop="@dimen/toolbar_margin_right"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/search_pat_hint_txt"
-                android:background="@drawable/ic_add_patient_svg"
-                />
-
-        </RelativeLayout>
-    </FrameLayout>
-
+<include
+    android:id="@+id/view_nopatientfound"
+    layout="@layout/no_patient_found_placeholder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/toolbar_relative"
+    android:layout_marginTop="@dimen/search_empty_margin_top"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycelview"
@@ -165,7 +107,7 @@
         android:layout_marginStart="@dimen/fu_card_margin_sides"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/search_listitem_layout" />
 
