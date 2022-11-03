@@ -39,8 +39,9 @@ public class VisitActivity extends AppCompatActivity {
 
     public void configureTabLayout() {
         TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
-        tabLayout.addTab(tabLayout.newTab().setText("Received (0)"));
-        tabLayout.addTab(tabLayout.newTab().setText("Pending (0)"));
+        tabLayout.addTab(tabLayout.newTab().setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon));
+        tabLayout.addTab(tabLayout.newTab().setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon));
+
 
         ViewPager viewPager = findViewById(R.id.pager_appointments);
         PagerAdapter adapter = new VisitPagerAdapter

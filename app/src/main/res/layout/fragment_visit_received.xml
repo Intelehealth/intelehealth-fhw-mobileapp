@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_below="@+id/visit_received_card_header" />
             <!--No Patient Found - End -->
 
@@ -140,7 +140,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_below="@+id/visit_received_card_header">
 
 
