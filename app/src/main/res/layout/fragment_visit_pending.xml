@@ -60,10 +60,6 @@
             android:src="@drawable/visit_filter_icon"
             />
 
-        <include
-            android:id="@+id/filter_menu"
-            layout="@layout/filter_visitscreen" />
-
     </RelativeLayout>
 
     <!--Card Header - start-->
@@ -130,7 +126,7 @@
                 android:id="@+id/filter_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_below="@+id/visit_pending_card_header">
@@ -189,6 +185,7 @@
                     </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 
+<!--
                     <androidx.cardview.widget.CardView
                         android:id="@+id/filter_allvisits_relative"
                         android:layout_width="wrap_content"
@@ -226,6 +223,7 @@
                             android:src="@drawable/cancel_small_crossbtn" />
                     </RelativeLayout>
                     </androidx.cardview.widget.CardView>
+-->
 
 
                 </RelativeLayout>
@@ -346,6 +344,10 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
                 tools:listitem="@layout/followup_list_item" />
+
+            <include
+                android:id="@+id/filter_menu"
+                layout="@layout/filter_visitscreen" />
 
         </RelativeLayout>
     </ScrollView>

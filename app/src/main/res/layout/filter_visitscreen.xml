@@ -7,7 +7,7 @@
     android:layout_gravity="end"
     android:layout_alignParentEnd="true"
     app:cardCornerRadius="10dp"
-    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginTop="50dp"
     android:layout_marginStart="@dimen/margin_10"
     android:layout_marginBottom="@dimen/margin_10"
     android:layout_marginEnd="@dimen/margin_5"

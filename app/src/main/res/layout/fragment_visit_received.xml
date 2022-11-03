@@ -60,9 +60,6 @@
             android:src="@drawable/visit_filter_icon"
             />
 
-        <include
-            android:id="@+id/filter_menu"
-            layout="@layout/filter_visitscreen" />
 
     </RelativeLayout>
 
@@ -190,6 +187,7 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
+<!--
                 <androidx.cardview.widget.CardView
                     android:id="@+id/filter_allvisits_relative"
                     android:layout_width="wrap_content"
@@ -227,6 +225,7 @@
                             android:src="@drawable/cancel_small_crossbtn" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
+-->
 
 
             </RelativeLayout>
@@ -347,7 +346,12 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/followup_list_item" />
 
+            <include
+                android:id="@+id/filter_menu"
+                layout="@layout/filter_visitscreen" />
+
         </RelativeLayout>
     </ScrollView>
+
 
 </RelativeLayout>
