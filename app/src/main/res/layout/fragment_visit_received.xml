@@ -15,7 +15,6 @@
 
         <!-- Frame 2608676 -->
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_26086"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +59,13 @@
             android:layout_marginStart="@dimen/fu_margin_start"
             android:src="@drawable/visit_filter_icon"
             />
+
+        <include
+            android:id="@+id/filter_menu"
+            layout="@layout/filter_visitscreen" />
+
     </RelativeLayout>
+
 
     <!--Card Header - start-->
     <androidx.cardview.widget.CardView
@@ -121,7 +126,112 @@
     </androidx.cardview.widget.CardView>
     <!--Card Header - end-->
 
+            <!--Filter View - start -->
+            <RelativeLayout
+                android:id="@+id/filter_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
+                android:visibility="visible"
+                tools:visibility="visible"
+                android:layout_below="@+id/visit_received_card_header">
 
+            <TextView
+                android:id="@+id/filter_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Results for"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize"
+
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filter_header"
+                android:layout_marginTop="@dimen/margin_4" >
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/filter_priority_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:contentPaddingLeft="@dimen/margin_6"
+                    app:contentPaddingRight="@dimen/margin_6"
+                    app:contentPaddingTop="@dimen/margin_6"
+                    app:contentPaddingBottom="@dimen/margin_6"
+                    app:cardCornerRadius="@dimen/corner_radius_5dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:backgroundTint="@color/grey_button_bg">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:id="@+id/filter_priority"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="@dimen/margin_4"
+                            android:textColor="@color/colorPrimary"
+                            android:text="Priority visit's" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/filter_priority"
+                            android:background="@null"
+                            android:layout_marginTop="2dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/cancel_small_crossbtn" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/filter_allvisits_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:contentPaddingLeft="@dimen/margin_6"
+                    app:contentPaddingRight="@dimen/margin_6"
+                    app:contentPaddingTop="@dimen/margin_6"
+                    app:contentPaddingBottom="@dimen/margin_6"
+                    app:cardCornerRadius="@dimen/corner_radius_5dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_toEndOf="@+id/filter_priority_relative"
+                    android:backgroundTint="@color/grey_button_bg">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:id="@+id/filter_allvisits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="@dimen/margin_4"
+                            android:textColor="@color/colorPrimary"
+                            android:text="All visit's" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/filter_allvisits"
+                            android:background="@null"
+                            android:layout_marginTop="2dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/cancel_small_crossbtn" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </RelativeLayout>
+            </RelativeLayout>
+            <!--Filter View - end -->
 
             <!-- You can add all acco -->
             <TextView
@@ -129,7 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:layout_below="@+id/visit_received_card_header"
+                android:layout_below="@+id/filter_relative"
                 android:lineSpacingExtra="3sp"
                 android:text="Today's visits"
                 android:textStyle="bold"
