@@ -584,7 +584,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/presc_relative"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                 <View
                     android:id="@+id/divider_4"
@@ -641,7 +641,7 @@
 
             </RelativeLayout>
 
-            <!--Followup - start-->
+            <!--Followup Section - start-->
             <RelativeLayout
                 android:id="@+id/followup_relative_block"
                 android:layout_width="match_parent"
@@ -649,27 +649,43 @@
                 android:layout_below="@+id/prescription_block"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="gone"
                 >
 
+                <View
+                    android:id="@+id/divider_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
 
-            <TextView
+
+                <TextView
                 android:id="@+id/followup_date_txtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                    android:layout_below="@+id/divider_5"
                 android:lineSpacingExtra="4sp"
                 android:text="@string/followup_date_txtv"
                 android:textAppearance="@style/followup_date_txtv"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_date_txt_size" />
 
+                <!--Start Follow up - Start-->
+                <RelativeLayout
+                    android:id="@+id/followup_start_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_below="@+id/followup_date_txtv" >
+
             <TextView
                 android:id="@+id/followup_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/followup_date_txtv"
                 android:layout_marginTop="@dimen/fu_male_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
@@ -684,7 +700,118 @@
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:background="@drawable/icon_followup_enabled" />
+                </RelativeLayout>
+                <!--Start Follow up - Start-->
+
+
+                <!--Do you want to Accept this Follow up - start-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    tools:visibility="gone"
+                    android:layout_below="@+id/followup_date_txtv" >
+
+                    <TextView
+                        android:id="@+id/followup_accept_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fu_male_margin_start"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"
+                        android:textSize="@dimen/txtsize_patdetail_14sp"
+                        android:textColor="@color/hint_text_color" />
+
+                    <!--Button - start -->
+                    <LinearLayout
+                        android:id="@+id/btn_bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/fu_margin_start"
+                        android:layout_below="@+id/followup_accept_text"
+                        android:layout_marginBottom="@dimen/fu_margin_start"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_vs_appointment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/margin_8"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_white_border"
+                            android:lineHeight="@dimen/button_line_height"
+                            android:padding="@dimen/fu_margin_start"
+                            android:text="No"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/common_button_text_size"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btn_vs_sendvisit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:layout_marginStart="@dimen/common_edittext_margin_top"
+                            android:layout_weight="1"
+                            android:textColor="@color/white"
+                            android:background="@drawable/ui2_common_primary_bg"
+                            android:padding="@dimen/fu_margin_start"
+                            android:textStyle="bold"
+                            android:text="Yes"
+                            android:textSize="@dimen/common_button_text_size" />
+
+                    </LinearLayout>
+
+                    <!--Button - end -->
+                </RelativeLayout>
+                <!--Do you want to Accept this Follow up - End -->
+
             </RelativeLayout>
+            <!--Followup Section - END -->
+
+
+            <!-- End Visit Button - Start -->
+        <RelativeLayout
+            android:id="@+id/followup_relative_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/prescription_block"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginEnd="@dimen/fu_margin_start"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:visibility="visible"
+            tools:visibility="visible"
+            >
+
+            <View
+                android:id="@+id/divider_5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                android:background="@color/notifi_divider_color" />
+
+            <Button
+                android:id="@+id/btn_vs_sendvisit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_marginStart="@dimen/common_edittext_margin_top"
+                android:layout_below="@+id/divider_5"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:padding="@dimen/fu_margin_start"
+                android:textStyle="bold"
+                android:text="End visit"
+                android:textSize="@dimen/txtsize_patdetail_14sp" />
+
+
+        </RelativeLayout>
+            <!-- End Visit Button - End -->
+
 
             <!--View based on visibility and condition - end-->
 
