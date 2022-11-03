@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
-    android:layout_marginTop="-900dp"
     tools:context=".activities.visit.PrescriptionActivity">
 
     <!--Toolbar - start -->
@@ -1030,7 +1029,7 @@
                         </RelativeLayout>
                         <!--Visibility based - end -->
 
-                        
+
                     </RelativeLayout>
 
                 </RelativeLayout>

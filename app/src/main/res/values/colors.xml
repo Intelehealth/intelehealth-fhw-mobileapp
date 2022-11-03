@@ -113,6 +113,7 @@
     <color name="buttonColorRed">#FF475D</color>
     <color name="green_button_bg">#0FD197</color>
     <color name="grey_button_bg">#EFE8FF</color>
+    <color name="light_red">#FFE8E8</color>
 
 
     <!--END-->
