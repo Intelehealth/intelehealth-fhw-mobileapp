@@ -141,8 +141,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+    TextView newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview;
     Toolbar toolbar;
 
     private void saveToken() {
@@ -228,14 +227,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+919503692181";
-                String message =
-                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                String message = getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumberWithCountryCode, message))));
             }
         });
         c1.setOnClickListener(new View.OnClickListener() {
@@ -343,8 +338,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                 startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
             } else {
                 //Permission Granted-System will work
@@ -374,15 +368,12 @@ public class HomeActivity extends AppCompatActivity {
 
     //function for handling the video library feature...
     private void videoLibrary() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -496,46 +487,43 @@ public class HomeActivity extends AppCompatActivity {
                     // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                    dialog.setTitle(getString(R.string.enter_license_key))
-                            .setView(promptsView)
-                            .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                    dialog.setTitle(getString(R.string.enter_license_key)).setView(promptsView).setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                                    Dialog d = (Dialog) dialog;
+                            Dialog d = (Dialog) dialog;
 
-                                    EditText etURL = d.findViewById(R.id.licenseurl);
-                                    EditText etKey = d.findViewById(R.id.licensekey);
-                                    String url = etURL.getText().toString().trim();
-                                    String key = etKey.getText().toString().trim();
+                            EditText etURL = d.findViewById(R.id.licenseurl);
+                            EditText etKey = d.findViewById(R.id.licensekey);
+                            String url = etURL.getText().toString().trim();
+                            String key = etKey.getText().toString().trim();
 
-                                    if (url.isEmpty()) {
-                                        etURL.setError(getResources().getString(R.string.enter_server_url));
-                                        etURL.requestFocus();
-                                        return;
-                                    }
-                                    if (url.contains(":")) {
-                                        etURL.setError(getResources().getString(R.string.invalid_url));
-                                        etURL.requestFocus();
-                                        return;
-                                    }
-                                    if (key.isEmpty()) {
-                                        etKey.setError(getResources().getString(R.string.enter_license_key));
-                                        etKey.requestFocus();
-                                        return;
-                                    }
+                            if (url.isEmpty()) {
+                                etURL.setError(getResources().getString(R.string.enter_server_url));
+                                etURL.requestFocus();
+                                return;
+                            }
+                            if (url.contains(":")) {
+                                etURL.setError(getResources().getString(R.string.invalid_url));
+                                etURL.requestFocus();
+                                return;
+                            }
+                            if (key.isEmpty()) {
+                                etKey.setError(getResources().getString(R.string.enter_license_key));
+                                etKey.requestFocus();
+                                return;
+                            }
 
-                                    sessionManager.setMindMapServerUrl(url);
-                                    getMindmapDownloadURL("https://" + url + ":3004/", key);
+                            sessionManager.setMindMapServerUrl(url);
+                            getMindmapDownloadURL("https://" + url + ":3004/", key);
 
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
+                        }
+                    }).setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
                     Dialog builderDialog = dialog.show();
                     IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 
@@ -752,9 +740,7 @@ public class HomeActivity extends AppCompatActivity {
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
-                        new AlertDialog.Builder(HomeActivity.this)
-                                .setMessage(R.string.failed_initial_synced)
-                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(HomeActivity.this).setMessage(R.string.failed_initial_synced).setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         finish();
@@ -806,37 +792,34 @@ public class HomeActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, mProgressDialog);
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        checkExistingMindMaps();
 
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    } else {
+                        Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    customProgressDialog.dismiss();
+                    Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
@@ -895,60 +878,52 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-                    @Override
-                    public void onSuccess(CheckAppUpdateRes res) {
-                        int latestVersionCode = 0;
-                        if (!res.getLatestVersionCode().isEmpty()) {
-                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                        }
+        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+            @Override
+            public void onSuccess(CheckAppUpdateRes res) {
+                int latestVersionCode = 0;
+                if (!res.getLatestVersionCode().isEmpty()) {
+                    latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                }
 
-                        if (latestVersionCode > versionCode) {
-                            android.app.AlertDialog.Builder builder;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                            } else {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
-                            }
-
-
-                            builder.setTitle(getResources().getString(R.string.new_update_available))
-                                    .setCancelable(false)
-                                    .setMessage(getResources().getString(R.string.update_app_note))
-                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-                                        }
-                                    })
-
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false);
-
-                            Dialog dialog = builder.show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                                TextView tv = (TextView) dialog.findViewById(textViewId);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                            }
-                        }
+                if (latestVersionCode > versionCode) {
+                    android.app.AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new android.app.AlertDialog.Builder(HomeActivity.this);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("Error", "" + e);
+
+                    builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                    } catch (ActivityNotFoundException anfe) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                    }
+
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
+
+                    Dialog dialog = builder.show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                        TextView tv = (TextView) dialog.findViewById(textViewId);
+                        tv.setTextColor(getResources().getColor(R.color.white));
                     }
-                })
-        );
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("Error", "" + e);
+            }
+        }));
 
     }
 
@@ -998,10 +973,13 @@ public class HomeActivity extends AppCompatActivity {
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
+                    boolean isCallEnded = remoteMessage.getBoolean("callEnded");
+
                     in.putExtra("roomId", roomId);
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
+                    in.putExtra("callEnded", isCallEnded);
                     startActivity(in);
                 }
             } catch (JSONException e) {
@@ -1014,11 +992,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         Window window = getWindow();
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-        );
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         super.onAttachedToWindow();
     }

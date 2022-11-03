@@ -139,11 +139,21 @@ public class CallListenerBackgroundService extends Service {
                     bundle.putString("roomId", String.valueOf(value.get("roomId")));
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
                     bundle.putString("actionType", "VIDEO_CALL");
-                    bundle.putBoolean("callEnded", Boolean.parseBoolean(String.valueOf(value.get("callEnded"))));
+
+                    boolean isCallEnded = Boolean.parseBoolean(String.valueOf(value.get("callEnded")));
+                    bundle.putBoolean("callEnded", isCallEnded);
+
+                    if (isCallEnded) {
+                        Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
+                        intent.putExtras(bundle);
+                        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+                        sendBroadcast(intent);
+                    }
 
                     boolean isOldNotification = true;
                     if (value.containsKey("timestamp")) {
                         String timestamp = String.valueOf(value.get("timestamp"));
+
 
                         Date date = new Date();
                         if (timestamp != null) {

@@ -818,7 +818,7 @@ public class CompleteActivity extends AppCompatActivity {
     private void catchFCMMessageData() {
         if (getIntent().getExtras() != null) {
             Bundle callEndBundle = getIntent().getExtras();
-            if (callEndBundle.containsKey("callEnded") && !callEndBundle.getBoolean("callEnded")) {
+            if (callEndBundle.containsKey("callEnded") && callEndBundle.getBoolean("callEnded")) {
                 disconnectAll();
             }
         }

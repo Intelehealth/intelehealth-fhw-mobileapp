@@ -16,18 +16,9 @@ public class CallRTCNotifyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v(TAG, "onReceive");
-        Bundle bundle = intent.getExtras();
-        boolean isCallEnded = bundle.getBoolean("callEnded");
-
-        Intent in;
-        if (isCallEnded) {
-            in = new Intent(context, CompleteActivity.class);
-            in.putExtras(intent.getExtras());
-        } else {
-            in = new Intent(context, HomeActivity.class);
-            in.putExtras(intent.getExtras());
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        }
+        Intent in = new Intent(context, HomeActivity.class);
+        in.putExtras(intent.getExtras());
+        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(in);
     }
 }
