@@ -42,8 +42,7 @@
                 android:background="@null"
                 android:padding="@dimen/margin_5"
                 android:src="@drawable/ic_arrow_right"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                />
 
             <!-- Label -->
             <TextView
@@ -125,8 +124,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/fu_margin_start"
-        android:layout_marginEnd="@dimen/fu_margin_start"
         >
 
         <!-- Frame 100340 -->
@@ -366,7 +363,7 @@
                     android:layout_centerVertical="true" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_vitals_header"
+                    android:id="@+id/btnup_drdetails_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -377,7 +374,7 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/vs_vitals_header_expandview"
+                android:id="@+id/vs_drdetails_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
@@ -595,7 +592,7 @@
                     android:layout_centerVertical="true" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_vitals_header"
+                    android:id="@+id/btnup_diagnosis_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -606,7 +603,7 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/vs_vitals_header_expandview"
+                android:id="@+id/vs_diagnosis_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
@@ -678,7 +675,7 @@
                     android:layout_centerVertical="true" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_vitals_header"
+                    android:id="@+id/btnup_medication_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -689,7 +686,7 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/vs_vitals_header_expandview"
+                android:id="@+id/vs_medication_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
@@ -761,7 +758,7 @@
                     android:layout_centerVertical="true" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_vitals_header"
+                    android:id="@+id/btnup_test_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -772,7 +769,7 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/vs_vitals_header_expandview"
+                android:id="@+id/vs_testheader_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
@@ -844,7 +841,7 @@
                     android:layout_centerVertical="true" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_vitals_header"
+                    android:id="@+id/btnup_speciality_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -855,7 +852,7 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/vs_vitals_header_expandview"
+                android:id="@+id/vs_speciality_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
@@ -928,7 +925,7 @@
                             android:layout_centerVertical="true" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btn_up_vitals_header"
+                            android:id="@+id/btnup_followup_header"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:background="@null"
@@ -939,7 +936,7 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_vitals_header_expandview"
+                        android:id="@+id/vs_followup_header_expandview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/vitals_header_relative"

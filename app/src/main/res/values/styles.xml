@@ -161,7 +161,7 @@
 
     <style name="fu_detiails_date">
         <item name="android:textColor">
-            #7F7B92
+            @color/textview_color
         </item>
     </style>
 

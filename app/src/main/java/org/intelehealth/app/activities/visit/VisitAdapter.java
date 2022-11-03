@@ -11,9 +11,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.appointment.VisitSummaryDetailsActivity;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
-import org.intelehealth.app.activities.followuppatients.FollowUp_VisitDetails;
 
 
 /**
@@ -54,7 +51,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
 
             fu_cardview_item.setOnClickListener(v -> {
-                Intent intent = new Intent(context, FollowUp_VisitDetails.class);
+                Intent intent = new Intent(context, PrescriptionActivity.class);
                 context.startActivity(intent);
             });
         }

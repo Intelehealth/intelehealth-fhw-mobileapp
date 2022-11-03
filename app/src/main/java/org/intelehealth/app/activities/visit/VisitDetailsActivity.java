@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.followuppatients;
+package org.intelehealth.app.activities.visit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class FollowUp_VisitDetails extends AppCompatActivity {
+public class VisitDetailsActivity extends AppCompatActivity {
     private String patientName, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency;
@@ -34,7 +34,7 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow_up_visit_details);
+        setContentView(R.layout.activity_visit_details);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {

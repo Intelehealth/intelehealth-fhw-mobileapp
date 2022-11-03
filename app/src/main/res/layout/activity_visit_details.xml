@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
-    tools:context=".activities.followuppatients.FollowUp_VisitDetails">
+    tools:context=".activities.visit.VisitDetailsActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/frame_10021"
@@ -329,7 +329,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ui2_ic_time"
-                    android:tint="#7F7B92"/>
+                    android:tint="@color/textview_color"/>
 
                 <TextView
                     android:id="@+id/visit_startDate"
@@ -578,11 +578,11 @@
                 android:id="@+id/followup_relative_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/divider_3"
+                android:layout_below="@+id/prescription_block"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:visibility="gone"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 >
 
 

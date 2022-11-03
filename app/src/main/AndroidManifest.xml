@@ -40,13 +40,16 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+
         <activity
-            android:name=".PrescriptionActivity"
-            android:exported="false">
+            android:name=".activities.visit.PrescriptionActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".activities.visit.EndVisitActivity"
             android:exported="false"
@@ -141,7 +144,7 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.followuppatients.FollowUp_VisitDetails"
+            android:name=".activities.visit.VisitDetailsActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"

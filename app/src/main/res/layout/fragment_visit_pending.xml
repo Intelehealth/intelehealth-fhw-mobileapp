@@ -105,7 +105,7 @@
                 android:text="3 Patients visits are waiting for closure, please end the visit."
                 android:textAppearance="@style/visitDetails_text"
                 android:textColor="@null"
-                android:textSize="@dimen/fu_name_txt_size" />
+                android:textSize="@dimen/fu_male_textsize" />
 
             <ImageButton
                 android:id="@+id/icon_arrowRight"

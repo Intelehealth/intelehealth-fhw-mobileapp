@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -133,7 +134,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
 
         holder.cardView.setOnClickListener(v -> {
-            Intent i = new Intent(context, FollowUp_VisitDetails.class);
+            Intent i = new Intent(context, VisitDetailsActivity.class);
             i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
             i.putExtra("gender", model.getGender());
             i.putExtra("age", age);
