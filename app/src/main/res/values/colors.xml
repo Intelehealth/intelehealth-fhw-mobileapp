@@ -112,6 +112,7 @@
     <color name="colorSuccess">#36c762</color>
     <color name="buttonColorRed">#FF475D</color>
     <color name="green_button_bg">#0FD197</color>
+    <color name="grey_button_bg">#EFE8FF</color>
 
 
     <!--END-->
