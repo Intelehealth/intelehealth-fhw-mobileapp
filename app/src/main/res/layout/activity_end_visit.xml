@@ -15,14 +15,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-24dp"
+        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_10016"
             android:layout_width="0dp"
-            android:layout_height="@dimen/fu_toolbat_txt_height"
+            android:layout_height="@dimen/followup_toolbar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -37,7 +37,7 @@
                 android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.8"
+                android:layout_weight="2.7"
                 android:orientation="horizontal">
 
                 <!-- arrow-right -->
@@ -58,7 +58,7 @@
                     android:id="@+id/label"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
                     android:text="End visits"
@@ -73,7 +73,7 @@
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
                 android:background="@null"
                 android:src="@drawable/ic_refreshbtn" />
 
@@ -88,7 +88,7 @@
         android:layout_below="@+id/toolbar_relative"
         android:scrollbars="none"
         android:scrollIndicators="none"
-        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginEnd="@dimen/fu_margin_start"
         android:fillViewport="true">
