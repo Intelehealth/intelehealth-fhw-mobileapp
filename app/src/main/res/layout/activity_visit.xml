@@ -14,14 +14,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-24dp"
+        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_10016"
             android:layout_width="0dp"
-            android:layout_height="@dimen/fu_toolbat_txt_height"
+            android:layout_height="@dimen/followup_toolbar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -57,7 +57,7 @@
                     android:id="@+id/label"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
                     android:text="My visits"
@@ -108,8 +108,8 @@
         android:layout_below="@+id/tablayout_appointments"
         android:visibility="visible"
         android:layout_marginTop="@dimen/margin_24"
-        android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginEnd="@dimen/fu_margin_start"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 

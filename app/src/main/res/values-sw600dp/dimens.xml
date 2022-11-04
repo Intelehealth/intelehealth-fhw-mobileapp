@@ -153,7 +153,7 @@
     <dimen name="card_close_visits_margin_top">20dp</dimen>
     <dimen name="bottom_nav_menu_text_size">40sp</dimen>
     <dimen name="bottom_nav_icon_size">34dp</dimen>
-    <dimen name="followup_toolbar">94dp</dimen>
+    <dimen name="followup_toolbar">104dp</dimen>
     <dimen name="fu_toolbat_txt_height">44dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size"
@@ -201,8 +201,8 @@
 
 
     <!-- Intro screens -->
-    <dimen name="back_arrow_intro_height">28dp</dimen>
-    <dimen name="back_arrow_intro_width">28dp</dimen>
+    <dimen name="back_arrow_intro_height">44dp</dimen>
+    <dimen name="back_arrow_intro_width">44dp</dimen>
     <dimen name="back_arrow_intro_margin_start">28dp</dimen>
     <dimen name="back_arrow_intro_margin_top">48dp</dimen>
     <dimen name="layout_dots_height">60dp</dimen>
@@ -363,10 +363,11 @@
     <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
 
     <!--Text Size-->
-    <dimen name="toolbar_text_size">28sp</dimen>
+    <dimen name="toolbar_text_size">38sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
+    <dimen name="toolbar_top_minus_24dp">-4dp</dimen>
     <dimen name="fu_image_width">58dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
     <dimen name="fu_name_txt_size">20sp</dimen>

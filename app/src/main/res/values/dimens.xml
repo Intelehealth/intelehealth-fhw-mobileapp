@@ -338,6 +338,7 @@
     <!-- Intro screens -->
     <dimen name="back_arrow_intro_height">24dp</dimen>
     <dimen name="back_arrow_intro_width">24dp</dimen>
+    <dimen name="toolbar_top_minus_24dp">-24dp</dimen>
     <dimen name="back_arrow_intro_margin_start">24dp</dimen>
     <dimen name="back_arrow_intro_margin_top">44dp</dimen>
     <dimen name="layout_dots_height">50dp</dimen>
