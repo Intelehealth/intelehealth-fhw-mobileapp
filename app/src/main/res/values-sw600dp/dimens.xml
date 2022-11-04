@@ -370,10 +370,10 @@
     <dimen name="toolbar_top_minus_24dp">-4dp</dimen>
     <dimen name="fu_image_width">58dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
-    <dimen name="fu_name_txt_size">20sp</dimen>
+    <dimen name="fu_name_txt_size">34sp</dimen>
     <dimen name="fu_male_margin_start">8dp</dimen>
-    <dimen name="fu_male_textsize">16sp</dimen>
-    <dimen name="fu_pencil_width">16dp</dimen>
+    <dimen name="fu_male_textsize">26sp</dimen>
+    <dimen name="fu_pencil_width">26dp</dimen>
     <dimen name="fu_pencil_height">16dp</dimen>
     <dimen name="fu_icons_margin_top">24dp</dimen>
     <dimen name="fu_icon_width">32dp</dimen>
@@ -389,7 +389,7 @@
     <dimen name="cal_margnin_start">8dp</dimen>
     <dimen name="card_padding">10dp</dimen>
     <dimen name="profile_img_card_size">42dp</dimen>
-    <dimen name="cal_size">18dp</dimen>
+    <dimen name="cal_size">32dp</dimen>
     <dimen name="search_priority_tag">30dp</dimen>
     <dimen name="search_presTag_margin_top">12dp</dimen>
     <dimen name="search_toolbar_height">125dp</dimen>
@@ -400,8 +400,8 @@
     <dimen name="search_addbtn_width">200dp</dimen>
     <dimen name="search_add_btn_height">50dp</dimen>
     <dimen name="search_item_name_width">150dp</dimen>
-    <dimen name="notifi_subtitle_size">14sp</dimen>
-    <dimen name="notifi_header_icon">60dp</dimen>
+    <dimen name="notifi_subtitle_size">24sp</dimen>
+    <dimen name="notifi_header_icon">80dp</dimen>
     <dimen name="notifi_arrow_margin_end">14dp</dimen>
 
     <!--My Achievements UI2.0-->
@@ -621,7 +621,7 @@
     <dimen name="txtsize_patdetail_16sp">28sp</dimen>
     <dimen name="txtsize_patdetail_14sp">24sp</dimen>
     <dimen name="patdetail_profile_imgview_14sp">70dp</dimen>
-    <dimen name="up_down_icon_size">30dp</dimen>
+    <dimen name="up_down_icon_size">35dp</dimen>
     <dimen name="cardcornerradius_imagev">40dp</dimen>
     <dimen name="margin_8">12dp</dimen>
     <dimen name="margin_4">8dp</dimen>
@@ -629,8 +629,15 @@
     <dimen name="vs_adddoc_listitem_bg_height">88dp</dimen>
     <dimen name="vs_phsexam_imgview_140dp">280dp</dimen>
     <dimen name="corner_radius_5dp">8dp</dimen>
-
-
+    <dimen name="margin_5">8dp</dimen>
+    <dimen name="margin_6">16dp</dimen>
+    <dimen name="margin_2dp">4dp</dimen>
+    <dimen name="btn_width_91dp">180dp</dimen>
+    <dimen name="btn_height_32dp">62dp</dimen>
+    <dimen name="btn_prioirty_w_60dp">120dp</dimen>
+    <dimen name="btn_prioirty_h_20dp">40dp</dimen>
+    <dimen name="btn_share_w_59dp">119dp</dimen>
+    <dimen name="btn_share_h_20dp">41dp</dimen>
 
 
 </resources>

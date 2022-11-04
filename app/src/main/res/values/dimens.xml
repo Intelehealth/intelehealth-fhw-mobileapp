@@ -720,6 +720,13 @@
     <dimen name="vs_adddoc_listitem_bg_height">68dp</dimen>
     <dimen name="vs_phsexam_imgview_140dp">140dp</dimen>
     <dimen name="corner_radius_5dp">5dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="btn_width_91dp">91dp</dimen>
+    <dimen name="btn_height_32dp">32dp</dimen>
+    <dimen name="btn_prioirty_w_60dp">60dp</dimen>
+    <dimen name="btn_prioirty_h_20dp">20dp</dimen>
+    <dimen name="btn_share_w_59dp">59dp</dimen>
+    <dimen name="btn_share_h_20dp">21dp</dimen>
 
 
     <!--UI2.0 Appointment-->
