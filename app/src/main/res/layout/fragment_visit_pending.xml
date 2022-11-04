@@ -23,103 +23,104 @@
             android:layout_alignParentTop="true">
 
     <!--Search-->
-    <RelativeLayout
-        android:id="@+id/search_relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_5"
-        android:layout_marginEnd="@dimen/margin_5"
-        >
+            <RelativeLayout
+                android:id="@+id/search_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_5"
+                >
 
-        <EditText
-            android:id="@+id/textlayout_find_patient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ui2_common_input_bg"
-            android:drawableStart="@drawable/ui2_ic_search_icon_home"
-            android:drawablePadding="@dimen/find_patient_icon_padding"
-            android:drawableTint="@color/edittextBorder"
-            android:hint="Search patient"
-            android:textColorHint="@color/edittext_hint_color"
-            android:importantForAutofill="no"
-            android:maxLines="1"
-            android:padding="@dimen/find_patient_padding"
-            android:singleLine="true"
-            android:textSize="@dimen/edittext_textsize_16sp"
-            android:layout_toStartOf="@+id/filter_icon"
-            android:layout_alignParentStart="true"
-            />
+                <EditText
+                    android:id="@+id/textlayout_find_patient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_common_input_bg"
+                    android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                    android:drawablePadding="@dimen/find_patient_icon_padding"
+                    android:drawableTint="@color/edittextBorder"
+                    android:hint="Search patient"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:importantForAutofill="no"
+                    android:maxLines="1"
+                    android:padding="@dimen/find_patient_padding"
+                    android:singleLine="true"
+                    android:textSize="@dimen/txtsize_patdetail_16sp"
+                    android:layout_toStartOf="@+id/filter_icon"
+                    android:layout_alignParentStart="true"
+                    />
 
-        <ImageButton
-            android:id="@+id/filter_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="@null"
-            android:layout_marginStart="@dimen/fu_margin_start"
-            android:src="@drawable/visit_filter_icon"
-            />
+                <ImageButton
+                    android:id="@+id/filter_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:src="@drawable/visit_filter_icon"
+                    />
 
-    </RelativeLayout>
+
+            </RelativeLayout>
 
     <!--Card Header - start-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/visit_pending_card_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_relative"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginStart="@dimen/margin_5"
-        android:layout_marginEnd="@dimen/margin_5"
-        android:layout_marginBottom="@dimen/margin_5"
-        app:cardCornerRadius="@dimen/corner_radius_5dp"
-        >
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/ll_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/fu_margin_start"
-            android:layout_marginEnd="@dimen/fu_margin_start"
-            android:layout_marginTop="@dimen/fu_margin_start"
-            android:layout_marginBottom="@dimen/fu_margin_start"
-            >
-
-            <ImageView
-                android:id="@+id/icon_visit_details"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/visit_pending_card_header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:src="@drawable/visit_header_icon" />
+                android:layout_below="@+id/search_relative"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:layout_marginBottom="@dimen/margin_5"
+                app:cardCornerRadius="@dimen/corner_radius_5dp"
+                >
 
-            <!-- label-text -->
-            <TextView
-                android:id="@+id/visitDetails_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_toEndOf="@+id/icon_visit_details"
-                android:layout_toStartOf="@id/icon_arrowRight"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="3sp"
-                android:text="3 Patients visits are waiting for closure, please end the visit."
-                android:textAppearance="@style/visitDetails_text"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/ll_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    >
 
-            <ImageButton
-                android:id="@+id/icon_arrowRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:src="@drawable/arrow_right_icon8" />
+                    <ImageView
+                        android:id="@+id/icon_visit_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:src="@drawable/visit_header_icon" />
 
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+                    <!-- label-text -->
+                    <TextView
+                        android:id="@+id/visitDetails_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_toEndOf="@+id/icon_visit_details"
+                        android:layout_toStartOf="@id/icon_arrowRight"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="3 Patients visits are waiting for closure, please end the visit."
+                        android:textAppearance="@style/visitDetails_text"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_male_textsize" />
+
+                    <ImageButton
+                        android:id="@+id/icon_arrowRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:src="@drawable/arrow_right_icon8" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
     <!--Card Header - end-->
 
             <!--No Patient Found - Start -->
@@ -146,10 +147,10 @@
                 android:id="@+id/filter_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:layout_marginTop="@dimen/margin_24"
-                android:layout_below="@+id/visit_pending_card_header">
+                android:layout_below="@+id/visit_received_card_header">
 
                 <TextView
                     android:id="@+id/filter_header"
@@ -180,70 +181,72 @@
                         android:layout_marginEnd="@dimen/margin_10"
                         android:backgroundTint="@color/grey_button_bg">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
-
-                        <TextView
-                            android:id="@+id/filter_priority"
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:layout_marginEnd="@dimen/margin_4"
-                            android:textColor="@color/colorPrimary"
-                            android:text="Priority visit's" />
+                            android:background="@color/grey_button_bg"
+                            >
 
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/filter_priority"
-                            android:background="@null"
-                            android:layout_marginTop="2dp"
-                            android:tint="@color/colorPrimary"
-                            android:src="@drawable/cancel_small_crossbtn" />
-                    </RelativeLayout>
+                            <TextView
+                                android:id="@+id/filter_priority"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/notifi_subtitle_size"
+                                android:layout_marginEnd="@dimen/margin_4"
+                                android:background="@null"
+                                android:textColor="@color/colorPrimary"
+                                android:text="Priority visit's" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/filter_priority"
+                                android:background="@null"
+                                android:layout_marginTop="@dimen/margin_2dp"
+                                android:tint="@color/colorPrimary"
+                                android:src="@drawable/cancel_small_crossbtn" />
+                        </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 
-<!--
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/filter_allvisits_relative"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:contentPaddingLeft="@dimen/margin_6"
-                        app:contentPaddingRight="@dimen/margin_6"
-                        app:contentPaddingTop="@dimen/margin_6"
-                        app:contentPaddingBottom="@dimen/margin_6"
-                        app:cardCornerRadius="@dimen/corner_radius_5dp"
-                        android:layout_marginEnd="@dimen/margin_10"
-                        android:layout_toEndOf="@+id/filter_priority_relative"
-                        android:backgroundTint="@color/grey_button_bg">
+                    <!--
+                                    <androidx.cardview.widget.CardView
+                                        android:id="@+id/filter_allvisits_relative"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:contentPaddingLeft="@dimen/margin_6"
+                                        app:contentPaddingRight="@dimen/margin_6"
+                                        app:contentPaddingTop="@dimen/margin_6"
+                                        app:contentPaddingBottom="@dimen/margin_6"
+                                        app:cardCornerRadius="@dimen/corner_radius_5dp"
+                                        android:layout_marginEnd="@dimen/margin_10"
+                                        android:layout_toEndOf="@+id/filter_priority_relative"
+                                        android:backgroundTint="@color/grey_button_bg">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            >
 
-                        <TextView
-                            android:id="@+id/filter_allvisits"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:layout_marginEnd="@dimen/margin_4"
-                            android:textColor="@color/colorPrimary"
-                            android:text="All visit's" />
+                                            <TextView
+                                                android:id="@+id/filter_allvisits"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="12sp"
+                                                android:layout_marginEnd="@dimen/margin_4"
+                                                android:textColor="@color/colorPrimary"
+                                                android:text="All visit's" />
 
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/filter_allvisits"
-                            android:background="@null"
-                            android:layout_marginTop="2dp"
-                            android:tint="@color/colorPrimary"
-                            android:src="@drawable/cancel_small_crossbtn" />
-                    </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
--->
+                                            <ImageButton
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_toEndOf="@id/filter_allvisits"
+                                                android:background="@null"
+                                                android:layout_marginTop="2dp"
+                                                android:tint="@color/colorPrimary"
+                                                android:src="@drawable/cancel_small_crossbtn" />
+                                        </RelativeLayout>
+                                    </androidx.cardview.widget.CardView>
+                    -->
 
 
                 </RelativeLayout>
