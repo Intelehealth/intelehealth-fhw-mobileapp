@@ -6,7 +6,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
 import org.intelehealth.ekalarogya.databinding.LayoutMedicalHistoryBinding;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 
 import java.util.List;
 

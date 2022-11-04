@@ -5545,7 +5545,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveMedicalHistoryData(MedicalHistory medicalHistory) {
-        medicalHistoryList.clear();
         medicalHistoryList.add(medicalHistory);
         medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
@@ -5557,7 +5556,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveMedicalHistoryDataAtPosition(MedicalHistory medicalHistory, int position) {
-        medicalHistoryList.clear();
         medicalHistoryList.set(position, medicalHistory);
         medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
@@ -5569,7 +5567,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveSmokingHistory(SmokingHistory smokingHistory) {
-        smokingHistoryList.clear();
         smokingHistoryList.add(smokingHistory);
         smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
@@ -5580,7 +5577,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveSmokingHistoryAtPosition(SmokingHistory smokingHistory, int position) {
-        smokingHistoryList.clear();
         smokingHistoryList.set(position, smokingHistory);
         smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
@@ -5590,9 +5586,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     }
 
     @Override
-    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory
-                                                   alcoholConsumptionHistory) {
-        alcoholConsumptionHistoryList.clear();
+    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
         alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
         alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
@@ -5602,9 +5596,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     }
 
     @Override
-    public void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory
-                                                             alcoholConsumptionHistory, int position) {
-        alcoholConsumptionHistoryList.clear();
+    public void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory alcoholConsumptionHistory, int position) {
         alcoholConsumptionHistoryList.set(position, alcoholConsumptionHistory);
         alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);

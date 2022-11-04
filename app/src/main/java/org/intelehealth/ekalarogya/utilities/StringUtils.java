@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
@@ -140,7 +141,7 @@ public final class StringUtils {
     public static String getSurveyValue(String value) {
         String val = "-";
         if (value != null && !value.equals(""))
-            val = value;
+            val = trimAdvanced(value);
         return val;
     }
 
@@ -4338,6 +4339,7 @@ public final class StringUtils {
     }
 
     public static String getTimeStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
         if (!locale.equalsIgnoreCase("en")) {
             // Translate hours to English
             if (context.getString(R.string.identification_screen_picker_hours).equalsIgnoreCase(text)) {
@@ -4349,5 +4351,34 @@ public final class StringUtils {
             }
         }
         return text;
+    }
+
+    private static String trimAdvanced(String value) {
+
+        int strLength = value.length();
+        int len = value.length();
+        int st = 0;
+        char[] val = value.toCharArray();
+
+        if (strLength == 0) {
+            return "";
+        }
+
+        while ((st < len) && (val[st] <= ' ') || (val[st] == '\u00A0')) {
+            st++;
+            if (st == strLength) {
+                break;
+            }
+        }
+
+        while ((st < len) && (val[len - 1] <= ' ') || (val[len - 1] == '\u00A0')) {
+            len--;
+            if (len == 0) {
+                break;
+            }
+        }
+
+
+        return (st > len) ? "" : ((st > 0) || (len < strLength)) ? value.substring(st, len) : value;
     }
 }
