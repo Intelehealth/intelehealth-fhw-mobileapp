@@ -639,5 +639,8 @@
     <dimen name="btn_share_w_59dp">119dp</dimen>
     <dimen name="btn_share_h_20dp">41dp</dimen>
 
+    <dimen name="tab_icon_18dp">28dp</dimen>
+    <dimen name="tab_icon_19dp">29dp</dimen>
+
 
 </resources>

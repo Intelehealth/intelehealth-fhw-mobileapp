@@ -728,6 +728,9 @@
     <dimen name="btn_share_w_59dp">59dp</dimen>
     <dimen name="btn_share_h_20dp">21dp</dimen>
 
+    <dimen name="tab_icon_18dp">18dp</dimen>
+    <dimen name="tab_icon_19dp">19dp</dimen>
+
 
     <!--UI2.0 Appointment-->
 
