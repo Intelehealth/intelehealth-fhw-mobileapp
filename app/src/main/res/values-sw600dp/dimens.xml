@@ -608,7 +608,7 @@
     <dimen name="margin_16dp">38dp</dimen>
     <dimen name="gender_margin">94dp</dimen>
     <dimen name="edittext_height_44dp">74dp</dimen>
-    <dimen name="edittext_textsize_16sp">24sp</dimen>
+    <dimen name="edittext_textsize_16sp">28sp</dimen>
     <dimen name="country_flag_icon_width">33dp</dimen>
     <dimen name="country_flag_icon_height">26dp</dimen>
     <dimen name="patregist_icon_title">18sp</dimen>
@@ -641,6 +641,8 @@
 
     <dimen name="tab_icon_18dp">28dp</dimen>
     <dimen name="tab_icon_19dp">29dp</dimen>
+    <dimen name="small_btn_w_62dp">122dp</dimen>
+    <dimen name="small_btn_h_48dp">98dp</dimen>
 
 
 </resources>
