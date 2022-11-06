@@ -210,7 +210,7 @@
                     android:id="@+id/frame_26088"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
-                    android:layout_marginStart="@dimen/margin_12"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:background="@null"
                     android:src="@drawable/ic_icon8_whatsapp" />
 
@@ -437,7 +437,7 @@
                         android:layout_width="@dimen/fu_icon_width"
                         android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginStart="@dimen/fu_margin_start"
                         android:background="@null"
                         android:src="@drawable/ic_icon8_whatsapp" />
 
@@ -531,7 +531,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:src="@drawable/prescription_icon" />
+                    android:src="@drawable/prescription_red_icon" />
 
                 <!-- label-text -->
                 <LinearLayout
@@ -584,7 +584,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/presc_relative"
                     android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                 <View
                     android:id="@+id/divider_4"
@@ -607,13 +607,13 @@
                     <Button
                         android:id="@+id/btn_vs_appointment"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/small_btn_h_48dp"
                         android:layout_marginEnd="@dimen/margin_8"
                         android:layout_weight="1"
                         android:background="@drawable/ui2_common_primary_bg"
                         android:backgroundTint="@color/light_red"
                         android:lineHeight="@dimen/button_line_height"
-                        android:padding="@dimen/margin_12"
+                        android:padding="@dimen/fu_margin_start"
                         android:text="Cancel"
                         android:textColor="@color/red"
                         android:textSize="@dimen/txtsize_patdetail_14sp"
@@ -622,7 +622,7 @@
                     <Button
                         android:id="@+id/btn_vs_sendvisit"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/small_btn_h_48dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginStart="@dimen/common_edittext_margin_top"
                         android:layout_weight="1"
