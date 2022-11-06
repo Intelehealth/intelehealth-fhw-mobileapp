@@ -100,7 +100,7 @@
     <dimen name="fu_icon_height">48dp</dimen>
     <dimen name="fu_vs_margin_start">12dp</dimen>
     <dimen name="fu_vs_margin_top">50dp</dimen>
-    <dimen name="fu_date_txt_size">18sp</dimen>
+    <dimen name="fu_date_txt_size">30sp</dimen>
     <dimen name="fu_btn_size">78dp</dimen>
     <dimen name="toolbar_margin_left">34dp</dimen>
     <dimen name="toolbar_top_minus_24dp">-4dp</dimen>
@@ -556,7 +556,7 @@
     <dimen name="vs_notes_big_edittext_height">172dp</dimen>
     <dimen name="vs_adddoc_listitem_bg_height">88dp</dimen>
     <dimen name="vs_phsexam_imgview_140dp">280dp</dimen>
-    <dimen name="corner_radius_5dp">8dp</dimen>
+    <dimen name="corner_radius_5dp">10dp</dimen>
     <dimen name="margin_5">8dp</dimen>
     <dimen name="margin_6">16dp</dimen>
     <dimen name="margin_2dp">4dp</dimen>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
+    android:layout_marginTop="-300dp"
     tools:context=".activities.visit.VisitDetailsActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -531,7 +532,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:src="@drawable/prescription_red_icon" />
+                    android:src="@drawable/prescription_icon" />
 
                 <!-- label-text -->
                 <LinearLayout
@@ -584,7 +585,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/presc_relative"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                 <View
                     android:id="@+id/divider_4"
@@ -671,6 +672,7 @@
                 android:text="@string/followup_date_txtv"
                 android:textAppearance="@style/followup_date_txtv"
                 android:textColor="@null"
+                    android:textStyle="bold"
                 android:textSize="@dimen/fu_date_txt_size" />
 
                 <!--Start Follow up - Start-->
@@ -679,7 +681,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:layout_below="@+id/followup_date_txtv" >
 
             <TextView
@@ -695,7 +697,7 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/followup_info"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
@@ -709,7 +711,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="visible"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_below="@+id/followup_date_txtv" >
 
                     <TextView
@@ -771,6 +773,7 @@
 
             </RelativeLayout>
             <!--Followup Section - END -->
+
 
 
             <!-- End Visit Button - Start -->
