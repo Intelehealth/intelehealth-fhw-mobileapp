@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-24dp"
+        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
@@ -82,7 +82,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_head"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fu_header_card_height"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/frame_10021"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -91,13 +91,13 @@
         android:layout_marginRight="@dimen/fu_card_margin_sides"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="@dimen/margin_5">
+        app:cardElevation="@dimen/corner_radius_5dp">
 
         <!-- Frame 100340 -->
         <LinearLayout
             android:id="@+id/frame_10034"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -105,27 +105,28 @@
             <!--1st-->
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                    android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                    android:layout_centerVertical="true"
                     android:elevation="0dp"
-                    app:cardCornerRadius="20dp">
+                    android:layout_marginStart="@dimen/margin_2dp"
+                    app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                         android:src="@drawable/avatar1" />
                 </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_toEndOf="@+id/profile"
                     android:orientation="vertical">
@@ -140,7 +141,7 @@
                         <TextView
                             android:id="@+id/patname_txt"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
@@ -153,7 +154,7 @@
                         <TextView
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
@@ -194,8 +195,8 @@
             <!--2nd-->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/fu_icons_margin_top"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:orientation="horizontal">
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -216,7 +217,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
 
@@ -241,8 +241,8 @@
 
             <ImageView
                 android:id="@+id/priority_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btn_prioirty_w_60dp"
+                android:layout_height="@dimen/btn_prioirty_h_20dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:src="@drawable/ui2_frame_priority" />
@@ -294,7 +294,7 @@
 
                 <ImageView
                     android:id="@+id/fu_details_calendar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/cal_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/followup_item_calendar" />
 
@@ -326,7 +326,7 @@
 
                 <ImageView
                     android:id="@+id/fu_details_calendar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/cal_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/ui2_ic_time"
                     android:tint="@color/textview_color"/>
@@ -459,7 +459,7 @@
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/ll_3"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/notifi_header_icon"
                 android:layout_below="@+id/divider_2"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start">

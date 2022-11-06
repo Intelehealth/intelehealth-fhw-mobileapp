@@ -154,7 +154,7 @@
                     android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                     android:layout_centerVertical="true"
                     android:elevation="0dp"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="@dimen/margin_2dp"
                     app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                     <ImageView

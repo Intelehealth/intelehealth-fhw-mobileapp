@@ -376,8 +376,8 @@
     <dimen name="fu_pencil_width">26dp</dimen>
     <dimen name="fu_pencil_height">16dp</dimen>
     <dimen name="fu_icons_margin_top">24dp</dimen>
-    <dimen name="fu_icon_width">32dp</dimen>
-    <dimen name="fu_icon_height">32dp</dimen>
+    <dimen name="fu_icon_width">48dp</dimen>
+    <dimen name="fu_icon_height">48dp</dimen>
     <dimen name="fu_vs_margin_start">12dp</dimen>
     <dimen name="fu_vs_margin_top">50dp</dimen>
     <dimen name="fu_date_txt_size">22sp</dimen>
