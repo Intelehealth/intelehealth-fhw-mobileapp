@@ -4035,9 +4035,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String encounterIDSelection = "visituuid = ? AND voided = ?";
                 String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE")
+                                .equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
                     } while (encounterCursor.moveToNext());

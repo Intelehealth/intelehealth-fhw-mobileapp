@@ -13,11 +13,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
+import org.intelehealth.app.models.PrescriptionModel;
 
+import java.util.List;
+
+/**
+ * Created by Prajwal Waingankar on 3/11/22.
+ * Github : @prajwalmw
+ * Email: prajwalwaingankar@gmail.com
+ */
 public class VisitPendingFragment extends Fragment {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_pending_card_header;
+    private List<PrescriptionModel> model;
 
 
     @Nullable
@@ -43,14 +51,14 @@ public class VisitPendingFragment extends Fragment {
             startActivity(intent);
         });
 
-        todays_Visits();
+      /*  todays_Visits();
         thisWeeks_Visits();
-        thisMonths_Visits();
+        thisMonths_Visits();*/
     }
 
 
     private void todays_Visits() {
-        VisitAdapter adapter_new = new VisitAdapter(getActivity());
+        VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
         recycler_today.setAdapter(adapter_new);
 
         /*try {
@@ -73,13 +81,13 @@ public class VisitPendingFragment extends Fragment {
 
 
     private void thisWeeks_Visits() {
-        VisitAdapter adapter_new = new VisitAdapter(getActivity());
-        recycler_week.setAdapter(adapter_new);
+        VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
+      //  recycler_week.setAdapter(adapter_new);
     }
 
     private void thisMonths_Visits() {
-        VisitAdapter adapter_new = new VisitAdapter(getActivity());
-        recycler_month.setAdapter(adapter_new);
+        VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
+     //   recycler_month.setAdapter(adapter_new);
     }
 
 
