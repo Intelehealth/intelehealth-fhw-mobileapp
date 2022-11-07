@@ -35,6 +35,8 @@ public class VisitReceivedFragment extends Fragment {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
+    int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
+
 
     @Nullable
     @Override
@@ -63,6 +65,8 @@ public class VisitReceivedFragment extends Fragment {
         todays_Visits();
         thisWeeks_Visits();
         thisMonths_Visits();
+        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+
     }
 
     private void todays_Visits() {
@@ -79,6 +83,7 @@ public class VisitReceivedFragment extends Fragment {
                 do {
                     PrescriptionModel model = new PrescriptionModel();
 
+                    model.setHasPrescription(true);
                     model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
                     model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
@@ -116,32 +121,13 @@ public class VisitReceivedFragment extends Fragment {
             db.setTransactionSuccessful();
             db.endTransaction();
 
+        totalCounts_today = arrayList.size();
         VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
         recycler_today.setAdapter(adapter_new);
-
-        /*try {
-            Date cDate = new Date();
-            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-            List<FollowUpModel> followUpModels = getAllPatientsFromDB_Today(offset, currentDate);
-            followUpModels = getChiefComplaint(followUpModels);
-            totalCounts_today = followUpModels.size();
-            if(totalCounts_today == 0 || totalCounts_today < 0)
-                today_nodata.setVisibility(View.VISIBLE);
-            else
-                today_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
-            rv_today.setAdapter(adapter_new);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("todays_followupvisits", "exception: ", e);
-        }*/
     }
 
 
     private void thisWeeks_Visits() {
-//        VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
-//        recycler_week.setAdapter(adapter_new);
-
         List<PrescriptionModel> arrayList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
@@ -149,7 +135,6 @@ public class VisitReceivedFragment extends Fragment {
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
                 "voided = 0 AND " +
-
                 "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) " +
                 "AND STRFTIME('%W',date(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2)) = STRFTIME('%W',DATE('now')) AND " +
                 "encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
@@ -158,6 +143,7 @@ public class VisitReceivedFragment extends Fragment {
             do {
                 PrescriptionModel model = new PrescriptionModel();
 
+                model.setHasPrescription(true);
                 model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
                 model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
@@ -195,15 +181,12 @@ public class VisitReceivedFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+        totalCounts_week = arrayList.size();
         VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
         recycler_week.setAdapter(adapter_new);
-
     }
 
     private void thisMonths_Visits() {
-//        VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
-//        recycler_month.setAdapter(adapter_new);
-
         List<PrescriptionModel> arrayList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
@@ -218,7 +201,7 @@ public class VisitReceivedFragment extends Fragment {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
-
+                model.setHasPrescription(true);
                 model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
                 model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
@@ -256,9 +239,9 @@ public class VisitReceivedFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+        totalCounts_month = arrayList.size();
         VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
         recycler_month.setAdapter(adapter_new);
-
     }
 
 

@@ -119,11 +119,12 @@
                 />
 
             <ImageButton
+                android:id="@+id/shareicon"
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                 android:layout_height="@dimen/btn_prioirty_h_20dp"
                 android:src="@drawable/visit_share_presc_icon"
                 android:background="@null"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_gravity="bottom|end|center"/>
