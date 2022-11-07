@@ -6,7 +6,6 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheck
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +23,8 @@ import org.intelehealth.ekalarogya.activities.identificationActivity.callback.Me
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
 import org.intelehealth.ekalarogya.databinding.DialogMedicalHistoryBinding;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MedicalHistoryDialog extends DialogFragment {
@@ -180,7 +179,7 @@ public class MedicalHistoryDialog extends DialogFragment {
         ));
 
         if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes"))
-            medicalHistory.setReasonForSurgery(binding.reasonForSurgeryEditText.getText().toString());
+            medicalHistory.setReasonForSurgery(Objects.requireNonNull(binding.reasonForSurgeryEditText.getText()).toString().trim());
 
         return medicalHistory;
     }

@@ -140,8 +140,8 @@ public final class StringUtils {
 
     public static String getSurveyValue(String value) {
         String val = "-";
-        if (value != null && !value.equals(""))
-            val = trimAdvanced(value);
+        if (value != null && !value.equals("") && !value.equals("-"))
+            val = value;
         return val;
     }
 

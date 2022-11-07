@@ -1055,7 +1055,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     return;
                 }
 
-                String uploadTime = AppConstants.dateAndTimeUtils.currentDateTime();
+                String uploadTime = AppConstants.dateAndTimeUtils.getVisitUploadDateTime();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
                 VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();

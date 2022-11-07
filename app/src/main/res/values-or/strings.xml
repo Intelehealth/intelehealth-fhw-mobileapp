@@ -213,8 +213,8 @@
     <string name="visit_update">ଯାତ୍ରା ଅପ୍ଡ଼େଟ୍ କରିବା</string>
     <string name="visit_summary_medical_history">ଚିକିତ୍ସ। ଗତ ଇତିହାସ</string>
     <string name="visit_summary_edit_vitals">ଆପଣ ପ୍ରମୁଖ ସ୍କ୍ରିନରୁ ପ୍ରମୁଖ ତଥ୍ୟ ପୁନଃ ଚୟନ କରିପାରିବେ</string>
-    <string name="generic_yes">"ହଁ "</string>
-    <string name="generic_no">"ନା"</string>
+    <string name="generic_yes">ହଁ</string>
+    <string name="generic_no">ନା</string>
     <string name="hint_required">ଜରୁରୀ </string>
     <string name="generic_back">ପଛକୁ ଯାନ୍ତୁ </string>
     <string name="generic_update">"ଅପଡେଟ "</string>
