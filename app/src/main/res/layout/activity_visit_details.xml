@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
-    android:layout_marginTop="-300dp"
     tools:context=".activities.visit.VisitDetailsActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -80,11 +79,20 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frame_10021"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_10021"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/fu_card_margin_sides"
@@ -230,6 +238,7 @@
         android:layout_marginLeft="@dimen/fu_card_margin_sides"
         android:layout_marginTop="@dimen/fu_vs_margin_top"
         android:layout_marginRight="@dimen/fu_card_margin_sides"
+        android:layout_marginBottom="@dimen/fu_card_margin_sides"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/margin_5"
         app:cardElevation="@dimen/margin_5">
@@ -651,7 +660,7 @@
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:visibility="visible"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <View
@@ -681,7 +690,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_below="@+id/followup_date_txtv" >
 
             <TextView
@@ -711,7 +720,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="visible"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:layout_below="@+id/followup_date_txtv" >
 
                     <TextView
@@ -786,7 +795,7 @@
             android:layout_marginEnd="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/margin_16dp"
             android:visibility="visible"
-            tools:visibility="visible"
+            tools:visibility="gone"
             >
 
             <View
@@ -823,4 +832,8 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
+
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

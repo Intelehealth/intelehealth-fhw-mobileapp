@@ -973,7 +973,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="visible"
-                            tools:visibility="visible"
+                            tools:visibility="gone"
                             android:layout_below="@+id/textView_content_complaint"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
