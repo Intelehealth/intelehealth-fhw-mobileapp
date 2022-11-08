@@ -1,8 +1,10 @@
 package org.intelehealth.app.activities.visit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
@@ -18,7 +21,7 @@ import org.intelehealth.app.activities.appointment.MyAppointmentsPagerAdapter;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends AppCompatActivity {
+public class VisitActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +42,31 @@ public class VisitActivity extends AppCompatActivity {
 
     public void configureTabLayout() {
         TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
-        tabLayout.addTab(tabLayout.newTab().setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon));
-        tabLayout.addTab(tabLayout.newTab().setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon));
+//        tabLayout.addTab(tabLayout.newTab().setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon));
+//        tabLayout.addTab(tabLayout.newTab().setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon));
 
 
-        ViewPager viewPager = findViewById(R.id.pager_appointments);
-        PagerAdapter adapter = new VisitPagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount(), VisitActivity.this);
+        ViewPager2 viewPager = findViewById(R.id.pager_appointments);
+        VisitPagerAdapter adapter = new VisitPagerAdapter
+                (VisitActivity.this);
         viewPager.setAdapter(adapter);
-        int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                (TabLayout.Tab tab, int position) -> {
+                    if (position == 0)
+                        tab.setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon);
+                    else
+                        tab.setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon);
+
+                }
+        ).attach();
+
+        int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
         viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        viewPager.addOnPageChangeListener(new
+//                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

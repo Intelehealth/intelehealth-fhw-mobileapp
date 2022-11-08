@@ -101,7 +101,7 @@
     <!--Tablayout - end -->
 
     <!--ViewPager-->
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager_appointments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

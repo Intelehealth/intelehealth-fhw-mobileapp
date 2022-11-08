@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -74,63 +78,84 @@ public class VisitPendingFragment extends Fragment {
             Date cDate = new Date();
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
-            db.beginTransaction();
-        /**
-         * Here we fetch all the visits for Today eg.10 except those visits for whom the presc is provided eg.2
-         * So, it must return pending visits as eg. 10-2 = 8.
-         */
-        Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND (substr(modified_date, 1, 4) ||'-'|| substr(modified_date, 6,2) ||'-'|| substr(modified_date, 9,2)) = DATE('now') except " +
-                    "SELECT distinct(visituuid) FROM tbl_encounter where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND (substr(modified_date, 1, 4) ||'-'|| substr(modified_date, 6,2) ||'-'|| substr(modified_date, 9,2)) = DATE('now') " +
-                    "and encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-                do {
-                    PrescriptionModel model = new PrescriptionModel();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-                  //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                    model.setHasPrescription(false);
-                    model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
-                 //   model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                //Background work here
+                db.beginTransaction();
+                /**
+                 * Here we fetch all the visits for Today eg.10 except those visits for whom the presc is provided eg.2
+                 * So, it must return pending visits as eg. 10-2 = 8.
+                 */
+                Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND (substr(modified_date, 1, 4) ||'-'|| substr(modified_date, 6,2) ||'-'|| substr(modified_date, 9,2)) = DATE('now') except " +
+                        "SELECT distinct(visituuid) FROM tbl_encounter where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND (substr(modified_date, 1, 4) ||'-'|| substr(modified_date, 6,2) ||'-'|| substr(modified_date, 9,2)) = DATE('now') " +
+                        "and encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
 
-                    // fetching patientuuid from visit table.
-                    Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
-                    if (c.getCount() > 0 && c.moveToFirst()) {
-                        do {
-                            model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                    do {
+                        PrescriptionModel model = new PrescriptionModel();
 
-                            // fetching patient values from Patient table.
-                            Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                            if (p_c.getCount() > 0 && p_c.moveToFirst()) {
-                                do {
-                                    model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                    model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                    model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                    arrayList.add(model);
+                        //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                        model.setHasPrescription(false);
+                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        //   model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+
+                        // fetching patientuuid from visit table.
+                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        if (c.getCount() > 0 && c.moveToFirst()) {
+                            do {
+                                model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+
+                                // fetching patient values from Patient table.
+                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                    do {
+                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        arrayList.add(model);
+                                    }
+                                    while (p_c.moveToNext());
                                 }
-                                while (p_c.moveToNext());
-                            }
-                            p_c.close();
-                            // end
+                                p_c.close();
+                                // end
 
+                            }
+                            while (c.moveToNext());
                         }
-                        while (c.moveToNext());
+                        c.close();
+                        //end
+
                     }
-                    c.close();
-                    //end
+                    while (cursor.moveToNext());
+                }
+                else {
 
                 }
-                while (cursor.moveToNext());
-            }
-            else {
+                cursor.close();
+                db.setTransactionSuccessful();
+                db.endTransaction();
 
-            }
-            cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
+                //  totalCounts_today = arrayList.size();
+                // end
 
-          //  totalCounts_today = arrayList.size();
-            VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-            recycler_today.setAdapter(adapter_new);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
+                        recycler_today.setAdapter(adapter_new);
+                    }
+                });
+            }
+        });
+
+
+
         }
 
 
@@ -142,64 +167,86 @@ public class VisitPendingFragment extends Fragment {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
-        db.beginTransaction();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
-                "voided = 0 AND " +
-                "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) " +
-                "AND STRFTIME('%W',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%W',DATE('now')) except " +
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-                "SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
-                "voided = 0 AND " +
-                "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) " +
-                "AND STRFTIME('%W',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                "AND encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
+                //Background work here
+                db.beginTransaction();
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            do {
-                PrescriptionModel model = new PrescriptionModel();
+                Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
+                        "voided = 0 AND " +
+                        "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+                        "AND STRFTIME('%W',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%W',DATE('now')) except " +
 
-              //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                model.setHasPrescription(false);
-                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
-              //  model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                        "SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
+                        "voided = 0 AND " +
+                        "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+                        "AND STRFTIME('%W',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%W',DATE('now'))" +
+                        "AND encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
 
-                // fetching patientuuid from visit table.
-                Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
-                if (c.getCount() > 0 && c.moveToFirst()) {
+                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                     do {
-                        model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                        PrescriptionModel model = new PrescriptionModel();
 
-                        // fetching patient values from Patient table.
-                        Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                        if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                        //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                        model.setHasPrescription(false);
+                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        //  model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+
+                        // fetching patientuuid from visit table.
+                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        if (c.getCount() > 0 && c.moveToFirst()) {
                             do {
-                                model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                arrayList.add(model);
+                                model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+
+                                // fetching patient values from Patient table.
+                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                    do {
+                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        arrayList.add(model);
+                                    }
+                                    while (p_c.moveToNext());
+                                }
+                                p_c.close();
+                                // end
+
                             }
-                            while (p_c.moveToNext());
+                            while (c.moveToNext());
                         }
-                        p_c.close();
-                        // end
+                        c.close();
+                        //end
 
                     }
-                    while (c.moveToNext());
+                    while (cursor.moveToNext());
                 }
-                c.close();
-                //end
+                cursor.close();
+                db.setTransactionSuccessful();
+                db.endTransaction();
 
+                //  totalCounts_week = arrayList.size();
+                // end
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
+                        recycler_week.setAdapter(adapter_new);
+                    }
+                });
             }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        });
 
-      //  totalCounts_week = arrayList.size();
-        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-        recycler_week.setAdapter(adapter_new);
+
+
+
     }
 
     private void thisMonths_Visits() {
@@ -210,64 +257,86 @@ public class VisitPendingFragment extends Fragment {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
-        db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
-                "voided = 0 AND " +
-                "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                "STRFTIME('%m',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%m',DATE('now')) except " +
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-                "SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
-                "voided = 0 AND " +
-                "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                "STRFTIME('%m',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%m',DATE('now')) " +
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-                "AND " +
-                "encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
+                //Background work here
+                db.beginTransaction();
+                Cursor cursor = db.rawQuery("SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
+                        "voided = 0 AND " +
+                        "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                        "STRFTIME('%m',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%m',DATE('now')) except " +
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            do {
-                PrescriptionModel model = new PrescriptionModel();
-              //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                model.setHasPrescription(false);
-                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
-              //  model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                        "SELECT distinct(visituuid) FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
+                        "voided = 0 AND " +
+                        "STRFTIME('%Y',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                        "STRFTIME('%m',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%m',DATE('now')) " +
 
-                // fetching patientuuid from visit table.
-                Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
-                if (c.getCount() > 0 && c.moveToFirst()) {
+                        "AND " +
+                        "encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
+
+                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                     do {
-                        model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                        PrescriptionModel model = new PrescriptionModel();
+                        //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                        model.setHasPrescription(false);
+                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        //  model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
 
-                        // fetching patient values from Patient table.
-                        Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                        if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                        // fetching patientuuid from visit table.
+                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        if (c.getCount() > 0 && c.moveToFirst()) {
                             do {
-                                model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                arrayList.add(model);
+                                model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+
+                                // fetching patient values from Patient table.
+                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                    do {
+                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        arrayList.add(model);
+                                    }
+                                    while (p_c.moveToNext());
+                                }
+                                p_c.close();
+                                // end
+
                             }
-                            while (p_c.moveToNext());
+                            while (c.moveToNext());
                         }
-                        p_c.close();
-                        // end
+                        c.close();
+                        //end
 
                     }
-                    while (c.moveToNext());
+                    while (cursor.moveToNext());
                 }
-                c.close();
-                //end
+                cursor.close();
+                db.setTransactionSuccessful();
+                db.endTransaction();
 
+                //   totalCounts_month = arrayList.size();
+                // end
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
+                        recycler_month.setAdapter(adapter_new);
+                    }
+                });
             }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        });
 
-     //   totalCounts_month = arrayList.size();
-        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-        recycler_month.setAdapter(adapter_new);
+
+
+
     }
 
 

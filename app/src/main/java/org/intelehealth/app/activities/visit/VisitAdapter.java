@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -104,6 +105,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             if (model.getPatient_photo() != null) {
                 Glide.with(context)
                         .load(model.getPatient_photo())
+                        .override(100, 100)
                         .thumbnail(0.3f)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -147,6 +149,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);
+
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
                 (url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
@@ -178,6 +181,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         if (updated) {
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
+                                    .override(100, 100)
                                     .thumbnail(0.3f)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
