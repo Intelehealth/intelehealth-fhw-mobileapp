@@ -141,12 +141,11 @@ public class DateAndTimeUtils {
             tyears = String.valueOf(period.getYears());
         }*/
 
-        if (period.getValue(2) > 0) {
-            tyears = String.valueOf(period.getValue(2));
+        if (period.getValue(0) > 0) {  // o index -> years
+            tyears = String.valueOf(period.getValue(0));
+            age = tyears;
+            Log.d("TAG", "getAge_FollowUp: s : "+age);
         }
-
-        age = tyears;
-        Log.d("TAG", "getAge_FollowUp: s : "+age);
 
         return age;
     }

@@ -18,9 +18,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,10 +98,26 @@ public class VisitReceivedFragment extends Fragment {
                 if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                     do {
                         PrescriptionModel model = new PrescriptionModel();
+                        // emergency - start
+                        String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                        String emergencyUuid = "";
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        try {
+                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            emergencyUuid = "";
+                        }
+
+                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                            model.setEmergency(true);
+                        else
+                            model.setEmergency(false);
+                        // emergency - end
 
                         model.setHasPrescription(true);
                         model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        model.setVisitUuid(visitID);
                         model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
 
                         // fetching patientuuid from visit table.
@@ -183,16 +203,34 @@ public class VisitReceivedFragment extends Fragment {
                     do {
                         PrescriptionModel model = new PrescriptionModel();
 
+                        // emergency - start
+                        String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                        String emergencyUuid = "";
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        try {
+                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            emergencyUuid = "";
+                        }
+
+                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                            model.setEmergency(true);
+                        else
+                            model.setEmergency(false);
+                        // emergency - end
+
                         model.setHasPrescription(true);
                         model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        model.setVisitUuid(visitID);
                         model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
 
                         // fetching patientuuid from visit table.
-                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        Cursor c = db.rawQuery("SELECT * FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
                         if (c.getCount() > 0 && c.moveToFirst()) {
                             do {
                                 model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                                model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
                                 Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
@@ -201,6 +239,9 @@ public class VisitReceivedFragment extends Fragment {
                                         model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
                                         model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
                                         model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
                                         arrayList.add(model);
                                     }
                                     while (p_c.moveToNext());
@@ -264,16 +305,37 @@ public class VisitReceivedFragment extends Fragment {
                 if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                     do {
                         PrescriptionModel model = new PrescriptionModel();
+
+                        // emergency - start
+                        // TODO: 8-11-2022 -> In app currently in sync even when the visit is priority still in sync of app the emergency enc
+                        //  is not getting added in local db ie. from server end emergency encounter is not coming to us in pull.
+                        String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                        String emergencyUuid = "";
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        try {
+                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            emergencyUuid = "";
+                        }
+
+                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                            model.setEmergency(true);
+                        else
+                            model.setEmergency(false);
+                        // emergency - end
+
                         model.setHasPrescription(true);
                         model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                        model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visituuid")));
+                        model.setVisitUuid(visitID);
                         model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
 
                         // fetching patientuuid from visit table.
-                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        Cursor c = db.rawQuery("SELECT * FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
                         if (c.getCount() > 0 && c.moveToFirst()) {
                             do {
                                 model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                                model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
                                 Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
@@ -282,6 +344,9 @@ public class VisitReceivedFragment extends Fragment {
                                         model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
                                         model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
                                         model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
                                         arrayList.add(model);
                                     }
                                     while (p_c.moveToNext());

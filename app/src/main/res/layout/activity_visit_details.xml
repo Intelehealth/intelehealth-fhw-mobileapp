@@ -349,7 +349,7 @@
                     android:layout_toEndOf="@+id/fu_details_calendar"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
-                    android:text="10:00 am"
+                    android:text="00:00 am"
                     android:textAppearance="@style/fu_detiails_date"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize" />
@@ -471,6 +471,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/notifi_header_icon"
                 android:layout_below="@+id/divider_2"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -507,28 +508,28 @@
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
 
-            <View
-                android:id="@+id/divider_3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/ll_3"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
 
             <!--View based on visibility and condition - start-->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/prescription_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/divider_3"
+                android:layout_below="@+id/ll_3"
                 android:visibility="gone"
-                tools:visibility="visible"
+                tools:visibility="gone"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/margin_16dp"
                 android:layout_marginEnd="@dimen/fu_margin_start">
+
+                <View
+                    android:id="@+id/divider_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
 
                 <RelativeLayout
                     android:id="@+id/presc_relative"
@@ -719,7 +720,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     tools:visibility="gone"
                     android:layout_below="@+id/followup_date_txtv" >
 
@@ -794,7 +795,7 @@
             android:layout_marginStart="@dimen/fu_margin_start"
             android:layout_marginEnd="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/margin_16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:visibility="gone"
             >
 

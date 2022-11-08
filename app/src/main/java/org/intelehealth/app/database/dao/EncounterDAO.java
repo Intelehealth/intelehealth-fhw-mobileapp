@@ -13,9 +13,12 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -442,4 +445,37 @@ public class EncounterDAO {
 
         return false;
     }
+
+    /**
+     * Chief Complaint for this visituuid
+     */
+    public static String getChiefComplaint(String visitUUID) {
+        String complaintValue = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+            if(visitUUID != null) {
+                String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " +
+                        "e.visituuid = ? " +
+                        "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
+                        "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
+
+                final Cursor cursor = db.rawQuery(complaint_query, new String[]{visitUUID});
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            complaintValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                            Log.v("Followup", "chiefcomplaint: " + complaintValue);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        return complaintValue;
+    }
+
 }

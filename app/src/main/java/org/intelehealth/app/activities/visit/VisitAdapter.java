@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,14 +118,31 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             }
             // photo - end
 
+            // visit start date
+            if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
+                String startDate = model.getVisit_start_date();
+                startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
+                Log.v("startdate", "startDAte: " + startDate);
+                holder.fu_date_txtview.setText(startDate);
+            }
+
+            // Emergency - start
+            if (model.isEmergency())
+                holder.fu_priority_tag.setVisibility(View.VISIBLE);
+            else
+                holder.fu_priority_tag.setVisibility(View.GONE);
+            // Emergency - end
 
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
                 intent.putExtra("gender", model.getGender());
+
                 String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
                 intent.putExtra("age", age);
+
+                intent.putExtra("priority_tag", model.isEmergency());
                 intent.putExtra("openmrsID", model.getOpenmrs_id());
                 intent.putExtra("visit_ID", model.getVisitUuid());
                 intent.putExtra("visit_startDate", model.getVisit_start_date());
@@ -141,15 +159,17 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public class Myholder extends RecyclerView.ViewHolder {
         private CardView fu_cardview_item;
-        private TextView name;
-        private ImageView profile_image;
+        private TextView name, fu_date_txtview;
+        private ImageView profile_image, fu_priority_tag;
         private ImageButton shareicon;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
             name = itemView.findViewById(R.id.fu_patname_txtview);
+            fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
+            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
             shareicon = itemView.findViewById(R.id.shareicon);
         }
     }

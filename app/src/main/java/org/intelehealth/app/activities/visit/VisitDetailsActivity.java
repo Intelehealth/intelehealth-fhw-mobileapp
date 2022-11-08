@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -92,6 +94,18 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
         if (chief_complaint_value != null) {
+            int first = chief_complaint_value.indexOf("<b>");
+            int last = chief_complaint_value.indexOf("</b>");
+            chief_complaint_value = chief_complaint_value.substring(first, last + 4);
+            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
+            Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
+            chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
+            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+            chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+        }
+        else {  // ie. here user is coming from Prescription screen and not Follow up screen.
+            chief_complaint_value = getChiefComplaint(visitID);
+            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
             int first = chief_complaint_value.indexOf("<b>");
             int last = chief_complaint_value.indexOf("</b>");
             chief_complaint_value = chief_complaint_value.substring(first, last + 4);
