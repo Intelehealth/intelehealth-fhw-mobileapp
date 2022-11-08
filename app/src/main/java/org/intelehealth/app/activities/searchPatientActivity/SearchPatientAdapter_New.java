@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.searchPatientActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -29,6 +30,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -66,6 +68,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     @Override
     public void onBindViewHolder(@NonNull SearchPatientAdapter_New.SearchHolderView holder, int position) {
         final PatientDTO model = patientDTOS.get(position);
+        holder.patientDTO = model;
         if (model != null) {
             //  1. Age
             String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
@@ -96,8 +99,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
                 else
                     holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
-            }
-            else {
+            } else {
                 holder.presc_tag_imgview.setVisibility(View.GONE);
             }
 
@@ -129,8 +131,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(holder.profile_imgview);
-            }
-            else {
+            } else {
                 holder.profile_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
 
@@ -145,7 +146,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public class SearchHolderView extends RecyclerView.ViewHolder {
         TextView search_gender, search_name, search_date_relative;
         ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview, profile_imgview;
-
+        PatientDTO patientDTO;
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
@@ -156,6 +157,26 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
             presc_tag_imgview = itemView.findViewById(R.id.presc_tag_imgview);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PatientDetailActivity2.class);
+                    intent.putExtra("patientUuid", patientDTO.getUuid());
+                    intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                    intent.putExtra("tag", "newPatient");
+                    intent.putExtra("hasPrescription", "false");
+                    //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
+                    //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    Bundle args = new Bundle();
+                    args.putSerializable("patientDTO", (Serializable) patientDTO);
+                    intent.putExtra("BUNDLE", args);
+                    intent.putExtra("patientUuid", patientDTO.getUuid());
+                   context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -209,7 +230,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
-               }
+                    }
                 });
     }
 

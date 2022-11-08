@@ -149,7 +149,7 @@ dependencies {
     implementation 'com.github.piruin:quickaction:2.4.3'
 
     implementation 'com.hbb20:ccp:2.6.1'
-
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

@@ -21,8 +21,6 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -152,9 +150,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         switch (view.getId()) {
             case R.id.btn_submit:
                 //validate
-                validateTable();
-                mActionListener.onProgress(100);
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, results);
+                if (validateTable()) {
+                    mActionListener.onProgress(100);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, results);
+                }
                 break;
             case R.id.tv_height:
                 showHeightListing();
@@ -339,7 +338,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public void validateTable() {
+    public boolean validateTable() {
         boolean cancel = false;
         View focusView = null;
 
@@ -350,12 +349,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBpSys.requestFocus();
 //                mBpSys.setError("Enter field");
                 mBpSys.setError(getResources().getString(R.string.error_field_required));
-                return;
+                return false;
             } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
 //                mBpDia.setError("Enter field");
                 mBpDia.setError(getResources().getString(R.string.error_field_required));
-                return;
+                return false;
             }
         }
 
@@ -529,7 +528,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (cancel) {
             // There was an error - focus the first form field with an error.
             focusView.requestFocus();
-            return;
+            return false;
         } else {
             try {
                 if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
@@ -790,6 +789,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             intent.putExtra("tag", intentTag);
             startActivity(intent);*/
         }
+        return true;
     }
 
     private String ConvertFtoC(String temperature) {

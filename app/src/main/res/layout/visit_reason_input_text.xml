@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui2.visit.reason.VisitReasonCaptureFragment">
+
+    <EditText
+        android:id="@+id/actv_reasons"
+        style="@style/edittext_textcolor"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height_44dp"
+        android:background="@drawable/edittext_border_blue"
+        android:drawablePadding="@dimen/margin_8"
+        android:hint="Enter value"
+        android:inputType="textAutoComplete"
+        android:padding="@dimen/padding_10"
+        android:textColorHint="@color/edittext_hint_color"
+        android:textSize="@dimen/edittext_textsize_16sp" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actv_reasons"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingHorizontal="@dimen/padding_10"
+        android:paddingVertical="@dimen/padding_7"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size" />
+</RelativeLayout>

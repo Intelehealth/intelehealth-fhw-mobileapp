@@ -26,7 +26,7 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<ReasonGroupData> mItemList = new ArrayList<ReasonGroupData>();
 
     public interface OnItemSelection {
-        public void onSelect(SlotInfo slotInfo);
+        public void onSelect(String data);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -66,8 +66,8 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             ReasonChipsGridAdapter reasonChipsGridAdapter = new ReasonChipsGridAdapter(genericViewHolder.recyclerView, mContext, genericViewHolder.reasonGroupData.getReasons(), new ReasonChipsGridAdapter.OnItemSelection() {
                 @Override
-                public void onSelect(SlotInfo slotInfo) {
-
+                public void onSelect(String data) {
+                    mOnItemSelection.onSelect(data);
                 }
             });
             genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
