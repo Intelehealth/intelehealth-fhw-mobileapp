@@ -90,6 +90,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
         prescription_block = findViewById(R.id.prescription_block);
         if (hasPrescription) {
             prescription_block.setVisibility(View.VISIBLE);
+            prescription_block.setOnClickListener(v -> {
+                Intent in = new Intent(this, PrescriptionActivity.class);
+                startActivity(in);
+            });
         }
         else {
             prescription_block.setVisibility(View.GONE);

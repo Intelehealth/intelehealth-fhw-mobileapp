@@ -25,9 +25,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/toolbar_margin_left"
+            android:layout_marginLeft="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/toolbar_margin_top"
-            android:layout_marginRight="@dimen/toolbar_margin_right"
+            android:layout_marginRight="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="3">
 
