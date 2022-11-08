@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
+import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -18,7 +19,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Prajwal Waingankar on 16/09/2022.
@@ -116,7 +121,6 @@ public class VisitDetailsActivity extends AppCompatActivity {
             chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
         }
 
-
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
@@ -128,9 +132,15 @@ public class VisitDetailsActivity extends AppCompatActivity {
         Log.v("Followup", "foramted date: " + visit_startDate);
         visit_startDate_txt.setText(visit_startDate);
 
+        // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);
         if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
+        else {
+            visit_speciality = fetchSpecialityValue(visitID);
+            visit_speciality_txt.setText(visit_speciality);
+        }
+        // speciality - end
 
         followupDate_txt = findViewById(R.id.followup_date_txtv);
         if (followupDate != null) {

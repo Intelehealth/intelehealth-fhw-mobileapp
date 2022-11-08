@@ -157,4 +157,29 @@ public class VisitAttributeListDAO {
         Log.d("isInserted", "isInserted: "+isInserted);
         return isInserted;
     }
+
+    /**
+     * Fetching speciality value for the visit.
+     * @param visitUUID
+     * @return
+     */
+    public static String fetchSpecialityValue(String visitUUID) {
+        String specialityValue = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and voided = 0",
+                new String[]{visitUUID});
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                specialityValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return specialityValue;
+    }
 }

@@ -283,9 +283,6 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-//        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
-//                new String[] {"0", visit_uuid});
-
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
                 new String[]{/*"0", */visit_uuid});
         if (cursor.getCount() != 0) {
