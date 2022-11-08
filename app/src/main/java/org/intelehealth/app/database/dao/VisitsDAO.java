@@ -461,7 +461,7 @@ public class VisitsDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND (substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
                 " AND v.enddate IS NULL", new String[]{});
 
@@ -469,7 +469,12 @@ public class VisitsDAO {
             do {
                 PrescriptionModel model = new PrescriptionModel();
 
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0,10));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -481,5 +486,80 @@ public class VisitsDAO {
 
         return arrayList;
     }
+
+    /**
+     * This Weeks Visits that are not Ended.
+     */
+    public static List<PrescriptionModel> thisWeeks_NotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
+                "v.enddate IS NULL", new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0,10));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return arrayList;
+    }
+
+    /**
+     * This Months Visits that are not Ended.
+     */
+    public static List<PrescriptionModel> thisMonths_NotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                "STRFTIME('%m',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%m',DATE('now')) AND " +
+                "v.enddate IS NULL", new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0,10));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return arrayList;
+    }
+
 
 }

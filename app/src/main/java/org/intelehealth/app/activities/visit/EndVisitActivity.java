@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
+import static org.intelehealth.app.database.dao.VisitsDAO.thisWeeks_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.todays_NotEndedVisits;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,22 +58,21 @@ public class EndVisitActivity extends AppCompatActivity {
     }
 
     private void todays_EndVisits() {
-//        EndVisitAdapter adapter_new = new EndVisitAdapter(this);
-//        recycler_today.setAdapter(adapter_new);
-
         List<PrescriptionModel> arrayList = todays_NotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_today.setAdapter(adapter_new);
     }
 
     private void thisWeeks_EndVisits() {
-//        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-//        recycler_week.setAdapter(adapter_new);
+        List<PrescriptionModel> arrayList = thisWeeks_NotEndedVisits();
+        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+        recycler_week.setAdapter(adapter_new);
     }
 
     private void thisMonths_EndVisits() {
-//        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-//        recycler_month.setAdapter(adapter_new);
+        List<PrescriptionModel> arrayList = thisMonths_NotEndedVisits();
+        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+        recycler_month.setAdapter(adapter_new);
     }
 
 
