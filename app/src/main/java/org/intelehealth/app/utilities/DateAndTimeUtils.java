@@ -134,15 +134,19 @@ public class DateAndTimeUtils {
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
 
-        if (period.getYears() > 0) {
+       /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
+        }*/
+
+        if (period.getValue(2) > 0) {
+            tyears = String.valueOf(period.getValue(2));
         }
 
         age = tyears;
+        Log.d("TAG", "getAge_FollowUp: s : "+age);
 
         return age;
     }

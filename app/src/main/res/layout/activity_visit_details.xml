@@ -264,7 +264,7 @@
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:text="@string/details_head1"
+                android:text="Test Fever"
                 android:textAppearance="@style/details_head1"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_name_txt_size" />
@@ -659,8 +659,8 @@
                 android:layout_below="@+id/prescription_block"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
-                android:visibility="visible"
-                tools:visibility="visible"
+                android:visibility="gone"
+                tools:visibility="gone"
                 >
 
                 <View

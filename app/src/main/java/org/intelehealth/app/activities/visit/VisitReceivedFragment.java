@@ -101,10 +101,11 @@ public class VisitReceivedFragment extends Fragment {
                         model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("sync")));
 
                         // fetching patientuuid from visit table.
-                        Cursor c = db.rawQuery("SELECT patientuuid FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
+                        Cursor c = db.rawQuery("SELECT * FROM tbl_visit WHERE uuid = ?", new String[]{model.getVisitUuid()});
                         if (c.getCount() > 0 && c.moveToFirst()) {
                             do {
                                 model.setPatientUuid(c.getString(c.getColumnIndexOrThrow("patientuuid")));
+                                model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
                                 Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
@@ -113,6 +114,9 @@ public class VisitReceivedFragment extends Fragment {
                                         model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
                                         model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
                                         model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
                                         arrayList.add(model);
                                     }
                                     while (p_c.moveToNext());

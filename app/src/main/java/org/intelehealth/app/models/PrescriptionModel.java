@@ -14,6 +14,7 @@ public class PrescriptionModel {
     String last_name;
     String phone_number;
     String gender;
+    String dob;
     String visit_start_date;
     String visit_speciality;
     String followup_date;
@@ -149,5 +150,13 @@ public class PrescriptionModel {
 
     public void setHasPrescription(boolean hasPrescription) {
         this.hasPrescription = hasPrescription;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 }

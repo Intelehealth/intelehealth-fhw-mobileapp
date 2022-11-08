@@ -2,6 +2,8 @@ package org.intelehealth.app.activities.visit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -36,11 +38,19 @@ public class VisitDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_details);
 
+        // changing status bar color
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientName = intent.getStringExtra("patientname");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
+            Log.d("TAG", "getAge_FollowUp: s : "+age);
+
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             visit_startDate = intent.getStringExtra("visit_startDate");
@@ -81,14 +91,16 @@ public class VisitDetailsActivity extends AppCompatActivity {
             priorityTag.setVisibility(View.GONE);
 
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
-        int first = chief_complaint_value.indexOf("<b>");
-        int last = chief_complaint_value.indexOf("</b>");
-        chief_complaint_value = chief_complaint_value.substring(first, last + 4);
-        Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
-        Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-        chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
-        chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
-        chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+        if (chief_complaint_value != null) {
+            int first = chief_complaint_value.indexOf("<b>");
+            int last = chief_complaint_value.indexOf("</b>");
+            chief_complaint_value = chief_complaint_value.substring(first, last + 4);
+            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
+            Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
+            chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
+            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+            chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+        }
 
 
         visitID_txt = findViewById(R.id.visitID);
@@ -103,11 +115,15 @@ public class VisitDetailsActivity extends AppCompatActivity {
         visit_startDate_txt.setText(visit_startDate);
 
         visit_speciality_txt = findViewById(R.id.visit_speciality);
-        visit_speciality_txt.setText(visit_speciality);
+        if (visit_speciality != null)
+            visit_speciality_txt.setText(visit_speciality);
 
         followupDate_txt = findViewById(R.id.followup_date_txtv);
-        followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
-        followupDate_txt.setText("Follow up on " + followupDate);
+        if (followupDate != null) {
+            followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+            followupDate_txt.setText("Follow up on " + followupDate);
+        }
+
 
         followup_info = findViewById(R.id.followup_info);
         followup_info.setText("Please take " + patientName + "'s follow-up visit.");

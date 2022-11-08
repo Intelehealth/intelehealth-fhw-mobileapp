@@ -25,6 +25,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -115,6 +116,21 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
             // photo - end
+
+
+
+            holder.fu_cardview_item.setOnClickListener(v -> {
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("gender", model.getGender());
+                String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age);
+                intent.putExtra("openmrsID", model.getOpenmrs_id());
+                intent.putExtra("visit_ID", model.getVisitUuid());
+                intent.putExtra("visit_startDate", model.getVisit_start_date());
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                context.startActivity(intent);
+            });
         }
     }
 
@@ -135,11 +151,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             name = itemView.findViewById(R.id.fu_patname_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             shareicon = itemView.findViewById(R.id.shareicon);
-
-            fu_cardview_item.setOnClickListener(v -> {
-                Intent intent = new Intent(context, PrescriptionActivity.class);
-                context.startActivity(intent);
-            });
         }
     }
 
