@@ -12,6 +12,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -449,6 +450,36 @@ public class VisitsDAO {
             db.endTransaction();
         }
         return isDownloaded;
+    }
+
+    /**
+     * Todays Visits that are not Ended.
+     */
+    public static List<PrescriptionModel> todays_NotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND (substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
+                " AND v.enddate IS NULL", new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return arrayList;
     }
 
 }

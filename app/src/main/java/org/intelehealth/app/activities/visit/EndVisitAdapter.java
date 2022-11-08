@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.PrescriptionModel;
+
+import java.util.List;
 
 /**
  * Created by Prajwal Waingankar on 21/08/22.
@@ -17,11 +20,12 @@ import org.intelehealth.app.R;
  * Email: prajwalwaingankar@gmail.com
  */
 public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myholder> {
-
     private Context context;
+    private List<PrescriptionModel> arrayList;
 
-    public EndVisitAdapter(Context context) {
+    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
         this.context = context;
+        this.arrayList = arrayList;
     }
 
     @NonNull
@@ -34,12 +38,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
     @Override
     public void onBindViewHolder(@NonNull EndVisitAdapter.Myholder holder, int position) {
+        PrescriptionModel model = arrayList.get(position);
+        if (model != null) {
 
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return arrayList.size();
     }
 
     public class Myholder extends RecyclerView.ViewHolder {
