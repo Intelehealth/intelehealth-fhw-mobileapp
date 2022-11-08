@@ -516,7 +516,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_3"
                 android:visibility="gone"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/margin_16dp"
                 android:layout_marginEnd="@dimen/fu_margin_start">
@@ -525,8 +525,6 @@
                     android:id="@+id/divider_3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/fu_card_margin_updown"
                     android:background="@color/notifi_divider_color" />
 
@@ -534,7 +532,8 @@
                 <RelativeLayout
                     android:id="@+id/presc_relative"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider_3">
 
                 <ImageView
                     android:id="@+id/icon_visit_details"

@@ -256,13 +256,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     ImageView profile_image;
     String profileImage = "";
     String profileImage1 = "";
-
     ImagesDAO imagesDAO = new ImagesDAO();
-
-
-
-
-
 
 
     @Override

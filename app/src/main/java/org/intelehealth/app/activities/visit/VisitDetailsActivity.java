@@ -13,6 +13,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,11 +35,12 @@ import java.util.List;
 public class VisitDetailsActivity extends AppCompatActivity {
     private String patientName, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
-    private boolean isEmergency;
+    private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt,
     visit_startDate_txt, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
+    private RelativeLayout prescription_block;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
             visit_speciality = intent.getStringExtra("visit_speciality");
             followupDate = intent.getStringExtra("followup_date");
             isEmergency = intent.getBooleanExtra("priority_tag", false);
+            hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             patient_photo_path = intent.getStringExtra("patient_photo");
             chief_complaint_value = intent.getStringExtra("chief_complaint");
         }
@@ -82,6 +85,17 @@ public class VisitDetailsActivity extends AppCompatActivity {
         else {
             profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
+
+        // presc block - start
+        prescription_block = findViewById(R.id.prescription_block);
+        if (hasPrescription) {
+            prescription_block.setVisibility(View.VISIBLE);
+        }
+        else {
+            prescription_block.setVisibility(View.GONE);
+        }
+        // presc block - end
+
         patName_txt = findViewById(R.id.patname_txt);
         patName_txt.setText(patientName);
 

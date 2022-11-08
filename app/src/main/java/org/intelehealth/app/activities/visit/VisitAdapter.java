@@ -134,6 +134,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             // Emergency - end
 
 
+
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
@@ -143,6 +144,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("age", age);
 
                 intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
                 intent.putExtra("openmrsID", model.getOpenmrs_id());
                 intent.putExtra("visit_ID", model.getVisitUuid());
                 intent.putExtra("visit_startDate", model.getVisit_start_date());
