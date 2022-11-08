@@ -55,10 +55,21 @@
         <item name="colorControlHighlight">#5677FC</item>
     </style>
 
+    <style name="SelectableItemTheme_Orange">
+        <item name="colorControlHighlight">#FAA78D</item>
+    </style>
+
+
     <style name="SelectableItemBackground">
         <item name="android:theme">@style/SelectableItemTheme</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+
+    <style name="SelectableItemBackground_Orange">
+        <item name="android:theme">@style/SelectableItemTheme_Orange</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
 
     <style name="Theme.Transparent" parent="android:Theme">
         <item name="android:windowIsTranslucent">true</item>

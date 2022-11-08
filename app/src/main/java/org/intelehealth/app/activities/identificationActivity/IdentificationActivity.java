@@ -1819,6 +1819,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                i.putExtra("patientFirstName", patientdto.getFirstname());
+                i.putExtra("patientLastName", patientdto.getLastname());
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
@@ -2138,6 +2140,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+                i.putExtra("patientFirstName", patientdto.getFirst_name());
+                i.putExtra("patientLastName", patientdto.getLast_name());
                 i.putExtra("tag", "newPatient");
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

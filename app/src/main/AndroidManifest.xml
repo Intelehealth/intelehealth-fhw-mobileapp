@@ -39,17 +39,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="allowBackup"
-        tools:ignore="UnusedAttribute, LockedOrientationActivity">
+        tools:ignore="UnusedAttribute, LockedOrientationActivity"
+        tools:replace="allowBackup">
+        <activity
+            android:name=".activities.billConfirmation.billConfirmationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
-
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
