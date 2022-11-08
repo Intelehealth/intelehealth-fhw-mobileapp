@@ -37,7 +37,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt,
-    visit_startDate_txt, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
+    visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block;
@@ -140,11 +140,27 @@ public class VisitDetailsActivity extends AppCompatActivity {
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
         visitID_txt.setText("Visit ID XXXX" + hideVisitUUID);
 
+        // Start Date and Time - start
         visit_startDate_txt = findViewById(R.id.visit_startDate);
-        Log.v("Followup", "actual date: " + visit_startDate);
-        visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
-        Log.v("Followup", "foramted date: " + visit_startDate);
-        visit_startDate_txt.setText(visit_startDate);
+        visit_startTime = findViewById(R.id.visit_startTime);
+
+        if (visit_startDate != null) {
+            Log.v("Followup", "actual date: " + visit_startDate);
+
+            // Time - start
+            String startTime = DateAndTimeUtils.date_formatter(visit_startDate,
+                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
+            Log.v("SearchPatient", "date: " + startTime);
+            visit_startTime.setText(startTime);
+            // Time - end
+
+            visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
+            Log.v("Followup", "foramted date: " + visit_startDate);
+            visit_startDate_txt.setText(visit_startDate);
+        }
+
+        // Start Date and Time - end
 
         // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);

@@ -174,6 +174,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                         "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
                 Log.v("SearchPatient", "date: " + visit_start_date);
+
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
                 //  3. prescription received/pending tag logic.
