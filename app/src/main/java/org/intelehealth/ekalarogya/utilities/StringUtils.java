@@ -141,7 +141,7 @@ public final class StringUtils {
     public static String getSurveyValue(String value) {
         String val = "-";
         if (value != null && !value.equals("") && !value.equals("-"))
-            val = value;
+            val = trimAdvanced(value);
         return val;
     }
 
@@ -4073,67 +4073,54 @@ public final class StringUtils {
             if (context.getString(R.string.smoker).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.smoker);
             }
-
             // Translate string Non-Smoker to English
             if (context.getString(R.string.non_smoker).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.non_smoker);
             }
-
             // Translate string Less than 5 bidis / cigarettes
             if (context.getString(R.string.less_than_5_cigarettes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.less_than_5_cigarettes);
             }
-
             // Translate string 5 - 10 bids / cigarette to English
             if (context.getString(R.string.five_ten_bids_cigarette).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.five_ten_bids_cigarette);
             }
-
             // Translate string More Than 10 bids / cigarette to English
             if (context.getString(R.string.more_than_ten_bids_cigarette).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_bids_cigarette);
             }
-
             // Translate string Less Than A Year to English
             if (context.getString(R.string.less_than_a_year).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.less_than_a_year);
             }
-
             // Translate string From One Year To Five Years to English
             if (context.getString(R.string.from_one_year_to_five_year).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.from_one_year_to_five_year);
             }
-
             // Translate string From Five Years To Ten Years to English
             if (context.getString(R.string.from_five_years_to_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.from_five_years_to_ten_years);
             }
-
             // Translate string More Than 10 Years to English
             if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_years);
             }
-
             // Translate strings Daily to English
             if (context.getString(R.string.daily).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.daily);
             }
-
             // Translate strings Once A Week to English
             if (context.getString(R.string.once_a_week).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.once_a_week);
             }
-
             // Translate strings Twice A Week to English
             if (context.getString(R.string.twice_a_week).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.twice_a_week);
             }
-
             // Translate strings Occasionally to English
             if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
             }
-
             // Translate string Denied to Answer
             if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.denied_to_answer);
@@ -4206,27 +4193,22 @@ public final class StringUtils {
             if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
             }
-
             // Translate string 0 - 50 ml to English
             if (context.getString(R.string.zero_fifty_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.zero_fifty_ml);
             }
-
             // Translate string 50 - 100 ml to English
             if (context.getString(R.string.fifty_hundred_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.fifty_hundred_ml);
             }
-
             // Translate string 100 - 250 ml to English
             if (context.getString(R.string.hundred_two_hundred_fifty_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hundred_two_hundred_fifty_ml);
             }
-
             // Translate string 250 - 500 ml to English
             if (context.getString(R.string.two_hundred_fifty_five_hundred_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.two_hundred_fifty_five_hundred_ml);
             }
-
             // Translate string More than 500 ml to English
             if (context.getString(R.string.more_than_five_hundred_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_five_hundred_ml);
