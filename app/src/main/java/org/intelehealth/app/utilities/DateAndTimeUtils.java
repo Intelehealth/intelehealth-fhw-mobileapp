@@ -54,14 +54,10 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if (period.getYears() > 0)
-            xyears = period.getYears();
-        else
-            xyears = 0;
-        if (period.getMonths() > 0)
-            xmonths = period.getMonths();
-        else
-            xmonths = 0;
+        if (period.getYears() > 0) xyears = period.getYears();
+        else xyears = 0;
+        if (period.getMonths() > 0) xmonths = period.getMonths();
+        else xmonths = 0;
 
         x_format = xyears + "." + xmonths;
         year_month = Float.parseFloat(x_format);
@@ -76,6 +72,7 @@ public class DateAndTimeUtils {
         Date todayDate = new Date();
         return date.format(todayDate);
     }
+
     public String currentDateTimeFormat() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -129,86 +126,92 @@ public class DateAndTimeUtils {
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
+        if (date != null) {
+            String formattedDate = targetFormat.format(date);  // 20120821
+            String[] components = formattedDate.split("-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
 
-        //call to function to pass this year and month for age mindmaps questions...
-        //getAge_Year_Month(year, month, day);
+            //call to function to pass this year and month for age mindmaps questions...
+            //getAge_Year_Month(year, month, day);
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
-        String age = "";
-        String tyears = "", tmonth = "", tdays = "";
-        //String xyears = "", xmonths = "";
+            String age = "";
+            String tyears = "", tmonth = "", tdays = "";
+            //String xyears = "", xmonths = "";
 
-        if (period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-            //xyears = String.valueOf(period.getYears());
+            if (period.getYears() > 0) {
+                tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+                //xyears = String.valueOf(period.getYears());
+            }
+            if (period.getMonths() > 0) {
+                tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
+                //xmonths = String.valueOf(period.getMonths());
+            }
+            if (period.getDays() > 0)
+                tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
+
+            age = tyears + " " + tmonth + " " + tdays;
+
+            return age;
+        } else {
+            return "";
         }
-        if (period.getMonths() > 0) {
-            tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
-            //xmonths = String.valueOf(period.getMonths());
-        }
-        if (period.getDays() > 0)
-            tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
-
-        age = tyears + " " + tmonth + " " + tdays;
-
-        return age;
     }
 
 
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
+        if (date != null) {
+            String formattedDate = targetFormat.format(date);  // 20120821
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+            String[] components = formattedDate.split("\\-");
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
 
-        String age = "";
-        String tyears = "0", tmonth = "0", tdays = "0";
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
-        if (period.getYears() > 0)
-            tyears = "" + period.getYears();
+            String age = "";
+            String tyears = "0", tmonth = "0", tdays = "0";
 
-        if (period.getMonths() > 0)
-            tmonth = "" + period.getMonths();
+            if (period.getYears() > 0) tyears = "" + period.getYears();
 
-        if (period.getDays() > 0)
-            tdays = "" + period.getDays();
+            if (period.getMonths() > 0) tmonth = "" + period.getMonths();
 
-        age = tyears + " " + tmonth + " " + tdays;
+            if (period.getDays() > 0) tdays = "" + period.getDays();
 
-        return age;
+            age = tyears + " " + tmonth + " " + tdays;
+
+            return age;
+        } else {
+            return "";
+        }
     }
 
     public static String getAgeInYears(String s, Context context) {
@@ -341,7 +344,8 @@ public class DateAndTimeUtils {
         return period.getMonths();
     }
 
-    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
+    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String
+            anotherFormat) {
 
         String result = "";
         SimpleDateFormat sdf;
@@ -361,32 +365,32 @@ public class DateAndTimeUtils {
         return result;
     }
 
-    public static void assignDatePickerMin2yrsMaxToday(Context context, EditText etFollowUpDate, SessionManager sessionManager) {
+    public static void assignDatePickerMin2yrsMaxToday(Context context, EditText
+            etFollowUpDate, SessionManager sessionManager) {
         Calendar today = Calendar.getInstance();
         int mDOBYear = today.get(Calendar.YEAR);
         int mDOBMonth = today.get(Calendar.MONTH);
         int mDOBDay = today.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog mDOBPicker = new DatePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                (view, year, monthOfYear, dayOfMonth) -> {
-                    SimpleDateFormat simpleDateFormat = null;
-                    simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DatePickerDialog mDOBPicker = new DatePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, (view, year, monthOfYear, dayOfMonth) -> {
+            SimpleDateFormat simpleDateFormat = null;
+            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
 //
 //                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 //                        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag(sessionManager.getAppLanguage()));
 //                    } else {
 //                        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
 //                    }
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(year, monthOfYear, dayOfMonth);
-                    String format = simpleDateFormat.format(calendar.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            String format = simpleDateFormat.format(calendar.getTime());
 
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        etFollowUpDate.setText(StringUtils.en__mr_dob(format));
-                    } else {
-                        etFollowUpDate.setText(format);
-                    }
-                }, mDOBYear, mDOBMonth, mDOBDay);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                etFollowUpDate.setText(StringUtils.en__mr_dob(format));
+            } else {
+                etFollowUpDate.setText(format);
+            }
+        }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
         Calendar prevYear = Calendar.getInstance();

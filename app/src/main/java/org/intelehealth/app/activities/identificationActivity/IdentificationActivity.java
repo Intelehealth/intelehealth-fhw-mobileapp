@@ -538,7 +538,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
 
-            if (patient1.getPostal_code()!=null && !patient1.getPostal_code().equalsIgnoreCase("-"))
+            if (patient1.getPostal_code() != null && !patient1.getPostal_code().equalsIgnoreCase("-"))
                 mPostal.setText(patient1.getPostal_code());
         }
 //        mRelationship.setText(patient1.getSdw());
@@ -895,15 +895,19 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
-            mAgeYears = Integer.valueOf(ymdData[0]);
-            mAgeMonths = Integer.valueOf(ymdData[1]);
-            mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                    mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                    mAgeDays + getResources().getString(R.string.days);
-            mAge.setText(age);
-            updateRoaster();
+            String patientAge = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth());
+
+            if (!patientAge.equals("")) {
+                String[] ymdData = patientAge.split(" ");
+                mAgeYears = Integer.parseInt(ymdData[0]);
+                mAgeMonths = Integer.parseInt(ymdData[1]);
+                mAgeDays = Integer.parseInt(ymdData[2]);
+                String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                        mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                        mAgeDays + getResources().getString(R.string.days);
+                mAge.setText(age);
+                updateRoaster();
+            }
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
