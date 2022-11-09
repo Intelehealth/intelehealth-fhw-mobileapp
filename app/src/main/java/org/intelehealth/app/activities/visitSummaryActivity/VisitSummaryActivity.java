@@ -225,6 +225,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String followUpDate = "";
 
     ImageButton editVitals;
+    ImageButton editDiagnostics;
     ImageButton editComplaint;
     ImageButton editPhysical;
     ImageButton editFamHist;
@@ -857,6 +858,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editDiagnostics = findViewById(R.id.imagebutton_edit_diagnostics);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -893,6 +895,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -1291,8 +1294,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
-        if (complaint.getValue() != null)
+        if (complaint.getValue() != null) {
             complaintView.setText(Html.fromHtml(complaint.getValue()));
+            if (complaintView.getText().toString().contains("Follow up visit"))
+                visitType = "Follow-Up";
+        }
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -1300,6 +1306,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
+        if (bldglucose.getValue() != null  && !bldglucose.getValue().equalsIgnoreCase("0"))
+            glucose.setText(bldglucose.getValue() );
+        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
+            glucoseRandom.setText(bldglucose_random.getValue());
+        if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
+            glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
+        if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
+            glucoseFasting.setText(bldglucose_fasting.getValue());
+        if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
+            hemoglobin.setText(hemoGlobin.getValue());
+        if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
+            uricAcid_textview.setText(uricAcid.getValue());
+        if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
+            totalCholesterol_textview.setText(totalCholesterol.getValue());
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1309,7 +1329,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+            }
+        });
+
+        editDiagnostics.setOnClickListener(new View.OnClickListener() { // Edit Diagnostics
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
@@ -1385,6 +1424,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_FamHist", "edit_FamHist");
                         intent1.putExtra("gender", patientGender);
@@ -1503,6 +1544,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1609,6 +1652,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         //    intent1.putStringArrayListExtra("exams", physicalExams);
@@ -1704,14 +1749,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_PatHist", "edit_PatHist");
                         intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                      /*  if(EncounterAdultInitial_LatestVisit != null &&
-                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
-                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                        }
-                        else {
-                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }*/
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -3682,7 +3721,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        try
+        { objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class); }
+        catch (Exception e)
+        { FirebaseCrashlytics.getInstance().recordException(e); }
+
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         String doctorSign = "";
@@ -4756,6 +4799,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private String checkForOldBill() {
         String billEncounterUuid = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
         String[] encounterIDArgs = {visitUuid, "0"};
@@ -4768,7 +4812,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (encounterCursor.moveToNext());
 
         }
-        encounterCursor.close();
+//        encounterCursor.close();
 
         return billEncounterUuid;
 
@@ -4784,10 +4828,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseBillData(selectedTests, dbConceptID, dbValue);
+                if(dbValue!=null && !dbValue.equals("0"))
+                    parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
-        visitCursor.close();
+//        visitCursor.close();
         passIntent(selectedTests);
     }
 

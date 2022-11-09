@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -45,6 +46,7 @@ import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivi
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -72,7 +74,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     Toolbar toolbar;
     String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
     ArrayList<String> selectedTests = new ArrayList<>();
-    TextView patientDetailsTV;
+    TextView patientDetailsTV, paymentStatusTV;
     String patientDetails;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
@@ -92,6 +94,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     private Bitmap bitmap;
     String finalBillPath = "";
     SyncUtils syncUtils = new SyncUtils();
+    ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +151,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         downloadCV = findViewById(R.id.button_download);
         shareCV = findViewById(R.id.button_share);
         finalBillCV = findViewById(R.id.finalBillCV);
+        paymentStatusTV = findViewById(R.id.paymentStatus);
+
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -175,9 +181,15 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         {
             if(billType.equals("Paid"))
             {
+                paymentStatusTV.setVisibility(View.VISIBLE);
+                paymentStatusTV.setText("Paid");
+                paymentStatusTV.setBackgroundColor(Color.GREEN);
             }
             else if(billType.contains("Unpaid"))
             {
+                paymentStatusTV.setVisibility(View.VISIBLE);
+                paymentStatusTV.setText("Unpaid");
+                paymentStatusTV.setBackgroundColor(Color.RED);
             }
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
@@ -238,6 +250,18 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 }*/
                 boolean billSuccess = syncBillToServer();
                 if(billSuccess) {
+                    if(paymentStatus.equals("Paid"))
+                    {
+                        paymentStatusTV.setVisibility(View.VISIBLE);
+                        paymentStatusTV.setText("Paid");
+                        paymentStatusTV.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(paymentStatus.contains("Unpaid"))
+                    {
+                        paymentStatusTV.setVisibility(View.VISIBLE);
+                        paymentStatusTV.setText("Unpaid");
+                        paymentStatusTV.setBackgroundColor(Color.RED);
+                    }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
@@ -484,84 +508,97 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     }
 
     private void shareFile() {
-        if(finalBillPath.equals("")) {
-            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill),Toast.LENGTH_LONG).show();
-            return; }
-
-        File file = new File(finalBillPath);
-        if(!file.exists()){
-            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill),Toast.LENGTH_LONG).show();
-            return; }
-
+        File path = this.getExternalFilesDir("Bill");
+        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
+        String finalPath = path + fName;
+        finalBillPath = finalPath;
+        if (finalBillPath.equals("")) {
+            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
+            return;
+        }
+        File file = new File(path, fName);
+        if (!file.exists()) {
+            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
+            return;
+        }
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                file);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" +file));
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(intent, "Share the file...."));
     }
 
 
     private void setPrices() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
-
-        //Check for license key and load the correct config file
-        try {
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(
-                        FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                        String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-            }
-
             if (consultCV.getVisibility() == View.VISIBLE) {
-                consultChargeTV.setText("₹" + obj.getString("consulCharge") + "/-");
-                total_amount += Double.valueOf(obj.getString("consulCharge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
+                price = getPrice(price, price.indexOf('.'));
+                consultChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (followUPCV.getVisibility() == View.VISIBLE) {
-                followUpChargeTV.setText("₹" + obj.getString("followUpCharge") + "/-");
-                total_amount += Double.valueOf(obj.getString("followUpCharge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Followup");
+                price = getPrice(price, price.indexOf('.'));
+                followUpChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucoseRCV.getVisibility() == View.VISIBLE) {
-                glucoseRChargeTV.setText("₹" + obj.getString("glucose_random_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_random_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+                price = getPrice(price, price.indexOf('.'));
+                glucoseRChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucoseFCV.getVisibility() == View.VISIBLE) {
-                glucoseFChargeTV.setText("₹" + obj.getString("glucose_fasting_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_fasting_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+                price = getPrice(price, price.indexOf('.'));
+                glucoseFChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucosePPNCV.getVisibility() == View.VISIBLE) {
-                glucosePPNChargeTV.setText("₹" + obj.getString("glucose_ppn_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_ppn_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+                price = getPrice(price, price.indexOf('.'));
+                glucosePPNChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucoseNFCV.getVisibility() == View.VISIBLE) {
-                glucoseNFChargeTV.setText("₹" + obj.getString("glucose_non_fasting_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_non_fasting_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+                price = getPrice(price, price.indexOf('.'));
+                glucoseNFChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (uricAcidCV.getVisibility() == View.VISIBLE) {
-                uricAcidChargeTV.setText("₹" + obj.getString("uric_acid_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("uric_acid_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+                price = getPrice(price, price.indexOf('.'));
+                uricAcidChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (haemoglobinCV.getVisibility() == View.VISIBLE) {
-                haemoglobinChargeTV.setText("₹" + obj.getString("haemoglobin_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("haemoglobin_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+                price = getPrice(price, price.indexOf('.'));
+                haemoglobinChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (cholesterolCV.getVisibility() == View.VISIBLE) {
-                cholesterolChargeTV.setText("₹" + obj.getString("cholesterol_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("cholesterol_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+                price = getPrice(price, price.indexOf('.'));
+                cholesterolChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (bpCV.getVisibility() == View.VISIBLE) {
-                bpChargeTV.setText("₹" + obj.getString("bp_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("bp_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("BP Test");
+                price = getPrice(price, price.indexOf('.'));
+                bpChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
 
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
-        }
-
         totalAmountTV.setText("₹" + String.valueOf(total_amount) + "/-");
+    }
+
+    private String getPrice(String price, int indexOf) {
+        return price.substring(0, indexOf);
     }
 
     private void manageCardView(ArrayList<String> selectedTests) {
@@ -658,16 +695,16 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         document.finishPage(page);
 
         // write the document content
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_NAS_PDF/";
-        File filePath= new File(path);
+        File path = this.getExternalFilesDir("Bill");
+        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
+        File filePath = new File(path, fName);
         if (!filePath.exists())
             filePath.mkdirs();
 
-        String fName = patientName + "_"+ patientOpenID + "_" + billDateString + ".pdf";
         String finalPath = path + fName;
         finalBillPath = finalPath;
-        File file = new File (filePath, fName);
-        if (file.exists ()) file.delete ();
+        File file = new File(path, fName);
+        if (file.exists()) file.delete();
 
         try {
             file.createNewFile();
@@ -675,12 +712,13 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+            return;
         }
 
         document.close();
         Toast.makeText(this, "successfully pdf created", Toast.LENGTH_SHORT).show();
 
-        openPdf(finalPath);
+//        openPdf(finalPath);
 
     }
 

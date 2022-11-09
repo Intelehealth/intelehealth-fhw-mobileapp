@@ -62,6 +62,8 @@ public class SyncDAO {
         LocationDAO locationDAO = new LocationDAO();
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+        ConceptAttributeTypeDAO conceptAttributeTypeDAO = new ConceptAttributeTypeDAO();
+        ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
@@ -77,6 +79,8 @@ public class SyncDAO {
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+            conceptAttributeTypeDAO.insertConcepts(responseDTO.getData().getConceptAttributeTypeList());
+            conceptAttributeListDAO.insertConceptAttributeList(responseDTO.getData().getConceptAttributeList());
 //            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());

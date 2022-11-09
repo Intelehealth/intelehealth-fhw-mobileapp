@@ -21,582 +21,590 @@
             android:id="@+id/finalBillCV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:background="@drawable/dash_border"
             app:cardCornerRadius="5dp"
-            android:layout_margin="8dp"
             app:cardElevation="10dp">
 
             <ImageView
-                android:src="@drawable/dash_border"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/dash_border" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="30dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/scd_logo" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/intelehealth_address"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginVertical="30dp"
-                    android:layout_marginHorizontal="10dp">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:layout_gravity="center"
-                        android:textSize="22sp"
-                        android:text="Intelehealth"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:text="@string/intelehealth_address"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
                         android:layout_marginVertical="20dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:textSize="22sp"
-                        android:text="Receipt"/>
+                        android:text="Receipt"
+                        android:textSize="22sp" />
 
                     <TextView
+                        android:id="@+id/paymentStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="8dp"
+                        android:background="@drawable/bg_visit_closed"
+                        android:padding="5dp"
+                        android:text="Paid"
                         android:textSize="14sp"
-                        android:layout_marginHorizontal="10dp"
-                        android:id="@+id/patientDetailsTV"
-                        android:text="@string/intelehealth_address"/>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/consultation_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="25dp"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="10dp"
                         android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_marginHorizontal="6dp"
-                        android:layout_marginBottom="6dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/consultation_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/consultation_charges"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/consultation_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/follow_up_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_marginHorizontal="6dp"
-                        android:layout_marginBottom="6dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/follow_up_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/follow_up_charges"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/follow_up_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="10.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/glucose_nf_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/glucose_nf_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/blood_glucose_non_fasting"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/glucose_nf_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/glucose_f_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_margin="6dp"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/glucose_f_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/blood_glucose_fasting"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/glucose_f_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="10.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/glucose_ppn_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/glucose_ppn_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/blood_glucose_post_prandial"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/glucose_ppn_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/glucose_ran_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_margin="6dp"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/glucose_ran_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/blood_glucose_random"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/glucose_ran_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="10.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/uric_acid_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/uric_acid_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/uric_acid"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/uric_acid_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cholestrol_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="10dp"
-                        android:layout_margin="6dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/cholestrol_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/total_cholestrol"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/cholestrol_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="10.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/haemeo_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/haemeo_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/haemoglobin"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/haemeo_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/bp_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="10dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_margin="6dp"
-                        app:cardElevation="10dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/bp_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/visit_summary_bp"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/bp_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="10.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/total_chargesCV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginVertical="25dp"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="10dp"
-                        android:layout_marginHorizontal="6dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:id="@+id/total_TV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingStart="5dp"
-                                android:text="@string/total_amount"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/total_chargesTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:paddingVertical="6dp"
-                                android:paddingEnd="5dp"
-                                android:text="15.00"
-                                android:textSize="16sp" />
-
-
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                        tools:visibility="visible"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/patientDetailsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/intelehealth_address"
+                    android:textSize="14sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/consultation_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/consultation_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/consultation_charges"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/consultation_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/follow_up_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/follow_up_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/follow_up_charges"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/follow_up_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="10.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/glucose_nf_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/glucose_nf_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/blood_glucose_non_fasting"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/glucose_nf_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/glucose_f_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/glucose_f_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/blood_glucose_fasting"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/glucose_f_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="10.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/glucose_ppn_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/glucose_ppn_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/blood_glucose_post_prandial"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/glucose_ppn_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/glucose_ran_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/glucose_ran_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/blood_glucose_random"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/glucose_ran_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="10.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/uric_acid_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/uric_acid_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/uric_acid"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/uric_acid_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cholestrol_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/cholestrol_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/total_cholestrol"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/cholestrol_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="10.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/haemeo_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/haemeo_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/haemoglobin"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/haemeo_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bp_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/bp_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/visit_summary_bp"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/bp_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="10.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="?android:attr/listDivider" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/total_chargesCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginVertical="25dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    app:contentPadding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/total_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/total_amount"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/total_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="6dp"
+                            android:paddingEnd="5dp"
+                            android:text="15.00"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
 
         <TextView
-            android:visibility="gone"
+            android:id="@+id/paying_billTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:id="@+id/paying_billTV"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="10dp"
-            android:text="@string/patient_paying"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/patient_paying"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <RadioGroup
             android:id="@+id/radioGrp"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginVertical="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
             android:weightSum="3">
 
             <RadioButton
@@ -625,10 +633,10 @@
             android:id="@+id/reasonTIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:counterEnabled="true"
-            android:visibility="gone"
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            app:counterEnabled="true"
             app:counterMaxLength="1000">
 
             <EditText
@@ -640,8 +648,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_confirm_bill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -671,18 +678,17 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_make_payment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_marginTop="@dimen/padding_card"
+            android:visibility="gone"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -705,18 +711,16 @@
         </androidx.cardview.widget.CardView>
 
 
-
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_print"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -746,17 +750,16 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -784,18 +787,17 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
