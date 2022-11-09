@@ -35,8 +35,8 @@
     <string name="total_cholestrol">Total Cholestrol</string>
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
-    <string name="blood_glucose_non_fasting">Blood Glucose \n(Non-Fasting)</string>
-    <string name="blood_glucose_fasting">Blood Glucose \n(Fasting)</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
+    <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
     <string name="haemoglobin">Haemoglobin (mg/dL)</string>
 
     <!-- Thermal Printers -->
