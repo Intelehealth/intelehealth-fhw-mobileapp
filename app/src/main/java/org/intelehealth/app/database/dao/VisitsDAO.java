@@ -450,6 +450,36 @@ public class VisitsDAO {
     }
 
     /**
+     *
+     * @param visitUUID
+     * @return
+     */
+    public static PrescriptionModel isVisitNotEnded(String visitUUID) {
+       PrescriptionModel model = new PrescriptionModel();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit where uuid = ? and (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
+                   "voided = 0 AND enddate is null", new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+       return model;
+    }
+
+
+    /**
      * Todays Visits that are not Ended.
      */
     public static List<PrescriptionModel> todays_NotEndedVisits() {

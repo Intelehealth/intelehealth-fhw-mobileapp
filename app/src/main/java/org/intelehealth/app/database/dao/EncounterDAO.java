@@ -474,6 +474,8 @@ public class EncounterDAO {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
+                db.setTransactionSuccessful();
+                db.endTransaction();
             }
         return complaintValue;
     }

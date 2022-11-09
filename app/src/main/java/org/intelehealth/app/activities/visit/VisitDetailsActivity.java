@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
+import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
@@ -40,7 +42,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
     visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
-    private RelativeLayout prescription_block;
+    private RelativeLayout prescription_block, endvisit_relative_block;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
             patient_photo_path = intent.getStringExtra("patient_photo");
             chief_complaint_value = intent.getStringExtra("chief_complaint");
         }
+
+        endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
 
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
@@ -182,10 +186,17 @@ public class VisitDetailsActivity extends AppCompatActivity {
             followupDate_txt.setText("Follow up on " + followupDate);
         }
 
-
         followup_info = findViewById(R.id.followup_info);
         followup_info.setText("Please take " + patientName + "'s follow-up visit.");
 
+
+        PrescriptionModel pres = isVisitNotEnded(visitID);
+        if (pres != null) {
+            endvisit_relative_block.setVisibility(View.VISIBLE);
+        }
+        else {
+            endvisit_relative_block.setVisibility(View.GONE);
+        }
 
 
     }

@@ -787,7 +787,7 @@
 
             <!-- End Visit Button - Start -->
         <RelativeLayout
-            android:id="@+id/followup_relative_block"
+            android:id="@+id/endvisit_relative_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/prescription_block"
@@ -795,7 +795,7 @@
             android:layout_marginEnd="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/margin_16dp"
             android:visibility="gone"
-            tools:visibility="gone"
+            tools:visibility="visible"
             >
 
             <View
