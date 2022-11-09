@@ -1,5 +1,11 @@
 package org.intelehealth.app.appointmentNew;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
+import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
+
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,19 +17,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.adapter.AppointmentListingAdapter;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class TodaysMyAppointmentsFragment extends Fragment {
     private static final String TAG = "TodaysMyAppointmentsFra";
@@ -32,6 +61,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             layoutUpcoming, layoutCancelled, layoutCompleted;
     RecyclerView rvUpcomingApp, rvCancelledApp, rvCompletedApp;
     LinearLayout layoutParentAll;
+    TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle;
+    SessionManager sessionManager = null;
+    private SQLiteDatabase db;
+    ImageView ivRefresh;
+    View noDataFoundForUpcoming, noDataFoundForCompleted;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +77,18 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void initUI() {
+        sessionManager = new SessionManager(getActivity());
+        String language = sessionManager.getAppLanguage();
+
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            Objects.requireNonNull(getActivity()).getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
         rvCancelledApp = view.findViewById(R.id.rv_cancelled_appointments);
@@ -55,19 +101,16 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutCancelled = view.findViewById(R.id.layout_cancelled);
         layoutCompleted = view.findViewById(R.id.layout_completed);
         layoutParentAll = view.findViewById(R.id.layout_parent_all);
+        ivRefresh = Objects.requireNonNull(getActivity()).findViewById(R.id.imageview_is_internet_common);
 
+        tvUpcomingAppointments = view.findViewById(R.id.tv_upcoming_appointments_todays);
+        tvUpcomingAppointmentsTitle = view.findViewById(R.id.tv_upcoming_apps_count_todays);
+        tvCompletedAppointments = view.findViewById(R.id.tv_completed_appointments_todays);
+        tvCompletedAppointmentsTitle = view.findViewById(R.id.tv_completed_apps_count_todays);
 
-        //recyclerview for upcoming appointments
-        TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity());
-        rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
-
-        //recyclerview for cancelled appointments
-        TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity());
-        rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
-
-        //recyclerview for completed appointments
-        TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new TodaysMyAppointmentsAdapter(getActivity());
-        rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
+        //no data found
+        noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
+        noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
 
 
         cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
@@ -86,8 +129,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         params.gravity = Gravity.TOP;
 
         layoutUpcoming.setLayoutParams(params);
-
         getAppointments();
+        getSlots();
     }
 
     private void clickListeners() {
@@ -150,29 +193,185 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             layoutCompleted.setLayoutParams(params);
 
         });
+
+        ivRefresh.setOnClickListener(v -> {
+           // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void getAppointments() {
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
-        Log.d(TAG, "getAppointments: list size : "+appointmentInfoList.size());
-
-        for (int i = 0; i < appointmentInfoList.size(); i++) {
-            AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
-            Log.d(TAG, "getAppointments: "+appointmentInfo.getCreatedAt());
-        }
- /*       AppointmentListingAdapter appointmentListingAdapter = new AppointmentListingAdapter(rvAppointments, this, appointmentInfoList, new AppointmentListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(AppointmentInfo appointmentInfo) {
-
-            }
-        });*/
-     /*   rvAppointments.setAdapter(appointmentListingAdapter);
-        if (appointmentInfoList.isEmpty()) {
-            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-        }*/
+        getUpcomingAppointments();
+        getCompletedAppointments();
     }
 
+    private void getUpcomingAppointments() {
+        //recyclerview for upcoming appointments
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
+        List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+
+        try {
+            if (appointmentInfoList.size() > 0) {
+                rvUpcomingApp.setVisibility(View.VISIBLE);
+                noDataFoundForUpcoming.setVisibility(View.GONE);
+
+                for (int i = 0; i < appointmentInfoList.size(); i++) {
+                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime = dateFormat.format(new Date());
+                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+
+                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+
+                    long second = diff / 1000;
+                    long minutes = second / 60;
+                    if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                        upcomingAppointmentsList.add(appointmentInfo);
+                    }
+                }
+                tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
+                tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
+
+                TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
+                        TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
+                rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
+            } else {
+                rvUpcomingApp.setVisibility(View.GONE);
+                noDataFoundForUpcoming.setVisibility(View.VISIBLE);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void getCompletedAppointments() {
+        //recyclerview for upcoming appointments
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
+        List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
+        try {
+            if (appointmentInfoList.size() > 0) {
+                rvUpcomingApp.setVisibility(View.VISIBLE);
+                noDataFoundForUpcoming.setVisibility(View.GONE);
+                for (int i = 0; i < appointmentInfoList.size(); i++) {
+                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime = dateFormat.format(new Date());
+                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+
+                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+
+                    long second = diff / 1000;
+                    long minutes = second / 60;
+                    //for appointment is completed/ appointment time has been passed
+                    if (appointmentInfo.getStatus().equalsIgnoreCase("visit closed")
+                            || ((appointmentInfo.getStatus().equals("booked") && minutes <= 0))) {
+                        completedAppointmentsList.add(appointmentInfo);
+                    }
+                }
+            } else {
+
+                rvCompletedApp.setVisibility(View.GONE);
+                noDataFoundForCompleted.setVisibility(View.VISIBLE);
+
+
+            }
+        } catch (Exception e) {
+
+        }
+
+        if (completedAppointmentsList.size() > 0) {
+            getDataForCompletedAppointments(completedAppointmentsList);
+        }
+
+    }
+
+    private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        //check if visit is present or not
+        for (int i = 0; i < appointmentsDaoList.size(); i++) {
+            VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(appointmentsDaoList.get(i).getPatientId());
+
+            //get values from visit
+            if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
+
+                String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
+                if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
+                    appointmentsDaoList.get(i).setPrescription_exists(true);
+                } else {
+                    appointmentsDaoList.get(i).setPrescription_exists(false);
+                }
+                String patientProfilePath = getPatientProfile(appointmentsDaoList.get(i).getPatientId());
+                // String patientProfilePath = getPatientProfile("984af313-83c7-479e-b8a7-8e72e7384346");
+                appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
+
+                //recyclerview for completed appointments
+                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
+                        TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+                rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
+                tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
+                tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
+            } else {
+
+            }
+        }
+    }
+    private String getPatientProfile(String patientUuid) {
+        Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String imagePath = "";
+
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ",
+                new String[]{patientUuid});
+
+        if (idCursor.moveToFirst()) {
+            do {
+                imagePath = idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo"));
+
+            } while (idCursor.moveToNext());
+            idCursor.close();
+        }
+        return imagePath;
+
+    }
+
+
+    private void getSlots() {
+
+        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
+
+                .enqueue(new Callback<AppointmentListingResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
+                        AppointmentListingResponse slotInfoResponse = response.body();
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAllAppointments();
+                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+
+                            try {
+                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        getAppointments();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+
+    }
 
 }

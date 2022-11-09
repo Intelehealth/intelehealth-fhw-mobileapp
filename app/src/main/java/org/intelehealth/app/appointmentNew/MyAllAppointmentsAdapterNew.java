@@ -33,13 +33,13 @@ public class MyAllAppointmentsAdapterNew extends RecyclerView.Adapter<MyAllAppoi
 
     @Override
     public void onBindViewHolder(MyAllAppointmentsAdapterNew.MyViewHolder holder, int position) {
-        holder.cardParent.setOnClickListener(new View.OnClickListener() {
+       /* holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, AppointmentDetailsActivity.class);
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MyAllAppointmentsAdapterNew extends RecyclerView.Adapter<MyAllAppoi
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardParent = itemView.findViewById(R.id.card_all_appointments);
+          //  cardParent = itemView.findViewById(R.id.card_all_appointments);
 
         }
     }

@@ -62,8 +62,8 @@ public class MyAppointmentActivity extends AppCompatActivity {
     public void configureTabLayout() {
         TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Today's (7)"));
-        tabLayout.addTab(tabLayout.newTab().setText("All appointments (78)"));
+        tabLayout.addTab(tabLayout.newTab().setText("Today's"));
+        tabLayout.addTab(tabLayout.newTab().setText("All appointments"));
 
         ViewPager viewPager = findViewById(R.id.pager_appointments);
         PagerAdapter adapter = new MyAppointmentsPagerAdapter

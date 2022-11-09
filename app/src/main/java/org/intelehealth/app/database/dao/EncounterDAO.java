@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.bumptech.glide.util.LogTime;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -29,11 +30,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class EncounterDAO {
+    private static final String TAG = "EncounterDAO";
 
     private String tag = EncounterDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
+
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -358,13 +361,13 @@ public class EncounterDAO {
                     model.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                     model.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
 
-                model.setUuid(UUID.randomUUID().toString());
-                model.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                model.setDescription(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
-                model.setObs_server_modified_date(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_server_modified_date")));
-                model.setNotification_type("Prescription");
-                model.setSync("TRUE");
-                patientDTOList.add(model);
+                    model.setUuid(UUID.randomUUID().toString());
+                    model.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setDescription(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
+                    model.setObs_server_modified_date(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_server_modified_date")));
+                    model.setNotification_type("Prescription");
+                    model.setSync("TRUE");
+                    patientDTOList.add(model);
                 }
                 while (idCursor.moveToNext());
             }
@@ -442,4 +445,85 @@ public class EncounterDAO {
 
         return false;
     }
+
+    public boolean isVisitCompletedOrExited(String visitUUID) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
+            //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
+
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e')",
+                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            EncounterDTO encounterDTO = new EncounterDTO();
+            if (idCursor.getCount() != 0) {
+                return true;
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return false;
+    }
+
+    public static String getEncounterIdForCompletedVisit(String visitUUID) throws DAOException {
+        String encounterUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
+            //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
+
+            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? and " +
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e')",
+                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            EncounterDTO encounterDTO = new EncounterDTO();
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return encounterUuid;
+    }
+
+    public static String getPrescriptionReceivedTime(String visitUUID) {
+        String modifiedTime = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE",
+                new String[]{visitUUID});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                modifiedTime = idCursor.getString(idCursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                Log.d(TAG, "getPrescriptionReceivedTime:modifiedTime :  " + modifiedTime);
+
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return modifiedTime;
+    }
+
+
 }

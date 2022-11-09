@@ -1660,6 +1660,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="end_visit">End visit</string>
     <string name="view_patient_history">View patient history</string>
     <string name="reschedule">Reschedule</string>
+    <string name="no_data_found">No data found</string>
 
 
     <!--    Follow-up new screens -->

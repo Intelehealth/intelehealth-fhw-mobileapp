@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,11 +18,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.appointment.ScheduleListingActivity;
+import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.appointment.model.SlotInfo;
+import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     private static final String TAG = "ScheduleAppointmentActi";
     ImageView ivPrevMonth, ivNextMonth;
+    RecyclerView rvMorningSlots, rvAfternoonSlots, rvEveningSlots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +62,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
 
         initUI();
+        getSlots();
     }
 
     private void initUI() {
-        RecyclerView rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
-        RecyclerView rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
-        RecyclerView rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
+        rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
+        rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
+        rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
 
         ivPrevMonth = findViewById(R.id.iv_prev_month);
         ivNextMonth = findViewById(R.id.iv_next_month);
@@ -110,4 +125,45 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         });
 
     }
+
+    private void getSlots() {
+        Log.d(TAG, "getSlots: ");
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlots("2022-11-02", "2022-11-02", "General Physician")
+                .enqueue(new Callback<SlotInfoResponse>() {
+                    @Override
+                    public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
+                        SlotInfoResponse slotInfoResponse = response.body();
+                        Log.d(TAG, "onResponse: "+response.body().toString());
+                        SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvMorningSlots,
+                                ScheduleAppointmentActivity_New.this,
+                                slotInfoResponse.getDates(), slotInfo -> {
+                            Log.d(TAG, "onResponse: dates list : "+slotInfoResponse.getDates().size());
+                                    //------before reschedule need to cancel appointment----
+                                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                    // appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                   /* if (appointmentId != 0) {
+                                        askReason(slotInfo);
+                                    } else {
+                                        bookAppointment(slotInfo, null);
+                                    }*/
+
+                                });
+                        rvMorningSlots.setAdapter(slotListingAdapter);
+                        if (slotListingAdapter.getItemCount() == 0) {
+                          //  findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
+                        } else {
+                       //     findViewById(R.id.llEmptyView).setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+
+    }
+
 }

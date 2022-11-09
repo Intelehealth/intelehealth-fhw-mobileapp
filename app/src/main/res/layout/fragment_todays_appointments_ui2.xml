@@ -43,8 +43,8 @@
         <LinearLayout
             android:id="@+id/layout_main_app_options"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/today_apps_options_margin_top"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/today_apps_options_margin_top"
             android:background="@drawable/ui2_ic_bg_options_appointment"
             android:orientation="horizontal"
             android:weightSum="3">
@@ -64,12 +64,12 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_upcoming_appointments"
+                        android:id="@+id/tv_upcoming_appointments_todays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_options_line_height"
-                        android:text="3"
+                        android:text="0"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/card_apps_options_text_size"
                         android:textStyle="bold" />
@@ -78,9 +78,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/card_apps_title_margin_top"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
-                        android:layout_marginBottom="10dp"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                         android:text="@string/upcoming"
                         android:textColor="@color/textColorBlack"
@@ -104,12 +104,12 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_cancelled_appointments"
+                        android:id="@+id/tv_cancelled_appointments_todays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_options_line_height"
-                        android:text="2"
+                        android:text="NA"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/card_apps_options_text_size"
                         android:textStyle="bold" />
@@ -118,9 +118,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
-                        android:layout_marginBottom="10dp"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                         android:text="@string/cancelled"
                         android:textColor="@color/textColorBlack"
@@ -144,12 +144,12 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_completed_appointments"
+                        android:id="@+id/tv_completed_appointments_todays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_options_line_height"
-                        android:text="2"
+                        android:text="0"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/card_apps_options_text_size"
                         android:textStyle="bold" />
@@ -158,10 +158,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
-                        android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                         android:text="@string/completed"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/card_apps_title_text_size"
@@ -172,10 +172,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/layout_parent_all"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -185,17 +185,24 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_upcoming_apps_count_todays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Upcoming (3)"
+                    android:text="Upcoming (0)"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
-
+                <include
+                    android:id="@+id/layout_no_data_found_upcoming"
+                    layout="@layout/layout_no_data_found_ui2"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_upcoming_appointments"
                     android:layout_width="match_parent"
@@ -220,7 +227,7 @@
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Cancelled (2)"
+                    android:text="Cancelled (NA)"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
@@ -243,16 +250,26 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_completed_apps_count_todays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Completed (2)"
+                    android:text="Completed (0)"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/layout_no_data_found_completed"
+                    layout="@layout/layout_no_data_found_ui2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_completed_appointments"

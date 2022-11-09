@@ -224,7 +224,7 @@ public class MyProfileFragment_New extends Fragment {
 
             dobToShow = sDay + "-" + sMonth + "-" + year;
             tvDob.setText(dobToShow);
-            tvDob.setText(DateAndTimeUtils.getDisplayDateFromApp(dobToDb));
+            tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
 
             String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, getActivity());
             tvAge.setText(age);
@@ -247,7 +247,7 @@ public class MyProfileFragment_New extends Fragment {
             etLastName.setText(providerProfileDTO.getLastName());
             etEmail.setText(providerProfileDTO.getEmail());
             etMobileNo.setText(providerProfileDTO.getPhoneNumber());
-            tvDob.setText(DateAndTimeUtils.getDisplayDateFromApp(providerProfileDTO.getDateOfBirth()));
+            tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(providerProfileDTO.getDateOfBirth()));
             tvAge.setText(providerProfileDTO.getAge());
 
             String selectedCountry = providerProfileDTO.getCountryCode();

@@ -74,6 +74,7 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             genericViewHolder.statusTextView.setText(StringUtils.getAppointmentBookStatus(genericViewHolder.appointmentInfo.getStatus().toUpperCase(), new SessionManager(mContext).getAppLanguage()));
             genericViewHolder.doctorDetailsTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getDrName(), getSpeciality(genericViewHolder.appointmentInfo.getSpeciality())));
 
+            Log.d("TAg", "onBindViewHolder: " + genericViewHolder.appointmentInfo.getStatus());
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
             String currentDateTime = dateFormat.format(new Date());
             String slottime = genericViewHolder.appointmentInfo.getSlotDate() + " " + genericViewHolder.appointmentInfo.getSlotTime();

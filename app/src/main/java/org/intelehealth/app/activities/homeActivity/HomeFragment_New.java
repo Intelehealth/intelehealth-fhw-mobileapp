@@ -61,6 +61,8 @@ public class HomeFragment_New extends Fragment {
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             /*   Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                startActivity(intent);*/
                 Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
                 startActivity(intent);
             }

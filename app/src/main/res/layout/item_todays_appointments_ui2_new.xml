@@ -25,28 +25,43 @@
             app:cardCornerRadius="@dimen/item_ta_member_iv_card_radius">
 
             <ImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/profile_image_todays"
                 android:layout_width="@dimen/item_ta_member_image_width"
                 android:layout_height="@dimen/item_ta_member_image_height"
                 android:src="@drawable/avatar1" />
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tv_patient_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_patient_name_todays"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image"
             android:lineSpacingExtra="3sp"
             android:text="Anthony Gonsalves"
             android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/item_ta_tv_name_text_size" />
+            android:textSize="@dimen/item_ta_tv_name_text_size1" />
+
+        <TextView
+            android:id="@+id/tv_patient_id_todays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name_todays"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_marginTop="@dimen/item_ta_tv_date_margin_top"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="3sp"
+            android:text="ID - 987654jK"
+            android:textAppearance="@style/caption"
+            android:textColor="@color/iconTintGray"
+            android:textSize="@dimen/item_ta_tv_date_text_size" />
 
         <ImageView
-            android:id="@+id/iv_time"
+            android:id="@+id/iv_time_todays"
             android:layout_width="@dimen/cal_size_new"
             android:layout_height="@dimen/cal_size_new"
-            android:layout_below="@+id/tv_patient_name"
+            android:layout_below="@+id/tv_patient_id_todays"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image"
@@ -54,13 +69,13 @@
             android:tint="@color/iconTintGray" />
 
         <TextView
-            android:id="@+id/tv_date_appointment"
+            android:id="@+id/tv_date_appointment_todays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_patient_name"
+            android:layout_below="@+id/tv_patient_id_todays"
             android:layout_marginStart="@dimen/item_ta_tv_date_margin_start"
             android:layout_marginTop="@dimen/item_ta_tv_date_margin_top"
-            android:layout_toEndOf="@+id/iv_time"
+            android:layout_toEndOf="@+id/iv_time_todays"
             android:gravity="center_vertical"
             android:lineSpacingExtra="3sp"
             android:text="In 2 minutes"
@@ -69,7 +84,7 @@
             android:textSize="@dimen/item_ta_tv_date_text_size" />
 
         <ImageView
-            android:id="@+id/iv_priority_tag1"
+            android:id="@+id/iv_priority_tag1_todays"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/item_ta_priority_tag_height"
             android:layout_alignParentEnd="true"
@@ -79,7 +94,24 @@
             android:layout_weight="0.5"
             android:gravity="center"
             android:lineSpacingExtra="0sp"
-            android:src="@drawable/ui2_frame_priority" />
+            android:src="@drawable/ui2_frame_priority"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_presc_rec_status"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tv_patient_name_todays"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_marginTop="@dimen/item_ta_tv_prescrec_margin_top"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:background="@drawable/ui2_ic_presc_received"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="3sp"
+            android:textAppearance="@style/caption"
+            android:textColor="@color/iconTintGray"
+            android:textSize="@dimen/item_ta_tv_date_text_size"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

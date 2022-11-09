@@ -148,7 +148,7 @@
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:paddingStart="@dimen/common_edittext_padding_left"
-                        android:text="nurse1"
+                        android:text="nurse"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
