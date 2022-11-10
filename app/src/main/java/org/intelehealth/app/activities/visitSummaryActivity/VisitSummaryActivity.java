@@ -3595,6 +3595,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
+            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            {
+                bldglucose.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+            {
+                bldglucose_random.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
+            {
+                bldglucose_post_prandial.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            {
+                bldglucose_fasting.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+            {
+                hemoGlobin.setValue(value);
+                break;
+            }
+            case UuidDictionary.URIC_ACID_ID: // Uric Acid
+            {
+                uricAcid.setValue(value);
+                break;
+            }
+            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
+            {
+                totalCholesterol.setValue(value);
+                break;
+            }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = diagnosisReturned + ",\n" + value;
