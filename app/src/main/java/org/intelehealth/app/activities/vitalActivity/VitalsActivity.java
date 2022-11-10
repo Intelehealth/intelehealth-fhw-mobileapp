@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,13 +51,13 @@ import org.intelehealth.app.utilities.exception.DAOException;
 public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
-    private String patientName = "";
+    private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
     private String intentTag;
     private String state;
     private String patientUuid;
     private String visitUuid;
-    private String encounterVitals;
+    private String encounterVitals, encounterBill = "";
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
@@ -64,7 +66,12 @@ public class VitalsActivity extends AppCompatActivity {
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
+            bloodGlucose_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
+            haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
+
+    ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,8 @@ public class VitalsActivity extends AppCompatActivity {
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
@@ -109,6 +118,15 @@ public class VitalsActivity extends AppCompatActivity {
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
+
+        //rhemos device fields added: By Nishita
+        bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
+        bloodGlucose_editText_fasting = findViewById(R.id.bloodGlucose_editText_fasting);
+        bloodGlucoseRandom_editText = findViewById(R.id.bloodGlucoseRandom_editText);
+        bloodGlucosePostPrandial_editText = findViewById(R.id.bloodGlucosePostPrandial_editText);
+        haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
+        uricAcid_editText = findViewById(R.id.uricAcid_editText);
+        totalCholestrol_editText = findViewById(R.id.totalCholestrol_editText);
 
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
@@ -189,6 +207,7 @@ public class VitalsActivity extends AppCompatActivity {
             Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        encounterBill = checkForOldBill();
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
         }
@@ -464,7 +483,222 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        // glucose - non-fasting
+        bloodGlucose_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_GLUCOSE_NON_FASTING)) {
+                        bloodGlucose_editText.setError(getString(R.string.glucose_non_fasting_validation,
+                                AppConstants.MINIMUM_GLUCOSE_NON_FASTING, AppConstants.MAXIMUM_GLUCOSE_NON_FASTING));
+                    } else {
+                        bloodGlucose_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (bloodGlucose_editText.getText().toString().startsWith(".")) {
+                    bloodGlucose_editText.setText("");
+                } else {
+
+                }
+            }
+        });
+        //end
+
+        // glucose - random - start
+        bloodGlucoseRandom_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_RANDOM) ||
+                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_RANDOM)) {
+                        bloodGlucoseRandom_editText.setError(getString(R.string.glucose_random_validation,
+                                AppConstants.MINIMUM_GLUCOSE_RANDOM, AppConstants.MAXIMUM_GLUCOSE_RANDOM));
+                    } else {
+                        bloodGlucoseRandom_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (bloodGlucoseRandom_editText.getText().toString().startsWith("."))
+                    bloodGlucoseRandom_editText.setText("");
+            }
+        });
+        // glucose - random - end
+
+        // glucose - post-prandial - start
+        bloodGlucosePostPrandial_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL) ||
+                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL)) {
+                        bloodGlucosePostPrandial_editText.setError(getString(R.string.glucose_post_prandial_validation,
+                                AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL, AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL));
+                    } else {
+                        bloodGlucosePostPrandial_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (bloodGlucosePostPrandial_editText.getText().toString().startsWith("."))
+                    bloodGlucosePostPrandial_editText.setText("");
+            }
+        });
+        // glucose - post-prandial - end
+
+        // glucose - fasting
+        bloodGlucose_editText_fasting.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_GLUCOSE_FASTING) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_GLUCOSE_FASTING)) {
+                        bloodGlucose_editText_fasting.setError(getString(R.string.glucose_fasting_validation,
+                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
+                    } else {
+                        bloodGlucose_editText_fasting.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (bloodGlucose_editText_fasting.getText().toString().startsWith(".")) {
+                    bloodGlucose_editText_fasting.setText("");
+                } else {
+
+                }
+            }
+        });
+        //end
+
+        // hemoglobin
+        haemoglobin_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEMOGLOBIN) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEMOGLOBIN)) {
+                        haemoglobin_editText.setError(getString(R.string.hemoglobin_validation,
+                                AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                    } else {
+                        haemoglobin_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (haemoglobin_editText.getText().toString().startsWith(".")) {
+                    haemoglobin_editText.setText("");
+                } else {
+
+                }
+            }
+        });
+
+        // Uric Acid
+        uricAcid_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_URIC_ACID) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_URIC_ACID)) {
+                        uricAcid_editText.setError(getString(R.string.uric_acid_validation,
+                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
+                    } else {
+                        uricAcid_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (uricAcid_editText.getText().toString().startsWith(".")) {
+                    uricAcid_editText.setText("");
+                } else {
+
+                }
+            }
+        });
+        //end
+
+        // Total Cholesterol
+        totalCholestrol_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TOTAL_CHOLSTEROL)) {
+                        totalCholestrol_editText.setError(getString(R.string.total_cholesterol_validation,
+                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
+                    } else {
+                        totalCholestrol_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (totalCholestrol_editText.getText().toString().startsWith(".")) {
+                    totalCholestrol_editText.setText("");
+                } else {
+
+                }
+            }
+        });
+        //end
+
+        TextView fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -568,6 +802,34 @@ public class VitalsActivity extends AppCompatActivity {
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
+            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose // Non-Fasting
+                if (!value.equalsIgnoreCase("0"))
+                    bloodGlucose_editText.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID:
+                if (!value.equalsIgnoreCase("0"))
+                    bloodGlucoseRandom_editText.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID:
+                if(!value.equalsIgnoreCase("0"))
+                    bloodGlucosePostPrandial_editText.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
+                if(!value.equalsIgnoreCase("0"))
+                    bloodGlucose_editText_fasting.setText(value);
+                break;
+            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+                if(!value.equalsIgnoreCase("0"))
+                    haemoglobin_editText.setText(value);
+                break;
+            case UuidDictionary.URIC_ACID_ID: // Uric Acid
+                if(!value.equalsIgnoreCase("0"))
+                    uricAcid_editText.setText(value);
+                break;
+            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholesterol
+                if(!value.equalsIgnoreCase("0"))
+                    totalCholestrol_editText.setText(value);
+                break;
             default:
                 break;
 
@@ -609,6 +871,12 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
+        values.add(bloodGlucoseRandom_editText);
+        values.add(bloodGlucosePostPrandial_editText);
+        values.add(bloodGlucose_editText_fasting);
+        values.add(haemoglobin_editText);
+        values.add(uricAcid_editText);
+        values.add(totalCholestrol_editText);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -744,13 +1012,14 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else {
+            } else if (i == 7) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
-                        et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        et.setError(getString(R.string.spo2_error,
+                                AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                         focusView = et;
                         cancel = true;
                         break;
@@ -762,7 +1031,127 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
             }
+
+            // glucose - random
+            else if (i == 8) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_RANDOM)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_RANDOM))) {
+                        et.setError(getString(R.string.glucose_random_validation,
+                                AppConstants.MAXIMUM_GLUCOSE_RANDOM, AppConstants.MINIMUM_GLUCOSE_RANDOM));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // glucose - post-prandial
+            else if (i == 9) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL))) {
+                        et.setError(getString(R.string.glucose_post_prandial_validation,
+                                AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL, AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // glucose - fasting
+            else if (i == 10) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
+                        et.setError(getString(R.string.glucose_fasting_validation,
+                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+            // hemoglobin
+            else if (i == 11) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
+                        et.setError(getString(R.string.hemoglobin_validation,
+                                AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // uric acid
+            else if (i == 12) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_URIC_ACID)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_URIC_ACID))) {
+                        et.setError(getString(R.string.uric_acid_validation,
+                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // total cholesterol
+            else if (i == 13) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TOTAL_CHOLSTEROL))) {
+                        et.setError(getString(R.string.total_cholesterol_validation,
+                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
         }
+
 
         if (cancel) {
             // There was an error - focus the first form field with an error.
@@ -805,6 +1194,34 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
+                if (bloodGlucose_editText.getText() != null && !bloodGlucose_editText.getText().toString().equals("")) {
+                    results.setBloodglucose((bloodGlucose_editText.getText().toString()));
+                } else
+                    results.setBloodglucose("0");
+                if (bloodGlucoseRandom_editText.getText() != null && !bloodGlucoseRandom_editText.getText().toString().equals("")) {
+                    results.setBloodGlucoseRandom((bloodGlucoseRandom_editText.getText().toString()));
+                } else
+                    results.setBloodGlucoseRandom("0");
+                if (bloodGlucosePostPrandial_editText.getText() != null && !bloodGlucosePostPrandial_editText.getText().toString().equals("")) {
+                    results.setBloodGlucosePostPrandial(bloodGlucosePostPrandial_editText.getText().toString());
+                } else
+                    results.setBloodGlucosePostPrandial("0");
+                if (bloodGlucose_editText_fasting.getText() != null && !bloodGlucose_editText_fasting.getText().toString().equals("")) {
+                    results.setBloodglucoseFasting((bloodGlucose_editText_fasting.getText().toString()));
+                } else
+                    results.setBloodglucoseFasting("0");
+                if (haemoglobin_editText.getText() != null && !haemoglobin_editText.getText().toString().equals("")) {
+                    results.setHemoglobin((haemoglobin_editText.getText().toString()));
+                } else
+                    results.setHemoglobin("0");
+                if (uricAcid_editText.getText() != null && !uricAcid_editText.getText().toString().equals("")) {
+                    results.setUricAcid((uricAcid_editText.getText().toString()));
+                } else
+                    results.setUricAcid("0");
+                if (totalCholestrol_editText.getText() != null && !totalCholestrol_editText.getText().toString().equals("")) {
+                    results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
+                } else
+                    results.setTotlaCholesterol("0");
 
 
             } catch (NumberFormatException e) {
@@ -816,6 +1233,8 @@ public class VitalsActivity extends AppCompatActivity {
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
+        String price = "0";
+
         if (intentTag != null && intentTag.equals("edit")) {
             try {
                 obsDTO = new ObsDTO();
@@ -893,6 +1312,113 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
 
                 obsDAO.updateObs(obsDTO);
+
+                // Glucose
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodglucose());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getBloodglucose() == null || results.getBloodglucose().equals("0") || results.getBloodglucose().equals("") || results.getBloodglucose().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Glucose - Random
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodGlucoseRandom());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getBloodGlucoseRandom() == null || results.getBloodGlucoseRandom().equals("0") || results.getBloodGlucoseRandom().equals("") || results.getBloodGlucoseRandom().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, price);
+
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Glucose - Post-prandial
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodGlucosePostPrandial());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getBloodGlucosePostPrandial() == null || results.getBloodGlucosePostPrandial().equals("0") || results.getBloodGlucosePostPrandial().equals("") || results.getBloodGlucosePostPrandial().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Glucose - Fasting
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodglucoseFasting());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getBloodglucoseFasting() == null || results.getBloodglucoseFasting().equals("0") || results.getBloodglucoseFasting().equals("") || results.getBloodglucoseFasting().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Hemoglobin
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHemoglobin());
+                price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getHemoglobin() == null || results.getHemoglobin().equals("0") || results.getHemoglobin().equals("") || results.getHemoglobin().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Uric Acid
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getUricAcid());
+                price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getUricAcid() == null || results.getUricAcid().equals("0") || results.getUricAcid().equals("") || results.getUricAcid().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.URIC_ACID_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // total cholesterol
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getTotlaCholesterol());
+                price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getTotlaCholesterol() == null || results.getTotlaCholesterol().equals("0") || results.getTotlaCholesterol().equals("") || results.getTotlaCholesterol().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, price);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
+                obsDAO.updateObs(obsDTO);
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -900,6 +1426,15 @@ public class VitalsActivity extends AppCompatActivity {
                     encounterDAO.updateEncounterModifiedDate(encounterVitals);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                //sync has to be performed once the vitals are updated for the bill update feature
+                SyncUtils syncUtils = new SyncUtils();
+                boolean success = false;
+                success = syncUtils.syncForeground("bill");
+
+                if(!success) {
+                    Toast.makeText(VitalsActivity.this, getString(R.string.sync_failed), Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
@@ -910,6 +1445,8 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName",patientFName);
+                intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
@@ -1020,8 +1557,93 @@ public class VitalsActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-            Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
+            // Glucose
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodglucose());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Glucose - Random
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodGlucoseRandom());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Glucose - Post-prandial
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodGlucosePostPrandial());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Glucose - Fasting
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodglucoseFasting());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Hemoglobin
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getHemoglobin());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Uric Acid Test
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getUricAcid());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // total cholesterol Test
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getTotlaCholesterol());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+
+            Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -1029,6 +1651,8 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
@@ -1070,4 +1694,51 @@ public class VitalsActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+    private String checkForOldBill() {
+        String billEncounterUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        //  encounterCursor.close();
+
+        return billEncounterUuid;
+
+    }
+
+    private void updateBillEncounter(String encounterBill, String obsConceptID, String price) {
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO1 = new ObsDTO();
+        obsDTO1.setConceptuuid(obsConceptID);
+        obsDTO1.setEncounteruuid(encounterBill);
+        obsDTO1.setCreator(sessionManager.getCreatorID());
+        obsDTO1.setValue(price);
+        try {
+            obsDTO1.setUuid(obsDAO.getObsuuid(encounterBill, obsConceptID));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        obsDAO.updateObs(obsDTO1);
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterBill);
+            encounterDAO.updateEncounterModifiedDate(encounterBill);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+    private String getPrice(String price, int indexOf) {
+        return price.substring(0, indexOf);
+    }
 }

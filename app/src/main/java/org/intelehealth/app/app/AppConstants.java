@@ -50,10 +50,34 @@ public class AppConstants {
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
     public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";
+
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
+
+    public static final String MINIMUM_GLUCOSE_NON_FASTING = "60";
+    public static final String MAXIMUM_GLUCOSE_NON_FASTING = "600";
+
+    public static final String MINIMUM_GLUCOSE_FASTING = "30";
+    public static final String MAXIMUM_GLUCOSE_FASTING = "300";
+
+    public static final String MINIMUM_GLUCOSE_RANDOM = "30";
+    public static final String MAXIMUM_GLUCOSE_RANDOM = "500";
+
+    public static final String MINIMUM_GLUCOSE_POST_PRANDIAL = "70";
+    public static final String MAXIMUM_GLUCOSE_POST_PRANDIAL = "400";
+
+    public static final String MINIMUM_HEMOGLOBIN = "4";
+    public static final String MAXIMUM_HEMOGLOBIN = "18";
+
+    public static final String MINIMUM_URIC_ACID = "2";
+    public static final String MAXIMUM_URIC_ACID = "12";
+
+    public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
+    public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
+
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());

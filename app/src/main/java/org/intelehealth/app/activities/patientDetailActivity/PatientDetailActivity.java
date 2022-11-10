@@ -143,7 +143,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
-    String patientName;
+    String patientName, patientFName, patientLName;
     String mGender;
     String visitUuid = null;
     List<String> visitUuidList;
@@ -221,6 +221,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             hasPrescription = intent.getStringExtra("hasPrescription");
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
@@ -377,6 +379,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("encounterUuidAdultIntial", "");
                 intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
+                intent2.putExtra("patientFirstName",patientFName);
+                intent2.putExtra("patientLastName", patientLName);
                 intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -592,10 +596,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 //changing patient to patient_new object
-        if (patient_new.getMiddle_name() == null) {
+        if (patient_new.getMiddle_name() == null || patient_new.getMiddle_name().equalsIgnoreCase("-")) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+            patientLName = patient_new.getLast_name();
+            patientFName = patient_new.getFirst_name();
         } else {
             patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
+            patientLName = patient_new.getLast_name();
+            patientFName = patient_new.getFirst_name();
         }
 
 //        setTitle(patientName);
@@ -1322,6 +1330,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
                 visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("patientFirstName",patientFName);
+                visitSummary.putExtra("patientLastName", patientLName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);

@@ -92,6 +92,7 @@ import com.razorpay.PaymentResultListener;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.app.activities.billConfirmation.billConfirmationActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
@@ -153,6 +154,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 import io.reactivex.Observable;
@@ -163,7 +165,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity implements PaymentResultListener {
+public class VisitSummaryActivity extends AppCompatActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -206,6 +208,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
+    ObsDTO bldglucose = new ObsDTO();
+    ObsDTO bldglucose_random = new ObsDTO();
+    ObsDTO bldglucose_post_prandial = new ObsDTO();
+    ObsDTO bldglucose_fasting = new ObsDTO();
+    ObsDTO hemoGlobin = new ObsDTO();
+    ObsDTO uricAcid = new ObsDTO();
+    ObsDTO totalCholesterol = new ObsDTO();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -216,6 +225,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     String followUpDate = "";
 
     ImageButton editVitals;
+    ImageButton editDiagnostics;
     ImageButton editComplaint;
     ImageButton editPhysical;
     ImageButton editFamHist;
@@ -241,7 +251,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    //    //    Respiratory added by mahiti dev team
+    TextView glucose;
+    TextView glucoseRandom;
+    TextView glucosePostPrandial;
+    TextView glucoseFasting;
+    TextView hemoglobin;
+    TextView uricAcid_textview;
+    TextView totalCholesterol_textview;
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -277,7 +293,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     CheckBox flag;
     EndVisitEncounterPrescription endVisitEncounterPrescription;
     String visitnoteencounteruuid = "";
-    Button btnSignSubmit, btnMakePayment;
+    Button btnSignSubmit;
     Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
@@ -324,6 +340,16 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+
+    //generate bill feature
+    String patientOpenMRSID = "";
+    String hideVisitUUID = "";
+    String patientPhoneNum = "";
+    String patientVillage = "";
+    String visitType = "Consultation";
+    Button generateBillBtn;
+    String receiptNum,receiptDate, patientFName, patientLName;
+    String receiptPaymentStatus = "NA";
 
 
     @Override
@@ -482,6 +508,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
@@ -532,6 +560,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
+        generateBillBtn = findViewById(R.id.btnGenerateBill);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -624,14 +653,6 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
-        btnMakePayment = findViewById(R.id.btnPayment);
-
-        btnMakePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makePayment();
-            }
-        });
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -674,7 +695,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
-                    editText.setText(patient.getPhone_number());
+                    if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
+                        editText.setText(patient.getPhone_number());
+                        patientPhoneNum = patient.getPhone_number();
+                    }
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                             (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     editText.setLayoutParams(layoutParams);
@@ -749,8 +773,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
+
+        if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
+            generateBillBtn.setVisibility(View.VISIBLE);
+        }
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -831,6 +858,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editDiagnostics = findViewById(R.id.imagebutton_edit_diagnostics);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -867,6 +895,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -924,8 +953,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                     }
 
 
-                    if (isVisitSpecialityExists)
+                    if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
+                        generateBillBtn.setVisibility(View.VISIBLE);
+                    }
+
 
 
                     if (flag.isChecked()) {
@@ -1010,8 +1042,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if (isVisitSpecialityExists)
+                                    if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
+                                        generateBillBtn.setVisibility(View.VISIBLE);
+                                    }
+
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +
                                             getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
@@ -1044,8 +1079,15 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
+        if (patient.getCity_village() != null && !patient.getCity_village().isEmpty()) {
+            patientVillage = patient.getCity_village();
+        }
+        if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
+            patientPhoneNum = patient.getPhone_number();
+        }
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
+            patientOpenMRSID = patient.getOpenmrs_id();
         } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
@@ -1161,6 +1203,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
+        glucose = findViewById(R.id.textView_glucose_value);
+        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
+        glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
+        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
+        hemoglobin = findViewById(R.id.textView_hemoglobin_value);
+        uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
+        totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1245,8 +1294,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
-        if (complaint.getValue() != null)
+        if (complaint.getValue() != null) {
             complaintView.setText(Html.fromHtml(complaint.getValue()));
+            if (complaintView.getText().toString().contains("Follow up visit"))
+                visitType = "Follow-Up";
+        }
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -1254,6 +1306,20 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
+        if (bldglucose.getValue() != null  && !bldglucose.getValue().equalsIgnoreCase("0"))
+            glucose.setText(bldglucose.getValue() );
+        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
+            glucoseRandom.setText(bldglucose_random.getValue());
+        if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
+            glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
+        if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
+            glucoseFasting.setText(bldglucose_fasting.getValue());
+        if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
+            hemoglobin.setText(hemoGlobin.getValue());
+        if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
+            uricAcid_textview.setText(uricAcid.getValue());
+        if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
+            totalCholesterol_textview.setText(totalCholesterol.getValue());
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1263,7 +1329,26 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+            }
+        });
+
+        editDiagnostics.setOnClickListener(new View.OnClickListener() { // Edit Diagnostics
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
@@ -1339,6 +1424,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_FamHist", "edit_FamHist");
                         intent1.putExtra("gender", patientGender);
@@ -1410,6 +1497,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                    if(complaintView.getText().toString().contains("Follow up visit"))
+                                        visitType = "Follow-Up";
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -1455,6 +1544,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1561,6 +1652,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         //    intent1.putStringArrayListExtra("exams", physicalExams);
@@ -1656,14 +1749,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_PatHist", "edit_PatHist");
                         intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                      /*  if(EncounterAdultInitial_LatestVisit != null &&
-                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
-                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                        }
-                        else {
-                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }*/
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -1833,7 +1920,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
     private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            String hideVisitUUID = visitUUID;
+            hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
             visitView.setText("XXXX" + hideVisitUUID);
         }
@@ -1867,7 +1954,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
             Log.e("ISSYNCED==", isSynedFlag);
 
             if (!isSynedFlag.equalsIgnoreCase("0")) {
-                String hideVisitUUID = visitUUID;
+                hideVisitUUID = visitUUID;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
             } else {
@@ -1875,7 +1962,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
-                String hideVisitUUID = visitUuid;
+                hideVisitUUID = visitUuid;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
 //              visitView.setText("----");
@@ -3634,7 +3721,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        try
+        { objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class); }
+        catch (Exception e)
+        { FirebaseCrashlytics.getInstance().recordException(e); }
+
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         String doctorSign = "";
@@ -4575,41 +4666,241 @@ public class VisitSummaryActivity extends AppCompatActivity implements PaymentRe
         }
     }
 
-    /*This function implements the Razorpay functionality
-    By: Nishita Goyal
-    Ticket: SCD-13*/
-    private void makePayment() {
-        String sAmount = "1";
-        // rounding off the amount.
-        int amount = Math.round(Float.parseFloat(sAmount) * 100);
-        Checkout checkout = new Checkout();
-        checkout.setKeyID("rzp_test_lsxV2Ylin7dw1Y");
-        checkout.setImage(R.drawable.scd_logo);
-        JSONObject object = new JSONObject();
-        try {
-            object.put("name", "Smart Care Doc");
-            object.put("description", "Test payment");
-            object.put("theme.color", "#2E1E91");
-            object.put("currency", "INR");
-            object.put("amount", amount);
-            object.put("prefill.contact", "9958392968");
-            object.put("prefill.email", "nishita@intelehealth.org");
-            checkout.open(VisitSummaryActivity.this, object);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public void generateBill(View view) {
+        String billEncounterUuid = checkForOldBill();
+        if(!billEncounterUuid.equals(""))
+        {
+            fetchBillDetails(billEncounterUuid);
+        }
+        else {
+            boolean[] selected_tests = new boolean[8];
+            if (!glucose.getText().toString().isEmpty())
+                selected_tests[1] = true;
+            if (!glucoseFasting.getText().toString().isEmpty())
+                selected_tests[2] = true;
+            if (!glucosePostPrandial.getText().toString().isEmpty())
+                selected_tests[3] = true;
+            if (!glucoseRandom.getText().toString().isEmpty())
+                selected_tests[4] = true;
+            if (!uricAcid_textview.getText().toString().isEmpty())
+                selected_tests[5] = true;
+            if (!totalCholesterol_textview.getText().toString().isEmpty())
+                selected_tests[6] = true;
+            if (!hemoglobin.getText().toString().isEmpty())
+                selected_tests[7] = true;
+            showTestConfirmationCustomDialog(selected_tests);
         }
     }
 
-    @Override
-    public void onPaymentSuccess(String s) {
-        // this method is called on payment success.
-        Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();
+    private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
+        ArrayList selectedTests = new ArrayList<>();
+        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid),getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+//        selectedTests.clear();
+
+        final Dialog dialog = new Dialog(VisitSummaryActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.confirm_test_dialog);
+
+        CheckBox glucose_fast = dialog.findViewById(R.id.glucose_f_CB);
+        CheckBox glucose_non_fast = dialog.findViewById(R.id.glucose_nf_CB);
+        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
+        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
+        CheckBox bp = dialog.findViewById(R.id.bp_CB);
+        CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
+        CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
+        CheckBox cholesterol = dialog.findViewById(R.id.cholesterol_CB);
+        TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
+        TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
+
+        if(checkedTests[1])
+            glucose_non_fast.setChecked(true);
+        if(checkedTests[2])
+            glucose_fast.setChecked(true);
+        if(checkedTests[3])
+            glucose_ppn.setChecked(true);
+        if(checkedTests[4])
+            glucose_rand.setChecked(true);
+        if(checkedTests[5])
+            uric_acid.setChecked(true);
+        if(checkedTests[6])
+            cholesterol.setChecked(true);
+        if(checkedTests[7])
+            haemoglobin.setChecked(true);
+
+        bp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((CompoundButton) view).isChecked()){
+                    checkedTests[0] = true;
+                } else {
+                    checkedTests[0] = false;
+                }
+            }
+        });
+
+        ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(int j=0;j<checkedTests.length;j++)
+                {
+                    if(checkedTests[j])
+                        selectedTests.add(test_names[j]);
+                }
+                receiptNum = generateReceiptNum();
+                receiptDate = fetchSystemDateForBill();
+                passIntent(selectedTests);
+            }
+        });
+
+        cancel_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
-    @Override
-    public void onPaymentError(int i, String s) {
-        // on payment failed.
-        Toast.makeText(this, "Payment Failed due to error : " + s, Toast.LENGTH_SHORT).show();
+    private String generateReceiptNum() {
+        String uniqueReceiptNum = "";
+        Random rnd = new Random();
+        int number = rnd.nextInt(9999);
+        String first = String.valueOf(patientFName.charAt(0));
+        String last = String.valueOf(patientLName.charAt(0));
+        uniqueReceiptNum = first + last + String.valueOf(number);
+        return uniqueReceiptNum;
     }
+
+    private void passIntent(ArrayList<String> selectedTests) {
+        Intent intent = new Intent(VisitSummaryActivity.this, billConfirmationActivity.class);
+        intent.putExtra("patientName", patientName);
+        intent.putExtra("patientOpenMRSID", patientOpenMRSID);
+        intent.putExtra("patientPhoneNum", patientPhoneNum);
+        intent.putExtra("patientVillage", patientVillage);
+        intent.putExtra("patientHideVisitID", "XXXX" + hideVisitUUID);
+        intent.putExtra("patientVisitID", visitUuid);
+        intent.putExtra("testsList", selectedTests);
+        intent.putExtra("receiptNum", receiptNum);
+        intent.putExtra("receiptDate", receiptDate);
+        intent.putExtra("visitType", visitType);
+        intent.putExtra("billType", receiptPaymentStatus);
+        startActivity(intent);
+    }
+
+    private String fetchSystemDateForBill()
+    {
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+        return thisDate;
+    }
+
+    private String checkForOldBill() {
+        String billEncounterUuid = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+//        encounterCursor.close();
+
+        return billEncounterUuid;
+
+    }
+
+    private void fetchBillDetails(String billEncounterUuid) {
+        ArrayList selectedTests = new ArrayList<>();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {billEncounterUuid, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                if(dbValue!=null && !dbValue.equals("0"))
+                    parseBillData(selectedTests, dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+//        visitCursor.close();
+        passIntent(selectedTests);
+    }
+
+    private void parseBillData(ArrayList<String> selectedTests, String concept_id, String value) {
+
+        switch (concept_id) {
+            case UuidDictionary.BILL_NUM:
+            {
+                receiptNum = value;
+                break;
+            }
+            case UuidDictionary.BILL_DATE:
+            {
+                receiptDate = value;
+                break;
+            }
+            case UuidDictionary.BILL_PAYMENT_STATUS:
+            {
+                receiptPaymentStatus = value;
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BP_ID:
+            {
+                selectedTests.add(getString(R.string.visit_summary_bp));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.blood_glucose_non_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+            {
+                selectedTests.add(getString(R.string.blood_glucose_random));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
+            {
+                selectedTests.add(getString(R.string.blood_glucose_post_prandial));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.blood_glucose_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID: // Hemoglobin
+            {
+                selectedTests.add(getString(R.string.haemoglobin));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_URIC_ACID_ID: // Uric Acid
+            {
+                selectedTests.add(getString(R.string.uric_acid));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID: // Cholestrol
+            {
+                selectedTests.add(getString(R.string.total_cholestrol));
+                break;
+            }
+            default:
+                Log.i(TAG, "parseData: " + value);
+                break;
+
+        }
+
+    }
+
 }
 

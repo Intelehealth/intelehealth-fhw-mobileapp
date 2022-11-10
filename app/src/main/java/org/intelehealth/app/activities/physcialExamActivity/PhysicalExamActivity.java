@@ -83,7 +83,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     static String patientUuid;
     static String visitUuid;
     String state;
-    String patientName;
+    String patientName, patientFName, patientLName;
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
@@ -162,6 +162,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
@@ -327,6 +329,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName",patientFName);
+                intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
@@ -347,6 +351,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
+                intent1.putExtra("patientFirstName",patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("tag", intentTag);
                 intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
