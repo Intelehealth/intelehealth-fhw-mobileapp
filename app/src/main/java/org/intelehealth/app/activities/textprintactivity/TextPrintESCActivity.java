@@ -269,7 +269,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         drSign_textview.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         drSign_textview.layout(0, 0, drSign_textview.getMeasuredWidth(), drSign_textview.getMeasuredHeight());
-        mBitmap = drSign_textview.getDrawingCache();
+        mBitmap = drSign_textview.getDrawingCache();  // converting Textview to Bitmap Image.
 
         pres_textview.setText(prescData);
         drDetails_textview.setText(doctorDetails);
