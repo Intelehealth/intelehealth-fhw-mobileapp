@@ -292,7 +292,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -350,8 +350,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
 
     private void sendCallData(String callEndTime) {
         SendCallData model = new SendCallData();
-        Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_ivr_call_details LIMIT 1",
-                null);
+        Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_ivr_call_details LIMIT 1", null);
         if (searchCursor.moveToFirst()) {
             do {
                 model.setState(searchCursor.getString(searchCursor.getColumnIndexOrThrow("state")));
@@ -369,7 +368,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
         String sendDataUrl = urlModifiers.sendCallData();
-        apiInterface.callPatientData(sendDataUrl,model).enqueue(new Callback<ResponseBody>() {
+        apiInterface.callPatientData(sendDataUrl, model).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(MedicalAdviceExistingPatientsActivity.this, "Information stored successfully!", Toast.LENGTH_SHORT).show();
@@ -382,5 +381,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
                 new AlertDialog.Builder(MedicalAdviceExistingPatientsActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
             }
         });
+        
+        searchCursor.close();
     }
 }

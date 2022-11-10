@@ -439,8 +439,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
         List<String> patientUUID_List = new ArrayList<>();
 
-        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
-                new String[]{search});
+        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?", new String[]{search});
         /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
          * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
          * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
@@ -449,8 +448,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         try {
             if (search_mobile_cursor.moveToFirst()) {
                 do {
-                    patientUUID_List.add(search_mobile_cursor.getString
-                            (search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
+                    patientUUID_List.add(search_mobile_cursor.getString(search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
                 }
                 while (search_mobile_cursor.moveToNext());
             }
@@ -458,13 +456,13 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        search_mobile_cursor.close();
         Log.d("patientUUID_list", "list: " + patientUUID_List.toString());
 
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
 
-                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
-                        new String[]{patientUUID_List.get(i)});
+                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -486,11 +484,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
+                searchCursor.close();
             }
-
         } else {
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
-                    null);
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
                 if (searchCursor.moveToFirst()) {
@@ -511,7 +508,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-
+            searchCursor.close();
         }
 
         return modelList;

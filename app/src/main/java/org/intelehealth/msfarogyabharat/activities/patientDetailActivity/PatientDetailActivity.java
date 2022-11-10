@@ -1509,7 +1509,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                         } while (encounterCursor.moveToNext());
                     }
-                    encounterCursor.close();
+
+                    if (encounterCursor != null)
+                        encounterCursor.close();
 
                     String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
                     String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
@@ -1579,6 +1581,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
+                    previsitCursor.close();
                 } while (visitCursor.moveToPrevious());
             }
         }

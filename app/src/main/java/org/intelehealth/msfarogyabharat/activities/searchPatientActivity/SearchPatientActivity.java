@@ -552,6 +552,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        search_mobile_cursor.close();
         Log.d("patientUUID_list", "list: " + patientUUID_List.toString());
 
         if (patientUUID_List.size() != 0) {
@@ -579,6 +580,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
+                searchCursor.close();
             }
 
         } else {
@@ -604,6 +606,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
+            searchCursor.close();
         }
 
         return modelList;

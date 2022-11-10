@@ -1702,6 +1702,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 model.setCallEndTime(callEndTime);
             } while (searchCursor.moveToNext());
         }
+
+        searchCursor.close();
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
         String sendDataUrl = urlModifiers.sendCallData();
