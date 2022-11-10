@@ -1,13 +1,10 @@
 package org.intelehealth.app.ayu.visit;
 
-import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,12 +18,10 @@ import com.google.common.collect.Lists;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
+import org.intelehealth.app.ayu.visit.reason.VisitReasonSummaryFragment;
+import org.intelehealth.app.ayu.visit.vital.VitalCollectionFragment;
 import org.intelehealth.app.ayu.visit.vital.VitalCollectionSummaryFragment;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -34,21 +29,16 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
-import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
-import org.intelehealth.app.ayu.visit.vital.VitalCollectionFragment;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -64,6 +54,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int STEP_2_VISIT_REASON = 2;
     public static final int STEP_2_VISIT_REASON_QUESTION = 3;
     public static final int STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS = 4;
+    public static final int STEP_2_VISIT_REASON_QUESTION_SUMMARY = 44;
     public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
     public static final int STEP_3_MEDICAL_HISTORY = 6;
 
@@ -82,6 +73,18 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private FrameLayout mSummaryFrameLayout;
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar;
+
+    // Chief complain
+    private List<Node> mAnsweredRootNodeList = new ArrayList<>();
+    private List<Node> mCurrentRootNodeList = new ArrayList<>();
+    private int mCurrentComplainNodeIndex = 0;
+    private int mCurrentComplainNodeOptionsIndex = 0;
+
+    // Physical Examination
+
+    // Past Medical History
+
+    // Family History
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,15 +166,31 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
             case STEP_2_VISIT_REASON_QUESTION:
                 List<String> selectedComplains = Lists.newArrayList((Set<String>) object);
+                loadChiefComplainNodeForSelectedNames(selectedComplains);
                 mStep2ProgressBar.setProgress(40);
                 setTitle("2/4 Visit reason : " + selectedComplains.get(0));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), selectedComplains), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mCurrentRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
+                        commit();
+                break;
+            case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
         }
+    }
+
+    private void loadChiefComplainNodeForSelectedNames(List<String> selectedComplains) {
+        for (int i = 0; i < selectedComplains.size(); i++) {
+            String fileLocation = "engines/" + selectedComplains.get(i) + ".json";
+            JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+
+            mCurrentRootNodeList.add(new Node(currentFile));
+        }
+
     }
 
     public void setTitle(String text) {
@@ -182,7 +201,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void onProgress(int progress) {
         switch (mCurrentStep) {
             case STEP_2_VISIT_REASON_QUESTION:
-                mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress()+progress);
+                mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
                 break;
         }
     }
@@ -200,9 +219,38 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void onBackPressed() {
         //super.onBackPressed();
     }
+
     boolean nodeComplete = false;
 
+    public void filterNodeQuestions() {
+
+    }
+
+    //new code for the one by one complain data capture
+    public void savedComplainRecordAndMovedForNextStep() {
+        // checking any question missing
+        // can check also compulsory question
+
+        // upload images if any
+
+        // generate language from current node
+    }
+
+    /**
+     *
+     */
+    private void showAssociateAssociatedComplaintsList() {
+
+    }
+
+    /**
+     *
+     */
+    private void showNextComplainQueries() {
+    }
+
     // saving data
+
     /**
      * Summarizes the information of the current complaint knowledgeEngine.
      * Then has that put into the database, and then checks to see if there are more complaint nodes.
@@ -230,35 +278,35 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
 
 
-        if (!complaintConfirmed) {
-            questionsMissing();
-        } else {
-            List<String> imagePathList = currentNode.getImagePathList();
+        //if (!complaintConfirmed) {
+        // questionsMissing();
+        // } else {
+        List<String> imagePathList = currentNode.getImagePathList();
 
-            if (imagePathList != null) {
-                for (String imagePath : imagePathList) {
-                    updateImageDatabase(imagePath);
-                }
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                updateImageDatabase(imagePath);
             }
+        }
 
-            String complaintString = currentNode.generateLanguage();
+        String complaintString = currentNode.generateLanguage();
 
-            if (complaintString != null && !complaintString.isEmpty()) {
-                //     String complaintFormatted = complaintString.replace("?,", "?:");
+        if (complaintString != null && !complaintString.isEmpty()) {
+            //     String complaintFormatted = complaintString.replace("?,", "?:");
 
-                String complaint = currentNode.getText();
-                //    complaintDetails.put(complaint, complaintFormatted);
+            String complaint = currentNode.getText();
+            //    complaintDetails.put(complaint, complaintFormatted);
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
-            } else {
-                String complaint = currentNode.getText();
-                if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
+            //insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+        } else {
+            String complaint = currentNode.getText();
+            if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
-                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
-                }
+                // insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
             }
-            ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
+        }
+          /*  ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
@@ -269,13 +317,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         complaintsNodes.add(currentNode);
                     }
                 }
-            }
+            }*/
 
-            ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
-            if (!childNodeSelectedPhysicalExams.isEmpty())
-                physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+        ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
+        // if (!childNodeSelectedPhysicalExams.isEmpty())
+        //     physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-            ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
+          /*  ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
             if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
                 physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
@@ -287,11 +335,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 complaintNumber++;
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;
-            } else {
-                if (intentTag != null && intentTag.equals("edit")) {
+            } else {*/
+                /*if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
                     updateDatabase(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                    Intent intent = new Intent(VisitCreationActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -310,7 +358,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
                     Intent intent = new Intent
-                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                            (VisitCreationActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -325,17 +373,18 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
                     startActivity(intent);
-                }
-            }
-        }
+                }*/
+        // }
+        //}
 
         // question_recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
-        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        //recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
 
     }
+
     /**
      * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
      * Although this could also be made into a function, for now it has now been.
@@ -369,7 +418,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
+            imagesDAO.insertObsImageDatabase(imagePath, encounterAdultIntials, "");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -403,11 +452,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     }
 
+    /*  */
+
     /**
      * Sets up the complaint knowledgeEngine's questions.
      *
      * @param complaintIndex Index of complaint being displayed to user.
-     */
+     *//*
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
 
@@ -432,10 +483,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-      /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
+      *//*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-        questionListView.expandGroup(0);*/
+        questionListView.expandGroup(0);*//*
         setTitle(patientName + ": " + currentNode.findDisplay());
 
     }
@@ -725,9 +776,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         Dialog alertDialog = alertDialogBuilder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
-    }
-
-
+    }*/
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();
         String rawExams = node.getPhysicalExams();

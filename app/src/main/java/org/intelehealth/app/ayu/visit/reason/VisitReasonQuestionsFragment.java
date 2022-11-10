@@ -16,9 +16,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.reason.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +32,16 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
 
+    private Node mCurrentNode;
 
     public VisitReasonQuestionsFragment() {
         // Required empty public constructor
     }
 
 
-    public static VisitReasonQuestionsFragment newInstance(Intent intent, List<String> selectedComplains) {
+    public static VisitReasonQuestionsFragment newInstance(Intent intent, Node node) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
-        fragment.mSelectedComplains = selectedComplains;
+        fragment.mCurrentNode = node;
         return fragment;
     }
 
@@ -58,9 +57,8 @@ public class VisitReasonQuestionsFragment extends Fragment {
         mActionListener = (VisitCreationActionListener) context;
     }
 
-    private List<Node> mAnsweredRootNodeList = new ArrayList<>();
-    private List<Node> mCurrentRootNodeList = new ArrayList<>();
-    private int mCurrentComplainNodeIndex = 0;
+
+    private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
 
@@ -80,23 +78,19 @@ public class VisitReasonQuestionsFragment extends Fragment {
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+        mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        String fileLocation = "engines/" + mSelectedComplains.get(0) + ".json";
-        JSONObject currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
-
-        mCurrentRootNodeList.add(new Node(currentFile));
-
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentRootNodeList.get(mCurrentComplainNodeIndex).getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentRootOptionList.size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node) {
                 //Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < mCurrentRootNodeList.get(mCurrentComplainNodeIndex).getOptionsList().size() - 1)
+                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1)
                     mCurrentComplainNodeOptionsIndex++;
                 else {
                     mCurrentComplainNodeOptionsIndex = 0;
-                    mCurrentComplainNodeIndex++;
+
                 }
-                mQuestionsListingAdapter.addItem(mCurrentRootNodeList.get(mCurrentComplainNodeIndex).getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -104,12 +98,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     }
                 }, 100);
 
-                mActionListener.onProgress((int)60/mCurrentRootNodeList.get(mCurrentComplainNodeIndex).getOptionsList().size());
+                mActionListener.onProgress((int) 60 / mCurrentRootOptionList.size());
             }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(mCurrentRootNodeList.get(mCurrentComplainNodeIndex).getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
         return view;
     }
 }
