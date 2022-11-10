@@ -65,7 +65,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public void setVisibility(boolean data) {
-        showPopUp=data;
+        showPopUp = data;
     }
 
     public interface FabClickListener {
@@ -166,14 +166,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
 
-
         holder.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showPopUp){
-                    Toast.makeText(context,"Select all the answers",Toast.LENGTH_LONG).show();
+                if (showPopUp) {
+                    Toast.makeText(context, "Select all the answers", Toast.LENGTH_LONG).show();
 
-                }else {
+                } else {
                     _mListener.fabClickedAtEnd();
                 }
 
@@ -209,6 +208,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -249,7 +249,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     chipList = currentNode.getOptionsList().get(0).getOptionsList();
-                }else{
+                } else {
                     Node node = currentNode.getOptionsList().get(pos);
                     for (int i = 0; i < node.getOptionsList().size(); i++) {
                         chipList.add(node.getOptionsList().get(i));
@@ -260,13 +260,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
 
-            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")
+            if (groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
-                associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+                associatedSysAdapter = new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
 
-            }   else {
+            } else {
                 chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(chipsAdapter);
             }
@@ -316,18 +316,21 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
-            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
-                    || (groupNode.getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ") && thisNode.isNoSelected())
-                    || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
-                    || thisNode.isSelected()) {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-            } else {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+            if (groupNode != null && groupNode.getText() != null) {
+                if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
+                        || (groupNode.getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ") && thisNode.isNoSelected())
+                        || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
+                        || thisNode.isSelected()) {
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                } else {
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                    //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
+                    //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                }
             }
+
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -415,8 +418,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                             _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                             notifyDataSetChanged();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();
                     }
 
