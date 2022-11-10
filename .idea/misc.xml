@@ -8,6 +8,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/circle_border_unpaid.xml" value="0.1" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/dash_border.xml" value="0.1" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/dot_border.xml" value="0.1" />
@@ -23,6 +24,19 @@
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+=======
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/background_splash.xml" value="0.201" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/bg_button_disable.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/bg_end_visit.xml" value="0.201" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/blank_checkbox.xml" value="0.201" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_text_print_escactivity.xml" value="0.2" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/bluetooth_device_item.xml" value="0.1766304347826087" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/dialog_choose_bluetooth_device.xml" value="0.1766304347826087" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+>>>>>>> SCD-5
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

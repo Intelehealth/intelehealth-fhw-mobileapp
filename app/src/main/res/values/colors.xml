@@ -53,5 +53,27 @@
 
     <color name="transparent_tab">#75000000</color>
 
+    <!-- Thermal Printer -->
+    <color name="gray2">#EEEEEE</color>
+    <color name="primary">#272a3b</color>
+    <color name="orange_color">#ef6c00</color>
+    <color name="gray_bg">#eeeeee</color>
+    <color name="basic_item_bg">@android:color/white</color>
+    <color name="ink_pen">#16264c</color>
+
+    <color name="basic_text_color">@android:color/white</color>
+    <color name="hint_text_color">#7f7f7f</color>
+    <color name="stroke_gray_color">#dddddd</color>
+    <color name="button_blue_bg">#409de5</color>
+    <color name="button_light_green_bg">#1de9b6</color>
+    <color name="button_dark_green_bg">#8dc150</color>
+    <color name="button_yellow_bg">#f7bb42</color>
+    <color name="text_setting_selected_bg">#f0f0f5</color>
+
+    <color name="tag_blue_bg">#5f9cff</color>
+    <color name="tag_orange_bg">#ff9a57</color>
+    <color name="tag_red_bg">#ff6d5f</color>
+    <color name="tag_green_bg">#40d189</color>
+    <color name="tag_blue_light_bg">#33befa</color>
 
 </resources>
