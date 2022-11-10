@@ -41,6 +41,15 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".horizontalcalendar.HorizontalCalendarActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+
+        </activity>
+        <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -48,8 +57,6 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
-
         </activity>
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
@@ -74,17 +81,12 @@
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".appointmentNew.MyAppointmentActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
@@ -115,8 +117,6 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -193,7 +193,7 @@
         <activity
             android:name=".appointment.ScheduleListingActivity"
             android:exported="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".utilities.RTCMessageReceiver"
@@ -371,10 +371,7 @@
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.IntroActivity.IntroScreensActivity_New"
             android:exported="true"
