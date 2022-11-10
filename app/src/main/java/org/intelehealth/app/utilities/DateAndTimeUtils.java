@@ -120,7 +120,7 @@ public class DateAndTimeUtils {
         Date date = null;
         try {
             date = originalFormat.parse(s);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String formattedDate = targetFormat.format(date);  // 20120821

@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.physcialExamActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -303,6 +305,13 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void fabClickedAtEnd() {
+        if(!physicalExamMap.areRequiredAnswered())
+        {   fabClicked();
+            return; }
+        triggerConfirmation();
+    }
+
+    public void fabClicked() {
 
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
@@ -659,6 +668,25 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     }
 
+    private void triggerConfirmation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        } else {
+            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        }
+
+        // Handle positive button click
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, ((dialog, which) -> {
+            dialog.dismiss();
+            fabClicked();
+        }));
+
+        // Handle negative button click
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, (dialog, which) -> dialog.dismiss());
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
 }
 
 
