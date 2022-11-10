@@ -1,34 +1,36 @@
-package org.intelehealth.app.ui2.visit.reason.adapter;
+package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
-    private List<String> mItemList = new ArrayList<String>();
+    private List<Node> mItemList = new ArrayList<Node>();
 
     public interface OnItemSelection {
-        public void onSelect(String data);
+        public void onSelect(Node data);
     }
 
     private OnItemSelection mOnItemSelection;
 
-    public ReasonChipsGridAdapter(RecyclerView recyclerView, Context context, List<String> itemList, OnItemSelection onItemSelection) {
+    public ImageGridAdapter(RecyclerView recyclerView, Context context, List<Node> itemList, OnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
@@ -37,14 +39,12 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
-    public void setLabelJSON(JSONObject json) {
-        mThisScreenLanguageJsonObject = json;
-    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ui2_chips_for_reason_item_view, parent, false);
+                .inflate(R.layout.ui2_image_item_vire, parent, false);
         /**
          * First item's entrance animations.
          */
@@ -57,7 +57,8 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
-            genericViewHolder.tvName.setText(mItemList.get(position));
+            genericViewHolder.node = mItemList.get(position);
+            genericViewHolder.index = position;
 
 
         }
@@ -69,15 +70,18 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
+        ImageView mainImageView, addImageView, crossImageView;
+        Node node;
+        int index;
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
-            tvName.setOnClickListener(new View.OnClickListener() {
+            mainImageView = itemView.findViewById(R.id.iv_image);
+            addImageView = itemView.findViewById(R.id.iv_add_items);
+            addImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemSelection.onSelect(tvName.getText().toString());
+                   // start image capture activity
                 }
             });
 

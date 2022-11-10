@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit;
+package org.intelehealth.app.ayu.visit;
 
 public interface VisitCreationActionListener {
     public void onFormSubmitted(int nextAction, Object object);

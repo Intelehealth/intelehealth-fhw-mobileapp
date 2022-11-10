@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.reason;
+package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
+import org.intelehealth.app.ayu.visit.reason.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.ui2.visit.VisitCreationActionListener;
-import org.intelehealth.app.ui2.visit.reason.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONObject;

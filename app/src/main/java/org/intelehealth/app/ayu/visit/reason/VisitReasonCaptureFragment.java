@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.reason;
+package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.ui2.visit.VisitCreationActionListener;
-import org.intelehealth.app.ui2.visit.VisitCreationActivity;
-import org.intelehealth.app.ui2.visit.model.ReasonGroupData;
-import org.intelehealth.app.ui2.visit.reason.adapter.ReasonListingAdapter;
+import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
+import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.IOException;

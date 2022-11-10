@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.model;
+package org.intelehealth.app.ayu.visit.model;
 
 import java.util.List;
 

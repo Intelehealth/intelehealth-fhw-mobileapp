@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.reason.adapter;
+package org.intelehealth.app.ayu.visit.reason.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.appointment.model.SlotInfo;
-import org.intelehealth.app.ui2.visit.model.ReasonGroupData;
+import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

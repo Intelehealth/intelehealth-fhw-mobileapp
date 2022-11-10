@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.reason.adapter;
+package org.intelehealth.app.ayu.visit.reason.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -36,6 +36,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<Node> mItemList = new ArrayList<Node>();
     private int mTotalQuery = 0;
     RecyclerView mRecyclerView;
+
     public interface OnItemSelection {
         public void onSelect(Node node);
     }
@@ -119,6 +120,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
+                    addCameraiew(genericViewHolder.node, genericViewHolder, position);
                     break;
 
                 case "options":
@@ -209,8 +211,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     }
 
+    /**
+     * Time duration
+     *
+     * @param node
+     * @param holder
+     * @param index
+     */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
-        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -299,7 +308,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 if (editText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
@@ -332,6 +341,31 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
+        View view = View.inflate(mContext, R.layout.visit_reason_date, null);
+        final Button submitButton = view.findViewById(R.id.btn_submit);
+        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // display the selected date by using a toast
+                submitButton.setText(dayOfMonth + "-" + month + "-" + year);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!submitButton.getText().toString().trim().contains("-")) {
+                    Toast.makeText(mContext, "Please select the date", Toast.LENGTH_SHORT).show();
+                } else
+                    mOnItemSelection.onSelect(node);
+            }
+        });
+
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addCameraiew(Node node, GenericViewHolder holder, int index) {
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);

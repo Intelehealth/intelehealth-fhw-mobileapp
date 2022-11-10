@@ -41,7 +41,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".ui2.visit.VisitCreationActivity"
+            android:name=".ayu.visit.VisitCreationActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
         <activity

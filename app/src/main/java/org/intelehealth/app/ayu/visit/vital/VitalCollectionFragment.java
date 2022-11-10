@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.vital;
+package org.intelehealth.app.ayu.visit.vital;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,13 +22,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.model.BMIStatus;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.ui2.visit.VisitCreationActionListener;
-import org.intelehealth.app.ui2.visit.VisitCreationActivity;
-import org.intelehealth.app.ui2.visit.model.BMIStatus;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;

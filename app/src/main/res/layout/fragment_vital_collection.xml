@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.visit.vital.VitalCollectionFragment">
+    tools:context=".ayu.visit.vital.VitalCollectionFragment">
 
     <Button
         android:id="@+id/btn_submit"

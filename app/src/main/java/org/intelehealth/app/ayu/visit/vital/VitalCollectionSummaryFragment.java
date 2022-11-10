@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.visit.vital;
+package org.intelehealth.app.ayu.visit.vital;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.models.VitalsObject;
-import org.intelehealth.app.ui2.visit.VisitCreationActionListener;
-import org.intelehealth.app.ui2.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.utilities.SessionManager;
 
 /**
