@@ -928,7 +928,7 @@
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose\n (Non-Fasting)</string>
     <string name="blood_glucose_random">Blood Glucose\n (Random)</string>
-    <string name="blood_glucose_post_prandial">Blood Glucose\n (Post-prandial)</string>
+    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
     <string name="blood_glucose_fasting">Blood Glucose\n (Fasting)</string>
     <string name="haemoglobin">Haemoglobin (mg/dL)</string>
     <string name="diagnostics">Diagnostics</string>

@@ -4182,6 +4182,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void downloadPrescription() {
         VisitsDAO visitsDAO = new VisitsDAO();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";

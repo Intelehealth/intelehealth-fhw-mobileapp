@@ -850,7 +850,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     By: Nishita Goyal
     Ticket: SCD-13*/
     private void makePayment() {
-        String sAmount = "1";
+        String sAmount = String.valueOf(total_amount);
         // rounding off the amount.
         int amount = Math.round(Float.parseFloat(sAmount) * 100);
         Checkout checkout = new Checkout();
