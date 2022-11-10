@@ -86,6 +86,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -161,7 +163,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity {
+public class VisitSummaryActivity extends AppCompatActivity implements PaymentResultListener {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -275,7 +277,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CheckBox flag;
     EndVisitEncounterPrescription endVisitEncounterPrescription;
     String visitnoteencounteruuid = "";
-    Button btnSignSubmit;
+    Button btnSignSubmit, btnMakePayment;
     Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
@@ -622,6 +624,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+        btnMakePayment = findViewById(R.id.btnPayment);
+
+        btnMakePayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makePayment();
+            }
+        });
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -4564,4 +4574,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
             getAppointmentDetails(visitUuid);
         }
     }
+
+    /*This function implements the Razorpay functionality
+    By: Nishita Goyal
+    Ticket: SCD-13*/
+    private void makePayment() {
+        String sAmount = "1";
+        // rounding off the amount.
+        int amount = Math.round(Float.parseFloat(sAmount) * 100);
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_lsxV2Ylin7dw1Y");
+        checkout.setImage(R.drawable.scd_logo);
+        JSONObject object = new JSONObject();
+        try {
+            object.put("name", "Smart Care Doc");
+            object.put("description", "Test payment");
+            object.put("theme.color", "#2E1E91");
+            object.put("currency", "INR");
+            object.put("amount", amount);
+            object.put("prefill.contact", "9958392968");
+            object.put("prefill.email", "nishita@intelehealth.org");
+            checkout.open(VisitSummaryActivity.this, object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        // this method is called on payment success.
+        Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        // on payment failed.
+        Toast.makeText(this, "Payment Failed due to error : " + s, Toast.LENGTH_SHORT).show();
+    }
 }
+
