@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonSummaryFragment;
@@ -37,6 +39,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +82,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private List<Node> mCurrentRootNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private int mCurrentComplainNodeOptionsIndex = 0;
+    private List<String> selectedComplains = new ArrayList<>();
 
     // Physical Examination
 
@@ -165,7 +169,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
 
             case STEP_2_VISIT_REASON_QUESTION:
-                List<String> selectedComplains = Lists.newArrayList((Set<String>) object);
+                selectedComplains = Lists.newArrayList((Set<String>) object);
                 loadChiefComplainNodeForSelectedNames(selectedComplains);
                 mStep2ProgressBar.setProgress(40);
                 setTitle("2/4 Visit reason : " + selectedComplains.get(0));
@@ -226,27 +230,86 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     }
 
+    String insertion = "";
+
     //new code for the one by one complain data capture
-    public void savedComplainRecordAndMovedForNextStep() {
+    public void savedComplainRecordAndMovedForNextStep(Node currentNode) {
         // checking any question missing
         // can check also compulsory question
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(this);
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }
+
 
         // upload images if any
 
         // generate language from current node
+
+        String complaintString = currentNode.generateLanguage();
+
+        if (complaintString != null && !complaintString.isEmpty()) {
+            //     String complaintFormatted = complaintString.replace("?,", "?:");
+
+            String complaint = currentNode.getText();
+            //    complaintDetails.put(complaint, complaintFormatted);
+
+//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+            insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+        } else {
+            String complaint = currentNode.getText();
+            if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
+//                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+            }
+        }
+
+
     }
 
     /**
      *
      */
-    private void showAssociateAssociatedComplaintsList() {
-
+    private void showAssociateAssociatedComplaintsList(Node currentNode) {
+        ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
+        if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
+            for (String associatedComplaint : selectedAssociatedComplaintsList) {
+                if (!complaints.contains(associatedComplaint)) {
+                    complaints.add(associatedComplaint);
+                    String fileLocation = "engines/" + associatedComplaint + ".json";
+                    JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+                    Node node = new Node(currentFile);
+                    complaintsNodes.add(currentNode);
+                }
+            }
+        }
     }
 
     /**
      *
      */
     private void showNextComplainQueries() {
+        mCurrentComplainNodeIndex++;
+        mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + 10);
+        setTitle("2/4 Visit reason : " + selectedComplains.get(mCurrentComplainNodeIndex));
+        //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+        //mSummaryFrameLayout.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mCurrentRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
+                commit();
     }
 
     // saving data
@@ -787,4 +850,31 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
         return null;
     }
+
+    public static void openCamera(Activity activity, String imagePath, String imageName) {
+        Log.d(TAG, "open Camera!");
+        Intent cameraIntent = new Intent(activity, CameraActivity.class);
+        if (imageName != null && imagePath != null) {
+            File filePath = new File(imagePath);
+            if (!filePath.exists()) {
+                boolean res = filePath.mkdirs();
+            }
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
+        }
+        activity.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                currentNode.setImagePath(mCurrentPhotoPath);
+                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
+            }
+        }
+    }
+
 }
