@@ -510,12 +510,13 @@
 
 
             <!--View based on visibility and condition - start-->
+            <!--Presc block - Start-->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/prescription_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_3"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/margin_16dp"
@@ -564,22 +565,21 @@
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <TextView
-                    android:id="@+id/dr_speciality"
+                    android:id="@+id/presc_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fu_male_margin_start"
                     android:layout_below="@+id/visitDetails_text"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="0sp"
-                    android:text="Received 2 hours ago"
+                    android:text="Test: Received 2 hours ago"
                     android:textAppearance="@style/details_head2"
                     android:textColor="@color/green_button_bg"
                     android:textSize="@dimen/fu_male_textsize" />
                 </LinearLayout>
 
-
                 <ImageButton
-                    android:id="@+id/icon_arrowRight"
+                    android:id="@+id/presc_arrowRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -587,14 +587,17 @@
                     android:background="@null"
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
+                <!--Presc block - End -->
+
 
                 <!--Remind button - start -->
                 <RelativeLayout
+                    android:id="@+id/presc_remind_block"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/presc_relative"
                     android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                 <View
                     android:id="@+id/divider_4"

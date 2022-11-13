@@ -1,8 +1,11 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModifiedDateForPrescGiven;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
+import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -13,6 +16,7 @@ import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,11 +42,12 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private String patientName, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt,
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
     visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
-    private RelativeLayout prescription_block, endvisit_relative_block;
+    private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block;
+    private ImageButton presc_arrowRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +97,36 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         // presc block - start
         prescription_block = findViewById(R.id.prescription_block);
+        presc_time = findViewById(R.id.presc_time);
+        presc_arrowRight = findViewById(R.id.presc_arrowRight);
+        presc_remind_block = findViewById(R.id.presc_remind_block);
+
         if (hasPrescription) {
-            prescription_block.setVisibility(View.VISIBLE);
-            prescription_block.setOnClickListener(v -> {
+            presc_arrowRight.setVisibility(View.VISIBLE);
+            presc_remind_block.setVisibility(View.GONE);
+            String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+            modifiedDate = timeAgoFormat(modifiedDate);
+            presc_time.setText("Received " + modifiedDate);
+            presc_arrowRight.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
                 startActivity(in);
             });
         }
         else {
-            prescription_block.setVisibility(View.GONE);
+            // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
+            presc_arrowRight.setVisibility(View.GONE);
+            String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+            modifiedDate = timeAgoFormat(modifiedDate);
+            if (modifiedDate.contains("minutes") || modifiedDate.contains("hours")) {
+                // here dont show remind block
+                presc_remind_block.setVisibility(View.GONE);
+            }
+            else {
+                // here show remind block as its pending from more than 1 day.
+                presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
+            }
+            presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
+            presc_time.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
 
@@ -113,11 +139,13 @@ public class VisitDetailsActivity extends AppCompatActivity {
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
         openmrsID_txt.setText(openmrsID);
 
+        // priority - start
         priorityTag = findViewById(R.id.priority_tag);
         if (isEmergency)
             priorityTag.setVisibility(View.VISIBLE);
         else
             priorityTag.setVisibility(View.GONE);
+        // priority - end
 
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
         if (chief_complaint_value != null) {
@@ -126,9 +154,6 @@ public class VisitDetailsActivity extends AppCompatActivity {
             chief_complaint_value = chief_complaint_value.substring(first, last + 4);
             Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-            chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
-            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
-            chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
         }
         else {  // ie. here user is coming from Prescription screen and not Follow up screen.
             chief_complaint_value = getChiefComplaint(visitID);
@@ -138,10 +163,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
             chief_complaint_value = chief_complaint_value.substring(first, last + 4);
             Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-            chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
-            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
-            chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
         }
+        chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
+        chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+        chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;
@@ -180,6 +205,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
         }
         // speciality - end
 
+        // follow up - start
         followupDate_txt = findViewById(R.id.followup_date_txtv);
         if (followupDate != null) {
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
@@ -188,8 +214,9 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         followup_info = findViewById(R.id.followup_info);
         followup_info.setText("Please take " + patientName + "'s follow-up visit.");
+        // follow up - end
 
-
+        // end visit - start
         PrescriptionModel pres = isVisitNotEnded(visitID);
         if (pres != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
@@ -197,6 +224,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
         else {
             endvisit_relative_block.setVisibility(View.GONE);
         }
+        // end visit - end
 
 
     }

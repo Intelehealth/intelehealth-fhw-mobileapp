@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -587,6 +588,37 @@ public class VisitsDAO {
 
         return arrayList;
     }
+
+    public static String fetchVisitModifiedDateForPrescPending(String visitUUID) {
+        String modifiedDate = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select modified_date from tbl_visit where uuid = ? and " +
+                    "(sync=1 or sync='TRUE' or sync = 'true') and voided = 0", new String[]{visitUUID});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
+                        Log.v("modifiedDate", "modifiedDate: " + modifiedDate);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return modifiedDate;
+    }
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 
@@ -399,6 +400,29 @@ public class DateAndTimeUtils {
             Log.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
+    }
+
+    /**
+     * This function is used to calculate value like Eg: '2 hours ago' or '2 minutes ago'.
+     * @param datetime
+     * @return
+     */
+    public static String timeAgoFormat(String datetime) {
+        String time = "";
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        try {
+            long date = format.parse(datetime).getTime();
+            long now = System.currentTimeMillis();
+            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
+            time = String.valueOf(ago);
+            Log.v("TimeAgo", "TimeAgo: " + time);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return time;
     }
 
 }
