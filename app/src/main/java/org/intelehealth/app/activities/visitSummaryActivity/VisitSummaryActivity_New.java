@@ -312,6 +312,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 physicalExams.addAll(selectedExams);
             }
 
+/*
             Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
                     visitUuid + "\n" +
                     patientGender + "\n" +
@@ -322,6 +323,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                     float_ageYear_Month + "\n" +
                     intentTag + "\n" +
                     isPastVisit + "\n");
+*/
         }
 
        /* // todo: testing - start

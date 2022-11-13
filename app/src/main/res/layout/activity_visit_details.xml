@@ -499,11 +499,12 @@
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <ImageButton
-                    android:id="@+id/icon_arrowRight"
+                    android:id="@+id/vs_arrowRight"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:paddingHorizontal="10dp"
                     android:background="@null"
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
@@ -581,9 +582,11 @@
                 <ImageButton
                     android:id="@+id/presc_arrowRight"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp"
                     android:background="@null"
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>

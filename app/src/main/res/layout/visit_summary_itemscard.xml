@@ -554,7 +554,7 @@
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="here comes the data in html format."
+                    android:text="Test: here comes the data in html format."
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
                 <!--Chief Complaint details - end-->
 
@@ -615,7 +615,7 @@
                         android:layout_marginTop="4dp"
                         android:textSize="@dimen/find_patient_hint_size"
                         android:layout_marginStart="@dimen/margin_10"
-                        android:text="Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
+                        android:text="Test: Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
                         android:layout_below="@+id/pat_reports_txtview" />
                 </RelativeLayout>
 
@@ -646,7 +646,7 @@
                         android:layout_marginTop="4dp"
                         android:textSize="@dimen/find_patient_hint_size"
                         android:layout_marginStart="@dimen/margin_10"
-                        android:text="Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
+                        android:text="Test: Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
                         android:layout_below="@+id/pat_reports_txtview" />
 
                 </RelativeLayout>
@@ -907,7 +907,7 @@
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="here comes the patient history data in html format."
+                    android:text="Test: here comes the patient history data in html format."
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
 
 
@@ -962,7 +962,7 @@
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
                     android:layout_marginBottom="@dimen/fu_margin_start"
-                    android:text="here comes data with bullets...."
+                    android:text="Test: here comes data with bullets...."
                     android:layout_marginTop="@dimen/margin_4" />
 
             </RelativeLayout>

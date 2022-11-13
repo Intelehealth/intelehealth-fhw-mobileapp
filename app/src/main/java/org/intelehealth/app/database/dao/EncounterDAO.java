@@ -1,7 +1,9 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -495,7 +497,7 @@ public class EncounterDAO {
         if(visitUUID != null) {
             final Cursor cursor = db.rawQuery("select modified_date from tbl_encounter where visituuid = ? and " +
                     "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
-                    "encounter_type_uuid = ?", new String[]{visitUUID, "d7151f82-c1f3-4152-a605-2f9ea7414a79"});
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
 
             if (cursor.moveToFirst()) {
                 do {
@@ -514,6 +516,76 @@ public class EncounterDAO {
         }
 
         return modifiedDate;
+    }
+
+    /**
+     * Fetching the uuid from Enc table for visit having ENCOUNTER_VITALS.
+     * @param visitUUID
+     * @return
+     */
+    public static String fetchEncounterUuidForEncounterVitals(String visitUUID) {
+        String uuid = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
+                    "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VITALS});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                        Log.v("modifiedDate", "uuid: " + uuid);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return uuid;
+    }
+
+    /**
+     * Fetching the uuid from Enc table for visit having ENCOUNTER_ADULTINITIALS.
+     * @param visitUUID
+     * @return
+     */
+    public static String fetchEncounterUuidForEncounterAdultInitials(String visitUUID) {
+        String uuid = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
+                    "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                        Log.v("modifiedDate", "uuid: " + uuid);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return uuid;
     }
 
 }

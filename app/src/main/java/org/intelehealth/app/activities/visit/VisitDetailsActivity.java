@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModifiedDateForPrescGiven;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
@@ -25,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -39,7 +42,7 @@ import java.util.List;
  */
 
 public class VisitDetailsActivity extends AppCompatActivity {
-    private String patientName, gender, age, openmrsID,
+    private String patientName, patientUuid, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
@@ -47,7 +50,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block;
-    private ImageButton presc_arrowRight;
+    private ImageButton presc_arrowRight, vs_arrowRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientName = intent.getStringExtra("patientname");
+            patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
             Log.d("TAG", "getAge_FollowUp: s : "+age);
@@ -94,6 +98,24 @@ public class VisitDetailsActivity extends AppCompatActivity {
         else {
             profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
+
+        // visit summary - start
+        vs_arrowRight = findViewById(R.id.vs_arrowRight);
+        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+
+        vs_arrowRight.setOnClickListener(v -> {
+            Intent in = new Intent(this, VisitSummaryActivity_New.class);
+            in.putExtra("patientUuid", patientUuid);
+            in.putExtra("visitUuid", visitID);
+            in.putExtra("gender", gender);
+            in.putExtra("name", patientName);
+            in.putExtra("encounterUuidVitals", vitalsUUID);
+            in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+            in.putExtra("float_ageYear_Month", age);
+            startActivity(in);
+        });
+        // visit summary - end
 
         // presc block - start
         prescription_block = findViewById(R.id.prescription_block);

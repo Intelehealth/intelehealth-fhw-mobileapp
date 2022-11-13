@@ -286,7 +286,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Kiran Devi Prakash"
+                        android:text="Test:Kiran Devi Prakash"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -316,7 +316,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="XXX543573"
+                        android:text="Test:XXX543573"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />
