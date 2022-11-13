@@ -143,7 +143,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
             btn_up_phyexam_header, btn_up_medhist_header, openall_btn;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
@@ -1392,6 +1392,26 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+
+        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            add_additional_doc.setVisibility(View.GONE);
+        }
+        else {
+            editVitals.setVisibility(View.VISIBLE);
+            editComplaint.setVisibility(View.VISIBLE);
+            editPhysical.setVisibility(View.VISIBLE);
+            editFamHist.setVisibility(View.VISIBLE);
+            editMedHist.setVisibility(View.VISIBLE);
+            editAddDocs.setVisibility(View.VISIBLE);
+            add_additional_doc.setVisibility(View.VISIBLE);
+
+        }
         // edit - end
 
         uploadButton = findViewById(R.id.btn_vs_sendvisit);

@@ -38,7 +38,7 @@
                 android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_weight="0.7"
                 android:orientation="horizontal">
 
                 <!-- arrow-right -->
@@ -74,7 +74,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
                 android:layout_marginStart="@dimen/margin_20"
                 android:orientation="horizontal">
 
@@ -84,9 +84,16 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:layout_marginEnd="@dimen/margin_10"
-                    android:tint="@color/red"
                     android:src="@drawable/ic_refreshbtn" />
+
+                <ImageButton
+                    android:id="@+id/downloadbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:src="@drawable/download_icon_toolbar" />
 
                 <ImageButton
                     android:id="@+id/filter"
@@ -414,6 +421,7 @@
                     android:layout_marginTop="@dimen/margin_8" />
 
                 <RelativeLayout
+                    android:id="@+id/add_additional_doc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fu_margin_start"
@@ -590,7 +598,7 @@
             android:textColor="@color/white"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/hamburger_margin_top"
+            android:padding="@dimen/margin_12"
             android:textStyle="bold"
             android:text="Send visit"
             android:textSize="@dimen/common_button_text_size" />

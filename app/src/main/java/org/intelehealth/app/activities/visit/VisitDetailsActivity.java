@@ -113,6 +113,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
             in.putExtra("encounterUuidVitals", vitalsUUID);
             in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
             in.putExtra("float_ageYear_Month", age);
+            in.putExtra("tag", "VisitDetailsActivity");
             startActivity(in);
         });
         // visit summary - end
