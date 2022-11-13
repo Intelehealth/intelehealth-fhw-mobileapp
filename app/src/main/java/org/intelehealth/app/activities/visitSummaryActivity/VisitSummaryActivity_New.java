@@ -389,10 +389,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
                 addDownloadButton();
-
             }
         }
         // past visit checking based on intent - end
+
+        showVisitID();  // display visit ID.
+
     }
 
     private void expandableCardVisibilityHandling() {
@@ -1398,7 +1400,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
-        showVisitID();  // display visit ID.
     }
 
     private void setgender(TextView genderView) {

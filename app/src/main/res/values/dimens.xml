@@ -249,8 +249,8 @@
     <dimen name="fu_pencil_width">14dp</dimen>
     <dimen name="fu_pencil_height">14dp</dimen>
     <dimen name="fu_icons_margin_top">18dp</dimen>
-    <dimen name="fu_icon_width">26dp</dimen>
-    <dimen name="fu_icon_height">26dp</dimen>
+    <dimen name="fu_icon_width">22dp</dimen>
+    <dimen name="fu_icon_height">22dp</dimen>
     <dimen name="fu_vs_margin_start">8dp</dimen>
     <dimen name="fu_vs_margin_top">40dp</dimen>
     <dimen name="fu_date_txt_size">18sp</dimen>
