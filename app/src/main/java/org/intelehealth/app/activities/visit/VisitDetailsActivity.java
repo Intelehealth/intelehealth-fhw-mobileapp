@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModif
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
+import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
@@ -49,7 +50,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
     visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
-    private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block;
+    private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
+            followup_relative_block, followup_start_card;
     private ImageButton presc_arrowRight, vs_arrowRight;
 
     @Override
@@ -75,7 +77,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
             visitID = intent.getStringExtra("visit_ID");
             visit_startDate = intent.getStringExtra("visit_startDate");
             visit_speciality = intent.getStringExtra("visit_speciality");
+
             followupDate = intent.getStringExtra("followup_date");
+            if (followupDate == null)
+                followupDate = getFollowupDataForVisitUUID(visitID);
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             patient_photo_path = intent.getStringExtra("patient_photo");
@@ -229,14 +234,25 @@ public class VisitDetailsActivity extends AppCompatActivity {
         // speciality - end
 
         // follow up - start
+        followup_relative_block = findViewById(R.id.followup_relative_block);   // entire block of follow up section.
+        followup_start_card = findViewById(R.id.followup_start_card);   // Block that shows to Start Follow up.
         followupDate_txt = findViewById(R.id.followup_date_txtv);
+        followup_info = findViewById(R.id.followup_info);
+
         if (followupDate != null) {
+            followup_relative_block.setVisibility(View.VISIBLE);
+            followup_start_card.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
             followupDate_txt.setText("Follow up on " + followupDate);
+            followup_info.setText("Please take " + patientName + "'s follow-up visit.");
+            Log.v("vd", "vd: " + followup_info);
+        }
+        else {
+            followup_relative_block.setVisibility(View.GONE);
+            followup_start_card.setVisibility(View.GONE);
+
         }
 
-        followup_info = findViewById(R.id.followup_info);
-        followup_info.setText("Please take " + patientName + "'s follow-up visit.");
         // follow up - end
 
         // end visit - start

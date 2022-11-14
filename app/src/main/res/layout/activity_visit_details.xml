@@ -667,7 +667,7 @@
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:visibility="gone"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <View
@@ -689,7 +689,7 @@
                 android:textAppearance="@style/followup_date_txtv"
                 android:textColor="@null"
                     android:textStyle="bold"
-                android:textSize="@dimen/fu_date_txt_size" />
+                android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                 <!--Start Follow up - Start-->
                 <RelativeLayout
@@ -718,6 +718,7 @@
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:background="@drawable/icon_followup_enabled" />
+
                 </RelativeLayout>
                 <!--Start Follow up - Start-->
 
@@ -797,7 +798,7 @@
             android:id="@+id/endvisit_relative_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/prescription_block"
+            android:layout_below="@+id/followup_relative_block"
             android:layout_marginStart="@dimen/fu_margin_start"
             android:layout_marginEnd="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/margin_16dp"
@@ -826,11 +827,8 @@
                 android:textStyle="bold"
                 android:text="End visit"
                 android:textSize="@dimen/txtsize_patdetail_14sp" />
-
-
         </RelativeLayout>
             <!-- End Visit Button - End -->
-
 
             <!--View based on visibility and condition - end-->
 
