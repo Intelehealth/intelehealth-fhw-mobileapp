@@ -96,7 +96,7 @@
 
                     <!-- label-text -->
                     <TextView
-                        android:id="@+id/visitDetails_text"
+                        android:id="@+id/pending_endvisit_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"

@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.Intent;
@@ -8,9 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +43,7 @@ public class VisitPendingFragment extends Fragment {
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
     private static SQLiteDatabase db;
+    private TextView pending_endvisit_no;
 
 
 
@@ -57,6 +61,7 @@ public class VisitPendingFragment extends Fragment {
         recycler_today = view.findViewById(R.id.recycler_today);
         recycler_week = view.findViewById(R.id.rv_thisweek);
         recycler_month = view.findViewById(R.id.rv_thismonth);
+        pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
 
         visitData();
     }
@@ -70,6 +75,12 @@ public class VisitPendingFragment extends Fragment {
         todays_Visits();
         thisWeeks_Visits();
         thisMonths_Visits();
+
+        // Total of End visits.
+        int total = getTotalCounts_EndVisit();
+        String htmlvalue = "<b>" + total + " Patients </b> visits are waiting for closure, please end the visit.";
+        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+
     }
 
 

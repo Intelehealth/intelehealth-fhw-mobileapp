@@ -619,6 +619,58 @@ public class VisitsDAO {
         return modifiedDate;
     }
 
+    /**
+     * This function is used to return counts of todays, thisweeks, thismonths visit who are NOT ENDED by HW.
+     * @return
+     */
+    public static int getTotalCounts_EndVisit() {
+        int total = 0;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        // Todays cursor
+        final Cursor today_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
+                "(substr(startdate, 1, 4) ||'-'|| substr(startdate, 6,2) ||'-'|| substr(startdate, 9,2)) = DATE('now') AND enddate IS NULL", new String[]{});
+        if (today_cursor.moveToFirst()) {
+            do {
+                total = total + today_cursor.getInt(0);
+            }
+            while (today_cursor.moveToNext());
+        }
+            today_cursor.close();
+
+                // Week cursor
+        final Cursor week_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
+                "STRFTIME('%Y',date(substr(startdate, 1, 4)||'-'||substr(startdate, 6, 2)||'-'||substr(startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+                "AND STRFTIME('%W',date(substr(startdate, 1, 4)||'-'||substr(startdate, 6, 2)||'-'||substr(startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND enddate IS NULL", new String[]{});
+        if (week_cursor.moveToFirst()) {
+            do {
+                total = total + week_cursor.getInt(0);
+            }
+            while (week_cursor.moveToNext());
+        }
+            week_cursor.close();
+
+            // Month cursor
+        final Cursor month_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
+                "STRFTIME('%Y',date(substr(startdate, 1, 4)||'-'||substr(startdate, 6, 2)||'-'||substr(startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+                "AND STRFTIME('%m',date(substr(startdate, 1, 4)||'-'||substr(startdate, 6, 2)||'-'||substr(startdate, 9,2))) = STRFTIME('%m',DATE('now')) AND enddate IS NULL", new String[]{});
+        if (month_cursor.moveToFirst()) {
+            do {
+                total = total + month_cursor.getInt(0);
+            }
+            while (month_cursor.moveToNext());
+        }
+            month_cursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+            Log.v("totalCount", "totalCountsEndVisit: " + total);
+
+        return total;
+    }
 
 
 

@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.Intent;
@@ -8,9 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +46,7 @@ public class VisitReceivedFragment extends Fragment {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
+    private TextView received_endvisit_no;
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
 
 
@@ -60,6 +64,11 @@ public class VisitReceivedFragment extends Fragment {
          recycler_today = view.findViewById(R.id.recycler_today);
          recycler_week = view.findViewById(R.id.rv_thisweek);
          recycler_month = view.findViewById(R.id.rv_thismonth);
+        received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
+
+        /*EndVisitCountsInterface countsInterface = new EndVisitActivity();
+        int total = countsInterface.getTotalCounts();
+        received_endvisit_no.setText(total + " Patients visits are waiting for closure, please end the visit.");*/
 
         visit_received_card_header.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EndVisitActivity.class);
@@ -75,6 +84,10 @@ public class VisitReceivedFragment extends Fragment {
         thisMonths_Visits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
 
+        // Total of End visits.
+        int total = getTotalCounts_EndVisit();
+        String htmlvalue = "<b>" + total + " Patients </b> visits are waiting for closure, please end the visit.";
+        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
     }
 
     private void todays_Visits() {

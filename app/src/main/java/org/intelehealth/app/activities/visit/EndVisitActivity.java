@@ -27,6 +27,7 @@ import java.util.Locale;
 public class EndVisitActivity extends AppCompatActivity {
     RecyclerView recycler_today, recycler_week, recycler_month;
     private static SQLiteDatabase db;
+    private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
 
 
     @Override
@@ -61,19 +62,28 @@ public class EndVisitActivity extends AppCompatActivity {
         List<PrescriptionModel> arrayList = todays_NotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_today.setAdapter(adapter_new);
+        todays_count = arrayList.size();
     }
 
     private void thisWeeks_EndVisits() {
         List<PrescriptionModel> arrayList = thisWeeks_NotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_week.setAdapter(adapter_new);
+        weeks_count = arrayList.size();
     }
 
     private void thisMonths_EndVisits() {
         List<PrescriptionModel> arrayList = thisMonths_NotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_month.setAdapter(adapter_new);
+        months_count = arrayList.size();
     }
 
+
+  /*  @Override
+    public int getTotalCounts() {
+        total_counts = todays_count + weeks_count + months_count;
+        return total_counts;
+    }*/
 
 }
