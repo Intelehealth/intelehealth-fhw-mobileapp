@@ -38,14 +38,13 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitPendingFragment extends Fragment {
+public class VisitPendingFragment extends Fragment implements EndVisitCountsInterface {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
     private static SQLiteDatabase db;
     private TextView pending_endvisit_no;
-
-
+    int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
 
     @Nullable
     @Override
@@ -75,6 +74,7 @@ public class VisitPendingFragment extends Fragment {
         todays_Visits();
         thisWeeks_Visits();
         thisMonths_Visits();
+        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
 
         // Total of End visits.
         int total = getTotalCounts_EndVisit();
@@ -155,7 +155,7 @@ public class VisitPendingFragment extends Fragment {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                //  totalCounts_today = arrayList.size();
+                  totalCounts_today = arrayList.size();
                 // end
 
                 handler.post(new Runnable() {
@@ -250,7 +250,7 @@ public class VisitPendingFragment extends Fragment {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                //  totalCounts_week = arrayList.size();
+                totalCounts_week = arrayList.size();
                 // end
 
                 handler.post(new Runnable() {
@@ -344,7 +344,7 @@ public class VisitPendingFragment extends Fragment {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                //   totalCounts_month = arrayList.size();
+                totalCounts_month = arrayList.size();
                 // end
 
                 handler.post(new Runnable() {
@@ -358,10 +358,11 @@ public class VisitPendingFragment extends Fragment {
             }
         });
 
-
-
-
     }
 
-
+    @Override
+    public int getPrescCount() {
+        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+        return totalCounts;
+    }
 }

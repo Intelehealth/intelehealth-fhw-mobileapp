@@ -42,7 +42,7 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitReceivedFragment extends Fragment {
+public class VisitReceivedFragment extends Fragment implements EndVisitCountsInterface {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
@@ -184,11 +184,6 @@ public class VisitReceivedFragment extends Fragment {
             }
         });
 
-
-
-
-
-
     }
 
 
@@ -288,10 +283,6 @@ public class VisitReceivedFragment extends Fragment {
                 });
             }
         });
-
-
-
-
 
     }
 
@@ -394,11 +385,12 @@ public class VisitReceivedFragment extends Fragment {
             }
         });
 
-
-
     }
 
 
-
-
+    @Override
+    public int getPrescCount() {
+        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+        return totalCounts;
+    }
 }

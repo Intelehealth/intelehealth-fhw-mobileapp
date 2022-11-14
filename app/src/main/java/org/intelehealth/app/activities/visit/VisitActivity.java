@@ -22,6 +22,8 @@ import org.intelehealth.app.activities.appointment.MyAppointmentsPagerAdapter;
  * Github: prajwalmw
  */
 public class VisitActivity extends FragmentActivity {
+    private int receivedTotal = 0;
+    private int pendingTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +44,21 @@ public class VisitActivity extends FragmentActivity {
 
     public void configureTabLayout() {
         TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
-//        tabLayout.addTab(tabLayout.newTab().setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon));
-//        tabLayout.addTab(tabLayout.newTab().setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon));
-
-
         ViewPager2 viewPager = findViewById(R.id.pager_appointments);
         VisitPagerAdapter adapter = new VisitPagerAdapter
                 (VisitActivity.this);
         viewPager.setAdapter(adapter);
 
+        EndVisitCountsInterface countsInterface = new VisitReceivedFragment();
+        receivedTotal = countsInterface.getPrescCount();
+        pendingTotal = countsInterface.getPrescCount();
+
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)
-                        tab.setText("Received (0)").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Received (" + receivedTotal + ")").setIcon(R.drawable.presc_tablayout_icon);
                     else
-                        tab.setText("Pending (0)").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Pending (" + pendingTotal + ")").setIcon(R.drawable.presc_tablayout_icon);
 
                 }
         ).attach();
@@ -85,5 +87,6 @@ public class VisitActivity extends FragmentActivity {
 
         });
     }
+
 
 }
