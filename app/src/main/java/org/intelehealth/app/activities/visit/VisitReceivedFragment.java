@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,14 +57,25 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     private List<PrescriptionModel> todayList, weeksList, monthsList;
     private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_visit_received, container, false);
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         initUI(view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        defaultData();
+        visitData();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void initUI(View view) {
@@ -84,17 +96,18 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
             Intent intent = new Intent(getActivity(), EndVisitActivity.class);
             startActivity(intent);
         });
-
-        visitData();
     }
 
-    private void visitData() {
+    private void defaultData() {
         todays_Visits();
         thisWeeks_Visits();
         thisMonths_Visits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+    }
 
-        // Total of End visits.
+    private void visitData() {
+
+        // Total no. of End visits.
         int total = getTotalCounts_EndVisit();
         String htmlvalue = "<b>" + total + " Patients </b> visits are waiting for closure, please end the visit.";
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
@@ -113,6 +126,11 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
                 showOnlyPriorityVisits();
             });
+
+        priority_cancel.setOnClickListener(v -> {
+            filter_relative.setVisibility(View.GONE);   // on clicking on cancel for Priority remove the filter tag as well as reset the data as default one.
+            defaultData();
+        });
         // Filter - end
     }
 
@@ -128,6 +146,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         }
 
         todays_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recycler_today.setNestedScrollingEnabled(false);
         recycler_today.setAdapter(todays_adapter);
         // todays - end
 
@@ -139,6 +158,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         }
 
         weeks_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        recycler_week.setNestedScrollingEnabled(false);
         recycler_week.setAdapter(weeks_adapter);
         // weeks - end
 
@@ -150,22 +170,19 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         }
 
         months_adapter = new VisitAdapter(getActivity(), prio_months);
+        recycler_month.setNestedScrollingEnabled(false);
         recycler_month.setAdapter(months_adapter);
         // months - end
     }
 
     private void todays_Visits() {
-        todayList = new ArrayList<>();
-        Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
+                todayList = new ArrayList<>();
                 //Background work here
                 db.beginTransaction();
                 Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
@@ -242,6 +259,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                     public void run() {
                         //UI Thread work here
                         todays_adapter = new VisitAdapter(getActivity(), todayList);
+                        recycler_today.setNestedScrollingEnabled(false);
                         recycler_today.setAdapter(todays_adapter);
                     }
                 });
@@ -252,17 +270,13 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
 
     private void thisWeeks_Visits() {
-        weeksList = new ArrayList<>();
-        Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
+                weeksList = new ArrayList<>();
                 //Background work here
                 db.beginTransaction();
                 Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
@@ -342,6 +356,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                     public void run() {
                         //UI Thread work here
                         weeks_adapter = new VisitAdapter(getActivity(), weeksList);
+                        recycler_week.setNestedScrollingEnabled(false);
                         recycler_week.setAdapter(weeks_adapter);
                     }
                 });
@@ -351,17 +366,13 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     }
 
     private void thisMonths_Visits() {
-        monthsList = new ArrayList<>();
-        Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
+                monthsList = new ArrayList<>();
                 //Background work here
                 db.beginTransaction();
                 Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
@@ -443,6 +454,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                     public void run() {
                         //UI Thread work here
                         months_adapter = new VisitAdapter(getActivity(), monthsList);
+                        recycler_month.setNestedScrollingEnabled(false);
                         recycler_month.setAdapter(months_adapter);
                     }
                 });

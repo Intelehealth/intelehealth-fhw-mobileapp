@@ -110,8 +110,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         .override(100, 100)
                         .thumbnail(0.3f)
                         .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.profile_image);
             } else {
                 holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
@@ -216,8 +215,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                                     .override(100, 100)
                                     .thumbnail(0.3f)
                                     .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                     .into(holder.profile_image);
                         }
                         ImagesDAO imagesDAO = new ImagesDAO();
