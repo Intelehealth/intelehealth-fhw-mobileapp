@@ -55,6 +55,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -145,6 +146,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             btn_up_phyexam_header, btn_up_medhist_header, openall_btn;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview;
+    private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
             medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -394,6 +396,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         // past visit checking based on intent - end
 
         showVisitID();  // display visit ID.
+
+        // Edit btn visibility based on user coming from Visit Details screen - Start
+        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            add_additional_doc.setVisibility(View.GONE);
+
+            btn_bottom_printshare.setVisibility(View.VISIBLE);
+            btn_bottom_vs.setVisibility(View.GONE);
+        }
+        else {
+            editVitals.setVisibility(View.VISIBLE);
+            editComplaint.setVisibility(View.VISIBLE);
+            editPhysical.setVisibility(View.VISIBLE);
+            editFamHist.setVisibility(View.VISIBLE);
+            editMedHist.setVisibility(View.VISIBLE);
+            editAddDocs.setVisibility(View.VISIBLE);
+            add_additional_doc.setVisibility(View.VISIBLE);
+
+            btn_bottom_printshare.setVisibility(View.GONE);
+            btn_bottom_vs.setVisibility(View.VISIBLE);
+        }
+        // Edit btn visibility based on user coming from Visit Details screen - End
 
     }
 
@@ -650,7 +679,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mAdditionalDocsRecyclerView.setHasFixedSize(true);
         mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
-        recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this);
+
+        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                    AppConstants.IMAGE_PATH, this, true);
+        }
+        else {
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                    AppConstants.IMAGE_PATH, this, false);
+        }
+
         mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
         add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
 
@@ -1211,12 +1249,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
                         "Are you sure you want to send the visit to the doctor?",
                         "Yes", "No");
-
-
             }
         });
         
@@ -1393,25 +1428,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
 
-        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-            editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
-            editPhysical.setVisibility(View.GONE);
-            editFamHist.setVisibility(View.GONE);
-            editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
-            add_additional_doc.setVisibility(View.GONE);
-        }
-        else {
-            editVitals.setVisibility(View.VISIBLE);
-            editComplaint.setVisibility(View.VISIBLE);
-            editPhysical.setVisibility(View.VISIBLE);
-            editFamHist.setVisibility(View.VISIBLE);
-            editMedHist.setVisibility(View.VISIBLE);
-            editAddDocs.setVisibility(View.VISIBLE);
-            add_additional_doc.setVisibility(View.VISIBLE);
-
-        }
+        btn_bottom_printshare = findViewById(R.id.btn_bottom_printshare);
+        btn_bottom_vs = findViewById(R.id.btn_bottom_vs);
         // edit - end
 
         uploadButton = findViewById(R.id.btn_vs_sendvisit);
@@ -1420,6 +1438,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
+        add_additional_doc = findViewById(R.id.add_additional_doc);
     }
 
     private void setgender(TextView genderView) {
@@ -1761,6 +1780,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         documentList.remove(position);
         add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
     }
+
 
     // download pres service class
     public class DownloadPrescriptionService extends BroadcastReceiver {
@@ -2351,9 +2371,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this);
+
+            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                        AppConstants.IMAGE_PATH, this, true);
+            }
+            else {
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                        AppConstants.IMAGE_PATH, this, false);
+            }
+
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+
+            if (recyclerViewAdapter != null) {
+                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+                    recyclerViewAdapter.hideCancelBtnAddDoc(true);
+                }
+                else {
+                    recyclerViewAdapter.hideCancelBtnAddDoc(false);
+                }
+            }
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

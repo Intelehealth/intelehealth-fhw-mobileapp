@@ -57,10 +57,13 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     String mEncounterUUID;
     ImagesDAO imagesDAO = new ImagesDAO();
     private AdapterInterface anInterface;
+    private AdditionalDocumentViewHolder rcv;
+    private boolean fromVisitDetails;
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
     public AdditionalDocumentAdapter(Context context, String edult,
-                                     List<DocumentObject> documentList, String filePath, AdapterInterface anInterface) {
+                                     List<DocumentObject> documentList, String filePath,
+                                     AdapterInterface anInterface, boolean fromVisitDetails) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -70,13 +73,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         mEncounterUUID=edult;
         this.filePath = filePath;
         this.anInterface = anInterface;
+        this.fromVisitDetails = fromVisitDetails;
     }
 
     @Override
     public AdditionalDocumentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.additional_docs_listitem, null);
-        AdditionalDocumentViewHolder rcv = new AdditionalDocumentViewHolder(layoutView);
+        rcv = new AdditionalDocumentViewHolder(layoutView);
         return rcv;
     }
 
@@ -100,6 +104,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 displayImage(image);
             }
         });
+
+        if (fromVisitDetails)
+            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
+        else
+            holder.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
 
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,4 +202,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
+
+    public void hideCancelBtnAddDoc(boolean flag) {
+        if (flag)
+            rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
+        else
+            rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+
+    }
+
+
 }

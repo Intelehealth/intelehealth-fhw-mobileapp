@@ -120,7 +120,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH, this);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+                    rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
