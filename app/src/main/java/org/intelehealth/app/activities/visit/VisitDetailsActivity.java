@@ -158,6 +158,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
                 in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
                 in.putExtra("age", age);
                 in.putExtra("tag", "VisitDetailsActivity");
+                in.putExtra("followupDate", followupDate);
                 in.putExtra("openmrsID", openmrsID);
                 startActivity(in);
             });

@@ -730,8 +730,8 @@
 
     <dimen name="tab_icon_18dp">18dp</dimen>
     <dimen name="tab_icon_19dp">19dp</dimen>
-    <dimen name="small_btn_w_62dp">62dp</dimen>
-    <dimen name="small_btn_h_48dp">48dp</dimen>
+    <dimen name="small_btn_w_62dp">58dp</dimen>
+    <dimen name="small_btn_h_48dp">44dp</dimen>
 
 
     <!--UI2.0 Appointment-->

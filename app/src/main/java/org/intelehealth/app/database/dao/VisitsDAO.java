@@ -440,11 +440,12 @@ public class VisitsDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
+            db.setTransactionSuccessful();
             db.endTransaction();
         }
         return isDownloaded;

@@ -707,6 +707,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -762,6 +763,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -815,6 +817,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -868,6 +871,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -921,6 +925,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -973,6 +978,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">

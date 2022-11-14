@@ -76,7 +76,7 @@
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
-                android:id="@+id/cancelbtn"
+                android:id="@+id/downloadBtn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -620,12 +620,12 @@
 
                 <!--Personal Sub-Child-->
                 <TextView
-                    android:id="@+id/textView_content_complaint"
+                    android:id="@+id/diagnosis_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Test: Acute gastritis Primary and Provisional"
+                    android:text="\u2022 No information"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -703,12 +703,12 @@
 
                 <!--Personal Sub-Child-->
                 <TextView
-                    android:id="@+id/textView_content_complaint"
+                    android:id="@+id/medication_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Test: Clotrimazole Cream 1%: 1 Milligram, 20 Tablet 15MIN BEFORE DINNER for 2 WEEKS."
+                    android:text="No information"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -786,12 +786,12 @@
 
                 <!--Personal Sub-Child-->
                 <TextView
-                    android:id="@+id/textView_content_complaint"
+                    android:id="@+id/test_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Test: A Stool Examination for H.Pylons"
+                    android:text="\u2022 No information"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -869,12 +869,12 @@
 
                 <!--Personal Sub-Child-->
                 <TextView
-                    android:id="@+id/textView_content_complaint"
+                    android:id="@+id/referred_speciality_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Test: No specialist referred"
+                    android:text="No information"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -955,7 +955,7 @@
                         <!--Visibility based - start-->
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/textView_content_complaint"
+                            android:id="@+id/no_followup_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/fu_margin_start"
@@ -974,7 +974,7 @@
                             android:layout_height="wrap_content"
                             android:visibility="visible"
                             tools:visibility="visible"
-                            android:layout_below="@+id/textView_content_complaint"
+                            android:layout_below="@+id/no_followup_txt"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
@@ -986,6 +986,7 @@
                                 android:layout_height="wrap_content">
 
                             <TextView
+                                android:id="@+id/followup_date_txt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="15 May, 2022"
@@ -998,10 +999,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:layout_marginStart="@dimen/margin_10"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentTop="true">
 
                                 <ImageButton
+                                    android:id="@+id/no_btn"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/no_small_btn"
@@ -1009,6 +1012,7 @@
                                     android:background="@null" />
 
                                 <ImageButton
+                                    android:id="@+id/yes_btn"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/yes_small_btn"
@@ -1018,12 +1022,13 @@
                             </RelativeLayout>
 
                             <TextView
+                                android:id="@+id/followup_info"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/date_relative"
                                 android:layout_marginTop="@dimen/margin_16dp"
                                 android:textSize="@dimen/find_patient_hint_size"
-                                android:textColor="@color/hint_text_color"
+                                android:textColor="@color/edittext_hint_color"
                                 android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?" />
 
 
