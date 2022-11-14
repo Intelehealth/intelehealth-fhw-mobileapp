@@ -3263,7 +3263,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate,
+                encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 
 

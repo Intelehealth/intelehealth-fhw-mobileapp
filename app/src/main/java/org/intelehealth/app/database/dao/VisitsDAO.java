@@ -451,7 +451,7 @@ public class VisitsDAO {
     }
 
     /**
-     *
+     * Checking for the provided visitUUID if the visit is Ended or not by checking the enddate column for NULL value.
      * @param visitUUID
      * @return
      */
@@ -462,7 +462,7 @@ public class VisitsDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit where uuid = ? and (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
-                   "voided = 0 AND enddate is null", new String[]{});
+                   "voided = 0 AND enddate is null", new String[]{visitUUID});  // enddate is null ie. visit is not yet ended.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

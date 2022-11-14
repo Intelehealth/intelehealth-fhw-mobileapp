@@ -814,7 +814,7 @@
                 android:background="@color/notifi_divider_color" />
 
             <Button
-                android:id="@+id/btn_vs_sendvisit"
+                android:id="@+id/btn_end_visit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"

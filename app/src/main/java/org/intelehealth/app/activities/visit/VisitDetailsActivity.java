@@ -12,6 +12,8 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,10 +31,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.VisitUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +59,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card;
     private ImageButton presc_arrowRight, vs_arrowRight;
+    private String vitalsUUID, adultInitialUUID;
+    private Button btn_end_visit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +95,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
             chief_complaint_value = intent.getStringExtra("chief_complaint");
         }
 
+        // end visit - start
         endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
+        btn_end_visit = findViewById(R.id.btn_end_visit);
+        // end visit - end
 
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
@@ -106,8 +117,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         // visit summary - start
         vs_arrowRight = findViewById(R.id.vs_arrowRight);
-        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
-        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+        vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+        adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
         vs_arrowRight.setOnClickListener(v -> {
             Intent in = new Intent(this, VisitSummaryActivity_New.class);
@@ -257,14 +268,17 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         // end visit - start
         PrescriptionModel pres = isVisitNotEnded(visitID);
-        if (pres != null) {
+        if (pres.getVisitUuid() != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
+            btn_end_visit.setOnClickListener(v -> {
+                VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate,
+                        vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+            });
         }
         else {
             endvisit_relative_block.setVisibility(View.GONE);
         }
         // end visit - end
-
-
     }
+
 }
