@@ -425,4 +425,23 @@ public class DateAndTimeUtils {
         return time;
     }
 
+    public static String parse_DateToddMMyyyy(String time) {
+        String inputPattern = "dd-MM-yyyy";
+        String outputPattern = "dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+
 }

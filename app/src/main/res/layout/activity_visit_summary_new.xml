@@ -570,7 +570,7 @@
         android:id="@+id/btn_bottom_printshare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -616,7 +616,7 @@
         android:id="@+id/btn_bottom_vs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:weightSum="2">
 
