@@ -1058,7 +1058,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_vs_appointment"
+            android:id="@+id/btn_vs_print"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_btn_size"
             android:layout_marginBottom="@dimen/margin_5"
@@ -1068,14 +1068,14 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:backgroundTint="@color/grey_button_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/margin_12"
+            android:padding="@dimen/fu_margin_start"
             android:text="Print"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_vs_sendvisit"
+            android:id="@+id/btn_vs_share"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_btn_size"
             android:layout_marginBottom="@dimen/margin_5"
@@ -1086,7 +1086,7 @@
             android:textColor="@color/white"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/hamburger_margin_top"
+            android:padding="@dimen/fu_margin_start"
             android:textStyle="bold"
             android:text="Share"
             android:textSize="@dimen/common_button_text_size" />
