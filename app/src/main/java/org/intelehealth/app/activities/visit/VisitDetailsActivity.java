@@ -148,6 +148,17 @@ public class VisitDetailsActivity extends AppCompatActivity {
             presc_time.setText("Received " + modifiedDate);
             presc_arrowRight.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
+                in.putExtra("patientname", patientName);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patient_photo", patient_photo_path);
+                in.putExtra("visit_ID", visitID);
+                in.putExtra("visit_startDate", visit_startDate);
+                in.putExtra("gender", gender);
+                in.putExtra("encounterUuidVitals", vitalsUUID);
+                in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+                in.putExtra("age", age);
+                in.putExtra("tag", "VisitDetailsActivity");
+                in.putExtra("openmrsID", openmrsID);
                 startActivity(in);
             });
         }

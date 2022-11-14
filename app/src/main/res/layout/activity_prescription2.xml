@@ -238,8 +238,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/frame_10034"
-            android:visibility="gone"
-            tools:visibility="gone">
+            android:visibility="visible"
+            tools:visibility="visible">
 
             <View
                 android:id="@+id/divider"
@@ -282,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Kiran Devi Prakash"
+                        android:text="Test: Kiran Devi Prakash"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -312,7 +312,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="XXX543573"
+                        android:text="Test: XXX543573"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -378,7 +378,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <View
@@ -447,7 +447,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/textView_height_value"
+                            android:id="@+id/drname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -474,7 +474,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/textView_height_value"
+                            android:id="@+id/dr_age_gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -506,7 +506,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/textView_weight_value"
+                            android:id="@+id/qualification"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -536,7 +536,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/textView_bmi_value"
+                            android:id="@+id/dr_speciality"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -607,7 +607,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <View
@@ -625,7 +625,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Acute gastritis Primary and Provisional"
+                    android:text="\u2022 Test: Acute gastritis Primary and Provisional"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -690,7 +690,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <View
@@ -708,7 +708,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 Clotrimazole Cream 1%: 1 Milligram, 20 Tablet 15MIN BEFORE DINNER for 2 WEEKS."
+                    android:text="\u2022 Test: Clotrimazole Cream 1%: 1 Milligram, 20 Tablet 15MIN BEFORE DINNER for 2 WEEKS."
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -773,7 +773,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <View
@@ -791,7 +791,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 A Stool Examination for H.Pylons"
+                    android:text="\u2022 Test: A Stool Examination for H.Pylons"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -856,7 +856,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <View
@@ -874,7 +874,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
-                    android:text="\u2022 No specialist referred"
+                    android:text="\u2022 Test: No specialist referred"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -940,7 +940,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/vitals_header_relative"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:visibility="visible"
                         >
 
@@ -973,7 +973,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="visible"
-                            tools:visibility="gone"
+                            tools:visibility="visible"
                             android:layout_below="@+id/textView_content_complaint"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
