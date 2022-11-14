@@ -101,7 +101,7 @@
         android:layout_marginRight="@dimen/fu_card_margin_sides"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="@dimen/corner_radius_5dp">
+        app:cardElevation="@dimen/corner_radius_8dp">
 
         <!-- Frame 100340 -->
         <LinearLayout
@@ -818,7 +818,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
                 android:layout_below="@+id/divider_5"
                 android:layout_weight="1"
                 android:textColor="@color/white"

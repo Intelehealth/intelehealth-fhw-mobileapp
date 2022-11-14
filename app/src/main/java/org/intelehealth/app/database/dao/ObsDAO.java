@@ -319,7 +319,7 @@ public class ObsDAO {
      * @return Followup date Eg. 30-11-2022
      */
     public static String getFollowupDataForVisitUUID(String visitUUID) {
-        String result = "";
+        String result = null;
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();

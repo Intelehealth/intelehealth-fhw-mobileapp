@@ -73,7 +73,7 @@
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5"
                 android:layout_marginBottom="@dimen/margin_5"
-                app:cardCornerRadius="@dimen/corner_radius_5dp"
+                app:cardCornerRadius="@dimen/corner_radius_8dp"
                 >
 
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -177,7 +177,7 @@
                         app:contentPaddingRight="@dimen/margin_6"
                         app:contentPaddingTop="@dimen/margin_6"
                         app:contentPaddingBottom="@dimen/margin_6"
-                        app:cardCornerRadius="@dimen/corner_radius_5dp"
+                        app:cardCornerRadius="@dimen/corner_radius_8dp"
                         android:layout_marginEnd="@dimen/margin_10"
                         android:backgroundTint="@color/grey_button_bg">
 
@@ -217,7 +217,7 @@
                                         app:contentPaddingRight="@dimen/margin_6"
                                         app:contentPaddingTop="@dimen/margin_6"
                                         app:contentPaddingBottom="@dimen/margin_6"
-                                        app:cardCornerRadius="@dimen/corner_radius_5dp"
+                                        app:cardCornerRadius="@dimen/corner_radius_8dp"
                                         android:layout_marginEnd="@dimen/margin_10"
                                         android:layout_toEndOf="@+id/filter_priority_relative"
                                         android:backgroundTint="@color/grey_button_bg">

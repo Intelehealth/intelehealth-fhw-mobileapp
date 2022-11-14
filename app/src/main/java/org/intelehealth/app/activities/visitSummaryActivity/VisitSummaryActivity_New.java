@@ -606,22 +606,31 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
             cc_recyclerview.setAdapter(cc_adapter);
 
+            String patientReports = "No data added.";
+            String patientDenies = "No data added.";
 
-            String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
-                    .split("• Patient denies -<br/>");
-            String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+            if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                        .split("• Patient denies -<br/>");
 
-            String patientReports = reports[1];
-            String patientDenies = assoValueBlock[1];
+                // index 0 - Reports
+                String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                        .split("• Patient reports -<br/>");
+                patientReports = reports[1];
+                patientDenies = assoValueBlock[1];
+                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+            }
+            else if (valueArray[1].contains("• Patient reports")) {
+                // todo: handle later -> comment added on 14 nov 2022
+            }
 
             // todo: testing:
-            String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
+            /*String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
                     "• Pain does not radiate.<br>• 4 Hours.<br><span style=\"color:#7F7B92\">• Onset</span> &emsp;&emsp; Gradual.<br><span style=\"color:#7F7B92\">• Timing</span> &emsp;&emsp; Morning.<br>" +
                     "<span style=\"color:#7F7B92\">• Character of the pain*</span> &emsp;&emsp; Constant.<br><span style=\"color:#7F7B92\">• Severity</span> &emsp;&emsp; Mild, 1-3.<br>" +
                     "<span style=\"color:#7F7B92\">• Exacerbating Factors</span> &emsp;&emsp; Hunger.<br><span style=\"color:#7F7B92\">• Relieving Factors</span> &emsp;&emsp; Food.<br><span style=\"color:#7F7B92\">• Prior treatment sought</span> &emsp;&emsp; None.";
-         //   complaintView.setText(Html.fromHtml(data));
+            complaintView.setText(Html.fromHtml(data));*/
             // todo: testin end
-            complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
             // associated symp.
             patientReports_txtview.setText(Html.fromHtml(patientReports));

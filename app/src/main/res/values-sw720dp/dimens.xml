@@ -555,7 +555,7 @@
     <dimen name="vs_notes_big_edittext_height">172dp</dimen>
     <dimen name="vs_adddoc_listitem_bg_height">88dp</dimen>
     <dimen name="vs_phsexam_imgview_140dp">280dp</dimen>
-    <dimen name="corner_radius_5dp">10dp</dimen>
+    <dimen name="corner_radius_8dp">16dp</dimen>
     <dimen name="margin_5">8dp</dimen>
     <dimen name="margin_6">16dp</dimen>
     <dimen name="margin_2dp">4dp</dimen>
