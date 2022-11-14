@@ -12,7 +12,7 @@
     android:layout_marginBottom="@dimen/margin_10"
     android:layout_marginEnd="@dimen/margin_5"
     android:layout_below="@+id/filter_icon"
-    android:visibility="gone"
+    android:visibility="visible"
     tools:visibility="visible"
     app:cardElevation="5dp">
 
@@ -25,6 +25,7 @@
         android:layout_marginVertical="@dimen/margin_15">
 
         <TextView
+            android:id="@+id/allvisits_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="All visits"
@@ -38,6 +39,7 @@
             android:background="@color/notifi_divider_color" />
 
         <TextView
+            android:id="@+id/priority_visits_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Priority visits"

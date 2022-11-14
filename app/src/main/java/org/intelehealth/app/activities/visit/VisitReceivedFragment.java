@@ -13,6 +13,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,8 +48,13 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
-    private TextView received_endvisit_no;
+    private TextView received_endvisit_no, allvisits_txt, priority_visits_txt;
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
+    private ImageButton filter_icon, priority_cancel;
+    private CardView filter_menu;
+    private RelativeLayout filter_relative;
+    private List<PrescriptionModel> todayList, weeksList, monthsList;
+    private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
 
 
     @Nullable
@@ -66,9 +73,12 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
          recycler_month = view.findViewById(R.id.rv_thismonth);
         received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
 
-        /*EndVisitCountsInterface countsInterface = new EndVisitActivity();
-        int total = countsInterface.getTotalCounts();
-        received_endvisit_no.setText(total + " Patients visits are waiting for closure, please end the visit.");*/
+        filter_icon = view.findViewById(R.id.filter_icon);
+        filter_menu = view.findViewById(R.id.filter_menu);
+        allvisits_txt = view.findViewById(R.id.allvisits_txt);
+        priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
+        filter_relative = view.findViewById(R.id.filter_relative);
+        priority_cancel = view.findViewById(R.id.priority_cancel);
 
         visit_received_card_header.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EndVisitActivity.class);
@@ -88,10 +98,64 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         int total = getTotalCounts_EndVisit();
         String htmlvalue = "<b>" + total + " Patients </b> visits are waiting for closure, please end the visit.";
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+
+        // Filter - start
+        filter_icon.setOnClickListener(v -> {
+            if (filter_menu.getVisibility() == View.VISIBLE)
+                filter_menu.setVisibility(View.GONE);
+            else
+                filter_menu.setVisibility(View.VISIBLE);
+        });
+
+            priority_visits_txt.setOnClickListener(v -> {
+                filter_relative.setVisibility(View.VISIBLE);    // display filter that is set tag.
+                filter_menu.setVisibility(View.GONE);   // hide filter menu
+
+                showOnlyPriorityVisits();
+            });
+        // Filter - end
+    }
+
+    /**
+     * This function will display all the visit of Emergency who have been recived the presc.
+     */
+    private void showOnlyPriorityVisits() {
+        // todays - start
+        List<PrescriptionModel> prio_todays = new ArrayList<>();
+        for (int i = 0; i < todayList.size(); i++) {
+            if (todayList.get(i).isEmergency())
+                prio_todays.add(todayList.get(i));
+        }
+
+        todays_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recycler_today.setAdapter(todays_adapter);
+        // todays - end
+
+        // weeks - start
+        List<PrescriptionModel> prio_weeks = new ArrayList<>();
+        for (int i = 0; i < weeksList.size(); i++) {
+            if (weeksList.get(i).isEmergency())
+                prio_weeks.add(weeksList.get(i));
+        }
+
+        weeks_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        recycler_week.setAdapter(weeks_adapter);
+        // weeks - end
+
+        // months - start
+        List<PrescriptionModel> prio_months = new ArrayList<>();
+        for (int i = 0; i < monthsList.size(); i++) {
+            if (monthsList.get(i).isEmergency())
+                prio_months.add(monthsList.get(i));
+        }
+
+        months_adapter = new VisitAdapter(getActivity(), prio_months);
+        recycler_month.setAdapter(months_adapter);
+        // months - end
     }
 
     private void todays_Visits() {
-        List<PrescriptionModel> arrayList = new ArrayList<>();
+        todayList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
@@ -150,7 +214,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                         model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
                                         model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
                                         model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
-                                        arrayList.add(model);
+                                        todayList.add(model);
                                     }
                                     while (p_c.moveToNext());
                                 }
@@ -170,15 +234,15 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                totalCounts_today = arrayList.size();
+                totalCounts_today = todayList.size();
                 // end
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         //UI Thread work here
-                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-                        recycler_today.setAdapter(adapter_new);
+                        todays_adapter = new VisitAdapter(getActivity(), todayList);
+                        recycler_today.setAdapter(todays_adapter);
                     }
                 });
             }
@@ -188,7 +252,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
 
     private void thisWeeks_Visits() {
-        List<PrescriptionModel> arrayList = new ArrayList<>();
+        weeksList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
@@ -250,7 +314,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                         model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
                                         model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
                                         model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
-                                        arrayList.add(model);
+                                        weeksList.add(model);
                                     }
                                     while (p_c.moveToNext());
                                 }
@@ -270,15 +334,15 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                totalCounts_week = arrayList.size();
+                totalCounts_week = weeksList.size();
                 // end
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         //UI Thread work here
-                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-                        recycler_week.setAdapter(adapter_new);
+                        weeks_adapter = new VisitAdapter(getActivity(), weeksList);
+                        recycler_week.setAdapter(weeks_adapter);
                     }
                 });
             }
@@ -287,7 +351,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     }
 
     private void thisMonths_Visits() {
-        List<PrescriptionModel> arrayList = new ArrayList<>();
+        monthsList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 
@@ -351,7 +415,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                         model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
                                         model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
                                         model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
-                                        arrayList.add(model);
+                                        monthsList.add(model);
                                     }
                                     while (p_c.moveToNext());
                                 }
@@ -371,15 +435,15 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                totalCounts_month = arrayList.size();
+                totalCounts_month = monthsList.size();
                 // ednd
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         //UI Thread work here
-                        VisitAdapter adapter_new = new VisitAdapter(getActivity(), arrayList);
-                        recycler_month.setAdapter(adapter_new);
+                        months_adapter = new VisitAdapter(getActivity(), monthsList);
+                        recycler_month.setAdapter(months_adapter);
                     }
                 });
             }

@@ -159,19 +159,14 @@
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize"
-
                 />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/filter_header"
-                android:layout_marginTop="@dimen/margin_4" >
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/filter_priority_relative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/filter_header"
+                    android:layout_marginTop="@dimen/margin_4"
                     app:contentPaddingLeft="@dimen/margin_6"
                     app:contentPaddingRight="@dimen/margin_6"
                     app:contentPaddingTop="@dimen/margin_6"
@@ -197,6 +192,7 @@
                             android:text="Priority visit's" />
 
                         <ImageButton
+                            android:id="@+id/priority_cancel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toEndOf="@id/filter_priority"
@@ -248,7 +244,6 @@
 -->
 
 
-            </RelativeLayout>
             </RelativeLayout>
             <!--Filter View - end -->
 
