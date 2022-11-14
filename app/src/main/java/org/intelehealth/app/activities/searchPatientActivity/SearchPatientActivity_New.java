@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -47,7 +48,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     TextView search_hint_text;
     String query;
     boolean fullyLoaded = false;
-    FrameLayout view_nopatientfound;
+    RelativeLayout view_nopatientfound;
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
