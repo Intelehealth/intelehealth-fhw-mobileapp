@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointmentNew;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -34,7 +36,9 @@ import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
@@ -51,6 +55,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Spliterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,6 +80,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     List<SlotInfo> slotInfoMorningList, slotInfoAfternoonList, slotInfoEveningList;
     Button btnBookAppointment;
     String selectedDateTime = "";
+    SlotInfo slotInfoForBookApp;
+    int appointmentId = 0;
+    String visitUuid;
+    String patientUuid;
+    String patientName;
+    String speciality;
+    String openMrsId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +100,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         }
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date());
-
+        Log.d(TAG, "onCreate: mSelectedStartDate : " + mSelectedStartDate);
+        Log.d(TAG, "onCreate: mSelectedEndDate : " + mSelectedEndDate);
 
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
@@ -102,6 +115,22 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
         }
 
+   /*
+  // intent params as per old flow
+   appointmentId = getIntent().getIntExtra("appointmentId", 0);
+        visitUuid = getIntent().getStringExtra("visitUuid");
+        patientUuid = getIntent().getStringExtra("patientUuid");
+        patientName = getIntent().getStringExtra("patientName");
+        speciality = getIntent().getStringExtra("speciality");
+        openMrsId = getIntent().getStringExtra("openMrsId");
+*/
+
+        //temporary hardcode parameters for temporary use
+        visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
+        patientUuid = "68617ab0-f826-4668-92dd-ab411ad6ab60";
+        patientName = "Test User2";
+        speciality = "General Physician";
+        openMrsId = "13TR2-8";
 
         initUI();
     }
@@ -116,10 +145,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
         btnBookAppointment = findViewById(R.id.btn_book_appointment);
         btnBookAppointment.setOnClickListener(v -> {
+            Log.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
             if (!selectedDateTime.isEmpty())
                 bookAppointmentDialog(ScheduleAppointmentActivity_New.this, selectedDateTime);
             else
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please select time slot", Toast.LENGTH_SHORT).show();
         });
 
         rvMorningSlots.setHasFixedSize(true);
@@ -163,10 +193,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivPrevMonth.setOnClickListener(v -> {
             getPreviousMonthDates();
         });
+        getSlots();
     }
 
 
     private void getSlots() {
+        Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
+        Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
@@ -243,6 +276,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                 slotInfoList, "afternoon", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
+                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
+                selectedDateTime = result + " at " + slotInfo.getSlotTime();
+
+                slotInfoForBookApp = slotInfo;
                 setDataForMorningAppointments(slotInfoMorningList);
                 setDataForEveningAppointments(slotInfoEveningList);
 
@@ -272,7 +309,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                 slotInfoList, "evening", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
+                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
+                selectedDateTime = result + " at " + slotInfo.getSlotTime();
+
                 Toast.makeText(ScheduleAppointmentActivity_New.this, "Selected position  evening : " + slotInfo.getSlotTime(), Toast.LENGTH_SHORT).show();
+                slotInfoForBookApp = slotInfo;
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForMorningAppointments(slotInfoMorningList);
@@ -301,8 +342,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                 slotInfoList, "morning", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
+                slotInfoForBookApp = slotInfo;
+
                 Toast.makeText(ScheduleAppointmentActivity_New.this, "Selected position morning : " + slotInfo.getSlotTime(), Toast.LENGTH_SHORT).show();
-                selectedDateTime = "<b>" + slotInfo.getSlotDate() + " at " + slotInfo.getSlotTime() + "?<b>";
+                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
+                selectedDateTime = result + " at " + slotInfo.getSlotTime();
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
@@ -488,10 +532,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        String infoText = "Are you sure, patient want to\\nbook the appointment on " + selectedDateTime;
+        String infoText = "Are you sure, patient want to \nbook the appointment on " + "<b>" + selectedDateTime + "?</b>";
         tvInfo.setText(Html.fromHtml(infoText));
-
-        tvInfo.setText(infoText);
+       /* SpannableString ss = new SpannableString(text);
+        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+        ss.setSpan(boldSpan, 21, 29,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(ss);*/
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
@@ -500,8 +546,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         yesButton.setOnClickListener(v -> {
-            Intent i_back = new Intent(context.getApplicationContext(), MyAppointmentActivity.class);
-            context.startActivity(i_back);
+          /*  Intent i_back = new Intent(context.getApplicationContext(), MyAppointmentActivity.class);
+            context.startActivity(i_back);*/
+            bookAppointment();
         });
 
         noButton.setOnClickListener(v -> {
@@ -510,4 +557,97 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
         alertDialog.show();
     }
+
+    private void bookAppointment() {
+        if (slotInfoForBookApp != null) {
+            //reason - as per old flow
+            BookAppointmentRequest request = new BookAppointmentRequest();
+            if (appointmentId != 0) {
+                request.setAppointmentId(appointmentId);
+                request.setReason("reason");
+            }
+
+            request.setSlotDay(slotInfoForBookApp.getSlotDay());
+            request.setSlotDate(slotInfoForBookApp.getSlotDate());
+            request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
+            request.setSlotDurationUnit(slotInfoForBookApp.getSlotDurationUnit());
+            request.setSlotTime(slotInfoForBookApp.getSlotTime());
+
+            request.setSpeciality(slotInfoForBookApp.getSpeciality());
+
+            request.setUserUuid(slotInfoForBookApp.getUserUuid());
+            request.setDrName(slotInfoForBookApp.getDrName());
+            request.setVisitUuid(visitUuid);
+            request.setPatientName(patientName);
+            request.setPatientId(patientUuid);
+            request.setOpenMrsId(openMrsId);
+            request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
+            request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
+
+            String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+            String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
+            ApiClientAppointment.getInstance(baseurl).getApi()
+                    .bookAppointment(url, request)
+                    .enqueue(new Callback<AppointmentDetailsResponse>() {
+                        @Override
+                        public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                            AppointmentDetailsResponse appointmentDetailsResponse = response.body();
+
+                            if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
+                                Log.d(TAG, "onResponse:Appointment book failed ");
+
+                                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
+                                getSlots();
+                            } else {
+                                Log.d(TAG, "onResponse:Appointment booked successfully ");
+                                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                                /*setResult(RESULT_OK);
+                                finish();*/
+                                Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                            Log.v("onFailure", t.getMessage());
+                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+        } else {
+            Log.d(TAG, "bookAppointment: model is null");
+        }
+
+    }
+
+    String getDayOfMonthSuffix(String date) {
+        String result = "";
+        String[] splitedDate = new String[0];
+        if (!date.isEmpty()) {
+            splitedDate = date.split("/");
+            int n = Integer.parseInt(splitedDate[0]);
+            checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
+            if (n >= 11 && n <= 13) {
+                result = "th";
+            }
+            switch (n % 10) {
+                case 1:
+                    result = "st";
+                case 2:
+                    result = "nd";
+                case 3:
+                    result = "rd";
+                default:
+                    result = "th";
+            }
+        }
+        String[] resultMonth = DateAndTimeUtils.getMonthAndYearFromGivenDate(date);
+        String finalDate = splitedDate[0] + result + " " + resultMonth[0];
+        return finalDate;
+    }
+
 }

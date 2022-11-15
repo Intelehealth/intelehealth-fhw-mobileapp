@@ -806,7 +806,7 @@
     <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
 
     <!--Appointment-->
-    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment">Book appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>

@@ -8,13 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <ImageView
             android:id="@+id/iv_dialog_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_icon_height"
-            android:layout_marginTop="@dimen/iv_icon_margin_top"
+            android:layout_marginTop="24dp"
             android:src="@drawable/ui2_ic_book_appointment" />
 
         <TextView
@@ -24,7 +25,8 @@
             android:gravity="center"
             android:text="@string/confirm_appointment"
             android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/internet_warning_title" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_info_dialog_app"
@@ -44,8 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_subtitle"
             android:layout_centerInParent="true"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"
             android:gravity="center"
             android:orientation="horizontal">
 
