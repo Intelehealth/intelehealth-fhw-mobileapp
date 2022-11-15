@@ -1,6 +1,7 @@
 package org.intelehealth.app.ayu.visit.reason.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
@@ -15,12 +16,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.common.adapter.AssociateSymptomsQueryAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
@@ -38,7 +43,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     RecyclerView mRecyclerView;
 
     public interface OnItemSelection {
-        public void onSelect(Node node);
+        void onSelect(Node node);
+
+        void needTitleChange(String title);
+
+        void onAllAnswered(boolean isAllAnswered);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -82,51 +91,59 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
 
-            String type = genericViewHolder.node.getInputType();
-            Log.v("Node", "Type - " + type);
-            if (type == null || type.isEmpty() && !genericViewHolder.node.getOptionsList().isEmpty()) {
-                type = "options";
-            }
-            switch (type) {
-                case "text":
-                    // askText(questionNode, context, adapter);
-                    addTextEnterView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "date":
-                    //askDate(questionNode, context, adapter);
-                    addDateView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "location":
-                    //askLocation(questionNode, context, adapter);
-                    break;
-                case "number":
-                    // askNumber(questionNode, context, adapter);
-                    addNumberView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "area":
-                    // askArea(questionNode, context, adapter);
-                    break;
-                case "duration":
-                    // askDuration(questionNode, context, adapter);
-                    addDurationView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "range":
-                    // askRange(questionNode, context, adapter);
-                    addNumberView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "frequency":
-                    //askFrequency(questionNode, context, adapter);
-                    addNumberView(genericViewHolder.node, genericViewHolder, position);
-                    break;
-                case "camera":
-                    // openCamera(context, imagePath, imageName);
-                    addCameraiew(genericViewHolder.node, genericViewHolder, position);
-                    break;
+            if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+                mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
+                showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
+            } else {
+                mOnItemSelection.needTitleChange("");
 
-                case "options":
-                    // openCamera(context, imagePath, imageName);
-                    showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList(), position);
-                    break;
+
+                String type = genericViewHolder.node.getInputType();
+                Log.v("Node", "Type - " + type);
+                if (type == null || type.isEmpty() && !genericViewHolder.node.getOptionsList().isEmpty()) {
+                    type = "options";
+                }
+                switch (type) {
+                    case "text":
+                        // askText(questionNode, context, adapter);
+                        addTextEnterView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "date":
+                        //askDate(questionNode, context, adapter);
+                        addDateView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "location":
+                        //askLocation(questionNode, context, adapter);
+                        break;
+                    case "number":
+                        // askNumber(questionNode, context, adapter);
+                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "area":
+                        // askArea(questionNode, context, adapter);
+                        break;
+                    case "duration":
+                        // askDuration(questionNode, context, adapter);
+                        addDurationView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "range":
+                        // askRange(questionNode, context, adapter);
+                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "frequency":
+                        //askFrequency(questionNode, context, adapter);
+                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        break;
+                    case "camera":
+                        // openCamera(context, imagePath, imageName);
+                        addCameraiew(genericViewHolder.node, genericViewHolder, position);
+                        break;
+
+                    case "options":
+                        // openCamera(context, imagePath, imageName);
+                        showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList(), position);
+                        break;
+                }
             }
 
             Handler handler = new Handler();
@@ -139,6 +156,33 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }, 2000);
         }
+    }
+
+    private void showAssociateSymptoms(Node node, GenericViewHolder holder, int position) {
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+        holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        holder.recyclerView.setVisibility(View.GONE);
+        holder.tvQuestionDesc.setText("Select yes or no");
+
+        View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemSelection.onAllAnswered(true);
+
+            }
+        });
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_container);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(recyclerView, mContext, node.getOptionsList(), new AssociateSymptomsQueryAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(Node data) {
+
+            }
+        });
+        recyclerView.setAdapter(associateSymptomsQueryAdapter);
+        holder.singleComponentContainer.addView(view);
     }
 
 
@@ -219,44 +263,99 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
      * @param index
      */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
+        Log.v("addDurationView", new Gson().toJson(node));
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
+        final TextView numberRangeTextView = view.findViewById(R.id.tv_number_range);
+        final TextView durationTypeTextView = view.findViewById(R.id.tv_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else {
-                            node.addLanguage(editText.getText().toString());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        node.setSelected(true);
-                    } else {
-                        //if (node.isRequired()) {
-                        node.setSelected(false);
-                        //} else {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                        } else {
-                            node.addLanguage("Question not answered");
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        //   node.setSelected(true);
-                        //}
-                    }
-                    mOnItemSelection.onSelect(node);
+                if (numberRangeTextView.getText().toString().isEmpty()) {
+                    Toast.makeText(mContext, "Please select the duration number", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (durationTypeTextView.getText().toString().isEmpty()) {
+                    Toast.makeText(mContext, "Please select the duration type", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                String durationString = numberRangeTextView.getText() + " " + durationTypeTextView.getText();
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                node.setSelected(true);
+                notifyDataSetChanged();
+                mOnItemSelection.onSelect(node);
+            }
+        });
+        numberRangeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showNumberListing(numberRangeTextView, "Select duration number", 0, 100);
+            }
+        });
+        durationTypeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDurationTypes(durationTypeTextView);
             }
         });
 
-        editText.setHint(node.getText());
         holder.singleComponentContainer.addView(view);
     }
+
+    private void showNumberListing(final TextView textView, String title, int i, int max) {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(title);
+
+        // add a list
+        final String[] data = new String[max];
+        for (; i < max; i++) {
+            data[i] = String.valueOf(i);
+        }
+        builder.setItems(data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textView.setText(data[which]);
+
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showDurationTypes(final TextView textView) {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Select Duration Type");
+
+        // add a list
+        final String[] data = new String[]{
+                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
+                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
+                mContext.getString(R.string.Years)};
+
+        builder.setItems(data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textView.setText(data[which]);
+
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);

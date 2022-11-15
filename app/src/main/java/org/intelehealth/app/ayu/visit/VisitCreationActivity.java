@@ -80,6 +80,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     // Chief complain
     private List<Node> mAnsweredRootNodeList = new ArrayList<>();
     private List<Node> mCurrentRootNodeList = new ArrayList<>();
+    private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private int mCurrentComplainNodeOptionsIndex = 0;
     private List<String> selectedComplains = new ArrayList<>();
@@ -180,8 +181,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         commit();
                 break;
             case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
+                mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
         }
@@ -191,8 +193,20 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         for (int i = 0; i < selectedComplains.size(); i++) {
             String fileLocation = "engines/" + selectedComplains.get(i) + ".json";
             JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+            Node mainNode = new Node(currentFile);
+            List<Node> optionList = new ArrayList<>();
 
-            mCurrentRootNodeList.add(new Node(currentFile));
+            for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
+                if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
+                    mAssociateSymptomsNodeList.add(mainNode.getOptionsList().get(j));
+                } else {
+                    optionList.add(mainNode.getOptionsList().get(j));
+                }
+            }
+            optionList.add(mAssociateSymptomsNodeList.get(i));
+            mainNode.setOptionsList(optionList);
+            mCurrentRootNodeList.add(mainNode);
+
         }
 
     }
@@ -207,6 +221,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             case STEP_2_VISIT_REASON_QUESTION:
                 mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
                 break;
+        }
+    }
+
+    @Override
+    public void onTitleChange(String title) {
+        if (title == null || title.isEmpty()) {
+            setTitle("2/4 Visit reason : " + selectedComplains.get(0));
+        }else{
+            setTitle(title);
         }
     }
 
@@ -285,7 +308,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
      */
     private void showAssociateAssociatedComplaintsList(Node currentNode) {
         ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
-        if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
+        /*if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
             for (String associatedComplaint : selectedAssociatedComplaintsList) {
                 if (!complaints.contains(associatedComplaint)) {
                     complaints.add(associatedComplaint);
@@ -295,7 +318,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     complaintsNodes.add(currentNode);
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -520,7 +543,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     /**
      * Sets up the complaint knowledgeEngine's questions.
      *
-     * @param complaintIndex Index of complaint being displayed to user.
+     * @param //complaintIndex Index of complaint being displayed to user.
      *//*
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
@@ -871,8 +894,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
+                // currentNode.setImagePath(mCurrentPhotoPath);
+                // currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <LinearLayout
@@ -14,35 +13,37 @@
         android:weightSum="2">
 
         <TextView
-            android:id="@+id/tv_hour_range"
+            android:id="@+id/tv_number_range"
             style="@style/edittext_textcolor"
             android:layout_width="0dip"
-            android:layout_height="@dimen/edittext_height_44dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/edittext_border_blue"
             android:drawableEnd="@drawable/ui2_ic_dropdown"
             android:drawablePadding="@dimen/margin_8"
-            android:hint="Select hours"
+            android:hint="Select number"
             android:inputType="textAutoComplete"
             android:padding="@dimen/padding_10"
-            android:textColorHint="@color/edittext_hint_color"
-            android:textSize="@dimen/edittext_textsize_16sp" />
+            android:textColor="@color/ui2_black_text_color"
+            android:textSize="12sp"
+            android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/tv_minute_range"
+            android:id="@+id/tv_duration_type"
             style="@style/edittext_textcolor"
             android:layout_width="0dip"
-            android:layout_height="@dimen/edittext_height_44dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_weight="1"
             android:background="@drawable/edittext_border_blue"
             android:drawableEnd="@drawable/ui2_ic_dropdown"
             android:drawablePadding="@dimen/margin_8"
-            android:hint="Select mminutes"
+            android:hint="Select duration type"
             android:inputType="textAutoComplete"
             android:padding="@dimen/padding_10"
-            android:textColorHint="@color/edittext_hint_color"
-            android:textSize="@dimen/edittext_textsize_16sp" />
+            android:textColor="@color/ui2_black_text_color"
+            android:textSize="12sp"
+            android:textStyle="normal" />
 
     </LinearLayout>
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.reason.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.SessionManager;
@@ -99,6 +100,16 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 }, 100);
 
                 mActionListener.onProgress((int) 60 / mCurrentRootOptionList.size());
+            }
+
+            @Override
+            public void needTitleChange(String title) {
+                mActionListener.onTitleChange(title);
+            }
+
+            @Override
+            public void onAllAnswered(boolean isAllAnswered) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
             }
         });
 
