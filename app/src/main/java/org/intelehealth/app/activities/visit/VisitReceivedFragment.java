@@ -57,7 +57,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
     private ImageButton filter_icon, priority_cancel;
     private CardView filter_menu;
-    private RelativeLayout filter_relative;
+    private RelativeLayout filter_relative, no_patient_found_block, main_block;
     private List<PrescriptionModel> todayList, weeksList, monthsList;
     private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
     TextView today_nodata, week_nodata, month_nodata;
@@ -87,6 +87,9 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     }
 
     private void initUI(View view) {
+        no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
+        main_block = view.findViewById(R.id.main_block);
+
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
         searchview_received = view.findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
@@ -158,18 +161,23 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (!newText.equalsIgnoreCase(""))
+                if (!newText.equalsIgnoreCase("")) {
                     searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
-                else
+                }
+                else {
                     searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                }
                 return false;
             }
         });
 
 
         closeButton.setOnClickListener(v -> {
+            no_patient_found_block.setVisibility(View.GONE);
+            main_block.setVisibility(View.VISIBLE);
             defaultData();
             searchview_received.setQuery("", false);
+
         });
         // Search - end
     }
@@ -253,6 +261,21 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 recycler_month.setAdapter(months_adapter);
             }
             // months - end
+
+            /**
+             * Checking here the query that is entered and it is not empty so check the size of all of these
+             * arraylists; if there size is 0 than show the no patient found view.
+             */
+            totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+            if (totalCounts <= 0) {
+                no_patient_found_block.setVisibility(View.VISIBLE);
+                main_block.setVisibility(View.GONE);
+            }
+            else {
+                no_patient_found_block.setVisibility(View.GONE);
+                main_block.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

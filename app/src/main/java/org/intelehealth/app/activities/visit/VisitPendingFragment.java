@@ -52,7 +52,7 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
     private ImageButton filter_icon, priority_cancel;
     private CardView filter_menu;
-    private RelativeLayout filter_relative;
+    private RelativeLayout filter_relative, no_patient_found_block, main_block;
     private List<PrescriptionModel> todayList, weeksList, monthsList;
     private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
     TextView today_nodata, week_nodata, month_nodata;
@@ -81,6 +81,9 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     }
 
     private void initUI(View view) {
+        no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
+        main_block = view.findViewById(R.id.main_block);
+
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
         searchview_pending = view.findViewById(R.id.searchview_pending);
         closeButton = searchview_pending.findViewById(R.id.search_close_btn);
@@ -160,6 +163,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
         });
 
         closeButton.setOnClickListener(v -> {
+            no_patient_found_block.setVisibility(View.GONE);
+            main_block.setVisibility(View.VISIBLE);
             defaultData();
             searchview_pending.setQuery("", false);
         });
@@ -599,6 +604,20 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                 recycler_month.setAdapter(months_adapter);
             }
             // months - end
+
+            /**
+             * Checking here the query that is entered and it is not empty so check the size of all of these
+             * arraylists; if there size is 0 than show the no patient found view.
+             */
+            totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+            if (totalCounts <= 0) {
+                no_patient_found_block.setVisibility(View.VISIBLE);
+                main_block.setVisibility(View.GONE);
+            }
+            else {
+                no_patient_found_block.setVisibility(View.GONE);
+                main_block.setVisibility(View.VISIBLE);
+            }
         }
     }
 

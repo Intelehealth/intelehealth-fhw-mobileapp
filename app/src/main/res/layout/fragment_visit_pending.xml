@@ -133,6 +133,7 @@
 
             <!--Main Block - Start -->
         <RelativeLayout
+            android:id="@+id/main_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
