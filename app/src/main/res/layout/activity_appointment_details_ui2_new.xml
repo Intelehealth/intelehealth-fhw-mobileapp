@@ -208,7 +208,7 @@
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:background="@null"
-                android:src="@drawable/ic_fu_details_progress_indicator" />
+                android:src="@drawable/details_progressindic" />
 
             <LinearLayout
                 android:id="@+id/ll_1"

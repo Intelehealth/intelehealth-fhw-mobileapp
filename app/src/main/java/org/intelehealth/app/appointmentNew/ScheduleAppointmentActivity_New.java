@@ -87,6 +87,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     String patientName;
     String speciality;
     String openMrsId;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,10 +218,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             SlotInfo slotInfo = slotInfoList.get(i);
                             if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
                                 String[] splitedTime = slotInfo.getSlotTime().split(" ");
-                                Log.d(TAG, "onResponse:splitedTime :  " + splitedTime);
-                                Log.d(TAG, "onResponse: in 1st if");
                                 if (splitedTime[1].trim().equals("AM")) {
-                                    Log.d(TAG, "onResponse: in am if");
 
                                     slotInfoMorningList.add(slotInfo);
                                 }
@@ -241,7 +239,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                                     } else {
                                         appointmentTime = Double.parseDouble(splitedTime[0]);
                                     }
-                                    Log.d(TAG, "onResponse: appointmentTime : " + appointmentTime);
                                     if ((appointmentTime >= 1 && appointmentTime <= 6) || appointmentTime >= 12) {
                                         slotInfoAfternoonList.add(slotInfo);
 
@@ -255,7 +252,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             }
 
                         }
-                        Log.d(TAG, "onResponse: slotInfoMorningList : " + slotInfoMorningList.size());
                         setDataForMorningAppointments(slotInfoMorningList);
                         setDataForAfternoonAppointments(slotInfoAfternoonList);
                         setDataForEveningAppointments(slotInfoEveningList);
@@ -283,7 +279,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                 setDataForMorningAppointments(slotInfoMorningList);
                 setDataForEveningAppointments(slotInfoEveningList);
 
-                Toast.makeText(ScheduleAppointmentActivity_New.this, "Selected position afternoon : " + slotInfo.getSlotTime(), Toast.LENGTH_SHORT).show();
                 //------before reschedule need to cancel appointment----
                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                 //    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
@@ -312,7 +307,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
                 selectedDateTime = result + " at " + slotInfo.getSlotTime();
 
-                Toast.makeText(ScheduleAppointmentActivity_New.this, "Selected position  evening : " + slotInfo.getSlotTime(), Toast.LENGTH_SHORT).show();
                 slotInfoForBookApp = slotInfo;
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
@@ -344,7 +338,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
             public void onSelect(SlotInfo slotInfo) {
                 slotInfoForBookApp = slotInfo;
 
-                Toast.makeText(ScheduleAppointmentActivity_New.this, "Selected position morning : " + slotInfo.getSlotTime(), Toast.LENGTH_SHORT).show();
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
                 selectedDateTime = result + " at " + slotInfo.getSlotTime();
 
@@ -427,7 +420,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
             String year = calendarModel1.getSelectedYear();
             mSelectedStartDate = date + "/" + month + "/" + year;
             mSelectedEndDate = date + "/" + month + "/" + year;
-            Toast.makeText(this, "Selected date : " + mSelectedStartDate, Toast.LENGTH_SHORT).show();
             getSlots();
 
         }));
@@ -539,7 +531,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ss.setSpan(boldSpan, 21, 29,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.setText(ss);*/
 
-        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
@@ -594,12 +586,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             AppointmentDetailsResponse appointmentDetailsResponse = response.body();
 
                             if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
-                                Log.d(TAG, "onResponse:Appointment book failed ");
-
+                                if (alertDialog != null) {
+                                    alertDialog.dismiss();
+                                }
                                 Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
                                 getSlots();
                             } else {
-                                Log.d(TAG, "onResponse:Appointment booked successfully ");
                                 Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                                 /*setResult(RESULT_OK);
                                 finish();*/

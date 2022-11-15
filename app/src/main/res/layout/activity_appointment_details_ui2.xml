@@ -224,7 +224,7 @@
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/cp_card_margin_updown"
                     android:background="@null"
-                    android:src="@drawable/ic_fu_details_progress_indicator" />
+                    android:src="@drawable/details_progressindic" />
             </RelativeLayout>
 
             <RelativeLayout

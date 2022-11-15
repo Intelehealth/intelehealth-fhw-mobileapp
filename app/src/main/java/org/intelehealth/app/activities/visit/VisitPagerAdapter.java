@@ -5,12 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import org.intelehealth.app.activities.appointment.AllAppointmentsFragment;
-import org.intelehealth.app.activities.appointment.TodaysMyAppointmentsFragment;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022

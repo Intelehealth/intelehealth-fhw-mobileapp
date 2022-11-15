@@ -15,8 +15,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
-import org.intelehealth.app.activities.appointment.MyAppointmentsPagerAdapter;
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
