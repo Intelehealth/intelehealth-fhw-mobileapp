@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    tools:visibility="gone"
+    android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/search_bg_icon"
+                android:layout_width="@dimen/search_icon_bg_dimens"
+                android:layout_height="@dimen/search_icon_bg_dimens"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_search_icon_background" />
+
+            <TextView
+                android:id="@+id/search_pat_not_found_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_bg_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/search_pat_not_found_txt"
+                android:textAppearance="@style/you_can_add"
+                android:textColor="@null"
+                android:textSize="@dimen/search_pat_notfound_txtsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/search_pat_hint_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_pat_not_found_txt"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:gravity="center_horizontal|top"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/search_pat_hint_txt"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:translationY="-1.58sp" />
+
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/frame_10007"
+                android:layout_width="@dimen/search_addbtn_width"
+                android:layout_height="@dimen/search_add_btn_height"
+                android:layout_marginTop="@dimen/toolbar_margin_right"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/margin_20dp"
+                android:layout_below="@id/search_pat_hint_txt"
+                android:background="@drawable/ic_add_patient_svg"
+                />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>

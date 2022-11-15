@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_time_slot"
+    android:layout_width="100dp"
+    android:layout_height="40dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="18dp"
+    android:background="@drawable/ui2_bg_disabled_time_slot"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingStart="8dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/tvTime_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineHeight="21dp"
+        android:text="10:30 AM"
+        android:textColor="@color/textColorGray"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDuration_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTime"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingHorizontal="8dip"
+        android:text="30 minutes"
+        android:textColor="@color/textColorGray"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:visibility="gone" />
+</LinearLayout>

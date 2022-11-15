@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -55,9 +56,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private String filePath;
     String mEncounterUUID;
     ImagesDAO imagesDAO = new ImagesDAO();
+    private AdapterInterface anInterface;
+    private AdditionalDocumentViewHolder rcv;
+    private boolean fromVisitDetails;
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, String edult,List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context, String edult,
+                                     List<DocumentObject> documentList, String filePath,
+                                     AdapterInterface anInterface, boolean fromVisitDetails) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -66,24 +72,22 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         screen_width = displayMetrics.widthPixels;
         mEncounterUUID=edult;
         this.filePath = filePath;
-
+        this.anInterface = anInterface;
+        this.fromVisitDetails = fromVisitDetails;
     }
 
     @Override
     public AdditionalDocumentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_additional_doc, null);
-        AdditionalDocumentViewHolder rcv = new AdditionalDocumentViewHolder(layoutView);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.additional_docs_listitem, null);
+        rcv = new AdditionalDocumentViewHolder(layoutView);
         return rcv;
     }
 
     @Override
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
-
-//        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         holder.getDocumentNameTextView().setText
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
-
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 
@@ -101,13 +105,20 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
+        if (fromVisitDetails)
+            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
+        else
+            holder.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (image.exists()) image.delete();
-                documentList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, documentList.size());
+
+                anInterface.deleteAddDoc_Item(documentList, holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
+                notifyItemRangeChanged(holder.getLayoutPosition(), documentList.size());
+                notifyDataSetChanged(); // this line is imp else it leaves empty space on delete.
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
 
@@ -118,6 +129,8 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
                         }
                         imagesDAO.deleteImageFromDatabase(imageList.get(position));
+
+
                     } catch (DAOException e) {
 
                         e.printStackTrace();
@@ -128,6 +141,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
     }
+
 
     public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
@@ -188,4 +202,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
+
+    public void hideCancelBtnAddDoc(boolean flag) {
+        if (flag)
+            rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
+        else
+            rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+
+    }
+
+
 }

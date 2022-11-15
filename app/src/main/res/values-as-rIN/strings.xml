@@ -56,7 +56,7 @@
     <string name="menu_option_settings" translatable="false">ছেটিংছ</string>
     <string name="menu_option_end_of_day" translatable="false">দিনৰ শেষ</string>
     <string name="menu_option_logout" translatable="false">লগআউট কৰক</string>
-    <string name="menu_option_hw_profile" translatable="false">ব্যৱহাৰকাৰী প্ৰফাইল</string>
+<!--    <string name="menu_option_hw_profile" translatable="false">ব্যৱহাৰকাৰী প্ৰফাইল</string>-->
     <string name="location_setup">ছেটআপ অৱস্থান - </string>
 
     <!--Identification Screen-->
@@ -219,7 +219,7 @@
     <string name="title_activity_patient_detail" translatable="false">ৰোগীৰ বিৱৰণ</string>
     <string name="header_medical_history" translatable="false">ইতিহাস</string>
     <string name="button_new_visit" translatable="false">ডাক্তৰৰ নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
-    <string name="button_sevika_advice" translatable="false">ছেভিকা নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
+<!--    <string name="button_sevika_advice" translatable="false">ছেভিকা নতুন পৰামৰ্শ আৰম্ভ কৰক</string>-->
     <string name="header_previous_visits" translatable="false">পূৰ্বৰ ভ্ৰমণ</string>
     <string name="header_patient_history" translatable="false">চিকিৎসা ইতিহাস</string>
     <string name="header_family_history" translatable="false">পাৰিবাৰিক ইতিহাস</string>
@@ -256,8 +256,8 @@
     <string name="toast_crash" translatable="false">প্ৰয়োগৰ ভুলৰ সন্মুখীন হৈছে; প্ৰতিবেদন প্ৰেৰণ কৰা হৈছে</string>
 
     <string name="title_activity_setup" translatable="false">স্থাপন কৰা</string>
-    <string name="error_login_str" translatable="false">ত্ৰুটি প্ৰৱেশ</string>
-    <string name="enter_url_str" translatable="false">Url দিয়ক</string>
+<!--    <string name="error_login_str" translatable="false">ত্ৰুটি প্ৰৱেশ</string>-->
+<!--    <string name="enter_url_str" translatable="false">Url দিয়ক</string>-->
 
     <string name="title_activity_camera" translatable="false">কেমেৰা</string>
     <string name="title_activity_today_patient" translatable="false">আজিৰ ভ্ৰমণ</string>
@@ -637,34 +637,34 @@
     <string name="no_family_member_registered">কোনো পৰিয়ালৰ সদস্য পঞ্জীয়ন কৰা হোৱা নাই</string>
     <string name="document_">"নথিপত্ৰ - "</string>
     <string name="gender">লিংগ</string>
-    <string name="are_you_head_of_the_family">আপুনি পৰিয়ালৰ মুৰব্বী নেকি?*</string>
-    <string name="what_is_your_occupation">আপোনাৰ বৃত্তি কি?*</string>
-    <string name="do_you_have_a_bank_account">আপোনাৰ বেংক একাউণ্ট আছে নেকি?*</string>
-    <string name="what_kind_of_mobile_phone_do_you_personally_own">ব্যক্তিগতভাৱে কেনেধৰণৰ মোবাইল ফোন আছে?*</string>
-    <string name="phone_ownership">ফোন মালিকীস্বত্ব*</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপুনি বা আপোনাৰ পৰিয়ালৰ কোনো সদস্যই( হোৱাটচ অ্যাপ)ব্যৱহাৰ কৰে নেকি?*</string>
-    <string name="total_number_of_members_in_the_household">ঘৰখনৰ মুঠ সদস্যৰ সংখ্যা*</string>
-    <string name="enter_number">নম্বৰ দিয়ক</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">সাধাৰণতে আপোনাৰ ঘৰত কিমান সদস্য থাকে বা এতিয়া আপোনাৰ লগত থাকে*</string>
-    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">খোৱাপানী সুৰক্ষিত কৰিবলৈ আপুনি কি কৰে?*</string>
-    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">তালৈ যাবলৈ, পানী লৈ, এটা ভ্ৰমণত উভতি আহিবলৈ কিমান সময় লাগে?*</string>
-    <string name="declined">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
-    <string name="enter_time">সময় প্ৰৱেশ কৰক</string>
-    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">যোৱা দুসপ্তাহত এই উৎসৰ পৰা অহা পানী অন্ততঃ এটা সম্পূৰ্ণ দিনলৈকে পোৱা নাছিল নেকি?*</string>
-    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">আপোনাৰ ঘৰৰ সদস্যসকলে সাধাৰণতে কেনেধৰণৰ শৌচাগাৰ ব্যৱহাৰ কৰে?*</string>
-    <string name="select_the_structure_of_house">ঘৰৰ গঠন নিৰ্বাচন কৰক*</string>
-    <string name="how_much_hectars_of_cultivable_land_your_family_owns">আপোনাৰ পৰিয়ালৰ কিমান হেক্টৰ খেতিযোগ্য মাটি আছে?*</string>
-    <string name="enter_answer">উত্তৰ দিয়ক</string>
-    <string name="enter_occupation">ব্যবসায় লিখক</string>
-    <string name="select">চয়ন কৰা</string>
+<!--    <string name="are_you_head_of_the_family">আপুনি পৰিয়ালৰ মুৰব্বী নেকি?*</string>-->
+<!--    <string name="what_is_your_occupation">আপোনাৰ বৃত্তি কি?*</string>-->
+<!--    <string name="do_you_have_a_bank_account">আপোনাৰ বেংক একাউণ্ট আছে নেকি?*</string>-->
+<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">ব্যক্তিগতভাৱে কেনেধৰণৰ মোবাইল ফোন আছে?*</string>-->
+<!--    <string name="phone_ownership">ফোন মালিকীস্বত্ব*</string>-->
+<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপুনি বা আপোনাৰ পৰিয়ালৰ কোনো সদস্যই( হোৱাটচ অ্যাপ)ব্যৱহাৰ কৰে নেকি?*</string>-->
+<!--    <string name="total_number_of_members_in_the_household">ঘৰখনৰ মুঠ সদস্যৰ সংখ্যা*</string>-->
+<!--    <string name="enter_number">নম্বৰ দিয়ক</string>-->
+<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">সাধাৰণতে আপোনাৰ ঘৰত কিমান সদস্য থাকে বা এতিয়া আপোনাৰ লগত থাকে*</string>-->
+<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?*</string>-->
+<!--    <string name="what_do_you_do_to_make_drinking_water_safer">খোৱাপানী সুৰক্ষিত কৰিবলৈ আপুনি কি কৰে?*</string>-->
+<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">তালৈ যাবলৈ, পানী লৈ, এটা ভ্ৰমণত উভতি আহিবলৈ কিমান সময় লাগে?*</string>-->
+<!--    <string name="declined">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>-->
+<!--    <string name="enter_time">সময় প্ৰৱেশ কৰক</string>-->
+<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">যোৱা দুসপ্তাহত এই উৎসৰ পৰা অহা পানী অন্ততঃ এটা সম্পূৰ্ণ দিনলৈকে পোৱা নাছিল নেকি?*</string>-->
+<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">আপোনাৰ ঘৰৰ সদস্যসকলে সাধাৰণতে কেনেধৰণৰ শৌচাগাৰ ব্যৱহাৰ কৰে?*</string>-->
+<!--    <string name="select_the_structure_of_house">ঘৰৰ গঠন নিৰ্বাচন কৰক*</string>-->
+<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">আপোনাৰ পৰিয়ালৰ কিমান হেক্টৰ খেতিযোগ্য মাটি আছে?*</string>-->
+<!--    <string name="enter_answer">উত্তৰ দিয়ক</string>-->
+<!--    <string name="enter_occupation">ব্যবসায় লিখক</string>-->
+<!--    <string name="select">চয়ন কৰা</string>-->
     <string name="Hours">ঘণ্টা</string>
     <string name="Days">দিনবোৰ</string>
     <string name="Weeks">সপ্তাহ</string>
     <string name="Months">মাহবোৰ</string>
     <string name="Years">বছৰবোৰ</string>
-    <string name="image_saved">ছবি সফলভাৱে সংৰক্ষণ কৰা হৈছে!</string>
-    <string name="emergency_confirmation">আপুনি এই ভ্ৰমণক জৰুৰীকালীন অৱস্থা হিচাপে নিৰ্ধাৰণ কৰিব বিচাৰেনে?</string>
+<!--    <string name="image_saved">ছবি সফলভাৱে সংৰক্ষণ কৰা হৈছে!</string>-->
+<!--    <string name="emergency_confirmation">আপুনি এই ভ্ৰমণক জৰুৰীকালীন অৱস্থা হিচাপে নিৰ্ধাৰণ কৰিব বিচাৰেনে?</string>-->
     <string name="per_Hour">প্ৰতি ঘণ্টাত</string>
     <string name="per_Day">প্ৰতিদিনে</string>
     <string name="per_Week">প্ৰতি সপ্তাহত</string>
@@ -675,16 +675,16 @@
     <!--@lincon-->
     <string name="failed_initial_synced">ব্যৰ্থ সতেজ, আপোনাৰ ইণ্টাৰনেট সংযোগ পৰীক্ষা কৰক। অনুগ্ৰহ কৰি এপটো পুনৰ আৰম্ভ কৰক।</string>
     <string name="something_went_wrong">কিবা এটা ভুল হৈ গ’ল৷ অনুগ্ৰহ কৰি সমৰ্থনৰ সৈতে যোগাযোগ কৰক</string>
-    <string name="have_you_taken_a_covid_vaccine">আপুনি কোভিড ভেক্সিন লৈছেনে?*</string>
-    <string name="select_option_vaccination_dialog">টিকাকৰণৰ বাবে বিকল্প নিৰ্ব্বাচন কৰক</string>
+<!--    <string name="have_you_taken_a_covid_vaccine">আপুনি কোভিড ভেক্সিন লৈছেনে?*</string>-->
+<!--    <string name="select_option_vaccination_dialog">টিকাকৰণৰ বাবে বিকল্প নিৰ্ব্বাচন কৰক</string>-->
     <string name="warning_app_update">অনুগ্ৰহ কৰি এপটো শেহতীয়া সংস্কৰণলৈ আপডেট কৰক।</string>
 
-    <string name="identification_screen_prompt_village">গাওঁ *</string>
+<!--    <string name="identification_screen_prompt_village">গাওঁ *</string>-->
 
     //-----------start new visit confirmation dialog string-----------
-    <string name="start_newvisit_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি ডাক্তৰৰ পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
-    <string name="prescription_notprovided_msg">ডাক্তৰে দিয়া নাই প্ৰেছক্ৰিপচন। অনুগ্ৰহ কৰি ভ্ৰমণ শেষ কৰিবলৈ প্ৰেছক্ৰিপচনৰ বাবে অপেক্ষা কৰক।</string>
-    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা সেভিকা পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
+<!--    <string name="start_newvisit_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি ডাক্তৰৰ পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>-->
+<!--    <string name="prescription_notprovided_msg">ডাক্তৰে দিয়া নাই প্ৰেছক্ৰিপচন। অনুগ্ৰহ কৰি ভ্ৰমণ শেষ কৰিবলৈ প্ৰেছক্ৰিপচনৰ বাবে অপেক্ষা কৰক।</string>-->
+<!--    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা সেভিকা পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>-->
 
     //Language Screen
     <string name="choose_lang_title">আপোনাৰ ভাষা বাছক</string>
@@ -697,10 +697,10 @@
     <string name="loading_more">অধিক লোড হচ্ছে...</string>
     <string name="take_photo">ফটো লওক</string>
     <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
-    <string name="hw_profile_image_picker_title">স্বাস্থ্য কৰ্মীৰ প্ৰফাইল ইমেজ!</string>
+<!--    <string name="hw_profile_image_picker_title">স্বাস্থ্য কৰ্মীৰ প্ৰফাইল ইমেজ!</string>-->
 
-    <string name="hw_qualification_hint">অৰ্হতা</string>
-    <string name="hw_aboutme_hint">মোৰ বিষয়ে</string>
+<!--    <string name="hw_qualification_hint">অৰ্হতা</string>-->
+<!--    <string name="hw_aboutme_hint">মোৰ বিষয়ে</string>-->
 
     <string name="chat_fab">আড্ডা fab</string>
     <string name="notification_title">ৰিয়েলটাইম ছিংক অন আছে!</string>

@@ -11,9 +11,7 @@ static def getDateTime() {
 }
 android {
     compileSdkVersion 30
-    dataBinding {
-        enabled = true
-    }
+
     defaultConfig {
         applicationId "org.intelehealth.app"
         minSdkVersion 19
@@ -63,6 +61,11 @@ android {
             enableSplit = true
         }
     }
+
+    buildFeatures{
+        dataBinding true // for data binding
+        
+    }
 }
 dependencies {
     implementation project(':webrtc')
@@ -73,6 +76,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    implementation 'com.google.android.gms:play-services-fido:18.1.0'
     testImplementation 'junit:junit:4.13-beta-2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'
@@ -145,6 +149,8 @@ dependencies {
     //for tooltip
     implementation 'com.github.piruin:quickaction:2.4.3'
 
+    implementation 'com.hbb20:ccp:2.6.1'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

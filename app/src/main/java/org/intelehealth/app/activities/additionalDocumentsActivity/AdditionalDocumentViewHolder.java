@@ -44,4 +44,6 @@ public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder{
         return rootView;
     }
 
+
+
 }

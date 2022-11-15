@@ -7,7 +7,6 @@ import static org.intelehealth.app.database.dao.NotificationDAO.insertNotificati
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -29,7 +29,6 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +38,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class NotificationActivity extends AppCompatActivity implements NotificationInterface{
+public class NotificationActivity extends AppCompatActivity implements AdapterInterface {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
@@ -191,7 +190,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     }
 
     @Override
-    public void deleteItem(List<NotificationModel> patientDTOList, int position) {
+    public void deleteNotifi_Item(List<NotificationModel> patientDTOList, int position) {
         deleteNotification(patientDTOList.get(position));
         patientDTOList.remove(position);
         if (patientDTOList.size() <= 0) {
@@ -202,5 +201,10 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             today_nodata.setVisibility(View.GONE);
             yesterday_nodata.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void deleteAddDoc_Item(List<DocumentObject> list, int position) {
+
     }
 }

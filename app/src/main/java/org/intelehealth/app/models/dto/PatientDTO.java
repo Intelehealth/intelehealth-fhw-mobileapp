@@ -4,9 +4,10 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PatientDTO {
+public class PatientDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose
@@ -253,5 +254,34 @@ public class PatientDTO {
 
     public void setPrescription_exists(boolean prescription_exists) {
         this.prescription_exists = prescription_exists;
+    }
+
+    @Override
+    public String toString() {
+        return "PatientDTO{" +
+                "uuid='" + uuid + '\'' +
+                ", openmrsId='" + openmrsId + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", middlename='" + middlename + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", dateofbirth='" + dateofbirth + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", cityvillage='" + cityvillage + '\'' +
+                ", stateprovince='" + stateprovince + '\'' +
+                ", postalcode='" + postalcode + '\'' +
+                ", country='" + country + '\'' +
+                ", education='" + education + '\'' +
+                ", economic='" + economic + '\'' +
+                ", gender='" + gender + '\'' +
+                ", patientPhoto='" + patientPhoto + '\'' +
+                ", patientAttributesDTOList=" + patientAttributesDTOList +
+                ", dead=" + dead +
+                ", syncd=" + syncd +
+                ", emergency=" + emergency +
+                ", visit_startdate='" + visit_startdate + '\'' +
+                ", prescription_exists=" + prescription_exists +
+                '}';
     }
 }

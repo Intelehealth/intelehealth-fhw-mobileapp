@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_doc_addBtn"
+        android:layout_width="@dimen/vs_phsexam_imgview_140dp"
+        android:layout_height="@dimen/vs_phsexam_imgview_140dp"
+        android:layout_marginTop="@dimen/fu_margin_start"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginBottom="@dimen/fu_margin_start"
+        app:cardCornerRadius="@dimen/margin_5">
+
+        <ImageView
+            android:id="@+id/imageView_medical"
+            android:layout_width="@dimen/vs_phsexam_imgview_140dp"
+            android:layout_height="@dimen/vs_phsexam_imgview_140dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/avatar1"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

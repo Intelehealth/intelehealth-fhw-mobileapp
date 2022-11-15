@@ -61,6 +61,19 @@ public class AppointmentInfo implements Serializable {
     @SerializedName("updatedAt")
     private String updatedAt;
 
+    private boolean prescription_exists = false;
+    //newly added for appointment
+    private String presc_received_time;
+
+    private String patientProfilePhoto;
+
+    public String getPatientProfilePhoto() {
+        return patientProfilePhoto;
+    }
+
+    public void setPatientProfilePhoto(String patientProfilePhoto) {
+        this.patientProfilePhoto = patientProfilePhoto;
+    }
 
     public String getSlotDay() {
         return slotDay;
@@ -206,5 +219,22 @@ public class AppointmentInfo implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+
+    public String getPresc_received_time() {
+        return presc_received_time;
+    }
+
+    public void setPresc_received_time(String presc_received_time) {
+        this.presc_received_time = presc_received_time;
+    }
+
+    public boolean isPrescription_exists() {
+        return prescription_exists;
+    }
+
+    public void setPrescription_exists(boolean prescription_exists) {
+        this.prescription_exists = prescription_exists;
     }
 }

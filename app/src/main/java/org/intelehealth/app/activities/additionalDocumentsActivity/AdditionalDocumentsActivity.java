@@ -33,9 +33,11 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -44,7 +46,7 @@ import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class AdditionalDocumentsActivity extends AppCompatActivity {
+public class AdditionalDocumentsActivity extends AppCompatActivity implements AdapterInterface {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private String patientUuid;
@@ -86,6 +88,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -113,12 +116,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
             RecyclerView recyclerView = findViewById(R.id.document_RecyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+                    rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
@@ -139,21 +142,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
-//                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-//                File photo = new File(mCurrentPhotoPath);
-//                if (photo.exists()) {
-//                    try{
-//
-//                        long length = photo.length();
-//                        length = length/1024;
-//                        Log.e("------->>>>",length+"");
-//                    }catch(Exception e){
-//                        System.out.println("File not found : " + e.getMessage() + e);
-//                    }
-//
-//                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-//                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
-//                }
             }
         }
         else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
@@ -176,6 +164,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }
+
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -281,6 +270,13 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void deleteNotifi_Item(List<NotificationModel> list, int position) {
 
+    }
 
+    @Override
+    public void deleteAddDoc_Item(List<DocumentObject> list, int position) {
+
+    }
 }

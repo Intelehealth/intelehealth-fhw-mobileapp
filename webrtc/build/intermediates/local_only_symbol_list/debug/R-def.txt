@@ -227,6 +227,7 @@ string yes
 string you
 string you_have_no_messages_start_sending_messages_now
 style AppTheme
+style AppThemeMaterialNew
 style AppTheme.AppBarOverlay
 style AppTheme.Call
 style AppTheme.NoActionBar

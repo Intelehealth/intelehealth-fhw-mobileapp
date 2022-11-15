@@ -534,7 +534,7 @@
                     android:fontFamily="@font/lato_medium"
                     android:text="@string/click_to_download_the_images"
                     android:textSize="@dimen/card_content_sub_text_size"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -707,6 +707,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -762,6 +763,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -815,6 +817,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -868,6 +871,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -921,6 +925,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -973,6 +978,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -1490,7 +1496,7 @@ app:layout_constraintStart_toEndOf="@+id/gd"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="35dp"
                         android:paddingVertical="10dp"
-                        app:srcCompat="@drawable/ic_icons8_whatsapp_purple"></ImageView>
+                        app:srcCompat="@drawable/whatsapp_purple"></ImageView>
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

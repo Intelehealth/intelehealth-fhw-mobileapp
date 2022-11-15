@@ -17,7 +17,7 @@
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_32dp"
-            android:src="@drawable/dialog_icon_complete" />
+            android:src="@drawable/close_patient_svg" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                 android:lineSpacingExtra="4sp"
                 android:text="Patient Registered!"
                 android:textAppearance="@style/dialog_title"
+                android:textStyle="bold"
                 android:textColor="@null"
                 android:textSize="@null" />
 
@@ -44,9 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dialog_title"
-                android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginTop="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/margin_24"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
                 android:text="Does the patient want to start the \n visit now?"
@@ -60,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dialog_subtitle"
                 android:layout_centerInParent="true"
-                android:gravity="center"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
@@ -75,7 +73,7 @@
                     android:background="@drawable/white_bg_button"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="Cancel" />
+                    android:text="Yes" />
 
                 <Button
                     android:id="@+id/positive_btn"
@@ -87,7 +85,7 @@
                     android:background="@drawable/darkblue_bg_button"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="Continue" />
+                    android:text="No" />
             </RelativeLayout>
 
 

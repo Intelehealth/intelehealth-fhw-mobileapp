@@ -1,6 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 
@@ -20,6 +21,7 @@ import org.intelehealth.app.R;
 
 
 public class DateAndTimeUtils {
+    private static final String TAG = "DateAndTimeUtils";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
@@ -114,7 +116,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
-        Log.d("TAG", "getAge_FollowUp: s : "+s);
+        Log.d("TAG", "getAge_FollowUp: s : " + s);
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -134,15 +136,18 @@ public class DateAndTimeUtils {
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
 
-        if (period.getYears() > 0) {
+       /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
-        }
+        }*/
 
-        age = tyears;
+        if (period.getValue(0) > 0) {  // o index -> years
+            tyears = String.valueOf(period.getValue(0));
+            age = tyears;
+            Log.d("TAG", "getAge_FollowUp: s : "+age);
+        }
 
         return age;
     }
@@ -396,6 +401,394 @@ public class DateAndTimeUtils {
             Log.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
+    }
+
+    /**
+     * This function is used to calculate value like Eg: '2 hours ago' or '2 minutes ago'.
+     * @param datetime
+     * @return
+     */
+    public static String timeAgoFormat(String datetime) {
+        String time = "";
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        try {
+            long date = format.parse(datetime).getTime();
+            long now = System.currentTimeMillis();
+            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
+            time = String.valueOf(ago);
+            Log.v("TimeAgo", "TimeAgo: " + time);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return time;
+    }
+
+    public static String parse_DateToddMMyyyy(String time) {
+        String inputPattern = "dd-MM-yyyy";
+        String outputPattern = "dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+
+    public static String getDisplayDateForApp(String date) {
+        String finalDate = "";
+        if (date != null && !date.isEmpty()) {
+
+            String[] dateSplit = date.split("-");
+            String year = dateSplit[0];
+            String month = dateSplit[1];
+            String day = dateSplit[2];
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "Jan";
+                    break;
+                case "02":
+                    monthString = "Feb";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "Aug";
+                    break;
+                case "09":
+                    monthString = "Sept";
+                    break;
+                case "10":
+                    monthString = "Oct";
+                    break;
+                case "11":
+                    monthString = "Nov";
+                    break;
+                case "12":
+                    monthString = "Dec";
+                    break;
+
+            }
+
+            // finalDate = day + " " + monthString + " " + year;
+            finalDate = monthString + " " + day + ", " + year;
+
+        }
+        return finalDate;
+
+
+    }
+
+    public static String getCurrentDateNew() {
+        Date cDate = new Date();
+        String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
+        Log.d("TAG", "getCurrentDateNew: fDate : " + fDate);
+        return fDate;
+    }
+
+    public static String getCurrentDateInDDMMYYYYFormat() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        return simpleDateFormat.format(new Date());
+    }
+
+    public static String getOneMonthAheadDateInDDMMYYYYFormat() {
+        //get date with one month ahead of current date
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        return simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
+    }
+
+    public static String getDisplayDateAndTime(String dateTime) {
+        String finalDate = "";
+        String hourFormated = "";
+        String textTime;
+        if (dateTime != null && !dateTime.isEmpty()) {
+
+            String[] splitedString = dateTime.split("\\s+");
+            String[] splitedTime = splitedString[1].split(":");
+            if (Integer.parseInt(splitedTime[0]) > 12) {
+                hourFormated = getTwelveHourFormat(splitedTime[0]);
+                textTime = "pm";
+            } else {
+                hourFormated = splitedTime[0];
+                textTime = "am";
+            }
+            String timeDisplay = hourFormated + ":" + splitedTime[1] + " " + textTime;
+            String displayDate = getDateWithDayAndMonth(splitedString[0]);
+            finalDate = displayDate + ", at " + timeDisplay;
+        }
+        return finalDate;
+
+
+    }
+
+    public static String getDisplayDateAndTimeFromDDMMFormat(String inputDate) {
+        String finalDate = "";
+        String hourFormated = "";
+        String textTime;
+        if (inputDate != null && !inputDate.isEmpty()) {
+
+            String[] splitedString = inputDate.split("/");
+            String[] splitedTime = splitedString[1].split(":");
+            if (Integer.parseInt(splitedTime[0]) > 12) {
+                hourFormated = getTwelveHourFormat(splitedTime[0]);
+                textTime = "pm";
+            } else {
+                hourFormated = splitedTime[0];
+                textTime = "am";
+            }
+            String timeDisplay = hourFormated + ":" + splitedTime[1] + " " + textTime;
+            String displayDate = getDateWithDayAndMonth(splitedString[0]);
+            finalDate = displayDate + ", at " + timeDisplay;
+        }
+        return finalDate;
+
+
+    }
+
+    public static String getTwelveHourFormat(String hour) {
+        String hourString = "";
+        switch (hour) {
+            case "13":
+                hourString = "01";
+                break;
+            case "14":
+                hourString = "02";
+                break;
+            case "15":
+                hourString = "03";
+                break;
+            case "16":
+                hourString = "04";
+                break;
+            case "17":
+                hourString = "05";
+                break;
+            case "18":
+                hourString = "06";
+                break;
+            case "19":
+                hourString = "07";
+                break;
+            case "20":
+                hourString = "08";
+                break;
+            case "21":
+                hourString = "09";
+                break;
+            case "22":
+                hourString = "10";
+                break;
+            case "23":
+                hourString = "11";
+                break;
+            case "24":
+                hourString = "12";
+                break;
+
+        }
+        return hourString;
+    }
+
+    public static String getDateWithDayAndMonth(String date) {
+        String finalDate = "";
+        if (date != null && !date.isEmpty()) {
+
+            String[] dateSplit = date.split("-");
+            String year = dateSplit[0];
+            String month = dateSplit[1];
+            String day = dateSplit[2];
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "Jan";
+                    break;
+                case "02":
+                    monthString = "Feb";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "Aug";
+                    break;
+                case "09":
+                    monthString = "Sept";
+                    break;
+                case "10":
+                    monthString = "Oct";
+                    break;
+                case "11":
+                    monthString = "Nov";
+                    break;
+                case "12":
+                    monthString = "Dec";
+                    break;
+
+            }
+
+            finalDate = day + " " + monthString;
+
+
+        }
+        return finalDate;
+
+
+    }
+
+    public static String getDateWithDayAndMonthFromDDMMFormat(String date) {
+        String finalDate = "";
+        if (date != null && !date.isEmpty()) {
+
+            String[] dateSplit = date.split("/");
+            String month = dateSplit[1];
+            String day = dateSplit[0];
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "Jan";
+                    break;
+                case "02":
+                    monthString = "Feb";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "Aug";
+                    break;
+                case "09":
+                    monthString = "Sept";
+                    break;
+                case "10":
+                    monthString = "Oct";
+                    break;
+                case "11":
+                    monthString = "Nov";
+                    break;
+                case "12":
+                    monthString = "Dec";
+                    break;
+
+            }
+
+            finalDate = day + " " + monthString;
+
+
+        }
+        return finalDate;
+
+
+    }
+
+    public static String[] getMonthAndYearFromGivenDate(String date) {
+        String[] result = new String[0];
+        if (date != null && !date.isEmpty()) {
+
+            String[] dateSplit = date.split("/");
+            String month = dateSplit[1];
+            String day = dateSplit[0];
+            String year = dateSplit[2];
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "January";
+                    break;
+                case "02":
+                    monthString = "February";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "August";
+                    break;
+                case "09":
+                    monthString = "September";
+                    break;
+                case "10":
+                    monthString = "October";
+                    break;
+                case "11":
+                    monthString = "November";
+                    break;
+                case "12":
+                    monthString = "December";
+                    break;
+
+            }
+            result = new String[]{monthString, year};
+        }
+        return result;
+
+
     }
 
 }

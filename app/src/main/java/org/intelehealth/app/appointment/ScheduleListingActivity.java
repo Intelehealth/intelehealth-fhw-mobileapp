@@ -63,6 +63,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         setContentView(R.layout.activity_schedule_listing);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.appointment_booking_title);
+
         appointmentId = getIntent().getIntExtra("appointmentId", 0);
         visitUuid = getIntent().getStringExtra("visitUuid");
         patientUuid = getIntent().getStringExtra("patientUuid");

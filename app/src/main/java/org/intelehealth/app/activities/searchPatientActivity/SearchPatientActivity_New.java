@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -47,7 +48,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     TextView search_hint_text;
     String query;
     boolean fullyLoaded = false;
-    FrameLayout view_nopatientfound;
+    RelativeLayout view_nopatientfound;
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
@@ -174,6 +175,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                         "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
                 Log.v("SearchPatient", "date: " + visit_start_date);
+
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
                 //  3. prescription received/pending tag logic.

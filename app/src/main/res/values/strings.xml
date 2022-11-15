@@ -806,7 +806,7 @@
     <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
 
     <!--Appointment-->
-    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment">Book appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
@@ -881,6 +881,8 @@
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
     <string name="profile_details_added">Profile details added successfully</string>
+    <string name="profile_details_updated_new">Profile details updated successfully</string>
+    <string name="profile_photo_updated_new">Profile photo updated successfully</string>
 
     <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
@@ -1655,8 +1657,12 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="appointment_details">Appointment details
 </string>
     <string name="remind_doctor">Remind doctor</string>
+    <string name="end_visit">End visit</string>
+    <string name="view_patient_history">View patient history</string>
+    <string name="reschedule">Reschedule</string>
+    <string name="no_data_found">No data found</string>
 
-
+    <string name="confirm_appointment">Confirm appointment?</string>
 
     <!--    Follow-up new screens -->
     <string name="label">Follow-up visits(9)</string>
@@ -1697,7 +1703,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="add_new_patient">Add new patient</string>
 
     <string name="caption">Name</string>
-
 
 
     <!--END-->

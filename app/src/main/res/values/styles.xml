@@ -161,7 +161,7 @@
 
     <style name="fu_detiails_date">
         <item name="android:textColor">
-            #7F7B92
+            @color/textview_color
         </item>
     </style>
 
@@ -327,7 +327,7 @@
             @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
-            #1B163A
+            @color/textview_color
         </item>
     </style>
 
@@ -385,6 +385,64 @@
         <item name="android:textColor">
             @color/textview_color
         </item>
+    </style>
+  <!--  <style name="ChipTheme" parent="Base.Theme.MaterialComponents.Light">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="background">@color/colorPrimaryDark</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
+    </style>-->
+    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="chipStrokeColor">@color/colorPrimary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="RadioButtonStyleSelection" parent="Theme.AppCompat.Light">
+<!--        <item name="colorControlNormal">@color/indigo</item>-->
+        <item name="colorControlActivated">@color/colorPrimary1</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_bg</item>
+        <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
+    </style>
+
+    <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/small_spinner_bg</item>
+    </style>
+
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="text_title_style">
+        <item name="android:textSize">
+            @dimen/txtsize_patdetail_16sp
+        </item>
+        <item name="android:textColor">
+            @color/textview_color
+        </item>
+    </style>
+
+    <style name="vs_title_head_14sp">
+        <item name="android:textSize">
+            @dimen/txtsize_patdetail_14sp
+        </item>
+        <item name="android:textColor">
+            @color/textview_color
+        </item>
+    </style>
+
+
+    <style name="AppTheme.switchColorStyle" parent="Theme.AppCompat.Light">
+        <!-- colorAccent is used as the default value for colorControlActivated,
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/lite_red</item>
     </style>
 
 </resources>
