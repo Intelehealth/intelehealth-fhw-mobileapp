@@ -103,11 +103,12 @@ public class PrescriptionActivity extends AppCompatActivity {
             vs_speciality_header_expandview, vs_followup_header_expandview;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             mCHWname, drname, dr_age_gender, qualification, dr_speciality,
-            diagnosis_txt, medication_txt, test_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+            diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private SessionManager sessionManager;
     String diagnosisReturned = "", rxReturned = "", testsReturned = "", adviceReturned = "", doctorName = "",
             additionalReturned = "", followUpDate = "";
+    String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
     private Patient patient = new Patient();
     private String hasPrescription = "";
@@ -163,6 +164,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         diagnosis_txt = findViewById(R.id.diagnosis_txt);
         medication_txt = findViewById(R.id.medication_txt);
+        advice_txt = findViewById(R.id.advice_txt);
         test_txt = findViewById(R.id.test_txt);
         referred_speciality_txt = findViewById(R.id.referred_speciality_txt);
         no_followup_txt = findViewById(R.id.no_followup_txt);
@@ -392,49 +394,52 @@ public class PrescriptionActivity extends AppCompatActivity {
                 break;
             }
 
-//            case UuidDictionary.MEDICAL_ADVICE: {
-//                if (!adviceReturned.isEmpty()) {
-//                    adviceReturned = adviceReturned + "\n" + value;
-//                    Log.d("GAME", "GAME: " + adviceReturned);
-//                } else {
-//                    adviceReturned = value;
-//                    Log.d("GAME", "GAME_2: " + adviceReturned);
-//                }
-//                if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
-//                    medicalAdviceCard.setVisibility(View.VISIBLE);
-//                }
-//                //medicalAdviceTextView.setText(adviceReturned);
-//                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
-//
-//                int j = adviceReturned.indexOf('<');
-//                int i = adviceReturned.lastIndexOf('>');
-//                if (i >= 0 && j >= 0) {
-//                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
-//                } else {
-//                    medicalAdvice_HyperLink = "";
-//                }
-//
-//                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
-//
-//                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-//                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
-//
-//                /*
-//                 * variable a contains the hyperlink sent from webside.
-//                 * variable b contains the string data (medical advice) of patient.
-//                 * */
-//               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
-//                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
-//                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
-//
-//                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
-//                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
-//                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
-//                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-//                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
-//                //checkForDoctor();
-//                break;
-//            }
+            case UuidDictionary.MEDICAL_ADVICE: {
+                if (!adviceReturned.isEmpty()) {
+                    if (adviceReturned.contains("Start Audio"))
+                        adviceReturned = Node.bullet + " " +value;
+                    else
+                        adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
+
+                    Log.d("GAME", "GAME: " + adviceReturned);
+                } else {
+                    adviceReturned = value;
+                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                }
+
+                //medicalAdviceTextView.setText(adviceReturned);
+
+                int j = adviceReturned.indexOf('<');
+                int i = adviceReturned.lastIndexOf('>');
+                if (i >= 0 && j >= 0) {
+                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
+                } else {
+                    medicalAdvice_HyperLink = "";
+                }
+
+                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+
+                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                advice_txt.setText(medicalAdvice_string);
+                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+
+                /*
+                 * variable a contains the hyperlink sent from webside.
+                 * variable b contains the string data (medical advice) of patient.
+                 * */
+               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
+                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
+
+              /*  adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+                advice_txt.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                advice_txt.setMovementMethod(LinkMovementMethod.getInstance());
+                Log.d("hyper_textview", "hyper_textview: " + advice_txt.getText().toString());*/
+                //checkForDoctor();
+                break;
+            }
+
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
                     testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
@@ -787,11 +792,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                   //  prescriptionCard.setVisibility(View.GONE);
 
                 }
-              /*  if (!adviceReturned.isEmpty()) {
+                if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
-                    medicalAdviceTextView.setText("");
-                    medicalAdviceCard.setVisibility(View.GONE);
-                }*/
+                    advice_txt.setText("");
+                  //  medicalAdviceCard.setVisibility(View.GONE);
+                }
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
                     test_txt.setText("");
