@@ -53,6 +53,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     private RelativeLayout filter_relative;
     private List<PrescriptionModel> todayList, weeksList, monthsList;
     private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
+    TextView today_nodata, week_nodata, month_nodata;
+
 
     @Nullable
     @Override
@@ -77,6 +79,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
 
     private void initUI(View view) {
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
+
+        today_nodata = view.findViewById(R.id.today_nodata);
+        week_nodata = view.findViewById(R.id.week_nodata);
+        month_nodata = view.findViewById(R.id.month_nodata);
+
         recycler_today = view.findViewById(R.id.recycler_today);
         recycler_week = view.findViewById(R.id.rv_thisweek);
         recycler_month = view.findViewById(R.id.rv_thismonth);
@@ -140,7 +147,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
             if (todayList.get(i).isEmergency())
                 prio_todays.add(todayList.get(i));
         }
-
+        totalCounts_today = prio_todays.size();
+        if(totalCounts_today == 0 || totalCounts_today < 0)
+            today_nodata.setVisibility(View.VISIBLE);
+        else
+            today_nodata.setVisibility(View.GONE);
         todays_adapter = new VisitAdapter(getActivity(), prio_todays);
         recycler_today.setNestedScrollingEnabled(false);
         recycler_today.setAdapter(todays_adapter);
@@ -152,7 +163,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
             if (weeksList.get(i).isEmergency())
                 prio_weeks.add(weeksList.get(i));
         }
-
+        totalCounts_week = prio_weeks.size();
+        if(totalCounts_week == 0 || totalCounts_week < 0)
+            week_nodata.setVisibility(View.VISIBLE);
+        else
+            week_nodata.setVisibility(View.GONE);
         weeks_adapter = new VisitAdapter(getActivity(), prio_weeks);
         recycler_week.setNestedScrollingEnabled(false);
         recycler_week.setAdapter(weeks_adapter);
@@ -164,7 +179,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
             if (monthsList.get(i).isEmergency())
                 prio_months.add(monthsList.get(i));
         }
-
+        totalCounts_month = prio_months.size();
+        if(totalCounts_month == 0 || totalCounts_month < 0)
+            month_nodata.setVisibility(View.VISIBLE);
+        else
+            month_nodata.setVisibility(View.GONE);
         months_adapter = new VisitAdapter(getActivity(), prio_months);
         recycler_month.setNestedScrollingEnabled(false);
         recycler_month.setAdapter(months_adapter);
@@ -250,6 +269,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                     @Override
                     public void run() {
                         //UI Thread work here
+                        if(totalCounts_today == 0 || totalCounts_today < 0)
+                            today_nodata.setVisibility(View.VISIBLE);
+                        else
+                            today_nodata.setVisibility(View.GONE);
+
                         todays_adapter = new VisitAdapter(getActivity(), todayList);
                         recycler_today.setNestedScrollingEnabled(false);
                         recycler_today.setAdapter(todays_adapter);
@@ -346,6 +370,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                     @Override
                     public void run() {
                         //UI Thread work here
+                        if(totalCounts_week == 0 || totalCounts_week < 0)
+                            week_nodata.setVisibility(View.VISIBLE);
+                        else
+                            week_nodata.setVisibility(View.GONE);
+
                         weeks_adapter = new VisitAdapter(getActivity(), weeksList);
                         recycler_week.setNestedScrollingEnabled(false);
                         recycler_week.setAdapter(weeks_adapter);
@@ -441,6 +470,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                     @Override
                     public void run() {
                         //UI Thread work here
+                        if(totalCounts_month == 0 || totalCounts_month < 0)
+                            month_nodata.setVisibility(View.VISIBLE);
+                        else
+                            month_nodata.setVisibility(View.GONE);
+
                         months_adapter = new VisitAdapter(getActivity(), monthsList);
                         recycler_month.setNestedScrollingEnabled(false);
                         recycler_month.setAdapter(months_adapter);

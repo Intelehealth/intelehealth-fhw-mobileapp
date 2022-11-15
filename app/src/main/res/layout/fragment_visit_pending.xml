@@ -273,7 +273,7 @@
                 android:layout_below="@+id/you_can_add"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:text="No follow up data"
+                android:text="No visits found"
                 android:visibility="gone"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
@@ -312,7 +312,7 @@
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:visibility="gone"
-                android:text="No follow up data"
+                android:text="No visits found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -350,7 +350,7 @@
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:visibility="gone"
-                android:text="No follow up data"
+                android:text="No visits found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />

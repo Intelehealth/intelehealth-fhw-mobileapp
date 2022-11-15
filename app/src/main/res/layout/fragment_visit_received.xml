@@ -270,13 +270,13 @@
                 android:layout_below="@+id/you_can_add"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:text="No follow up data"
-                android:visibility="gone"
+                android:text="No visits found"
+                android:visibility="visible"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
 
-            <androidx.recyclerview.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_today"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -285,7 +285,7 @@
                 android:padding="@dimen/card_padding"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="1"
+                tools:itemCount="0"
                 tools:listitem="@layout/followup_list_item" />
 
             <!--            This week-->
@@ -301,20 +301,20 @@
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize" />
 
-            <TextView
-                android:id="@+id/week_nodata"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/this_week"
-                android:gravity="center"
-                android:padding="@dimen/card_padding"
-                android:visibility="gone"
-                android:text="No follow up data"
-                android:textAppearance="@style/caption"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                <TextView
+                    android:id="@+id/week_nodata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/this_week"
+                    android:gravity="center"
+                    android:padding="@dimen/card_padding"
+                    android:visibility="gone"
+                    android:text="No visits found"
+                    android:textAppearance="@style/caption"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_male_textsize" />
 
-            <androidx.recyclerview.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_thisweek"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -339,20 +339,20 @@
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize" />
 
-            <TextView
-                android:id="@+id/month_nodata"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/this_month"
-                android:gravity="center"
-                android:padding="@dimen/card_padding"
-                android:visibility="gone"
-                android:text="No follow up data"
-                android:textAppearance="@style/caption"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                <TextView
+                    android:id="@+id/month_nodata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/this_month"
+                    android:gravity="center"
+                    android:padding="@dimen/card_padding"
+                    android:visibility="gone"
+                    android:text="No visits found"
+                    android:textAppearance="@style/caption"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_male_textsize" />
 
-            <androidx.recyclerview.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_thismonth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

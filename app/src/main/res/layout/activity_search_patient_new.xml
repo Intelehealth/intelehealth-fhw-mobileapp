@@ -107,7 +107,7 @@
         android:layout_marginStart="@dimen/fu_card_margin_sides"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/search_listitem_layout" />
 
