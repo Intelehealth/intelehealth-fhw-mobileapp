@@ -33,7 +33,7 @@
         >
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/textlayout_find_patient"
+            android:id="@+id/searchview_received"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_common_input_bg"

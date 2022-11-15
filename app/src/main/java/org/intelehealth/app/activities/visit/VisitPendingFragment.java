@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,7 +56,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     private List<PrescriptionModel> todayList, weeksList, monthsList;
     private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
     TextView today_nodata, week_nodata, month_nodata;
-
+    private androidx.appcompat.widget.SearchView searchview_pending;
+    private ImageView closeButton;
 
     @Nullable
     @Override
@@ -79,6 +82,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
 
     private void initUI(View view) {
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
+        searchview_pending = view.findViewById(R.id.searchview_pending);
+        closeButton = searchview_pending.findViewById(R.id.search_close_btn);
 
         today_nodata = view.findViewById(R.id.today_nodata);
         week_nodata = view.findViewById(R.id.week_nodata);
@@ -135,6 +140,26 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
             defaultData();
         });
         // Filter - end
+
+        // Search - start
+        searchview_pending.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchOperation(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+        closeButton.setOnClickListener(v -> {
+            defaultData();
+            searchview_pending.setQuery("", false);
+        });
+        // Search - end
     }
 
     /**
@@ -490,4 +515,87 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
         return totalCounts;
     }
+
+    /**
+     * This function will perform the search operation.
+     * @param query
+     */
+    private void searchOperation(String query) {
+        Log.v("Search", "Search Word: " + query);
+
+        List<PrescriptionModel> today = new ArrayList<>();
+        List<PrescriptionModel> week = new ArrayList<>();
+        List<PrescriptionModel> month = new ArrayList<>();
+
+        today.addAll(todayList);
+        week.addAll(weeksList);
+        month.addAll(monthsList);
+
+        if (!query.isEmpty()) {
+
+            // todays - start
+            today.clear();
+            for (PrescriptionModel model : todayList) {
+                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+                    today.add(model);
+                }
+                else {
+                    // dont add in list value.
+                }
+
+                totalCounts_today = today.size();
+                if(totalCounts_today == 0 || totalCounts_today < 0)
+                    today_nodata.setVisibility(View.VISIBLE);
+                else
+                    today_nodata.setVisibility(View.GONE);
+                todays_adapter = new VisitAdapter(getActivity(), today);
+                recycler_today.setNestedScrollingEnabled(false);
+                recycler_today.setAdapter(todays_adapter);
+            }
+            // todays - end
+
+            // weeks - start
+            week.clear();
+            for (PrescriptionModel model : weeksList) {
+                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+                    week.add(model);
+                }
+                else {
+                    // do nothing
+                }
+
+                totalCounts_week = week.size();
+                if(totalCounts_week == 0 || totalCounts_week < 0)
+                    week_nodata.setVisibility(View.VISIBLE);
+                else
+                    week_nodata.setVisibility(View.GONE);
+                weeks_adapter = new VisitAdapter(getActivity(), week);
+                recycler_week.setNestedScrollingEnabled(false);
+                recycler_week.setAdapter(weeks_adapter);
+            }
+            // weeks - end
+
+            // months - start
+            month.clear();
+            for (PrescriptionModel model : monthsList) {
+                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+                    month.add(model);
+                }
+                else {
+                    // do nothing
+                }
+
+                totalCounts_month = month.size();
+                if(totalCounts_month == 0 || totalCounts_month < 0)
+                    month_nodata.setVisibility(View.VISIBLE);
+                else
+                    month_nodata.setVisibility(View.GONE);
+                months_adapter = new VisitAdapter(getActivity(), month);
+                recycler_month.setNestedScrollingEnabled(false);
+                recycler_month.setAdapter(months_adapter);
+            }
+            // months - end
+        }
+    }
+
 }
