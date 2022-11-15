@@ -2,13 +2,21 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class DialogUtils {
@@ -52,5 +60,12 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+
+   /* patientRegistrationDialog(context,
+                              getResources().getDrawable(R.drawable.close_patient_svg),
+                "Close patient registration?",
+                        "Are you sure you want to close the patient registration?",
+                        "No",
+                        "Yes");*/
 
 }

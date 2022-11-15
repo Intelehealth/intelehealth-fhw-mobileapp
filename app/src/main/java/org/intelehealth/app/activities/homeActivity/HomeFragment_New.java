@@ -63,7 +63,7 @@ public class HomeFragment_New extends Fragment {
             public void onClick(View v) {
              /*   Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
                 startActivity(intent);*/
-                Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                Intent intent = new Intent(getActivity(), ScheduleAppointmentActivity_New.class);
                 startActivity(intent);
             }
         });

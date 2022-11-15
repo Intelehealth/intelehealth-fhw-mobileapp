@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -40,6 +41,12 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_calendar);
+
+        initUI();
+
+    }
+
+    private void initUI() {
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rvHorizontalCal.setLayoutManager(linearLayoutManager);
@@ -48,7 +55,6 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
         tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
 
         calendarInstance = Calendar.getInstance();
-        //  calendar = Calendar.getInstance();
         currentMonth = calendarInstance.getActualMaximum(Calendar.MONTH);
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
@@ -61,7 +67,7 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
             enableDisablePreviousButton(true);
 
         }
-        getAllDatesOfSelectedMonth(calendarInstance, true);
+        getAllDatesOfSelectedMonth(calendarInstance, true, String.valueOf(currentMonth), String.valueOf(currentYear), String.valueOf(currentMonth));
 
         ivNextMonth.setOnClickListener(v -> {
             getNextMonthDates();
@@ -71,7 +77,11 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllDatesOfSelectedMonth(Calendar calendar, boolean isCurrentMonth) {
+    private void getAllDatesOfSelectedMonth(Calendar calendar,
+                                            boolean isCurrentMonth,
+                                            String selectedMonth, String selectedYear, String selectedMonthForDays) {
+        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : "+selectedMonth);
+        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : "+selectedYear);
 
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDay;
@@ -90,17 +100,17 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
         for (int i = currentDay; i <= lastDay; i++) {
 
             try {
-                String inputDate = i + "-" + currentMonth + "-" + currentYear;
+                String inputDate = i + "-" + selectedMonthForDays + "-" + selectedYear;
                 Date date = inFormat.parse(inputDate);
                 if (date != null) {
                     String dayForDate = outFormat.format(date);
                     String dayForDateFinal = dayForDate.substring(0, 3);
 
                     if (i == currentDay) {
-                        calendarModel = new CalendarModel("Today", i, currentDay, true);
+                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, true, selectedMonth, selectedYear, false,selectedMonthForDays);
 
                     } else {
-                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, false);
+                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, false, selectedMonth, selectedYear, false,selectedMonthForDays);
 
                     }
 
@@ -113,85 +123,23 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "getAllDatesOfSelectedMonth: e : " + e.getLocalizedMessage());
                 e.printStackTrace();
             }
-
-
         }
 
-        HorizontalCalendarViewAdapter horizontalCalendarViewAdapter = new HorizontalCalendarViewAdapter(this, listOfDates);
-        rvHorizontalCal.setAdapter(horizontalCalendarViewAdapter);
+        //  HorizontalCalendarViewAdapter horizontalCalendarViewAdapter = new HorizontalCalendarViewAdapter(this, listOfDates,this);
 
-        System.out.println("getAllDatesOfSelectedMonth currentMonth: " + currentMonth);
-        System.out.println("getAllDatesOfSelectedMonth Day: " + lastDay);
-        System.out.println("getAllDatesOfSelectedMonth Day : " + currentDay);
-        System.out.println("getAllDatesOfSelectedMonth are " + daysLeft + " days left in the month.");
-    }
+        rvHorizontalCal.setAdapter(new HorizontalCalendarViewAdapter(this, listOfDates, calendarModel1 -> {
+            int date = calendarModel1.getDate();
+            String month = calendarModel1.getSelectedMonthForDays();
+            String year = calendarModel1.getSelectedYear();
 
-    private void newCode() {
-        /* starts before 1 month from now */
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, -1);
-
-        /* ends after 1 month from now */
-        //Calendar endDate = Calendar.getInstance();
-        //endDate.add(Calendar.MONTH, 1);
-
-        int lastDay = calendarInstance.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = calendarInstance.get(Calendar.DAY_OF_MONTH);
-        int daysLeft = lastDay - currentDay;
-        tvSelectedMonthYear.setText(getMonthNumberByName(String.valueOf(currentMonth)) + ", " + currentYear);
-
-        Log.d(TAG, "011newCode: currentMonth : " + currentMonth);
-        CalendarModel calendarModel;
-        SimpleDateFormat inFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
-
-        List<CalendarModel> listOfDates = new ArrayList<>();
-        for (int i = currentDay; i <= lastDay; i++) {
-
-            try {
-                String inputDate = i + "-" + currentMonth + "-" + currentYear;
-                Date date = inFormat.parse(inputDate);
-                if (date != null) {
-                    String dayForDate = outFormat.format(date);
-                    String dayForDateFinal = dayForDate.substring(0, 3);
-
-                    Log.d(TAG, "011newCode: dayForDate :" + dayForDateFinal + ", InputDate : " + inputDate);
-                    if (i == currentDay) {
-                        calendarModel = new CalendarModel("Today", i, currentDay, true);
-
-                    } else {
-                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, false);
-
-                    }
-
-                    listOfDates.add(calendarModel);
-
-                } else {
-                    Log.d(TAG, "011newCode: date is null");
-                }
-
-            } catch (ParseException e) {
-                Log.d(TAG, "newCode: e : " + e.getLocalizedMessage());
-                e.printStackTrace();
-            }
-
-
-        }
-
-        HorizontalCalendarViewAdapter horizontalCalendarViewAdapter = new HorizontalCalendarViewAdapter(this, listOfDates);
-        rvHorizontalCal.setAdapter(horizontalCalendarViewAdapter);
-
-        System.out.println("011Last currentMonth: " + currentMonth);
-        System.out.println("011Last Day: " + lastDay);
-        System.out.println("011Current Day : " + currentDay);
-        System.out.println("011There are " + daysLeft + " days left in the month.");
+            Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();
+        }));
 
     }
 
     private void getPreviousMonthDates() {
         calendarInstance.add(Calendar.MONTH, -1);
         Date monthNameNEw = calendarInstance.getTime();
-        String monthName = calendarInstance.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
         Date date = null;
         SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
         try {
@@ -210,12 +158,12 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
                     enableDisablePreviousButton(false);
 
-                    getAllDatesOfSelectedMonth(calendarInstance, true);
+                    getAllDatesOfSelectedMonth(calendarInstance, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
 
                 } else {
-                    enableDisablePreviousButton(false);
+                    enableDisablePreviousButton(true);
 
-                    getAllDatesOfSelectedMonth(calendarInstance, false);
+                    getAllDatesOfSelectedMonth(calendarInstance, false, monthToCompare, selectedPrevMonthYear,monthToCompare);
 
                 }
 
@@ -245,11 +193,13 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
             if (monthYear.length > 0) {
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
+                String[] dateSplit = formateDate.split("/");
+
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 if (selectedNextMonth.equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
-                    getAllDatesOfSelectedMonth(calendarInstance, true);
+                    getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear,dateSplit[1]);
                 } else {
-                    getAllDatesOfSelectedMonth(calendarInstance, false);
+                    getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear,dateSplit[1]);
 
                 }
             }
@@ -260,60 +210,14 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
 
     }
 
-    private String getMonthNumberByName(String monthNo) {
-
-        switch (monthNo) {
-            case "01":
-                monthNAmeFromNo = "January";
-                break;
-            case "02":
-                monthNAmeFromNo = "February";
-                break;
-            case "03":
-                monthNAmeFromNo = "March";
-                break;
-            case "04":
-                monthNAmeFromNo = "April";
-                break;
-            case "05":
-                monthNAmeFromNo = "May";
-                break;
-            case "06":
-                monthNAmeFromNo = "June";
-                break;
-            case "07":
-                monthNAmeFromNo = "July";
-                break;
-            case "08":
-                monthNAmeFromNo = "August";
-                break;
-            case "09":
-                monthNAmeFromNo = "September";
-                break;
-            case "10":
-                monthNAmeFromNo = "October";
-                break;
-            case "11":
-                monthNAmeFromNo = "November";
-
-                break;
-            case "12":
-                monthNAmeFromNo = "December";
-                break;
-        }
-        return monthNAmeFromNo;
-
-    }
-
     private void enableDisablePreviousButton(boolean wantToEnable) {
         if (wantToEnable) {
             ivPrevMonth.setEnabled(true);
             ivPrevMonth.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
 
         } else {
-            ivPrevMonth.setEnabled(true);
+            ivPrevMonth.setEnabled(false);
             ivPrevMonth.setColorFilter(ContextCompat.getColor(this, R.color.font_black_3), android.graphics.PorterDuff.Mode.SRC_IN);
-
         }
     }
 }

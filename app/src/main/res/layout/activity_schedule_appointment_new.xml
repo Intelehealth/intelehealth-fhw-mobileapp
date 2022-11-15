@@ -12,116 +12,175 @@
         android:id="@+id/toolbar_schedule_appointments"
         layout="@layout/toolbar_common_new2_ui2" />
 
-    <LinearLayout
-        android:id="@+id/layout_dates"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/toolbar_schedule_appointments"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_schedule_appointments"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="38dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="80dp">
 
-        <ImageView
-            android:id="@+id/iv_prev_month"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ui2_ic_chevron_left" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
 
-        <ImageView
-            android:id="@+id/iv_next_month"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ui2_ic_chevron_right"
-            android:tint="@color/colorPrimary" />
-    </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/layout_cal_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <LinearLayout
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_date_selector"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ui2_ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tv_selected_month_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toEndOf="@+id/iv_date_selector"
+                    android:lineHeight="21dp"
+                    android:text="November, 2022"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_prev_month1"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ui2_ic_chevron_left" />
+
+                    <ImageView
+                        android:id="@+id/iv_next_month1"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ui2_ic_chevron_right"
+                        android:tint="@color/colorPrimary" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_horizontal_cal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_cal_view"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rv_horizontal_cal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_time_slot_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Pick a time slot"
+                    android:textColor="@color/textColorGray" />
+
+                <TextView
+                    android:id="@+id/tv_appointment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableStart="@drawable/ui2_ic_sunrise"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimary1"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Morning"
+                    android:textAppearance="@style/fu_detiails_date"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_morning_time_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:drawableStart="@drawable/ui2_ic_afternoon"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimary1"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Afternoon"
+                    android:textAppearance="@style/fu_detiails_date"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_afternoon_time_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:drawableStart="@drawable/ui2_ic_sunset"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimary1"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Evening"
+                    android:textAppearance="@style/fu_detiails_date"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_evening_time_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_book_appointment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_dates"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_time_slot_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Pick a time slot"
-            android:textColor="@color/textColorGray" />
-
-        <TextView
-            android:id="@+id/tv_appointment_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/ui2_ic_sunrise"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorPrimary1"
-            android:gravity="center_vertical"
-            android:lineSpacingExtra="3sp"
-            android:text="Morning"
-            android:textAppearance="@style/fu_detiails_date"
-            android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/fu_male_textsize"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_morning_time_slots"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:drawableStart="@drawable/ui2_ic_afternoon"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorPrimary1"
-            android:gravity="center_vertical"
-            android:lineSpacingExtra="3sp"
-            android:text="Afternoon"
-            android:textAppearance="@style/fu_detiails_date"
-            android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/fu_male_textsize"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_afternoon_time_slots"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:drawableStart="@drawable/ui2_ic_sunset"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorPrimary1"
-            android:gravity="center_vertical"
-            android:lineSpacingExtra="3sp"
-            android:text="Evening"
-            android:textAppearance="@style/fu_detiails_date"
-            android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/fu_male_textsize"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_evening_time_slots"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_privacy_notice_link"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/button_setup1_margin_top"
+        android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
+        android:background="@drawable/ui2_common_primary_bg"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/book_appointment"
+        android:textSize="@dimen/common_button_text_size" />
 </RelativeLayout>

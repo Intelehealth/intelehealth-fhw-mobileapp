@@ -30,6 +30,7 @@ public class SlotInfo implements Serializable {
     @SerializedName("drName")
     private String drName;
 
+    private boolean isSelected = false;
 
     public String getSlotDay() {
         return slotDay;
@@ -95,6 +96,12 @@ public class SlotInfo implements Serializable {
         this.drName = drName;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
 }
