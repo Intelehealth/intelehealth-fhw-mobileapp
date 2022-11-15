@@ -103,4 +103,11 @@ public class DialogUtils {
     }
 
 
+   /* patientRegistrationDialog(context,
+                              getResources().getDrawable(R.drawable.close_patient_svg),
+                "Close patient registration?",
+                        "Are you sure you want to close the patient registration?",
+                        "No",
+                        "Yes");*/
+
 }

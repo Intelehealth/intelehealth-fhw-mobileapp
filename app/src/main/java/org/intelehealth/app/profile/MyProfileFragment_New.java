@@ -5,7 +5,6 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,8 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,34 +41,26 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
-import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.app.activities.splash_activity.SplashActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.dataMigration.SmoothUpgrade;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.ProviderProfileDao;
-import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.dto.ProviderProfileDTO;
-import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.ByteArrayOutputStream;
@@ -85,7 +74,7 @@ import java.util.UUID;
 public class MyProfileFragment_New extends Fragment {
     private static final String TAG = "MyProfileFragment_New";
     View view;
-    String[] textArray = {"+91", "+00", "+20", "+22"};
+    String[] textArray = {"+91", "+99", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
@@ -101,6 +90,11 @@ public class MyProfileFragment_New extends Fragment {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Handler mBackgroundHandler;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    RadioButton rbMale, rbFemale, rbOther;
+    String profileImagePAth = "";
+    Button btnSave;
+    SnackbarUtils snackbarUtils;
+    SpinnerAdapter adapter;
 
     @Override
     public void onResume() {
@@ -117,6 +111,7 @@ public class MyProfileFragment_New extends Fragment {
     }
 
     private void initUI() {
+        snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(getActivity());
         View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
         TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
@@ -128,52 +123,6 @@ public class MyProfileFragment_New extends Fragment {
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
-
-        ivBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-           /*     FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();*/
-                Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
-                startActivity(intent);
-            }
-        });
-
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
-        bottomNav.setVisibility(View.GONE);
-
-        spinnerCountries = view.findViewById(R.id.spinner_countries_profile);
-        ivProfileImage = view.findViewById(R.id.iv_profilePic);
-
-
-        RelativeLayout layoutChangePassword = view.findViewById(R.id.view_change_password);
-        layoutChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChangePasswordActivity_New.class);
-                startActivity(intent);
-            }
-        });
-        SpinnerAdapter adapter = new SpinnerAdapter(getActivity(), R.layout.spinner_value_layout, textArray, imageArray);
-        spinnerCountries.setAdapter(adapter);
-
-        RadioGroup rgGroupGender = view.findViewById(R.id.radioGroup_gender_profile);
-        rgGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedRadioButton = group.findViewById(checkedId);
-                boolean isChecked = checkedRadioButton.isChecked();
-                if (isChecked) {
-                    selectedGender = checkedRadioButton.getText().toString();
-                    Log.d(TAG, "onCheckedChanged: selected  " + checkedRadioButton.getText().toString());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        checkedRadioButton.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
-                    }
-
-                }
-            }
-        });
-
         //initialize all input fields
 
         etUsername = view.findViewById(R.id.et_username_profile);
@@ -184,17 +133,59 @@ public class MyProfileFragment_New extends Fragment {
         etMobileNo = view.findViewById(R.id.et_mobile_no_profile);
         tvDob = view.findViewById(R.id.tv_date_of_birth_profile);
         tvAge = view.findViewById(R.id.tv_age_profile);
-        Button btnSave = view.findViewById(R.id.btn_save_profile);
+        btnSave = view.findViewById(R.id.btn_save_profile);
         layoutParent = view.findViewById(R.id.layout_parent_profile);
+        rbMale = view.findViewById(R.id.rb_male);
+        rbFemale = view.findViewById(R.id.rb_female);
+        rbOther = view.findViewById(R.id.rb_other);
 
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addProfileDetailsToLocalDb();
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        bottomNav.setVisibility(View.GONE);
+
+        spinnerCountries = view.findViewById(R.id.spinner_countries_profile);
+        ivProfileImage = view.findViewById(R.id.iv_profilePic);
+        tvChangePhoto = view.findViewById(R.id.tv_change_photo_profile);
+
+
+        RelativeLayout layoutChangePassword = view.findViewById(R.id.view_change_password);
+
+        adapter = new SpinnerAdapter(getActivity(), R.layout.spinner_value_layout, textArray, imageArray);
+        spinnerCountries.setAdapter(adapter);
+
+
+        //all click listeners
+
+        RadioGroup rgGroupGender = view.findViewById(R.id.radioGroup_gender_profile);
+        rgGroupGender.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton checkedRadioButton = group.findViewById(checkedId);
+            boolean isChecked = checkedRadioButton.isChecked();
+            if (isChecked) {
+                selectedGender = checkedRadioButton.getText().toString();
+                Log.d(TAG, "onCheckedChanged: selected  " + checkedRadioButton.getText().toString());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    checkedRadioButton.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
+                }
+
             }
         });
 
+        layoutChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity_New.class);
+            startActivity(intent);
+        });
+
+        ivBackArrow.setOnClickListener(v -> {
+       /*     FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
+            fm.popBackStack();*/
+            Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
+            startActivity(intent);
+        });
+
+
+        btnSave.setOnClickListener(v -> addProfileDetailsToLocalDb());
+
+        //date selector
         tvDob.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
@@ -232,49 +223,94 @@ public class MyProfileFragment_New extends Fragment {
             dobToDb = year + "-" + sMonth + "-" + sDay;
 
             dobToShow = sDay + "-" + sMonth + "-" + year;
+            tvDob.setText(dobToShow);
+            tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
+
+            String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, getActivity());
+            tvAge.setText(age);
 
         };
-        tvChangePhoto = view.findViewById(R.id.tv_change_photo_profile);
 
-        tvChangePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPerm();
-            }
-        });
+        tvChangePhoto.setOnClickListener(v -> checkPerm());
 
+        fetchUserDetailsIfAdded();
+
+    }
+
+    private void fetchUserDetailsIfAdded() {
         ProviderProfileDao providerProfileDao = new ProviderProfileDao();
         try {
             ProviderProfileDTO providerProfileDTO = providerProfileDao.getProvidersDetails();
             etUsername.setText(providerProfileDTO.getUsername());
-            etFirstName.setText(providerProfileDTO.getUsername());
-            etMiddleName.setText(providerProfileDTO.getUsername());
-            etLastName.setText(providerProfileDTO.getUsername());
-            etEmail.setText(providerProfileDTO.getUsername());
-            etMobileNo.setText(providerProfileDTO.getUsername());
-            tvDob.setText(providerProfileDTO.getUsername());
-            tvAge.setText(providerProfileDTO.getUsername());
-            //spinnerCountries.setse(providerProfileDTO.getUsername());
-            // rgGroupGender.setText(providerProfileDTO.getUsername());
-            String gender = providerProfileDTO.getGender();
-            if (gender != null && !gender.isEmpty()) {
-                //rgGroupGender.set
+            etFirstName.setText(providerProfileDTO.getFirstName());
+            etMiddleName.setText(providerProfileDTO.getMiddleName());
+            etLastName.setText(providerProfileDTO.getLastName());
+            etEmail.setText(providerProfileDTO.getEmail());
+            etMobileNo.setText(providerProfileDTO.getPhoneNumber());
+            tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(providerProfileDTO.getDateOfBirth()));
+            tvAge.setText(providerProfileDTO.getAge());
+
+            String selectedCountry = providerProfileDTO.getCountryCode();
+            if (selectedCountry != null && !selectedCountry.isEmpty()) {
+                if (selectedCountry.equals("91")) {
+                    spinnerCountries.setSelection(0, true);
+
+                } else if (selectedCountry.equals("99")) {
+                    spinnerCountries.setSelection(1, true);
+
+                } else if (selectedCountry.equals("20")) {
+                    spinnerCountries.setSelection(2, true);
+
+                } else if (selectedCountry.equals("22")) {
+                    spinnerCountries.setSelection(3, true);
+
+                }
             }
 
-            if(providerProfileDTO.getImagePath()!=null && !providerProfileDTO.getImagePath().isEmpty()){
+            String gender = providerProfileDTO.getGender();
+            if (gender != null && !gender.isEmpty()) {
+
+                if (gender.equalsIgnoreCase("male")) {
+                    rbMale.setChecked(true);
+                } else if (gender.equalsIgnoreCase("female")) {
+                    rbFemale.setChecked(true);
+
+                } else if (gender.equalsIgnoreCase("other")) {
+                    rbOther.setChecked(true);
+
+                }
+            }
+
+            Log.d(TAG, "initUI: path : " + providerProfileDTO.getImagePath());
+
+            if (providerProfileDTO.getImagePath() != null && !providerProfileDTO.getImagePath().isEmpty()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(providerProfileDTO.getImagePath());
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                 byte[] imageArray = stream.toByteArray();
                 ivProfileImage.setImageBitmap(bitmap);
+              /*  Glide.with(getActivity())
+                        .load(bitmap)
+                        .thumbnail(0.3f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(ivProfileImage);*/
+
             }
 
+            if (providerProfileDTO.getProvider_id() != null && !providerProfileDTO.getProvider_id().isEmpty()) {
+                //data already inserted in local db
+                //update existing data
+                btnSave.setOnClickListener(v -> {
+                    updateProfileDetailsToLocalDb(providerProfileDTO);
+                });
 
+            }
 
         } catch (DAOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void selectImage() {
@@ -302,7 +338,40 @@ public class MyProfileFragment_New extends Fragment {
         builder.show();
     }
 
+    private void updateProfileDetailsToLocalDb(ProviderProfileDTO providerProfileDTO) {
+        Log.d(TAG, "updateProfileDetailsToLocalDb: ");
+        ProviderProfileDao providerDAO = new ProviderProfileDao();
+        List<ProviderProfileDTO> providersDetails = new ArrayList<>();
+        String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, getActivity());
+
+        String imagePath = "";
+        if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
+            imagePath = profileImagePAth;
+        } else {
+            imagePath = providerProfileDTO.getImagePath();
+        }
+
+
+        ProviderProfileDTO inputDTO = new ProviderProfileDTO(providerProfileDTO.getProvider_id(), etUsername.getText().toString(),
+                etFirstName.getText().toString(),
+                etMiddleName.getText().toString(), etLastName.getText().toString(), selectedGender,
+                dobToDb, tvAge.getText().toString(), etMobileNo.getText().toString(),
+                spinnerCountries.getSelectedItem().toString(), etEmail.getText().toString(), imagePath);
+        providersDetails.add(inputDTO);
+        try {
+            boolean isUpdated = providerDAO.updateProvidersProfile(providersDetails);
+            if (isUpdated)
+
+                snackbarUtils.showSnackLinearLayoutParentSuccess(getActivity(), layoutParent, getResources().getString(R.string.profile_details_updated_new));
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void addProfileDetailsToLocalDb() {
+        Log.d(TAG, "addProfileDetailsToLocalDb: ");
         ProviderProfileDao providerDAO = new ProviderProfileDao();
         SnackbarUtils snackbarUtils = new SnackbarUtils();
         List<ProviderProfileDTO> providersDetails = new ArrayList<>();
@@ -313,8 +382,8 @@ public class MyProfileFragment_New extends Fragment {
         ProviderProfileDTO providerProfileDTO = new ProviderProfileDTO(sessionManager.getProviderID(), etUsername.getText().toString(),
                 etFirstName.getText().toString(),
                 etMiddleName.getText().toString(), etLastName.getText().toString(), selectedGender,
-                dobToDb, age, etMobileNo.getText().toString(),
-                spinnerCountries.getSelectedItem().toString(), etEmail.getText().toString(), "None");
+                dobToDb, tvAge.getText().toString(), etMobileNo.getText().toString(),
+                spinnerCountries.getSelectedItem().toString(), etEmail.getText().toString(), profileImagePAth);
         providersDetails.add(providerProfileDTO);
         try {
             boolean isInserted = providerDAO.insertProvidersProfile(providersDetails);
@@ -417,10 +486,15 @@ public class MyProfileFragment_New extends Fragment {
     }
 
     private void updateProfileImage(String imagePath) {
+        profileImagePAth = imagePath;
         ProviderProfileDao providerProfileDao = new ProviderProfileDao();
 
         try {
-            providerProfileDao.updateProfilePicture(sessionManager.getProviderID(), imagePath);
+            boolean isUpdated = providerProfileDao.updateProfilePicture(sessionManager.getProviderID(), imagePath);
+            if (isUpdated) {
+                snackbarUtils.showSnackLinearLayoutParentSuccess(getActivity(), layoutParent, getResources().getString(R.string.profile_photo_updated_new));
+
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -439,6 +513,7 @@ public class MyProfileFragment_New extends Fragment {
                 takenImage.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                 byte[] imageArray = stream.toByteArray();
                 ivProfileImage.setImageBitmap(takenImage);
+
                 saveImage(mCurrentPhotoPath);
 //                String mCurrentPhotoPath = data.getStringExtra("RESULT");
 //                File photo = new File(mCurrentPhotoPath);
@@ -478,6 +553,7 @@ public class MyProfileFragment_New extends Fragment {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                 byte[] imageArray = stream.toByteArray();
                 ivProfileImage.setImageBitmap(bitmap);
+
 
                 BitmapUtils.copyFile(picturePath, finalFilePath);
                 compressImageAndSave(finalFilePath);

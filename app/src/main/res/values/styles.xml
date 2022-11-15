@@ -386,6 +386,18 @@
             @color/textview_color
         </item>
     </style>
+  <!--  <style name="ChipTheme" parent="Base.Theme.MaterialComponents.Light">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="background">@color/colorPrimaryDark</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
+    </style>-->
+    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="chipStrokeColor">@color/colorPrimary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 
     <style name="RadioButtonStyleSelection" parent="Theme.AppCompat.Light">
 <!--        <item name="colorControlNormal">@color/indigo</item>-->

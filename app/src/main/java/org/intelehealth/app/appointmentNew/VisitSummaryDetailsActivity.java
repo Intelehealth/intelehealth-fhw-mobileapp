@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.appointment;
+package org.intelehealth.app.appointmentNew;
 
 import android.os.Bundle;
 

@@ -2,15 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/layout_parent_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/layout_parent_profile"
         android:background="@color/white"
+        android:orientation="vertical"
         android:padding="@dimen/layout_profile_padding">
 
         <FrameLayout
@@ -18,19 +18,29 @@
             android:layout_height="@dimen/iv_profile_drawer_height"
             android:layout_gravity="center">
 
-            <ImageView
-                android:id="@+id/iv_profilePic"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@drawable/ui2_dummy_profile_icon" />
+                android:layout_alignParentTop="true"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/apps_details_profile_iv_radius">
+
+                <ImageView
+                    android:id="@+id/iv_profilePic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:src="@drawable/ui2_dummy_profile_icon" />
+            </androidx.cardview.widget.CardView>
 
             <ImageView
                 android:id="@+id/iv_camera"
                 android:layout_width="@dimen/iv_camera_width"
                 android:layout_height="@dimen/iv_camera_height"
                 android:layout_gravity="bottom|right"
-                android:src="@drawable/ui2_ic_camera_edit" />
+                android:src="@drawable/ui2_ic_camera_edit"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
@@ -224,7 +234,7 @@
             android:weightSum="3">
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/rb_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -241,7 +251,7 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rb_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -258,7 +268,7 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rb_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -312,11 +322,11 @@
             android:weightSum="1">
 
             <TextView
+                android:id="@+id/tv_date_of_birth_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:id="@+id/tv_date_of_birth_profile"
-                android:background="@drawable/bg_input_fieldnew"
+                android:background="@drawable/ui2_background_input_field_new"
                 android:drawableEnd="@drawable/ui2_ic_calendar"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="@dimen/profile_text_line_spacing"
@@ -329,12 +339,12 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <TextView
+                android:id="@+id/tv_age_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dob_age_margin_start"
                 android:layout_weight="0.4"
-                android:id="@+id/tv_age_profile"
-                android:background="@drawable/bg_input_fieldnew"
+                android:background="@drawable/ui2_background_input_field_new"
                 android:drawableEnd="@drawable/ui2_ic_calendar"
                 android:drawableTint="@color/transparent"
                 android:gravity="center_vertical"
@@ -374,7 +384,8 @@
                     android:id="@+id/spinner_countries_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/spinner_countries_margin" />
+                    android:layout_margin="@dimen/spinner_countries_margin"
+                   />
 
             </LinearLayout>
 
@@ -392,10 +403,10 @@
                     android:background="@drawable/bg_input_fieldnew"
                     android:hint="@string/enter_phone_number"
                     android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:lineSpacingExtra="3sp"
                     android:maxLength="10"
                     android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:inputType="number"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
@@ -421,8 +432,8 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
                 android:id="@+id/et_email_profile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_fieldnew"
                 android:hint="@string/enter_your_email"

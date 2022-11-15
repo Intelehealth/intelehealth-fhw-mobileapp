@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/chip_apps_height"
+    android:paddingEnd="@dimen/chip_apps_padding_start"
+    android:paddingStart="@dimen/chip_apps_padding_start"
+    android:paddingTop="@dimen/chip_apps_padding_top"
+    android:paddingBottom="@dimen/chip_apps_padding_top"
+    android:textFontWeight="500"
+    android:lineHeight="@dimen/card_apps_title_line_height"
+    android:textSize="@dimen/chip_apps_text_size"
+    app:chipCornerRadius="4dp"
+    android:fontFamily="@font/lato_bold"
+    android:textColor="@color/colorPrimary"
+    android:textStyle="bold"
+    app:chipBackgroundColor="@color/colorAccentCloseVisit"
+    app:chipStrokeColor="@color/colorPrimary"
+    app:closeIcon="@drawable/ui2_ic_close_drawer"
+    app:closeIconTint="@color/colorPrimary"
+    app:closeIconEnabled="true" />
+

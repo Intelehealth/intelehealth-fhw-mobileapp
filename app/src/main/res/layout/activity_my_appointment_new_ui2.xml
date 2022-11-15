@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="16dp"
-    android:background="@color/white"
-    android:paddingEnd="16dp"
+    android:background="@drawable/frame_10021"
     android:orientation="vertical"
-    tools:context=".activities.appointment.MyAppointmentActivity">
+    android:paddingStart="@dimen/my_appointment_parent_padding"
+    android:paddingEnd="@dimen/my_appointment_parent_padding"
+    tools:context=".appointmentNew.MyAppointmentActivity">
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/toolbar_my_appointments"
         layout="@layout/toolbar_common_new2_ui2" />
 
@@ -19,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_my_appointments"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/my_appointments_tab_margin_top"
         android:gravity="center"
         android:textAlignment="center"
         app:tabGravity="fill"
@@ -41,10 +43,10 @@
         style="@style/NavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@drawable/top_rounded_whitebg"
         android:foregroundTint="@color/colorPrimary"
+        android:visibility="gone"
         app:elevation="8dip"
         app:itemBackground="@drawable/bottom_nav_tab_background"
         app:itemIconSize="@dimen/bottom_nav_icon_size"
