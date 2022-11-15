@@ -364,8 +364,14 @@
                 android:id="@+id/add_notes_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vitalsRelativeLayout"
                 android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_below="@+id/vitalsRelativeLayout">
+
+                <!--Visit Summary-->
+            <RelativeLayout
+                android:id="@+id/vs_add_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginEnd="@dimen/toolbar_margin_left">
 
@@ -389,6 +395,96 @@
                     android:paddingStart="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
                     android:background="@drawable/edittext_border"/>
+
+            </RelativeLayout>
+
+                <!--Visit Details - start-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/addnotes_vd_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/add_doc_relative"
+                    android:elevation="16dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/addnotes_vd_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/fu_card_margin_sides">
+
+                            <ImageView
+                                android:id="@+id/vs_icon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/add_notes_redicon"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/vs_icon"
+                                android:text="Additional Notes"
+                                style="@style/text_title_style"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:layout_centerVertical="true" />
+
+                            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/btn_up_addnotes_vd_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:background="@null"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <!--Expanded Vitals-->
+                        <RelativeLayout
+                            android:id="@+id/vd_addnotes_header_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/addnotes_vd_header_relative"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                                android:background="@color/notifi_divider_color" />
+
+                            <!--Personal Sub-Child-->
+
+                            <TextView
+                                android:id="@+id/vd_addnotes_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Notes shared by doctor will be shown here."
+                                android:layout_below="@+id/divider"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/margin_16dp"
+                                />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Visit Details - end-->
 
             </RelativeLayout>
             <!--Additional docs - end-->
@@ -485,30 +581,33 @@
                         android:id="@+id/special_vd_header_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/fu_card_margin_sides">
+                        android:layout_marginStart="@dimen/fu_card_margin_sides"
+                        android:layout_marginTop="@dimen/fu_card_margin_sides"
+                        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                        android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
                             android:id="@+id/vs_icon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
-                            android:src="@drawable/speciality_red_icon"/>
+                            android:src="@drawable/speciality_red_icon" />
 
                         <TextView
+                            style="@style/text_title_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Doctor's Speciality"
-                            style="@style/text_title_style"
+                            android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_centerVertical="true" />
+                            android:layout_toEndOf="@+id/vs_icon"
+                            android:text="Doctor's Speciality" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btn_up_special_vd_header"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
-                            android:background="@null"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:background="@null"
                             android:src="@drawable/ui2_ic_chevron_down" />
                     </RelativeLayout>
 

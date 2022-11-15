@@ -157,9 +157,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
-            btn_up_phyexam_header, btn_up_medhist_header, openall_btn;
+            btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
-            vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview;
+            vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
+            vs_add_notes;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
@@ -278,7 +279,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     private WebView mWebView;
     public static String prescription1;
     public static String prescription2;
-    private CardView doc_speciality_card, special_vd_card;
+    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
 
 
 
@@ -433,6 +434,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
+            vs_add_notes.setVisibility(View.GONE);
+            addnotes_vd_card.setVisibility(View.VISIBLE);
         }
         else {
             editVitals.setVisibility(View.VISIBLE);
@@ -448,6 +451,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
             doc_speciality_card.setVisibility(View.VISIBLE);
             special_vd_card.setVisibility(View.GONE);
+            vs_add_notes.setVisibility(View.VISIBLE);
+            addnotes_vd_card.setVisibility(View.GONE);
         }
         // Edit btn visibility based on user coming from Visit Details screen - End
 
@@ -464,6 +469,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
+                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
             }
             else {
                 openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
@@ -472,6 +478,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
+                vd_addnotes_header_expandview.setVisibility(View.GONE);
             }
 
         });
@@ -516,6 +523,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 vd_special_header_expandview.setVisibility(View.GONE);
             else
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
+        });
+
+        btn_up_addnotes_vd_header.setOnClickListener(v -> {
+            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
+                vd_addnotes_header_expandview.setVisibility(View.GONE);
+            else
+                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
         });
     }
 
@@ -1415,6 +1429,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
         btn_up_medhist_header = findViewById(R.id.btn_up_medhist_header);
         btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
+        btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
@@ -1422,6 +1437,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         vs_phyexam_header_expandview = findViewById(R.id.vs_phyexam_header_expandview);
         vs_medhist_header_expandview = findViewById(R.id.vs_medhist_header_expandview);
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
+        vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
+        vs_add_notes = findViewById(R.id.vs_add_notes);
         // up-down btn - end
 
         // vitals ids
@@ -1430,9 +1447,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
-        vd_special_value = findViewById(R.id.vd_special_value);
 
+        vd_special_value = findViewById(R.id.vd_special_value);
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
+        addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
 
 
