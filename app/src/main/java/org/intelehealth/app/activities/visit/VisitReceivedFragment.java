@@ -158,9 +158,14 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return true;
+                if (!newText.equalsIgnoreCase(""))
+                    searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                else
+                    searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                return false;
             }
         });
+
 
         closeButton.setOnClickListener(v -> {
             defaultData();

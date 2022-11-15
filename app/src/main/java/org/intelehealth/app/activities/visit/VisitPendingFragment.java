@@ -151,7 +151,11 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return true;
+                if (!newText.equalsIgnoreCase(""))
+                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                else
+                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                return false;
             }
         });
 
