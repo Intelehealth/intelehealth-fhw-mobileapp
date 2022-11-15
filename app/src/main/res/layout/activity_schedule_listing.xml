@@ -45,7 +45,7 @@
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/ic_baseline_medical_services_24" />
+                app:drawableEndCompat="@drawable/medical_services" />
 
             <TextView
                 android:id="@+id/tvDate"

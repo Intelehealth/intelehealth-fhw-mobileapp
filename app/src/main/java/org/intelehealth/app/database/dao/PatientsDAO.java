@@ -129,6 +129,51 @@ public class PatientsDAO {
 
     }
 
+    public boolean updatePatientToDB_PatientDTO(PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        boolean isCreated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereclause = "Uuid=?";
+        db.beginTransaction();
+        List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
+        try {
+
+            Logger.logD("create", "create has to happen");
+            values.put("uuid", uuid);
+            values.put("openmrs_id", patientDTO.getOpenmrsId());
+            values.put("first_name", patientDTO.getFirstname());
+            values.put("middle_name", patientDTO.getMiddlename());
+            values.put("last_name", patientDTO.getLastname());
+            values.put("phone_number", patientDTO.getPhonenumber());
+            values.put("address1", patientDTO.getAddress1());
+            values.put("address2", patientDTO.getAddress2());
+            values.put("country", patientDTO.getCountry());
+            values.put("date_of_birth", patientDTO.getDateofbirth());
+            values.put("gender", patientDTO.getGender());
+            values.put("postal_code", patientDTO.getPostalcode());
+            values.put("city_village", patientDTO.getCityvillage());
+            values.put("state_province", patientDTO.getStateprovince());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("patient_photo", patientDTO.getPatientPhoto());
+            values.put("dead", false);
+            values.put("sync", false);
+
+            insertPatientAttributes(patientAttributesDTOS, db);
+            Logger.logD("pulldata", "datadumper" + values);
+            createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
+
     public boolean updatePatientToDB(Patient patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;

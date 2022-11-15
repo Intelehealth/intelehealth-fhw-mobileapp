@@ -47,7 +47,7 @@
         android:layout_marginEnd="20dp"
         android:layout_toStartOf="@+id/iv_more_options"
         android:foregroundGravity="center_horizontal"
-        android:src="@drawable/ui2_ic_icons8_downloading_updates_1"
+        android:src="@drawable/downloading_udpates"
         android:tooltipText="Tooltip"
         android:visibility="visible" />
 

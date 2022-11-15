@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/fu_margin_start"
+    android:background="@drawable/visit_summary_add_doc_cardbg">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_doc_addBtn"
+        android:layout_width="@dimen/edittext_height_44dp"
+        android:layout_height="@dimen/edittext_height_44dp"
+        android:layout_marginTop="@dimen/fu_margin_start"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginBottom="@dimen/fu_margin_start"
+        app:cardCornerRadius="@dimen/margin_5">
+
+        <ImageView
+            android:id="@+id/document_photo_ImageView"
+            android:layout_width="@dimen/edittext_height_44dp"
+            android:layout_height="@dimen/edittext_height_44dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/avatar1"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/document_name_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/add_doc_addBtn"
+            style = "@style/text_title_style"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:text="Red eye" />
+
+    <ImageButton
+        android:id="@+id/document_delete_button_ImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:background="@null"
+        android:padding="@dimen/margin_4"
+        android:src="@drawable/cancel_btn_cross" />
+
+
+</RelativeLayout>

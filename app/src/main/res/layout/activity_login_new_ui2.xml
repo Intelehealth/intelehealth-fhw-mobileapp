@@ -63,7 +63,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_collapsing_toolbar_height"
-                android:background="@drawable/ui2_common_bottom_rounded_primary_bg"
+                android:background="@drawable/btn_rounded_primarybg"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_scroll_margin_top"
-        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:background="@drawable/top_rounded_whitebg"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_collapsing_tollbar_layout">
 
@@ -128,7 +128,7 @@
                         android:id="@+id/edittext_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_background_input_field_new"
+                        android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:paddingStart="@dimen/common_edittext_padding_left"
@@ -162,7 +162,7 @@
                         android:id="@+id/edittext_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_background_input_field_new"
+                        android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/enter_password1"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"

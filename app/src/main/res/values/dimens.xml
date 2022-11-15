@@ -249,8 +249,8 @@
     <dimen name="fu_pencil_width">14dp</dimen>
     <dimen name="fu_pencil_height">14dp</dimen>
     <dimen name="fu_icons_margin_top">18dp</dimen>
-    <dimen name="fu_icon_width">28dp</dimen>
-    <dimen name="fu_icon_height">28dp</dimen>
+    <dimen name="fu_icon_width">22dp</dimen>
+    <dimen name="fu_icon_height">22dp</dimen>
     <dimen name="fu_vs_margin_start">8dp</dimen>
     <dimen name="fu_vs_margin_top">40dp</dimen>
     <dimen name="fu_date_txt_size">18sp</dimen>
@@ -338,6 +338,7 @@
     <!-- Intro screens -->
     <dimen name="back_arrow_intro_height">24dp</dimen>
     <dimen name="back_arrow_intro_width">24dp</dimen>
+    <dimen name="toolbar_top_minus_24dp">-24dp</dimen>
     <dimen name="back_arrow_intro_margin_start">24dp</dimen>
     <dimen name="back_arrow_intro_margin_top">44dp</dimen>
     <dimen name="layout_dots_height">50dp</dimen>
@@ -686,6 +687,7 @@
     <dimen name="patdetail_editicon_width">70dp</dimen>
     <dimen name="patdetail_editicon_height">22dp</dimen>
     <dimen name="txtsize_patdetail_16sp">16sp</dimen>
+    <dimen name="txtsize_patdetail_14sp">14sp</dimen>
 
     <!--UI2.0 Informative Videos-->
     <dimen name="layout_videos_margin_top">0dp</dimen>
@@ -713,7 +715,23 @@
 
     <dimen name="patdetail_profile_imgview_14sp">40dp</dimen>
     <dimen name="up_down_icon_size">20dp</dimen>
+    <dimen name="cardcornerradius_imagev">20dp</dimen>
+    <dimen name="vs_notes_big_edittext_height">88dp</dimen>
+    <dimen name="vs_adddoc_listitem_bg_height">68dp</dimen>
+    <dimen name="vs_phsexam_imgview_140dp">140dp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="btn_width_91dp">91dp</dimen>
+    <dimen name="btn_height_32dp">32dp</dimen>
+    <dimen name="btn_prioirty_w_60dp">60dp</dimen>
+    <dimen name="btn_prioirty_h_20dp">20dp</dimen>
+    <dimen name="btn_share_w_59dp">59dp</dimen>
+    <dimen name="btn_share_h_20dp">21dp</dimen>
 
+    <dimen name="tab_icon_18dp">18dp</dimen>
+    <dimen name="tab_icon_19dp">19dp</dimen>
+    <dimen name="small_btn_w_62dp">58dp</dimen>
+    <dimen name="small_btn_h_48dp">44dp</dimen>
 
 
     <!--UI2.0 Appointment-->

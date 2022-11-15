@@ -7,7 +7,7 @@
 
     <dimen name="common_button_height">48dp</dimen>
     <dimen name="common_button_width">312dp</dimen>
-    <dimen name="common_button_text_size">18sp</dimen>
+    <dimen name="common_button_text_size">20sp</dimen>
 
     <dimen name="common_header_text_size">22sp</dimen>
     <dimen name="common_label_text_size">18sp</dimen>
@@ -153,7 +153,7 @@
     <dimen name="card_close_visits_margin_top">20dp</dimen>
     <dimen name="bottom_nav_menu_text_size">40sp</dimen>
     <dimen name="bottom_nav_icon_size">34dp</dimen>
-    <dimen name="followup_toolbar">94dp</dimen>
+    <dimen name="followup_toolbar">104dp</dimen>
     <dimen name="fu_toolbat_txt_height">44dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size"
@@ -201,8 +201,8 @@
 
 
     <!-- Intro screens -->
-    <dimen name="back_arrow_intro_height">28dp</dimen>
-    <dimen name="back_arrow_intro_width">28dp</dimen>
+    <dimen name="back_arrow_intro_height">44dp</dimen>
+    <dimen name="back_arrow_intro_width">44dp</dimen>
     <dimen name="back_arrow_intro_margin_start">28dp</dimen>
     <dimen name="back_arrow_intro_margin_top">48dp</dimen>
     <dimen name="layout_dots_height">60dp</dimen>
@@ -363,23 +363,24 @@
     <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
 
     <!--Text Size-->
-    <dimen name="toolbar_text_size">28sp</dimen>
+    <dimen name="toolbar_text_size">34sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
+    <dimen name="toolbar_top_minus_24dp">-4dp</dimen>
     <dimen name="fu_image_width">58dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
-    <dimen name="fu_name_txt_size">20sp</dimen>
+    <dimen name="fu_name_txt_size">34sp</dimen>
     <dimen name="fu_male_margin_start">8dp</dimen>
-    <dimen name="fu_male_textsize">16sp</dimen>
-    <dimen name="fu_pencil_width">16dp</dimen>
-    <dimen name="fu_pencil_height">16dp</dimen>
+    <dimen name="fu_male_textsize">26sp</dimen>
+    <dimen name="fu_pencil_width">26dp</dimen>
+    <dimen name="fu_pencil_height">26dp</dimen>
     <dimen name="fu_icons_margin_top">24dp</dimen>
-    <dimen name="fu_icon_width">32dp</dimen>
-    <dimen name="fu_icon_height">32dp</dimen>
+    <dimen name="fu_icon_width">48dp</dimen>
+    <dimen name="fu_icon_height">48dp</dimen>
     <dimen name="fu_vs_margin_start">12dp</dimen>
     <dimen name="fu_vs_margin_top">50dp</dimen>
-    <dimen name="fu_date_txt_size">22sp</dimen>
+    <dimen name="fu_date_txt_size">30sp</dimen>
     <dimen name="fu_btn_size">78dp</dimen>
     <dimen name="toolbar_margin_left">34dp</dimen>
     <dimen name="toolbar_margin_top">54dp</dimen>
@@ -388,7 +389,7 @@
     <dimen name="cal_margnin_start">8dp</dimen>
     <dimen name="card_padding">10dp</dimen>
     <dimen name="profile_img_card_size">42dp</dimen>
-    <dimen name="cal_size">18dp</dimen>
+    <dimen name="cal_size">32dp</dimen>
     <dimen name="search_priority_tag">30dp</dimen>
     <dimen name="search_presTag_margin_top">12dp</dimen>
     <dimen name="search_toolbar_height">125dp</dimen>
@@ -399,8 +400,8 @@
     <dimen name="search_addbtn_width">200dp</dimen>
     <dimen name="search_add_btn_height">50dp</dimen>
     <dimen name="search_item_name_width">150dp</dimen>
-    <dimen name="notifi_subtitle_size">14sp</dimen>
-    <dimen name="notifi_header_icon">60dp</dimen>
+    <dimen name="notifi_subtitle_size">24sp</dimen>
+    <dimen name="notifi_header_icon">80dp</dimen>
     <dimen name="notifi_arrow_margin_end">14dp</dimen>
 
     <!--My Achievements UI2.0-->
@@ -604,10 +605,10 @@
     <dimen name="line_66dp">76dp</dimen>
     <dimen name="patregist_profileimg_icon">104dp</dimen>
     <dimen name="patregis_icon_text">20dp</dimen>
-    <dimen name="margin_16dp">32dp</dimen>
+    <dimen name="margin_16dp">38dp</dimen>
     <dimen name="gender_margin">94dp</dimen>
     <dimen name="edittext_height_44dp">74dp</dimen>
-    <dimen name="edittext_textsize_16sp">24sp</dimen>
+    <dimen name="edittext_textsize_16sp">28sp</dimen>
     <dimen name="country_flag_icon_width">33dp</dimen>
     <dimen name="country_flag_icon_height">26dp</dimen>
     <dimen name="patregist_icon_title">18sp</dimen>
@@ -618,10 +619,30 @@
     <dimen name="patdetail_editicon_width">120dp</dimen>
     <dimen name="patdetail_editicon_height">42dp</dimen>
     <dimen name="txtsize_patdetail_16sp">28sp</dimen>
+    <dimen name="txtsize_patdetail_14sp">24sp</dimen>
     <dimen name="patdetail_profile_imgview_14sp">70dp</dimen>
-    <dimen name="up_down_icon_size">30dp</dimen>
+    <dimen name="up_down_icon_size">35dp</dimen>
+    <dimen name="cardcornerradius_imagev">40dp</dimen>
+    <dimen name="margin_8">20dp</dimen>
+    <dimen name="margin_4">8dp</dimen>
+    <dimen name="vs_notes_big_edittext_height">172dp</dimen>
+    <dimen name="vs_adddoc_listitem_bg_height">88dp</dimen>
+    <dimen name="vs_phsexam_imgview_140dp">280dp</dimen>
+    <dimen name="corner_radius_8dp">16dp</dimen>
+    <dimen name="margin_5">8dp</dimen>
+    <dimen name="margin_6">16dp</dimen>
+    <dimen name="margin_2dp">4dp</dimen>
+    <dimen name="btn_width_91dp">180dp</dimen>
+    <dimen name="btn_height_32dp">60dp</dimen>
+    <dimen name="btn_prioirty_w_60dp">120dp</dimen>
+    <dimen name="btn_prioirty_h_20dp">40dp</dimen>
+    <dimen name="btn_share_w_59dp">119dp</dimen>
+    <dimen name="btn_share_h_20dp">41dp</dimen>
 
-
+    <dimen name="tab_icon_18dp">28dp</dimen>
+    <dimen name="tab_icon_19dp">29dp</dimen>
+    <dimen name="small_btn_w_62dp">122dp</dimen>
+    <dimen name="small_btn_h_48dp">98dp</dimen>
 
 
 </resources>

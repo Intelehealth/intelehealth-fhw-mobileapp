@@ -1,10 +1,15 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -309,5 +314,85 @@ public class ObsDAO {
 
     }
 
+    /**
+     * This fetches the value of Follow up shared for this Visit UUID.
+     * @param visitUUID
+     * @return Followup date Eg. 30-11-2022
+     */
+    public static String getFollowupDataForVisitUUID(String visitUUID) {
+        String result = null;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
+                    "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
+                    "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
+                    "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                        Log.v("value_text", "value_text: " + result);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return result;
+    }
+
+    public static String fetchDrDetailsFromLocalDb(String visitUuid) {
+        // fetch dr details from local db - start
+        String dbValue = null;
+
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        String encounterIDSelection = "visituuid = ? ";
+        String[] encounterIDArgs = {visitUuid};
+        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
+                null, null, null);
+
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided!='1' ";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return dbValue;
+        // fetch dr details from local db - end
+    }
 
 }

@@ -1657,7 +1657,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="remind_doctor">Remind doctor</string>
 
 
-
     <!--    Follow-up new screens -->
     <string name="label">Follow-up visits(9)</string>
     <string name="you_can_add">Today</string>
@@ -1697,7 +1696,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="add_new_patient">Add new patient</string>
 
     <string name="caption">Name</string>
-
 
 
     <!--END-->

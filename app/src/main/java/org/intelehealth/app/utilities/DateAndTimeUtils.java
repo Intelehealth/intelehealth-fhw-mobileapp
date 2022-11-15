@@ -1,6 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 
@@ -134,15 +135,18 @@ public class DateAndTimeUtils {
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
 
-        if (period.getYears() > 0) {
+       /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
-        }
+        }*/
 
-        age = tyears;
+        if (period.getValue(0) > 0) {  // o index -> years
+            tyears = String.valueOf(period.getValue(0));
+            age = tyears;
+            Log.d("TAG", "getAge_FollowUp: s : "+age);
+        }
 
         return age;
     }
@@ -397,5 +401,47 @@ public class DateAndTimeUtils {
         }
         return formattedDate;
     }
+
+    /**
+     * This function is used to calculate value like Eg: '2 hours ago' or '2 minutes ago'.
+     * @param datetime
+     * @return
+     */
+    public static String timeAgoFormat(String datetime) {
+        String time = "";
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        try {
+            long date = format.parse(datetime).getTime();
+            long now = System.currentTimeMillis();
+            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
+            time = String.valueOf(ago);
+            Log.v("TimeAgo", "TimeAgo: " + time);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return time;
+    }
+
+    public static String parse_DateToddMMyyyy(String time) {
+        String inputPattern = "dd-MM-yyyy";
+        String outputPattern = "dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
 
 }
