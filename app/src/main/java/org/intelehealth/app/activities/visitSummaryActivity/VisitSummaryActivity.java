@@ -2517,10 +2517,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+
+                            "<b><p id=\"diagnostics_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Diagnostics</p></b>" + "<p id=\"diagnostics\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Glucose (Random): %s | Glucose (Fasting): %s | Glucose (Post-Prandial): %s | HGB: %s | Uric Acid: %s | Total Cholesterol: %s </p><br>" +
+
                             "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>"
 
                     , heading, heading2, heading3, mPatientName, age, mGender, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                    /*pat_hist, fam_hist,*/ mComplaint);
+                    /*pat_hist, fam_hist,*/
+                    bldglucose_random.getValue(), bldglucose_fasting.getValue(), bldglucose_post_prandial.getValue(), hemoGlobin.getValue(), uricAcid.getValue(), totalCholesterol.getValue(),
+                    mComplaint);
 
             if (!diagnosis_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>", diagnosis_web));
