@@ -432,7 +432,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 economicLayout.setVisibility(View.GONE);
             }
             country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
+            //changes done for the ticket SCD-63: Nishita Goyal
+//            state = obj.getString("mState");
 
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
@@ -812,7 +813,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         if (patientID_edit != null)
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         else
-                            mState.setSelection(stateAdapter.getPosition(state));
+                            mState.setSelection(0);
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
