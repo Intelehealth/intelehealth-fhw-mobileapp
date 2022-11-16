@@ -20,6 +20,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonSummaryFragment;
@@ -186,7 +187,22 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
+            case STEP_3_PHYSICAL_EXAMINATION:
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                mPhysicalExamNode = loadPhysicalExam();
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mPhysicalExamNode), VISIT_REASON_QUESTION_FRAGMENT).
+                        commit();
+                break;
         }
+    }
+    private Node mPhysicalExamNode;
+
+    private Node loadPhysicalExam() {
+        String fileLocation = "engines/physExam.json";
+        JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+        Node mainNode = new Node(currentFile);
+        return mainNode;
     }
 
     private void loadChiefComplainNodeForSelectedNames(List<String> selectedComplains) {
@@ -228,7 +244,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void onTitleChange(String title) {
         if (title == null || title.isEmpty()) {
             setTitle("2/4 Visit reason : " + selectedComplains.get(0));
-        }else{
+        } else {
             setTitle(title);
         }
     }
@@ -300,27 +316,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
         }
 
-
+        insertDb(insertion);
     }
-
-    /**
-     *
-     */
-    private void showAssociateAssociatedComplaintsList(Node currentNode) {
-        ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
-        /*if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
-            for (String associatedComplaint : selectedAssociatedComplaintsList) {
-                if (!complaints.contains(associatedComplaint)) {
-                    complaints.add(associatedComplaint);
-                    String fileLocation = "engines/" + associatedComplaint + ".json";
-                    JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
-                    Node node = new Node(currentFile);
-                    complaintsNodes.add(currentNode);
-                }
-            }
-        }*/
-    }
-
     /**
      *
      */

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -61,7 +62,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
-            genericViewHolder.questionTextView.setText((position+1)+". "+genericViewHolder.node.getText());
+            genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.getText());
             //genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
 
             if (mItemList.get(position).isNoSelected()) {
@@ -73,15 +74,42 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.noTextView.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_green, 0, 0, 0);
             }
+            genericViewHolder.currentRootOptionList = mItemList.get(position).getOptionsList();
 
             if (mItemList.get(position).isSelected()) {
                 genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.white));
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
+
+                if (mItemList.get(position).getOptionsList().size() > 0) {
+                    genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
+                    genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+                        @Override
+                        public void onSelect(Node node) {
+
+                        }
+
+                        @Override
+                        public void needTitleChange(String title) {
+
+                        }
+
+                        @Override
+                        public void onAllAnswered(boolean isAllAnswered) {
+
+                        }
+                    });
+                    genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
+                    genericViewHolder.questionsListingAdapter.addItem(genericViewHolder.currentRootOptionList.get(genericViewHolder.currentComplainNodeOptionsIndex));
+                } else {
+                    genericViewHolder.recyclerView.setVisibility(View.GONE);
+                }
             } else {
                 genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
+                genericViewHolder.recyclerView.setVisibility(View.GONE);
             }
 
         }
@@ -97,6 +125,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         Node node;
         int index;
         RecyclerView recyclerView;
+        QuestionsListingAdapter questionsListingAdapter;
+        int currentComplainNodeOptionsIndex;
+        List<Node> currentRootOptionList = new ArrayList<>();
 
         GenericViewHolder(View itemView) {
             super(itemView);

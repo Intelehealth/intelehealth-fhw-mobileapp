@@ -1,13 +1,11 @@
-package org.intelehealth.app.ayu.visit.reason;
+package org.intelehealth.app.ayu.visit.physicalexam;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,31 +15,31 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link VisitReasonQuestionsFragment#newInstance} factory method to
+ * Use the {@link PhysicalExaminationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VisitReasonQuestionsFragment extends Fragment {
+public class PhysicalExaminationFragment extends Fragment {
 
-    private List<String> mSelectedComplains = new ArrayList<>();
-    private VisitCreationActionListener mActionListener;
-    SessionManager sessionManager;
-
+    private List<Node> mCurrentRootOptionList = new ArrayList<>();
+    private int mCurrentComplainNodeOptionsIndex = 0;
+    private QuestionsListingAdapter mQuestionsListingAdapter;
     private Node mCurrentNode;
+    private VisitCreationActionListener mActionListener;
 
-    public VisitReasonQuestionsFragment() {
+    public PhysicalExaminationFragment() {
         // Required empty public constructor
     }
 
 
-    public static VisitReasonQuestionsFragment newInstance(Intent intent, Node node) {
-        VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
+    public static PhysicalExaminationFragment newInstance(Intent intent, Node node) {
+        PhysicalExaminationFragment fragment = new PhysicalExaminationFragment();
         fragment.mCurrentNode = node;
         return fragment;
     }
@@ -53,25 +51,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mActionListener = (VisitCreationActionListener) context;
-    }
-
-
-    private List<Node> mCurrentRootOptionList = new ArrayList<>();
-    private int mCurrentComplainNodeOptionsIndex = 0;
-    private QuestionsListingAdapter mQuestionsListingAdapter;
-
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-        View view = inflater.inflate(R.layout.fragment_visit_reason_questions, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_physical_examination, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -99,7 +82,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     }
                 }, 100);
 
-                mActionListener.onProgress((int) 60 / mCurrentRootOptionList.size());
+                mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
             }
 
             @Override

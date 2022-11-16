@@ -1,4 +1,4 @@
-package org.intelehealth.app.ayu.visit.reason.adapter;
+package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.adapter.AssociateSymptomsQueryAdapter;
+import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
