@@ -106,7 +106,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview,
             vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_testheader_expandview,
-            vs_speciality_header_expandview, vs_followup_header_expandview;
+            vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             mCHWname, drname, dr_age_gender, qualification, dr_speciality,
             diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
@@ -176,6 +176,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         no_followup_txt = findViewById(R.id.no_followup_txt);
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
+        followup_date_block = findViewById(R.id.followup_date_block);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -286,6 +287,17 @@ public class PrescriptionActivity extends AppCompatActivity {
             }
         });
         // download btn - end
+
+        // Follow up - start
+        if (followUpDate.equalsIgnoreCase("")) {
+            no_followup_txt.setVisibility(View.VISIBLE);
+            followup_date_block.setVisibility(View.GONE);
+        }
+        else {
+            no_followup_txt.setVisibility(View.GONE);
+            followup_date_block.setVisibility(View.VISIBLE);
+        }
+        // Follow up - end
 
         // Bottom Buttons - start
         btn_vs_print.setOnClickListener(v -> {
@@ -521,9 +533,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 } else {
                     followUpDate = date_formatter(value.substring(0,10), "dd-MM-yyyy", "dd MMM, yyyy");
                 }
+
                 followup_date_txt.setText(followUpDate);
                 followup_subtext.setText("The doctor suggested a follow-up visit on " + followUpDate +
                         ". Does the patient want to take a follow-up visit?");
+
                 break;
             }
 

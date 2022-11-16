@@ -964,6 +964,7 @@
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
                     android:text="No information"
+                    android:textColor="@color/hint_text_color"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1054,6 +1055,7 @@
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
+                            android:textColor="@color/hint_text_color"
                             android:visibility="gone"
                             tools:visibility="visible"/>
 
