@@ -697,7 +697,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:layout_below="@+id/followup_date_txtv" >
 
             <TextView
@@ -725,10 +725,11 @@
 
                 <!--Do you want to Accept this Follow up - start-->
                 <RelativeLayout
+                    android:id="@+id/yes_no_followup_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_below="@+id/followup_date_txtv" >
 
                     <TextView
@@ -769,7 +770,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/btn_vs_sendvisit"
+                            android:id="@+id/yes_followup_btn"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_5"

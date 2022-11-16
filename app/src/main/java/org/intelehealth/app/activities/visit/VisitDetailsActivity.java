@@ -57,10 +57,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private ImageView priorityTag, profile_image;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
-            followup_relative_block, followup_start_card;
+            followup_relative_block, followup_start_card, yes_no_followup_relative;
     private ImageButton presc_arrowRight, vs_arrowRight;
     private String vitalsUUID, adultInitialUUID;
-    private Button btn_end_visit;
+    private Button btn_end_visit, yes_followup_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,12 +259,14 @@ public class VisitDetailsActivity extends AppCompatActivity {
         // follow up - start
         followup_relative_block = findViewById(R.id.followup_relative_block);   // entire block of follow up section.
         followup_start_card = findViewById(R.id.followup_start_card);   // Block that shows to Start Follow up.
+        yes_no_followup_relative = findViewById(R.id.yes_no_followup_relative);   // yes no button for follow up.
         followupDate_txt = findViewById(R.id.followup_date_txtv);
         followup_info = findViewById(R.id.followup_info);
+        yes_followup_btn = findViewById(R.id.yes_followup_btn);
 
         if (followupDate != null) {
             followup_relative_block.setVisibility(View.VISIBLE);
-            followup_start_card.setVisibility(View.VISIBLE);
+            yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
             followupDate_txt.setText("Follow up on " + followupDate);
             followup_info.setText("Please take " + patientName + "'s follow-up visit.");
@@ -272,10 +274,14 @@ public class VisitDetailsActivity extends AppCompatActivity {
         }
         else {
             followup_relative_block.setVisibility(View.GONE);
-            followup_start_card.setVisibility(View.GONE);
+            yes_no_followup_relative.setVisibility(View.GONE);
 
         }
 
+        yes_followup_btn.setOnClickListener(v -> {
+            yes_no_followup_relative.setVisibility(View.GONE);
+            followup_start_card.setVisibility(View.VISIBLE);
+        });
         // follow up - end
 
         // end visit - start
