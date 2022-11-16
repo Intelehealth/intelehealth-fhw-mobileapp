@@ -54,7 +54,7 @@
                     app:cardCornerRadius="@dimen/apps_details_profile_iv_radius">
 
                     <ImageView
-                        android:id="@+id/profile_image"
+                        android:id="@+id/profile_image_app_details"
                         android:layout_width="@dimen/apps_details_profile_iv_height"
                         android:layout_height="@dimen/apps_details_profile_iv_width"
                         android:src="@drawable/avatar1" />
@@ -184,10 +184,11 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/priority_tag"
+                    android:id="@+id/priority_tag_app_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/cp_margin_start"
                     android:src="@drawable/ui2_frame_priority" />
 
@@ -300,7 +301,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fu_progress_indicator"
                 android:layout_marginTop="@dimen/rt_card_margin_updown"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tv_reschedule_on"
@@ -326,7 +327,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/visit_startDate_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/tv_reschedule1_time_margin_start"
@@ -343,7 +344,7 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_starttime_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="60dp"
