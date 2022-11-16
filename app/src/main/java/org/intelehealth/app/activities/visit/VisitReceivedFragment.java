@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.progressindicator.BaseProgressIndicator;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -35,6 +38,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +67,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     TextView today_nodata, week_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
-
+    private ProgressBar progress;
 
     @Nullable
     @Override
@@ -87,6 +91,9 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     }
 
     private void initUI(View view) {
+        progress = view.findViewById(R.id.progress);
+        progress.setVisibility(View.VISIBLE);
+
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);
 
@@ -118,8 +125,8 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
     private void defaultData() {
         todays_Visits();
-        thisWeeks_Visits();
-        thisMonths_Visits();
+
+
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
     }
 
@@ -423,6 +430,8 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                         todays_adapter = new VisitAdapter(getActivity(), todayList);
                         recycler_today.setNestedScrollingEnabled(false);
                         recycler_today.setAdapter(todays_adapter);
+
+                        thisWeeks_Visits();
                     }
                 });
             }
@@ -525,6 +534,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                         weeks_adapter = new VisitAdapter(getActivity(), weeksList);
                         recycler_week.setNestedScrollingEnabled(false);
                         recycler_week.setAdapter(weeks_adapter);
+                        thisMonths_Visits();
                     }
                 });
             }
@@ -594,6 +604,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                         model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
                                         model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
                                         monthsList.add(model);
+
                                     }
                                     while (p_c.moveToNext());
                                 }
@@ -628,6 +639,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                         months_adapter = new VisitAdapter(getActivity(), monthsList);
                         recycler_month.setNestedScrollingEnabled(false);
                         recycler_month.setAdapter(months_adapter);
+                        progress.setVisibility(View.GONE);
                     }
                 });
             }

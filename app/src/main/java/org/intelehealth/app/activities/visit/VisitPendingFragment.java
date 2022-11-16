@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,6 +59,7 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     TextView today_nodata, week_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_pending;
     private ImageView closeButton;
+    private ProgressBar progress;
 
     @Nullable
     @Override
@@ -81,6 +83,9 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     }
 
     private void initUI(View view) {
+        progress = view.findViewById(R.id.progress);
+        progress.setVisibility(View.VISIBLE);
+
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);
 
@@ -107,8 +112,6 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
 
     private void defaultData() {
         todays_Visits();
-        thisWeeks_Visits();
-        thisMonths_Visits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
     }
 
@@ -311,6 +314,9 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                         todays_adapter = new VisitAdapter(getActivity(), todayList);
                         recycler_today.setNestedScrollingEnabled(false);
                         recycler_today.setAdapter(todays_adapter);
+
+                        thisWeeks_Visits();
+
                     }
                 });
             }
@@ -412,6 +418,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                         weeks_adapter = new VisitAdapter(getActivity(), weeksList);
                         recycler_week.setNestedScrollingEnabled(false);
                         recycler_week.setAdapter(weeks_adapter);
+
+                        thisMonths_Visits();
                     }
                 });
             }
@@ -512,6 +520,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
                         months_adapter = new VisitAdapter(getActivity(), monthsList);
                         recycler_month.setNestedScrollingEnabled(false);
                         recycler_month.setAdapter(months_adapter);
+
+                        progress.setVisibility(View.GONE);
                     }
                 });
             }

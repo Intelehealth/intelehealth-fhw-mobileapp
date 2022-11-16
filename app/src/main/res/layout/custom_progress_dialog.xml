@@ -19,7 +19,7 @@
             app:mlpb_arrow_height="5dp"
             app:mlpb_arrow_width="10dp"
             app:mlpb_progress_color="@color/colorPrimaryDark"
-            app:mlpb_progress_stoke_width="3dp"
+            app:mlpb_progress_stoke_width="50dp"
             app:mlpb_show_arrow="true" />
 
         <TextView

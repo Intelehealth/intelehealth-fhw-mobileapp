@@ -107,9 +107,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             if (model.getPatient_photo() != null) {
                 Glide.with(context)
                         .load(model.getPatient_photo())
-                        .override(100, 100)
+                        .override(50, 50)
                         .thumbnail(0.3f)
                         .centerCrop()
+                        .skipMemoryCache(false)
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.profile_image);
             } else {
@@ -212,9 +213,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         if (updated) {
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
-                                    .override(100, 100)
+                                    .override(50, 50)
                                     .thumbnail(0.3f)
                                     .centerCrop()
+                                    .skipMemoryCache(false)
                                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                     .into(holder.profile_image);
                         }
