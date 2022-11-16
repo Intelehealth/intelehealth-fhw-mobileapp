@@ -296,6 +296,16 @@
             android:exported="false"
             android:permission="" />
 
+        <provider
+            android:authorities="org.intelehealth.app.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"/>
+        </provider>
+
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
