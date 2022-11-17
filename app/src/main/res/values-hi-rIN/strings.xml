@@ -60,7 +60,7 @@
 
 
     <string name="cant_login_user" translatable="false">लॉग इन नहीं कर सकते?</string>
-    <string name="email_link" translatable="false">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
+    <string name="email_link">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
     <string name="contact_whatsapp">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें</string>
 
     //Home Screen (after login)
@@ -829,4 +829,8 @@
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
     <string name="and">और</string>
     <string name="app_version_string">ऐप संस्करण - %1$s</string>
+
+    //addtional strings
+    <string name="hello_my_name_is1">नमस्ते मेरा नाम है \"</string>
+    <string name="please_help">\" और मैं लॉगिन नहीं कर पा रहा हूँ, कृपया मदद करें।</string>
 </resources>

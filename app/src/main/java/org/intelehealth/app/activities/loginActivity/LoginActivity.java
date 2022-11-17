@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +41,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -74,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
     Context context;
     CustomProgressDialog cpd;
     SessionManager sessionManager = null;
+    String appLanguage;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -104,6 +112,11 @@ public class LoginActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
 
         setTitle(R.string.title_activity_login);
+
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
 
         offlineLogin = OfflineLogin.getOfflineLogin();
         txt_cant_login = findViewById(R.id.cant_login_id);
@@ -238,11 +251,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void cant_log() {
-        final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
+        final SpannableString span_string = new SpannableString(getResources().getString(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
       MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
-                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
+                .setMessage(getResources().getString(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -259,8 +272,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         String phoneNumberWithCountryCode = "+919503692181";
                         String message =
-                                getString(R.string.hello_my_name_is1) + sessionManager.getChwname() +
-                                        /*" from " + sessionManager.getState() + */getString(R.string.please_help);
+                                getResources().getString(R.string.hello_my_name_is1) + sessionManager.getChwname() +
+                                        /*" from " + sessionManager.getState() + */getResources().getString(R.string.please_help);
 
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(
@@ -453,6 +466,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return salt;
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            LoginActivity.this.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
     }
 }

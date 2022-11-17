@@ -63,12 +63,21 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
-    <string-array name="countries">
+
+    <string-array name="countries_en">
         <item>Select Country</item>
         <item>India</item>
 <!--        <item>United States</item>-->
 <!--        <item>Philippines</item>-->
     </string-array>
+
+    <string-array name="countries_hi">
+        <item>देश चुनें</item>
+        <item>India</item>
+        <!--        <item>United States</item>-->
+        <!--        <item>Philippines</item>-->
+    </string-array>
+
     <string-array name="economic_gu">
         <item>પસંદ કરો</item>
         <item>ગરીબીની રેખાથી ઉપર</item>
@@ -372,8 +381,41 @@
         <item>BPL</item>
     </string-array>
 
-    <string-array name="states_india">
+    <string-array name="states_india_en">
         <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_india_hi">
+        <item>राज्य चुनें</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>
