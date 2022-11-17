@@ -692,7 +692,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                         // isreturningWhatsapp = true;
 
                                     } else {
-                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
+                                        Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.please_enter_mobile_number),
                                                 Toast.LENGTH_SHORT).show();
 
                                     }
@@ -701,9 +701,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             });
                     AlertDialog dialog = alertDialog.show();
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
