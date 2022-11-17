@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.physcialExamActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +85,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     static String patientUuid;
     static String visitUuid;
     String state;
-    String patientName;
+    String patientName, patientFName, patientLName;
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
@@ -162,6 +164,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
@@ -301,6 +305,13 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void fabClickedAtEnd() {
+        if(!physicalExamMap.areRequiredAnswered())
+        {   fabClicked();
+            return; }
+        triggerConfirmation();
+    }
+
+    public void fabClicked() {
 
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
@@ -327,6 +338,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName",patientFName);
+                intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
@@ -347,6 +360,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
+                intent1.putExtra("patientFirstName",patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("tag", intentTag);
                 intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -653,6 +668,25 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     }
 
+    private void triggerConfirmation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        } else {
+            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        }
+
+        // Handle positive button click
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, ((dialog, which) -> {
+            dialog.dismiss();
+            fabClicked();
+        }));
+
+        // Handle negative button click
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, (dialog, which) -> dialog.dismiss());
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
 }
 
 

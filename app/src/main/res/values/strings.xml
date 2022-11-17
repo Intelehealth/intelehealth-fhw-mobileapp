@@ -371,6 +371,13 @@
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
+    <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_random_validation">Blood Glucose (Random) should be in between %1$s and %2$s</string>
+    <string name="glucose_post_prandial_validation">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
+    <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="uric_acid_validation">Uric Acid should be in between %1$s and %2$s</string>
+    <string name="total_cholesterol_validation">Total Cholesterol should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
 
@@ -842,4 +849,87 @@
     <string name="and">”, and “</string>
     <string name="app_version_string">App Version - %1$s</string>
     <!--Appointment END-->
+
+    <!-- Thermal Printers -->
+    <string name="please_connect">Select Available Device</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+    <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
+    <string name="paired_devices">Paired</string>
+    <string name="tip_have_no_paired_device">No paired device</string>
+    <string name="tip_have_no_found_bluetooth_device">No Device</string>
+    <string name="search_device">Search</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_tip">Tip</string>
+    <string name="main_pls_choose_device">Please choose a device</string>
+    <string name="dialog_back">Back</string>
+    <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
+    <string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+
+    <string name="please_enter_text">Please enter text.</string>
+    <string name="small_font">Small Font</string>
+    <string name="anti_white">Anti white</string>
+    <string name="double_width">Double Width</string>
+    <string name="double_height">Double Height</string>
+    <string name="bold">Bold</string>
+    <string name="underline">Underline</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
+    <string name="text_encode">Text Encode:</string>
+    <string name="dialog_title_chartset_setting">Chartset name settings</string>
+    <string name="spin_default_esc_font">Please choose a Font</string>
+    <string name="tv_font_select">Font Choose：</string>
+    <string name="btn_clk_sel_font">Click to choose the printed font</string>
+    <string name="label_setting">Label Setting</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="no_presc_available">No Prescription Available</string>
+    <string name="_main_connected">" connect success"</string>
+    <string name="_main_connected_fail">connect fail</string>
+    <string name="_main_disconnect">" disconnected"</string>
+    <string name="printing">Printing...</string>
+
+    //generate bill - SCD-7
+    <string name="generate_bill">Generate Bill</string>
+    <string name="confirm_tests">Please confirm the test(s)</string>
+    <string name="intelehealth_address">Telehealth Innovations Foundation\n14A, Shreeji Arcade,\nOpp Nitin Company , Panchpakhadi\nThane, 400602, Maharashtra, India.</string>
+    <string name="consultation_charges">Consultation Charges</string>
+    <string name="follow_up_charges">Follow-Up Charges</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="patient_paying">Is patient paying the bill?</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="print_button">Print</string>
+    <string name="enter_reason_toast">Enter reason for not paying bill.</string>
+    <string name="bill_generated_success">Bill generated successfully!</string>
+    <string name="select_payment_information">Payment Information is not selected.</string>
+    <string name="download_bill">First download the bill to share.</string>
+    <string name="intelehealth">Intelehealth</string>
+    <string name="receipt">Receipt</string>
+    <string name="paid">Paid</string>
+    <string name="receipt_no">"Receipt No.: "</string>
+    <string name="client_name">"Client Name: "</string>
+    <string name="client_id">"Client ID: "</string>
+    <string name="visit_id">"Visit ID: "</string>
+    <string name="contact_no">"Contact Number: "</string>
+    <string name="client_village_name">"Client Village Name: "</string>
+    <string name="date">"Date: "</string>
+    <string name="unpaid">Unpaid</string>
+
+    //test
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholesterol</string>
+    <string name="uric_acid_calibration">Uric Acid Calibration</string>
+    <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose\n (Non-Fasting)</string>
+    <string name="blood_glucose_random">Blood Glucose\n (Random)</string>
+    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
+    <string name="blood_glucose_fasting">Blood Glucose\n (Fasting)</string>
+    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
+    <string name="diagnostics">Diagnostics</string>
 </resources>

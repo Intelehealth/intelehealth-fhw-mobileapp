@@ -47,6 +47,12 @@ public class Data {
     @SerializedName("visitAttributeList")
     @Expose
     private List<VisitAttributeDTO> visitAttributeList = null;
+    @SerializedName("conceptAttributeTypeList")
+    @Expose
+    private List<ConceptAttributeTypeDTO> conceptAttributeTypeList = null;
+    @SerializedName("conceptAttributeList")
+    @Expose
+    private List<ConceptAttributeDTO> conceptAttributeList = null;
 
 
 
@@ -152,5 +158,22 @@ public class Data {
 
     public void setVisitAttributeList(List<VisitAttributeDTO> visitAttributeList) {
         this.visitAttributeList = visitAttributeList;
+    }
+
+
+    public List<ConceptAttributeTypeDTO> getConceptAttributeTypeList() {
+        return conceptAttributeTypeList;
+    }
+
+    public void setConceptAttributeTypeList(List<ConceptAttributeTypeDTO> conceptAttributeTypeList) {
+        this.conceptAttributeTypeList = conceptAttributeTypeList;
+    }
+
+    public List<ConceptAttributeDTO> getConceptAttributeList() {
+        return conceptAttributeList;
+    }
+
+    public void setConceptAttributeList(List<ConceptAttributeDTO> conceptAttributeList) {
+        this.conceptAttributeList = conceptAttributeList;
     }
 }

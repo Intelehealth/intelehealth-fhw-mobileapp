@@ -12,6 +12,13 @@ public class VitalsObject {
     private String temperature;
     private String spo2;
     private String resp;
+    private String bloodglucose;
+    private String bloodglucoseFasting;
+    private String bloodGlucoseRandom;
+    private String bloodGlucosePostPrandial;
+    private String hemoglobin;
+    private String uricAcid;
+    private String totlaCholesterol;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -91,5 +98,60 @@ public class VitalsObject {
 
     public void setResp(String resp) {
         this.resp = resp;
+    }
+    public String getBloodglucose() {
+        return bloodglucose;
+    }
+
+    public void setBloodglucose(String bloodglucose) {
+        this.bloodglucose = bloodglucose;
+    }
+
+    public String getHemoglobin() {
+        return hemoglobin;
+    }
+
+    public void setHemoglobin(String hemoglobin) {
+        this.hemoglobin = hemoglobin;
+    }
+
+    public String getBloodGlucoseRandom() {
+        return bloodGlucoseRandom;
+    }
+
+    public void setBloodGlucoseRandom(String bloodGlucoseRandom) {
+        this.bloodGlucoseRandom = bloodGlucoseRandom;
+    }
+
+    public String getBloodGlucosePostPrandial() {
+        return bloodGlucosePostPrandial;
+    }
+
+    public void setBloodGlucosePostPrandial(String bloodGlucosePostPrandial) {
+        this.bloodGlucosePostPrandial = bloodGlucosePostPrandial;
+    }
+
+    public String getBloodglucoseFasting() {
+        return bloodglucoseFasting;
+    }
+
+    public void setBloodglucoseFasting(String bloodglucoseFasting) {
+        this.bloodglucoseFasting = bloodglucoseFasting;
+    }
+
+    public String getUricAcid() {
+        return uricAcid;
+    }
+
+    public void setUricAcid(String uricAcid) {
+        this.uricAcid = uricAcid;
+    }
+
+    public String getTotlaCholesterol() {
+        return totlaCholesterol;
+    }
+
+    public void setTotlaCholesterol(String totlaCholesterol) {
+        this.totlaCholesterol = totlaCholesterol;
     }
 }

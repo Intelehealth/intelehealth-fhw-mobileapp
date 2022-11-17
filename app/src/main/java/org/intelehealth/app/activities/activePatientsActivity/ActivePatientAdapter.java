@@ -126,13 +126,15 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String end_date="",dob = "", mGender = "", patientName = "", patientLName = "", patientFName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
                         mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
                         patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
+                        patientFName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name"));
+                        patientLName = idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
                         dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
@@ -193,6 +195,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
                 visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("patientFirstName", patientFName);
+                visitSummary.putExtra("patientLastName", patientLName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", "");
