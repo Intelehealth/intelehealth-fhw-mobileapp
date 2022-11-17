@@ -301,7 +301,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fu_progress_indicator"
                 android:layout_marginTop="@dimen/rt_card_margin_updown"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_reschedule_on"
@@ -478,13 +478,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/dr_speciality"
+                            android:id="@+id/dr_speciality_appointment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ad_male_margin_start"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                            android:text="General physician"
+                            android:text="Speciality"
                             android:textAppearance="@style/details_head2"
                             android:textColor="@color/textColorBlack"
                             android:textSize="@dimen/ad_title_text_size" />
@@ -515,10 +515,10 @@
                         android:id="@+id/frame_26088"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
+                        android:layout_marginStart="@dimen/cp_option_margin_start"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
-                        android:padding="@dimen/cp_option_icon_padding"
+                        android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_call_green" />
-
                     <ImageView
                         android:id="@+id/frame_26088"
                         android:layout_width="@dimen/cp_option_icon_width"
@@ -575,8 +575,8 @@
                     android:textColor="@null"
                     android:textSize="@dimen/ad_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/icon_arrowRight"
+                <ImageView
+                    android:id="@+id/iv_drawer_visit_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -627,6 +627,7 @@
                     android:textSize="@dimen/btn_visit_text_size" />
 
                 <Button
+                    android:id="@+id/btn_reschedule_appointment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
@@ -687,7 +688,7 @@
                        android:textSize="@dimen/fu_name_txt_size"
                        tools:text="@string/prescription" />
    -->
-                <ImageButton
+                <ImageView
                     android:id="@+id/iv_drawer_prescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -706,7 +707,7 @@
                     android:layout_toEndOf="@+id/iv_prescription111"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="0sp"
-                    android:text="Pending since 4 hours"
+                    android:text="Pending since 40 hours"
                     android:textAppearance="@style/details_head2"
                     android:textColor="@null"
                     android:textSize="@dimen/cp_male_textsize" />

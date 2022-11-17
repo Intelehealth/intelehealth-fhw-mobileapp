@@ -127,11 +127,20 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 */
 
         //temporary hardcode parameters for temporary use
-        visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
+      /*  visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
         patientUuid = "68617ab0-f826-4668-92dd-ab411ad6ab60";
         patientName = "Test User2";
         speciality = "General Physician";
         openMrsId = "13TR2-8";
+*/
+        //for reschedule appointment as per old flow
+        appointmentId = getIntent().getIntExtra("appointmentId", 0);
+        visitUuid = getIntent().getStringExtra("visitUuid");
+        patientUuid = getIntent().getStringExtra("patientUuid");
+        patientName = getIntent().getStringExtra("patientName");
+        speciality = getIntent().getStringExtra("speciality");
+        openMrsId = getIntent().getStringExtra("openMrsId");
+
 
         initUI();
     }

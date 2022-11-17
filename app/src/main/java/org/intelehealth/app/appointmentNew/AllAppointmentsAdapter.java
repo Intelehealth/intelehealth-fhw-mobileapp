@@ -210,6 +210,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 intent.putExtra("patient_photo", appointmentInfoModel.getPatientProfilePhoto());
                 intent.putExtra("app_start_date", appointmentInfoModel.getSlotDate());
                 intent.putExtra("app_start_time", appointmentInfoModel.getSlotTime());
+                intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
+                intent.putExtra("appointment_id", appointmentInfoModel.getId());
+
 
                 context.startActivity(intent);
 
