@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_baseline_videocam_24"
         android:orderInCategory="200"
         android:title="@string/video_call"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always">
 
     </item>

@@ -70,7 +70,7 @@ public class IntroActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnSkip,btnNext;
     private List<Location> mLocations = new ArrayList<>();
     Location location = null;
     ProgressDialog progress;
@@ -89,7 +89,7 @@ public class IntroActivity extends AppCompatActivity {
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
 
-        BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
+        BASE_URL = "https://development.mysmartcaredoc.com/openmrs/ws/rest/v1/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -224,14 +224,14 @@ public class IntroActivity extends AppCompatActivity {
             //Highlighting Text
             String introOne = getString(R.string.intelehealth_a_telemedicine_platform);
             String textToHighlightOne = getString(R.string.intelehealth_name);
-            String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
+            String newString = introOne.replaceAll(textToHighlightOne, "<font color='#503096'>" + textToHighlightOne + "</font>");
             tvIntroOne.setText(Html.fromHtml(newString));
 
             if (position == 1) {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
                 String textHighlight = getString(R.string.Ayu_name);
                 String newhighlight = two.replaceAll(textHighlight,
-                        "<font color='blue'>" + textHighlight + "</font>")
+                        "<font color='#503096'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
 
@@ -300,7 +300,7 @@ public class IntroActivity extends AppCompatActivity {
                                 else
                                     location = mLocations.get(0);
 
-                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
+                                TestSetup("development.mysmartcaredoc.com", "nurse1", "Nurse@123", "", location);
 
                             } else {
                                 progress.dismiss();

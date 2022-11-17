@@ -37,21 +37,21 @@
         android:lineSpacingExtra="2sp"
         android:gravity="center_horizontal|top" />
 
-        <Button
-            android:id="@+id/button_demo_visit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:elevation="5dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/demo_version"
-            android:layout_below="@id/tv_intro_two"
-            android:layout_marginTop="70dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
-            android:visibility="visible"
-            android:includeFontPadding="true"
-            android:background="@drawable/ic_rectangle_76" />
+            <Button
+                android:id="@+id/button_demo_visit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_intro_two"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="70dp"
+                android:background="@drawable/ic_rectangle_76"
+                android:elevation="5dp"
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="true"
+                android:text="@string/demo_version"
+                android:visibility="visible" />
 
         <Button
             android:id="@+id/button_custom_visit"
