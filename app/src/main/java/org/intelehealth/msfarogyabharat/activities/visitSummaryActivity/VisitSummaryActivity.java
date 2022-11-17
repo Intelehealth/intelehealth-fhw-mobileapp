@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -99,6 +100,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
@@ -638,14 +641,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
-        //if row is present i.e. if true is returned by the function then the spinner will be disabled.
-        Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            //if row is present i.e. if true is returned by the function then the spinner will be disabled.
+            Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
+            isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+            runOnUiThread(() -> {
+                if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
 
-        //spinner is being populated with the speciality values...
+                //spinner is being populated with the speciality values...
 //        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+                VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
 
 //        List<String> items = providerAttributeLIstDAO.getAllValues();
@@ -662,40 +667,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            }
 //        }
 //        Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
-        //Hashmap to List<String> add all value
-        ArrayAdapter<String> stringArrayAdapter;
+                String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+                //Hashmap to List<String> add all value
+                ArrayAdapter<String> stringArrayAdapter;
 
 //        if (items != null) {
 //            items.add(0, "Select Specialization");
 //            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
 //            speciality_spinner.setAdapter(stringArrayAdapter);
 //        } else {
-        stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
-        speciality_spinner.setAdapter(stringArrayAdapter);
+                stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
+                speciality_spinner.setAdapter(stringArrayAdapter);
 //        }
 
 
-        if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
-            speciality_spinner.setSelection(spinner_position);
-        } else {
+                if (special_value != null) {
+                    int spinner_position = stringArrayAdapter.getPosition(special_value);
+                    speciality_spinner.setSelection(spinner_position);
+                } else {
 
-        }
+                }
 
-        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
-            }
+                        speciality_selected = adapterView.getItemAtPosition(i).toString();
+                        Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
+                    }
+                });
+            });
         });
 
 //        if (hasPrescription.equalsIgnoreCase("true")) {
@@ -2089,8 +2096,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean speciality_row_exist_check(String uuid) {
         boolean isExists = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        db.beginTransaction();
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
 
         if (cursor.getCount() != 0) {
@@ -2099,9 +2106,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         return isExists;
     }
 
