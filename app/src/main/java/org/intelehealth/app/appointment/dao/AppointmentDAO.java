@@ -12,6 +12,9 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -47,7 +50,6 @@ public class AppointmentDAO {
             values.put("open_mrs_id", appointmentInfo.getOpenMrsId());
             values.put("status", appointmentInfo.getStatus());
             values.put("created_at", appointmentInfo.getCreatedAt());
-            values.put("updated_at", appointmentInfo.getUpdatedAt());
 
             createdRecordsCount = db.insertWithOnConflict("tbl_appointments", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
@@ -221,9 +223,9 @@ public class AppointmentDAO {
 
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !searchPatientText.isEmpty()) {
             String selectQuery = "SELECT * FROM " + table +
-                    " WHERE patient_name LIKE " + "'%" + search  + "%'  and slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'" +
+                    " WHERE patient_name LIKE " + "'%" + search + "%'  and slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'" +
                     " ORDER BY patient_name ASC";
-            Log.d(TAG, "getAppointmentsWithFilters: 1selectQuery : "+selectQuery);
+            Log.d(TAG, "getAppointmentsWithFilters: 1selectQuery : " + selectQuery);
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "SELECT * FROM tbl_appointments where slot_date BETWEEN '" + fromDate + "'  and '" + toDate + "'";
@@ -280,4 +282,32 @@ public class AppointmentDAO {
 
         return appointmentInfos;
     }
+
+    public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid,
+                                                    String prev_slot_day, String prev_slot_date,
+                                                    String prev_slot_time) throws DAOException {
+        boolean isCreated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereclause = "appointment_id=? and visit_uuid=?";
+        db.beginTransaction();
+        try {
+            values.put("prev_slot_day", prev_slot_day);
+            values.put("prev_slot_date", prev_slot_date);
+            values.put("prev_slot_time", prev_slot_time);
+
+            createdRecordsCount1 = db.update("tbl_appointments", values, whereclause, new String[]{appointment_id, visit_uuid});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
+
 }

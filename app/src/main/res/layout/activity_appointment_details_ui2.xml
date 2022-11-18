@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/iv_call_patient_app"
                     android:layout_width="@dimen/cp_option_icon_width"
                     android:layout_height="@dimen/cp_option_icon_height"
                     android:background="@drawable/ui2_ic_bg_contact_icons"
@@ -144,7 +144,7 @@
                     android:src="@drawable/ui2_ic_call_green" />
 
                 <ImageView
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/iv_whatsapp_patient_app"
                     android:layout_width="@dimen/cp_option_icon_width"
                     android:layout_height="@dimen/cp_option_icon_height"
                     android:layout_marginStart="@dimen/cp_option_margin_start"
@@ -610,6 +610,7 @@
                 android:weightSum="1">
 
                 <Button
+                    android:id="@+id/btn_cancel_appointment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"

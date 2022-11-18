@@ -729,6 +729,25 @@ public class PatientsDAO {
 
         return result;
     }
+    public static String[] getPatientsPhoneNumber(String patientUuid) {
+        String[] result = new String[0];
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
+                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+                String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
+                result = new String[]{gender, dob};
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return result;
+    }
 
 
 }
