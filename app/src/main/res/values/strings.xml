@@ -748,7 +748,6 @@
 
     <string name="diagnosis">Diagnosis</string>
     <string name="primary">Primary</string>
-    <string name="secondary">Secondary</string>
     <string name="provisiona">Provisional</string>
     <string name="confirmed">Confirmed</string>
     <string name="recommended_medication">Recommended Medication</string>
@@ -797,4 +796,7 @@
     <string name="please_enter_reason_txt">Please enter the reason!</string>
 
     <string name="patientdetail_seen_on_str">Seen on</string>
+    <string name="hospital_type">Hospital Type</string>
+    <string name="secondary">Secondary</string>
+    <string name="tertiary">Tertiary</string>
 </resources>
