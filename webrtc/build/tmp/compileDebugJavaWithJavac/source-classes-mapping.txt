@@ -8,7 +8,6 @@ org/intelehealth/apprtc/CompleteActivity.java
  org.intelehealth.apprtc.CompleteActivity$12
  org.intelehealth.apprtc.CompleteActivity$13
  org.intelehealth.apprtc.CompleteActivity$14
- org.intelehealth.apprtc.CompleteActivity$15
  org.intelehealth.apprtc.CompleteActivity$2
  org.intelehealth.apprtc.CompleteActivity$2$1
  org.intelehealth.apprtc.CompleteActivity$3

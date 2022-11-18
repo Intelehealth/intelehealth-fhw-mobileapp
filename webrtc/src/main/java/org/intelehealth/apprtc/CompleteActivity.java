@@ -340,17 +340,10 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
-
-        if (videoCapturer != null) {
-            videoCapturer.dispose();
-
-        }
-
         if (socket != null) {
             socket.disconnect();
             socket = null;
         }
-
         if (peerConnection != null) {
             peerConnection.dispose();
             peerConnection = null;
@@ -367,12 +360,7 @@ public class CompleteActivity extends AppCompatActivity {
             surfaceTextureHelper.dispose();
             surfaceTextureHelper = null;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show());
         stopRinging();
         try {
             unregisterReceiver(broadcastReceiver);
@@ -380,7 +368,6 @@ public class CompleteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         finish();
-
     }
 
 
@@ -808,12 +795,6 @@ public class CompleteActivity extends AppCompatActivity {
             }
         }
     };
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        catchFCMMessageData();
-    }
 
     private void catchFCMMessageData() {
         if (getIntent().getExtras() != null) {
