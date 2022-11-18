@@ -2204,7 +2204,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
-                if (!comp.trim().isEmpty()) {
+                if (!comp.isEmpty() && !comp.trim().isEmpty()) {
                     mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
                 }
