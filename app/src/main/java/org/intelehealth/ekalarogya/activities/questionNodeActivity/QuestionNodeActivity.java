@@ -162,8 +162,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     String complaintsFile = FileUtils.readFile(complaints.get(i) + ".json", this);
                     if (complaintsFile != null) {
                         currentFile = new JSONObject(complaintsFile);
-                        Node currentNode = new Node(currentFile);
-                        complaintsNodes.add(currentNode);
                     }
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -171,6 +169,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
+            }
+
+            if (currentFile != null) {
+                Node currentNode = new Node(currentFile);
+                complaintsNodes.add(currentNode);
             }
         }
 
