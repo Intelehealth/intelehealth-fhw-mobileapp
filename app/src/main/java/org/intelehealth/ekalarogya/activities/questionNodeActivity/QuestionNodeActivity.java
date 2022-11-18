@@ -159,7 +159,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         for (int i = 0; i < complaints.size(); i++) {
             if (hasLicense) {
                 try {
-                    currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
+                    String complaintsFile = FileUtils.readFile(complaints.get(i) + ".json", this);
+                    if (complaintsFile != null) {
+                        currentFile = new JSONObject(complaintsFile);
+                        Node currentNode = new Node(currentFile);
+                        complaintsNodes.add(currentNode);
+                    }
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -167,8 +172,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
             }
-            Node currentNode = new Node(currentFile);
-            complaintsNodes.add(currentNode);
         }
 
         super.onCreate(savedInstanceState);
@@ -418,14 +421,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
 
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]"))
-                    {
-                        insertion=insertion.replaceAll("Yes [Describe]","")
-                                .replaceAll("Other [Describe]","")
-                                .replaceAll("[Describe]","");
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]")) {
+                        insertion = insertion.replaceAll("Yes [Describe]", "")
+                                .replaceAll("Other [Describe]", "")
+                                .replaceAll("[Describe]", "");
                     }
 
-                    insertion=Node.dateformate_hi_or_gu_as_en(insertion,sessionManager);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
 
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
@@ -444,13 +446,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     startActivity(intent);
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]"))
-                    {
-                        insertion=insertion.replaceAll("Yes [Describe]","")
-                                .replaceAll("Other [Describe]","")
-                                .replaceAll("[Describe]","");
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]")) {
+                        insertion = insertion.replaceAll("Yes [Describe]", "")
+                                .replaceAll("Other [Describe]", "")
+                                .replaceAll("[Describe]", "");
                     }
-                    insertion=Node.dateformate_hi_or_gu_as_en(insertion,sessionManager);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
 
                     insertDb(insertion);
                     Intent intent = new Intent
@@ -699,7 +700,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
-            currentNodeVal=currentNodeVal
+            currentNodeVal = currentNodeVal
                     .replace("Question not answered", "सवाल का जवाब नहीं दिया")
                     .replace("Patient reports -", "पेशेंट ने सूचित किया -")
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
@@ -710,13 +711,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
                     .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
                     .replace("times per year", "प्रति वर्ष बार");
-            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             Log.d("tag", currentNodeVal);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
-            currentNodeVal= currentNodeVal
+            currentNodeVal = currentNodeVal
                     .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
                     .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
                     .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
@@ -727,11 +728,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ");
-            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
-            currentNodeVal= currentNodeVal
+            currentNodeVal = currentNodeVal
                     .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
                     .replace("Patient reports -", "દર્દીના અહેવાલો -")
                     .replace("Patient denies -", "દર્દી નકારે છે -")
@@ -742,11 +743,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "કલાક દીઠ વખત").replace("time per day", "દિવસ દીઠ વખત")
                     .replace("times per week", "સપ્તાહ દીઠ વખત").replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "દર વર્ષે વખત");
-            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
-            currentNodeVal= currentNodeVal
+            currentNodeVal = currentNodeVal
                     .replace("Question not answered", "પপ্ৰশ্নৰ উত্তৰ নাই")
                     .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
                     .replace("Patient denies -", "ৰোগীৰ ৰিপৰ্ট -")
@@ -757,7 +758,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "প্ৰতি ঘণ্টাত বাৰকৈ").replace("time per day", "প্ৰতিদিনে সময়")
                     .replace("times per week", "প্ৰতি সপ্তাহত বাৰকৈ").replace("times per month", "প্ৰতিমাহে বাৰ")
                     .replace("times per year", "বছৰি বাৰকৈ");
-            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));

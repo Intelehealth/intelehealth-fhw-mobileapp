@@ -74,6 +74,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
 public class VitalsActivity extends AppCompatActivity {
@@ -160,7 +161,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.medium_gray));
+                    TextView textView = ((TextView) parent.getChildAt(0));
+                    if (textView != null)
+                        textView.setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
 
@@ -765,7 +768,7 @@ public class VitalsActivity extends AppCompatActivity {
                 break;
 
             case UuidDictionary.BLOODGROUP: //blood
-                if (value==null || value.isEmpty() || value.length() == 0) {
+                if (value == null || value.isEmpty() || value.length() == 0) {
                     mBlood_Spinner.setSelection(0);
                 } else {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
