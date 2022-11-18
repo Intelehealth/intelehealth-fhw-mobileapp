@@ -1034,8 +1034,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     boolean isUpdateVisitDone = false;
                     try {
                         if (!isVisitSpecialityExists) {
-                            isUpdateVisitDone = listDAO
-                                    .insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY); // Speciality
+                            isUpdateVisitDone = listDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY); // Speciality
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
@@ -1045,7 +1044,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     // Upload Hospital Type visit attribute as well - start
                     try {
-                        listDAO.insertVisitAttributes(visitUuid, mHospitalType, HOSPITAL_TYPE);
+                        boolean hospitalValue_Added = listDAO.insertVisitAttributes(visitUuid, mHospitalType, HOSPITAL_TYPE);
+                        if (hospitalValue_Added)
+                        {
+                            secondaryType_rb.setEnabled(false);
+                            tertiaryType_rb.setEnabled(false);
+                        }
+                        else {
+                            secondaryType_rb.setEnabled(true);
+                            tertiaryType_rb.setEnabled(true);
+                        }
                     } catch (DAOException e) {
                         e.printStackTrace();
                         Log.v("hospitalType", "hospitalType: " + e.getMessage());
