@@ -165,22 +165,21 @@
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
-                            android:gravity="center_vertical"
-                            android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_male_textsize" />
+                            android:textSize="@dimen/fu_name_txt_size" />
 
                         <ImageButton
                             android:id="@+id/icons8_edit"
                             android:layout_width="@dimen/fu_pencil_width"
                             android:layout_height="@dimen/fu_pencil_height"
-                            android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="2dp"
                             android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
