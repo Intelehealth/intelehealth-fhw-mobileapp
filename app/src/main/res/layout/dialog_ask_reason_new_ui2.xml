@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
+            android:gravity="center"
             android:text="@string/please_select_your_reschedule_reason"
             android:textColor="@color/gray_6"
             android:textSize="16sp" />

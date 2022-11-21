@@ -285,8 +285,9 @@
                 <include
                     android:id="@+id/layout_no_data_found_upcoming"
                     layout="@layout/layout_no_data_found_ui2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_marginTop="10dp"
                     android:visibility="gone" />
             </LinearLayout>
@@ -342,8 +343,9 @@
                 <include
                     android:id="@+id/layout_no_data_found_completed"
                     layout="@layout/layout_no_data_found_ui2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_marginTop="10dp"
                     android:visibility="gone" />
 

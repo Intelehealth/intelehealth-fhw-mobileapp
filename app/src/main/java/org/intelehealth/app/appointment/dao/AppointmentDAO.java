@@ -282,6 +282,67 @@ public class AppointmentDAO {
 
         return appointmentInfos;
     }
+    public List<AppointmentInfo> getAppointmentsWithFiltersForToday(String searchPatientText, String currentDate) {
+        String search = searchPatientText.trim().replaceAll("\\s", "");
+
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor;
+        String table = "tbl_appointments";
+
+
+      if (!searchPatientText.isEmpty()) {
+            String selectQuery = "SELECT * FROM " + table +
+                    " WHERE patient_name LIKE " + "'%" + search + "%' and slot_date = '"+currentDate +"' ORDER BY patient_name ASC";
+            Log.d(TAG, "getAppointments: 3selectQuery : " + selectQuery);
+
+            idCursor = db.rawQuery(selectQuery, new String[]{});
+        } else {
+            idCursor = db.rawQuery("SELECT * FROM tbl_appointments where slot_date = '"+currentDate +"'", new String[]{});
+
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        //db.close();
+
+        return appointmentInfos;
+    }
 
     public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid,
                                                     String prev_slot_day, String prev_slot_date,

@@ -137,19 +137,16 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         openMrsId = "13TR2-8";
 */
         //for reschedule appointment as per old flow
+        actionTag = getIntent().getStringExtra("actionTag");
         appointmentId = getIntent().getIntExtra("appointmentId", 0);
         visitUuid = getIntent().getStringExtra("visitUuid");
         patientUuid = getIntent().getStringExtra("patientUuid");
         patientName = getIntent().getStringExtra("patientName");
         speciality = getIntent().getStringExtra("speciality");
         openMrsId = getIntent().getStringExtra("openMrsId");
-        actionTag = getIntent().getStringExtra("actionTag");
         app_start_date = getIntent().getStringExtra("app_start_date");
         app_start_time = getIntent().getStringExtra("app_start_time");
         app_start_day = getIntent().getStringExtra("app_start_day");
-
-
-        Log.d(TAG, "onCreate: actionTag : " + actionTag);
 
 
         initUI();
@@ -179,10 +176,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-    /*    PickUpTimeSlotsAdapter pickUpTimeSlotsAdapter = new PickUpTimeSlotsAdapter(this);
-        rvMorningSlots.setAdapter(pickUpTimeSlotsAdapter);
-        rvAfternoonSlots.setAdapter(pickUpTimeSlotsAdapter);
-        rvEveningSlots.setAdapter(pickUpTimeSlotsAdapter);*/
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rvHorizontalCal.setLayoutManager(linearLayoutManager);

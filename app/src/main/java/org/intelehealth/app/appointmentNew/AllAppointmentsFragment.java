@@ -195,6 +195,10 @@ public class AllAppointmentsFragment extends Fragment {
                     if (filtersList != null && filtersList.size() == 0) {
                         tvResultsFor.setVisibility(View.GONE);
                         scrollChips.setVisibility(View.GONE);
+                        fromDate = "";
+                        toDate = "";
+                        whichAppointment = "";
+                        getAppointments();
 
                     }
 
@@ -578,18 +582,19 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getAppointments() {
-        whichAppointment = "";
-        getUpcomingAppointments("", "", searchPatientText);
-        getCompletedAppointments("", "", searchPatientText);
+        //whichAppointment = "";
+        getUpcomingAppointments(fromDate, toDate, searchPatientText);
+        getCompletedAppointments(fromDate, toDate, searchPatientText);
     }
 
     private void getUpcomingAppointments(String fromDate, String toDate,
                                          String searchPatientText) {
         //recyclerview for upcoming appointments
-        Log.d(TAG, "getUpcomingAppointments: fromDate : "+fromDate);
-        Log.d(TAG, "getUpcomingAppointments: toDate : "+toDate);
-        Log.d(TAG, "getUpcomingAppointments: searchPatientText : "+searchPatientText);
-
+        Log.d(TAG, "getUpcomingAppointments: fromDate : " + fromDate);
+        Log.d(TAG, "getUpcomingAppointments: toDate : " + toDate);
+        Log.d(TAG, "getUpcomingAppointments: searchPatientText : " + searchPatientText);
+        tvUpcomingAppsCount.setText("0");
+        tvUpcomingAppsCountTitle.setText("Completed (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
         Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
@@ -635,7 +640,12 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getCompletedAppointments(String fromDate, String toDate, String searchPatientText) {
-        Log.d(TAG, "getCompletedAppointments: searchPatientText : "+searchPatientText);
+        Log.d(TAG, "55getCompletedAppointments: searchPatientText : " + searchPatientText);
+        Log.d(TAG, "55getCompletedAppointments:fromDate :  " + fromDate);
+        Log.d(TAG, "55getCompletedAppointments:toDate :  " + toDate);
+
+        tvCompletedAppsCount.setText("0");
+        tvCompletedAppsCountTitle.setText("Completed (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
 
@@ -757,7 +767,7 @@ public class AllAppointmentsFragment extends Fragment {
             } else {
             }
         }
-        Log.d(TAG, "getDataForCompletedAppointments: comp size : "+appointmentsDaoList.size());
+        Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
 
     }
@@ -795,8 +805,7 @@ public class AllAppointmentsFragment extends Fragment {
                     mDateSetListener,
                     year, month, day);
             datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //  datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
             datePickerDialog.show();
         });
@@ -843,8 +852,7 @@ public class AllAppointmentsFragment extends Fragment {
                     mDateSetListener1,
                     year, month, day);
             datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //  datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
             datePickerDialog.show();
         });
@@ -879,9 +887,22 @@ public class AllAppointmentsFragment extends Fragment {
         };
 
 
+    }
+
+    private void filterAsPerSelectedOptions() {
+        Log.d(TAG, "newselectDateRange: fromDate : " + fromDate);
+        Log.d(TAG, "newselectDateRange: todate : " + toDate);
+        Log.d(TAG, "newselectDateRange: whichAppointment : " + whichAppointment);
+
         if (whichAppointment.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()) {
             //all data
-            getAppointments();
+            Log.d(TAG, "filterAsPerSelectedOptions: all data");
+            getUpcomingAppointments(fromDate, toDate, searchPatientText);
+            getCompletedAppointments(fromDate, toDate, searchPatientText);
+        } else if (whichAppointment.isEmpty() && !fromDate.isEmpty() && !toDate.isEmpty()) {
+            //all
+            getUpcomingAppointments(fromDate, toDate, searchPatientText);
+            getCompletedAppointments(fromDate, toDate, searchPatientText);
         } else if (whichAppointment.equals("upcoming") && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //upcoming
             getUpcomingAppointments(fromDate, toDate, searchPatientText);
@@ -892,8 +913,11 @@ public class AllAppointmentsFragment extends Fragment {
         }
     }
 
+
     private void dismissDateFilterDialog() {
         if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            filterAsPerSelectedOptions();
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
