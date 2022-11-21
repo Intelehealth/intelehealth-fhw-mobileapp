@@ -174,20 +174,27 @@ public class VisitDetailsActivity extends AppCompatActivity {
             // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
             presc_arrowRight.setVisibility(View.GONE);
          //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+
+            String modifiedDate = "";
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                String modifiedDate = obsservermodifieddate;
+                modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
-                if (modifiedDate.contains("minutes") || modifiedDate.contains("hours") || modifiedDate.contains("minute") || modifiedDate.contains("hour")) {
-                    // here dont show remind block
-                    presc_remind_block.setVisibility(View.GONE);
-                } else {
-                    // here show remind block as its pending from more than 1 day.
-                    presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
-                }
-                presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
-                presc_time.setTextColor(getResources().getColor(R.color.red));
-                icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
             }
+            else {
+                modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+                modifiedDate = timeAgoFormat(modifiedDate);
+            }
+
+            if (modifiedDate.contains("minutes") || modifiedDate.contains("hours") || modifiedDate.contains("minute") || modifiedDate.contains("hour")) {
+                // here dont show remind block
+                presc_remind_block.setVisibility(View.GONE);
+            } else {
+                // here show remind block as its pending from more than 1 day.
+                presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
+            }
+            presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
+            presc_time.setTextColor(getResources().getColor(R.color.red));
+            icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
         }
         // presc block - end
 

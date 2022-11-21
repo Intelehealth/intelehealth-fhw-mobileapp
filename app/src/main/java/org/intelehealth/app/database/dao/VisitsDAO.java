@@ -1,5 +1,7 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -597,14 +599,18 @@ public class VisitsDAO {
         db.beginTransaction();
 
         if(visitUUID != null) {
-            final Cursor cursor = db.rawQuery("select modified_date from tbl_visit where uuid = ? and " +
-                    "(sync=1 or sync='TRUE' or sync = 'true') and voided = 0", new String[]{visitUUID});
+            final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " +
+                    "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
+                    "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " +
+                    "v.uuid = ? and " +
+                    "e.encounter_type_uuid = ? group by p.openmrs_id",
+                    new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
 
             if (cursor.moveToFirst()) {
                 do {
                     try {
-                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
-                        Log.v("modifiedDate", "modifiedDate: " + modifiedDate);
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        Log.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
