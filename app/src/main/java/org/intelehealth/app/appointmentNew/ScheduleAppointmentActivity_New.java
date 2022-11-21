@@ -157,9 +157,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
     private void initUI() {
 
-        slotInfoMorningList = new ArrayList<>();
-        slotInfoAfternoonList = new ArrayList<>();
-        slotInfoEveningList = new ArrayList<>();
+
         rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
         rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
         rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
@@ -221,6 +219,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
         Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
 
+       // Dermatologist
+       // General Physician
+
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, "General Physician")
@@ -229,7 +230,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
                         List<SlotInfo> slotInfoList = new ArrayList<>();
-
+                        slotInfoMorningList = new ArrayList<>();
+                        slotInfoAfternoonList = new ArrayList<>();
+                        slotInfoEveningList = new ArrayList<>();
 
                         slotInfoList.addAll(slotInfoResponse.getDates());
 

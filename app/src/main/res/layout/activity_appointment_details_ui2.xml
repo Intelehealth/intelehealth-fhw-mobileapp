@@ -205,7 +205,7 @@
                     android:textSize="@dimen/cp_name_txt_size" />
 
                 <TextView
-                    android:id="@+id/visitID"
+                    android:id="@+id/visitID_appointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/chief_complaint_txt"
@@ -221,7 +221,7 @@
                     android:id="@+id/fu_progress_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/visitID"
+                    android:layout_below="@id/visitID_appointment"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/cp_card_margin_updown"
                     android:background="@null"
@@ -259,7 +259,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_prev_app_date"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/margin_6"
@@ -275,7 +275,7 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_prev_app_time"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/reschedule_time_margin_start"

@@ -8,30 +8,31 @@
     <RelativeLayout
         android:id="@+id/layout_parent_all_appointments"
         android:layout_width="match_parent"
-        android:paddingBottom="40dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/today_apps_parent_margin_top">
+        android:layout_marginTop="@dimen/today_apps_parent_margin_top"
+        android:paddingBottom="40dp">
 
         <RelativeLayout
             android:id="@+id/layout_all_appoints_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutLocation"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginTop="@dimen/ma_icon_margin_top"
                 android:layout_toStartOf="@+id/iv_calendar_all_app"
-                app:endIconDrawable="@drawable/ui2_ic_close_drawer"
-                app:endIconMode="clear_text">
+                android:background="@drawable/ui2_background_input_field_new">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autotv_select_location"
+                <EditText
+                    android:id="@+id/et_search_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ui2_background_input_field_new"
+                    android:layout_toStartOf="@+id/iv_clear_all"
+                    android:background="@null"
                     android:drawableStart="@drawable/ui2_ic_search_icon_home"
                     android:drawablePadding="@dimen/find_patient_icon_padding"
+                    android:imeOptions="actionSearch"
                     android:drawableTint="@color/iconTintGrayBottomNav"
                     android:hint="@string/search_patient"
                     android:importantForAutofill="no"
@@ -41,12 +42,21 @@
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom1"
                     android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size"
-                    app:endIconDrawable="@drawable/ui2_ic_chevron_down"
-                    app:endIconMode="custom"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:textSize="@dimen/common_hint_text_size" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/iv_clear_all"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    app:tint="@color/colorPrimary"
+                    android:src="@drawable/ui2_ic_close_drawer" />
+
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/iv_calendar_all_app"
@@ -125,8 +135,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
-                                android:gravity="center"
                                 android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
+                                android:gravity="center"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
                                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                                 android:text="@string/upcoming"
@@ -164,8 +174,8 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
+                                android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                                 android:gravity="center"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
                                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
@@ -205,8 +215,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
-                                android:gravity="center"
                                 android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
+                                android:gravity="center"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
                                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                                 android:text="@string/completed"
@@ -271,13 +281,14 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_all_appointments_ui2_new" />
+
                 <include
                     android:id="@+id/layout_no_data_found_upcoming"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -327,13 +338,14 @@
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
+
                 <include
                     android:id="@+id/layout_no_data_found_completed"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:visibility="gone" />
 
 
                 <androidx.recyclerview.widget.RecyclerView

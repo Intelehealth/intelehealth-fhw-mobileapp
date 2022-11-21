@@ -10,13 +10,19 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,8 +70,10 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle;
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
-    ImageView ivRefresh;
+    ImageView ivRefresh, ivClearText;
     View noDataFoundForUpcoming, noDataFoundForCompleted;
+    EditText autotvSearch;
+    String searchPatientText = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,7 +119,13 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //no data found
         noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
         noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
-
+        autotvSearch = view.findViewById(R.id.et_search_today);
+        ivClearText = view.findViewById(R.id.iv_clear_today);
+        ivClearText.setOnClickListener(v -> {
+            autotvSearch.setText("");
+            searchPatientText = "";
+            getAppointments();
+        });
 
         cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
@@ -131,6 +145,49 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutUpcoming.setLayoutParams(params);
         getAppointments();
         getSlots();
+
+        autotvSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!autotvSearch.getText().toString().isEmpty()) {
+                    ivClearText.setVisibility(View.VISIBLE);
+                } else {
+                    searchPatientText = "";
+                    getAppointments();
+                    ivClearText.setVisibility(View.GONE);
+                }
+            }
+
+        });
+
+        autotvSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (!autotvSearch.getText().toString().isEmpty()) {
+                        searchPatientText = autotvSearch.getText().toString();
+                        getUpcomingAppointments();
+                        getCompletedAppointments();
+                    } else {
+                        searchPatientText = "";
+
+                        Log.d(TAG, "afterTextChanged: in else");
+                        getAppointments();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void clickListeners() {
@@ -195,7 +252,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         });
 
         ivRefresh.setOnClickListener(v -> {
-           // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -206,7 +263,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters("", "", searchPatientText);
         Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
@@ -320,6 +377,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             }
         }
     }
+
     private String getPatientProfile(String patientUuid) {
         Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
