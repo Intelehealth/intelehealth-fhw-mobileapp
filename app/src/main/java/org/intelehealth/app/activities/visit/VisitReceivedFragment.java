@@ -128,7 +128,6 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         thisWeeks_Visits();
         thisMonths_Visits();
 
-
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
     }
 
