@@ -125,6 +125,8 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
 
     private void defaultData() {
         todays_Visits();
+        thisWeeks_Visits();
+        thisMonths_Visits();
 
 
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
@@ -340,9 +342,81 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     }
 
     private void todays_Visits() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+        // new 
+        todayList = new ArrayList<>();
+        db.beginTransaction();
 
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                " e.encounter_type_uuid = ? and" +
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                " o.conceptuuid = ? and " +
+                " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                // emergency - start
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                String emergencyUuid = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+
+                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                    model.setEmergency(true);
+                else
+                    model.setEmergency(false);
+                // emergency - end
+
+                model.setHasPrescription(true);
+                model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
+                model.setVisitUuid(visitID);
+                model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                todayList.add(model);
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        totalCounts_today = todayList.size();
+        if(totalCounts_today == 0 || totalCounts_today < 0)
+            today_nodata.setVisibility(View.VISIBLE);
+        else
+            today_nodata.setVisibility(View.GONE);
+
+        todays_adapter = new VisitAdapter(getActivity(), todayList);
+        recycler_today.setNestedScrollingEnabled(false);
+        recycler_today.setAdapter(todays_adapter);
+
+      //  thisWeeks_Visits();
+        //new
+        
+        
+        
+        
+        
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        Handler handler = new Handler(Looper.getMainLooper());
+
+/*
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -386,20 +460,20 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                 model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
-                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                Cursor cursor = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                                     do {
-                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
-                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
-                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
+                                        model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                                         todayList.add(model);
                                     }
-                                    while (p_c.moveToNext());
+                                    while (cursor.moveToNext());
                                 }
-                                p_c.close();
+                                cursor.close();
                                 // end
 
                             }
@@ -436,12 +510,82 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 });
             }
         });
+*/
 
     }
 
 
     private void thisWeeks_Visits() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        // new
+        weeksList = new ArrayList<>();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                "  e.encounter_type_uuid = ? and" +
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                " o.conceptuuid = ? and" +
+                " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
+                " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
+                " group by p.openmrs_id"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                // emergency - start
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                String emergencyUuid = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+
+                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                    model.setEmergency(true);
+                else
+                    model.setEmergency(false);
+                // emergency - end
+
+                model.setHasPrescription(true);
+                model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
+                model.setVisitUuid(visitID);
+                model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                weeksList.add(model);
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        totalCounts_week = weeksList.size();
+        if(totalCounts_week == 0 || totalCounts_week < 0)
+            week_nodata.setVisibility(View.VISIBLE);
+        else
+            week_nodata.setVisibility(View.GONE);
+
+        weeks_adapter = new VisitAdapter(getActivity(), weeksList);
+        recycler_week.setNestedScrollingEnabled(false);
+        recycler_week.setAdapter(weeks_adapter);
+
+        //  thisWeeks_Visits();
+        //new
+
+     /*   ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
@@ -490,20 +634,20 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                 model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
-                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                Cursor cursor1 = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                                     do {
-                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
-                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
-                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
+                                        model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                                         weeksList.add(model);
                                     }
-                                    while (p_c.moveToNext());
+                                    while (cursor.moveToNext());
                                 }
-                                p_c.close();
+                                cursor.close();
                                 // end
 
                             }
@@ -538,12 +682,83 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                     }
                 });
             }
-        });
+        });*/
 
     }
 
     private void thisMonths_Visits() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        // new
+        monthsList = new ArrayList<>();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        "  e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " o.conceptuuid = ? and" +
+                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
+                        " group by p.openmrs_id"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                // emergency - start
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                String emergencyUuid = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+
+                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                    model.setEmergency(true);
+                else
+                    model.setEmergency(false);
+                // emergency - end
+
+                model.setHasPrescription(true);
+                model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
+                model.setVisitUuid(visitID);
+                model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                monthsList.add(model);
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        totalCounts_month = monthsList.size();
+        if(totalCounts_month == 0 || totalCounts_month < 0)
+            month_nodata.setVisibility(View.VISIBLE);
+        else
+            month_nodata.setVisibility(View.GONE);
+
+        months_adapter = new VisitAdapter(getActivity(), monthsList);
+        recycler_month.setNestedScrollingEnabled(false);
+        recycler_month.setAdapter(months_adapter);
+        progress.setVisibility(View.GONE);
+
+        //  thisWeeks_Visits();
+        //new
+
+
+      /*  ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
@@ -594,21 +809,21 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                                 model.setVisit_start_date(c.getString(c.getColumnIndexOrThrow("startdate")));
 
                                 // fetching patient values from Patient table.
-                                Cursor p_c = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                                if (p_c.getCount() > 0 && p_c.moveToFirst()) {
+                                Cursor cursor2 = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
+                                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                                     do {
-                                        model.setPatient_photo(p_c.getString(p_c.getColumnIndexOrThrow("patient_photo")));
-                                        model.setFirst_name(p_c.getString(p_c.getColumnIndexOrThrow("first_name")));
-                                        model.setLast_name(p_c.getString(p_c.getColumnIndexOrThrow("last_name")));
-                                        model.setOpenmrs_id(p_c.getString(p_c.getColumnIndexOrThrow("openmrs_id")));
-                                        model.setDob(p_c.getString(p_c.getColumnIndexOrThrow("date_of_birth")));
-                                        model.setGender(p_c.getString(p_c.getColumnIndexOrThrow("gender")));
+                                        model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                                        model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                                        model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                                        model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                                        model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                                         monthsList.add(model);
 
                                     }
-                                    while (p_c.moveToNext());
+                                    while (cursor.moveToNext());
                                 }
-                                p_c.close();
+                                cursor.close();
                                 // end
 
                             }
@@ -644,7 +859,7 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
                 });
             }
         });
-
+*/
     }
 
 
