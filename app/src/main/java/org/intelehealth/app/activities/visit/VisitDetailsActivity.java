@@ -54,12 +54,12 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
     visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
-    private ImageView priorityTag, profile_image;
+    private ImageView priorityTag, profile_image, icon_presc_details;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative;
     private ImageButton presc_arrowRight, vs_arrowRight;
-    private String vitalsUUID, adultInitialUUID;
+    private String vitalsUUID, adultInitialUUID, obsservermodifieddate;
     private Button btn_end_visit, yes_followup_btn;
 
     @Override
@@ -93,6 +93,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             patient_photo_path = intent.getStringExtra("patient_photo");
             chief_complaint_value = intent.getStringExtra("chief_complaint");
+            obsservermodifieddate = intent.getStringExtra("obsservermodifieddate");
         }
 
         // end visit - start
@@ -139,13 +140,19 @@ public class VisitDetailsActivity extends AppCompatActivity {
         presc_time = findViewById(R.id.presc_time);
         presc_arrowRight = findViewById(R.id.presc_arrowRight);
         presc_remind_block = findViewById(R.id.presc_remind_block);
+        icon_presc_details = findViewById(R.id.icon_presc_details);
 
         if (hasPrescription) {
             presc_arrowRight.setVisibility(View.VISIBLE);
             presc_remind_block.setVisibility(View.GONE);
-            String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-            modifiedDate = timeAgoFormat(modifiedDate);
-            presc_time.setText("Received " + modifiedDate);
+            if (!obsservermodifieddate.equalsIgnoreCase("")) {
+              //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+                String modifiedDate = obsservermodifieddate;
+                modifiedDate = timeAgoFormat(modifiedDate);
+                presc_time.setText("Received " + modifiedDate);
+                icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
+            }
+
             presc_arrowRight.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
                 in.putExtra("patientname", patientName);
@@ -166,18 +173,21 @@ public class VisitDetailsActivity extends AppCompatActivity {
         else {
             // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
             presc_arrowRight.setVisibility(View.GONE);
-            String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
-            modifiedDate = timeAgoFormat(modifiedDate);
-            if (modifiedDate.contains("minutes") || modifiedDate.contains("hours")) {
-                // here dont show remind block
-                presc_remind_block.setVisibility(View.GONE);
+         //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+            if (!obsservermodifieddate.equalsIgnoreCase("")) {
+                String modifiedDate = obsservermodifieddate;
+                modifiedDate = timeAgoFormat(modifiedDate);
+                if (modifiedDate.contains("minutes") || modifiedDate.contains("hours") || modifiedDate.contains("minute") || modifiedDate.contains("hour")) {
+                    // here dont show remind block
+                    presc_remind_block.setVisibility(View.GONE);
+                } else {
+                    // here show remind block as its pending from more than 1 day.
+                    presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
+                }
+                presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
+                presc_time.setTextColor(getResources().getColor(R.color.red));
+                icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
             }
-            else {
-                // here show remind block as its pending from more than 1 day.
-                presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
-            }
-            presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
-            presc_time.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
 

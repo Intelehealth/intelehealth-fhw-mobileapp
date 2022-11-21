@@ -23,6 +23,7 @@ public class PrescriptionModel {
     String patient_photo;
     String chiefComplaint;
     boolean hasPrescription = false;
+    String obsservermodifieddate = "";
 
     public String getEncounterUuid() {
         return encounterUuid;
@@ -158,5 +159,13 @@ public class PrescriptionModel {
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getObsservermodifieddate() {
+        return obsservermodifieddate;
+    }
+
+    public void setObsservermodifieddate(String obsservermodifieddate) {
+        this.obsservermodifieddate = obsservermodifieddate;
     }
 }

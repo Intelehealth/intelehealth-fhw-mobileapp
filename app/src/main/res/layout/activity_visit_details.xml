@@ -539,7 +539,7 @@
                     android:layout_below="@+id/divider_3">
 
                 <ImageView
-                    android:id="@+id/icon_visit_details"
+                    android:id="@+id/icon_presc_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -551,7 +551,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:layout_toEndOf="@+id/icon_presc_details"
                     android:orientation="vertical">
 
                 <TextView

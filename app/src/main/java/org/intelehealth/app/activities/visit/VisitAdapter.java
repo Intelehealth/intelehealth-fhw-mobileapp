@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -148,6 +147,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("visit_ID", model.getVisitUuid());
                 intent.putExtra("visit_startDate", model.getVisit_start_date());
                 intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
                 context.startActivity(intent);
             });
         }

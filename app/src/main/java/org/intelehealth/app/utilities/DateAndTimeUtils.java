@@ -411,7 +411,7 @@ public class DateAndTimeUtils {
     public static String timeAgoFormat(String datetime) {
         String time = "";
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
             long date = format.parse(datetime).getTime();
             long now = System.currentTimeMillis();
