@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/rece_nestedscroll"
         android:layout_width="match_parent"
@@ -136,6 +138,7 @@
 
             <!--Main Block - Start -->
             <RelativeLayout
+                android:id="@+id/main_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
@@ -374,6 +377,18 @@
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:layout_centerInParent="true"
+        android:elevation="@dimen/margin_2dp"
+        android:padding="@dimen/margin_5"
+        android:background="@drawable/circle_white_bg"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorPrimaryDark"
+        android:layout_gravity="center" />
 
 
 </RelativeLayout>

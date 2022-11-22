@@ -165,22 +165,21 @@
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
-                            android:gravity="center_vertical"
-                            android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_male_textsize" />
+                            android:textSize="@dimen/fu_name_txt_size" />
 
                         <ImageButton
                             android:id="@+id/icons8_edit"
                             android:layout_width="@dimen/fu_pencil_width"
                             android:layout_height="@dimen/fu_pencil_height"
-                            android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="2dp"
                             android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
@@ -539,7 +538,7 @@
                     android:layout_below="@+id/divider_3">
 
                 <ImageView
-                    android:id="@+id/icon_visit_details"
+                    android:id="@+id/icon_presc_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -551,7 +550,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:layout_toEndOf="@+id/icon_presc_details"
                     android:orientation="vertical">
 
                 <TextView
@@ -697,7 +696,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:layout_below="@+id/followup_date_txtv" >
 
             <TextView
@@ -725,10 +724,11 @@
 
                 <!--Do you want to Accept this Follow up - start-->
                 <RelativeLayout
+                    android:id="@+id/yes_no_followup_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_below="@+id/followup_date_txtv" >
 
                     <TextView
@@ -769,7 +769,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/btn_vs_sendvisit"
+                            android:id="@+id/yes_followup_btn"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/margin_5"

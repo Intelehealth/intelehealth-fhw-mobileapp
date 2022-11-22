@@ -719,6 +719,92 @@
     </androidx.cardview.widget.CardView>
     <!--    Prescribed Medication - end-->
 
+            <!--Advice - Start-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/adviceCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                app:cardCornerRadius="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginEnd="@dimen/toolbar_margin_left"
+                android:layout_below="@+id/medicationCard"
+                app:cardElevation="@dimen/margin_5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/advice_header_relative"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fu_card_margin_sides"
+                        android:layout_marginTop="@dimen/fu_card_margin_sides"
+                        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                        android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                        <ImageView
+                            android:id="@+id/vs_icon"
+                            android:layout_width="@dimen/edittext_height_44dp"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:src="@drawable/med_history_icon" />
+
+                        <TextView
+                            style="@style/text_title_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/margin_8"
+                            android:layout_toEndOf="@+id/vs_icon"
+                            android:text="Advice" />
+
+                        <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/btnup_advice_header"
+                            android:layout_width="@dimen/fu_icon_width"
+                            android:layout_height="@dimen/fu_icon_height"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:src="@drawable/ui2_ic_chevron_down" />
+                    </RelativeLayout>
+
+                    <!--Expanded Vitals-->
+                    <RelativeLayout
+                        android:id="@+id/vs_adviceheader_expandview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/advice_header_relative"
+                        android:visibility="visible"
+                        tools:visibility="visible">
+
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:background="@color/notifi_divider_color" />
+
+                        <!--Personal Sub-Child-->
+                        <TextView
+                            android:id="@+id/advice_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/fu_margin_start"
+                            android:textSize="@dimen/find_patient_hint_size"
+                            android:text="\u2022 No information"
+                            android:layout_below="@+id/divider"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:layout_marginTop="@dimen/margin_16dp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+            <!--Advice - End-->
+
     <!--Test - start-->
     <androidx.cardview.widget.CardView
         android:id="@+id/testCard"
@@ -729,7 +815,7 @@
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
-        android:layout_below="@+id/medicationCard"
+        android:layout_below="@+id/adviceCard"
         app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
@@ -740,30 +826,33 @@
                 android:id="@+id/vitals_header_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fu_card_margin_sides">
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                 <ImageView
                     android:id="@+id/vs_icon"
                     android:layout_width="@dimen/edittext_height_44dp"
                     android:layout_height="@dimen/edittext_height_44dp"
-                    android:src="@drawable/test_icon"/>
+                    android:src="@drawable/test_icon" />
 
                 <TextView
+                    style="@style/text_title_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/vs_icon"
-                    android:text="Test"
-                    style="@style/text_title_style"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
-                    android:layout_centerVertical="true" />
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:text="Test" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/btnup_test_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
-                    android:background="@null"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:background="@null"
                     android:src="@drawable/ui2_ic_chevron_down" />
             </RelativeLayout>
 
@@ -875,6 +964,7 @@
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
                     android:text="No information"
+                    android:textColor="@color/hint_text_color"
                     android:layout_below="@+id/divider"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -965,6 +1055,7 @@
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
+                            android:textColor="@color/hint_text_color"
                             android:visibility="gone"
                             tools:visibility="visible"/>
 
