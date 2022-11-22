@@ -3,6 +3,7 @@ package org.intelehealth.app.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 import org.intelehealth.app.utilities.SessionManager;
@@ -75,7 +76,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "value TEXT," +
                     "visit_attribute_type_uuid TEXT," +
                     "voided TEXT," +
-                    "sync TEXT)";
+                    "sync TEXT, " +
+                    "visit_id TEXT)";
     //sync column is maintained for internal checking on android side for update.
 
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
@@ -83,9 +85,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "password TEXT UNIQUE," +
             "creator_uuid_cred TEXT," +
             "chwname TEXT," +
-            "provider_uuid_cred TEXT"+
+            "provider_uuid_cred TEXT" +
             ")";
-
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
@@ -185,7 +186,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT  PRIMARY KEY," +
             "name TEXT," +
             "price TEXT," +
-            "retired Integer" +")";
+            "retired Integer" + ")";
 
     public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS tbl_image_records(" +
             "uuid TEXT PRIMARY KEY," +
@@ -293,12 +294,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             case 3:
                 //upgrade logic from version 3 to 4
             case 4:
-                //upgrade logic from version 4
+                //upgrade logic from version 4 to 5
+                db.execSQL("ALTER TABLE tbl_visit_attribute ADD COLUMN visit_id TEXT");
+                break;
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
         }
-
     }
 
 

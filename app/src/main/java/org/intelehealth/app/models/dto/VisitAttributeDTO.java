@@ -6,6 +6,7 @@ public class VisitAttributeDTO {
     private String value;
     private String visit_attribute_type_uuid;
     private int voided;
+    private String visit_id;
 
     public String getUuid() {
         return uuid;
@@ -45,5 +46,13 @@ public class VisitAttributeDTO {
 
     public void setVoided(int voided) {
         this.voided = voided;
+    }
+
+    public String getVisit_id() {
+        return visit_id;
+    }
+
+    public void setVisit_id(String visit_id) {
+        this.visit_id = visit_id;
     }
 }

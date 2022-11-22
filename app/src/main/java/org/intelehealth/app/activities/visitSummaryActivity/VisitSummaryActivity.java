@@ -1109,13 +1109,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                     isSynedFlag = "1";
                                     //
-                                    showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
                                         generateBillBtn.setVisibility(View.VISIBLE);
                                     }
+                                    fetchVisitIdAfterSomeTime();
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
@@ -1909,6 +1909,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
     }
 
+    private void fetchVisitIdAfterSomeTime() {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> showVisitId(fetchVisitId()), 5000);
+    }
+
 //    private void doConnect() {
 //
 //        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
@@ -2029,7 +2034,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-
         return isExists;
     }
 
@@ -2120,20 +2124,24 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             Log.e("ISSYNCED==", isSynedFlag);
 
             if (!isSynedFlag.equalsIgnoreCase("0")) {
-                hideVisitUUID = visitUUID;
-                hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-                visitView.setText("XXXX" + hideVisitUUID);
+                showVisitId(fetchVisitId());
             } else {
                 visitView.setText(getResources().getString(R.string.visit_not_uploaded));
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
-                hideVisitUUID = visitUuid;
-                hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-                visitView.setText("XXXX" + hideVisitUUID);
-//              visitView.setText("----");
+                showVisitId(fetchVisitId());
             }
         }
+    }
+
+    private void showVisitId(String visitId) {
+        if (visitView != null) visitView.setText(visitId);
+    }
+
+    private String fetchVisitId() {
+        VisitAttributeListDAO attributeListDAO = new VisitAttributeListDAO();
+        return attributeListDAO.getVisitID(visitUuid);
     }
 
     private void physcialExaminationImagesDownload() {
