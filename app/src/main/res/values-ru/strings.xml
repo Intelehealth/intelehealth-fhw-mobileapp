@@ -799,6 +799,6 @@
     <!--Hospital Type-->
     <string name="hospital_type">Тип больницы</string>
     <string name="secondary">Вторичный</string>
-    <string name="tertiary">Tertiary </string>
+    <string name="tertiary">третичный</string>
 
 </resources>
