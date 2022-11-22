@@ -20,6 +20,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -37,9 +38,11 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -53,12 +56,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -100,14 +106,15 @@ public class PrescriptionActivity extends AppCompatActivity {
             btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview,
             vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_testheader_expandview,
-            vs_speciality_header_expandview, vs_followup_header_expandview;
+            vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             mCHWname, drname, dr_age_gender, qualification, dr_speciality,
-            diagnosis_txt, medication_txt, test_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+            diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private SessionManager sessionManager;
     String diagnosisReturned = "", rxReturned = "", testsReturned = "", adviceReturned = "", doctorName = "",
             additionalReturned = "", followUpDate = "";
+    String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
     private Patient patient = new Patient();
     private String hasPrescription = "";
@@ -163,11 +170,13 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         diagnosis_txt = findViewById(R.id.diagnosis_txt);
         medication_txt = findViewById(R.id.medication_txt);
+        advice_txt = findViewById(R.id.advice_txt);
         test_txt = findViewById(R.id.test_txt);
         referred_speciality_txt = findViewById(R.id.referred_speciality_txt);
         no_followup_txt = findViewById(R.id.no_followup_txt);
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
+        followup_date_block = findViewById(R.id.followup_date_block);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -279,6 +288,17 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
         // download btn - end
 
+        // Follow up - start
+        if (followUpDate.equalsIgnoreCase("")) {
+            no_followup_txt.setVisibility(View.VISIBLE);
+            followup_date_block.setVisibility(View.GONE);
+        }
+        else {
+            no_followup_txt.setVisibility(View.GONE);
+            followup_date_block.setVisibility(View.VISIBLE);
+        }
+        // Follow up - end
+
         // Bottom Buttons - start
         btn_vs_print.setOnClickListener(v -> {
             try {
@@ -292,6 +312,50 @@ public class PrescriptionActivity extends AppCompatActivity {
             sharePresc();
         });
         // Bottom Buttons - end
+
+        // follow up - yes - start
+        yes_btn.setOnClickListener(v -> {
+            followupScheduledSuccess(PrescriptionActivity.this, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
+                    "Follow up scheduled!",
+                    "A follow up for this patient visit has been scheduled successfully.",
+                    "Okay");
+        });
+        // follow up - yes - end
+    }
+
+    private void followupScheduledSuccess(Context context, Drawable drawable, String title, String subTitle,
+                                        String neutral) {
+
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        negative_btn.setVisibility(View.GONE);  // as this view requires only one button so other button has hidden.
+
+        icon.setImageDrawable(drawable);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subTitle);
+        positive_btn.setText(neutral);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        positive_btn.setOnClickListener(v -> {
+            /*Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);*/
+            alertDialog.dismiss();
+        });
+
+        alertDialog.show();
     }
 
     private void expandableCardVisibilityHandling() {
@@ -392,49 +456,52 @@ public class PrescriptionActivity extends AppCompatActivity {
                 break;
             }
 
-//            case UuidDictionary.MEDICAL_ADVICE: {
-//                if (!adviceReturned.isEmpty()) {
-//                    adviceReturned = adviceReturned + "\n" + value;
-//                    Log.d("GAME", "GAME: " + adviceReturned);
-//                } else {
-//                    adviceReturned = value;
-//                    Log.d("GAME", "GAME_2: " + adviceReturned);
-//                }
-//                if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
-//                    medicalAdviceCard.setVisibility(View.VISIBLE);
-//                }
-//                //medicalAdviceTextView.setText(adviceReturned);
-//                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
-//
-//                int j = adviceReturned.indexOf('<');
-//                int i = adviceReturned.lastIndexOf('>');
-//                if (i >= 0 && j >= 0) {
-//                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
-//                } else {
-//                    medicalAdvice_HyperLink = "";
-//                }
-//
-//                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
-//
-//                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-//                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
-//
-//                /*
-//                 * variable a contains the hyperlink sent from webside.
-//                 * variable b contains the string data (medical advice) of patient.
-//                 * */
-//               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
-//                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
-//                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
-//
-//                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
-//                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
-//                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
-//                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-//                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
-//                //checkForDoctor();
-//                break;
-//            }
+            case UuidDictionary.MEDICAL_ADVICE: {
+                if (!adviceReturned.isEmpty()) {
+                    if (adviceReturned.contains("Start Audio"))
+                        adviceReturned = Node.bullet + " " +value;
+                    else
+                        adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
+
+                    Log.d("GAME", "GAME: " + adviceReturned);
+                } else {
+                    adviceReturned = value;
+                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                }
+
+                //medicalAdviceTextView.setText(adviceReturned);
+
+                int j = adviceReturned.indexOf('<');
+                int i = adviceReturned.lastIndexOf('>');
+                if (i >= 0 && j >= 0) {
+                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
+                } else {
+                    medicalAdvice_HyperLink = "";
+                }
+
+                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+
+                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                advice_txt.setText(medicalAdvice_string);
+                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+
+                /*
+                 * variable a contains the hyperlink sent from webside.
+                 * variable b contains the string data (medical advice) of patient.
+                 * */
+               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
+                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
+
+              /*  adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+                advice_txt.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                advice_txt.setMovementMethod(LinkMovementMethod.getInstance());
+                Log.d("hyper_textview", "hyper_textview: " + advice_txt.getText().toString());*/
+                //checkForDoctor();
+                break;
+            }
+
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
                     testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
@@ -466,9 +533,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 } else {
                     followUpDate = date_formatter(value.substring(0,10), "dd-MM-yyyy", "dd MMM, yyyy");
                 }
+
                 followup_date_txt.setText(followUpDate);
                 followup_subtext.setText("The doctor suggested a follow-up visit on " + followUpDate +
                         ". Does the patient want to take a follow-up visit?");
+
                 break;
             }
 
@@ -787,11 +856,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                   //  prescriptionCard.setVisibility(View.GONE);
 
                 }
-              /*  if (!adviceReturned.isEmpty()) {
+                if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
-                    medicalAdviceTextView.setText("");
-                    medicalAdviceCard.setVisibility(View.GONE);
-                }*/
+                    advice_txt.setText("");
+                  //  medicalAdviceCard.setVisibility(View.GONE);
+                }
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
                     test_txt.setText("");

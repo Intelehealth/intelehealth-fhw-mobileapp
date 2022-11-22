@@ -24,6 +24,7 @@ import androidx.transition.TransitionManager;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,9 +83,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 finish(); // TODO: uncomment
-             /*   Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
-                startActivity(intent); // TODO: remove this intent code later.
-*/
+
+                // testing...
+              /*  sessionManager.setServerUrl(AppConstants.DEMO_URL);
+                Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
+                startActivity(intent); // TODO: remove this block code later.*/
             }
         });
 

@@ -31,11 +31,13 @@
             android:text="All visits"
             android:layout_marginBottom="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
+            android:visibility="gone"
             android:textColor="@color/header_title_color"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@color/notifi_divider_color" />
 
         <TextView
@@ -43,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Priority visits"
-            android:layout_marginTop="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
             android:textColor="@color/header_title_color"/>
 

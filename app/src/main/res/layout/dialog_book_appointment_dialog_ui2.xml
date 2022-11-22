@@ -19,6 +19,7 @@
             android:src="@drawable/ui2_ic_book_appointment" />
 
         <TextView
+            android:id="@+id/tv_title_book_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"

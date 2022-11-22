@@ -146,7 +146,7 @@ public class DateAndTimeUtils {
         if (period.getValue(0) > 0) {  // o index -> years
             tyears = String.valueOf(period.getValue(0));
             age = tyears;
-            Log.d("TAG", "getAge_FollowUp: s : "+age);
+            Log.d("TAG", "getAge_FollowUp: s : " + age);
         }
 
         return age;
@@ -405,13 +405,14 @@ public class DateAndTimeUtils {
 
     /**
      * This function is used to calculate value like Eg: '2 hours ago' or '2 minutes ago'.
+     *
      * @param datetime
      * @return
      */
     public static String timeAgoFormat(String datetime) {
         String time = "";
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
             long date = format.parse(datetime).getTime();
             long now = System.currentTimeMillis();
@@ -791,4 +792,21 @@ public class DateAndTimeUtils {
 
     }
 
+    public static String getDateInDDMMMMYYYYFormat(String inputDate) {
+        String dateFormatted = "";
+        //input date must be in dd/mm/yyyy format
+        if (inputDate != null && !inputDate.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date d = null;
+            try {
+                d = sdf.parse(inputDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdf2 = new SimpleDateFormat("dd MMMM, yyyy");
+            dateFormatted = sdf2.format(d);
+
+        }
+        return dateFormatted;
+    }
 }

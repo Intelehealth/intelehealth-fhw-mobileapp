@@ -51,6 +51,9 @@ public class VisitActivity extends FragmentActivity {
         receivedTotal = countsInterface.getPrescCount();
         pendingTotal = countsInterface.getPrescCount();
 
+        receivedTotal = 15;
+        pendingTotal = 10;
+
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)
