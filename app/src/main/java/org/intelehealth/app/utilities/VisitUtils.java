@@ -10,6 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity;
+import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class VisitUtils {
@@ -26,7 +27,8 @@ public class VisitUtils {
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                       // Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                        Intent intent = new Intent(activityContext, PatientSurveyActivity_New.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUUID);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
