@@ -22,6 +22,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter_New;
+import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -188,6 +189,35 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             Log.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
             e.printStackTrace();
         }
+
+        holder.cardParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  /*    patientname patientUuid gender age openmrsID visit_ID visit_startDate visit_speciality followup_date
+                  priority_tag hasPrescription patient_photo chief_complaint */
+
+                Intent intent = new Intent(context, AppointmentDetailsActivity.class);
+                intent.putExtra("patientname", appointmentInfoModel.getPatientName());
+                intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
+                intent.putExtra("gender", "");
+                //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
+                intent.putExtra("age", "");
+                intent.putExtra("priority_tag", "");
+                intent.putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists());
+                intent.putExtra("openmrsID", appointmentInfoModel.getOpenMrsId());
+                intent.putExtra("visit_ID", appointmentInfoModel.getVisitUuid());
+                intent.putExtra("visit_startDate", "");
+                intent.putExtra("patient_photo", appointmentInfoModel.getPatientProfilePhoto());
+                intent.putExtra("app_start_date", appointmentInfoModel.getSlotDate());
+                intent.putExtra("app_start_time", appointmentInfoModel.getSlotTime());
+                intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
+                intent.putExtra("appointment_id", appointmentInfoModel.getId());
+                intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
+
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     @Override

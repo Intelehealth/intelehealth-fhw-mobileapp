@@ -8,7 +8,7 @@
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity_New">
 
    <!-- Toolbar - start-->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/relativeCardview"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"

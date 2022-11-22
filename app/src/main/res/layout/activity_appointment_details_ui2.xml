@@ -54,7 +54,7 @@
                     app:cardCornerRadius="@dimen/apps_details_profile_iv_radius">
 
                     <ImageView
-                        android:id="@+id/profile_image"
+                        android:id="@+id/profile_image_app_details"
                         android:layout_width="@dimen/apps_details_profile_iv_height"
                         android:layout_height="@dimen/apps_details_profile_iv_width"
                         android:src="@drawable/avatar1" />
@@ -91,22 +91,22 @@
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
                             android:layout_marginStart="@dimen/cp_gender_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
-                            android:gravity="center_vertical"
                             android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
+                            android:layout_gravity="center"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_gender_text_size" />
+                            android:textSize="@dimen/card_profile_name_text_size" />
 
                         <ImageButton
                             android:id="@+id/icons8_edit"
                             android:layout_width="@dimen/cp_pencil_width"
                             android:layout_height="@dimen/cp_pencil_height"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/cp_gender_margin_start"
+                            android:layout_marginTop="1dp"
                             android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/iv_call_patient_app"
                     android:layout_width="@dimen/cp_option_icon_width"
                     android:layout_height="@dimen/cp_option_icon_height"
                     android:background="@drawable/ui2_ic_bg_contact_icons"
@@ -144,7 +144,7 @@
                     android:src="@drawable/ui2_ic_call_green" />
 
                 <ImageView
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/iv_whatsapp_patient_app"
                     android:layout_width="@dimen/cp_option_icon_width"
                     android:layout_height="@dimen/cp_option_icon_height"
                     android:layout_marginStart="@dimen/cp_option_margin_start"
@@ -184,10 +184,11 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/priority_tag"
+                    android:id="@+id/priority_tag_app_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/cp_margin_start"
                     android:src="@drawable/ui2_frame_priority" />
 
@@ -204,7 +205,7 @@
                     android:textSize="@dimen/cp_name_txt_size" />
 
                 <TextView
-                    android:id="@+id/visitID"
+                    android:id="@+id/visitID_appointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/chief_complaint_txt"
@@ -220,7 +221,7 @@
                     android:id="@+id/fu_progress_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/visitID"
+                    android:layout_below="@id/visitID_appointment"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/cp_card_margin_updown"
                     android:background="@null"
@@ -258,7 +259,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_prev_app_date"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/margin_6"
@@ -274,7 +275,7 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_prev_app_time"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/reschedule_time_margin_start"
@@ -326,7 +327,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/visit_startDate_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/tv_reschedule1_time_margin_start"
@@ -343,7 +344,7 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/visit_startDate"
+                        android:id="@+id/tv_starttime_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="60dp"
@@ -477,13 +478,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/dr_speciality"
+                            android:id="@+id/dr_speciality_appointment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ad_male_margin_start"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                            android:text="General physician"
+                            android:text="Speciality"
                             android:textAppearance="@style/details_head2"
                             android:textColor="@color/textColorBlack"
                             android:textSize="@dimen/ad_title_text_size" />
@@ -514,10 +515,10 @@
                         android:id="@+id/frame_26088"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
+                        android:layout_marginStart="@dimen/cp_option_margin_start"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
-                        android:padding="@dimen/cp_option_icon_padding"
+                        android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_call_green" />
-
                     <ImageView
                         android:id="@+id/frame_26088"
                         android:layout_width="@dimen/cp_option_icon_width"
@@ -574,8 +575,8 @@
                     android:textColor="@null"
                     android:textSize="@dimen/ad_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/icon_arrowRight"
+                <ImageView
+                    android:id="@+id/iv_drawer_visit_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -609,6 +610,7 @@
                 android:weightSum="1">
 
                 <Button
+                    android:id="@+id/btn_cancel_appointment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
@@ -626,6 +628,7 @@
                     android:textSize="@dimen/btn_visit_text_size" />
 
                 <Button
+                    android:id="@+id/btn_reschedule_appointment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
@@ -686,7 +689,7 @@
                        android:textSize="@dimen/fu_name_txt_size"
                        tools:text="@string/prescription" />
    -->
-                <ImageButton
+                <ImageView
                     android:id="@+id/iv_drawer_prescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -705,7 +708,7 @@
                     android:layout_toEndOf="@+id/iv_prescription111"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="0sp"
-                    android:text="Pending since 4 hours"
+                    android:text="Pending since 40 hours"
                     android:textAppearance="@style/details_head2"
                     android:textColor="@null"
                     android:textSize="@dimen/cp_male_textsize" />

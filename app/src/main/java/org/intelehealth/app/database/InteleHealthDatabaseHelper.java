@@ -45,7 +45,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "open_mrs_id TEXT," +
             "status TEXT," +
             "created_at TEXT," +
-            "updated_at TEXT )";
+            "updated_at TEXT, " +
+            "prev_slot_day TEXT, " +
+            "prev_slot_date TEXT, " +
+            "prev_slot_time TEXT)";
+    //newly added prev_slot_day, prev_slot_date,prev_slot_time
 
     /**
      * This will maintain all the types of notifications and its data.

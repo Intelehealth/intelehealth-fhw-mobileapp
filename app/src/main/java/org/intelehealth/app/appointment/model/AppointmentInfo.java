@@ -64,8 +64,33 @@ public class AppointmentInfo implements Serializable {
     private boolean prescription_exists = false;
     //newly added for appointment
     private String presc_received_time;
-
     private String patientProfilePhoto;
+
+    public String getPrev_slot_day() {
+        return prev_slot_day;
+    }
+
+    public void setPrev_slot_day(String prev_slot_day) {
+        this.prev_slot_day = prev_slot_day;
+    }
+
+    public String getPrev_slot_date() {
+        return prev_slot_date;
+    }
+
+    public void setPrev_slot_date(String prev_slot_date) {
+        this.prev_slot_date = prev_slot_date;
+    }
+
+    public String getPrev_slot_time() {
+        return prev_slot_time;
+    }
+
+    public void setPrev_slot_time(String prev_slot_time) {
+        this.prev_slot_time = prev_slot_time;
+    }
+
+    String  prev_slot_day,prev_slot_date,prev_slot_time;
 
     public String getPatientProfilePhoto() {
         return patientProfilePhoto;

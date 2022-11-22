@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
@@ -81,13 +82,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     Button btnBookAppointment;
     String selectedDateTime = "";
     SlotInfo slotInfoForBookApp;
-    int appointmentId = 0;
+    int appointmentId;
     String visitUuid;
     String patientUuid;
     String patientName;
     String speciality;
     String openMrsId;
     AlertDialog alertDialog;
+    String actionTag = "";
+    String app_start_date, app_start_time, app_start_day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,20 +130,31 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 */
 
         //temporary hardcode parameters for temporary use
-        visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
+      /*  visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
         patientUuid = "68617ab0-f826-4668-92dd-ab411ad6ab60";
         patientName = "Test User2";
         speciality = "General Physician";
         openMrsId = "13TR2-8";
+*/
+        //for reschedule appointment as per old flow
+        actionTag = getIntent().getStringExtra("actionTag");
+        appointmentId = getIntent().getIntExtra("appointmentId", 0);
+        visitUuid = getIntent().getStringExtra("visitUuid");
+        patientUuid = getIntent().getStringExtra("patientUuid");
+        patientName = getIntent().getStringExtra("patientName");
+        speciality = getIntent().getStringExtra("speciality");
+        openMrsId = getIntent().getStringExtra("openMrsId");
+        app_start_date = getIntent().getStringExtra("app_start_date");
+        app_start_time = getIntent().getStringExtra("app_start_time");
+        app_start_day = getIntent().getStringExtra("app_start_day");
+
 
         initUI();
     }
 
     private void initUI() {
 
-        slotInfoMorningList = new ArrayList<>();
-        slotInfoAfternoonList = new ArrayList<>();
-        slotInfoEveningList = new ArrayList<>();
+
         rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
         rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
         rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
@@ -162,10 +176,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-    /*    PickUpTimeSlotsAdapter pickUpTimeSlotsAdapter = new PickUpTimeSlotsAdapter(this);
-        rvMorningSlots.setAdapter(pickUpTimeSlotsAdapter);
-        rvAfternoonSlots.setAdapter(pickUpTimeSlotsAdapter);
-        rvEveningSlots.setAdapter(pickUpTimeSlotsAdapter);*/
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rvHorizontalCal.setLayoutManager(linearLayoutManager);
@@ -202,6 +212,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
         Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
 
+       // Dermatologist
+       // General Physician
+
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, "General Physician")
@@ -210,7 +223,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
                         List<SlotInfo> slotInfoList = new ArrayList<>();
-
+                        slotInfoMorningList = new ArrayList<>();
+                        slotInfoAfternoonList = new ArrayList<>();
+                        slotInfoEveningList = new ArrayList<>();
 
                         slotInfoList.addAll(slotInfoResponse.getDates());
 
@@ -526,10 +541,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
         String infoText = "Are you sure, patient want to \nbook the appointment on " + "<b>" + selectedDateTime + "?</b>";
         tvInfo.setText(Html.fromHtml(infoText));
-       /* SpannableString ss = new SpannableString(text);
-        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-        ss.setSpan(boldSpan, 21, 29,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(ss);*/
 
         alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
@@ -551,68 +562,86 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     }
 
     private void bookAppointment() {
-        if (slotInfoForBookApp != null) {
-            //reason - as per old flow
-            BookAppointmentRequest request = new BookAppointmentRequest();
-            if (appointmentId != 0) {
-                request.setAppointmentId(appointmentId);
-                request.setReason("reason");
-            }
+        //reason - as per old flow
+        BookAppointmentRequest request = new BookAppointmentRequest();
+        if (appointmentId != 0) {
+            request.setAppointmentId(appointmentId);
+            request.setReason("reason");
+        }
+        Log.d(TAG, "22bookAppointment: day : " + slotInfoForBookApp.getSlotDay());
+        Log.d(TAG, "22bookAppointment: getSlotDate : " + slotInfoForBookApp.getSlotDate());
+        Log.d(TAG, "22bookAppointment: getSlotDuration : " + slotInfoForBookApp.getSlotDuration());
+        Log.d(TAG, "22bookAppointment: getSlotDurationUnit : " + slotInfoForBookApp.getSlotDurationUnit());
+        Log.d(TAG, "22bookAppointment: getSlotTime : " + slotInfoForBookApp.getSlotTime());
+        Log.d(TAG, "22bookAppointment: getSpeciality : " + slotInfoForBookApp.getSpeciality());
+        Log.d(TAG, "22bookAppointment: getUserUuid : " + slotInfoForBookApp.getUserUuid());
+        Log.d(TAG, "22bookAppointment: getDrName : " + slotInfoForBookApp.getDrName());
+        Log.d(TAG, "22bookAppointment: patientName : " + patientName);
+        Log.d(TAG, "22bookAppointment: patientUuid : " + patientUuid);
+        Log.d(TAG, "22bookAppointment: openMrsId : " + openMrsId);
 
-            request.setSlotDay(slotInfoForBookApp.getSlotDay());
-            request.setSlotDate(slotInfoForBookApp.getSlotDate());
-            request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
-            request.setSlotDurationUnit(slotInfoForBookApp.getSlotDurationUnit());
-            request.setSlotTime(slotInfoForBookApp.getSlotTime());
+        request.setSlotDay(slotInfoForBookApp.getSlotDay());
+        request.setSlotDate(slotInfoForBookApp.getSlotDate());
+        request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
+        request.setSlotDurationUnit(slotInfoForBookApp.getSlotDurationUnit());
+        request.setSlotTime(slotInfoForBookApp.getSlotTime());
 
-            request.setSpeciality(slotInfoForBookApp.getSpeciality());
+        request.setSpeciality(slotInfoForBookApp.getSpeciality());
 
-            request.setUserUuid(slotInfoForBookApp.getUserUuid());
-            request.setDrName(slotInfoForBookApp.getDrName());
-            request.setVisitUuid(visitUuid);
-            request.setPatientName(patientName);
-            request.setPatientId(patientUuid);
-            request.setOpenMrsId(openMrsId);
-            request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
-            request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
+        request.setUserUuid(slotInfoForBookApp.getUserUuid());
+        request.setDrName(slotInfoForBookApp.getDrName());
+        request.setVisitUuid(visitUuid);
+        request.setPatientName(patientName);
+        request.setPatientId(patientUuid);
+        request.setOpenMrsId(openMrsId);
+        request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
+        request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
 
-            String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-            String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
-            ApiClientAppointment.getInstance(baseurl).getApi()
-                    .bookAppointment(url, request)
-                    .enqueue(new Callback<AppointmentDetailsResponse>() {
-                        @Override
-                        public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
-                            AppointmentDetailsResponse appointmentDetailsResponse = response.body();
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .bookAppointment(url, request)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        AppointmentDetailsResponse appointmentDetailsResponse = response.body();
 
-                            if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
-                                if (alertDialog != null) {
-                                    alertDialog.dismiss();
+                        if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
+                            if (alertDialog != null) {
+                                alertDialog.dismiss();
+                            }
+                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
+                            getSlots();
+                        } else {
+                            Log.d(TAG, "onResponse: resche appointmentId  :" + appointmentId);
+                            if (!actionTag.isEmpty() && appointmentId != 0) {
+                                //reschedule appointment - update local db with prev appointment details
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                try {
+                                    appointmentDAO.updatePreviousAppointmentDetails(String.valueOf(appointmentId),
+                                            visitUuid,app_start_day,app_start_date,app_start_time);
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
                                 }
-                                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
-                                getSlots();
-                            } else {
-                                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                            }
+                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                                 /*setResult(RESULT_OK);
                                 finish();*/
-                                Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-
+                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, HomeScreenActivity_New.class);
+                            startActivity(intent);
+                            finish();
                         }
 
-                        @Override
-                        public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
-                            Log.v("onFailure", t.getMessage());
-                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                        }
-                    });
+                    @Override
+                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
-        } else {
-            Log.d(TAG, "bookAppointment: model is null");
-        }
+                    }
+                });
+
 
     }
 

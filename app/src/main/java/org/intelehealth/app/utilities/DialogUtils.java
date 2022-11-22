@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 
 public class DialogUtils {
 
@@ -102,12 +103,5 @@ public class DialogUtils {
         alertDialog.show();
     }
 
-
-   /* patientRegistrationDialog(context,
-                              getResources().getDrawable(R.drawable.close_patient_svg),
-                "Close patient registration?",
-                        "Are you sure you want to close the patient registration?",
-                        "No",
-                        "Yes");*/
 
 }

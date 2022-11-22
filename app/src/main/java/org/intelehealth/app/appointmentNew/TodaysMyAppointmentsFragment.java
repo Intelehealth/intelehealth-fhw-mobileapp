@@ -10,13 +10,19 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,9 +70,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle;
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
-    ImageView ivRefresh;
+    ImageView ivRefresh, ivClearText;
     View noDataFoundForUpcoming, noDataFoundForCompleted;
-
+    EditText autotvSearch;
+    String searchPatientText = "";
+    String currentDate = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,6 +86,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+         currentDate = dateFormat1.format(new Date());
         String language = sessionManager.getAppLanguage();
 
         if (!language.equalsIgnoreCase("")) {
@@ -111,7 +121,13 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //no data found
         noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
         noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
-
+        autotvSearch = view.findViewById(R.id.et_search_today);
+        ivClearText = view.findViewById(R.id.iv_clear_today);
+        ivClearText.setOnClickListener(v -> {
+            autotvSearch.setText("");
+            searchPatientText = "";
+            getAppointments();
+        });
 
         cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
@@ -131,6 +147,51 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutUpcoming.setLayoutParams(params);
         getAppointments();
         getSlots();
+
+        autotvSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 0) {
+                    ivClearText.setVisibility(View.VISIBLE);
+                } else {
+                    searchPatientText = "";
+                    getAppointments();
+                    ivClearText.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
+
+        autotvSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (!autotvSearch.getText().toString().isEmpty()) {
+                        searchPatientText = autotvSearch.getText().toString();
+                        getUpcomingAppointments();
+                        getCompletedAppointments();
+                    } else {
+                       /* searchPatientText = "";
+
+                        Log.d(TAG, "afterTextChanged: in else");
+                        getAppointments();*/
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void clickListeners() {
@@ -195,7 +256,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         });
 
         ivRefresh.setOnClickListener(v -> {
-           // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -206,8 +267,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        tvUpcomingAppointments.setText("0");
+        tvUpcomingAppointmentsTitle.setText("Completed (0)");
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText,currentDate);
         Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
+        Log.d(TAG, "getUpcomingAppointments: searchPatientText " + searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
         try {
@@ -229,8 +293,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
-                tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
-                tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
 
                 TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
                         TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
@@ -240,6 +302,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 noDataFoundForUpcoming.setVisibility(View.VISIBLE);
 
             }
+            tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
+            tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,14 +313,17 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void getCompletedAppointments() {
+        tvCompletedAppointments.setText("0");
+        tvCompletedAppointmentsTitle.setText("Completed (0)");
+
         //recyclerview for upcoming appointments
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText,currentDate);
         Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
-                rvUpcomingApp.setVisibility(View.VISIBLE);
-                noDataFoundForUpcoming.setVisibility(View.GONE);
+                rvCompletedApp.setVisibility(View.VISIBLE);
+                noDataFoundForCompleted.setVisibility(View.GONE);
                 for (int i = 0; i < appointmentInfoList.size(); i++) {
                     AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -284,12 +352,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         }
 
         if (completedAppointmentsList.size() > 0) {
+
             getDataForCompletedAppointments(completedAppointmentsList);
         }
 
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
+        rvCompletedApp.setVisibility(View.VISIBLE);
+        noDataFoundForCompleted.setVisibility(View.GONE);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         //check if visit is present or not
@@ -309,17 +380,23 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 // String patientProfilePath = getPatientProfile("984af313-83c7-479e-b8a7-8e72e7384346");
                 appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
 
-                //recyclerview for completed appointments
-                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
-                        TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-                rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
-                tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
-                tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
+
+
             } else {
 
             }
         }
+        //recyclerview for completed appointments
+        TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
+                TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+        rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
+        Log.d(TAG, "getDataForCompletedAppointments:appointmentsDaoList :  "+appointmentsDaoList.size());
+        tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
+        tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
+
+
     }
+
     private String getPatientProfile(String patientUuid) {
         Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
