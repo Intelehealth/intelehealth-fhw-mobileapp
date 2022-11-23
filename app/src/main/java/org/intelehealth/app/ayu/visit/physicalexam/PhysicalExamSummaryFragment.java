@@ -1,0 +1,73 @@
+package org.intelehealth.app.ayu.visit.physicalexam;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
+import org.intelehealth.app.knowledgeEngine.Node;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PhysicalExamSummaryFragment extends Fragment {
+    private List<Node> mAnsweredRootNodeList = new ArrayList<>();
+    private List<List<VisitSummaryData>> mAllItemList = new ArrayList<>();
+    private List<VisitSummaryData> mItemList = new ArrayList<VisitSummaryData>();
+
+
+    public PhysicalExamSummaryFragment() {
+        // Required empty public constructor
+    }
+
+
+    public static PhysicalExamSummaryFragment newInstance(Intent intent, List<Node> answeredRootNodeList) {
+        PhysicalExamSummaryFragment fragment = new PhysicalExamSummaryFragment();
+        fragment.mAnsweredRootNodeList = answeredRootNodeList;
+        fragment.prepareSummary();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_physical_exam_summary, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), mItemList, new SummaryViewAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(VisitSummaryData data) {
+
+            }
+        });
+        recyclerView.setAdapter(summaryViewAdapter);
+        return view;
+    }
+
+    private void prepareSummary() {
+        for (int i = 0; i < mAnsweredRootNodeList.size(); i++) {
+            List<VisitSummaryData> itemList = new ArrayList<VisitSummaryData>();
+            for (int j = 0; j < mAnsweredRootNodeList.get(i).getOptionsList().size(); j++) {
+                VisitSummaryData summaryData = new VisitSummaryData();
+                summaryData.setDisplayValue(mAnsweredRootNodeList.get(i).getOptionsList().get(j).getText());
+                itemList.add(summaryData);
+            }
+        }
+    }
+}

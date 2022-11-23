@@ -822,5 +822,6 @@
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
     <string name="confirm">Confirm</string>
+    <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
 
 </resources>

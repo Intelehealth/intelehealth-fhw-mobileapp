@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -20,6 +21,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
@@ -30,6 +35,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -60,6 +66,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS = 4;
     public static final int STEP_2_VISIT_REASON_QUESTION_SUMMARY = 44;
     public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
+    public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
     public static final int STEP_3_MEDICAL_HISTORY = 6;
 
     private int mCurrentStep = STEP_1_VITAL;
@@ -187,6 +194,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
+
             case STEP_3_PHYSICAL_EXAMINATION:
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 mPhysicalExamNode = loadPhysicalExam();
@@ -194,8 +202,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mPhysicalExamNode), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
+            case STEP_3_PHYSICAL_SUMMARY_EXAMINATION:
+                mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        commit();
+                break;
         }
     }
+
     private Node mPhysicalExamNode;
 
     private Node loadPhysicalExam() {
@@ -318,6 +333,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         insertDb(insertion);
     }
+
     /**
      *
      */
@@ -896,5 +912,68 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
         }
     }
+
+    /*Physical exam*/
+    private boolean insertDbPhysicalExam(String value) {
+        Log.i(TAG, "insertDb: ");
+
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(StringUtils.getValue(value));
+        boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        return isInserted;
+    }
+    String physicalString;
+    Boolean complaintConfirmed = false;
+    PhysicalExam physicalExamMap;
+    private void savePhysicalExamData(){
+        complaintConfirmed = physicalExamMap.areRequiredAnswered();
+
+        if (complaintConfirmed) {
+
+            physicalString = physicalExamMap.generateFindings();
+
+            List<String> imagePathList = physicalExamMap.getImagePathList();
+
+            if (imagePathList != null) {
+                for (String imagePath : imagePathList) {
+                    updateImageDatabase(imagePath);
+                }
+            }
+
+
+
+        } else {
+            questionsMissing();
+        }
+    }
+
+
+    public void questionsMissing() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+
+
 
 }
