@@ -133,6 +133,7 @@
                 android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             <EditText
+                android:id="@+id/editText_exit_survey"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_below="@+id/give_feedback_txtview"

@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -110,6 +112,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     Context context;
     TextView tvTitleHomeScreenCommon;
     BottomNavigationView bottomNav;
+    private CardView survey_snackbar_cv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +131,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         }
         sessionManager = new SessionManager(this);
-
         initUI();
-
-
     }
 
     private void initUI() {
@@ -139,11 +139,21 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         TextView tvAppVersion = findViewById(R.id.tv_app_version);
         LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
+        survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
 
+        Intent intent_exit = getIntent();
+        if (intent_exit != null) {
+            String intentTag = intent_exit.getStringExtra("intentTag");
+            if (intentTag != null) {
+                if (intentTag.equalsIgnoreCase("Feedback screen"))
+                    showSnackBarAndRemoveLater();
+                else
+                    survey_snackbar_cv.setVisibility(View.GONE);
+            }
+        }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             //drawer is open
             //  getWindow().setStatusBarColor(Color.CYAN);
-
         }
 
 
@@ -269,6 +279,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+    }
+
+    private void showSnackBarAndRemoveLater() {
+        survey_snackbar_cv.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                survey_snackbar_cv.setVisibility(View.GONE);
+            }
+        }, 4000);
     }
 
     private void checkForInternet() {

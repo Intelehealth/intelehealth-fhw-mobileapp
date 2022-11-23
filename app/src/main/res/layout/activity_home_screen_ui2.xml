@@ -20,9 +20,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/survey_snackbar_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/corner_radius_8dp"
+            app:cardElevation="@dimen/margin_5"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_above="@id/bottom_nav_home">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/snackbar_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:src="@drawable/survey_snackbar_icon"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/snackbar_icon"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:textSize="@dimen/edittext_textsize_16sp"
+                    android:layout_centerVertical="true"
+                    android:text="Thank you for your feedback!" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_home"
-            style="@style/NavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -50,6 +91,7 @@
         android:background="@drawable/ui2_home_nav_drawer_background"
         android:fitsSystemWindows="false"
         app:itemIconPadding="@dimen/itemIconPadding_drawer"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_home_ui2"
         app:itemIconTint="@color/colorPrimary"
         app:menu="@menu/activity_home_menu_drawer_ui2">

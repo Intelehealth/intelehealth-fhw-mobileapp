@@ -3,18 +3,68 @@ package org.intelehealth.app.activities.patientSurveyActivity;
 import androidx.annotation.Dimension;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class PatientSurveyActivity_New extends AppCompatActivity {
+    private static final String TAG = PatientSurveyActivity_New.class.getSimpleName();
+    String patientUuid;
+    String visitUuid;
+    String state;
+    String patientName;
+    String intentTag;
+    SyncUtils syncUtils = new SyncUtils();
+    Context context;
+    SQLiteDatabase db;
+
+    EditText mComments;
+    ImageButton mSkip;
+    Button mSubmit;
     private RatingBar ratingBar;
+
+    String rating;
+    String comments;
+
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +77,156 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingbar);
+        getIntentValues();
+        initUI();
+        clickListeners();
+    }
 
+    private void clickListeners() {
+
+        // Submit button click will end the visit.
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Getting the rating
+                rating = String.valueOf(ratingBar.getRating());
+                if (rating != null && !TextUtils.isEmpty(rating)) {
+                    Log.d(TAG, "Rating is " + rating);
+                    uploadSurvey();
+                    endVisit();
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+            }
+        });
+
+        // skip button click will skip this feedback screen.
+        mSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endVisit();
+            }
+        });
 
     }
+
+    private void getIntentValues() {
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            state = intent.getStringExtra("state");
+            patientName = intent.getStringExtra("name");
+            intentTag = intent.getStringExtra("tag");
+        }
+    }
+
+    private void initUI() {
+        setTitle(R.string.title_activity_login);
+        sessionManager = new SessionManager(this);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        context = getApplicationContext();
+
+        mComments = findViewById(R.id.editText_exit_survey);
+        mSkip = findViewById(R.id.cancelbtn);
+        mSubmit = findViewById(R.id.btn_submit);
+        ratingBar = (RatingBar) findViewById(R.id.ratingbar);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
+
+    /**
+     * This will upload the Feedback value to backend...
+     */
+    private void uploadSurvey() {
+        EncounterDTO encounterDTO = new EncounterDTO();
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(uuid);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
+
+        //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
+        try {
+            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
+        encounterDTO.setSyncd(false);
+        encounterDTO.setVoided(0);
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // Rating adding in this section.
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(uuid);
+        obsDTO.setValue(rating);
+        obsDTO.setConceptuuid(UuidDictionary.RATING);
+        obsDTOList.add(obsDTO);
+
+        // Comments adding in this section.
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(uuid);
+        obsDTO.setValue(mComments.getText().toString());
+        obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTOList.add(obsDTO);
+
+        try {
+            obsDAO.insertObsToDb(obsDTOList);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+    /**
+     * This function returns a timestamp with -5 minutes interval.
+     * @param timeStamp
+     * @return
+     * @throws ParseException
+     */
+    public String fiveMinutesAgo(String timeStamp) throws ParseException {
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+    }
+
+    /**
+     * This function will end the visit for this patient.
+     */
+    private void endVisit() {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
+        // the Time will be changed for last sync.
+
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        Intent i = new Intent(this, HomeScreenActivity_New.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("intentTag", "Feedback screen");
+        startActivity(i);
+    }
+
+
 }
