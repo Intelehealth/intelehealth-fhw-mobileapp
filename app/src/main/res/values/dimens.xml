@@ -866,5 +866,7 @@
     <dimen name="cp_option_icon_padding_whts">7dp</dimen>
     <dimen name="item_ta_tv_name_text_size1">16sp</dimen>
     <dimen name="item_ta_tv_prescrec_margin_top">8dp</dimen>
+    <dimen name="icon_size_100dp">100dp</dimen>
+    <dimen name="icon_size_40dp">40dp</dimen>
 
 </resources>

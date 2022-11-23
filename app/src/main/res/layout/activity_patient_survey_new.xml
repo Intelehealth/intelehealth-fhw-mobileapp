@@ -66,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/icon_size_100dp"
+                android:layout_height="@dimen/icon_size_100dp"
                 android:src="@drawable/review_icon"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icon"
                 android:textStyle="bold"
+                android:textColor = "#1B163A"
                 android:paddingHorizontal="@dimen/margin_20"
                 android:fontFamily="@font/lato_bold"
                 android:text="Rate your experience"
@@ -135,7 +136,7 @@
             <EditText
                 android:id="@+id/editText_exit_survey"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/icon_size_100dp"
                 android:layout_below="@+id/give_feedback_txtview"
                 android:layout_marginTop="@dimen/margin_8"
                 android:hint="Type here..."
