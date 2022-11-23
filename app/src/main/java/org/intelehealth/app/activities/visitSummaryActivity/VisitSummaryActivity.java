@@ -1876,6 +1876,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     public void run() {
                         downloadPrescription();
 //                        pd.dismiss();
+                        if (visitView.getText().toString().equalsIgnoreCase("") || visitView.getText().toString().equalsIgnoreCase(getString(R.string.visit_not_uploaded))) {
+                            fetchVisitIdAfterSomeTime();
+                        }
                     }
                 }, 5000);
             }
