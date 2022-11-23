@@ -41,59 +41,68 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".horizontalcalendar.HorizontalCalendarActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
-
         </activity>
         <activity
             android:name=".activities.visit.PrescriptionActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.visit.EndVisitActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.visit.VisitActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -101,159 +110,135 @@
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".appointmentNew.VisitSummaryDetailsActivity"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".appointmentNew.MyAppointmentActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".ui2.SwipeDeleteTestActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.help.activities.FAQActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.help.activities.MostSearchedVideosActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.forgotPasswordNew.ChangePasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
-
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.visit.VisitDetailsActivity"
             android:configChanges="uiMode"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:label="@string/title_follow_up"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity_New"
             android:configChanges="uiMode"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:label="@string/title_follow_up"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".ui2.TestDialogsUI2Activity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.homeActivity.HomeScreenActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.loginActivity.LoginActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.forgotPasswordNew.ResetPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
-            android:windowSoftInputMode="adjustNothing|adjustPan"/>
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
+        <activity
+            android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointment.ScheduleListingActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
 
         <receiver
             android:name=".utilities.RTCMessageReceiver"
@@ -268,24 +253,21 @@
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.physcialExamActivity.PhysicalExamActivity"
             android:configChanges="uiMode"
@@ -294,7 +276,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
             android:configChanges="uiMode"
@@ -303,7 +284,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:configChanges="uiMode"
@@ -312,7 +292,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".activities.questionNodeActivity.QuestionNodeActivity"
             android:configChanges="uiMode"
@@ -320,7 +299,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
             android:configChanges="uiMode"
@@ -329,82 +307,72 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.IntroActivity.IntroActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.cameraActivity.CameraActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.activitySync.ActivitySync"
             android:configChanges="uiMode"
             android:label="@string/title_activity_sync"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.activePatientsActivity.ActivePatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.todayPatientActivity.TodayPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -416,15 +384,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
@@ -435,65 +401,53 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.loginActivity.LoginActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_home"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.IntroActivity.IntroScreensActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
@@ -502,14 +456,11 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
-
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"

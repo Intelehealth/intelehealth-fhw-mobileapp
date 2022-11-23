@@ -71,7 +71,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     ImageView ivPrevMonth, ivNextMonth;
     int monthNumber;
     String monthNAmeFromNo;
-    TextView tvSelectedMonthYear;
+    TextView tvSelectedMonthYear, tvPrevSelectedAppDetails;
     Calendar calendarInstance;
     String yearToCompare = "";
     String monthToCompare = "";
@@ -118,6 +118,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+        initUI();
 
    /*
   // intent params as per old flow
@@ -148,8 +149,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         app_start_time = getIntent().getStringExtra("app_start_time");
         app_start_day = getIntent().getStringExtra("app_start_day");
 
+        String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " at " + app_start_time;
+        tvPrevSelectedAppDetails.setText(prevDetails);
 
-        initUI();
+
     }
 
     private void initUI() {
@@ -182,6 +185,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivPrevMonth = findViewById(R.id.iv_prev_month1);
         ivNextMonth = findViewById(R.id.iv_next_month1);
         tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
+        tvPrevSelectedAppDetails = findViewById(R.id.tv_prev_scheduled_details);
+
 
         calendarInstance = Calendar.getInstance();
         currentMonth = calendarInstance.getActualMaximum(Calendar.MONTH);
@@ -212,8 +217,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
         Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
 
-       // Dermatologist
-       // General Physician
+        // Dermatologist
+        // General Physician
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
@@ -619,7 +624,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 try {
                                     appointmentDAO.updatePreviousAppointmentDetails(String.valueOf(appointmentId),
-                                            visitUuid,app_start_day,app_start_date,app_start_time);
+                                            visitUuid, app_start_day, app_start_date, app_start_time);
                                 } catch (DAOException e) {
                                     e.printStackTrace();
                                 }
