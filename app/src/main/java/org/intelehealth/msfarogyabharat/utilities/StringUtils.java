@@ -890,9 +890,9 @@ public final class StringUtils {
     }
 
     /*
-    * @return mdob_text : Assamese month translation is passed.
-    * @param dob : DOB in the format DD MMMM YYYY eg. 15 January 2021
-    */
+     * @return mdob_text : Assamese month translation is passed.
+     * @param dob : DOB in the format DD MMMM YYYY eg. 15 January 2021
+     */
 /*
     public static String en__as_dob(String dob) { //English dob is replaced to Assamese text.
         String mdob_text = dob
@@ -934,7 +934,7 @@ public final class StringUtils {
 
     public static String hi_or_as__en_noEdit(String dobString, String locale) {
 
-        if(locale.equalsIgnoreCase("hi")) {
+        if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
                     .replace("जनवरी", "January")
@@ -950,8 +950,7 @@ public final class StringUtils {
                     .replace("नवंबर", "November")
                     .replace("दिसंबर", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("or")) {
+        } else if (locale.equalsIgnoreCase("or")) {
             //Odiya
             String dob = dobString
                     .replace("ଜାନୁଆରୀ", "January")
@@ -992,5 +991,34 @@ public final class StringUtils {
             return dobString;
         }
 
+    }
+
+    public static String trimAdvanced(String value) {
+
+        int strLength = value.length();
+        int len = value.length();
+        int st = 0;
+        char[] val = value.toCharArray();
+
+        if (strLength == 0) {
+            return "";
+        }
+
+        while ((st < len) && (val[st] <= ' ') || (val[st] == '\u00A0')) {
+            st++;
+            if (st == strLength) {
+                break;
+            }
+        }
+
+        while ((st < len) && (val[len - 1] <= ' ') || (val[len - 1] == '\u00A0')) {
+            len--;
+            if (len == 0) {
+                break;
+            }
+        }
+
+
+        return (st > len) ? "" : ((st > 0) || (len < strLength)) ? value.substring(st, len) : value;
     }
 }

@@ -1604,29 +1604,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        downloadButton.setOnClickListener(view -> {
 
-                if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context1, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(context1, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
-                }
-
-                SyncUtils syncUtils = new SyncUtils();
-                syncUtils.syncForeground("downloadPrescription");
-                uploaded = true;
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloadPrescription();
-//                        pd.dismiss();
-                    }
-                }, 5000);
+            if (NetworkConnection.isOnline(getApplication())) {
+                Toast.makeText(context1, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context1, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
             }
+
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncForeground("downloadPrescription");
+            uploaded = true;
+
+            final Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                downloadPrescription();
+//                        pd.dismiss();
+            }, 5000);
         });
 
         onExaminationDownload.setOnClickListener(new View.OnClickListener() {
@@ -2177,46 +2171,47 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void physcialExaminationImagesDownload() {
-        ImagesDAO imagesDAO = new ImagesDAO();
-        try {
-            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-            for (String images : imageList) {
-                if (imagesDAO.isLocalImageUuidExists(images))
+        runOnUiThread(() -> {
+            ImagesDAO imagesDAO = new ImagesDAO();
+            try {
+                List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                for (String images : imageList) {
+                    if (imagesDAO.isLocalImageUuidExists(images))
+                        physcialExaminationDownloadText.setVisibility(View.GONE);
+                    else physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+            physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
                     physcialExaminationDownloadText.setVisibility(View.GONE);
-                else physcialExaminationDownloadText.setVisibility(View.VISIBLE);
-            }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
-                physcialExaminationDownloadText.setVisibility(View.GONE);
-            }
+                }
+            });
         });
     }
 
     private void additionalDocumentImagesDownload() {
-        ImagesDAO imagesDAO = new ImagesDAO();
-        try {
-            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String images : imageList) {
-                if (imagesDAO.isLocalImageUuidExists(images))
-                    additionalImageDownloadText.setVisibility(View.GONE);
-                else additionalImageDownloadText.setVisibility(View.VISIBLE);
+        runOnUiThread(() -> {
+            ImagesDAO imagesDAO = new ImagesDAO();
+            try {
+                List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+                for (String images : imageList) {
+                    if (imagesDAO.isLocalImageUuidExists(images))
+                        additionalImageDownloadText.setVisibility(View.GONE);
+                    else additionalImageDownloadText.setVisibility(View.VISIBLE);
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+            additionalImageDownloadText.setOnClickListener(v -> {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
                 additionalImageDownloadText.setVisibility(View.GONE);
-            }
+            });
         });
-
     }
 
     private void physicalDoumentsUpdates() {
@@ -2522,11 +2517,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                             /* doctorDetailStr +*/
-                            "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                            "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" +
-                            "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | Blood Pressure: %s | Blood Glucose (ml/dl): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                            "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" +
-                            "<b><p id=\"food_allergy_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Food Allergy</p></b>" + para_open + "%s" + para_close
+                            "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | Blood Pressure: %s | Blood Glucose (ml/dl): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<b><p id=\"food_allergy_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Food Allergy</p></b>" + para_open + "%s" + para_close
 
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -2537,11 +2528,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     /*pat_hist, fam_hist,*/, diagnosis_web, foodAllergy_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                            "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" +
-                            "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | Blood Pressure: %s | Blood Glucose: %s | %s | %s </p><br>" +
-                            "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                            "<b><p id=\"food_allergy_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Food Allergy</p></b>" + para_open + "%s" + para_close + "<br><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | Blood Pressure: %s | Blood Glucose: %s | %s | %s </p><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "<b><p id=\"food_allergy_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Food Allergy</p></b>" + para_open + "%s" + para_close + "<br><br>" +
 
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -3771,87 +3758,105 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void downloadPrescription() {
-        VisitsDAO visitsDAO = new VisitsDAO();
-        try {
-            if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
-                String visitnote = "";
-                EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? ";
-                String[] encounterIDArgs = {visitUuid};
-                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                    do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                    } while (encounterCursor.moveToNext());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            VisitsDAO visitsDAO = new VisitsDAO();
+            try {
+                if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
+                    String visitnote = "";
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String encounterIDSelection = "visituuid = ? ";
+                    String[] encounterIDArgs = {visitUuid};
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                        } while (encounterCursor.moveToNext());
 
-                }
-                if (encounterCursor != null) {
-                    encounterCursor.close();
-                }
-                if (!diagnosisReturned.isEmpty()) {
-                    diagnosisReturned = "";
-                    diagnosisTextView.setText("");
-                    diagnosisCard.setVisibility(View.GONE);
-                }
-                if (!rxReturned.isEmpty()) {
-                    rxReturned = "";
-                    prescriptionTextView.setText("");
-                    prescriptionCard.setVisibility(View.GONE);
-
-                }
-                if (!adviceReturned.isEmpty()) {
-                    adviceReturned = "";
-                    medicalAdviceTextView.setText("");
-                    medicalAdviceCard.setVisibility(View.GONE);
-                }
-                if (!testsReturned.isEmpty()) {
-                    testsReturned = "";
-                    requestedTestsTextView.setText("");
-                    requestedTestsCard.setVisibility(View.GONE);
-                }
-
-                if (!followUpDate.isEmpty()) {
-                    followUpDate = "";
-                    followUpDateTextView.setText("");
-                    followUpDateCard.setVisibility(View.GONE);
-                }
-                String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? and voided!='1'";
-                String[] visitArgs = {visitnote};
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-                if (visitCursor.moveToFirst()) {
-                    do {
-                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        hasPrescription = "true"; //if any kind of prescription data is present...
-                        parseData(dbConceptID, dbValue);
-                    } while (visitCursor.moveToNext());
-                }
-                visitCursor.close();
-
-                //checks if prescription is downloaded and if so then sets the icon color.
-                if (hasPrescription.equalsIgnoreCase("true")) {
-                    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-                }
-
-                if (uploaded) {
-                    try {
-                        downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
+                    if (encounterCursor != null) {
+                        encounterCursor.close();
+                    }
+
+                    if (!diagnosisReturned.isEmpty()) {
+                        runOnUiThread(() -> {
+                            diagnosisReturned = "";
+                            diagnosisTextView.setText("");
+                            diagnosisCard.setVisibility(View.GONE);
+                        });
+                    }
+
+                    if (!rxReturned.isEmpty()) {
+                        runOnUiThread(() -> {
+                            rxReturned = "";
+                            prescriptionTextView.setText("");
+                            prescriptionCard.setVisibility(View.GONE);
+                        });
+                    }
+
+                    if (!adviceReturned.isEmpty()) {
+                        runOnUiThread(() -> {
+                            adviceReturned = "";
+                            medicalAdviceTextView.setText("");
+                            medicalAdviceCard.setVisibility(View.GONE);
+                        });
+                    }
+
+                    if (!testsReturned.isEmpty()) {
+                        runOnUiThread(() -> {
+                            testsReturned = "";
+                            requestedTestsTextView.setText("");
+                            requestedTestsCard.setVisibility(View.GONE);
+                        });
+                    }
+
+                    if (!followUpDate.isEmpty()) {
+                        runOnUiThread(() -> {
+                            followUpDate = "";
+                            followUpDateTextView.setText("");
+                            followUpDateCard.setVisibility(View.GONE);
+                        });
+                    }
+
+                    String[] columns = {"value", " conceptuuid"};
+                    String visitSelection = "encounteruuid = ? and voided!='1'";
+                    String[] visitArgs = {visitnote};
+                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                    if (visitCursor.moveToFirst()) {
+                        do {
+                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                            hasPrescription = "true"; //if any kind of prescription data is present...
+                            runOnUiThread(() -> {
+                                parseData(dbConceptID, dbValue);
+                            });
+                        } while (visitCursor.moveToNext());
+                    }
+                    visitCursor.close();
+
+                    //checks if prescription is downloaded and if so then sets the icon color.
+                    if (hasPrescription.equalsIgnoreCase("true")) {
+                        runOnUiThread(() -> ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green)));
+                    }
+
+                    if (uploaded) {
+                        try {
+                            downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+                    downloadDoctorDetails();
                 }
-                downloadDoctorDetails();
+
+                additionalDocumentImagesDownload();
+                physcialExaminationImagesDownload();
+
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-
-            additionalDocumentImagesDownload();
-            physcialExaminationImagesDownload();
-
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     public void downloadPrescriptionDefault() {
@@ -4066,7 +4071,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+                runOnUiThread(() -> parseDoctorDetails(dbValue));
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();

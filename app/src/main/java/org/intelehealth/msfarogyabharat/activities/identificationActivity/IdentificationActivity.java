@@ -113,6 +113,7 @@ import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 //import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.trimAdvanced;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -156,13 +157,13 @@ public class IdentificationActivity extends AppCompatActivity {
     RadioButton mIncoming;
     RadioButton mOutgoing;
     EditText mRelationship;
-      EditText mOccupation;
+    EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -205,7 +206,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
-    private boolean isMedicalAdvice;;
+    private boolean isMedicalAdvice;
+    ;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
@@ -305,8 +307,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-         mOccupation = findViewById(R.id.identification_occupation);
-         mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        mOccupation = findViewById(R.id.identification_occupation);
+        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste1);
         mCallerRelation = findViewById(R.id.relationship_spinner);
@@ -500,7 +502,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mMiddleName.setText(patient1.getMiddle_name());
         mLastName.setText(patient1.getLast_name());
 
-        if(patient1.getOccupation()!= null && !patient1.getOccupation().equalsIgnoreCase("Not Provided"))
+        if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("Not Provided"))
             mOccupation.setText(patient1.getOccupation().toString());
         else
             mOccupation.setText("");
@@ -565,7 +567,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-              //  startActivity(intent);
+                //  startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -1044,7 +1046,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "yes");
             }
 
-            if(patient1.getCallType()!=null) {
+            if (patient1.getCallType() != null) {
                 if (patient1.getCallType().equals("Outgoing")) {
                     mOutgoing.setChecked(true);
                     if (mIncoming.isChecked())
@@ -1054,8 +1056,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (mOutgoing.isChecked())
                         mOutgoing.setChecked(false);
                 }
-            }
-            else {
+            } else {
                 mIncoming.setChecked(false);
                 mOutgoing.setChecked(false);
             }
@@ -1075,21 +1076,17 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-            if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
-            {
+            if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
                 mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                 helplineInfoOther.setText(patient1.getCaste());
-            }
-            else
+            } else
                 mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
 
 
-            if(ngoKnowledgeAdapter.getPosition(patient1.getReferredNGO())==-1)
-            {
+            if (ngoKnowledgeAdapter.getPosition(patient1.getReferredNGO()) == -1) {
                 mNGOKnowledge.setSelection(ngoKnowledgeAdapter.getPosition("Other"));
                 ngoInfoOther.setText(patient1.getReferredNGO());
-            }
-            else
+            } else
                 mNGOKnowledge.setSelection(ngoKnowledgeAdapter.getPosition(patient1.getReferredNGO()));
 
             mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
@@ -1346,8 +1343,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
 
-        if(autocompleteState.getText().toString().equals(""))
-        {
+        if (autocompleteState.getText().toString().equals("")) {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
         }
@@ -1356,13 +1352,10 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
-                if(selectedHelplineOption.equalsIgnoreCase("Other"))
-                {
+                if (selectedHelplineOption.equalsIgnoreCase("Other")) {
                     helplineInfoOther.setVisibility(View.VISIBLE);
                     helplineInfoOther.setFocusable(true);
-                }
-                else
-                {
+                } else {
                     helplineInfoOther.setText("");
                     helplineInfoOther.setError(null);
 //                    helplineInfoOther.setEnabled(false);
@@ -1380,13 +1373,10 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedNGOOption = parent.getItemAtPosition(position).toString();
-                if(selectedNGOOption.equalsIgnoreCase("Other"))
-                {
+                if (selectedNGOOption.equalsIgnoreCase("Other")) {
                     ngoInfoOther.setVisibility(View.VISIBLE);
                     ngoInfoOther.setFocusable(true);
-                }
-                else
-                {
+                } else {
                     ngoInfoOther.setText("");
                     ngoInfoOther.setError(null);
                     ngoInfoOther.setVisibility(View.GONE);
@@ -1424,23 +1414,20 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedState = parent.getItemAtPosition(position).toString();
-                if(selectedState.equalsIgnoreCase("")|| autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State"))
-                {
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
-                }
-                else
-                autocompleteDistrict.setEnabled(true);
+                } else
+                    autocompleteDistrict.setEnabled(true);
                 districtList.clear();
                 try {
                     JSONArray stateArray = json.getJSONArray("states");
-                    for(int i = 0; i< stateArray.length(); i++){
+                    for (int i = 0; i < stateArray.length(); i++) {
                         String state = stateArray.getJSONObject(i).getString("state");
-                        if(state.equalsIgnoreCase(selectedState))
-                        {
+                        if (state.equalsIgnoreCase(selectedState)) {
                             JSONObject districtObj = stateArray.getJSONObject(i);
                             JSONArray districtArray = districtObj.getJSONArray("districts");
-                            for(int j = 0; j< districtArray.length(); j++) {
+                            for (int j = 0; j < districtArray.length(); j++) {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
@@ -1450,13 +1437,11 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
 
                     }
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
 
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1802,8 +1787,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
 
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
         });
 
 /*
@@ -1988,6 +1973,7 @@ public class IdentificationActivity extends AppCompatActivity {
             do {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                    name = trimAdvanced(name.replace("\r", ""));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -2015,7 +2001,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-              if (name.equalsIgnoreCase("occupation")) {
+                if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 /*if (name.equalsIgnoreCase("Bank Account")) {
@@ -2240,7 +2226,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
@@ -2356,7 +2342,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mCallerRelation.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mCallerRelation.getSelectedView();
+            TextView errorText = (TextView) mCallerRelation.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -2366,7 +2352,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mHelplineKnowledge.getSelectedView();
+            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -2376,7 +2362,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mNGOKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mNGOKnowledge.getSelectedView();
+            TextView errorText = (TextView) mNGOKnowledge.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -2385,23 +2371,19 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
+        if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                 helplineInfoOther.setError(getString(R.string.error_field_required));
                 focusView = helplineInfoOther;
                 cancel = true;
-            return;
-        } else {
-            helplineInfoOther.setError(null);
-        }
+                return;
+            } else {
+                helplineInfoOther.setError(null);
+            }
         }
 
-        if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(ngoInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
+        if (mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (ngoInfoOther.getText().toString().equalsIgnoreCase("")) {
                 ngoInfoOther.setError(getString(R.string.error_field_required));
                 focusView = ngoInfoOther;
                 cancel = true;
@@ -2412,7 +2394,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mPhoneType.getSelectedView();
+            TextView errorText = (TextView) mPhoneType.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -2420,7 +2402,6 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
-
 
 
         // TODO: Add validations for all Spinners here...
@@ -2643,12 +2624,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-            if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 helplineInfo = helplineInfoOther.getText().toString();
             else
                 helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
-            if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+            if (mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 ngoInfo = ngoInfoOther.getText().toString();
             else
                 ngoInfo = mNGOKnowledge.getSelectedItem().toString();
@@ -2703,7 +2684,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("")? StringUtils.getValue(mOccupation.getText().toString()): "Not Provided");
+            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("") ? StringUtils.getValue(mOccupation.getText().toString()) : "Not Provided");
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3027,8 +3008,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //if from medical advise option then create medical advice visit first(automatically)
                     createMedicalAdviceVisit();
                     medicalboolean = true;
-                }
-                else {
+                } else {
                     SyncDAO syncDAO = new SyncDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                     boolean push = syncDAO.pushDataApi();
@@ -3163,7 +3143,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
@@ -3278,7 +3258,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mCallerRelation.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mCallerRelation.getSelectedView();
+            TextView errorText = (TextView) mCallerRelation.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3288,7 +3268,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mHelplineKnowledge.getSelectedView();
+            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3298,7 +3278,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mNGOKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mNGOKnowledge.getSelectedView();
+            TextView errorText = (TextView) mNGOKnowledge.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3307,10 +3287,8 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
+        if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                 helplineInfoOther.setError(getString(R.string.error_field_required));
                 focusView = helplineInfoOther;
                 cancel = true;
@@ -3320,10 +3298,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(ngoInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
+        if (mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (ngoInfoOther.getText().toString().equalsIgnoreCase("")) {
                 ngoInfoOther.setError(getString(R.string.error_field_required));
                 focusView = ngoInfoOther;
                 cancel = true;
@@ -3334,9 +3310,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-
         if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mPhoneType.getSelectedView();
+            TextView errorText = (TextView) mPhoneType.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3570,13 +3545,13 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
 
-            if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 helplineInfo = helplineInfoOther.getText().toString();
             else
                 helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
 
-            if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+            if (mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 ngoInfo = ngoInfoOther.getText().toString();
             else
                 ngoInfo = mNGOKnowledge.getSelectedItem().toString();
@@ -3635,7 +3610,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("")? StringUtils.getValue(mOccupation.getText().toString()): "Not Provided");
+            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("") ? StringUtils.getValue(mOccupation.getText().toString()) : "Not Provided");
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3936,8 +3911,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
                 i.putExtra("tag", "newPatient");
-                i.putExtra("intentTag1",intentTag1);
-                i.putExtra("intentTag2",intentTag2);
+                i.putExtra("intentTag1", intentTag1);
+                i.putExtra("intentTag2", intentTag2);
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
@@ -3957,11 +3932,8 @@ public class IdentificationActivity extends AppCompatActivity {
         today.set(Calendar.MILLISECOND, 0);
         Date todayDate = today.getTime();
         String endDate = startFormat.format(todayDate);
-        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
-
-
-
 
 
         //create & save visit visitUuid & encounter in the DB
@@ -3992,7 +3964,7 @@ public class IdentificationActivity extends AppCompatActivity {
         visitDTO.setUuid(visitUuid);
         visitDTO.setPatientuuid(this.uuid);
         visitDTO.setStartdate(startDate);
-       // visitDTO.setEnddate(endDate);
+        // visitDTO.setEnddate(endDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
@@ -4049,8 +4021,8 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -4062,7 +4034,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
