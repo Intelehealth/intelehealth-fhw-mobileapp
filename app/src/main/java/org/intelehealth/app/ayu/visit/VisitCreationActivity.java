@@ -21,9 +21,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
+import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
@@ -59,6 +59,12 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private static final String VITAL_SUMMARY_FRAGMENT = "VITAL_SUMMARY";
     private static final String VISIT_REASON_FRAGMENT = "VISIT_REASON";
     private static final String VISIT_REASON_QUESTION_FRAGMENT = "VISIT_REASON_QUESTION";
+    private static final String VISIT_REASON_SUMMARY_FRAGMENT = "VISIT_REASON_SUMMARY";
+    private static final String PHYSICAL_EXAM_FRAGMENT = "PHYSICAL_EXAM";
+    private static final String PHYSICAL_EXAM_SUMMARY_FRAGMENT = "PHYSICAL_EXAM_SUMMARY";
+    private static final String PAST_MEDICAL_HISTORY_FRAGMENT = "PAST_MEDICAL_HISTORY";
+    private static final String PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT = "PAST_MEDICAL_HISTORY_SUMMARY";
+    private static final String FAMILY_HISTORY_SUMMARY_FRAGMENT = "FAMILY_HISTORY_SUMMARY";
     public static final int STEP_1_VITAL = 1;
     public static final int STEP_1_VITAL_SUMMARY = 1001;
     public static final int STEP_2_VISIT_REASON = 2;
@@ -67,7 +73,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int STEP_2_VISIT_REASON_QUESTION_SUMMARY = 44;
     public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
     public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
-    public static final int STEP_3_MEDICAL_HISTORY = 6;
+    public static final int STEP_4_PAST_MEDICAL_HISTORY = 6;
+    public static final int STEP_5_FAMILY_HISTORY = 7;
 
     private int mCurrentStep = STEP_1_VITAL;
 
@@ -199,13 +206,28 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 mPhysicalExamNode = loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mPhysicalExamNode), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mPhysicalExamNode), PHYSICAL_EXAM_FRAGMENT).
                         commit();
                 break;
             case STEP_3_PHYSICAL_SUMMARY_EXAMINATION:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                        commit();
+                break;
+            case STEP_4_PAST_MEDICAL_HISTORY:
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                mPastMedicalHistoryNode = loadPastMedicalHistory();
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, PastMedicalHistoryFragment.newInstance(getIntent(), mPastMedicalHistoryNode), PAST_MEDICAL_HISTORY_FRAGMENT).
+                        commit();
+                break;
+
+            case STEP_5_FAMILY_HISTORY:
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                mFamilyHistoryNode = loadFamilyHistory();
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(getIntent(), mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                         commit();
                 break;
         }
@@ -215,6 +237,24 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private Node loadPhysicalExam() {
         String fileLocation = "engines/physExam.json";
+        return loadFileToNode(fileLocation);
+    }
+
+    private Node mPastMedicalHistoryNode;
+
+    private Node loadPastMedicalHistory() {
+        String fileLocation = "engines/patHist.json";
+        return loadFileToNode(fileLocation);
+    }
+
+    private Node mFamilyHistoryNode;
+
+    private Node loadFamilyHistory() {
+        String fileLocation = "engines/famHist.json";
+        return loadFileToNode(fileLocation);
+    }
+
+    private Node loadFileToNode(String fileLocation) {
         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
         Node mainNode = new Node(currentFile);
         return mainNode;
@@ -932,10 +972,12 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         return isInserted;
     }
+
     String physicalString;
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
-    private void savePhysicalExamData(){
+
+    private void savePhysicalExamData() {
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
@@ -949,7 +991,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     updateImageDatabase(imagePath);
                 }
             }
-
 
 
         } else {
@@ -972,8 +1013,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
-
-
 
 
 }
