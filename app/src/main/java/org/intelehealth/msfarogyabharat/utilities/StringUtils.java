@@ -17,9 +17,12 @@ package org.intelehealth.msfarogyabharat.utilities;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.models.prescribed_medications_model.Datum;
+import org.intelehealth.msfarogyabharat.models.prescribed_medications_model.PrescribedMedication;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -1020,5 +1023,79 @@ public final class StringUtils {
 
 
         return (st > len) ? "" : ((st > 0) || (len < strLength)) ? value.substring(st, len) : value;
+    }
+
+    public static String sortMedications(List<PrescribedMedication> prescribedMedicationList) {
+        List<PrescribedMedication> earlyMorningList = new ArrayList<>();
+        List<PrescribedMedication> breakfastList = new ArrayList<>();
+        List<PrescribedMedication> midMorningList = new ArrayList<>();
+        List<PrescribedMedication> lunchList = new ArrayList<>();
+        List<PrescribedMedication> eveningSnackList = new ArrayList<>();
+        List<PrescribedMedication> dinnerList = new ArrayList<>();
+        List<PrescribedMedication> bedTimeList = new ArrayList<>();
+
+        for (PrescribedMedication medication : prescribedMedicationList) {
+            switch (medication.getEn().getMealType()) {
+                case "Early Morning":
+                    earlyMorningList.add(medication);
+                    break;
+                case "Breakfast":
+                    breakfastList.add(medication);
+                    break;
+                case "Mid Morning":
+                    midMorningList.add(medication);
+                    break;
+                case "Lunch":
+                    lunchList.add(medication);
+                    break;
+                case "Evening Snack":
+                    eveningSnackList.add(medication);
+                    break;
+                case "Dinner":
+                    dinnerList.add(medication);
+                    break;
+                case "Bed Time":
+                    bedTimeList.add(medication);
+                    break;
+            }
+        }
+
+        prescribedMedicationList.clear();
+        prescribedMedicationList.addAll(earlyMorningList);
+        prescribedMedicationList.addAll(breakfastList);
+        prescribedMedicationList.addAll(midMorningList);
+        prescribedMedicationList.addAll(lunchList);
+        prescribedMedicationList.addAll(eveningSnackList);
+        prescribedMedicationList.addAll(dinnerList);
+        prescribedMedicationList.addAll(bedTimeList);
+
+        StringBuilder finalString = new StringBuilder();
+        String englishString = "";
+        String hindiString = "";
+
+        for (int i = 0; i < prescribedMedicationList.size(); i++) {
+            String engMealTime = prescribedMedicationList.get(i).getEn().getMealType();
+            List<Datum> engDatumList = prescribedMedicationList.get(i).getEn().getData();
+            for (Datum datum : engDatumList) {
+                englishString = datum.getValue();
+            }
+            int serial = i + 1;
+            finalString = finalString.append(serial).append(". ").append(engMealTime).append("\n-").append(englishString).append("\n\n");
+        }
+
+        finalString = finalString.append("\n");
+
+        for (int i = 0; i < prescribedMedicationList.size(); i++) {
+            String hindiMealTime = prescribedMedicationList.get(i).getHi().getMealType();
+            List<Datum> hiDatumList = prescribedMedicationList.get(i).getHi().getData();
+            for (Datum datum : hiDatumList) {
+                hindiString = datum.getValue();
+            }
+
+            int serial = i + 1;
+            finalString = finalString.append(serial).append(". ").append(hindiMealTime).append("\n-").append(hindiString).append("\n\n");
+        }
+
+        return finalString.toString();
     }
 }

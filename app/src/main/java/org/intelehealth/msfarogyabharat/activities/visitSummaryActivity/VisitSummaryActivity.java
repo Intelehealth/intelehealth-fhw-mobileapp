@@ -1,5 +1,7 @@
 package org.intelehealth.msfarogyabharat.activities.visitSummaryActivity;
 
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.sortMedications;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -2420,13 +2422,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Calendar today = Calendar.getInstance();
         Calendar dob = Calendar.getInstance();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = sdf.parse(mPatientDob);
-        dob.setTime(date);
+
+        if (date != null) dob.setTime(date);
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String medicationPlan = finalString.toString().replace("\n\n", "\n");
+        String medicationPlan = sortMedications(prescribedMedicationArrayList).replace("\n\n", "\n");
 
         String rx_web = stringToWeb(medicationPlan).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●", "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">").replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\"></p>", "</p>");
 
@@ -3429,7 +3432,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
-                prescriptionTextView.setText(finalString.toString().trim());
+                prescriptionTextView.setText(sortMedications(prescribedMedicationArrayList));
                 //checkForDoctor();
                 break;
             }
