@@ -1617,6 +1617,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             SyncUtils syncUtils = new SyncUtils();
             syncUtils.syncForeground("downloadPrescription");
             uploaded = true;
+            prescribedMedicationArrayList.clear();
 
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
