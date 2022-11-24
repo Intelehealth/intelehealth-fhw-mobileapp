@@ -32,27 +32,27 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="1.5"
             android:gravity="center_vertical"
-            android:spinnerMode="dropdown"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_10"
+            android:spinnerMode="dropdown"
             android:textSize="@dimen/edittext_textsize_16sp" />
 
         <Spinner
             android:id="@+id/spinner_year_caleview"
-            style="@style/SmallSpinnerTheme"
+            style="@style/CalendarSpinnerTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1.5"
             android:gravity="center_vertical"
-            android:spinnerMode="dropdown"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_10"
+            android:spinnerMode="dropdown"
             android:textSize="@dimen/edittext_textsize_16sp" />
 
         <ImageView

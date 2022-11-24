@@ -1,11 +1,14 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -39,10 +42,16 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         return myViewHolder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(CalendarviewNewAdapter.MyViewHolder holder, int position) {
         CalendarviewModel calendarModel = listOfDates.get(position);
-        holder.tvDate.setText(calendarModel.getDate()+"");
+        holder.tvDate.setText(calendarModel.getDate() + "");
+
+        if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
+            holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+            holder.tvDate.setEnabled(false);
+        }
 
     }
 
