@@ -98,7 +98,7 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
-    private boolean isMultiChoice = false;
+    private boolean isMultiChoice = true;
     private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
     //for Associated Complaints and medical history only
