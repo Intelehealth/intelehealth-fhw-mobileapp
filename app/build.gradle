@@ -11,22 +11,22 @@ static def getDateTime() {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "org.intelehealth.nas"
         minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 19
+        targetSdkVersion 31
+        versionCode 20
         buildToolsVersion('29.0.2')
-        versionName "1.2.2"
+        versionName "1.2.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth " + versionName + " - " + getDateTime()
+        archivesBaseName = "nas " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -131,7 +131,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only)
-    implementation 'androidx.work:work-runtime:2.0.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
     // optional - RxJava2 support
     implementation 'androidx.work:work-rxjava2:2.0.1'
     // optional - Test helpers
