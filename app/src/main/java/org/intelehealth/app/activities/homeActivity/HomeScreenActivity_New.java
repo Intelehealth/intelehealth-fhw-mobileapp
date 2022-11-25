@@ -62,6 +62,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.notification.NotificationActivity;
@@ -389,11 +390,13 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
 
     private void loadFragment(Fragment fragment) {
-        String tag = fragment.getClass().getSimpleName();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (fragment != null) {
+            String tag = fragment.getClass().getSimpleName();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment, tag);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     private void loadFragmentForBottomNav(Fragment fragment) {
@@ -447,6 +450,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
+
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
@@ -458,7 +462,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 fragment = new InformativeVideosFragment_New();
                 break;
             case R.id.menu_change_language:
-
+                Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.menu_about_us:
 
@@ -470,7 +475,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         }
 
         try {
-
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();

@@ -71,7 +71,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setLocale(sessionManager.getAppLanguage());
-                if (sessionManager.isFirstTimeLaunch()) {
+               /* if (sessionManager.isFirstTimeLaunch()) {
                     Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
@@ -83,11 +83,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 finish(); // TODO: uncomment
-
+*/
                 // testing...
-              /*  sessionManager.setServerUrl(AppConstants.DEMO_URL);
+                sessionManager.setServerUrl(AppConstants.DEMO_URL);
                 Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
-                startActivity(intent); // TODO: remove this block code later.*/
+                startActivity(intent); // TODO: remove this block code later.
             }
         });
 

@@ -141,9 +141,7 @@
                 android:id="@+id/lang_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lang_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/lang_header_relative">
 
                 <View
                     android:id="@+id/divider"
@@ -278,9 +276,7 @@
                 android:id="@+id/protocols_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/protocols_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/protocols_header_relative">
 
                 <View
                     android:id="@+id/divider"
@@ -323,7 +319,16 @@
             </RelativeLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
     <!--Protocols - End-->
+
+    <include
+        android:id="@+id/snackbar_cv"
+        layout="@layout/custom_snackbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24" />
 
 </RelativeLayout>

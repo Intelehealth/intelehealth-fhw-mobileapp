@@ -25,6 +25,7 @@
                 android:src="@drawable/survey_snackbar_icon"/>
 
             <TextView
+                android:id="@+id/snackbar_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/snackbar_icon"
