@@ -2,8 +2,8 @@
 
 
     <string-array name="language_names">
-        <item>हिंदी</item>
         <item>English</item>
+        <item>हिंदी</item>
         <item>ଓଡିଆ</item>
         <item>తెలుగు</item>
         <item>ગુજરાતી</item>
@@ -19,8 +19,8 @@
     </string-array>
 
     <string-array name="language_values">
-        <item>hi</item>
         <item>en</item>
+        <item>hi</item>
         <item>or</item>
         <item>te</item>
         <item>gu</item>

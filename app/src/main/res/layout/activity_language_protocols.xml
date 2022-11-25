@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/frame_10021"
+    tools:context=".activities.settingsActivity.Language_ProtocolsActivity">
+
+    <!--    Toolbar - start -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar_relative"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/followup_toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
+        android:background="@drawable/frame_10021">
+
+        <!-- Frame 100167 -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_10016"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/followup_toolbar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/toolbar_margin_top"
+            android:layout_marginRight="@dimen/fu_margin_start"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!-- Frame 100116 -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/frame_10011"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.7"
+                android:orientation="horizontal">
+
+                <!-- arrow-right -->
+                <ImageButton
+                    android:id="@+id/vector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@null"
+                    android:padding="@dimen/margin_5"
+                    android:src="@drawable/ic_arrow_right" />
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Change language &amp; protocol"
+                    android:textSize="@dimen/toolbar_text_size"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/label"
+                    android:translationY="-0.28sp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/refresh"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:background="@null"
+                android:src="@drawable/ic_refreshbtn" />
+
+        </LinearLayout>
+    </RelativeLayout>
+    <!--    Toolbar - end -->
+
+    <!--Language - Start-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/lang_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_relative"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/corner_radius_8dp"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/lang_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/vs_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_2dp"
+                    android:src="@drawable/language_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:textStyle="bold"
+                    android:text="Language" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_special_vd_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+            <!--Expanded Vitals-->
+            <RelativeLayout
+                android:id="@+id/lang_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lang_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+
+                <!--Language Relative - Start-->
+                <RelativeLayout
+                    android:id="@+id/lang_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="App language"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/hint_text_color"/>
+
+                    <Spinner
+                        android:id="@+id/lang_spinner"
+                        style="@style/SmallSpinnerTheme"
+                        android:layout_width="120dp"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:layout_alignParentEnd="true"
+                        android:entries="@array/language_names"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/reset_lang_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lang_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/margin_16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reset to English"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/hint_text_color"/>
+
+                    <ImageButton
+                        android:id="@+id/reset_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/reset_lang_icon"
+                        android:background="@null" />
+                </RelativeLayout>
+                <!--Language Relative - End-->
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <!--Language - End-->
+
+    <!--Protocols - Start-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/protocols_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lang_card"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/corner_radius_8dp"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/protocols_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/vs_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_2dp"
+                    android:src="@drawable/protocols_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:textStyle="bold"
+                    android:text="Protocols" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_special_vd_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+            <!--Expanded Vitals-->
+            <RelativeLayout
+                android:id="@+id/protocols_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/protocols_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+
+                <!--Protocols Relative - Start-->
+                <RelativeLayout
+                    android:id="@+id/reset_lang_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/margin_16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update app protocols"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/hint_text_color"/>
+
+                    <ImageButton
+                        android:id="@+id/update_protocols_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/update_protocols_icon"
+                        android:background="@null" />
+                </RelativeLayout>
+                <!--Protocols Relative - End-->
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!--Protocols - End-->
+
+</RelativeLayout>
