@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -132,7 +133,7 @@ public class FollowUpNotificationWorker extends Worker {
                             count++;
                         }
                     } else {
-                        String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),db);
+                        String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")), db);
                         int days = mGetDaysAccording(newStartDate);
                         String mValue = "";
                         if (!mSeverityValue.contains("Do you want us to follow-up?")) {
@@ -342,7 +343,13 @@ public class FollowUpNotificationWorker extends Worker {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
         Notification notification = mBuilder
                 .setSmallIcon(R.drawable.ic_cloud_upload)
                 .setAutoCancel(true).setContentTitle(title)
