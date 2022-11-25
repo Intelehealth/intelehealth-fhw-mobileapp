@@ -2,7 +2,16 @@ package org.intelehealth.app.ui2.calendarviewcustom;
 
 public class CalendarviewModel {
     int date, headerPositionForFirstDay, headerPositionForLastDay;
-    boolean isCurrentDate, isPrevMonth, isNextMonth;
+
+    public boolean isCurrentMonthCompletedDate() {
+        return isCurrentMonthCompletedDate;
+    }
+
+    public void setCurrentMonthUpcomingDate(boolean currentMonthUpcomingDate) {
+        isCurrentMonthCompletedDate = currentMonthUpcomingDate;
+    }
+
+    boolean isCurrentDate, isPrevMonth, isNextMonth, isCurrentMonthCompletedDate;
 
     public int getHeaderPositionForFirstDay() {
         return headerPositionForFirstDay;
@@ -46,13 +55,15 @@ public class CalendarviewModel {
 
     public CalendarviewModel(int date, int headerPositionForFirstDay,
                              int headerPositionForLastDay, boolean isCurrentDate,
-                             boolean isPrevMonth, boolean isNextMonth) {
+                             boolean isPrevMonth, boolean isNextMonth, boolean isCurrentMonthCompletedDate) {
         this.date = date;
         this.headerPositionForFirstDay = headerPositionForFirstDay;
         this.headerPositionForLastDay = headerPositionForLastDay;
         this.isCurrentDate = isCurrentDate;
         this.isPrevMonth = isPrevMonth;
         this.isNextMonth = isNextMonth;
+        this.isCurrentMonthCompletedDate = isCurrentMonthCompletedDate;
+
 
     }
 

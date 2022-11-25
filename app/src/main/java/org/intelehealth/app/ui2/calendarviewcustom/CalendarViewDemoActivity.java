@@ -1,25 +1,39 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.intelehealth.app.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -37,6 +51,12 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
     CalendarviewYearModel spinnerSelectedYearModel;
     Calendar calendarInstanceDefault;
     int monthTotalDays;
+    ImageView ivPrevMonth, ivNextMonth;
+    String yearToCompare = "";
+    String monthToCompare = "";
+    int currentMonth;
+    int currentYear;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -44,31 +64,62 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view_demo_ui2);
 
-        rvCalendarView = findViewById(R.id.rv_calendarview_new);
-        spinnerMonths = findViewById(R.id.spinner_months_caleview);
-        spinnerYear = findViewById(R.id.spinner_year_caleview);
-        calendarInstanceDefault = Calendar.getInstance();
-        int currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH);
-        Log.d(TAG, "onCreate: currentMonth : " + currentMonth);
-        int currentYear = calendarInstanceDefault.get(Calendar.YEAR);
-        monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
-        Log.d(TAG, "default: monthTotalDays : " + monthTotalDays);
+        showDatePicker(this);
 
+    }
 
-        spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
-        spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getPreviousMonthDates() {
+        calendarInstanceDefault.add(Calendar.MONTH, -1);
+        Date monthNameNEw = calendarInstanceDefault.getTime();
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        try {
+            date = formatter.parse(monthNameNEw.toString());
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
 
+            String[] dateSplit = formateDate.split("/");
+            yearToCompare = dateSplit[2];
+            monthToCompare = dateSplit[1];
+            String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
 
-        fillMonthsSpinner();
-        fillYearSpinner();
-        fillDatesMonthsWise("default");
-        setValuesToTheMonthSpinnerForDefault(currentMonth);
-        setValuesToTheYearSpinnerForDefault(currentYear);
+            if (monthYear.length > 0) {
+                String selectedPrevMonth = monthYear[0];
+                String selectedPrevMonthYear = monthYear[1];
+                //tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
+                Log.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
+                if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
+                   // enableDisablePreviousButton(false);
+
+                    spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(yearToCompare), true);
+                    spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
+                    setValuesToTheYearSpinnerForDefault(Integer.parseInt(yearToCompare));
+                    setValuesToTheMonthSpinnerForDefault(Integer.parseInt(monthToCompare));
+
+                    // getAllDatesOfSelectedMonth(calendarInstanceDefault, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
+                    fillDatesMonthsWise("prevButton");
+                } else {
+                    spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(yearToCompare), true);
+                    spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
+                    setValuesToTheYearSpinnerForDefault(Integer.parseInt(yearToCompare));
+                    setValuesToTheMonthSpinnerForDefault(Integer.parseInt(monthToCompare));
+
+                    //enableDisablePreviousButton(true);
+                    fillDatesMonthsWise("prevButton");
+
+                    // getAllDatesOfSelectedMonth(calendarInstanceDefault, false, monthToCompare, selectedPrevMonthYear,monthToCompare);
+
+                }
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
     private void setValuesToTheMonthSpinnerForDefault(int currentMonth) {
-        Log.d(TAG, "setValuesToTheMonthSpinnerForDefault: currentMonth : " + currentMonth);
         switch (currentMonth) {
             case 1:
                 spinnerMonths.setSelection(0, true);
@@ -111,7 +162,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
     }
 
     private void setValuesToTheYearSpinnerForDefault(int currentYear) {
-        Log.d(TAG, "setValuesToTheYearSpinnerForDefault: currentYear : " + currentYear);
         switch (currentYear) {
             case 2022:
                 spinnerYear.setSelection(0, true);
@@ -129,10 +179,12 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
-        Log.d(TAG, "newfillDatesMonthsWise:month " + spinnerSelectedMonthModel.getMonthNo());
-        Log.d(TAG, "newfillDatesMonthsWise:year " + spinnerSelectedYearModel.getYear());
+        if(spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth){
+           // enableDisablePreviousButton(false);
+        }else {
+          //  enableDisablePreviousButton(true);
 
-        Log.d(TAG, "fillDatesMonthsWise: tag : " + tag);
+        }
         String firstDay = "";
         String lastDay = "";
 
@@ -151,9 +203,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
             firstDay = (ym.atDay(1).getDayOfWeek().name()).substring(0, 2);
             lastDay = (ym.atEndOfMonth().getDayOfWeek().name()).substring(0, 2);
-
-            Log.d(TAG, "fillDatesMonthsWise: -firstDay : " + firstDay);
-            Log.d(TAG, "fillDatesMonthsWise: lastDay : " + lastDay);
 
 
             //maximum 42 entries
@@ -236,57 +285,41 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
                     break;
 
             }
+            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedYearModel : " + spinnerSelectedYearModel.getYear());
+            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedMonthModel : " + spinnerSelectedMonthModel.getMonthNo());
 
             //calculate total days for recyclerview
             int totalViewDays = monthTotalDays + noOfPrevMonthDaysRequired;
             int daysFromNextMonth = 42 - totalViewDays;
-
-            Log.d(TAG, "55fillDatesMonthsWise: monthMaxDays : " + monthTotalDays);
-            Log.d(TAG, "55fillDatesMonthsWise: noOfPrevMonthDaysRequired : " + noOfPrevMonthDaysRequired);
-            Log.d(TAG, "55fillDatesMonthsWise: daysFromNextMonth : " + daysFromNextMonth);
-            Log.d(TAG, "55fillDatesMonthsWise: totalViewDays : " + totalViewDays);
 
             List<CalendarviewModel> listOfPrevMonthDays = new ArrayList<>();
             List<CalendarviewModel> listOfDates = new ArrayList<>();
             List<CalendarviewModel> listOfNextMonthDays = new ArrayList<>();
 
             CalendarviewModel calendarviewModel;
-            Calendar calForSelectedMonth = Calendar.getInstance(); //current
+            Calendar calForSelectedMonth = Calendar.getInstance();
             calForSelectedMonth.set(spinnerSelectedYearModel.getYear(), spinnerSelectedMonthModel.getMonthNo(), 1);//for selected
-            calForSelectedMonth.add(Calendar.MONTH, -1); //2022/11/1 - 1
+            calForSelectedMonth.add(Calendar.MONTH, -1);
 
 
             Calendar calForPrevMonth = Calendar.getInstance();
             calForPrevMonth.set(spinnerSelectedYearModel.getYear(), spinnerSelectedMonthModel.getMonthNo(), 1);//2022/11/1
-            Log.d(TAG, "\n\n88fillDatesMonthsWise:33new tag : " + tag);
-            Log.d(TAG, "88fillDatesMonthsWise:33new spinner date check1****** : " + calForPrevMonth.getTime());
 
-            calForPrevMonth.add(Calendar.MONTH, -2); //2022/11/1 - 1
+            calForPrevMonth.add(Calendar.MONTH, -2);
 
-            Log.d(TAG, "88fillDatesMonthsWise:33new prev date check2****** : " + calForPrevMonth.getTime() + "\n\n");
-            Log.d(TAG, "88fillDatesMonthsWise: spinneryear :" + spinnerSelectedYearModel.getYear());
-            Log.d(TAG, "88fillDatesMonthsWise: spinnermonth :" + spinnerSelectedMonthModel.getMonthNo());
 
             int prevMonthMaxDays = calForPrevMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
-            Log.d(TAG, "88fillDatesMonthsWise:33new prevMonthMaxDays : " + prevMonthMaxDays);
 
-            //i=31
-            //noOfPrevMonthDaysRequired = 5
-            Log.d(TAG, "fillDatesMonthsWise:99 noOfPrevMonthDaysRequired : check : " + noOfPrevMonthDaysRequired);
 
             if (noOfPrevMonthDaysRequired > 0) {
                 for (int i = prevMonthMaxDays; i >= 1; i--) {
-                    calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, true, false);
+                    calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, true, false, false);
                     listOfPrevMonthDays.add(calendarviewModel);
                     if (listOfPrevMonthDays.size() == noOfPrevMonthDaysRequired) {
                         break;
                     }
                 }
-            }
 
-
-            Log.d(TAG, "fillDatesMonthsWise: listOfPrevMonthDays : " + listOfPrevMonthDays.size());
-            if (listOfPrevMonthDays.size() > 0) {
                 Collections.reverse(listOfPrevMonthDays);
                 listOfDates.addAll(listOfPrevMonthDays);
             }
@@ -295,44 +328,47 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             //  int monthTotalDays = calForSelectedMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
             monthTotalDays = calForSelectedMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-            Log.d(TAG, "99fillDatesMonthsWise: selcted monthmonthTotalDays : " + monthTotalDays);
+            int currentDay = calendarInstanceDefault.get(Calendar.DAY_OF_MONTH);  //today from default instance
+            int selectedMonth = spinnerSelectedMonthModel.getMonthNo();
+            int selectedYear = spinnerSelectedYearModel.getYear();
+
 
             for (int i = 1; i <= monthTotalDays; i++) {
-                if (i == 1) {
+
+                if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth< currentMonth)) {
+                    //i.e. selected month is current month and check for date is less than current date i.e. upcoming or completed
+                    calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, true);
+
+                } else {
+                    //i.e. selected month is other than current month
+
+                    calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, false);
+
+                }
+
+               /* if (i == 1) {
                     calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false);
 
                 } else {
                     calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, false, false);
 
-                }
+                }*/
                 listOfDates.add(calendarviewModel);
             }
 
-            Log.d(TAG, "666fillDatesMonthsWise: listOfDates size*************** : " + listOfDates.size() + "\n\n");
-            for (int i = 0; i < listOfDates.size(); i++) {
-                CalendarviewModel calendarviewModel1 = listOfDates.get(i);
-                Log.d(TAG, "666fillDatesMonthsWise: listOfDates dates :" + calendarviewModel1.getDate());
-            }
 
             Calendar calForNextMonth = Calendar.getInstance();
             calForNextMonth.set(spinnerSelectedYearModel.getYear(), spinnerSelectedMonthModel.getMonthNo(), 1);
             calForNextMonth.add(Calendar.MONTH, +1);
-            //     int currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH);
-            //    int currentYear = calendarInstanceDefault.get(Calendar.YEAR);
-            Log.d(TAG, "88fillDatesMonthsWise: new next date : " + calForNextMonth.get(Calendar.YEAR) + "/" + calForNextMonth.getActualMaximum(Calendar.MONTH) + "/1");
+
 
             int nextMonthMaxDays = calForNextMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
-            Log.d(TAG, "fillDatesMonthsWise: nextMonthMaxDays : " + nextMonthMaxDays);
-
-            //i=31
-            //noOfPrevMonthDaysRequired = 5
 
             int noOfNextMonthDaysRequiredNew = 42 - listOfDates.size();
-            Log.d(TAG, "fillDatesMonthsWise:99 noOfNextMonthDaysRequiredNew : check : " + noOfNextMonthDaysRequiredNew);
 
             if (noOfNextMonthDaysRequiredNew > 0) {
                 for (int i = 1; i <= nextMonthMaxDays; i++) {
-                    calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, false, true);
+                    calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, false, true, false);
                     listOfNextMonthDays.add(calendarviewModel);
                     if (listOfNextMonthDays.size() == noOfNextMonthDaysRequiredNew) {
                         break;
@@ -342,10 +378,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
 
             listOfDates.addAll(listOfNextMonthDays);
-
-            Log.d(TAG, "sizes : fillDatesMonthsWise: listOfDates***** : " + listOfDates.size());
-            Log.d(TAG, "sizes : fillDatesMonthsWise: prev month***** : " + listOfPrevMonthDays.size());
-            Log.d(TAG, "sizes : fillDatesMonthsWise: next month***** : " + listOfNextMonthDays.size());
 
             rvCalendarView.setHasFixedSize(true);
             rvCalendarView.setLayoutManager(new GridLayoutManager(this, 7));
@@ -375,7 +407,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             monthsList.add(model1);
         }
 
-        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(CalendarViewDemoActivity.this, android.R.layout.simple_spinner_item, monthsList);
+        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, monthsList);
         spinnerMonths.setAdapter(adapter);
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -383,6 +415,10 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
+                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                spinnerMonths.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+
                 fillDatesMonthsWise("fromSpinnerMonth");
             }
 
@@ -447,7 +483,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             yearsList.add(model1);
         }
 
-        YearSpinnerAdapter adapter = new YearSpinnerAdapter(CalendarViewDemoActivity.this, android.R.layout.simple_spinner_item, yearsList);
+        YearSpinnerAdapter adapter = new YearSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, yearsList);
         spinnerYear.setAdapter(adapter);
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -455,6 +491,10 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedYearModel = adapter.getItem(position);
+                //spinnerYear.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+
                 fillDatesMonthsWise("fromSpinnerYear");
 
 
@@ -509,5 +549,125 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
             return label;
         }
+    }
+
+  /*  private void enableDisablePreviousButton(boolean wantToEnable) {
+        if (wantToEnable) {
+            ivPrevMonth.setEnabled(true);
+            ivPrevMonth.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        } else {
+            ivPrevMonth.setEnabled(false);
+            ivPrevMonth.setColorFilter(ContextCompat.getColor(this, R.color.font_black_3), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+    }*/
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getNextMonthDates() {
+       // enableDisablePreviousButton(true);
+
+        calendarInstanceDefault.add(Calendar.MONTH, 1);
+        Date monthNameNEw = calendarInstanceDefault.getTime();
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        try {
+            date = formatter.parse(monthNameNEw.toString());
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+
+            String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
+            String selectedNextMonth;
+            String selectedMonthYear;
+
+            if (monthYear.length > 0) {
+                selectedNextMonth = monthYear[0];
+                selectedMonthYear = monthYear[1];
+                String[] dateSplit = formateDate.split("/");
+
+                //tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
+                Log.d(TAG, "getNextMonthDates: tvSelectedMonthYear : " + selectedNextMonth + ", " + selectedMonthYear);
+                Log.d(TAG, "getNextMonthDates: currentMonth : " + currentMonth);
+                Log.d(TAG, "getNextMonthDates: currentYear : " + currentYear);
+                Log.d(TAG, "getNextMonthDates: selectedMonthYear : " + selectedMonthYear);
+                Log.d(TAG, "getNextMonthDates: selectedNextMonth : " + selectedNextMonth);
+                Log.d(TAG, "getNextMonthDates: selectedNextMonthnew : " + dateSplit[1]);
+
+                if (dateSplit[1].equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
+                    // getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);
+                    spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(selectedMonthYear), true);
+                    spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(dateSplit[1]), true);
+                    setValuesToTheYearSpinnerForDefault(Integer.parseInt(selectedMonthYear));
+                    setValuesToTheMonthSpinnerForDefault(Integer.parseInt(dateSplit[1]));
+                    fillDatesMonthsWise("nextButton");
+
+                } else {
+                    spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(selectedMonthYear), true);
+                    spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(dateSplit[1]), true);
+                    setValuesToTheYearSpinnerForDefault(Integer.parseInt(selectedMonthYear));
+                    fillDatesMonthsWise("nextButton");
+                    setValuesToTheMonthSpinnerForDefault(Integer.parseInt(dateSplit[1]));
+
+                    // getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear, dateSplit[1]);
+
+                }
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void showDatePicker(Context context) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.layout_dialog_custom_calendarview, null);
+        alertdialogBuilder.setView(convertView);
+
+        rvCalendarView = convertView.findViewById(R.id.rv_calendarview_new);
+        spinnerMonths = convertView.findViewById(R.id.spinner_months_caleview);
+        spinnerYear = convertView.findViewById(R.id.spinner_year_caleview);
+        ivPrevMonth =convertView.findViewById(R.id.iv_prev_month2);
+        ivNextMonth = convertView.findViewById(R.id.iv_next_month2);
+
+
+        ivPrevMonth.setOnClickListener(v -> {
+            getPreviousMonthDates();
+        });
+        ivNextMonth.setOnClickListener(v -> {
+            getNextMonthDates();
+        });
+
+        calendarInstanceDefault = Calendar.getInstance();
+        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH);
+        currentYear = calendarInstanceDefault.get(Calendar.YEAR);
+        monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+
+        spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
+        spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
+
+
+
+        fillMonthsSpinner();
+        fillYearSpinner();
+        fillDatesMonthsWise("default");
+        setValuesToTheMonthSpinnerForDefault(currentMonth);
+        setValuesToTheYearSpinnerForDefault(currentYear);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.dialog_custom_cal_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+       /* noButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
+        yesButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });*/
+
+        alertDialog.show();
     }
 }

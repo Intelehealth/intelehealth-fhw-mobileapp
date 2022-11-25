@@ -3,15 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".ui2.calendarviewcustom.CalendarViewDemoActivity">
-
-  <!--  <LinearLayout
+    android:padding="10dp">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="20dp"
+        android:weightSum="4">
+
+        <ImageView
+            android:id="@+id/iv_prev_month2"
+            android:layout_width="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ui2_ic_calendar_previous"
+            app:tint="@color/colorPrimary" />
+
+        <Spinner
+            android:id="@+id/spinner_months_caleview"
+            style="@style/CalendarSpinnerTheme"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/iv_prev_month2"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:paddingStart="-10dp"
+            android:textAlignment="viewStart"
+            android:layout_weight="1.7"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingEnd="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_10"
+            android:spinnerMode="dropdown"
+            android:textSize="@dimen/edittext_textsize_16sp" />
+
+        <Spinner
+            android:id="@+id/spinner_year_caleview"
+            style="@style/CalendarSpinnerTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.7"
+            android:paddingStart="-10dp"
+            android:layout_toEndOf="@+id/spinner_months_caleview"
+            android:textAlignment="center"
+            android:layout_toStartOf="@+id/iv_next_month2"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/margin_10"
+            android:layout_marginStart="-10dp"
+            android:paddingEnd="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_10"
+            android:spinnerMode="dropdown"
+            android:textSize="@dimen/edittext_textsize_16sp" />
+
+        <ImageView
+            android:id="@+id/iv_next_month2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ui2_ic_calendar_next"
+            app:tint="@color/colorPrimary" />
+    </RelativeLayout>
+
+<!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         android:weightSum="4">
 
         <ImageView
@@ -19,8 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ui2_ic_calendar_previous"
             app:tint="@color/colorPrimary" />
@@ -30,8 +98,9 @@
             style="@style/CalendarSpinnerTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1.5"
+            android:layout_marginEnd="5dp"
+            android:textAlignment="center"
+            android:layout_weight="1.7"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingTop="@dimen/margin_10"
@@ -45,9 +114,8 @@
             style="@style/CalendarSpinnerTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.7"
+            android:textAlignment="center"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingTop="@dimen/margin_10"
@@ -61,11 +129,12 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ui2_ic_calendar_next"
             app:tint="@color/colorPrimary" />
     </LinearLayout>
+-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -159,6 +228,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
         android:weightSum="2">
 
         <Button
@@ -169,7 +241,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
             android:layout_weight="1"
-            android:background="@drawable/ui2_common_primary_bg_disabled"
+            android:background="@drawable/ui2_cal_view_white_button"
             android:paddingStart="@dimen/common_button_padding_left"
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
@@ -193,5 +265,5 @@
             android:text="@string/okay"
             android:textSize="@dimen/common_button_text_size" />
 
-    </LinearLayout>-->
+    </LinearLayout>
 </LinearLayout>

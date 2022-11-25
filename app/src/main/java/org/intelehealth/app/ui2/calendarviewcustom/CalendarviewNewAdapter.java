@@ -48,7 +48,7 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         CalendarviewModel calendarModel = listOfDates.get(position);
         holder.tvDate.setText(calendarModel.getDate() + "");
 
-        if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
+        if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
             holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
             holder.tvDate.setEnabled(false);
         }

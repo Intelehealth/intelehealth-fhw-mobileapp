@@ -309,6 +309,7 @@
     <dimen name="btn_okay_internet_margin_top">30dp</dimen>
     <dimen name="btn_okay_internet_margin_bottom">32dp</dimen>
     <dimen name="btn_okay_text_size">14sp</dimen>
+    <dimen name="dialog_custom_cal_width">350dp</dimen>
 
     <!-- splash screen -->
 
