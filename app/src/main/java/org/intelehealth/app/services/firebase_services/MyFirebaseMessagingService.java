@@ -70,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
                 if (callState == TelephonyManager.CALL_STATE_IDLE) {
                     startActivity(in);
-                }else{
+                } else {
                     sendNotification(remoteMessage, null);
                 }
 
@@ -95,8 +95,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     chatIntent.putExtra("patientUuid", patientUUid);
                     chatIntent.putExtra("fromUuid", fromUUId);
                     chatIntent.putExtra("toUuid", toUUId);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
                     sendNotification(remoteMessage, pendingIntent);
 
 
@@ -146,8 +146,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (pendingIntent == null) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
         String channelId = "CHANNEL_ID";
 
