@@ -62,6 +62,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
@@ -466,7 +467,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.menu_about_us:
-
+                Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+                startActivity(i);
                 break;
             case R.id.menu_logout:
 

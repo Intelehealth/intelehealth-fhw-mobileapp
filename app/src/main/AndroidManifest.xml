@@ -40,7 +40,14 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
+        <activity
+            android:name=".activities.aboutus.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activities.settingsActivity.Language_ProtocolsActivity"
             android:exported="false"
@@ -49,7 +56,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.patientSurveyActivity.PatientSurveyActivity_New"
             android:exported="false"
@@ -162,14 +168,12 @@
             android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
@@ -444,8 +448,7 @@
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
