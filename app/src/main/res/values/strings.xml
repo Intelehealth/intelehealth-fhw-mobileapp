@@ -1704,6 +1704,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
     <string name="caption">Name</string>
 
+    <string name="aboutus_termscondition">Check out our <a href="https://intelehealth.org/terms-of-use">terms and Conditions</a></string>
+    <string name="visit_intelehealth_for_more">Visit intelehealth.org for more</string>
 
     <!--END-->
 

@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.View;
+import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_New;
@@ -19,6 +22,7 @@ import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_Ne
 public class AboutUsActivity extends AppCompatActivity {
     private RecyclerView images_recyclerview;
     private AboutUsAdapter adapter;
+    private TextView globe_link, info_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,12 @@ public class AboutUsActivity extends AppCompatActivity {
 
     private void initUI() {
         images_recyclerview = findViewById(R.id.images_recyclerview);
+        globe_link = findViewById(R.id.globe_link);
+        globe_link.setAutoLinkMask(Linkify.ALL);    // When you want to show directly the Link to the user as text.
+
+        info_link = findViewById(R.id.info_link);
+        info_link.setMovementMethod(LinkMovementMethod.getInstance());  // When you need to show custom text rather than link to user.
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         images_recyclerview.setLayoutManager(layoutManager);
         images_recyclerview.addItemDecoration(new CirclePagerIndicatorDecoration(this));
@@ -44,5 +54,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
 //        MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity());
 //        rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+
+
     }
 }

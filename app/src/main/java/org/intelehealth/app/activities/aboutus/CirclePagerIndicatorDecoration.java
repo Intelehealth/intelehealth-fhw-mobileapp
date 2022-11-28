@@ -98,7 +98,7 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
     }
 
     private void drawInactiveIndicators(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
-        mPaint.setColor(Color.GRAY);
+        mPaint.setColor(context.getResources().getColor(R.color.grey_button_bg));
 
         // width of item indicator including padding
         final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;

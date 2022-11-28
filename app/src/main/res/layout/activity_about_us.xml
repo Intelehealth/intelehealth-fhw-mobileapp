@@ -85,7 +85,7 @@
     <!--Scrollbar - Start -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_relative"
         android:fillViewport="true">
 
@@ -101,18 +101,108 @@
                 tools:listitem="@layout/aboutus_listitem"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_32dp" />
+                android:layout_marginTop="@dimen/margin_24" />
 
             <TextView
+                android:id="@+id/description_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:layout_marginTop="@dimen/margin_24"
-                android:text=""
+                android:textSize="@dimen/txtsize_patdetail_14sp"
+                android:textColor="@color/textview_color"
+                android:layout_below="@+id/images_recyclerview"
+                android:text="We are a tech-for-impact organisation : A team of engineers, clinicians, management and public health experts. We've developed an innovative open source telemedicine platform connecting the last mile population. \n\n
+Mission: We deliver quality healthcare where there is no doctor \n\n Our vision is Health for all. We believe in the vision of universal health coverage - that you should be able to receive the health services you need, when and where you need them, without facing financial hardship." />
+
+            <RelativeLayout
+                android:id="@+id/globe_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edittext_height_44dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_below="@+id/description_txt">
+
+                <ImageView
+                    android:id="@+id/globe_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/globe_blue_svg" />
+
+                <TextView
+                    android:id="@+id/globe_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/globe_img"
+                    android:autoLink="web"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:textColorLink="@color/blue_1"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:text="@string/visit_intelehealth_for_more"/>
+
+            </RelativeLayout>
+
+            <!--Info - Start-->
+            <RelativeLayout
+                android:id="@+id/relative_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_below="@+id/globe_relative"
+                >
+
+                <ImageView
+                    android:id="@+id/info_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/info_blue_svg" />
+
+                <TextView
+                    android:id="@+id/info_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/info_img"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:textColorLink="@color/blue_1"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:text="@string/aboutus_termscondition"/>
+
+            </RelativeLayout>
+            <!--Info - End-->
+
+            <FrameLayout
+                android:id="@+id/frame_gotobtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="68dp"
+                android:layout_below="@+id/relative_info">
+
+                <RelativeLayout
+                    android:id="@+id/relative_goto_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/goto_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_24"
+                        android:layout_marginEnd="@dimen/margin_24"
+                        android:layout_marginBottom="@dimen/margin_24"
+                        android:layout_marginTop="@dimen/fu_margin_start"
+                        android:background="@drawable/aboutus_btn" />
+
+                </RelativeLayout>
+            </FrameLayout>
 
         </RelativeLayout>
     </ScrollView>
     <!--Scrollbar - End -->
+
 
 </RelativeLayout>

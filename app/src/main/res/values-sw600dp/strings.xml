@@ -3,4 +3,5 @@
     <string name="app_version_string">App Version - %1$s</string>
     <string name="five_presc_received">%1$d prescriptions received</string>
     <string name="no_visit_created">No visit created</string>
+    <string name="visit_intelehealth_for_more">Visit intelehealth.org for more</string>
 </resources>
