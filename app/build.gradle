@@ -10,17 +10,17 @@ static def getDateTime() {
     return df.format(new Date());
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "org.intelehealth.app"
         minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 60
+        targetSdkVersion 31
+        versionCode 59
         buildToolsVersion('29.0.2')
-        versionName '3.4.0'
+        versionName '3.3.9'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -114,7 +114,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only)
-    implementation 'androidx.work:work-runtime:2.0.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
     // optional - RxJava2 support
     implementation 'androidx.work:work-rxjava2:2.0.1'
     // optional - Test helpers
