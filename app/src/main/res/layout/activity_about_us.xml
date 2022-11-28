@@ -98,6 +98,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="1"
+                android:scrollbars="none"
+                android:scrollIndicators="none"
                 tools:listitem="@layout/aboutus_listitem"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
@@ -113,8 +115,7 @@
                 android:textSize="@dimen/txtsize_patdetail_14sp"
                 android:textColor="@color/textview_color"
                 android:layout_below="@+id/images_recyclerview"
-                android:text="We are a tech-for-impact organisation : A team of engineers, clinicians, management and public health experts. We've developed an innovative open source telemedicine platform connecting the last mile population. \n\n
-Mission: We deliver quality healthcare where there is no doctor \n\n Our vision is Health for all. We believe in the vision of universal health coverage - that you should be able to receive the health services you need, when and where you need them, without facing financial hardship." />
+                android:text="@string/aboutus_text" />
 
             <RelativeLayout
                 android:id="@+id/globe_relative"
@@ -170,7 +171,6 @@ Mission: We deliver quality healthcare where there is no doctor \n\n Our vision 
                     android:textColorLink="@color/blue_1"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:text="@string/aboutus_termscondition"/>
-
             </RelativeLayout>
             <!--Info - End-->
 
@@ -178,7 +178,7 @@ Mission: We deliver quality healthcare where there is no doctor \n\n Our vision 
                 android:id="@+id/frame_gotobtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="@dimen/margin_68dp"
                 android:layout_below="@+id/relative_info">
 
                 <RelativeLayout
@@ -190,7 +190,7 @@ Mission: We deliver quality healthcare where there is no doctor \n\n Our vision 
                     <Button
                         android:id="@+id/goto_btn"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/fu_btn_size"
                         android:layout_marginStart="@dimen/margin_24"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_24"

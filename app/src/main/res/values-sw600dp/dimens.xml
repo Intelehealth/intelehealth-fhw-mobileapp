@@ -775,5 +775,7 @@
     <dimen name="cp_option_icon_padding">5dp</dimen>
     <dimen name="icon_size_100dp">180dp</dimen>
     <dimen name="icon_size_40dp">80dp</dimen>
+    <dimen name="card_size_160dp">260dp</dimen>
+    <dimen name="margin_68dp">88dp</dimen>
 
 </resources>
