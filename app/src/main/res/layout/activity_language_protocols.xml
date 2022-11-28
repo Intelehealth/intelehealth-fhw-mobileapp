@@ -167,13 +167,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="App language"
+                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/hint_text_color"/>
 
                     <Spinner
                         android:id="@+id/lang_spinner"
                         style="@style/SmallSpinnerTheme"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
@@ -198,6 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reset to English"
+                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/hint_text_color"/>
 
@@ -303,6 +305,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Update app protocols"
+                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/hint_text_color"/>
 

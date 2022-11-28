@@ -707,6 +707,7 @@
     <dimen name="icon_size_40dp">80dp</dimen>
     <dimen name="card_size_160dp">260dp</dimen>
     <dimen name="margin_68dp">88dp</dimen>
+    <dimen name="size_120dp">200dp</dimen>
 
 
 </resources>
