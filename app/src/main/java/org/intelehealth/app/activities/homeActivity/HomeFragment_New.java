@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class HomeFragment_New extends Fragment {
@@ -46,6 +48,17 @@ public class HomeFragment_New extends Fragment {
 
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
+
+        String language = sessionManager.getAppLanguage();
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
+        }
+
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         ImageView viewHamburger = Objects.requireNonNull(getActivity()).findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_hamburger));
@@ -107,6 +120,8 @@ public class HomeFragment_New extends Fragment {
         followup_cardview = view.findViewById(R.id.followup_cardview);
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
+
+
     }
 
     @Override

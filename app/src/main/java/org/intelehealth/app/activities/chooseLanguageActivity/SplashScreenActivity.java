@@ -254,6 +254,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void setLocale(String appLanguage) {
+        // here comes en, hi, mr
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();

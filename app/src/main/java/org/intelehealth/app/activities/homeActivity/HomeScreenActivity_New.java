@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -135,6 +136,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         initUI();
     }
+
 
     private void initUI() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -495,6 +497,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        loadFragment(new HomeFragment_New());
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
         //registerReceiver(reMyreceive, filter);

@@ -70,6 +70,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private String mindmapURL = "";
     private AlertDialog alertDialog;
+    private String appLanguage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +89,6 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
-       // customProgressDialog = new CustomProgressDialog(context);
         sessionManager = new SessionManager(context);
         lang_spinner = findViewById(R.id.lang_spinner);
         reset_btn = findViewById(R.id.reset_btn);
@@ -103,10 +103,15 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
 
-        String l = sessionManager.getAppLanguage();
-        int i = langAdapter.getPosition(sessionManager.getAppLanguage());
-        if (!sessionManager.getAppLanguage().equalsIgnoreCase(""))
-            lang_spinner.setSelection(langAdapter.getPosition(sessionManager.getAppLanguage()));
+        String l = sessionManager.getCurrentLang();
+        if (l.equalsIgnoreCase("en"))
+            l = "English";
+        if (l.equalsIgnoreCase("hi"))
+            l = "हिंदी";
+
+        int i = langAdapter.getPosition(l);
+        if (!l.equalsIgnoreCase(""))
+            lang_spinner.setSelection(langAdapter.getPosition(l));
         else
             lang_spinner.setSelection(langAdapter.getPosition("English"));
 
@@ -114,7 +119,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
-                if (index != 0) {
+                if (index >= 0) {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
                     String message = "Are you sure you want to change language to " + selected_language + "?";
@@ -132,8 +137,9 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
         // Reset button.
         reset_btn.setOnClickListener(v -> {
-            lang_spinner.setSelection(langAdapter.getPosition("English"));
-            showSnackBarAndRemoveLater("Language successfully changed to English!");
+            sessionManager.setAppLanguage("en");
+            lang_spinner.setSelection(0, false);
+          //  showSnackBarAndRemoveLater("Language successfully changed to English!");
         });
 
         // language spinner - end
@@ -289,7 +295,13 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         positive_btn.setOnClickListener(v -> {
             // setting app language here...
             if (!selected_language.equalsIgnoreCase("")) {
-                setLocale(selected_language);
+                String locale = selected_language;
+                if (locale.equalsIgnoreCase("English"))
+                    locale = "en";
+                if (locale.equalsIgnoreCase("हिंदी"))
+                    locale = "hi";
+
+                setLocale(locale, selected_language);
             }
             alertDialog.dismiss();
         });
@@ -301,18 +313,19 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     /**
      * Setting the language selected by user as app language.
-     * @param appLanguage
+     * @param // appLanguage
      */
-    public void setLocale(String appLanguage) {
-        Locale locale = new Locale(appLanguage);
+    public void setLocale(String locale_code, String language) {
+        sessionManager.setAppLanguage(locale_code);
+        // here comes en, hi, mr
+        Locale locale = new Locale(locale_code);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        sessionManager.setAppLanguage(appLanguage);
 
         // show snackbar view
-        showSnackBarAndRemoveLater("Language successfully changed to " + appLanguage + "!");
+        showSnackBarAndRemoveLater("Language successfully changed to " + language + "!");
     }
 
     // show snackbar
@@ -433,5 +446,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
