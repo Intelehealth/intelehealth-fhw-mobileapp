@@ -51,6 +51,8 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    private static final String ENABLE_APP_LOCK = "ENABLE_APP_LOCK";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -453,5 +455,15 @@ public class SessionManager {
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+
+
+    public void setEnableAppLock(boolean isFirstTime) {
+        editor.putBoolean(ENABLE_APP_LOCK, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isEnableAppLock() {
+        return pref.getBoolean(ENABLE_APP_LOCK, false);
     }
 }

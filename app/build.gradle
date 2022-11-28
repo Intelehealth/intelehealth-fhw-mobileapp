@@ -136,5 +136,8 @@ dependencies {
     api 'com.google.android.material:material:1.1.0'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
+
+    //fingerprint lock
+    implementation 'androidx.biometric:biometric:1.1.0'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

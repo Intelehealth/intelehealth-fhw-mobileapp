@@ -43,4 +43,14 @@
             android:title="@string/menu_option_logout" />
 
     </group>
+
+    <group android:checkableBehavior="all">
+
+        <item
+            android:id="@+id/fingerprintLock"
+            android:orderInCategory="200"
+            android:title="App Lock" />
+
+    </group>
+
 </menu>
