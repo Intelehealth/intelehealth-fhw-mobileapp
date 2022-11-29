@@ -247,7 +247,7 @@ public class VisitsDAO {
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
-                list = fetchVisitAttr_Speciality(visitDTO.getUuid());
+                list = fetchVisitAttrs(visitDTO.getUuid());
                 visitDTO.setAttributes(list);
 //                visitDTOList.add(visitDTO);
 
@@ -279,25 +279,27 @@ public class VisitsDAO {
         return visitDTOList;
     }
 
-    private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
+    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
-        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+       // VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
+//        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
+//                new String[]{/*"0", */visit_uuid});
+
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
                 new String[]{/*"0", */visit_uuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-
-                speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                speciality.setAttributeType(cursor.getString
-                        (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
-                speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
-                list.add(speciality);
+                VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
+                attribute.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                attribute.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                attribute.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                list.add(attribute);
             }
-            }
+        }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
