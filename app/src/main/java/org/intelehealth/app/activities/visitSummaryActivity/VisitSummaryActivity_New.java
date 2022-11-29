@@ -244,7 +244,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView add_docs_title;
+    TextView add_docs_title, vd_addnotes_value;
+    String addnotes_value = "";
 
     TextView respiratory;
     TextView respiratoryText;
@@ -440,6 +441,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             special_vd_card.setVisibility(View.VISIBLE);
             vs_add_notes.setVisibility(View.GONE);
             addnotes_vd_card.setVisibility(View.VISIBLE);
+
+            addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
+            if (!addnotes_value.equalsIgnoreCase("")) {
+                vd_addnotes_value.setText(addnotes_value);
+            }
+            else {
+                vd_addnotes_value.setText("No notes added for Doctor.");
+            }
         }
         else {
             editVitals.setVisibility(View.VISIBLE);
@@ -1443,6 +1452,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
+        vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
         // up-down btn - end
 
         // vitals ids
@@ -1780,9 +1790,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
             // Additional Notes - Start
             try {
-                String additionalNotes = !additional_notes_edittext.getText().toString().equalsIgnoreCase("") ?
-                        additional_notes_edittext.getText().toString() : "No additional notes";
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, additionalNotes, ADDITIONAL_NOTES);
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes_value, ADDITIONAL_NOTES);
             } catch (DAOException e) {
                 e.printStackTrace();
                 Log.v("hospitalType", "hospitalType: " + e.getMessage());
