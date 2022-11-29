@@ -35,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -71,6 +72,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private AlertDialog alertDialog;
     private String appLanguage;
+    EditText text, url;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,6 +155,126 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     }
 
     private void updateProtocols() {
+        if (NetworkConnection.isOnline(Language_ProtocolsActivity.this)) {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Language_ProtocolsActivity.this);
+            LayoutInflater li = LayoutInflater.from(Language_ProtocolsActivity.this);
+            View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+            text = promptsView.findViewById(R.id.licensekey);
+            url = promptsView.findViewById(R.id.licenseurl);
+
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+
+                text.setText(sessionManager.getLicenseKey());
+                url.setText(sessionManager.getMindMapServerUrl());
+
+            } else {
+                url.setText("");
+                text.setText("");
+            }
+
+            dialog.setTitle(getString(R.string.enter_license_key))
+                    .setView(promptsView)
+                    .setPositiveButton(getString(R.string.button_ok), null)
+                    .setNegativeButton(getString(R.string.button_cancel), null);
+
+            AlertDialog alertDialog = dialog.create();
+            alertDialog.setView(promptsView, 20, 0, 20, 0);
+            alertDialog.show();
+            alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+
+
+            // Get the alert dialog buttons reference
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            // Change the alert dialog buttons text and background color
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                                /* text = promptsView.findViewById(R.id.licensekey);
+                                 url = promptsView.findViewById(R.id.licenseurl);*/
+
+                    url.setError(null);
+                    text.setError(null);
+
+                    //If both are not entered...
+                    if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                        url.requestFocus();
+                        url.setError(getResources().getString(R.string.enter_server_url));
+                        text.setError(getResources().getString(R.string.enter_license_key));
+                        return;
+                    }
+
+                    //If Url is empty...key is not empty...
+                    if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                        url.requestFocus();
+                        url.setError(getResources().getString(R.string.enter_server_url));
+                        return;
+                    }
+
+                    //If Url is not empty...key is empty...
+                    if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                        text.requestFocus();
+                        text.setError(getResources().getString(R.string.enter_license_key));
+                        return;
+                    }
+
+                    //If Url has : in it...
+                    if (url.getText().toString().trim().contains(":")) {
+                        url.requestFocus();
+                        url.setError(getResources().getString(R.string.invalid_url));
+                        return;
+                    }
+
+                    //If url entered is Invalid...
+                    if (!url.getText().toString().trim().isEmpty()) {
+                        if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                            String url_field = "https://" + url.getText().toString() + ":3004/";
+                            if (URLUtil.isValidUrl(url_field)) {
+                                key = text.getText().toString().trim();
+                                licenseUrl = url.getText().toString().trim();
+
+                                sessionManager.setMindMapServerUrl(licenseUrl);
+
+                                sessionManager.setLicenseKey(key);
+
+                                if (keyVerified(key)) {
+                                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                    alertDialog.dismiss();
+                                }
+                            } else {
+                                Toast.makeText(Language_ProtocolsActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            //invalid url || invalid url and key.
+                            Toast.makeText(Language_ProtocolsActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(Language_ProtocolsActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            negativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+
+            IntelehealthApplication.setAlertDialogCustomTheme(Language_ProtocolsActivity.this, alertDialog);
+
+//                      }
+
+        } else {
+            Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
+        }
+/*
         if (NetworkConnection.isOnline(this)) {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 LayoutInflater li = LayoutInflater.from(this);
@@ -223,7 +346,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                                     sessionManager.setMindMapServerUrl(licenseUrl);
 
                                     if (keyVerified(key)) {
-                                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
                                         alertDialog.dismiss();
                                     }
                                 } else {
@@ -249,6 +372,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
+*/
     }
 
 
@@ -346,8 +470,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void getMindmapDownloadURL(String url) {
-      //  customProgressDialog.show();
+    private void getMindmapDownloadURL(String url, String key) {
+       // customProgressDialog.show();
         dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
                 "Changing protocols", "Please wait while the protocols are being changed.",
                 "Yes", "No", true);
@@ -365,19 +489,19 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                           //  customProgressDialog.dismiss();
                             alertDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog,"setup");
+                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 /**
                                  * Showing snackbar custom view on success of Protocols udpated...
-                                  */
+                                 */
                                 showSnackBarAndRemoveLater("Protocols have been successfully changed!");
                                 checkExistingMindMaps();
 
                             } else {
-//                                Toast.makeText(context, res.getMessage(), Toast.LENGTH_LONG).show();
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -385,8 +509,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                           //  customProgressDialog.dismiss();
                             alertDialog.dismiss();
-                            Log.e("MindMapURL", " " + e);
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -399,6 +522,60 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             Log.e("TAG", "changeApiBaseUrl: " + e.getStackTrace());
         }
     }
+
+//    private void getMindmapDownloadURL(String url, String key) {
+//      //  customProgressDialog.show();
+//        dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
+//                "Changing protocols", "Please wait while the protocols are being changed.",
+//                "Yes", "No", true);
+//
+//        ApiClient.changeApiBaseUrl(url);
+//        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+//        try {
+//            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+//            resultsObservable
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
+//                        @Override
+//                        public void onNext(DownloadMindMapRes res) {
+//                          //  customProgressDialog.dismiss();
+//                            alertDialog.dismiss();
+//                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+//                                Log.e("MindMapURL", "Successfully get MindMap URL");
+//                                mTask = new DownloadMindMaps(context, mProgressDialog,"setup");
+//                                mindmapURL = res.getMindmap().trim();
+//                                sessionManager.setLicenseKey(key);
+//                                /**
+//                                 * Showing snackbar custom view on success of Protocols udpated...
+//                                  */
+//                                showSnackBarAndRemoveLater("Protocols have been successfully changed!");
+//                                checkExistingMindMaps();
+//
+//                            } else {
+////                                Toast.makeText(context, res.getMessage(), Toast.LENGTH_LONG).show();
+//                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                          //  customProgressDialog.dismiss();
+//                            alertDialog.dismiss();
+//                            Log.e("MindMapURL", " " + e);
+//                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                        }
+//                    });
+//        } catch (IllegalArgumentException e) {
+//            Log.e("TAG", "changeApiBaseUrl: " + e.getMessage());
+//            Log.e("TAG", "changeApiBaseUrl: " + e.getStackTrace());
+//        }
+//    }
 
     private void showProgressbar() {
         mProgressDialog = new ProgressDialog(Language_ProtocolsActivity.this);

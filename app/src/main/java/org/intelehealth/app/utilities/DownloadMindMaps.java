@@ -31,8 +31,8 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
     Context context;
     String screenStr="";
-
     private final ProgressDialog mProgressDialog;
+
     public DownloadMindMaps(Context _context, ProgressDialog mProgressDialog, String screenStr) {
         this.context = _context;
         this.mProgressDialog = mProgressDialog;
@@ -43,7 +43,8 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mProgressDialog.show();
+        if (mProgressDialog != null)
+            mProgressDialog.show();
     }
 
     @Override
@@ -115,7 +116,8 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        mProgressDialog.dismiss();
+        if (mProgressDialog != null)
+            mProgressDialog.dismiss();
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
                 ((SetupActivity)context).showMindmapFailedAlert();
@@ -139,9 +141,11 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
         Log.e("------>>>",values[0]+"");
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.setMax(100);
-        mProgressDialog.setProgress(values[0]);
+        if (mProgressDialog != null) {
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setMax(100);
+            mProgressDialog.setProgress(values[0]);
+        }
     }
 
 //    private boolean unpackZip(String filePath) {

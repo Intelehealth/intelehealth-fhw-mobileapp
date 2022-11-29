@@ -75,7 +75,7 @@ public class Fragment_SecondScreen extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        context = Fragment_SecondScreen.this.context;
+        context = getActivity();
         sessionManager = new SessionManager(getActivity());
 
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
