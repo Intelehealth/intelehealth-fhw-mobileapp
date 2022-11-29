@@ -1,7 +1,7 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
 public class CalendarviewModel {
-    int date, headerPositionForFirstDay, headerPositionForLastDay;
+    int date, headerPositionForFirstDay, headerPositionForLastDay, selectedMonth, selectedYear;
 
     public boolean isCurrentMonthCompletedDate() {
         return isCurrentMonthCompletedDate;
@@ -53,9 +53,30 @@ public class CalendarviewModel {
         this.isCurrentDate = isCurrentDate;
     }
 
+    public int getSelectedMonth() {
+        return selectedMonth;
+    }
+
+    public void setSelectedMonth(int selectedMonth) {
+        this.selectedMonth = selectedMonth;
+    }
+
+    public int getSelectedYear() {
+        return selectedYear;
+    }
+
+    public void setSelectedYear(int selectedYear) {
+        this.selectedYear = selectedYear;
+    }
+
+    public void setCurrentMonthCompletedDate(boolean currentMonthCompletedDate) {
+        isCurrentMonthCompletedDate = currentMonthCompletedDate;
+    }
+
     public CalendarviewModel(int date, int headerPositionForFirstDay,
                              int headerPositionForLastDay, boolean isCurrentDate,
-                             boolean isPrevMonth, boolean isNextMonth, boolean isCurrentMonthCompletedDate) {
+                             boolean isPrevMonth, boolean isNextMonth, boolean isCurrentMonthCompletedDate,
+                             int selectedMonth, int selectedYear) {
         this.date = date;
         this.headerPositionForFirstDay = headerPositionForFirstDay;
         this.headerPositionForLastDay = headerPositionForLastDay;
@@ -63,6 +84,9 @@ public class CalendarviewModel {
         this.isPrevMonth = isPrevMonth;
         this.isNextMonth = isNextMonth;
         this.isCurrentMonthCompletedDate = isCurrentMonthCompletedDate;
+        this.selectedMonth = selectedMonth;
+        this.selectedYear = selectedYear;
+
 
 
     }

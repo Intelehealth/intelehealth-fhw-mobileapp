@@ -1,7 +1,6 @@
 package org.intelehealth.app.appointmentNew;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
-import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
 import android.app.DatePickerDialog;
@@ -23,8 +22,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -36,34 +33,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
+import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DownloadFilesUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -73,15 +60,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AllAppointmentsFragment extends Fragment {
+public class AllAppointmentsFragment extends Fragment implements SendSelectedDateInterface {
     private static final String TAG = "AllAppointmentsFragment";
     View view;
     LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions;
@@ -115,10 +97,17 @@ public class AllAppointmentsFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_all_appointments_ui2,
-                container, false);
+                container, true);
         initUI();
         clickListeners();
 
@@ -358,7 +347,8 @@ public class AllAppointmentsFragment extends Fragment {
 
         ivDateFilter.setOnClickListener(v -> {
 
-            selectDateRange();
+            //selectDateRange();
+            selectDateRangeNew();
 
 
             // filter options
@@ -429,6 +419,7 @@ public class AllAppointmentsFragment extends Fragment {
         });
 
     }
+
 
     private void updateCardBackgrounds(String cardName) {
         if (cardName.equals("upcoming")) {
@@ -889,6 +880,54 @@ public class AllAppointmentsFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void selectDateRangeNew() {
+
+        tvFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: tvFromDate clicked");
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity());
+                String selectedDate = customCalendarViewUI2.showDatePicker(getActivity(), "fromdate");
+                Log.d(TAG, "selectDateRangeNew: selectedDate return from: " + selectedDate);
+
+
+             /*
+             old logic before cust calendarview
+             fromDate = selectedDate;
+                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                if (!fromDate.isEmpty()) {
+                    String[] splitedDate = fromDate.split("/");
+                    tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                } else {
+                    Log.d(TAG, "onClick: date empty");
+                }
+
+                dismissDateFilterDialog();*/
+            }
+        });
+        tvToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity());
+                String selectedDate = customCalendarViewUI2.showDatePicker(getActivity(), "todate");
+                Log.d(TAG, "selectDateRangeNew: selectedDate return to: " + selectedDate);
+
+              /*  toDate = selectedDate;
+                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+                if (!toDate.isEmpty()) {
+                    String[] splitedDate = toDate.split("/");
+                    tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                } else {
+                    Log.d(TAG, "onClick: date empty");
+                }
+
+                dismissDateFilterDialog();*/
+            }
+        });
+
+    }
+
     private void filterAsPerSelectedOptions() {
         Log.d(TAG, "newselectDateRange: fromDate : " + fromDate);
         Log.d(TAG, "newselectDateRange: todate : " + toDate);
@@ -929,4 +968,43 @@ public class AllAppointmentsFragment extends Fragment {
             }, 1000);
         }
     }
+
+    @Override
+    public void getSelectedDate(String selectedDate, String whichDate) {
+        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        frameLayoutDateFilter = view.findViewById(R.id.filter_frame_date_appointments);
+
+        tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
+        tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
+
+        if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+            fromDate = selectedDate;
+            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+            if (!fromDate.isEmpty()) {
+                String[] splitedDate = fromDate.split("/");
+                tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
+
+            } else {
+                Log.d(TAG, "onClick: date empty");
+            }
+
+            dismissDateFilterDialog();
+        }
+        if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+
+            toDate = selectedDate;
+            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+            if (!toDate.isEmpty()) {
+                String[] splitedDate = toDate.split("/");
+                tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
+            } else {
+                Log.d(TAG, "onClick: date empty");
+            }
+
+            dismissDateFilterDialog();
+        }
+    }
+
+
 }

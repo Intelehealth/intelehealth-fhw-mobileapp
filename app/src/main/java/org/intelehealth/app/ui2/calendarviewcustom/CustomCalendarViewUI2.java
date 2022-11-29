@@ -1,19 +1,9 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +15,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.appointmentNew.AllAppointmentsFragment;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.text.ParseException;
@@ -38,13 +32,12 @@ import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarViewDemoActivity extends AppCompatActivity {
-    private static final String TAG = "CalendarViewDemoActivit";
+public class CustomCalendarViewUI2 {
+    private static final String TAG = "CustomCalendarViewUI2";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;
     CalendarViewMonthModel spinnerSelectedMonthModel;
@@ -56,19 +49,11 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
     String monthToCompare = "";
     int currentMonth;
     int currentYear;
+    Context context;
+    String selectedDate = "";
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar_view_demo_ui2);
-
-        CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this);
-        String selectedDate = customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
-        Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
-      //  showDatePicker(this);
-
+    public CustomCalendarViewUI2(Context context) {
+        this.context = context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -92,7 +77,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
                 //tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 Log.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
-                   // enableDisablePreviousButton(false);
+                    // enableDisablePreviousButton(false);
 
                     spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(yearToCompare), true);
                     spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
@@ -182,10 +167,10 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
-        if(spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth){
-           // enableDisablePreviousButton(false);
-        }else {
-          //  enableDisablePreviousButton(true);
+        if (spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth) {
+            // enableDisablePreviousButton(false);
+        } else {
+            //  enableDisablePreviousButton(true);
 
         }
         String firstDay = "";
@@ -201,6 +186,9 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         //  String spinnerSelectedMonth = spinnerMonths.getSelectedItem().toString();
 
         if (spinnerSelectedMonthModel != null && spinnerSelectedYearModel != null) {
+            Log.d(TAG, "fillDatesMonthsWise: month : " + spinnerSelectedMonthModel.getMonthNo());
+            Log.d(TAG, "fillDatesMonthsWise: year : " + spinnerSelectedYearModel.getYear());
+
             YearMonth ym = YearMonth.of(spinnerSelectedYearModel.getYear(), spinnerSelectedMonthModel.getMonthNo());
 
 
@@ -338,7 +326,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
             for (int i = 1; i <= monthTotalDays; i++) {
 
-                if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth< currentMonth)) {
+                if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth < currentMonth)) {
                     //i.e. selected month is current month and check for date is less than current date i.e. upcoming or completed
                     calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, true, spinnerSelectedMonthModel.getMonthNo(), spinnerSelectedYearModel.getYear());
 
@@ -383,14 +371,25 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             listOfDates.addAll(listOfNextMonthDays);
 
             rvCalendarView.setHasFixedSize(true);
-            rvCalendarView.setLayoutManager(new GridLayoutManager(this, 7));
-            rvCalendarView.setAdapter(new CalendarviewNewAdapter(this, listOfDates,calendarModel1 -> {
+            rvCalendarView.setLayoutManager(new GridLayoutManager(context, 7));
+            rvCalendarView.setAdapter(new CalendarviewNewAdapter(context, listOfDates, calendarModel1 -> {
                 int date = calendarModel1.getDate();
-                Log.d(TAG, "selected from adapter fillDatesMonthsWise: date : "+date);
-             /*   String month = calendarModel1.getSelectedMonthForDays();
-                String year = calendarModel1.getSelectedYear();
+                int month = calendarModel1.getSelectedMonth();
+                int year = calendarModel1.getSelectedYear();
 
-                Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();*/
+                //  if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
+
+                if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
+                    selectedDate = "";
+                } else {
+                    selectedDate = date + "/" + month + "/" + year;
+
+                }
+
+                Log.d(TAG, "selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
+                //String year = calendarModel1.getSelectedYear();
+                // Log.d(TAG, "Selected date adapter: " + date + "-" + month + "-" + year);
+                // Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();
             }));
 
 
@@ -411,7 +410,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             monthsList.add(model1);
         }
 
-        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, monthsList);
+        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, monthsList);
         spinnerMonths.setAdapter(adapter);
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -419,9 +418,9 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                spinnerMonths.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                spinnerMonths.setBackground(context.getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerMonth");
             }
@@ -487,7 +486,8 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             yearsList.add(model1);
         }
 
-        YearSpinnerAdapter adapter = new YearSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, yearsList);
+
+        YearSpinnerAdapter adapter = new YearSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, yearsList);
         spinnerYear.setAdapter(adapter);
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -496,8 +496,8 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedYearModel = adapter.getItem(position);
                 //spinnerYear.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerYear");
 
@@ -568,7 +568,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void getNextMonthDates() {
-       // enableDisablePreviousButton(true);
+        // enableDisablePreviousButton(true);
 
         calendarInstanceDefault.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstanceDefault.getTime();
@@ -621,7 +621,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void showDatePicker(Context context) {
+    public String showDatePicker(Context context, String whichDate1) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.layout_dialog_custom_calendarview, null);
@@ -630,8 +630,10 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         rvCalendarView = convertView.findViewById(R.id.rv_calendarview_new);
         spinnerMonths = convertView.findViewById(R.id.spinner_months_caleview);
         spinnerYear = convertView.findViewById(R.id.spinner_year_caleview);
-        ivPrevMonth =convertView.findViewById(R.id.iv_prev_month2);
+        ivPrevMonth = convertView.findViewById(R.id.iv_prev_month2);
         ivNextMonth = convertView.findViewById(R.id.iv_next_month2);
+        Button btnCancelCalendar = convertView.findViewById(R.id.btn_cancel_calendar);
+        Button btnOkCalendar = convertView.findViewById(R.id.btn_okay_calendar);
 
 
         ivPrevMonth.setOnClickListener(v -> {
@@ -651,7 +653,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
 
 
-
         fillMonthsSpinner();
         fillYearSpinner();
         fillDatesMonthsWise("default");
@@ -659,19 +660,25 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         setValuesToTheYearSpinnerForDefault(currentYear);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.calendarview_bg_ui2);
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.dialog_custom_cal_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.setCancelable(false);
 
-       /* noButton.setOnClickListener(v -> {
+        btnCancelCalendar.setOnClickListener(v -> {
             alertDialog.dismiss();
         });
 
-        yesButton.setOnClickListener(v -> {
+        btnOkCalendar.setOnClickListener(v -> {
             alertDialog.dismiss();
-        });*/
+            SendSelectedDateInterface sendDataInterface = new AllAppointmentsFragment();
+            sendDataInterface.getSelectedDate(selectedDate, whichDate1);
+            Log.d(TAG, "dialog selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
+        });
 
         alertDialog.show();
+
+        return selectedDate;
     }
 }
