@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -32,11 +33,19 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     Context context;
     String screenStr="";
     private final ProgressDialog mProgressDialog;
+    private androidx.appcompat.app.AlertDialog alertDialog;
 
     public DownloadMindMaps(Context _context, ProgressDialog mProgressDialog, String screenStr) {
         this.context = _context;
         this.mProgressDialog = mProgressDialog;
         this.screenStr=screenStr;
+    }
+
+    public DownloadMindMaps(Context _context, androidx.appcompat.app.AlertDialog alertDialog, String screenStr, boolean from) {
+        this.context = _context;
+        this.alertDialog = alertDialog;
+        this.screenStr=screenStr;
+        this.mProgressDialog = null;
     }
 
 
@@ -118,16 +127,20 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         super.onPostExecute(s);
         if (mProgressDialog != null)
             mProgressDialog.dismiss();
+
+        if (alertDialog != null)
+            alertDialog.dismiss();
+
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
                 ((SetupActivity)context).showMindmapFailedAlert();
             }else if(screenStr.equalsIgnoreCase("home")){
                 SessionManager sessionManager=new SessionManager(context);
                 sessionManager.setLicenseKey("");
-                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         }else{
-            Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+          //  Toast.makeText(context, s, Toast.LENGTH_LONG).show();
         }
         //Check is there any existing mindmaps are present, if yes then delete.
         File mindMapZip = new File(context.getFilesDir().getAbsolutePath(), "mindmaps.zip");

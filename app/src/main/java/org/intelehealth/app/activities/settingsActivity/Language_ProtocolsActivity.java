@@ -487,11 +487,10 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                         @Override
                         public void onNext(DownloadMindMapRes res) {
                           //  customProgressDialog.dismiss();
-                            alertDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
+                                mTask = new DownloadMindMaps(context, alertDialog,"home", true);
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 /**
@@ -499,6 +498,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                                  */
                                 showSnackBarAndRemoveLater("Protocols have been successfully changed!");
                                 checkExistingMindMaps();
+                              //  alertDialog.dismiss();
 
                             } else {
                                 Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
