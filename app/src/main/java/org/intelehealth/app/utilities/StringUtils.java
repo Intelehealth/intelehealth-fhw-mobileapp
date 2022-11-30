@@ -2076,6 +2076,8 @@ public final class StringUtils {
                 return context.getString(R.string.gender_male);
             case "F":
                 return context.getString(R.string.gender_female);
+            case "Other":
+                return context.getString(R.string.identification_screen_checkbox_other);
             default:
                 return gender;
         }

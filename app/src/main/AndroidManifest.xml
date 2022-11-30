@@ -48,7 +48,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
+        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".appointment.AppointmentListingActivity"
