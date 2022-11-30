@@ -74,20 +74,23 @@
         android:paddingEnd="@dimen/help_parent_videos_padding_end"
         tools:itemCount="2"
         tools:listitem="@layout/row_item_chat_support_ui2" />
+
     <FrameLayout
         android:id="@+id/layout_media_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:visibility="visible"
-        tools:visibility="visible">
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="gone">
 
-        <include layout="@layout/select_media_attachments_layout_ui2" />
+        <include
+            android:id="@+id/layout_options_choose_media"
+            layout="@layout/select_media_attachments_layout_ui2" />
 
     </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,33 +101,51 @@
         android:paddingEnd="@dimen/help_parent_videos_padding_end"
         android:weightSum="2">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/tv_type_here_margin_end"
             android:layout_weight="1.8"
-            app:hintEnabled="false">
+            android:background="@drawable/bg_input_fieldnew"
+            android:paddingEnd="15dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_username_profile"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tel_send_msg_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_input_fieldnew"
-                android:drawableEnd="@drawable/ui2_icon_attachment"
-                android:drawablePadding="@dimen/common_tv_icon_padding"
-                android:hint="@string/type_here"
-                android:imeOptions="actionNext"
-                android:paddingStart="@dimen/type_here_padding_start"
-                android:paddingTop="@dimen/type_here_padding_top"
-                android:paddingEnd="@dimen/type_here_padding_start"
-                android:paddingBottom="@dimen/type_here_padding_top"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="@dimen/tv_type_here_margin_end"
+                android:layout_toStartOf="@+id/iv_attachment_chat"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_send_msg_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="null"
+                    android:hint="@string/type_here"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="@dimen/type_here_padding_start"
+                    android:paddingTop="@dimen/type_here_padding_top"
+                    android:paddingEnd="@dimen/type_here_padding_start"
+                    android:paddingBottom="@dimen/type_here_padding_top"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_attachment_chat"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ui2_icon_attachment"
+                app:tint="@color/colorPrimary" />
+        </RelativeLayout>
+
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:src="@drawable/ui2_icon_send_message" />
 

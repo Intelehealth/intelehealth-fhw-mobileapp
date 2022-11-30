@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.help.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.DocumentObject;
 
 public class ChatSupportAdapter_New extends RecyclerView.Adapter<ChatSupportAdapter_New.MyViewHolder> {
     Context context;
@@ -44,6 +46,11 @@ public class ChatSupportAdapter_New extends RecyclerView.Adapter<ChatSupportAdap
 
         }
     }
+   /* public void add(DocumentObject doc) {
+        boolean bool = documentList.add(doc);
+        if (bool) Log.d(TAG, "add: Item added to list");
+        notifyDataSetChanged();
+    }*/
 
 
 }
