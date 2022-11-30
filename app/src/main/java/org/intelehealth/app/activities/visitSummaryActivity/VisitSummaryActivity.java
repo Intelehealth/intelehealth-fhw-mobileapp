@@ -757,6 +757,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (items != null) {
             items.add(0, getString(R.string.select_specialization_text));
+            translateSpecialities(items);
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -1744,6 +1745,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         doQuery();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void translateSpecialities(List<String> items) {
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        {
+            if(items.contains("General Physician"))
+            {
+                int i = items.indexOf("General Physician");
+                items.set(i,"सामान्य चिकित्सक");
+            }
+            if(items.contains("Neurologist"))
+            {
+                int i = items.indexOf("Neurologist");
+                items.set(i,"स्नायु विशेषज्ञ");
+            }
+            if(items.contains("Neonatologist"))
+            {
+                int i = items.indexOf("Neonatologist");
+                items.set(i,"नवजात शिशु रोग विशेषज्ञ");
+            }
+            if(items.contains("Infectionist"))
+            {
+                int i = items.indexOf("Infectionist");
+                items.set(i,"संक्रामक रोग विशेषज्ञ");
+            }
+            if(items.contains("Pediatrician"))
+            {
+                int i = items.indexOf("Pediatrician");
+                items.set(i,"बाल रोग विशेषज्ञ");
+            }
+            if(items.contains("Physiotherapist"))
+            {
+                int i = items.indexOf("Physiotherapist");
+                items.set(i,"फिजियोथेरेपिस्ट");
+            }
+            if(items.contains("Cardiologist"))
+            {
+                int i = items.indexOf("Cardiologist");
+                items.set(i,"हृदय रोग विशेषज्ञ");
+            }
+            if(items.contains("Gynecologist"))
+            {
+                int i = items.indexOf("Gynecologist");
+                items.set(i,"स्त्री रोग विशेषज्ञ");
+            }
+            if(items.contains("Dermatologist"))
+            {
+                int i = items.indexOf("Dermatologist");
+                items.set(i,"त्वचा रोग विशेषज्ञ");
+            }
+        }
     }
 
     /**
