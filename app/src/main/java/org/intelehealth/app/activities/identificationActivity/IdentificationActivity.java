@@ -590,6 +590,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
@@ -2046,7 +2048,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+            patientdto.setState_province( StringUtils.getValue(mState.getSelectedItem().toString()));
 //           patientdto.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
