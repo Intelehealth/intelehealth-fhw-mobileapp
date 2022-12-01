@@ -75,8 +75,9 @@ public class SplashActivity extends AppCompatActivity {
     private void initFirebaseRemoteConfig() {
         FirebaseApp.initializeApp(this);
         FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings
+                .Builder()
+                .setMinimumFetchIntervalInSeconds(300)
                 .build();
         instance.setConfigSettingsAsync(configSettings);
 
