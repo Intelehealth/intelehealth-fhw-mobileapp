@@ -20,7 +20,7 @@ public class VisitUtils {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
 
-            if (followUpDate != null || !followUpDate.isEmpty() || !followUpDate.equalsIgnoreCase("")) {
+            if (followUpDate != null && !followUpDate.equalsIgnoreCase("")) {
 
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
                 followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
@@ -41,7 +41,7 @@ public class VisitUtils {
                 });
                 followUpAlert.show();
             } else {
-                Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                Intent intent = new Intent(activityContext, PatientSurveyActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUUID);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
