@@ -447,7 +447,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 vd_addnotes_value.setText(addnotes_value);
             }
             else {
-                vd_addnotes_value.setText("No notes added for Doctor.");
+                addnotes_value = "No notes added for Doctor.";
+                vd_addnotes_value.setText(addnotes_value);
             }
         }
         else {
@@ -1790,7 +1791,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
             // Additional Notes - Start
             try {
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes_value, ADDITIONAL_NOTES);
+                String addnotes = additional_notes_edittext.getText().toString();
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
             } catch (DAOException e) {
                 e.printStackTrace();
                 Log.v("hospitalType", "hospitalType: " + e.getMessage());
