@@ -1117,6 +1117,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         Intent data = result.getData();
                         // Handle the Intent
                         String mCurrentPhotoPath = data.getStringExtra("RESULT");
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("image", mCurrentPhotoPath);
+                        selectedBundle.onBundleSelect(bundle);
+
                         //physicalExamMap.setImagePath(mCurrentPhotoPath);
                         Log.i(TAG, mCurrentPhotoPath);
                         //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
@@ -1141,6 +1146,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForResult.launch(cameraIntent);
     }
-
-
+    SelectedBundle selectedBundle;
+    public void setOnBundleSelected(SelectedBundle selectedBundle) {
+        this.selectedBundle = selectedBundle;
+    }
+    public interface SelectedBundle {
+        void onBundleSelect(Bundle bundle);
+    }
 }

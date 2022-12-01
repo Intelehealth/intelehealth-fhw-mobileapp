@@ -42,6 +42,12 @@ public class PhysicalExaminationFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         //sessionManager = new SessionManager(context);
+        ((VisitCreationActivity) context).setOnBundleSelected(new VisitCreationActivity.SelectedBundle() {
+            @Override
+            public void onBundleSelect(Bundle bundle) {
+                mQuestionsListingAdapter.addImageInLastNode(bundle.getString("image"));
+            }
+        });
     }
 
     public static PhysicalExaminationFragment newInstance(Intent intent, Node node) {

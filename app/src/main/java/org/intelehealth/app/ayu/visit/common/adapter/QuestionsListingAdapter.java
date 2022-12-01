@@ -1,9 +1,7 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
@@ -17,12 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,13 +24,10 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +40,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<Node> mItemList = new ArrayList<Node>();
     private int mTotalQuery = 0;
     RecyclerView mRecyclerView;
+    private int mLastImageCaptureSelectedNodeIndex = 0;
+
+    public void addImageInLastNode(String image) {
+        mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
+        notifyDataSetChanged();
+    }
 
     public interface OnItemSelection {
         void onSelect(Node node);
@@ -57,6 +53,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         void needTitleChange(String title);
 
         void onAllAnswered(boolean isAllAnswered);
+
         void onCameraRequest();
     }
 
@@ -344,6 +341,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
+                mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
         });
@@ -355,12 +353,22 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_added_image);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        ImageGridAdapter imageGridAdapter = new ImageGridAdapter(recyclerView, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+            @Override
+            public void onImageRemoved(int index) {
 
+            }
+
+            @Override
+            public void onNewImageRequest() {
+
+            }
+        });
+        recyclerView.setAdapter(imageGridAdapter);
         holder.singleComponentContainer.addView(view);
     }
-
-
-
 
 
     /**
