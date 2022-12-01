@@ -102,6 +102,11 @@ public class PastMedicalHistoryFragment extends Fragment {
             public void onAllAnswered(boolean isAllAnswered) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
             }
+
+            @Override
+            public void onCameraRequest() {
+
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);

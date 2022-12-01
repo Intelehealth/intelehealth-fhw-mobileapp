@@ -16,7 +16,7 @@
         android:inputType="textAutoComplete"
         android:padding="@dimen/padding_10"
         android:textColorHint="@color/edittext_hint_color"
-        android:textSize="@dimen/edittext_textsize_16sp" />
+        android:textSize="@dimen/common_label_text_size" />
 
     <Button
         android:id="@+id/btn_submit"

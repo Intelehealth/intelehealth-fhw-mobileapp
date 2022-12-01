@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
-import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.SessionManager;
 
 /**
@@ -70,12 +70,19 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mVitalsObject);
             }
         });
+        view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
+            }
+        });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
             }
-        });view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        });
+        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);

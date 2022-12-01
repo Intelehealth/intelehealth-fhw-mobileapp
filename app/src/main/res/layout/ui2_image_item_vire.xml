@@ -15,4 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/ic_baseline_add_24_green" />
+
+    <ImageView
+        android:id="@+id/iv_image_delete"
+        android:layout_width="16dip"
+        android:layout_height="16dip"
+        android:layout_marginStart="-16dip"
+        android:layout_toEndOf="@+id/iv_image"
+        android:src="@drawable/ic_baseline_cancel_24"
+        android:visibility="gone" />
+
 </RelativeLayout>

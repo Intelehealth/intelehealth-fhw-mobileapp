@@ -59,7 +59,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
     }
 
 
-    private List<Node> mCurrentRootOptionList = new ArrayList<>();
+    //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
 
@@ -79,19 +79,19 @@ public class VisitReasonQuestionsFragment extends Fragment {
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mCurrentRootOptionList = mCurrentNode.getOptionsList();
+        //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentRootOptionList.size(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node) {
                 //Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1)
+                if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
                     mCurrentComplainNodeOptionsIndex++;
                 else {
                     mCurrentComplainNodeOptionsIndex = 0;
 
                 }
-                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -99,7 +99,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     }
                 }, 100);
 
-                mActionListener.onProgress((int) 60 / mCurrentRootOptionList.size());
+                mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             }
 
             @Override
@@ -111,10 +111,15 @@ public class VisitReasonQuestionsFragment extends Fragment {
             public void onAllAnswered(boolean isAllAnswered) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
             }
+
+            @Override
+            public void onCameraRequest() {
+
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+        mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
         return view;
     }
 }

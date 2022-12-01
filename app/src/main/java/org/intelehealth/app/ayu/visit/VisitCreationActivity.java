@@ -12,15 +12,21 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.collect.Lists;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
@@ -38,6 +44,7 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -49,8 +56,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class VisitCreationActivity extends AppCompatActivity implements VisitCreationActionListener {
 
@@ -93,8 +102,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar;
 
     // Chief complain
-    private List<Node> mAnsweredRootNodeList = new ArrayList<>();
-    private List<Node> mCurrentRootNodeList = new ArrayList<>();
+    //private List<Node> mAnsweredRootNodeList = new ArrayList<>();
+    private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
     private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private int mCurrentComplainNodeOptionsIndex = 0;
@@ -115,6 +124,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
+
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         mSummaryFrameLayout = findViewById(R.id.fl_steps_summary);
         mStep1ProgressBar = findViewById(R.id.prog_bar_step1);
         mStep2ProgressBar = findViewById(R.id.prog_bar_step2);
@@ -139,6 +150,27 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Intent Tag: " + intentTag);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
 
+        }
+
+        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
+            encounterAdultIntials = UUID.randomUUID().toString();
+
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(encounterAdultIntials);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
 
@@ -192,17 +224,23 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mCurrentRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
-                mSummaryFrameLayout.setVisibility(View.VISIBLE);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
-                        commit();
+                if (isSavedVisitReason()) {
+                    mStep2ProgressBar.setProgress(100);
+
+                    mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertion), VISIT_REASON_QUESTION_FRAGMENT).
+                            commit();
+                }
                 break;
 
             case STEP_3_PHYSICAL_EXAMINATION:
+                mStep3ProgressBar.setProgress(10);
+                setTitle("3/4 Physical Examination");
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 mPhysicalExamNode = loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
@@ -212,7 +250,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             case STEP_3_PHYSICAL_SUMMARY_EXAMINATION:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), mAnsweredRootNodeList), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), null), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                         commit();
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
@@ -233,24 +271,63 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
+    private boolean isSavedVisitReason() {
+        Node node = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
+        List<Node> optionList = node.getOptionsList();
+        Node associateSymptomsNode = optionList.get(optionList.size() - 1);
+        optionList.remove(optionList.size() - 1);
+        node.setOptionsList(optionList);
+        formatComplainRecord(node);
+        formatComplainRecord(associateSymptomsNode);
+        return insertChiefComplainToDb(insertion);
+    }
+
     private Node mPhysicalExamNode;
+    private String mLastChiefComplainPhysicalString = "";
 
     private Node loadPhysicalExam() {
-        String fileLocation = "engines/physExam.json";
-        return loadFileToNode(fileLocation);
+        mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+        String[] exm = mLastChiefComplainPhysicalString.split(";");
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        for (String s : exm) {
+            String rootNodeName = s.split(":")[0];
+            String childNodeName = s.split(":")[1];
+
+            List<String> list = new ArrayList<>();
+            if (map.containsKey(rootNodeName)) {
+                list = map.get(rootNodeName);
+            }
+            list.add(childNodeName);
+            map.put(rootNodeName, list);
+        }
+        String fileLocation = "physExam.json";
+        Node filterNode = loadFileToNode(fileLocation);
+        List<Node> optionsList = new ArrayList<>();
+        for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
+            if (i == 0) {
+                optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
+            }
+            if (map.containsKey(filterNode.getOptionsList().get(i).getText())) {
+                for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
+                    optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));
+                }
+            }
+        }
+        filterNode.setOptionsList(optionsList);
+        return filterNode;
     }
 
     private Node mPastMedicalHistoryNode;
 
     private Node loadPastMedicalHistory() {
-        String fileLocation = "engines/patHist.json";
+        String fileLocation = "patHist.json";
         return loadFileToNode(fileLocation);
     }
 
     private Node mFamilyHistoryNode;
 
     private Node loadFamilyHistory() {
-        String fileLocation = "engines/famHist.json";
+        String fileLocation = "famHist.json";
         return loadFileToNode(fileLocation);
     }
 
@@ -276,7 +353,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
             optionList.add(mAssociateSymptomsNodeList.get(i));
             mainNode.setOptionsList(optionList);
-            mCurrentRootNodeList.add(mainNode);
+            mChiefComplainRootNodeList.add(mainNode);
 
         }
 
@@ -292,16 +369,27 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             case STEP_2_VISIT_REASON_QUESTION:
                 mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
                 break;
+            case STEP_3_PHYSICAL_EXAMINATION:
+                mStep3ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
+                break;
         }
     }
 
     @Override
     public void onTitleChange(String title) {
-        if (title == null || title.isEmpty()) {
-            setTitle("2/4 Visit reason : " + selectedComplains.get(0));
-        } else {
-            setTitle(title);
+        switch (mCurrentStep) {
+            case STEP_2_VISIT_REASON_QUESTION:
+                if (title == null || title.isEmpty()) {
+                    setTitle("2/4 Visit reason : " + selectedComplains.get(0));
+                } else {
+                    setTitle(title);
+                }
+                break;
+            case STEP_3_PHYSICAL_EXAMINATION:
+                setTitle(title);
+                break;
         }
+
     }
 
     @Override
@@ -311,6 +399,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    @Override
+    public void onCameraOpenRequest() {
+        openCamera();
     }
 
     @Override
@@ -327,7 +420,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     String insertion = "";
 
     //new code for the one by one complain data capture
-    public void savedComplainRecordAndMovedForNextStep(Node currentNode) {
+    public String formatComplainRecord(Node currentNode) {
         // checking any question missing
         // can check also compulsory question
 
@@ -345,7 +438,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             });
             Dialog alertDialog = alertDialogBuilder.show();
             Log.v(TAG, answerResult.requiredStrings);
-            return;
+            return null;
         }
 
 
@@ -354,7 +447,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         // generate language from current node
 
         String complaintString = currentNode.generateLanguage();
-
+        Log.v("complaintString", "Value - " + complaintString);
         if (complaintString != null && !complaintString.isEmpty()) {
             //     String complaintFormatted = complaintString.replace("?,", "?:");
 
@@ -371,7 +464,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
         }
 
-        insertDb(insertion);
+        return insertion;
+
     }
 
     /**
@@ -384,7 +478,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
         //mSummaryFrameLayout.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mCurrentRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
+                replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
                 commit();
     }
 
@@ -531,15 +625,17 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
      * @param value String to put into DB
      * @return DB Row number, never used
      */
-    private boolean insertDb(String value) {
+    private boolean insertChiefComplainToDb(String value) {
 
-        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        Log.i(TAG, "insertChiefComplainToDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        Log.i(TAG, "insertChiefComplainToDb: " + value);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue1(value));
+        Log.v("obsDTO", new Gson().toJson(obsDTO));
         boolean isInserted = false;
         try {
             isInserted = obsDAO.insertObs(obsDTO);
@@ -551,17 +647,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         return isInserted;
     }
 
-    private void updateImageDatabase(String imagePath) {
-
-
-        ImagesDAO imagesDAO = new ImagesDAO();
-
-        try {
-            imagesDAO.insertObsImageDatabase(imagePath, encounterAdultIntials, "");
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-    }
 
     private void updateDatabase(String string) {
         Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
@@ -1012,6 +1097,49 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         AlertDialog alertDialog = alertDialogBuilder.show();
         //alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void updateImageDatabase(String imageName) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // Handle the Intent
+                        String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                        //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                        Log.i(TAG, mCurrentPhotoPath);
+                        //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+                        updateImageDatabase(mLastSelectedImageName);
+                    }
+                }
+            });
+    private String mLastSelectedImageName = "";
+
+    public void openCamera() {
+        File file = new File(AppConstants.IMAGE_PATH);
+        final String imagePath = file.getAbsolutePath();
+        final String imageName = UUID.randomUUID().toString();
+        mLastSelectedImageName = imageName;
+        Intent cameraIntent = new Intent(VisitCreationActivity.this, CameraActivity.class);
+        File filePath = new File(imagePath);
+        if (!filePath.exists()) {
+            boolean res = filePath.mkdirs();
+        }
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
+        //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
+        mStartForResult.launch(cameraIntent);
     }
 
 

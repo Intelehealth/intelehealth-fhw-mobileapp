@@ -1,6 +1,7 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -81,7 +84,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
 
-                if (mItemList.get(position).getOptionsList().size() > 0) {
+                Log.v("OptionList", new Gson().toJson(mItemList.get(position).getOptionsList()));
+                if (mItemList.get(position).getOptionsList()!=null && mItemList.get(position).getOptionsList().size() > 0) {
                     genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                     genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                     genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
@@ -97,6 +101,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         @Override
                         public void onAllAnswered(boolean isAllAnswered) {
+
+                        }
+
+                        @Override
+                        public void onCameraRequest() {
 
                         }
                     });

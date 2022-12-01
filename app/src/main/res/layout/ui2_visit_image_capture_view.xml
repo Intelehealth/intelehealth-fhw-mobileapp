@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_1st_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ui2_common_button_bg_submit"
+            android:text="+"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="1sp"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:text="Upload an image from gallery or take a picture"
+            android:textColor="@color/hint_text_color"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_added_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/ui2_image_item_vire" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="Upload"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size"
+        android:visibility="gone" />
+
+</LinearLayout>

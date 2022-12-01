@@ -1,11 +1,14 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +19,6 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class PhysicalExaminationFragment extends Fragment {
 
-    private List<Node> mCurrentRootOptionList = new ArrayList<>();
+    //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private Node mCurrentNode;
@@ -37,6 +37,12 @@ public class PhysicalExaminationFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mActionListener = (VisitCreationActionListener) context;
+        //sessionManager = new SessionManager(context);
+    }
 
     public static PhysicalExaminationFragment newInstance(Intent intent, Node node) {
         PhysicalExaminationFragment fragment = new PhysicalExaminationFragment();
@@ -62,19 +68,19 @@ public class PhysicalExaminationFragment extends Fragment {
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mCurrentRootOptionList = mCurrentNode.getOptionsList();
+        //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentRootOptionList.size(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node) {
-                //Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1)
+                Log.v("onSelect", "node - " + node.getText());
+                if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
                     mCurrentComplainNodeOptionsIndex++;
                 else {
                     mCurrentComplainNodeOptionsIndex = 0;
 
                 }
-                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -82,22 +88,27 @@ public class PhysicalExaminationFragment extends Fragment {
                     }
                 }, 100);
 
-                mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
+                mActionListener.onProgress((int) 100 / mCurrentNode.getOptionsList().size());
             }
 
             @Override
             public void needTitleChange(String title) {
-                mActionListener.onTitleChange(title);
+                // mActionListener.onTitleChange(title);
             }
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
             }
+
+            @Override
+            public void onCameraRequest() {
+                mActionListener.onCameraOpenRequest();
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+        mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
         return view;
     }
 }

@@ -8,4 +8,5 @@ public interface VisitCreationActionListener {
     public void onTitleChange(String title);
 
     public void onManualClose();
+    public void onCameraOpenRequest();
 }

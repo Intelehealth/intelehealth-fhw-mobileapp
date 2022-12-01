@@ -58,7 +58,7 @@
                 android:visibility="visible"
                 app:SpinKit_Color="@color/ui2_green" />
 
-            <RelativeLayout
+            <LinearLayout android:orientation="vertical"
                 android:id="@+id/rl_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                     android:layout_marginTop="@dimen/margin_16"
                     android:orientation="vertical" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

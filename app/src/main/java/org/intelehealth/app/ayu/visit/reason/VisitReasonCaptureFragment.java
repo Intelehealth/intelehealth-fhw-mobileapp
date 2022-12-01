@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -45,6 +47,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private AutoCompleteTextView mVisitReasonAutoCompleteTextView;
     private LinearLayout mSelectedComplainLinearLayout;
     private TextView mEmptyReasonLabelTextView;
+    private ImageView mClearImageView;
 
     private Set<String> mSelectedComplains = new HashSet<String>();
 
@@ -77,11 +80,16 @@ public class VisitReasonCaptureFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visit_reason_capture, container, false);
         mSelectedComplainLinearLayout = view.findViewById(R.id.ll_selected_container);
+        mClearImageView = view.findViewById(R.id.iv_clear);
         mEmptyReasonLabelTextView = view.findViewById(R.id.tv_empty_reason_lbl);
         mVisitReasonAutoCompleteTextView = view.findViewById(R.id.actv_reasons);
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mSelectedComplains.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please select at least one complain!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
             }
         });
@@ -100,7 +108,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         String[] mindmapsNames = getVisitReasonFilesNamesOnly();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.select_dialog_item, mindmapsNames);
+                (getActivity(), R.layout.ui2_select_dialog_item, mindmapsNames);
 
         mVisitReasonAutoCompleteTextView.setThreshold(2);
         mVisitReasonAutoCompleteTextView.setAdapter(adapter);
@@ -108,12 +116,23 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String name = (String) adapterView.getItemAtPosition(position);
-                mSelectedComplains.add(name);
-                showSelectedComplains();
+                if (name != null && !name.isEmpty()) {
+                    mSelectedComplains.add(name);
+                    showSelectedComplains();
+                    mVisitReasonAutoCompleteTextView.setText("");
+                }
             }
         });
-
-
+        mClearImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSelectedComplains.clear();
+                mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
+                mClearImageView.setVisibility(View.GONE);
+                mSelectedComplainLinearLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Selection clear!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -122,9 +141,11 @@ public class VisitReasonCaptureFragment extends Fragment {
         mSelectedComplainLinearLayout.removeAllViews();
         if (mSelectedComplains.isEmpty()) {
             mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
+            mClearImageView.setVisibility(View.GONE);
             mSelectedComplainLinearLayout.setVisibility(View.GONE);
         } else {
             mEmptyReasonLabelTextView.setVisibility(View.GONE);
+            mClearImageView.setVisibility(View.VISIBLE);
             mSelectedComplainLinearLayout.setVisibility(View.VISIBLE);
         }
 

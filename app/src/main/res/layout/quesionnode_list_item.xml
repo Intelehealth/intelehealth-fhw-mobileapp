@@ -22,7 +22,7 @@
             android:layout_height="@dimen/physical_exam_img_max_height"
             android:layout_gravity="center_horizontal"
             android:contentDescription="TODO"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"

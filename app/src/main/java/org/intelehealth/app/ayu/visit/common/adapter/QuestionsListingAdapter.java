@@ -1,7 +1,9 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
@@ -12,11 +14,15 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,11 +31,13 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.ayu.visit.common.adapter.AssociateSymptomsQueryAdapter;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +57,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         void needTitleChange(String title);
 
         void onAllAnswered(boolean isAllAnswered);
+        void onCameraRequest();
     }
 
     private OnItemSelection mOnItemSelection;
@@ -66,6 +75,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addItem(Node node) {
         mItemList.add(node);
         notifyDataSetChanged();
+    }
+
+    public List<Node> geItems() {
+        return mItemList;
+
     }
 
     @Override
@@ -101,48 +115,49 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 String type = genericViewHolder.node.getInputType();
                 Log.v("Node", "Type - " + type);
-                if (type == null || type.isEmpty() && !genericViewHolder.node.getOptionsList().isEmpty()) {
+                Log.v("Node", "Node - " + new Gson().toJson(genericViewHolder.node));
+                if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                     type = "options";
                 }
                 switch (type) {
                     case "text":
                         // askText(questionNode, context, adapter);
-                        addTextEnterView(genericViewHolder.node, genericViewHolder, position);
+                        addTextEnterView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "date":
                         //askDate(questionNode, context, adapter);
-                        addDateView(genericViewHolder.node, genericViewHolder, position);
+                        addDateView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "location":
                         //askLocation(questionNode, context, adapter);
                         break;
                     case "number":
                         // askNumber(questionNode, context, adapter);
-                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        addNumberView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "area":
                         // askArea(questionNode, context, adapter);
                         break;
                     case "duration":
                         // askDuration(questionNode, context, adapter);
-                        addDurationView(genericViewHolder.node, genericViewHolder, position);
+                        addDurationView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "range":
                         // askRange(questionNode, context, adapter);
-                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        addNumberView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "frequency":
                         //askFrequency(questionNode, context, adapter);
-                        addNumberView(genericViewHolder.node, genericViewHolder, position);
+                        addNumberView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "camera":
                         // openCamera(context, imagePath, imageName);
-                        addCameraiew(genericViewHolder.node, genericViewHolder, position);
+                        showCameraView(mItemList.get(position), genericViewHolder, position);
                         break;
 
                     case "options":
                         // openCamera(context, imagePath, imageName);
-                        showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList(), position);
+                        showOptionsData(genericViewHolder, mItemList.get(position).getOptionsList(), position);
                         break;
                 }
             }
@@ -152,7 +167,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void run() {
                     genericViewHolder.spinKitView.setVisibility(View.GONE);
-                    genericViewHolder.bodyRelativeLayout.setVisibility(View.VISIBLE);
+                    genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
                     mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
                 }
             }, 2000);
@@ -179,7 +194,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(recyclerView, mContext, node.getOptionsList(), new AssociateSymptomsQueryAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node data) {
+                Log.v("data", new Gson().toJson(data));
+                node.setSelected(false);
+                for (int i = 0; i < node.getOptionsList().size(); i++) {
+                    if (node.getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
+                        node.setSelected(true);
 
+                    }
+                }
             }
         });
         recyclerView.setAdapter(associateSymptomsQueryAdapter);
@@ -203,33 +225,33 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
-                    addTextEnterView(node, holder, index);
+                    addTextEnterView(options.get(0), holder, index);
                     break;
                 case "date":
                     //askDate(questionNode, context, adapter);
-                    addDateView(node, holder, index);
+                    addDateView(options.get(0), holder, index);
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(node, holder, index);
+                    addNumberView(options.get(0), holder, index);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
                     break;
                 case "duration":
                     // askDuration(questionNode, context, adapter);
-                    addDurationView(node, holder, index);
+                    addDurationView(options.get(0), holder, index);
                     break;
                 case "range":
                     // askRange(questionNode, context, adapter);
-                    addNumberView(node, holder, index);
+                    addNumberView(options.get(0), holder, index);
                     break;
                 case "frequency":
                     //askFrequency(questionNode, context, adapter);
-                    addNumberView(node, holder, index);
+                    addNumberView(options.get(0), holder, index);
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
@@ -246,15 +268,100 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
-                public void onSelect(Node data) {
-                    mOnItemSelection.onSelect(data);
+                public void onSelect(Node node) {
+                    mItemList.get(index).setSelected(false);
+                    for (int i = 0; i < options.size(); i++) {
+                        if (options.get(i).isSelected()) {
+                            mItemList.get(index).setSelected(true);
+                        }
+                    }
                     //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                    String type = node.getInputType();
+
+                    if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                        type = "options";
+                    }
+                    if (!type.isEmpty()) {
+                        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                    } else {
+                        mOnItemSelection.onSelect(node);
+                    }
+                    Log.v("Node", "Type - " + type);
+                    switch (type) {
+                        case "text":
+                            // askText(questionNode, context, adapter);
+                            addTextEnterView(node, holder, index);
+                            break;
+                        case "date":
+                            //askDate(questionNode, context, adapter);
+                            addDateView(node, holder, index);
+                            break;
+                        case "location":
+                            //askLocation(questionNode, context, adapter);
+                            break;
+                        case "number":
+                            // askNumber(questionNode, context, adapter);
+                            addNumberView(node, holder, index);
+                            break;
+                        case "area":
+                            // askArea(questionNode, context, adapter);
+                            break;
+                        case "duration":
+                            // askDuration(questionNode, context, adapter);
+                            addDurationView(node, holder, index);
+                            break;
+                        case "range":
+                            // askRange(questionNode, context, adapter);
+                            addNumberView(node, holder, index);
+                            break;
+                        case "frequency":
+                            //askFrequency(questionNode, context, adapter);
+                            addNumberView(node, holder, index);
+                            break;
+                        case "camera":
+                            // openCamera(context, imagePath, imageName);
+                            showCameraView(node, holder, index);
+                            break;
+
+                        case "options":
+                            // openCamera(context, imagePath, imageName);
+                            //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
+                            break;
+                    }
                 }
             });
             holder.recyclerView.setAdapter(optionsChipsGridAdapter);
         }
 
     }
+
+    private void showCameraView(Node node, GenericViewHolder holder, int index) {
+        View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+        newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+        newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(getImagePath(), "");
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
+
+        holder.singleComponentContainer.addView(view);
+    }
+
+
+
+
 
     /**
      * Time duration
@@ -465,30 +572,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.addView(view);
     }
 
-    private void addCameraiew(Node node, GenericViewHolder holder, int index) {
-        View view = View.inflate(mContext, R.layout.visit_reason_date, null);
-        final Button submitButton = view.findViewById(R.id.btn_submit);
-        final CalendarView calendarView = view.findViewById(R.id.cav_date);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                // display the selected date by using a toast
-                submitButton.setText(dayOfMonth + "-" + month + "-" + year);
-            }
-        });
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!submitButton.getText().toString().trim().contains("-")) {
-                    Toast.makeText(mContext, "Please select the date", Toast.LENGTH_SHORT).show();
-                } else
-                    mOnItemSelection.onSelect(node);
-            }
-        });
-
-        holder.singleComponentContainer.addView(view);
-    }
 
     @Override
     public int getItemCount() {
@@ -502,16 +585,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         // this will contain independent view like, edittext, date, time, range, etc
         LinearLayout singleComponentContainer;
         SpinKitView spinKitView;
-        RelativeLayout bodyRelativeLayout;
+        LinearLayout bodyLayout;
 
         GenericViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
             spinKitView = itemView.findViewById(R.id.spin_kit);
-            bodyRelativeLayout = itemView.findViewById(R.id.rl_body);
+            bodyLayout = itemView.findViewById(R.id.rl_body);
             spinKitView.setVisibility(View.VISIBLE);
-            bodyRelativeLayout.setVisibility(View.GONE);
+            bodyLayout.setVisibility(View.GONE);
 
             tvQuestion = itemView.findViewById(R.id.tv_question);
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);

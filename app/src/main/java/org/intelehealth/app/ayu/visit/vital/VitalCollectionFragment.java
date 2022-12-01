@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -371,63 +372,28 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
-            /*if (i == 0) {
-                EditText et = values.get(i);
-                String abc = et.getText().toString().trim();
-                if (abc != null && !abc.isEmpty()) {
-                    if (Double.parseDouble(abc) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) {
-                        et.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-//       }
-                } else {
-                    cancel = false;
-                }
-            } else if (i == 1) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty()) {
-                    if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) {
-                        et.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-//       }
-                } else {
-                    cancel = false;
-                }
-
-            } else*/
 
             if (i == 0) {
                 EditText et = values.get(i);
                 String abc2 = et.getText().toString().trim();
-                if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
+                if (!abc2.isEmpty() && !abc2.equals("0.0")) {
                     if ((Double.parseDouble(abc2) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
                             (Double.parseDouble(abc2) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
                         et.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
                         focusView = et;
                         cancel = true;
                         break;
-                    } else {
-                        cancel = false;
                     }
 //       }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
 
             } else if (i == 1) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
                         et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
@@ -439,13 +405,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 //       }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
 
             } else if (i == 2) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
                         et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
@@ -457,13 +424,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 //       }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
 
             } else if (i == 3) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if (configUtils.celsius()) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
                                 (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
@@ -486,12 +454,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         }
                     }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
             } else if (i == 4) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
                         et.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
@@ -503,12 +472,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 //       }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
             } else {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
                         et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
@@ -520,7 +490,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 //       }
                 } else {
-                    cancel = false;
+                    focusView = et;
+                    cancel = true;
                 }
             }
         }
@@ -528,6 +499,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (cancel) {
             // There was an error - focus the first form field with an error.
             focusView.requestFocus();
+            Toast.makeText(getActivity(), "Please fill the all vitals data!", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             try {
