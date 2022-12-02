@@ -121,11 +121,11 @@
                     android:id="@+id/et_send_msg_chat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="null"
                     android:hint="@string/type_here"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/type_here_padding_start"
                     android:paddingTop="@dimen/type_here_padding_top"
+                    android:background="@null"
                     android:paddingEnd="@dimen/type_here_padding_start"
                     android:paddingBottom="@dimen/type_here_padding_top"
                     android:singleLine="true"
@@ -144,8 +144,9 @@
 
 
         <ImageView
+            android:id="@+id/iv_send_message_chat"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:src="@drawable/ui2_icon_send_message" />
 

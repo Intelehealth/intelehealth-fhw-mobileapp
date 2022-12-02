@@ -19,25 +19,17 @@
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/tv_chat_time_text_size" />
 
-    <!-- <androidx.cardview.widget.CardView
-         android:id="@+id/card_incoming_msg"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/tv_incoming_msg_time"
-         android:layout_alignParentEnd="true"
-         android:layout_marginStart="@dimen/card_incoming_margin_start"
-         android:layout_marginTop="@dimen/card_incoming_margin_top"
-         app:cardElevation="2dp"
-         app:cardMaxElevation="2dp">-->
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/card_incoming_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_incoming_msg_time"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/card_incoming_margin_start"
-        android:layout_marginTop="@dimen/card_incoming_margin_top">
+        android:layout_marginTop="@dimen/card_incoming_margin_top"
+        android:gravity="end"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_sent_msg_new"
@@ -54,44 +46,55 @@
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/tv_chat_msg_text_size" />
 
-
-        <TextView
-            android:id="@+id/tv_msg_send_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_outgoing_image_or_video"
+            android:layout_width="152dp"
+            android:layout_height="152dp"
             android:layout_below="@+id/tv_sent_msg_new"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
             android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="sent" />
+            android:background="@drawable/ui2_bg_sent_image_chat"
+            android:visibility="gone">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_below="@+id/tv_sent_msg_new"
-            android:layout_marginTop="8dp"
-            android:layout_toStartOf="@+id/tv_msg_send_status"
-            android:padding="5dp"
-            android:src="@drawable/ui2_ic_chat_msg_not_sent" />
+            <ImageView
+                android:id="@+id/iv_outgoing_image_or_video"
+                android:layout_width="152dp"
+                android:layout_height="152dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/dummy_chat_help" />
 
-    </RelativeLayout>
-
-    <!--
         </androidx.cardview.widget.CardView>
-    -->
 
-    <!-- <androidx.cardview.widget.CardView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/card_incoming_msg"
-         android:layout_alignParentEnd="true"
-         android:layout_marginTop="@dimen/card_outgoing_margin_top"
-         android:layout_marginEnd="@dimen/card_outgoing_margin_end"
-         android:background="@drawable/ui2_chat_incoming_msg_bg"
-         app:cardElevation="2dp"
-         app:cardMaxElevation="2dp">
-         -->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_outgoing_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_msg_send_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="sent" />
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="6dp"
+                android:layout_toStartOf="@+id/tv_msg_send_status"
+                android:padding="5dp"
+                android:src="@drawable/ui2_ic_chat_msg_not_sent" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +112,5 @@
         android:textAlignment="viewStart"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/tv_chat_msg_text_size" />
-    <!--
-        </androidx.cardview.widget.CardView>
-    -->
+
 </RelativeLayout>
