@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.getSpecialityTranslated;
+import static org.intelehealth.app.utilities.StringUtils.getSpecialityTranslated_Edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -783,6 +785,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
                 speciality_selected = adapterView.getItemAtPosition(i).toString();
+                speciality_selected = getSpecialityTranslated(speciality_selected, sessionManager.getAppLanguage());
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
 
 
