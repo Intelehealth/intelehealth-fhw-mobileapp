@@ -154,7 +154,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
     private void initUI() {
 
-
         rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
         rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
         rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
@@ -188,6 +187,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+        String month_name = month_date.format(calendarInstance.getTime());
+        tvSelectedMonthYear.setText(month_name + ", " + currentYear);
+        currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
+        monthToCompare = String.valueOf(currentMonth);
 
         if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
             enableDisablePreviousButton(false);
