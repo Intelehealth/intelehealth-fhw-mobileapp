@@ -351,6 +351,7 @@ public class EncounterDAO {
         List<NotificationModel> patientDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, p.uuid as patientuuid, " +
+                        "v.uuid as visitUUID, p.patient_photo, v.startdate, p.gender, p.openmrs_id, p.date_of_birth, " +
                         "substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
                         "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
                         "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
@@ -372,6 +373,13 @@ public class EncounterDAO {
                     model.setObs_server_modified_date(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_server_modified_date")));
                     model.setNotification_type("Prescription");
                     model.setSync("TRUE");
+
+                    model.setVisitUUID(idCursor.getString(idCursor.getColumnIndexOrThrow("visitUUID")));
+                    model.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setVisit_startDate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    model.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                    model.setOpenmrsID(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                     patientDTOList.add(model);
                 }
                 while (idCursor.moveToNext());

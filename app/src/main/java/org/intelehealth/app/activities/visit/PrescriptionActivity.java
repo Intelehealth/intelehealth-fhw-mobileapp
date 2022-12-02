@@ -218,6 +218,8 @@ public class PrescriptionActivity extends AppCompatActivity {
             patient_photo_path = intent.getStringExtra("patient_photo");
             intentTag = intent.getStringExtra("tag");
         }
+
+
     }
 
     private void setDataToView() {
@@ -482,7 +484,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                 Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-                advice_txt.setText(medicalAdvice_string);
+                if (!medicalAdvice_string.equalsIgnoreCase(""))
+                    advice_txt.setText(medicalAdvice_string);
                 Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*

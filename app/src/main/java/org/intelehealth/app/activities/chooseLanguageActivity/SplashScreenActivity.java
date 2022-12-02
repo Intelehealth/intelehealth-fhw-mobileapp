@@ -83,9 +83,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 finish(); // TODO: uncomment
-
                 // testing...
-              /*  sessionManager.setServerUrl(AppConstants.DEMO_URL);
+               /* sessionManager.setServerUrl(AppConstants.DEMO_URL);
                 Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
                 startActivity(intent); // TODO: remove this block code later.*/
             }
@@ -254,6 +253,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void setLocale(String appLanguage) {
+        // here comes en, hi, mr
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();

@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,6 +33,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -60,6 +63,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.aboutus.AboutUsActivity;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.notification.NotificationActivity;
@@ -110,6 +115,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     Context context;
     TextView tvTitleHomeScreenCommon;
     BottomNavigationView bottomNav;
+    private CardView survey_snackbar_cv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,22 +134,30 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         }
         sessionManager = new SessionManager(this);
-
         initUI();
-
-
     }
+
 
     private void initUI() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView tvAppVersion = findViewById(R.id.tv_app_version);
         LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
+        survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
 
+        Intent intent_exit = getIntent();
+        if (intent_exit != null) {
+            String intentTag = intent_exit.getStringExtra("intentTag");
+            if (intentTag != null) {
+                if (intentTag.equalsIgnoreCase("Feedback screen"))
+                    showSnackBarAndRemoveLater();
+                else
+                    survey_snackbar_cv.setVisibility(View.GONE);
+            }
+        }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             //drawer is open
             //  getWindow().setStatusBarColor(Color.CYAN);
-
         }
 
 
@@ -271,6 +285,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
     }
 
+    private void showSnackBarAndRemoveLater() {
+        survey_snackbar_cv.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                survey_snackbar_cv.setVisibility(View.GONE);
+            }
+        }, 4000);
+    }
+
     private void checkForInternet() {
         boolean result = NetworkConnection.isOnline(this);
         Log.d(TAG, "checkForInternet: result : " + result);
@@ -367,11 +393,13 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
 
     private void loadFragment(Fragment fragment) {
-        String tag = fragment.getClass().getSimpleName();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (fragment != null) {
+            String tag = fragment.getClass().getSimpleName();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment, tag);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     private void loadFragmentForBottomNav(Fragment fragment) {
@@ -425,6 +453,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
+
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
@@ -436,10 +465,12 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 fragment = new InformativeVideosFragment_New();
                 break;
             case R.id.menu_change_language:
-
+                Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.menu_about_us:
-
+                Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+                startActivity(i);
                 break;
             case R.id.menu_logout:
 
@@ -448,7 +479,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         }
 
         try {
-
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -467,6 +497,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        loadFragment(new HomeFragment_New());
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
         //registerReceiver(reMyreceive, filter);

@@ -55,6 +55,7 @@ public class AppConstants {
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
 
+
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";

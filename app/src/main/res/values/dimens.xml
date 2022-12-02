@@ -866,5 +866,10 @@
     <dimen name="cp_option_icon_padding_whts">7dp</dimen>
     <dimen name="item_ta_tv_name_text_size1">16sp</dimen>
     <dimen name="item_ta_tv_prescrec_margin_top">8dp</dimen>
+    <dimen name="icon_size_100dp">100dp</dimen>
+    <dimen name="icon_size_40dp">40dp</dimen>
+    <dimen name="card_size_160dp">160dp</dimen>
+    <dimen name="margin_68dp">68dp</dimen>
+    <dimen name="size_120dp">120dp</dimen>
 
 </resources>

@@ -70,4 +70,9 @@ public class UuidDictionary {
     public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
     public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";
 
+    // Visit Attribute Types
+    public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
+    public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
+
+
 }

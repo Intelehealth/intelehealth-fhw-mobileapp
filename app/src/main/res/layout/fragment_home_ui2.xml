@@ -76,7 +76,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/image_add_patient_margin_start"
                     android:layout_toEndOf="@+id/imageview_add_patient"
-                    android:text="Add patients"
+                    android:text="@string/add_patient"
                     android:textColor="@color/textColorWhite"
                     android:textSize="@dimen/common_headings_home"
                     android:textStyle="bold"

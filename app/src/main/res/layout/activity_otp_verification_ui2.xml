@@ -24,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_32"
         android:layout_marginEnd="10dp"
-        android:drawableEnd="@drawable/ui2_ic_outline_info_24"
+        android:drawableEnd="@drawable/info_svg"
         android:drawablePadding="5dp"
         android:drawableTint="@color/iconTintWhite"
         android:text="@string/help"

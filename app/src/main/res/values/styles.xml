@@ -411,6 +411,7 @@
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/small_spinner_bg</item>
+        <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
     </style>
 
 
