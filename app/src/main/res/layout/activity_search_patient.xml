@@ -28,11 +28,15 @@
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:hint="@string/type_to_search"
                         android:layout_weight="1"
                         android:singleLine="true"
-                        android:background="@null"
+                        android:textSize="16sp"
+                        android:paddingStart="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:background="@color/blue_search_bg"
                         android:id="@+id/toolbar_ET" />
 
                     <ImageView
