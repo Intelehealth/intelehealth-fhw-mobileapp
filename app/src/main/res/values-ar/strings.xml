@@ -342,7 +342,7 @@
     <string name="show_text">إظهار</string>
 
     <string name="new_patient">حالة جديدة</string>
-    <string name="find_patient">البحث عن الحالات</string>
+    <string name="find_patient">انشاء\بحث عن سجل</string>
     <string name="video_library">مكتبة الفيديو</string>
 
     <string name="error_no_sd">هذه الميزة متاحة فقط للأجهزة مع بطاقات SD.</string>
