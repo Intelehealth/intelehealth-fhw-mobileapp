@@ -107,7 +107,7 @@ public class AllAppointmentsFragment extends Fragment implements SendSelectedDat
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_all_appointments_ui2,
-                container, true);
+                container, false);
         initUI();
         clickListeners();
 
@@ -348,7 +348,7 @@ public class AllAppointmentsFragment extends Fragment implements SendSelectedDat
         ivDateFilter.setOnClickListener(v -> {
 
             //selectDateRange();
-            selectDateRangeNew();
+            // selectDateRangeNew();
 
 
             // filter options
@@ -688,8 +688,11 @@ public class AllAppointmentsFragment extends Fragment implements SendSelectedDat
         Log.d(TAG, "getSlots: date2 : " + DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat());
 
         String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        Log.d(TAG, "getSlots: baseurl : " + baseurl);
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                        new SessionManager(getActivity()).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
@@ -715,6 +718,8 @@ public class AllAppointmentsFragment extends Fragment implements SendSelectedDat
                         Log.v("onFailure", t.getMessage());
                     }
                 });
+
+        Log.d(TAG, "getSlots: location : " + new SessionManager(getActivity()).getLocationUuid());
 
     }
 
@@ -1005,6 +1010,5 @@ public class AllAppointmentsFragment extends Fragment implements SendSelectedDat
             dismissDateFilterDialog();
         }
     }
-
 
 }

@@ -32,6 +32,7 @@ import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.StringUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,13 +41,13 @@ public class ChatHelpActivity_New extends AppCompatActivity {
     private static final String TAG = "ChatHelpActivity_New";
     TextInputEditText etSendMessage;
     TextInputLayout telSendMessage;
-    ImageView ivSendAttachment;
+    ImageView ivSendAttachment, ivSendMessage;
     LinearLayout layoutCamera, layoutGallery, layoutDocument;
     View layoutChooseOptions;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Handler mBackgroundHandler;
     RecyclerView rvChatSupport;
-    ChatSupportAdapter_New chatSupportAdapter_new;
+    ChatHelpAdapter_New chatHelpAdapter_new;
     List<ChatHelpModel> chattingDetailsList;
 
     @Override
@@ -62,10 +63,18 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         telSendMessage = findViewById(R.id.tel_send_msg_chat);
         ivSendAttachment = findViewById(R.id.iv_attachment_chat);
         layoutChooseOptions = findViewById(R.id.layout_options_choose_media);
+        ivSendMessage = findViewById(R.id.iv_send_message_chat);
+
 
         layoutCamera = layoutChooseOptions.findViewById(R.id.card_camera_option);
         layoutGallery = layoutChooseOptions.findViewById(R.id.card_gallery_option);
         layoutDocument = layoutChooseOptions.findViewById(R.id.card_document_option);
+        fillDataInList();
+
+        ivSendMessage.setOnClickListener(v -> {
+            fillDataInList();
+
+        });
 
 
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -78,10 +87,31 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         rvChatSupport = findViewById(R.id.rv_chatting);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvChatSupport.setLayoutManager(layoutManager);
-        chatSupportAdapter_new = new ChatSupportAdapter_New(this);
-        rvChatSupport.setAdapter(chatSupportAdapter_new);
+
 
         clickListeners();
+    }
+
+    private void fillDataInList() {
+        String outgoingMsg = etSendMessage.getText().toString();
+        // SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm a");
+        //  Log.d(TAG, "fillDataInList: formatDate : " + formatDate);
+
+
+     /*   ChatHelpModel c1 = new ChatHelpModel("", outgoingMsg, "",
+                "Mon 5 at 4 pm", "", false,
+                false, false, false,false,
+                false, false, true);
+        chattingDetailsList.add(c1);
+
+        ChatHelpModel c2 = new ChatHelpModel("hi, incoming msg 1", "", "",
+                "", "", false,
+                false, false, false,false,
+                false, false, true);
+        chattingDetailsList.add(c2);*/
+
+        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList);
+        rvChatSupport.setAdapter(chatHelpAdapter_new);
     }
 
     private void clickListeners() {
@@ -100,11 +130,6 @@ public class ChatHelpActivity_New extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
         });
-    }
-
-    private void selectMediaFilesToSend() {
-
-
     }
 
     @Override
