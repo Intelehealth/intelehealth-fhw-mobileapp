@@ -10,6 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity;
+import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class VisitUtils {
@@ -19,14 +20,15 @@ public class VisitUtils {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
 
-            if (followUpDate != null || !followUpDate.isEmpty() || !followUpDate.equalsIgnoreCase("")) {
+            if (followUpDate != null && !followUpDate.equalsIgnoreCase("")) {
 
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
                 followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                       // Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                        Intent intent = new Intent(activityContext, PatientSurveyActivity_New.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUUID);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -39,7 +41,7 @@ public class VisitUtils {
                 });
                 followUpAlert.show();
             } else {
-                Intent intent = new Intent(activityContext, PatientSurveyActivity.class);
+                Intent intent = new Intent(activityContext, PatientSurveyActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUUID);
                 intent.putExtra("encounterUuidVitals", encounterVitals);

@@ -20,9 +20,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+<include
+    android:id="@+id/survey_snackbar_cv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    layout="@layout/custom_snackbar"
+    android:layout_marginBottom="@dimen/margin_24"
+    android:layout_marginStart="@dimen/margin_24"
+    android:layout_marginEnd="@dimen/margin_24"
+    android:layout_above="@id/bottom_nav_home" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_home"
-            style="@style/NavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -50,6 +59,7 @@
         android:background="@drawable/ui2_home_nav_drawer_background"
         android:fitsSystemWindows="false"
         app:itemIconPadding="@dimen/itemIconPadding_drawer"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_home_ui2"
         app:itemIconTint="@color/colorPrimary"
         app:menu="@menu/activity_home_menu_drawer_ui2">

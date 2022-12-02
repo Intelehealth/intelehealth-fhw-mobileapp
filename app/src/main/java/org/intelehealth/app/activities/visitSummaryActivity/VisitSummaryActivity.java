@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -749,7 +750,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -908,7 +909,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
-                                    .insertVisitAttributes(visitUuid, speciality_selected);
+                                    .insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {

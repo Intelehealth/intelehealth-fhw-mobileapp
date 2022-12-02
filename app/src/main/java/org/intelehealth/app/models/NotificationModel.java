@@ -16,6 +16,17 @@ public class NotificationModel {
     private String notification_type;
     private String sync;
 
+    private String visitUUID;
+    private String patient_photo;
+    private String visit_startDate;
+    private String gender;
+    private String age;
+    private String encounterUuidVitals;
+    private String encounterUuidAdultIntial;
+    private String date_of_birth;
+    private String followupDate;
+    private String openmrsID;
+
     // firstname and lastname not in table bt just fetched to store value before storing in desc table.
 
 
@@ -88,5 +99,85 @@ public class NotificationModel {
 
     public void setNotification_type(String notification_type) {
         this.notification_type = notification_type;
+    }
+
+    public String getVisitUUID() {
+        return visitUUID;
+    }
+
+    public void setVisitUUID(String visitUUID) {
+        this.visitUUID = visitUUID;
+    }
+
+    public String getPatient_photo() {
+        return patient_photo;
+    }
+
+    public void setPatient_photo(String patient_photo) {
+        this.patient_photo = patient_photo;
+    }
+
+    public String getVisit_startDate() {
+        return visit_startDate;
+    }
+
+    public void setVisit_startDate(String visit_startDate) {
+        this.visit_startDate = visit_startDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEncounterUuidVitals() {
+        return encounterUuidVitals;
+    }
+
+    public void setEncounterUuidVitals(String encounterUuidVitals) {
+        this.encounterUuidVitals = encounterUuidVitals;
+    }
+
+    public String getEncounterUuidAdultIntial() {
+        return encounterUuidAdultIntial;
+    }
+
+    public void setEncounterUuidAdultIntial(String encounterUuidAdultIntial) {
+        this.encounterUuidAdultIntial = encounterUuidAdultIntial;
+    }
+
+    public String getFollowupDate() {
+        return followupDate;
+    }
+
+    public void setFollowupDate(String followupDate) {
+        this.followupDate = followupDate;
+    }
+
+    public String getOpenmrsID() {
+        return openmrsID;
+    }
+
+    public void setOpenmrsID(String openmrsID) {
+        this.openmrsID = openmrsID;
+    }
+
+    public String getDate_of_birth() {
+        return date_of_birth;
+    }
+
+    public void setDate_of_birth(String date_of_birth) {
+        this.date_of_birth = date_of_birth;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

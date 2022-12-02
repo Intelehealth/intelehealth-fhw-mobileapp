@@ -384,6 +384,7 @@
                     android:textStyle="bold"/>
 
                 <EditText
+                    android:id="@+id/additional_notes_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/vs_notes_big_edittext_height"
                     android:layout_below="@+id/add_notes_title"
@@ -813,6 +814,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        tools:visibility="visible"
         android:orientation="horizontal"
         android:weightSum="2">
 

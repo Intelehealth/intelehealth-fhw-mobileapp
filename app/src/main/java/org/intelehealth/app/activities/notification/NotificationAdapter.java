@@ -1,6 +1,11 @@
 package org.intelehealth.app.activities.notification;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.OnSwipeTouchListener;
 
 import java.util.List;
@@ -52,6 +59,37 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 anInterface.deleteNotifi_Item(patientDTOList, holder.getLayoutPosition());
                 notifyItemRemoved(holder.getLayoutPosition());
             });
+
+
+            holder.open_presc_btn.setOnClickListener(v -> {
+                Intent intent = new Intent(context, PrescriptionActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name());
+                intent.putExtra("patientUuid", model.getPatientuuid());
+                intent.putExtra("tag", "Notification screen");
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("visit_ID", model.getVisitUUID());
+                intent.putExtra("visit_startDate", model.getVisit_startDate());
+                intent.putExtra("gender", model.getGender());
+                intent.putExtra("openmrsID", model.getOpenmrsID());
+
+                String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUUID());
+                String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUUID());
+                model.setEncounterUuidVitals(vitalsUUID);
+                model.setEncounterUuidAdultIntial(adultInitialUUID);
+
+                intent.putExtra("encounterUuidVitals", vitalsUUID);
+                intent.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+
+                String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
+                model.setAge(age);
+                intent.putExtra("age", age);
+
+                String followupDate = getFollowupDataForVisitUUID(model.getVisitUUID());
+                model.setFollowupDate(followupDate);
+                intent.putExtra("followupDate", followupDate);
+
+                context.startActivity(intent);
+            });
         }
     }
 
@@ -65,7 +103,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         LinearLayout scroll_layout;
         CardView fu_cardview_item;
         RelativeLayout delete_relative, scroll_relative;
-        ImageView delete_imgview;
+        ImageView delete_imgview, open_presc_btn;
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +112,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             scroll_layout = itemView.findViewById(R.id.scroll_layout);
             scroll_relative = itemView.findViewById(R.id.scroll_relative);
             delete_imgview = itemView.findViewById(R.id.delete_imgview);
+            open_presc_btn = itemView.findViewById(R.id.open_presc_btn);
 
             search_name.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override

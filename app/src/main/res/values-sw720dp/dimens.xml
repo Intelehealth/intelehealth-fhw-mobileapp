@@ -535,13 +535,13 @@
     <dimen name="margin_16dp">38dp</dimen>
     <dimen name="gender_margin">94dp</dimen>
     <dimen name="edittext_height_44dp">74dp</dimen>
-    <dimen name="edittext_textsize_16sp">28sp</dimen>
+    <dimen name="edittext_textsize_16sp">32sp</dimen>
     <dimen name="country_flag_icon_width">33dp</dimen>
     <dimen name="country_flag_icon_height">26dp</dimen>
     <dimen name="patregist_icon_title">18sp</dimen>
     <dimen name="margin_32dp">64dp</dimen>
     <dimen name="margin_20dp">30dp</dimen>
-    <dimen name="txtsize_20sp">26sp</dimen>
+    <dimen name="txtsize_20sp">36sp</dimen>
     <dimen name="margin_40dp">50dp</dimen>
     <dimen name="patdetail_editicon_width">120dp</dimen>
     <dimen name="patdetail_editicon_height">42dp</dimen>
@@ -703,6 +703,11 @@
     <dimen name="tv_card_info_margin_bottom">15dp</dimen>
     <dimen name="ad_title_text_size">18sp</dimen>
     <dimen name="cp_option_icon_padding">5dp</dimen>
+    <dimen name="icon_size_100dp">180dp</dimen>
+    <dimen name="icon_size_40dp">80dp</dimen>
+    <dimen name="card_size_160dp">260dp</dimen>
+    <dimen name="margin_68dp">88dp</dimen>
+    <dimen name="size_120dp">200dp</dimen>
 
 
 </resources>

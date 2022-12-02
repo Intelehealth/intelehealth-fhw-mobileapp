@@ -5,6 +5,8 @@ import static org.intelehealth.app.database.dao.NotificationDAO.deleteNotificati
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
+import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -162,6 +164,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
             vs_add_notes;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
+    private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
             medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -241,7 +244,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView add_docs_title;
+    TextView add_docs_title, vd_addnotes_value;
+    String addnotes_value = "";
 
     TextView respiratory;
     TextView respiratoryText;
@@ -280,6 +284,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     public static String prescription1;
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
+    private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
 
 
@@ -436,6 +441,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             special_vd_card.setVisibility(View.VISIBLE);
             vs_add_notes.setVisibility(View.GONE);
             addnotes_vd_card.setVisibility(View.VISIBLE);
+
+            addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
+            if (!addnotes_value.equalsIgnoreCase("")) {
+                vd_addnotes_value.setText(addnotes_value);
+            }
+            else {
+                addnotes_value = "No notes added for Doctor.";
+                vd_addnotes_value.setText(addnotes_value);
+            }
         }
         else {
             editVitals.setVisibility(View.VISIBLE);
@@ -775,11 +789,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -1419,6 +1432,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
+        additional_notes_edittext = findViewById(R.id.additional_notes_edittext);
         // textview - end
 
         // up-down btn - start
@@ -1439,6 +1453,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
+        vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
         // up-down btn - end
 
         // vitals ids
@@ -1762,18 +1777,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_spinner.getSelectedItemPosition() != 0) {
-            VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {
                 if (!isVisitSpecialityExists) {
-                    isUpdateVisitDone = speciality_attributes
-                            .insertVisitAttributes(visitUuid, speciality_selected);
+                    isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
                 }
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             } catch (DAOException e) {
                 e.printStackTrace();
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             }
+
+            // Additional Notes - Start
+            try {
+                String addnotes = additional_notes_edittext.getText().toString();
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+            } catch (DAOException e) {
+                e.printStackTrace();
+                Log.v("hospitalType", "hospitalType: " + e.getMessage());
+            }
+            // Additional Notes - End
 
             if (isVisitSpecialityExists)
                 speciality_spinner.setEnabled(false);

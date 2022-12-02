@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.List;
@@ -105,6 +109,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
             // start date show
             holder.fu_date_txtview.setText(model.getVisit_start_date());
+
+            holder.end_visit_btn.setOnClickListener(v -> {
+                String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
+                String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
+
+                VisitUtils.endVisit(context, model.getVisitUuid(), model.getPatientUuid(), model.getFollowup_date(),
+                        vitalsUUID, adultInitialUUID, "state",
+                        model.getFirst_name() + " " + model.getLast_name().substring(0,1), "VisitDetailsActivity");
+            });
         }
     }
 
