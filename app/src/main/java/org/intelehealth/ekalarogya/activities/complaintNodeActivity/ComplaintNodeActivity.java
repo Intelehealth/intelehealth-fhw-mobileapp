@@ -161,63 +161,62 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         complaints = new ArrayList<>();
 
 
-        boolean hasLicense = false;
-//        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        boolean hasLicense = !sessionManager.getLicenseKey().isEmpty();
         JSONObject currentFile = null;
+
         if (hasLicense) {
-            File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
+            File base_dir = new File(this.getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
             File[] files = base_dir.listFiles();
-            for (File file : files) {
-                try {
-                    currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
-                } catch (JSONException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+            if (files != null) {
+                for (File file : files) {
+                    String fileData = FileUtils.readFile(file.getName(), this);
+                    if (fileData != null) {
+                        try {
+                            currentFile = new JSONObject(fileData);
+                        } catch (JSONException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+                    if (currentFile != null) {
+                        Log.i(TAG, currentFile.toString());
+                        Node currentNode = new Node(currentFile);
+
+                        complaints.add(currentNode);
+                    }
                 }
-                if (currentFile != null) {
-                    Log.i(TAG, currentFile.toString());
-                    Node currentNode = new Node(currentFile);
+                //remove items from complaints array here...
+                mgender = PatientsDAO.fetch_gender(patientUuid);
 
-                    complaints.add(currentNode);
-                }
-            }
-            //remove items from complaints array here...
-            mgender = PatientsDAO.fetch_gender(patientUuid);
+                for (int i = 0; i < complaints.size(); i++) {
+                    if (mgender.equalsIgnoreCase("M") &&
+                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
-            for (int i = 0; i < complaints.size(); i++) {
-                if (mgender.equalsIgnoreCase("M") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("0")) {
-
-                    complaints.get(i).remove(complaints, i);
-                    i--;
-                } else if (mgender.equalsIgnoreCase("F") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("1")) {
-                    complaints.get(i).remove(complaints, i);
-                    i--;
-                }
-            }
-
-            for (int i = 0; i < complaints.size(); i++) {
-                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                        !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
-
-                    if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                        complaints.get(i).remove(complaints, i);
+                        i--;
+                    } else if (mgender.equalsIgnoreCase("F") &&
+                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
-
-                    //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-                    else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
-                        complaints.get(i).remove(complaints, i);
-                        i--;
-                    }
-
                 }
 
+                for (int i = 0; i < complaints.size(); i++) {
+                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
 
+                        if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+
+                        //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+                    }
+                }
             }
-
         } else {
             String[] fileNames = new String[0];
             try {
