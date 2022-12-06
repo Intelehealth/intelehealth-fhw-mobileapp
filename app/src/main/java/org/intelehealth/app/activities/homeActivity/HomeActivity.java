@@ -128,7 +128,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class HomeActivity extends AppCompatActivity implements
-        BluetoothService.OnBluetoothScanCallback,BTAdapter.ItemClickListener{
+        BluetoothService.OnBluetoothScanCallback, BTAdapter.ItemClickListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -576,8 +576,8 @@ public class HomeActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.menu_home, menu);
         bluetoothCheck = menu.findItem(R.id.bluetooth);
 
-        if(mService.getStatus() == BluetoothStatus.CONNECTED) {
-            if(bluetoothCheck != null) {
+        if (mService.getStatus() == BluetoothStatus.CONNECTED) {
+            if (bluetoothCheck != null) {
                 bluetoothCheck.setIcon(R.drawable.bluetooth_connected);
             }
         }
@@ -588,15 +588,14 @@ public class HomeActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bluetooth:
-              showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+                showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
                 return true;
 
             case R.id.draftSurvey:
                 draftSurvey();
                 return true;
 
-            case R.id.devicesOption:
-            {
+            case R.id.devicesOption: {
                 Intent intent = new Intent(this, DevicesActivity.class);
                 startActivity(intent);
                 return true;
@@ -844,7 +843,7 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
-    
+
     /**
      * This method starts intent to another activity to change settings
      *
@@ -960,7 +959,7 @@ public class HomeActivity extends AppCompatActivity implements
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-      //  unregisterReceiver(bluetoothReceiver);
+        //  unregisterReceiver(bluetoothReceiver);
     }
 
     private boolean keyVerified(String key) {
@@ -992,7 +991,7 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
-               // curPrinterInterface = null;
+                // curPrinterInterface = null;
                 // finish();
             }
         });
@@ -1295,9 +1294,8 @@ public class HomeActivity extends AppCompatActivity implements
             ContextCompat.startForegroundService(this, serviceIntent);
         }
 
-        if (mService != null)
+        if (mService != null && mScanning)
             mService.stopScan();
-
     }
 
     @Override
@@ -1433,8 +1431,7 @@ public class HomeActivity extends AppCompatActivity implements
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, 101);
             return;
-        }
-        else { // Bluetooth is turned ON.
+        } else { // Bluetooth is turned ON.
 
         }
 
@@ -1459,15 +1456,15 @@ public class HomeActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 101 && resultCode == RESULT_OK) {
+        if (requestCode == 101 && resultCode == RESULT_OK) {
             startStopScan();
         }
     }
 
     private void showBluetoothDeviceChooseDialog() {
-        if(mService != null) {
+        if (mService != null) {
             mService.disconnect();
-            if(mService.getStatus().equals(BluetoothStatus.CONNECTED))
+            if (mService.getStatus().equals(BluetoothStatus.CONNECTED))
                 Toast.makeText(this, R.string.disconnected, Toast.LENGTH_SHORT).show();
         }
 
@@ -1541,13 +1538,12 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     public void onStatusChange(BluetoothStatus bluetoothStatus) {
         if (bluetoothStatus.equals(BluetoothStatus.CONNECTED)) {
-            if(bluetoothCheck != null)
+            if (bluetoothCheck != null)
                 bluetoothCheck.setIcon(R.drawable.bluetooth_connected);
             Toast.makeText(this, R.string.connected, Toast.LENGTH_SHORT).show();
-           // finish();
-        }
-        else {
-            if(bluetoothCheck != null)
+            // finish();
+        } else {
+            if (bluetoothCheck != null)
                 bluetoothCheck.setIcon(R.drawable.bluetooth);
         }
 
@@ -1567,7 +1563,7 @@ public class HomeActivity extends AppCompatActivity implements
     public void onItemClick(BluetoothDevice bluetoothDevice) {
         mService.connect(bluetoothDevice);
         Toast.makeText(this, R.string.connecting_please_wait, Toast.LENGTH_SHORT).show();
-        if(alertDialog != null) {
+        if (alertDialog != null) {
             alertDialog.cancel();
         }
     }
