@@ -858,7 +858,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         checkout.setImage(R.drawable.scd_logo);
         JSONObject object = new JSONObject();
         try {
-            object.put("name", "Smart Care Doc");
+            object.put("name", "SmartCareDoc");
             object.put("description", "Test payment");
             object.put("theme.color", "#2E1E91");
             object.put("currency", "INR");

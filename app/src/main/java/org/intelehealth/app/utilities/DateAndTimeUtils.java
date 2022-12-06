@@ -260,18 +260,19 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-        Date date = null;
-        try {
-            date = originalFormat.parse(oldformatteddate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String formattedDate = "";
+        if(oldformatteddate!= null && !oldformatteddate.isEmpty() && !oldformatteddate.equalsIgnoreCase(" ")) {
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = originalFormat.parse(oldformatteddate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            formattedDate = targetFormat.format(date);  // 20120821
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
-
         return formattedDate;
-
     }
 
     public String currentDateTimeInHome() {
