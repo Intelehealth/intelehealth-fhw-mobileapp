@@ -151,6 +151,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
     Button newVisit, button_householdSurvey, mTriageSurveyButton;
+    Button cha_button, generalaid_btn, studentaid_btn;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -195,6 +196,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit = findViewById(R.id.button_new_visit);
         button_householdSurvey = findViewById(R.id.button_householdSurvey);
         mTriageSurveyButton = findViewById(R.id.button_triageSurvey);
+        cha_button = findViewById(R.id.cha_button);
+        generalaid_btn = findViewById(R.id.generalaid_btn);
+        studentaid_btn = findViewById(R.id.studentaid_btn);
+
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -291,6 +296,35 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(intentsurvey);
             }
         });
+
+        // Aid section - Start
+        cha_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentCHA = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentCHA.putExtra("patientUuid", patientUuid);
+                startActivity(intentCHA);
+            }
+        });
+
+        generalaid_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentGeneral = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentGeneral.putExtra("patientUuid", patientUuid);
+                startActivity(intentGeneral);
+            }
+        });
+        studentaid_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStudent = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentStudent.putExtra("patientUuid", patientUuid);
+                startActivity(intentStudent);
+            }
+        });
+        // Aid section - End
+
         LoadFamilyMembers();
         // survey button
 

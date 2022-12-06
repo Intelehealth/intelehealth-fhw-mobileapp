@@ -1661,6 +1661,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
 
+/*
             if (!yesHOH.isChecked() && !noHOH.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -1680,7 +1681,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
 
+/*
             if (!generalCB.isChecked() && !studentCB.isChecked() && !emergencyCB.isChecked() && !fhhSurveyCB.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -1700,10 +1703,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
 
-            focusView.requestFocus();
-            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
+            if (focusView != null) {
+                focusView.requestFocus();
+                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+                return;
+            }
         }
 
 
@@ -2058,13 +2064,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setPatientPhoto(mCurrentPhotoPath);
             patientdto.setStateprovince(mState.getSelectedItem().toString());
 
-            patientAttributesDTO = new PatientAttributesDTO();
+          /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("patient aid type"));
             String aidTypeInJson = getAidTypeInJson();
             patientAttributesDTO.setValue(aidTypeInJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3067,6 +3073,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 }
 
+/*
                 if (!yesHOH.isChecked() && !noHOH.isChecked()) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                     alertDialogBuilder.setTitle(R.string.error);
@@ -3085,7 +3092,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
                 }
+*/
 
+/*
                 if (!generalCB.isChecked() && !studentCB.isChecked() && !emergencyCB.isChecked() && !fhhSurveyCB.isChecked()) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                     alertDialogBuilder.setTitle(R.string.error);
@@ -3105,10 +3114,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
                 }
+*/
 
-                focusView.requestFocus();
-                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-                return;
+                if (focusView != null) {
+                    focusView.requestFocus();
+                    Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
 
             if (mCountry.getSelectedItemPosition() == 0) {
@@ -3309,13 +3321,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setPatient_photo(mCurrentPhotoPath);
                 patientdto.setState_province(mState.getSelectedItem().toString());
 
-                patientAttributesDTO = new PatientAttributesDTO();
+              /*  patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("patient aid type"));
                 String aidTypeInJson = getAidTypeInJson();
                 patientAttributesDTO.setValue(aidTypeInJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                patientAttributesDTOList.add(patientAttributesDTO);*/
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());

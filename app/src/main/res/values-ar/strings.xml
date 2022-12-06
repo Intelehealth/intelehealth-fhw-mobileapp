@@ -1564,6 +1564,7 @@
     <string name="household_survey_draft">تم حفظ المسودة!</string>
     <string name="aid_types_missing">أنواع مساعدات المريض مفقودة!</string>
     <string name="visit_failed_for_no_complaint">زيارة التحميل فشل! قم باختيار شكوى صحيح.</string>
+    <string name="community_health_assessment">Community Health Assessment</string>
 
 
 </resources>

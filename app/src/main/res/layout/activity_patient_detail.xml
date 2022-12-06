@@ -751,6 +751,7 @@
                 android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
+                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -877,6 +878,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!--Add buttons here for Aid-->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -884,6 +886,71 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/cha_button"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/orange3"
+                    android:text="@string/community_health_assessment" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/generalaid_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/green"
+                    android:text="@string/general_aid_survey" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/studentaid_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/student_aid_survey" />
+
+            </androidx.cardview.widget.CardView>
+            <!--Add buttons here for Aid - End -->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="16dp">
 
                 <Button
@@ -905,6 +972,7 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="16dp">
 
                 <Button
@@ -916,9 +984,6 @@
                     tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/green"
                     android:text="@string/triage_survey" />
-
-
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -928,6 +993,8 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="16dp">
 
                 <Button
@@ -940,7 +1007,6 @@
                     tools:background="@color/colorPrimary"
                     android:text="@string/button_new_visit" />
 
-
             </androidx.cardview.widget.CardView>
 
 
@@ -952,6 +1018,7 @@
                 android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
+                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout

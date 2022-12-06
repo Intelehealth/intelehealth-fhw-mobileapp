@@ -1570,5 +1570,6 @@
     <string name="household_survey_draft">Draft Saved!</string>
     <string name="aid_types_missing">Patient AID types are missing!</string>
     <string name="visit_failed_for_no_complaint">Visit Upload Failed! Make a valid complaint selection.</string>
+    <string name="community_health_assessment">Community Health Assessment</string>
 
 </resources>

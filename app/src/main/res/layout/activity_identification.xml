@@ -640,6 +640,8 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -669,6 +671,8 @@
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     app:cardPreventCornerOverlap="false">
 
 
@@ -709,11 +713,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/fhh_survey" />
-
-
-
-
-
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -755,6 +754,8 @@
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     app:cardPreventCornerOverlap="false">
                 <LinearLayout android:padding="8dip"
                     android:layout_width="match_parent"
