@@ -124,7 +124,7 @@ public class DateAndTimeUtils {
 
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
-        if (s == null) return "";
+        if (s == null || s.equalsIgnoreCase("")) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date date = null;
