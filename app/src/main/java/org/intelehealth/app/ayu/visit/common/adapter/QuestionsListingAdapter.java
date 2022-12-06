@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +106,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
+
 
             if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
                 mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
@@ -333,6 +338,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void showCameraView(Node node, GenericViewHolder holder, int index) {
+
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
@@ -368,6 +374,34 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
         recyclerView.setAdapter(imageGridAdapter);
         holder.singleComponentContainer.addView(view);
+
+        if (node.getJobAidFile() != null && !node.getJobAidFile().isEmpty()) {
+            holder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.referenceContainerLinearLayout.setVisibility(View.GONE);
+        }
+        holder.referenceContainerLinearLayout.removeAllViews();
+        String[] imgs = node.getJobAidFile().split(",");
+        for (int i = 0; i < imgs.length; i++) {
+            View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
+            ImageView imageView = v2.findViewById(R.id.image);
+            String drawableName = "physicalExamAssets/" + node.getJobAidFile() + ".jpg";
+            try {
+                // get input stream
+                InputStream ims = mContext.getAssets().open(drawableName);
+                // load image as Drawable
+                Drawable d = Drawable.createFromStream(ims, null);
+                // set image to ImageView
+                imageView.setImageDrawable(d);
+                imageView.setMinimumHeight(500);
+                imageView.setMinimumWidth(500);
+                holder.referenceContainerLinearLayout.addView(v2);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+
+            }
+        }
+
     }
 
 
@@ -591,7 +625,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Node node;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
-        LinearLayout singleComponentContainer;
+        LinearLayout singleComponentContainer, referenceContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
 
@@ -599,6 +633,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
+            referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
             spinKitView = itemView.findViewById(R.id.spin_kit);
             bodyLayout = itemView.findViewById(R.id.rl_body);
             spinKitView.setVisibility(View.VISIBLE);

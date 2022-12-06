@@ -58,10 +58,11 @@
                 android:visibility="visible"
                 app:SpinKit_Color="@color/ui2_green" />
 
-            <LinearLayout android:orientation="vertical"
+            <LinearLayout
                 android:id="@+id/rl_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:padding="@dimen/padding_15">
 
                 <TextView
@@ -73,6 +74,16 @@
                     android:text="Which part of the abdomen do you feel pain?"
                     android:textColor="@color/ui2_black_text_color"
                     android:textSize="@dimen/text_18sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_reference_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_question_desc"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginBottom="@dimen/margin_16"
+                    android:orientation="vertical"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_question_desc"
