@@ -34,6 +34,7 @@
         <TextView
             android:id="@+id/tv_sent_msg_new"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_bg_outgoing_msg_new"
             android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
@@ -54,7 +55,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="12dp"
             android:background="@drawable/ui2_bg_sent_image_chat"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_outgoing_image_or_video"
@@ -96,10 +97,12 @@
 
 
     <TextView
+        android:id="@+id/tv_incoming_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/card_incoming_msg"
         android:layout_alignParentEnd="true"
+        android:visibility="visible"
         android:layout_marginTop="@dimen/card_outgoing_margin_top"
         android:layout_marginEnd="@dimen/card_outgoing_margin_end"
         android:background="@drawable/ui2_chat_incoming_msg_bg_new"
@@ -112,5 +115,24 @@
         android:textAlignment="viewStart"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/tv_chat_msg_text_size" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_incoming_image_or_video"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        android:layout_below="@+id/tv_outgoing_msg"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/ui2_bg_sent_image_chat"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/iv_incoming_image_or_video"
+            android:layout_width="152dp"
+            android:layout_height="152dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/dummy_chat_help" />
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

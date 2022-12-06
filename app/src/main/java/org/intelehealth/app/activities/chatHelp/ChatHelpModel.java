@@ -118,7 +118,7 @@ public class ChatHelpModel {
                          String outgoingMsgTime, String outgoingMsgStatus, boolean isOutgoingMsgImage,
                          boolean isOutgoingMsgDocument, boolean isOutgoingMsgVideo, boolean isIncomingMsgImage,
                          boolean isIncomingMsgDocument, boolean isIncomingMsgVideo, boolean isIncomingMsgText,
-                         boolean isOutgoingMsgText, String outgoingMediaPath) {
+                         boolean isOutgoingMsgText, String outgoingMediaPath, String incomingMediaPath) {
         this.incomingMsg = incomingMsg;
         this.outgoingMsg = outgoingMsg;
         this.incomingMsgTime = incomingMsgTime;
@@ -133,12 +133,13 @@ public class ChatHelpModel {
         this.isIncomingMsgText = isIncomingMsgText;
         this.isOutgoingMsgText = isOutgoingMsgText;
         this.outgoingMediaPath = outgoingMediaPath;
+        this.incomingMediaPath = incomingMediaPath;
 
 
     }
 
 
-    String incomingMsg, outgoingMsg, incomingMsgTime, outgoingMsgTime, outgoingMsgStatus, outgoingMediaPath;
+    String incomingMsg, outgoingMsg, incomingMsgTime, outgoingMsgTime, outgoingMsgStatus, outgoingMediaPath,incomingMediaPath;
            boolean isOutgoingMsgImage, isOutgoingMsgDocument, isOutgoingMsgVideo, isIncomingMsgImage,
                    isIncomingMsgDocument, isIncomingMsgVideo,isIncomingMsgText, isOutgoingMsgText;
 }
