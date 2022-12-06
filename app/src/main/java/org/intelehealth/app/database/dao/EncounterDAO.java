@@ -173,8 +173,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
-
         return encounterDTOList;
     }
 
@@ -200,8 +198,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
-
         return encounterDTO;
     }
 
@@ -303,7 +299,6 @@ public class EncounterDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-
         }
         return uuid;
     }
@@ -328,8 +323,6 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
 
         return isUpdated;
@@ -350,8 +343,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
-
         return encounterUuid;
     }
 
