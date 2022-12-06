@@ -2076,6 +2076,8 @@ public final class StringUtils {
                 return context.getString(R.string.gender_male);
             case "F":
                 return context.getString(R.string.gender_female);
+            case "Other":
+                return context.getString(R.string.identification_screen_checkbox_other);
             default:
                 return gender;
         }
@@ -3707,4 +3709,84 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static String getSpecialityTranslated(String val, String locale) {
+        if (locale.equalsIgnoreCase("hi")) {
+            switch (val.toLowerCase()) {
+                case "सामान्य चिकित्सक":
+                    val = "General Physician";
+                    break;
+                case "स्नायु विशेषज्ञ":
+                    val = "Neurologist";
+                    break;
+                case "नवजात शिशु रोग विशेषज्ञ":
+                    val = "Neonatologist";
+                    break;
+                case "संक्रामक रोग विशेषज्ञ":
+                    val = "Infectionist";
+                    break;
+                case "बाल रोग विशेषज्ञ":
+                    val = "Pediatrician";
+                    break;
+                case "फिजियोथेरेपिस्ट":
+                    val = "Physiotherapist";
+                    break;
+                case "हृदय रोग विशेषज्ञ":
+                    val = "Cardiologist";
+                    break;
+                case "स्त्री रोग विशेषज्ञ":
+                    val = "Gynecologist";
+                    break;
+                case "त्वचा रोग विशेषज्ञ":
+                    val = "Dermatologist";
+                    break;
+                default:
+                    return val;
+            }
+        } else {
+            return val;
+        }
+        return val;
+    }
+
+    public static String getSpecialityTranslated_Edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("hi")) {
+            switch (val.toLowerCase()) {
+                case "General Physician":
+                    val = "सामान्य चिकित्सक";
+                    break;
+                case "Neurologist":
+                    val = "स्नायु विशेषज्ञ";
+                    break;
+                case "Neonatologist":
+                    val = "नवजात शिशु रोग विशेषज्ञ";
+                    break;
+                case "Infectionist":
+                    val = "संक्रामक रोग विशेषज्ञ";
+                    break;
+                case "Pediatrician":
+                    val = "बाल रोग विशेषज्ञ";
+                    break;
+                case "Physiotherapist":
+                    val = "फिजियोथेरेपिस्ट";
+                    break;
+                case "Cardiologist":
+                    val = "हृदय रोग विशेषज्ञ";
+                    break;
+                case "Gynecologist":
+                    val = "स्त्री रोग विशेषज्ञ";
+                    break;
+                case "Dermatologist":
+                    val = "त्वचा रोग विशेषज्ञ";
+                    break;
+                default:
+                    return val;
+            }
+        } else {
+            return val;
+        }
+        return val;
+    }
+
+
 }

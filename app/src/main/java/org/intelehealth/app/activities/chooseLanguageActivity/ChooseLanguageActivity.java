@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,8 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,15 +35,15 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
     Button SaveButton;
     ImageView BackImage;
-
+    Toolbar mToolbar;
     SessionManager sessionManager = null;
-
     String LOG_TAG = "ChooseLanguageActivity";
     String systemLanguage = Resources.getSystem().getConfiguration().locale.getLanguage();
-
     String appLanguage;
     private RecyclerView mRecyclerView;
     private List<JSONObject> mItemList = new ArrayList<JSONObject>();
+    Intent intent;
+    String intentType;
 
 
     @Override
@@ -53,7 +56,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
-        if (!sessionManager.isFirstTimeLaunch()) {
+        /*if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
             BackImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,7 +65,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
                 }
             });
 
-        }
+        }*/
 
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +104,23 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
     }
     public void initViews() {
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        mToolbar.setTitleTextColor(Color.WHITE);
+
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         SaveButton = findViewById(R.id.save_button);
         BackImage = findViewById(R.id.backButton);
+        intent = getIntent();
+        intentType = intent.getStringExtra("intentType");
+
+        if(intentType.equalsIgnoreCase("home")) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
 
     }
 
@@ -215,5 +230,16 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
     public interface ItemSelectionListener {
         void onSelect(JSONObject jsonObject, int index);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

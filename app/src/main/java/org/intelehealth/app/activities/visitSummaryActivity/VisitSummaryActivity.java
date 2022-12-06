@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.getSpecialityTranslated;
+import static org.intelehealth.app.utilities.StringUtils.getSpecialityTranslated_Edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -96,6 +98,7 @@ import org.intelehealth.app.activities.billConfirmation.billConfirmationActivity
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -494,8 +497,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
-        sessionManager1 = new SessionManager(this);
+        sessionManager1 = new SessionManager(VisitSummaryActivity.this);
         appLanguage = sessionManager1.getAppLanguage();
+
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
@@ -725,7 +729,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                         // isreturningWhatsapp = true;
 
                                     } else {
-                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
+                                        Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.please_enter_mobile_number),
                                                 Toast.LENGTH_SHORT).show();
 
                                     }
@@ -734,9 +738,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             });
                     AlertDialog dialog = alertDialog.show();
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
@@ -793,6 +797,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (items != null) {
             items.add(0, getString(R.string.select_specialization_text));
+            translateSpecialities(items);
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -818,6 +823,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
                 speciality_selected = adapterView.getItemAtPosition(i).toString();
+                speciality_selected = getSpecialityTranslated(speciality_selected, sessionManager.getAppLanguage());
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
 
 
@@ -1842,6 +1848,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getAppointmentDetails(visitUuid);
     }
 
+    private void translateSpecialities(List<String> items) {
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        {
+            if(items.contains("General Physician"))
+            {
+                int i = items.indexOf("General Physician");
+                items.set(i,"सामान्य चिकित्सक");
+            }
+            if(items.contains("Neurologist"))
+            {
+                int i = items.indexOf("Neurologist");
+                items.set(i,"स्नायु विशेषज्ञ");
+            }
+            if(items.contains("Neonatologist"))
+            {
+                int i = items.indexOf("Neonatologist");
+                items.set(i,"नवजात शिशु रोग विशेषज्ञ");
+            }
+            if(items.contains("Infectionist"))
+            {
+                int i = items.indexOf("Infectionist");
+                items.set(i,"संक्रामक रोग विशेषज्ञ");
+            }
+            if(items.contains("Pediatrician"))
+            {
+                int i = items.indexOf("Pediatrician");
+                items.set(i,"बाल रोग विशेषज्ञ");
+            }
+            if(items.contains("Physiotherapist"))
+            {
+                int i = items.indexOf("Physiotherapist");
+                items.set(i,"फिजियोथेरेपिस्ट");
+            }
+            if(items.contains("Cardiologist"))
+            {
+                int i = items.indexOf("Cardiologist");
+                items.set(i,"हृदय रोग विशेषज्ञ");
+            }
+            if(items.contains("Gynecologist"))
+            {
+                int i = items.indexOf("Gynecologist");
+                items.set(i,"स्त्री रोग विशेषज्ञ");
+            }
+            if(items.contains("Dermatologist"))
+            {
+                int i = items.indexOf("Dermatologist");
+                items.set(i,"त्वचा रोग विशेषज्ञ");
+            }
+        }
+    }
+
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
@@ -1863,29 +1920,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         db.endTransaction();
 
         return isExists;
-    }
-
-    public void setLocale(String appLanguage) {
-//        Locale locale = new Locale(appLanguage);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
-        }
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
     }
 
 //    private String convertCtoF(String temperature) {
@@ -5187,6 +5221,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            VisitSummaryActivity.this.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+    }
 }
 
 

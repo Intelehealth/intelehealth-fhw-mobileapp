@@ -70,6 +70,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
@@ -577,8 +578,13 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
-                settings();
+//            case R.id.settingsOption:
+//                settings();
+//                return true;
+            case R.id.languageOptions:
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                intent.putExtra("intentType", "home");
+                startActivity(intent);
                 return true;
             case R.id.updateProtocolsOption: {
 

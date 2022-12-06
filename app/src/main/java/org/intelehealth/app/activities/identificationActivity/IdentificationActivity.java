@@ -466,25 +466,41 @@ public class IdentificationActivity extends AppCompatActivity {
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
         Resources res = getResources();
-        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
-                R.array.countries, R.layout.custom_spinner);
-        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCountry.setAdapter(countryAdapter);
-//        ArrayAdapter<CharSequence> countryAdapter = null;
-//        try {
-//
-//            String mCountriesLanguage = "countries_" + sessionManager.getAppLanguage();
-//            int country = res.getIdentifier(mCountriesLanguage, "array", getApplicationContext().getPackageName());
-//            if (country != 0) {
-//                countryAdapter = ArrayAdapter.createFromResource(this,
-//                        country, R.layout.custom_spinner);
-//
-//            }
-//            mCountry.setAdapter(countryAdapter);
-//        } catch (Exception e) {
-////            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
+//        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.countries, R.layout.custom_spinner);
+//        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCountry.setAdapter(countryAdapter);
+        ArrayAdapter<CharSequence> countryAdapter = null;
+        try {
+
+            String mCountriesLanguage = "countries_" + sessionManager.getAppLanguage();
+            int country = res.getIdentifier(mCountriesLanguage, "array", getApplicationContext().getPackageName());
+            if (country != 0) {
+                countryAdapter = ArrayAdapter.createFromResource(this,
+                        country, R.layout.custom_spinner);
+
+            }
+            mCountry.setAdapter(countryAdapter);
+        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        ArrayAdapter<CharSequence> stateAdapter = null;
+        try {
+
+            String mStateLanguage = "states_india_" + sessionManager.getAppLanguage();
+            int state = res.getIdentifier(mStateLanguage, "array", getApplicationContext().getPackageName());
+            if (state != 0) {
+                stateAdapter = ArrayAdapter.createFromResource(this,
+                        state, R.layout.custom_spinner);
+
+            }
+            mState.setAdapter(stateAdapter);
+        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
 
 
 //        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
@@ -574,6 +590,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
@@ -717,9 +735,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
+            mCountry.setEnabled(false);
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
+        /*ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
@@ -729,7 +748,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (i != 0) {
                     String country = adapterView.getItemAtPosition(i).toString();
 //                    ArrayAdapter<CharSequence> stateAdapter = null;
-                /*todo for All Language Changes Regarding...
+//                todo for All Language Changes Regarding...
                   if (country.matches(getResources().getString(R.string.str_check_India))) {
 
                         try {
@@ -801,7 +820,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
-                    }*/
+                    }
 
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -851,7 +870,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
+
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -2030,7 +2050,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+            patientdto.setState_province( StringUtils.getValue(mState.getSelectedItem().toString()));
 //           patientdto.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
