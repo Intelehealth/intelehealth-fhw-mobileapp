@@ -67,12 +67,8 @@
                         android:id="@+id/toolbar_filter"
                         android:visibility="gone"/>
 
-
-
                 </LinearLayout>
-
             </androidx.appcompat.widget.Toolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <!--<include layout="@layout/content_search_patient" />-->
@@ -97,7 +93,7 @@
                 android:id="@+id/recycle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/fab_layout"
+                android:layout_below="@id/fab_layout"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -105,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
                 android:layout_gravity="bottom">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
