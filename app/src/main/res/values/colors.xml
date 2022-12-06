@@ -79,5 +79,6 @@
     <color name="tag_red_bg">#ff6d5f</color>
     <color name="tag_green_bg">#40d189</color>
     <color name="tag_blue_light_bg">#33befa</color>
+    <color name="blue_search_bg">#6650E5</color>
 
 </resources>
