@@ -51,6 +51,7 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -223,13 +224,13 @@ public class IntroActivity extends AppCompatActivity {
             String introOne = getString(R.string.intelehealth_a_telemedicine_platform);
             String textToHighlightOne = getString(R.string.intelehealth_name);
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
-            tvIntroOne.setText(Html.fromHtml(newString));
+            if (!newString.isEmpty()) tvIntroOne.setText(Html.fromHtml(newString));
 
             if (position == 1) {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
                 String textHighlight = getString(R.string.Ayu_name);
                 String newhighlight = two.replaceAll(textHighlight,
-                        "<font color='blue'>" + textHighlight + "</font>")
+                                "<font color='blue'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
 
@@ -306,9 +307,9 @@ public class IntroActivity extends AppCompatActivity {
                         @Override
                         public void onError(Throwable e) {
                             progress.dismiss();
-                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
                                 Toast.makeText(context, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(IntroActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                             }
                         }

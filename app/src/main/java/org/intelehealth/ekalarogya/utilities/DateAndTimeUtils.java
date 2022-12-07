@@ -200,7 +200,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {
-
+        if (oldformatteddate == null || oldformatteddate.isEmpty()) return "";
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
@@ -219,7 +219,11 @@ public class DateAndTimeUtils {
             }
         }
 
-        return targetFormat.format(date);
+        if (date != null) {
+            return targetFormat.format(date);
+        } else {
+            return "";
+        }
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {

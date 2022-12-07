@@ -737,7 +737,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 try {
                     doWebViewPrint_Button();
-                } catch (ParseException e) {
+                } catch (ParseException | StringIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
