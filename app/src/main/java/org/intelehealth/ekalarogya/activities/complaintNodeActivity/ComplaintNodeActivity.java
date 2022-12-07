@@ -167,7 +167,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         if (hasLicense) {
             File base_dir = new File(this.getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
             File[] files = base_dir.listFiles();
-            if (files != null) {
+            if (files != null && files.length > 0) {
                 for (File file : files) {
                     String fileData = FileUtils.readFile(file.getName(), this);
                     if (fileData != null) {
