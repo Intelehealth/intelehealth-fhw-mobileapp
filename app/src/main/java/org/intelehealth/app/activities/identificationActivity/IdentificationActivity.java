@@ -44,6 +44,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -158,6 +159,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     PatientsDAO patientsDAO = new PatientsDAO();
+    TextInputLayout postal_layout;
     EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mPostal, countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
     MaterialAlertDialogBuilder mAgePicker;
     RadioButton mGenderM, mGenderF, mGenderO, yesHOH, noHOH;
@@ -417,7 +419,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+
+            // setting state - start
+            String state = String.valueOf(patient1.getState_province());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                mState.setSelection(stateAdapter.getPosition(state));
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                mState.setSelection(stateAdapter.getPosition("ٱلسُّوَيْدَاء"));
+            // setting state - end
 
             if (patient1 != null && patient1.getPatientAidType() != null) {
                 Log.d("Patient Aid Type", patient1.getPatientAidType());
@@ -604,7 +613,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
-            mState.setSelection(stateAdapter.getPosition(state));
+         //   mState.setSelection(stateAdapter.getPosition(state));
+            // setting state - start
+          //  String state = String.valueOf(patient1.getState_province());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                mState.setSelection(stateAdapter.getPosition(state));
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                mState.setSelection(stateAdapter.getPosition("ٱلسُّوَيْدَاء"));
+            // setting state - end
         }
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
@@ -890,7 +906,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         try {
-            String stateLanguage = "states_syriana";
+         //   Toast.makeText(context, "lang: " + sessionManager.getAppLanguage(), Toast.LENGTH_SHORT).show();
+            String stateLanguage = "states_syriana_en";
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
+
             int states = res.getIdentifier(stateLanguage, "array", getApplicationContext().getPackageName());
             if (states != 0) {
                 stateAdapter = ArrayAdapter.createFromResource(this,
@@ -1120,8 +1142,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 countryStateLayout.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mPostal")) {
+                postal_layout.setVisibility(View.VISIBLE);
                 mPostal.setVisibility(View.VISIBLE);
             } else {
+                postal_layout.setVisibility(View.GONE);
                 mPostal.setVisibility(View.GONE);
             }
 
@@ -2062,7 +2086,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
             patientdto.setPatientPhoto(mCurrentPhotoPath);
-            patientdto.setStateprovince(mState.getSelectedItem().toString());
+
+            String stateName = mState.getSelectedItem().toString();
+            if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء"))
+                stateName = "As-Sweida";
+            patientdto.setStateprovince(stateName);
+            Log.v("state", "state name: create: " + stateName);
+
+            //  patientdto.setStateprovince(mState.getSelectedItem().toString());
 
           /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3319,7 +3350,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
                 patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
                 patientdto.setPatient_photo(mCurrentPhotoPath);
-                patientdto.setState_province(mState.getSelectedItem().toString());
+
+                String stateName = mState.getSelectedItem().toString();
+                if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء"))
+                    stateName = "As-Sweida";
+                patientdto.setState_province(stateName);
+                Log.v("state", "state name: " + stateName);
+              //  patientdto.setState_province(mState.getSelectedItem().toString());
 
               /*  patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3553,6 +3590,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
         mVillage = findViewById(R.id.spinner_village);
+        postal_layout = findViewById(R.id.postal_layout);
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);

@@ -71,9 +71,15 @@
         <item>@string/state_Maharastra</item>
     </string-array>
 
-    <string-array name="states_syriana">
+    <string-array name="states_syriana_en">
         <item>Select</item>
         <item>As-Sweida</item>
+        <item>Deir-ez-Zor</item>
+    </string-array>
+
+    <string-array name="states_syriana_ar">
+        <item>Select</item>
+        <item>ٱلسُّوَيْدَاء</item>
         <item>Deir-ez-Zor</item>
     </string-array>
 
