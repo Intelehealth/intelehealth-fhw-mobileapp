@@ -591,6 +591,7 @@
 
                         <TableRow
                             android:id="@+id/tableRow_aid_type"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
