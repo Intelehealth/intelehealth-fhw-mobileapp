@@ -99,7 +99,6 @@ public class EncounterDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-
         }
         return isCreated;
     }
@@ -172,7 +171,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
 
         return encounterDTOList;
     }
@@ -356,8 +354,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
-
         return encounterDTO;
     }
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
