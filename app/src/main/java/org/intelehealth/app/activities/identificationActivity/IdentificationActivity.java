@@ -258,16 +258,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patient1.getDate_of_birth() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-"))
             mDOB.setText(patient1.getDate_of_birth());
 
-        if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-")) {
+        if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-"))
             mPhoneNum.setText(patient1.getPhone_number());
-            mPhoneNum.setEnabled(true);
-            phone_checkbox.setChecked(false);
-        }
-        else {
-            mPhoneNum.setEnabled(false);
-            phone_checkbox.setChecked(true);
-            mPhoneNum.setText("");
-        }
 
 
         if (patientID_edit == null) {
@@ -394,6 +386,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
+
+            if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-")) {
+                mPhoneNum.setText(patient1.getPhone_number());
+                mPhoneNum.setEnabled(true);
+                phone_checkbox.setChecked(false);
+            }
+            else {
+                mPhoneNum.setEnabled(false);
+                phone_checkbox.setChecked(true);
+                mPhoneNum.setText("");
+            }
 
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
