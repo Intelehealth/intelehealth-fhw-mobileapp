@@ -62,6 +62,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private String mPatientAIDType = "";
     private List<String> mPatientAidTypes = new ArrayList<>();
     private boolean mIsTriageMode = false;
+    private String aidType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         View view = mScreenBinding.getRoot();
         setContentView(view);
         setTitle(getString(R.string.livelihood_needs_assessment));
+
        /* getSupportFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FirstScreenFragment())
                 .commit();*/
@@ -78,12 +80,15 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
         }*/
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPatientUUid = getIntent().getStringExtra("patientUuid");
+        aidType = getIntent().getStringExtra("aidType");
         mIsTriageMode = getIntent().getBooleanExtra("IsTriageMode", false);
+        Log.v("aidTYpe", "aidTypeIntent" + aidType);
 
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
-        try {
+      /*  try {
             String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
             AidTypeAnswerValue answerValue = new Gson().fromJson(value, AidTypeAnswerValue.class);
             if (answerValue == null || answerValue.getEnValues().size() == 0 || answerValue.getArValues().size() == 0) {
@@ -93,15 +98,20 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
             Log.v("answerValue", answerValue.getEnValues().get(0));
 
             mPatientAidTypes = answerValue.getEnValues();
-            Log.v("answerValue", mPatientAidTypes + "");
+            Log.v("answerValue", "aidArray: " + mPatientAidTypes + "");
         } catch (DAOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        mPatientAidTypes.add(aidType);
+        Log.v("answerValue", "aidArray: " + mPatientAidTypes + "");
+
         mIsEditMode = getIntent().getBooleanExtra("isEditMode", false);
         context = HouseholdSurveyActivity.this;
         if (mIsEditMode) {
-
+            // TODO: pre-fill Values from db in this case.
         }
+
         mScreenBinding.rvQuery.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         if (mIsTriageMode) {
             mSurveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "triage_survery_data.json").toString(), SurveyData.class);

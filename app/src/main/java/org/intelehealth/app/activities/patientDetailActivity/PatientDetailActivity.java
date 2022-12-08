@@ -196,6 +196,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit = findViewById(R.id.button_new_visit);
         button_householdSurvey = findViewById(R.id.button_householdSurvey);
         mTriageSurveyButton = findViewById(R.id.button_triageSurvey);
+
         cha_button = findViewById(R.id.cha_button);
         generalaid_btn = findViewById(R.id.generalaid_btn);
         studentaid_btn = findViewById(R.id.studentaid_btn);
@@ -303,6 +304,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentCHA = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentCHA.putExtra("patientUuid", patientUuid);
+                intentCHA.putExtra("isEditMode", true);
+                intentCHA.putExtra("aidType", "Emergency Need Evaluation");
                 startActivity(intentCHA);
             }
         });
@@ -312,6 +315,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentGeneral = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentGeneral.putExtra("patientUuid", patientUuid);
+                intentGeneral.putExtra("aidType", "General Aid");
+                intentGeneral.putExtra("isEditMode", true);
                 startActivity(intentGeneral);
             }
         });
@@ -320,6 +325,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentStudent = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentStudent.putExtra("patientUuid", patientUuid);
+                intentStudent.putExtra("aidType", "Student Aid");
+                intentStudent.putExtra("isEditMode", true);
                 startActivity(intentStudent);
             }
         });
