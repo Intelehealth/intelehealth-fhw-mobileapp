@@ -86,7 +86,7 @@
     <string name="identification_screen_prompt_last_name">Last name *</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="identification_screen_prompt_phone_number">Phone number*</string>
     <string name="admin_password_dialog_heading">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
@@ -1571,5 +1571,6 @@
     <string name="aid_types_missing">Patient AID types are missing!</string>
     <string name="visit_failed_for_no_complaint">Visit Upload Failed! Make a valid complaint selection.</string>
     <string name="community_health_assessment">Community Health Assessment</string>
+    <string name="mobileno_not_available">Mobile number is not available.</string>
 
 </resources>

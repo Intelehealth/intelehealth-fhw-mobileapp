@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -180,6 +181,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
     ArrayList<String> selectedAid_en, selectedAid_ar;
     ScrollView scrollView;
+    private MaterialCheckBox phone_checkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,8 +258,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patient1.getDate_of_birth() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-"))
             mDOB.setText(patient1.getDate_of_birth());
 
-        if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-"))
+        if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-")) {
             mPhoneNum.setText(patient1.getPhone_number());
+            mPhoneNum.setEnabled(true);
+            phone_checkbox.setChecked(false);
+        }
+        else {
+            mPhoneNum.setEnabled(false);
+            phone_checkbox.setChecked(true);
+            mPhoneNum.setText("");
+        }
+
 
         if (patientID_edit == null) {
             mAddress1.setText(mAddress1Value);
@@ -415,6 +426,28 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         } else {
             mGender = "F";
         }
+
+        // Phone checkbox
+        if (phone_checkbox.isChecked())
+            mPhoneNum.setEnabled(false);
+        else
+            mPhoneNum.setEnabled(true);
+
+        phone_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                mPhoneNum.setError(null);
+
+                if (checked) {
+                    mPhoneNum.setEnabled(false);
+                    mPhoneNum.setText("");
+                }
+                else
+                    mPhoneNum.setEnabled(true);
+            }
+        });
+        // Phone checkbox - End
+
 
         if (patientID_edit != null) {
             // setting country according database
@@ -1639,6 +1672,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                !mPhoneNum.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked())
                 && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
 
@@ -1663,6 +1697,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (mAge.getText().toString().equals("")) {
                 focusView = mAge;
                 mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
+                focusView = mPhoneNum;
+                mPhoneNum.setError(getString(R.string.error_field_required));
+            }
+            else {
+                mPhoneNum.setError(null);
             }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
@@ -3060,6 +3102,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                     && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                    !mPhoneNum.getText().toString().equals("") &&
                     !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() ||
                     generalCB.isChecked() || fhhSurveyCB.isChecked())) {
                 aidSelectionImplementation();
@@ -3083,6 +3126,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (mAge.getText().toString().equals("")) {
                     focusView = mAge;
                     mAge.setError(getString(R.string.error_field_required));
+                }
+
+                if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
+                    focusView = mPhoneNum;
+                    mPhoneNum.setError(getString(R.string.error_field_required));
+                }
+                else {
+                    mPhoneNum.setError(null);
                 }
 
                 if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
@@ -3582,6 +3633,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
+        phone_checkbox = findViewById(R.id.phone_checkbox);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50

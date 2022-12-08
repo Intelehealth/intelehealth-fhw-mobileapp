@@ -307,6 +307,7 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/phone_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -335,6 +336,14 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <!--Checkbox - mobile - Start -->
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/phone_checkbox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mobileno_not_available"
+                            android:paddingStart="5dp"/>
+                        <!--Checkbox - mobile - End -->
 
                     </LinearLayout>
 

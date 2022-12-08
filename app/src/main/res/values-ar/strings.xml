@@ -85,7 +85,7 @@
     <string name="identification_screen_prompt_last_name">الكنية</string>
     <string name="identification_screen_prompt_address">العنوان السطر 1</string>
     <string name="identification_screen_prompt_address2">العنوان السطر 2</string>
-    <string name="identification_screen_prompt_phone_number">رقم الهاتف</string>
+    <string name="identification_screen_prompt_phone_number">رقم الهاتف *</string>
     <string name="admin_password_dialog_heading">أدخل كلمة مرور المسؤول</string>
     <string name="identification_screen_prompt_gender">الجنس *</string>
     <string name="identification_screen_checkbox_male">ذكر</string>
@@ -1565,6 +1565,7 @@
     <string name="aid_types_missing">أنواع مساعدات المريض مفقودة!</string>
     <string name="visit_failed_for_no_complaint">زيارة التحميل فشل! قم باختيار شكوى صحيح.</string>
     <string name="community_health_assessment">Community Health Assessment</string>
+    <string name="mobileno_not_available">Mobile number is not available.</string>
 
 
 </resources>
