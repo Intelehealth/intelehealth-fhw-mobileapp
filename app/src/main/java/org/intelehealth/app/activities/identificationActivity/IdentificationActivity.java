@@ -2,6 +2,8 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
+import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
 
 import android.app.DatePickerDialog;
@@ -149,7 +151,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter,
+    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter,
             linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -1099,19 +1101,31 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         // Village - Start
-     /*   try {
-            String perc_income_Language = "percentage_income_" + sessionManager.getAppLanguage();
-            int incomePerc = res.getIdentifier(perc_income_Language, "array", getApplicationContext().getPackageName());
-            if (incomePerc != 0) {
-                percentageIncomeAdapter = ArrayAdapter.createFromResource(this, incomePerc, R.layout.custom_spinner);
+        try {
+            String as_sweida_villages_Language = "as_sweida_villages_" + sessionManager.getAppLanguage();
+            int village = res.getIdentifier(as_sweida_villages_Language, "array", getApplicationContext().getPackageName());
+            if (village != 0) {
+                villageAdapter = ArrayAdapter.createFromResource(this, village, R.layout.custom_spinner);
             }
-            percentage_income_spinner.setAdapter(percentageIncomeAdapter);
+            mVillage.setAdapter(villageAdapter);
+            if (patientID_edit != null) {
+                String value = patient1.getCity_village();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                    value = switch_en_to_ar_village_edit(value);
+                mVillage.setSelection(villageAdapter.getPosition(value));
+            } else {
+                String value = sessionManager.getVillageName();
+                Log.v("value", "village_value: " + value);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                    value = switch_en_to_ar_village_edit(value);
+                mVillage.setSelection(villageAdapter.getPosition(value));
+            }
         } catch (Exception e) {
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
-        }*/
+        }
+        // Village - End
 
-
-        NewLocationDao newLocationDao = new NewLocationDao();
+      /*  NewLocationDao newLocationDao = new NewLocationDao();
         List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName(), context);
         if (villageList.size() > 1) {
             LocationArrayAdapter locationArrayAdapter =
@@ -1123,8 +1137,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             } else {
                 mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
             }
-        }
-        // Village - End
+        }*/
 
     }
 
@@ -2142,7 +2155,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(mVillage.getSelectedItem().toString());
+
+            String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
+            patientdto.setCityvillage(value);
+
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -3415,7 +3431,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
                 patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-                patientdto.setCity_village(mVillage.getSelectedItem().toString());
+
+                String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
+                patientdto.setCity_village(value);
+
                 patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
                 patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
                 patientdto.setPatient_photo(mCurrentPhotoPath);

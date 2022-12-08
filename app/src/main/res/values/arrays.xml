@@ -1763,7 +1763,29 @@
     </string-array>
 
     <string-array name="as_sweida_villages_en">
-        <item></item>
+        <item>Al-Shomarah</item>
+        <item>Ariqa</item>
+        <item>Dama</item>
+        <item>Deir Dama</item>
+        <item>Harran (Ariqa)</item>
+        <item>Jrein</item>
+        <item>Kharsa</item>
+        <item>Lebbin</item>
+        <item>Smeid</item>
+        <item>Waqm</item>
+    </string-array>
+
+    <string-array name="as_sweida_villages_ar">
+        <item>الشوماره</item>
+        <item>جرين</item>
+        <item>داما</item>
+        <item>دير داما</item>
+        <item>حران</item>
+        <item>جرين</item>
+        <item>خرسة</item>
+        <item>ليبين</item>
+        <item>صميد</item>
+        <item>وقم</item>
     </string-array>
 
 </resources>

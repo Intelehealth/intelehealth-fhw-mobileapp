@@ -551,6 +551,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2"
+                                            android:entries="@array/as_sweida_villages_ar"
                                             android:textAlignment="viewStart" />
                                     </LinearLayout>
 

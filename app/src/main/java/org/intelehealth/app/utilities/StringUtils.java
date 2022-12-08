@@ -312,6 +312,42 @@ public final class StringUtils {
         return val;
     }
 
+    // Village - Start
+    public static String switch_ar_to_en_village(String val) {
+        switch (val) {
+            case "الشوماره":
+                val = "Al-Shomarah";
+                break;
+            case "جرين":
+                val = "Ariqa";
+                break;
+            case "داما":
+                val = "Dama";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_en_to_ar_village_edit(String val) {
+        switch (val) {
+            case "Al-Shomarah":
+                val = "الشوماره";
+                break;
+            case "Ariqa":
+                val = "جرين";
+                break;
+            case "Dama":
+                val = "داما";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    // Village - End
+
 
     public static String switch_ru_education(String val) {
         switch (val) {

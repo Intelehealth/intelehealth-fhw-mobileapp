@@ -107,6 +107,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getValueForStateCity_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
@@ -773,12 +774,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        if (patient_new.getPostal_code() != null) {
+        if (patient_new.getPostal_code() != null && !patient_new.getPostal_code().equalsIgnoreCase("-")) {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
                 addrFinalLine = String.format("%s, %s, %s, %s",
-                        getValueForStateCity_edit(city_village), getValueForStateCity_edit(patient_new.getState_province()),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+                        getValueForStateCity_edit(city_village),
+                        getValueForStateCity_edit(patient_new.getState_province()),
+                        patient_new.getPostal_code(),
+                        patient_new.getCountry());
             } else {
                 addrFinalLine = String.format("%s, %s, %s",
                         city_village, patient_new.getState_province(),
@@ -786,10 +789,27 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             addrFinalView.setText(addrFinalLine);
         } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                String village = switch_en_to_ar_village_edit(city_village);
+
+                 String addrFinalLine = String.format("%s, %s, %s",
+                        village,
+                         "ٱلسُّوَيْدَاء",   // State
+                        "سوريا");      // country
+                addrFinalView.setText(addrFinalLine);
+
+               /* String addrFinalLine = String.format("%s, %s, %s",
+                        village, patient_new.getState_province(),
+                        patient_new.getCountry());*/
+            }
+            else {
+                String addrFinalLine = String.format("%s, %s, %s",
+                        city_village,
+                        patient_new.getState_province(),
+                        patient_new.getCountry());
+                addrFinalView.setText(addrFinalLine);
+            }
+
         }
 
 
