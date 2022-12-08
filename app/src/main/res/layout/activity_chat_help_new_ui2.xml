@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".activities.help.activities.ChatSupportHelpActivity_New">
 
@@ -34,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/custom_tool_title_margin_top"
             android:layout_toEndOf="@+id/iv_back_arrow_chat"
-            android:text="@string/support_team"
+            android:text="@string/chat_with_doctor"
             android:textColor="@color/textColorWhite"
             android:textSize="@dimen/common_header_text_size"
             android:textStyle="bold" />
@@ -65,7 +67,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_chatting"
+        android:id="@+id/rv_chatting11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_toolbar_support"
@@ -73,7 +75,7 @@
         android:paddingStart="@dimen/help_parent1_videos_padding_start"
         android:paddingEnd="@dimen/help_parent_videos_padding_end"
         tools:itemCount="2"
-        tools:listitem="@layout/row_item_chat_support_ui2" />
+        tools:listitem="@layout/item_layout_chat_text_ui2" />
 
     <FrameLayout
         android:id="@+id/layout_media_options"
@@ -93,8 +95,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="19dp"
         android:orientation="horizontal"
         android:paddingStart="@dimen/help_parent1_videos_padding_start"
@@ -103,16 +106,16 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/tv_type_here_margin_end"
-            android:layout_weight="1.8"
+            android:layout_weight="1.7"
             android:background="@drawable/bg_input_fieldnew"
             android:paddingEnd="15dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tel_send_msg_chat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/tv_type_here_margin_end"
                 android:layout_toStartOf="@+id/iv_attachment_chat"
                 app:hintEnabled="false">
@@ -120,12 +123,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_send_msg_chat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
                     android:hint="@string/type_here"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/type_here_padding_start"
                     android:paddingTop="@dimen/type_here_padding_top"
-                    android:background="@null"
                     android:paddingEnd="@dimen/type_here_padding_start"
                     android:paddingBottom="@dimen/type_here_padding_top"
                     android:singleLine="true"
@@ -143,13 +146,21 @@
         </RelativeLayout>
 
 
-        <ImageView
-            android:id="@+id/iv_send_message_chat"
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:src="@drawable/ui2_icon_send_message" />
+            android:layout_weight="0.3"
+            app:cardCornerRadius="8dp"
+            android:backgroundTint="@color/colorPrimary">
 
+            <ImageView
+                android:id="@+id/iv_send_message_chat"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ui2_ic_icons8_sent_1" />
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </RelativeLayout>

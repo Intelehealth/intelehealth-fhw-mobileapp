@@ -1,9 +1,13 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +20,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,8 +44,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CustomCalendarViewUI2 {
-    private static final String TAG = "CustomCalendarViewUI2";
+public class CustomCalendarViewUI2 extends DialogFragment {
+    public static final String TAG = "CustomCalendarViewUI2";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;
     CalendarViewMonthModel spinnerSelectedMonthModel;
@@ -51,9 +59,24 @@ public class CustomCalendarViewUI2 {
     int currentYear;
     Context context;
     String selectedDate = "";
+    private SendSelectedDateInterface listener;
 
     public CustomCalendarViewUI2(Context context) {
         this.context = context;
+    }
+
+    public CustomCalendarViewUI2(Context context, SendSelectedDateInterface listener) {
+        this.context = context;
+        this.listener = listener;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @NonNull
+    @Override
+    public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog alertDialog = showDatePicker(context, "");
+        return alertDialog;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -167,6 +190,9 @@ public class CustomCalendarViewUI2 {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
+        if(!tag.isEmpty() && tag.equals("default")){
+
+        }
         if (spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth) {
             // enableDisablePreviousButton(false);
         } else {
@@ -621,7 +647,7 @@ public class CustomCalendarViewUI2 {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String showDatePicker(Context context, String whichDate1) {
+    public AlertDialog showDatePicker(Context context, String whichDate1) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.layout_dialog_custom_calendarview, null);
@@ -644,7 +670,7 @@ public class CustomCalendarViewUI2 {
         });
 
         calendarInstanceDefault = Calendar.getInstance();
-        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH);
+        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH)+1;
         currentYear = calendarInstanceDefault.get(Calendar.YEAR);
         monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
 
@@ -655,9 +681,9 @@ public class CustomCalendarViewUI2 {
 
         fillMonthsSpinner();
         fillYearSpinner();
-        fillDatesMonthsWise("default");
         setValuesToTheMonthSpinnerForDefault(currentMonth);
         setValuesToTheYearSpinnerForDefault(currentYear);
+        fillDatesMonthsWise("default");
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.calendarview_bg_ui2);
@@ -672,13 +698,28 @@ public class CustomCalendarViewUI2 {
 
         btnOkCalendar.setOnClickListener(v -> {
             alertDialog.dismiss();
-            SendSelectedDateInterface sendDataInterface = new AllAppointmentsFragment();
-            sendDataInterface.getSelectedDate(selectedDate, whichDate1);
+
+          //  SendSelectedDateInterface sendDataInterface = new AllAppointmentsFragment();
+            //sendDataInterface.getSelectedDate(selectedDate, whichDate1);
+           /* LocalBroadcastManager.getInstance(context);
+            Intent intent = new Intent("SOME_ACTION");
+            intent.putExtra("selectedDate", selectedDate);
+            context.sendBroadcast(intent);*/
+
+          /*  LocalBroadcastManager.getInstance(context).sendBroadcast(
+                    new Intent("SOME_ACTION"));*/
+
+            try {
+                listener.getSelectedDate(selectedDate, whichDate1);
+            } catch (ClassCastException cce) {
+                cce.printStackTrace();
+
+            }
             Log.d(TAG, "dialog selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
         });
 
         alertDialog.show();
 
-        return selectedDate;
+        return alertDialog;
     }
 }
