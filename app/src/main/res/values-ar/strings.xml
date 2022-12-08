@@ -1565,7 +1565,7 @@
     <string name="aid_types_missing">أنواع مساعدات المريض مفقودة!</string>
     <string name="visit_failed_for_no_complaint">زيارة التحميل فشل! قم باختيار شكوى صحيح.</string>
     <string name="community_health_assessment">Community Health Assessment</string>
-    <string name="mobileno_not_available">Mobile number is not available.</string>
+    <string name="mobileno_not_available">رقم الهاتف المحمول غير متوفر.</string>
 
 
 </resources>
