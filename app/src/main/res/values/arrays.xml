@@ -1762,5 +1762,8 @@
         <item>Charakmunda</item>
     </string-array>
 
+    <string-array name="as_sweida_villages_en">
+        <item></item>
+    </string-array>
 
 </resources>

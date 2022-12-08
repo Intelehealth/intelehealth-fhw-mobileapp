@@ -1098,6 +1098,19 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
 
+        // Village - Start
+     /*   try {
+            String perc_income_Language = "percentage_income_" + sessionManager.getAppLanguage();
+            int incomePerc = res.getIdentifier(perc_income_Language, "array", getApplicationContext().getPackageName());
+            if (incomePerc != 0) {
+                percentageIncomeAdapter = ArrayAdapter.createFromResource(this, incomePerc, R.layout.custom_spinner);
+            }
+            percentage_income_spinner.setAdapter(percentageIncomeAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }*/
+
+
         NewLocationDao newLocationDao = new NewLocationDao();
         List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName(), context);
         if (villageList.size() > 1) {
@@ -1111,6 +1124,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
             }
         }
+        // Village - End
+
     }
 
     private void configureViewsFromConfig() {
