@@ -306,7 +306,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Intent intentCHA = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentCHA.putExtra("patientUuid", patientUuid);
                 intentCHA.putExtra("isEditMode", true);
-                intentCHA.putExtra("aidType", "Emergency Need Evaluation");
+                intentCHA.putExtra("aidType", "Community Health Need Assessment");
                 startActivity(intentCHA);
             }
         });

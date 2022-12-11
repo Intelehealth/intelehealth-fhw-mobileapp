@@ -244,6 +244,7 @@
                                 android:maxLines="1"
                                 android:text="@string/other"
                                 android:textSize="@dimen/card_content_sub_text_size"
+                                tools:visibility="visible"
                                 android:visibility="gone" />
 
                         </RadioGroup>
@@ -409,6 +410,7 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
+                                tools:visibility="visible"
                                 android:visibility="gone">
 
                                 <com.google.android.material.textfield.TextInputLayout
@@ -592,6 +594,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            tools:visibility="visible"
                             android:visibility="gone">
 
                             <EditText
@@ -736,6 +739,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
                     <ImageView
@@ -820,6 +824,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false">
@@ -1283,6 +1288,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
                     <!--Title-->
@@ -1321,6 +1327,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
                         app:cardPreventCornerOverlap="false">
@@ -1448,6 +1455,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true"
@@ -1486,6 +1494,7 @@
                                 android:layout_marginEnd="10dp"
                                 android:background="@android:color/transparent"
                                 android:src="@drawable/ic_baseline_edit_24"
+                                tools:visibility="visible"
                                 android:visibility="gone" />
 
                             <androidx.appcompat.widget.AppCompatImageButton
