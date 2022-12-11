@@ -318,11 +318,455 @@ public final class StringUtils {
             case "الشوماره":
                 val = "Al-Shomarah";
                 break;
-            case "جرين":
+            case "عريقة":
                 val = "Ariqa";
                 break;
             case "داما":
                 val = "Dama";
+                break;
+            case "دير داما":
+                val = "Deir Dama";
+                break;
+            case "حران":
+                val = "Harran (Ariqa)";
+                break;
+            case "جرين":
+                val = "Jrein";
+                break;
+            case "خرسة":
+                val = "Kharsa";
+                break;
+            case "ليبين":
+                val = "Lebbin";
+                break;
+            case "صميد":
+                val = "Smeid";
+                break;
+            case "وقم":
+                val = "Waqm";
+                break;
+            case "مستوصف عين الزمان":
+                val = "Ain Azzaman";
+                break;
+            case "حي الثورة-السويداء":
+                val = "Al- Thawrah - As-Sweida (ne)";
+                break;
+            case "اصلحة":
+                val = "Aslaha";
+                break;
+            case "عتيل":
+                val = "Atil";
+                break;
+            case "دارة":
+                val = "Dara";
+                break;
+            case "حي الفرسان-السويداء":
+                val = "Fursan (ne)";
+                break;
+            case "حبران":
+                val = "Habran";
+                break;
+            case "حي الحرية-السويداء":
+                val = "Hurriyeh - As-Sweida (ne)";
+                break;
+            case "حي الاستقلال-السويداء":
+                val = "Istiqlal (ne)";
+                break;
+            case "جبيب":
+                val = "Jbib";
+                break;
+            case "حي الجهاد-السويداء":
+                val = "Jihad (ne)";
+                break;
+            case "حي الجولان-السويداء":
+                val = "Joulan (ne)";
+                break;
+            case "الكفر":
+                val = "Kafr";
+                break;
+            case "كفر اللحف":
+                val = "Kafr Ellahaf";
+                break;
+            case "كناكر":
+                val = "Kanaker (As-Sweida)";
+                break;
+            case "خربا":
+                val = "Kherba";
+                break;
+            case "مفعلة":
+                val = "Mafaala";
+                break;
+            case "مصاد":
+                val = "Masad";
+                break;
+            case "مياماس":
+                val = "Mayamas";
+                break;
+            case "حي المزرعة-السويداء":
+                val = "Mazra'a (ne)";
+                break;
+            case "مجيمر":
+                val = "Mjeimer";
+                break;
+            case "حي النهضة-السويداء":
+                val = "Nahda - As-Sweida (ne)";
+                break;
+            case "عرى":
+                val = "Ora";
+                break;
+            case "قنوات":
+                val = "Qanawat";
+                break;
+            case "الرحى":
+                val = "Raha (As-Sweida)";
+                break;
+            case "رساس":
+                val = "Rassas";
+                break;
+            case "ريمة حازم":
+                val = "Rima Hazem";
+                break;
+            case "سهوة البلاطة":
+                val = "Sahwet Balata";
+                break;
+            case "سهوة الخضر":
+                val = "Sahwet Elkhodar";
+                break;
+            case "سكاكة":
+                val = "Sakaka";
+                break;
+            case "سليم":
+                val = "Salim (As-Sweida)";
+                break;
+            case "حي الشهداء-السويداء":
+                val = "Shuhada - As-Sweida (ne)";
+                break;
+            case "ثعلة":
+                val = "Thaala";
+                break;
+            case "ولغا":
+                val = "Walgha";
+                break;
+            case "حي الوحدة-السويداء":
+                val = "Wihdeh - As-Sweida (ne)";
+                break;
+            case "عنز":
+                val = "Anz (Gharyeh)";
+                break;
+            case "الغاريه":
+                val = "Gharyeh";
+                break;
+            case "خربة عواد":
+                val = "Kherbet Awad";
+                break;
+            case "المغير":
+                val = "Maghir (Gharyeh)";
+                break;
+            case "الصورة الكبيرة":
+                val = "Big Sura";
+                break;
+            case "الحقف":
+                val = "Haqf";
+                break;
+            case "حازم":
+                val = "Hazm (Little Sura)";
+                break;
+            case "الخالدية":
+                val = "Kalidiyeh (Little Sura)";
+                break;
+            case "خلخلة":
+                val = "Khalkhaleh";
+                break;
+            case "خربة الغوثة":
+                val = "Kherbet Ghotha";
+                break;
+            case "لاهثة":
+                val = "Lahetheh";
+                break;
+            case "الصورة الصغيرة":
+                val = "Little Sura";
+                break;
+            case "شمال الشهيب":
+                val = "Nothern Ushayhib";
+                break;
+            case "رضيمة اللوا":
+                val = "Radimeh Ellewa";
+                break;
+            case "سالميه (صورة الصغيرة)":
+                val = "Salmiyeh (Little Sura)";
+                break;
+            case "سيرة العلي":
+                val = "Seerat Alyah";
+                break;
+            case "تل الأصفر":
+                val = "Tal Asfar";
+                break;
+            case "ذكير":
+                val = "Thakir";
+                break;
+            case "ام حارتين":
+                val = "Um Hartein (Little Sura)";
+                break;
+            case "بوسان":
+                val = "Bosan";
+                break;
+            case "غيضة":
+                val = "Gheida";
+                break;
+            case "كسيب":
+                val = "Kassib";
+                break;
+            case "خربة الضياث":
+                val = "Khribet ad Diyath";
+                break;
+            case "مشنف":
+                val = "Mashnaf";
+                break;
+            case "العجيلات":
+                val = "Ojeilat";
+                break;
+            case "رامي":
+                val = "Rami (Mashnaf)";
+                break;
+            case "رشيده":
+                val = "Rashideh";
+                break;
+            case "سعنا":
+                val = "Saana";
+                break;
+            case "سالة":
+                val = "Sala";
+                break;
+            case "الشبكي":
+                val = "Shabki";
+                break;
+            case "شريحي":
+                val = "Shrehi";
+                break;
+            case "طربا":
+                val = "Tarba";
+                break;
+            case "الطيبة":
+                val = "Tiba (Mashnaf)";
+                break;
+            case "ام رواق":
+                val = "Um Riwaq";
+                break;
+            case "دور":
+                val = "Dor";
+                break;
+            case "دويرة":
+                val = "Dweira";
+                break;
+            case "جدية":
+                val = "Jidya (Mazra'a)";
+                break;
+            case "مجدل":
+                val = "Majdal 6";
+                break;
+            case "المزرعة":
+                val = "Mazra'a - Sijn";
+                break;
+            case "نجران":
+                val = "Najran";
+                break;
+            case "قراصة":
+                val = "Qarrasa";
+                break;
+            case "ريمة إللحف":
+                val = "Rima Ellahf";
+                break;
+            case "سميع":
+                val = "Samie";
+                break;
+            case "صمة الهنيدات":
+                val = "Samma Al-Hneidat";
+                break;
+            case "تعارة":
+                val = "Taara";
+                break;
+            case "الطيرة":
+                val = "Tira";
+                break;
+            case "ابو زريق":
+                val = "Abu Zreik";
+                break;
+            case "بهم":
+                val = "Behem";
+                break;
+            case "هويا":
+                val = "Hoya";
+                break;
+            case "الحريسة":
+                val = "Hreiseh";
+                break;
+            case "خازمة":
+                val = "Khazmeh";
+                break;
+            case "ملح":
+                val = "Milh";
+                break;
+            case "قيصمة":
+                val = "Qaysama";
+                break;
+            case "شعف":
+                val = "Shaaf";
+                break;
+            case "شعيب":
+                val = "Sheab";
+                break;
+            case "تل اللوز":
+                val = "Tal Elloz";
+                break;
+            case "تل مجدا":
+                val = "Tal Majdaa";
+                break;
+            case "طليلين":
+                val = "Tleilin";
+                break;
+            case "أم شامة":
+                val = "Um Shama";
+                break;
+            case "العفينة":
+                val = "Afineh";
+                break;
+            case "برد":
+                val = "Barad";
+                break;
+            case "حوط":
+                val = "Hot";
+                break;
+            case "القريا":
+                val = "Qarayya";
+                break;
+            case "أمتان":
+                val = "Amtan";
+                break;
+            case "العانات":
+                val = "Anat";
+                break;
+            case "عرمان":
+                val = "Arman";
+                break;
+            case "كاريس":
+                val = "Karis";
+                break;
+            case "مشقوق":
+                val = "Mashquq (Salkhad)";
+                break;
+            case "منيذرة":
+                val = "Mneithreh";
+                break;
+            case "عوس":
+                val = "Os";
+                break;
+            case "عيون":
+                val = "Oyun";
+                break;
+            case "رافقة":
+                val = "Rafqa";
+                break;
+            case "صلخد":
+                val = "Salkhad";
+                break;
+            case "صمة البردان":
+                val = "Sama Elbardan";
+                break;
+            case "شنيرة":
+                val = "Shannireh";
+                break;
+            case "تحولة":
+                val = "Tahula";
+                break;
+            case "البجع":
+                val = "Al-Bajaa";
+                break;
+            case "عمرة":
+                val = "Amra";
+                break;
+            case "بريكة":
+                val = "Breika";
+                break;
+            case "مجادل":
+                val = "Majadel";
+                break;
+            case "مردك":
+                val = "Mardak";
+                break;
+            case "المتونة":
+                val = "Mtuna";
+                break;
+            case "نمرة":
+                val = "Nemreh";
+                break;
+            case "صلاخد":
+                val = "Salakhed";
+                break;
+            case "شهبا":
+                val = "Shahba (Shahba)";
+                break;
+            case "سويمرة":
+                val = "Sweimreh";
+                break;
+            case "تيما":
+                val = "Tima";
+                break;
+            case "ام ضبيب":
+                val = "Um Dbeib";
+                break;
+            case "أم إلزايتون":
+                val = "Um Elzaytun";
+                break;
+            case "عراجة":
+                val = "Araja";
+                break;
+            case "بنات باير":
+                val = "Banat Baeir";
+                break;
+            case "بارك":
+                val = "Barek";
+                break;
+            case "البثينة":
+                val = "Bothaina";
+                break;
+            case "دوما":
+                val = "Duma (Shaqa)";
+                break;
+            case "الهيات":
+                val = "Hayat (Shaqa)";
+                break;
+            case "الهيت":
+                val = "Hit (Shaqa)";
+                break;
+            case "جنينة":
+                val = "Jneineh (Shaqa)";
+                break;
+            case "القصر":
+                val = "Qasr";
+                break;
+            case "رضيمة":
+                val = "Rdeimeh";
+                break;
+            case "ساقية":
+                val = "Sakia";
+                break;
+            case "شقا":
+                val = "Shaqa";
+                break;
+            case "شنوان":
+                val = "Shinwan";
+                break;
+            case "تعلا":
+                val = "Taala (Shaqa)";
+                break;
+            case "بكا":
+                val = "Baka";
+                break;
+            case "ذبين":
+                val = "Thibeen";
+                break;
+            case "ام الرمان":
+                val = "Um Elrumman (Thibeen)";
                 break;
             default:
                 return val;
@@ -336,10 +780,454 @@ public final class StringUtils {
                 val = "الشوماره";
                 break;
             case "Ariqa":
-                val = "جرين";
+                val = "عريقة";
                 break;
             case "Dama":
                 val = "داما";
+                break;
+            case "Deir Dama":
+                val = "دير داما";
+                break;
+            case "Harran (Ariqa)":
+                val = "حران";
+                break;
+            case "Jrein":
+                val = "جرين";
+                break;
+            case "Kharsa":
+                val = "خرسة";
+                break;
+            case "Lebbin":
+                val = "ليبين";
+                break;
+            case "Smeid":
+                val = "صميد";
+                break;
+            case "Waqm":
+                val = "وقم";
+                break;
+            case "Ain Azzaman":
+                val = "مستوصف عين الزمان";
+                break;
+            case "Al- Thawrah - As-Sweida (ne)":
+                val = "حي الثورة-السويداء";
+                break;
+            case "Aslaha":
+                val = "اصلحة";
+                break;
+            case "Atil":
+                val = "عتيل";
+                break;
+            case "Dara":
+                val = "دارة";
+                break;
+            case "Fursan (ne)":
+                val = "حي الفرسان-السويداء";
+                break;
+            case "Habran":
+                val = "حبران";
+                break;
+            case "Hurriyeh - As-Sweida (ne)":
+                val = "حي الحرية-السويداء";
+                break;
+            case "Istiqlal (ne)":
+                val = "حي الاستقلال-السويداء";
+                break;
+            case "Jbib":
+                val = "جبيب";
+                break;
+            case "Jihad (ne)":
+                val = "حي الجهاد-السويداء";
+                break;
+            case "Joulan (ne)":
+                val = "حي الجولان-السويداء";
+                break;
+            case "Kafr":
+                val = "الكفر";
+                break;
+            case "Kafr Ellahaf":
+                val = "كفر اللحف";
+                break;
+            case "Kanaker (As-Sweida)":
+                val = "كناكر";
+                break;
+            case "Kherba":
+                val = "خربا";
+                break;
+            case "Mafaala":
+                val = "مفعلة";
+                break;
+            case "Masad":
+                val = "مصاد";
+                break;
+            case "Mayamas":
+                val = "مياماس";
+                break;
+            case "Mazra'a (ne)":
+                val = "حي المزرعة-السويداء";
+                break;
+            case "Mjeimer":
+                val = "مجيمر";
+                break;
+            case "Nahda - As-Sweida (ne)":
+                val = "حي النهضة-السويداء";
+                break;
+            case "Ora":
+                val = "عرى";
+                break;
+            case "Qanawat":
+                val = "قنوات";
+                break;
+            case "Raha (As-Sweida)":
+                val = "الرحى";
+                break;
+            case "Rassas":
+                val = "رساس";
+                break;
+            case "Rima Hazem":
+                val = "ريمة حازم";
+                break;
+            case "Sahwet Balata":
+                val = "سهوة البلاطة";
+                break;
+            case "Sahwet Elkhodar":
+                val = "سهوة الخضر";
+                break;
+            case "Sakaka":
+                val = "سكاكة";
+                break;
+            case "Salim (As-Sweida)":
+                val = "سليم";
+                break;
+            case "Shuhada - As-Sweida (ne)":
+                val = "حي الشهداء-السويداء";
+                break;
+            case "Thaala":
+                val = "ثعلة";
+                break;
+            case "Walgha":
+                val = "ولغا";
+                break;
+            case "Wihdeh - As-Sweida (ne)":
+                val = "حي الوحدة-السويداء";
+                break;
+            case "Anz (Gharyeh)":
+                val = "عنز";
+                break;
+            case "Gharyeh":
+                val = "الغاريه";
+                break;
+            case "Kherbet Awad":
+                val = "خربة عواد";
+                break;
+            case "Maghir (Gharyeh)":
+                val = "المغير";
+                break;
+            case "Big Sura":
+                val = "الصورة الكبيرة";
+                break;
+            case "Haqf":
+                val = "الحقف";
+                break;
+            case "Hazm (Little Sura)":
+                val = "حازم";
+                break;
+            case "Kalidiyeh (Little Sura)":
+                val = "الخالدية";
+                break;
+            case "Khalkhaleh":
+                val = "خلخلة";
+                break;
+            case "Kherbet Ghotha":
+                val = "خربة الغوثة";
+                break;
+            case "Lahetheh":
+                val = "لاهثة";
+                break;
+            case "Little Sura":
+                val = "الصورة الصغيرة";
+                break;
+            case "Nothern Ushayhib":
+                val = "شمال الشهيب";
+                break;
+            case "Radimeh Ellewa":
+                val = "رضيمة اللوا";
+                break;
+            case "Salmiyeh (Little Sura)":
+                val = "سالميه (صورة الصغيرة)";
+                break;
+            case "Seerat Alyah":
+                val = "سيرة العلي";
+                break;
+            case "Tal Asfar":
+                val = "تل الأصفر";
+                break;
+            case "Thakir":
+                val = "ذكير";
+                break;
+            case "Um Hartein (Little Sura)":
+                val = "ام حارتين";
+                break;
+            case "Bosan":
+                val = "بوسان";
+                break;
+            case "Gheida":
+                val = "غيضة";
+                break;
+            case "Kassib":
+                val = "كسيب";
+                break;
+            case "Khribet ad Diyath":
+                val = "خربة الضياث";
+                break;
+            case "Mashnaf":
+                val = "مشنف";
+                break;
+            case "Ojeilat":
+                val = "العجيلات";
+                break;
+            case "Rami (Mashnaf)":
+                val = "رامي";
+                break;
+            case "Rashideh":
+                val = "رشيده";
+                break;
+            case "Saana":
+                val = "سعنا";
+                break;
+            case "Sala":
+                val = "سالة";
+                break;
+            case "Shabki":
+                val = "الشبكي";
+                break;
+            case "Shrehi":
+                val = "شريحي";
+                break;
+            case "Tarba":
+                val = "طربا";
+                break;
+            case "Tiba (Mashnaf)":
+                val = "الطيبة";
+                break;
+            case "Um Riwaq":
+                val = "ام رواق";
+                break;
+            case "Dor":
+                val = "دور";
+                break;
+            case "Dweira":
+                val = "دويرة";
+                break;
+            case "Jidya (Mazra'a)":
+                val = "جدية";
+                break;
+            case "Majdal 6":
+                val = "مجدل";
+                break;
+            case "Mazra'a - Sijn":
+                val = "المزرعة";
+                break;
+            case "Najran":
+                val = "نجران";
+                break;
+            case "Qarrasa":
+                val = "قراصة";
+                break;
+            case "Rima Ellahf":
+                val = "ريمة إللحف";
+                break;
+            case "Samie":
+                val = "سميع";
+                break;
+            case "Samma Al-Hneidat":
+                val = "صمة الهنيدات";
+                break;
+            case "Taara":
+                val = "تعارة";
+                break;
+            case "Tira":
+                val = "الطيرة";
+                break;
+            case "Abu Zreik":
+                val = "ابو زريق";
+                break;
+            case "Behem":
+                val = "بهم";
+                break;
+            case "Hoya":
+                val = "هويا";
+                break;
+            case "Hreiseh":
+                val = "الحريسة";
+                break;
+            case "Khazmeh":
+                val = "خازمة";
+                break;
+            case "Milh":
+                val = "ملح";
+                break;
+            case "Qaysama":
+                val = "قيصمة";
+                break;
+            case "Shaaf":
+                val = "شعف";
+                break;
+            case "Sheab":
+                val = "شعيب";
+                break;
+            case "Tal Elloz":
+                val = "تل اللوز";
+                break;
+            case "Tal Majdaa":
+                val = "تل مجدا";
+                break;
+            case "Tleilin":
+                val = "طليلين";
+                break;
+            case "Um Shama":
+                val = "أم شامة";
+                break;
+            case "Afineh":
+                val = "العفينة";
+                break;
+            case "Barad":
+                val = "برد";
+                break;
+            case "Hot":
+                val = "حوط";
+                break;
+            case "Qarayya":
+                val = "القريا";
+                break;
+            case "Amtan":
+                val = "أمتان";
+                break;
+            case "Anat":
+                val = "العانات";
+                break;
+            case "Arman":
+                val = "عرمان";
+                break;
+            case "Karis":
+                val = "كاريس";
+                break;
+            case "Mashquq (Salkhad)":
+                val = "مشقوق";
+                break;
+            case "Mneithreh":
+                val = "منيذرة";
+                break;
+            case "Os":
+                val = "عوس";
+                break;
+            case "Oyun":
+                val = "عيون";
+                break;
+            case "Rafqa":
+                val = "رافقة";
+                break;
+            case "Salkhad":
+                val = "صلخد";
+                break;
+            case "Sama Elbardan":
+                val = "صمة البردان";
+                break;
+            case "Shannireh":
+                val = "شنيرة";
+                break;
+            case "Tahula":
+                val = "تحولة";
+                break;
+            case "Al-Bajaa":
+                val = "البجع";
+                break;
+            case "Amra":
+                val = "عمرة";
+                break;
+            case "Breika":
+                val = "بريكة";
+                break;
+            case "Majadel":
+                val = "مجادل";
+                break;
+            case "Mardak":
+                val = "مردك";
+                break;
+            case "Mtuna":
+                val = "المتونة";
+                break;
+            case "Nemreh":
+                val = "نمرة";
+                break;
+            case "Salakhed":
+                val = "صلاخد";
+                break;
+            case "Shahba (Shahba)":
+                val = "شهبا";
+                break;
+            case "Sweimreh":
+                val = "سويمرة";
+                break;
+            case "Tima":
+                val = "تيما";
+                break;
+            case "Um Dbeib":
+                val = "ام ضبيب";
+                break;
+            case "Um Elzaytun":
+                val = "أم إلزايتون";
+                break;
+            case "Araja":
+                val = "عراجة";
+                break;
+            case "Banat Baeir":
+                val = "بنات باير";
+                break;
+            case "Barek":
+                val = "بارك";
+                break;
+            case "Bothaina":
+                val = "البثينة";
+                break;
+            case "Duma (Shaqa)":
+                val = "دوما";
+                break;
+            case "Hayat (Shaqa)":
+                val = "الهيات";
+                break;
+            case "Hit (Shaqa)":
+                val = "الهيت";
+                break;
+            case "Jneineh (Shaqa)":
+                val = "جنينة";
+                break;
+            case "Qasr":
+                val = "القصر";
+                break;
+            case "Rdeimeh":
+                val = "رضيمة";
+                break;
+            case "Sakia":
+                val = "ساقية";
+                break;
+            case "Shaqa":
+                val = "شقا";
+                break;
+            case "Shinwan":
+                val = "شنوان";
+                break;
+            case "Taala (Shaqa)":
+                val = "تعلا";
+                break;
+            case "Baka":
+                val = "بكا";
+                break;
+            case "Thibeen":
+                val = "ذبين";
+                break;
+            case "Um Elrumman (Thibeen)":
+                val = "ام الرمان";
                 break;
             default:
                 return val;
