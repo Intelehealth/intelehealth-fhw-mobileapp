@@ -1,17 +1,11 @@
 package org.intelehealth.app.activities.billConfirmation;
 
-import static android.widget.RelativeLayout.ALIGN_LEFT;
-
 import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_MIDDLE;
-
 import static org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity.curPrinterInterface;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
@@ -25,7 +19,6 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -44,7 +37,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -72,13 +64,8 @@ import com.rt.printerlibrary.setting.BitmapSetting;
 import com.rt.printerlibrary.setting.CommonSetting;
 import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.FuncUtils;
-
-import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
@@ -89,14 +76,12 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BaseEnum;
-import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -105,7 +90,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.UUID;
 
 public class billConfirmationActivity extends AppCompatActivity implements PaymentResultListener, PrinterObserver {
@@ -113,7 +97,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     Toolbar toolbar;
     String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
     ArrayList<String> selectedTests = new ArrayList<>();
-    TextView patientDetailsTV, paymentStatusTV;
+    TextView patientDetailsTV;
     String patientDetails;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
@@ -139,7 +123,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
-//    public static PrinterInterface curPrinterInterface = null;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 50;
     private String printStr;
@@ -204,7 +187,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         downloadCV = findViewById(R.id.button_download);
         shareCV = findViewById(R.id.button_share);
         finalBillCV = findViewById(R.id.finalBillCV);
-        paymentStatusTV = findViewById(R.id.paymentStatus);
         tv_device_selected = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
         btn_disConnect = findViewById(R.id.btn_disConnect);
@@ -237,18 +219,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         manageCardView(selectedTests);
         if(!billType.equals("NA"))
         {
-            if(billType.equals("Paid"))
-            {
-                paymentStatusTV.setVisibility(View.VISIBLE);
-                paymentStatusTV.setText(getString(R.string.paid));
-//                paymentStatusTV.setBackgroundColor(Color.GREEN);
-            }
-            else if(billType.contains("Unpaid"))
-            {
-                paymentStatusTV.setVisibility(View.VISIBLE);
-                paymentStatusTV.setText(getString(R.string.unpaid));
-//                paymentStatusTV.setBackgroundColor(Color.RED);
-            }
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
             confirmBillCV.setVisibility(View.GONE);
@@ -295,51 +265,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         confirmBillCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if(!yes.isChecked() && !no.isChecked())
-                {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(billConfirmationActivity.this);
-                    alertDialogBuilder.setTitle(R.string.error);
-                    alertDialogBuilder.setMessage(R.string.select_payment_information);
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    IntelehealthApplication.setAlertDialogCustomTheme(billConfirmationActivity.this, alertDialog);
-                    return;
-                }
-                if(no.isChecked() && not_paying_reasonTIL.getVisibility() == View.VISIBLE)
-                {
-                    if(not_paying_reasonET.getText().toString().isEmpty()) {
-                        not_paying_reasonET.setError(getResources().getString(R.string.error_field_required));
-                        Toast.makeText(billConfirmationActivity.this, getString(R.string.enter_reason_toast), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    else {
-                        not_paying_reason = not_paying_reasonET.getText().toString();
-                        paymentStatus = "Unpaid - " + not_paying_reason;
-                    }
-                }*/
                 boolean billSuccess = syncBillToServer();
                 if(billSuccess) {
-                    if(paymentStatus.equals("Paid"))
-                    {
-                        paymentStatusTV.setVisibility(View.VISIBLE);
-                        paymentStatusTV.setText(getString(R.string.paid));
-//                        paymentStatusTV.setBackgroundColor(Color.GREEN);
-                    }
-                    else if(paymentStatus.contains("Unpaid"))
-                    {
-                        paymentStatusTV.setVisibility(View.VISIBLE);
-                        paymentStatusTV.setText(getString(R.string.unpaid));
-//                        paymentStatusTV.setBackgroundColor(Color.RED);
-                    }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
@@ -585,8 +512,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
         Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
-        encounterDTO.setPrivacynotice_value("Accept");//privacy value added.
-
+        encounterDTO.setPrivacynotice_value("Accept"); //privacy value added.
         try {
             success = encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
@@ -759,25 +685,18 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
     private void createPdf() {
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        //  Display display = wm.getDefaultDisplay();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         float height = displaymetrics.heightPixels;
         float width = displaymetrics.widthPixels;
-
         int convertHeight = (int) height, convertWidth = (int) width;
-
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHeight, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
-
         Canvas canvas = page.getCanvas();
-
         Paint paint = new Paint();
         canvas.drawPaint(paint);
-
         bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHeight, true);
-
         paint.setColor(Color.BLUE);
         canvas.drawBitmap(bitmap, 0, 0, null);
         document.finishPage(page);
@@ -788,12 +707,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         File filePath = new File(path, fName);
         if (!filePath.exists())
             filePath.mkdirs();
-
         String finalPath = path + fName;
         finalBillPath = finalPath;
         File file = new File(path, fName);
         if (file.exists()) file.delete();
-
         try {
             file.createNewFile();
             document.writeTo(new FileOutputStream(file));
@@ -802,12 +719,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
             return;
         }
-
         document.close();
         Toast.makeText(this, "successfully pdf created", Toast.LENGTH_SHORT).show();
-
-//        openPdf(finalPath);
-
     }
 
     private void openPdf(String path) {
@@ -835,7 +748,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.detail_home:
                 Intent intent = new Intent(billConfirmationActivity.this, HomeActivity.class);
@@ -846,7 +758,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         }
     }
 
-    /*This function implements the Razorpay functionality
+    /**This function implements the Razorpay functionality
     By: Nishita Goyal
     Ticket: SCD-13*/
     private void makePayment() {
@@ -903,7 +815,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                         btn_connect.setBackgroundResource(R.drawable.bg_visit_details);
                     }
                 });
-
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth.
@@ -923,11 +834,9 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
     private void initBluetoothDevice() {
         IntelehealthApplication.getInstance().setCurrentCmdType(BaseEnum.CMD_ESC);
-        // printerFactory = new UniversalPrinterFactory();
         printerFactory = new ThermalPrinterFactory();
         rtPrinter = printerFactory.create();
         PrinterObserverManager.getInstance().add(this);
-
         if (curPrinterInterface != null) {
             // to maintain the bluetooth pairing throughout the app.
             rtPrinter.setPrinterInterface(curPrinterInterface);
@@ -939,16 +848,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             btn_disConnect.setBackgroundResource(R.drawable.bg_end_visit);
             btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
         }
-
         IntelehealthApplication.getInstance().setRtPrinter(rtPrinter);
         rtPrinter = IntelehealthApplication.getInstance().getRtPrinter();
         textSetting = new TextSetting();
-
-//        finalBillCV.setTextSize(60f);
-//        finalBillCV.setIncludeFontPadding(false);
-//        finalBillCV.setTextColor(getResources().getColor(R.color.ink_pen));
         finalBillCV.setBackgroundColor(getResources().getColor(R.color.white));
-        // patientDetailsTV.setText(drSign_Text);
         finalBillCV.setDrawingCacheEnabled(true);
         finalBillCV.buildDrawingCache();
         finalBillCV.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
@@ -977,14 +880,9 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
-
-
                 switch (state) {
                     case CommonEnum.CONNECT_STATE_SUCCESS:
                         TimeRecordUtils.record("RT连接end：", System.currentTimeMillis());
-//                        Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
-//                                + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
-//                        tv_device_selected.setText(printerInterface.getConfigObject().toString());
                         tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
                         curPrinterInterface = printerInterface; // set current Printer Interface
                         printerInterfaceArrayList.add(printerInterface);
@@ -995,12 +893,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                         break;
                     case CommonEnum.CONNECT_STATE_INTERRUPTED:
                         if (printerInterface != null && printerInterface.getConfigObject() != null) {
-//                            Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
-//                                            + getString(R.string._main_disconnect),
-//                                    Toast.LENGTH_SHORT).show();
                         } else {
-//                            Toast.makeText(TextPrintESCActivity.this, getString(R.string._main_disconnect),
-//                                    Toast.LENGTH_SHORT).show();
                         }
                         TimeRecordUtils.record("Time：", System.currentTimeMillis());
                         tv_device_selected.setText(R.string.please_connect);
@@ -1010,7 +903,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                         setPrintEnable(false);
                         btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
                         btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
-
                         break;
                     default:
                         break;
@@ -1025,7 +917,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     }
 
     private void setPrintEnable(boolean isEnable) {
-        // btn_txtprint.setEnabled(isEnable);
         btn_connect.setEnabled(!isEnable);
         btn_disConnect.setEnabled(isEnable);
     }
@@ -1053,12 +944,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     }
 
     private void doConnect() {
-
         if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
             showAlertDialog(getString(R.string.main_pls_choose_device));
             return;
         }
-
         pb_connect.setVisibility(View.VISIBLE);
         TimeRecordUtils.record("Start：", System.currentTimeMillis());
         BluetoothEdrConfigBean bluetoothEdrConfigBean = (BluetoothEdrConfigBean) configObj;
@@ -1072,11 +961,9 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
             rtPrinter.disConnect();
         }
-
         // disconnect and connect button color change.
         btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
         btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
-
         tv_device_selected.setText(getString(R.string.please_connect));
         tv_device_selected.setTag(BaseEnum.NO_DEVICE);
         setPrintEnable(false);
@@ -1100,7 +987,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         PIFactory piFactory = new BluetoothFactory();
         PrinterInterface printerInterface = piFactory.create();
         printerInterface.setConfigObject(bluetoothEdrConfigBean);
-
         rtPrinter.setPrinterInterface(printerInterface);
         try {
             rtPrinter.connect(bluetoothEdrConfigBean);
@@ -1125,7 +1011,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                     escCmd.setChartsetName(mChartsetName);
                     CommonSetting commonSetting = new CommonSetting();
                     commonSetting.setAlign(ALIGN_MIDDLE);
-//                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
 
                     BitmapSetting bitmapSetting = new BitmapSetting();
                     bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
@@ -1134,15 +1019,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                     Position txtposition = new Position(0, 0);
                     textSetting.setTxtPrintPosition(txtposition);
                     escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
-
-                    // textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
-                    // commonSetting.setEscLineSpacing(getInputLineSpacing());
-
-//                    try {
-//                        escCmd.append(escCmd.getTextCmd(textSetting, prescData));
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
                     escCmd.append(escCmd.getLFCRCmd());
 
                     // here printing the image...
@@ -1155,27 +1031,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
                     escCmd.append(escCmd.getLFCRCmd());
                     escCmd.append(escCmd.getLFCRCmd());
-
-                    //here it prints 2nd time taking the position of the cursor where the priting ended above.
-//                    txtposition.x = 20;
-//                    textSetting.setTxtPrintPosition(txtposition);
-//                    try {
-//                        escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//                    escCmd.append(escCmd.getLFCRCmd());
-//                    escCmd.append(escCmd.getLFCRCmd());
-//                    escCmd.append(escCmd.getLFCRCmd());
-//                    escCmd.append(escCmd.getLFCRCmd());
-//                    escCmd.append(escCmd.getHeaderCmd());
-//                    escCmd.append(escCmd.getLFCRCmd());
-
                     Log.i("bill", FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
                     if (rtPrinter.getPrinterInterface() != null) {
                         // If without selecting Bluetooth user click Print button crash happens so added this condition.
                         rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
-
                         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(billConfirmationActivity.this);
                         alertdialogBuilder.setMessage(R.string.printing);
                         alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -1186,12 +1045,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                                 finish();
                             }
                         });
-
                         androidx.appcompat.app.AlertDialog alertDialog = alertdialogBuilder.create();
                         alertDialog.setCanceledOnTouchOutside(false);
                         alertDialog.setCancelable(false);
                         alertDialog.show();
-
                         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         IntelehealthApplication.setAlertDialogCustomTheme(billConfirmationActivity.this, alertDialog);

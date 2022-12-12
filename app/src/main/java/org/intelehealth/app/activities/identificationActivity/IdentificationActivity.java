@@ -907,6 +907,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Aadhar details")) {
+                    patient1.setAadhar_details(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
 
             } while (idCursor1.moveToNext());
         }
@@ -934,6 +937,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity.setText(patient1.getCity_village());
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
+        aadharNumET.setText(patient1.getAadhar_details());
         mOccupation.setText(patient1.getOccupation());
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
@@ -1442,6 +1446,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Aadhar details"));
+            patientAttributesDTO.setValue(StringUtils.getValue(aadharNumET.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -1707,6 +1718,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Aadhar details"));
+            patientAttributesDTO.setValue(StringUtils.getValue(aadharNumET.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();

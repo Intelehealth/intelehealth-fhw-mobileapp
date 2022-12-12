@@ -175,15 +175,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
     private LinearLayout mLayout;
-
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String speciality_selected = "";
-
     boolean uploaded = false;
     boolean downloaded = false;
-
     Context context;
-
     String patientUuid;
     String visitUuid;
     String state;
@@ -195,11 +191,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medicalAdvice_HyperLink = "";
     String isSynedFlag = "";
     private float float_ageYear_Month;
-
     Spinner speciality_spinner;
-
     SQLiteDatabase db;
-
     Patient patient = new Patient();
     ObsDTO complaint = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
@@ -220,7 +213,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO hemoGlobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO totalCholesterol = new ObsDTO();
-
     String diagnosisReturned = "";
     String rxReturned = "";
     String testsReturned = "";
@@ -228,7 +220,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String doctorName = "";
     String additionalReturned = "";
     String followUpDate = "";
-
     ImageButton editVitals;
     ImageButton editDiagnostics;
     ImageButton editComplaint;
@@ -236,7 +227,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editFamHist;
     ImageButton editMedHist;
     ImageButton editAddDocs;
-
     FrameLayout frameLayout_doctor;
     TextView nameView;
     TextView genderView;
@@ -269,16 +259,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView tempcel;
     String medHistory;
     String baseDir;
-    String filePathPhyExam;
     File obsImgdir;
-
     NotificationManager mNotificationManager;
-    NotificationCompat.Builder mBuilder;
-
     RelativeLayout uploadButton;
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
-
     CardView diagnosisCard;
     CardView prescriptionCard;
     CardView medicalAdviceCard;
@@ -286,38 +271,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView additionalCommentsCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
-
-
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
-    //added checkbox flag .m
     CheckBox flag;
     EndVisitEncounterPrescription endVisitEncounterPrescription;
     String visitnoteencounteruuid = "";
     Button btnSignSubmit;
     Base64Utils base64Utils = new Base64Utils();
-
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
-
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
-
     NetworkChangeReceiver receiver;
     private boolean isConnected = false;
     private Menu mymenu;
     MenuItem internetCheck = null;
     MenuItem endVisit_click = null;
-
     private RecyclerView mAdditionalDocsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
-
     private RecyclerView mPhysicalExamsRecyclerView;
     private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
-
     public static String prescriptionHeader1;
     public static String prescriptionHeader2;
     SharedPreferences mSharedPreference;
@@ -328,19 +304,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     SessionManager sessionManager, sessionManager1;
     String encounterUuid;
     String encounterVitals;
-    //  Boolean isreturningWhatsapp = true;
     String encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
-
-    ProgressBar mProgressBar;
-    TextView mProgressText;
-
-    ImageButton additionalDocumentsDownlaod;
     ImageButton onExaminationDownload;
-
     DownloadPrescriptionService downloadPrescriptionService;
     private TextView additionalImageDownloadText;
     private TextView physcialExaminationDownloadText;
-
     ImageView ivPrescription;
     private String hasPrescription = "";
     private boolean isRespiratory = false;
@@ -362,7 +330,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
-
         internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
@@ -499,7 +466,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(VisitSummaryActivity.this);
         appLanguage = sessionManager1.getAppLanguage();
-
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
@@ -658,6 +624,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        card_print.setVisibility(View.GONE);
+        card_share.setVisibility(View.GONE);
+        generateBillBtn.setVisibility(View.GONE);
+
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
 
         //get from encountertbl from the encounter
@@ -790,7 +760,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid), sessionManager.getAppLanguage());
+
+
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -897,9 +869,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         physcialExaminationImagesDownload();
 
-
-        downloadButton.setEnabled(false);
-        downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
             editDiagnostics.setVisibility(View.GONE);
@@ -910,6 +879,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
+            card_share.setVisibility(View.VISIBLE);
+            card_print.setVisibility(View.VISIBLE);
+            generateBillBtn.setVisibility(View.VISIBLE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -921,10 +893,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
             }
             if (visitIDCursor != null) visitIDCursor.close();
-            if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
-
-            }
+//            if (visitUUID != null && !visitUUID.isEmpty()) {
+//                addDownloadButton();
+//            }
 
         }
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -962,6 +933,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
+                        downloadButton.setVisibility(View.VISIBLE);
                         generateBillBtn.setVisibility(View.VISIBLE);
                     }
 
@@ -1807,36 +1779,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (NetworkConnection.isOnline(getApplication())) {
                     Toast.makeText(context, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                 }
-
                 SyncUtils syncUtils = new SyncUtils();
                 syncUtils.syncForeground("downloadPrescription");
-//                AppConstants.notificationUtils.DownloadDone(getString(R.string.download_from_doctor), getString(R.string.prescription_downloaded), 3, VisitSummaryActivity.this);
                 uploaded = true;
-//                ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
-//                pd.setTitle(getString(R.string.downloading_prescription));
-//                pd.show();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         downloadPrescription();
-//                        pd.dismiss();
                     }
                 }, 5000);
             }
         });
-     /*   additionalDocumentsDownlaod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
-            }
-        }); */
+
         onExaminationDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4296,6 +4256,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 }
                 downloadDoctorDetails();
+
+                if(visitnote!=null && !visitnote.equalsIgnoreCase(""))
+                {
+                    editVitals.setVisibility(View.GONE);
+                    editDiagnostics.setVisibility(View.GONE);
+                    editComplaint.setVisibility(View.GONE);
+                    editPhysical.setVisibility(View.GONE);
+                    editFamHist.setVisibility(View.GONE);
+                    editMedHist.setVisibility(View.GONE);
+                    editAddDocs.setVisibility(View.GONE);
+                    uploadButton.setVisibility(View.GONE);
+                    card_print.setVisibility(View.VISIBLE);
+                    card_share.setVisibility(View.VISIBLE);
+                    generateBillBtn.setVisibility(View.VISIBLE);
+                }
             }
 
             additionalDocumentImagesDownload();
@@ -4502,7 +4477,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);

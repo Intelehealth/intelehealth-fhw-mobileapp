@@ -709,7 +709,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
                     android:paddingVertical="10dp"
-                    android:text="Make Payment"
+                    android:text="@string/make_payment"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />

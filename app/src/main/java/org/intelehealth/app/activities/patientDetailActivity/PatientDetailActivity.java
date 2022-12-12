@@ -522,6 +522,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Aadhar details")) {
+                    patient_new.setAadhar_details(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
@@ -546,6 +549,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView education_statusView = findViewById(R.id.textView_education_status);
         phoneView = findViewById(R.id.textView_phone);
         TextView sdwView = findViewById(R.id.textView_SDW);
+        TextView aadharView = findViewById(R.id.textView_Aadhar);
+        TableRow aadharRow = findViewById(R.id.tableRow_Aadhar);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
         TableRow occuRow = findViewById(R.id.tableRow_Occupation);
@@ -1081,6 +1086,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             sdwView.setText(patient_new.getSdw());
         } else {
             sdwRow.setVisibility(View.GONE);
+        }
+
+        if (patient_new.getAadhar_details() != null && !patient_new.getAadhar_details().equals("")) {
+            aadharView.setText(patient_new.getAadhar_details());
+        } else {
+            aadharRow.setVisibility(View.GONE);
         }
 
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {

@@ -441,6 +441,41 @@
                         </TableRow>
 
                         <TableRow
+                            android:id="@+id/tableRow_Aadhar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:paddingRight="5dp"
+                                android:text="@string/aadhar_number_details"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                            <TextView
+                                android:id="@+id/textView_Aadhar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content" />
+
+
+                        </TableRow>
+
+
+                        <TableRow
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -616,6 +651,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/padding_card"
+                            android:visibility="gone"
                             app:cardCornerRadius="5dp"
                             app:cardElevation="2dp"
                             app:cardUseCompatPadding="true">

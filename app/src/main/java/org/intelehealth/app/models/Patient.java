@@ -22,6 +22,7 @@ public class Patient {
     private String education_level;
     private String caste;
     private String emergency;
+    private String aadhar_details;
 
     public String getUuid() {
         return uuid;
@@ -191,5 +192,13 @@ public class Patient {
 
     public void setEmergency(String emergency) {
         this.emergency = emergency;
+    }
+
+    public String getAadhar_details() {
+        return aadhar_details;
+    }
+
+    public void setAadhar_details(String aadhar_details) {
+        this.aadhar_details = aadhar_details;
     }
 }

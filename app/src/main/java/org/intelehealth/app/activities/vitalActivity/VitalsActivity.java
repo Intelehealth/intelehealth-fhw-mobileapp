@@ -1,9 +1,12 @@
 package org.intelehealth.app.activities.vitalActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,8 +16,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,6 +36,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.intelehealth.app.R;
@@ -63,10 +69,10 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
-
+    String appLanguage;
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp, mAbdominalGirth,
             bloodGlucose_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
 
@@ -105,7 +111,10 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
 
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
@@ -129,6 +138,7 @@ public class VitalsActivity extends AppCompatActivity {
         totalCholestrol_editText = findViewById(R.id.totalCholestrol_editText);
 
         mBMI = findViewById(R.id.table_bmi);
+        mAbdominalGirth = findViewById(R.id.table_abdominal_girth);
 //    Respiratory added by mahiti dev team
 
         mResp = findViewById(R.id.table_respiratory);
@@ -483,6 +493,30 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
+        //abdominal girth
+        mAbdominalGirth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE)) {
+                        mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                    } else {
+                        mAbdominalGirth.setError(null);
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mAbdominalGirth.getText().toString().startsWith(".")) {
+                    mAbdominalGirth.setText("");
+                } else {
+                }
+            }
+        });
+
         // glucose - non-fasting
         bloodGlucose_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -784,6 +818,9 @@ public class VitalsActivity extends AppCompatActivity {
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
                 mBpDia.setText(value);
                 break;
+            case UuidDictionary.ABDOMINAL_GIRTH: //Abdominal Girth
+                mAbdominalGirth.setText(value);
+                break;
             case UuidDictionary.TEMPERATURE: //Temperature
                 if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
@@ -871,6 +908,7 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
+        values.add(mAbdominalGirth);
         values.add(bloodGlucoseRandom_editText);
         values.add(bloodGlucosePostPrandial_editText);
         values.add(bloodGlucose_editText_fasting);
@@ -1175,6 +1213,9 @@ public class VitalsActivity extends AppCompatActivity {
                 }
                 if (mBpSys.getText() != null) {
                     results.setBpsys((mBpSys.getText().toString()));
+                }
+                if (mAbdominalGirth.getText() != null) {
+                    results.setAbdominalGirth((mAbdominalGirth.getText().toString()));
                 }
                 if (mTemperature.getText() != null) {
 
@@ -1740,5 +1781,23 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String getPrice(String price, int indexOf) {
         return price.substring(0, indexOf);
+    }
+
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            VitalsActivity.this.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
     }
 }

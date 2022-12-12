@@ -368,6 +368,7 @@
     <string name="spo2_error">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error">Pulse should be in between %1$s and %2$s</string>
     <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>
+    <string name="abdominal_girth_male_error">Abdominal girth should be less than %1$s inches</string>
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
@@ -938,4 +939,7 @@
 
     //new feature
     <string name="aadhar_issue">Enter valid aadhar number.</string>
+    <string name="aadhar_number_details">Aadhar Card Number</string>
+    <string name="abdominal_girth_vitals">Abdominal Girth (inches)</string>
+    <string name="make_payment">Make Payment</string>
 </resources>
