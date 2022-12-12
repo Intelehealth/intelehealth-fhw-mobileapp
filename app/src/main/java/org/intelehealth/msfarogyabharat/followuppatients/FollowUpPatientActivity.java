@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientAdapter;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.models.FollowUpModel;
 import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
@@ -63,13 +66,16 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     private String TAG = FollowUpPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     //    FloatingActionButton new_patient;
-    int limit = Integer.MAX_VALUE, offset = 0;
     //    boolean fullyLoaded = false;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
     LinearLayout llToolbar;
 
     private boolean shouldAllowBack = true;
+    private final int limit = 15;
+    private int start = 0, end = start + limit;
+    private boolean isFullyLoaded = false;
+    private List<FollowUpModel> followUpList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +109,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
-        customProgressDialog = new CustomProgressDialog(FollowUpPatientActivity.this);
+        initializeRecyclerView(reLayoutManager);
 
+        customProgressDialog = new CustomProgressDialog(FollowUpPatientActivity.this);
         if (sessionManager.isPullSyncFinished()) {
             msg.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -126,25 +133,19 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         executorService.execute(() -> {
             runOnUiThread(() -> customProgressDialog.show());
 
-            List<FollowUpModel> followUpList = getAllPatientsFromDB(offset);
-            runOnUiThread(() -> {
-                try {
-                    recycler = new FollowUpPatientAdapter(followUpList, FollowUpPatientActivity.this);
-                    recyclerView.setAdapter(recycler);
-                } catch (Exception e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    Logger.logE("firstquery", "exception", e);
-                }
+            followUpList = getAllPatientsFromDB();
 
+            runOnUiThread(() -> {
                 customProgressDialog.dismiss();
+                initialRecyclerViewDataSet();
+                shouldAllowBack = true;
             });
 
-            shouldAllowBack = true;
             getFollowUpCount();
         });
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB(int offset) {
+    public List<FollowUpModel> getAllPatientsFromDB() {
         String visitType = "General";
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
@@ -566,5 +567,49 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (shouldAllowBack)
             super.onBackPressed();
+    }
+
+    private void initializeRecyclerView(LinearLayoutManager linearLayoutManager) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (followUpList != null && start > followUpList.size()) {
+                    isFullyLoaded = true;
+                    return;
+                }
+
+                if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && linearLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
+                    Toast.makeText(FollowUpPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    setMoreDataIntoRecyclerView();
+                }
+            }
+        });
+    }
+
+    // This method is used for initially adding only "limit" number of elements into the RecyclerView - Added by Arpan Sircar
+    private void initialRecyclerViewDataSet() {
+        if (end > followUpList.size()) {
+            end = followUpList.size();
+            isFullyLoaded = true;
+        }
+
+        recycler = new FollowUpPatientAdapter(followUpList.subList(start, end), FollowUpPatientActivity.this);
+        recyclerView.setAdapter(recycler);
+        start = end;
+        end += limit;
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further - Added by Arpan Sircar
+    private void setMoreDataIntoRecyclerView() {
+        if (end > followUpList.size()) {
+            end = followUpList.size();
+            isFullyLoaded = true;
+        }
+
+        recycler.patients.addAll(followUpList.subList(start, end));
+        recycler.notifyDataSetChanged();
+        start = end;
+        end += limit;
     }
 }

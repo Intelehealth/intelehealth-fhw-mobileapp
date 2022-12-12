@@ -2,7 +2,6 @@ package org.intelehealth.msfarogyabharat.followuppatients;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,24 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.msfarogyabharat.models.FollowUpModel;
-import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
 import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.getCurrentDate;
-import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.mGetDaysAccording;
-
 public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatientAdapter.Myholder> {
-    List<FollowUpModel> patients;
+    List<FollowUpModel> patients = new ArrayList<>();
     Context context;
     LayoutInflater layoutInflater;
 
     public FollowUpPatientAdapter(List<FollowUpModel> patients, Context context) {
-        this.patients = patients;
+        this.patients.addAll(patients);
         this.context = context;
     }
 
@@ -52,15 +45,12 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
         final FollowUpModel patinet = patients.get(position);
 
         if (patinet != null) {
-            //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
-
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDate_of_birth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
             if (patinet.getOpenmrs_id() != null)
-                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name()
-                        + ", " + patinet.getOpenmrs_id());
+                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name() + ", " + patinet.getOpenmrs_id());
             else
                 holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
 
@@ -74,12 +64,11 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             if (patinet.getValue() == 0 || patinet.getValue() == 1) {
                 holder.dueDateTextView.setVisibility(View.GONE);
             } else {
-                if(patinet.getFollowup_date()!=null) {
+                if (patinet.getFollowup_date() != null) {
                     holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
                     holder.dueDateTextView.setVisibility(View.VISIBLE);
                 }
             }
-
         }
 
 //        if (!patinet.getVisitStartDate().equalsIgnoreCase("null")) {
@@ -156,21 +145,19 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
 //            holder.linearLayout.setVisibility(View.GONE);
 //            holder.dueDateTextView.setVisibility(View.GONE);
 //        }
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("search adapter", "patientuuid" + patinet.getUuid());
-                String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getPatientuuid());
-                intent.putExtra("patientName", patinet.getFirst_name() + "" + patinet.getLast_name());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "search");
-                intent.putExtra("intentTag2", "findPatient");
-                intent.putExtra("hasPrescription", "false");
-                intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
-                context.startActivity(intent);
-            }
+
+        holder.linearLayout.setOnClickListener(v -> {
+            Log.d("search adapter", "patientuuid" + patinet.getUuid());
+            String patientStatus = "returning";
+            Intent intent = new Intent(context, PatientDetailActivity.class);
+            intent.putExtra("patientUuid", patinet.getPatientuuid());
+            intent.putExtra("patientName", patinet.getFirst_name() + "" + patinet.getLast_name());
+            intent.putExtra("status", patientStatus);
+            intent.putExtra("tag", "search");
+            intent.putExtra("intentTag2", "findPatient");
+            intent.putExtra("hasPrescription", "false");
+            intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
+            context.startActivity(intent);
         });
     }
 
@@ -180,6 +167,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
     }
 
     class Myholder extends RecyclerView.ViewHolder {
+
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
@@ -187,6 +175,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
 
         public Myholder(View itemView) {
             super(itemView);
+            Log.d("Adapter", "Current thread: " + Thread.currentThread().getName());
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
             commentTextView = itemView.findViewById(R.id.list_item_comment);
@@ -194,5 +183,4 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
-
 }
