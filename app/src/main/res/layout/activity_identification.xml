@@ -233,6 +233,7 @@
                             <RadioButton
                                 android:id="@+id/identification_gender_other"
                                 android:layout_width="wrap_content"
+                                android:visibility="gone"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/female_icon"
@@ -637,6 +638,29 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="8dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/identification_aadhar_number"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_baseline_perm_identity_24"
+                                android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="@string/aadhar_number_details"
+                                android:imeOptions="actionUnspecified"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"

@@ -214,6 +214,28 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_abdominal_girth"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/abdominal_girth_vitals"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

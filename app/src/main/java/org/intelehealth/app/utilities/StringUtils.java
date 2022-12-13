@@ -3712,7 +3712,7 @@ public final class StringUtils {
 
     public static String getSpecialityTranslated(String val, String locale) {
         if (locale.equalsIgnoreCase("hi")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "सामान्य चिकित्सक":
                     val = "General Physician";
                     break;
@@ -3751,7 +3751,7 @@ public final class StringUtils {
 
     public static String getSpecialityTranslated_Edit(String val, String locale) {
         if (locale.equalsIgnoreCase("hi")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "General Physician":
                     val = "सामान्य चिकित्सक";
                     break;

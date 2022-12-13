@@ -19,6 +19,7 @@ public class VitalsObject {
     private String hemoglobin;
     private String uricAcid;
     private String totlaCholesterol;
+    private String abdominalGirth;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -153,5 +154,13 @@ public class VitalsObject {
 
     public void setTotlaCholesterol(String totlaCholesterol) {
         this.totlaCholesterol = totlaCholesterol;
+    }
+
+    public String getAbdominalGirth() {
+        return abdominalGirth;
+    }
+
+    public void setAbdominalGirth(String abdominalGirth) {
+        this.abdominalGirth = abdominalGirth;
     }
 }

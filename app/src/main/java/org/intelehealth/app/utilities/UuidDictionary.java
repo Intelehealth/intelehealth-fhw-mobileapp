@@ -90,4 +90,7 @@ public class UuidDictionary {
     public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325720";
     public static final String BILL_PRICE_BP_ID = "dd51ab03-12ef-43cb-9aef-2ec93a989816";
     public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
+
+    //Abdominal Girth
+    public static final String ABDOMINAL_GIRTH = "4a49bacc-3510-4700-9099-2b7aa788688e";
 }
