@@ -7,7 +7,7 @@
 
     <stroke
         android:width="5dp"
-        android:color="#EFE8FF" />
+        android:color="@color/grey_button_bg" />
 
     <padding
         android:bottom="1dp"
@@ -16,8 +16,8 @@
         android:top="1dp" />
 
     <corners
-        android:bottomLeftRadius="10dp"
+        android:bottomLeftRadius="14dp"
         android:bottomRightRadius="0dp"
-        android:topLeftRadius="10dp"
-        android:topRightRadius="10dp" />
+        android:topLeftRadius="14dp"
+        android:topRightRadius="14dp" />
 </shape>

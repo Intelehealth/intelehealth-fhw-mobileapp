@@ -88,6 +88,9 @@
     <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop1">18dp</dimen>
 
+    <dimen name="home_frag_parent_padding_all">8dp</dimen>
+    <dimen name="home_frag_parent_padding_bottom">70dp</dimen>
+
     <!--Home Screen - Homefragment UI2.0-->
     <dimen name="home_parent_layout_padding">16dp</dimen>
     <dimen name="find_patient_padding_top">15dp</dimen>
@@ -99,11 +102,15 @@
     <dimen name="find_patient_margin_start">5dp</dimen>
     <dimen name="find_patient_margin_end">7dp</dimen>
     <dimen name="find_patient_padding">16dp</dimen>
-    <dimen name="find_patient_icon_padding">16dp</dimen>
+    <dimen name="find_patient_icon_padding">12dp</dimen>
     <dimen name="find_patient_margin_top">5dp</dimen>
     <dimen name="home_framelayout_margin_top">7dp</dimen>
     <dimen name="home_framelayout_margin_bottom">20dp</dimen>
     <dimen name="home_framelayout_padding_bottom">10dp</dimen>
+
+    <!-- new-->
+    <dimen name="find_patient_margin_start_new">19dp</dimen>
+    <dimen name="find_patient_margin_end_new">19dp</dimen>
 
     <dimen name="card_add_patient_home_height">140dp</dimen>
     <dimen name="card_add_patient_home_topmargin">40dp</dimen>
@@ -313,12 +320,13 @@
     <dimen name="spinner_countries_margin_top">15dp</dimen>
     <dimen name="spinner_countries_margin_end">15dp</dimen>
     <dimen name="et_mobile_pass_margin_top">13dp</dimen>
-    <dimen name="spinner_countries_margin">13dp</dimen>
+    <dimen name="spinner_countries_margin">11dp</dimen>
     <dimen name="options_button_padding_top">20dp</dimen>
     <dimen name="options_button_padding_end">14dp</dimen>
     <dimen name="options_button_padding_bottom">20dp</dimen>
     <dimen name="options_button_padding_start">14dp</dimen>
     <dimen name="info_options_text_size">18sp</dimen>
+    <dimen name="otp_pinview_margin_end">12dp</dimen>
 
     <!--Navigation drawer UI2.0-->
 
@@ -774,4 +782,67 @@
     <dimen name="ad_title_text_size">18sp</dimen>
     <dimen name="cp_option_icon_padding">5dp</dimen>
 
+
+    <!--UI2.0 Schedule appointment screen-->
+    <dimen name="schedule_parent_padding_start_end">28dp</dimen>
+    <dimen name="schedule_scroll_margin_top">44dp</dimen>
+    <dimen name="schedule_scroll_margin_bottom">90dp</dimen>
+    <dimen name="schedule_parent_sub_padding_bottom">80dp</dimen>
+    <dimen name="schedule_iv_calendar_height_width">30dp</dimen>
+    <dimen name="schedule_iv_month_margin_start">16dp</dimen>
+    <dimen name="schedule_iv_month_margin_top">5dp</dimen>
+    <dimen name="schedule_iv_month_line_height">26dp</dimen>
+    <dimen name="schedule_iv_month_text_Size">18sp</dimen>
+    <dimen name="schedule_iv_month_arrows_margin_end">16dp</dimen>
+    <dimen name="schedule_hor_calview_margin_top">20dp</dimen>
+    <dimen name="schedule_prev_app_details_margin_top">34dp</dimen>
+    <dimen name="schedule_pick_time_margin_top">24dp</dimen>
+    <dimen name="schedule_tv_morning_title_margin_top">20dp</dimen>
+    <dimen name="schedule_tv_morning_drawable_padding">128dp</dimen>
+    <dimen name="schedule_rv_morning_margin_top">20dp</dimen>
+    <dimen name="schedule_tv_afternoon_title_margin_top">28dp</dimen>
+    <dimen name="schedule_rv_afternoon_margin_top">16dp</dimen>
+    <dimen name="schedule_tv_evening_title_margin_top">28dp</dimen>
+    <dimen name="schedule_rv_evening_margin_top">20dp</dimen>
+
+    <!--UI2.0 text chat support screen-->
+    <dimen name="media_options_margin_top">100dp</dimen>
+    <dimen name="media_options_margin_bottom">120dp</dimen>
+    <dimen name="media_options1_margin_start">28dp</dimen>
+    <dimen name="media_options1_margin_top">12dp</dimen>
+    <dimen name="media_options1_margin_end">28dp</dimen>
+    <dimen name="media_options1_margin_bottom">12dp</dimen>
+    <dimen name="media_options1_layout_padding">12dp</dimen>
+    <dimen name="media_options1_cards_padding">14dp</dimen>
+    <dimen name="media_options1_iv_height">80dp</dimen>
+    <dimen name="tv_card_media_margin_bottom">15dp</dimen>
+    <dimen name="card_apps_media_title_margin_top">7dp</dimen>
+    <dimen name="card_apps_media_title_text_size">16sp</dimen>
+    <dimen name="layout_msg_inbox_height">70dp</dimen>
+    <dimen name="layout_msg_inbox_margin_top">25dp</dimen>
+    <dimen name="layout_msg_inbox_margin_bottom">22dp</dimen>
+    <dimen name="layout_msg_inbox_margin_end">20dp</dimen>
+    <dimen name="tv_type_here_margin_end1">20dp</dimen>
+    <dimen name="tv_type_here_padding_end1">18dp</dimen>
+    <dimen name="iv_attachment_height">26dp</dimen>
+    <dimen name="iv_attachment_width">26dp</dimen>
+    <dimen name="iv_send_msg_height">24dp</dimen>
+    <dimen name="iv_send_msg_width">24dp</dimen>
+
+    <dimen name="iv_img_media_height_width">172dp</dimen>
+    <dimen name="iv_img_media_margin_top">16dp</dimen>
+    <dimen name="iv_img_media_margin1">15dp</dimen>
+    <dimen name="help_card_incoming_margin_start">35dp</dimen>
+    <dimen name="help_card_incoming_margin_top">20dp</dimen>
+    <dimen name="help_card_doc_margin_top">16dp</dimen>
+    <dimen name="help_card_doc_margin1">10dp</dimen>
+    <dimen name="help_card_doc_iv_height_width">80dp</dimen>
+    <dimen name="help_card_doc_iv_padding">20dp</dimen>
+    <dimen name="help_card_doc_tv_text_size">18sp</dimen>
+    <dimen name="help_card_doc_tv_text_margin_end">24dp</dimen>
+    <dimen name="help_card_tv_msg_sent_text_size">16sp</dimen>
+    <dimen name="help_card_msg_sent_height">42dp</dimen>
+    <dimen name="help_card_msg_sent_width">42dp</dimen>
+    <dimen name="help_card_msg_sent_margin_top">7dp</dimen>
+    <dimen name="help_card_msg_sent_padding">10dp</dimen>
 </resources>

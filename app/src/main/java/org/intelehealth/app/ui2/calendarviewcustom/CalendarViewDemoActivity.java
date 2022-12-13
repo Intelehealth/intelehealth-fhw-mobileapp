@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarViewDemoActivity extends AppCompatActivity {
+public class CalendarViewDemoActivity extends AppCompatActivity implements SendSelectedDateInterface{
     private static final String TAG = "CalendarViewDemoActivit";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;
@@ -56,7 +56,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
     String monthToCompare = "";
     int currentMonth;
     int currentYear;
-
+    TextView tv_selected_date_demo;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -64,9 +64,11 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view_demo_ui2);
 
-        CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this);
-        String selectedDate = customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
-        Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
+        tv_selected_date_demo = findViewById(R.id.tv_selected_date_demo);
+
+        CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this, this);
+      customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
+     //  Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
       //  showDatePicker(this);
 
     }
@@ -432,6 +434,22 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void getSelectedDate(String selectedDate, String whichDate) {
+        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+
+            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+            if (!selectedDate.isEmpty()) {
+                String[] splitedDate = selectedDate.split("/");
+                tv_selected_date_demo.setText(dateToshow1);
+                Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
+
+            } else {
+                Log.d(TAG, "onClick: date empty");
+            }
+
+    }
+
     public class MonthsSpinnerAdapter extends ArrayAdapter<CalendarViewMonthModel> {
 
         private Context context;
@@ -674,4 +692,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity {
 
         alertDialog.show();
     }
+
+
 }

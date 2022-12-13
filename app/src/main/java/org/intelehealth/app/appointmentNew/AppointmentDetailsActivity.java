@@ -712,6 +712,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                             .putExtra("app_start_day", app_start_day)
                             .putExtra("rescheduleReason", mEngReason)
                             .putExtra("speciality", visit_speciality), SCHEDULE_LISTING_INTENT);
+
+                    Log.d(TAG, "onClick: speciality : "+visit_speciality);
                 }
 
             }

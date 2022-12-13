@@ -83,8 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="@dimen/media_options_margin_top"
+        android:layout_marginBottom="@dimen/media_options_margin_top"
         android:visibility="gone">
 
         <include
@@ -95,28 +95,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/layout_msg_inbox_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="@dimen/layout_msg_inbox_margin_top"
+        android:layout_marginBottom="@dimen/layout_msg_inbox_margin_bottom"
         android:orientation="horizontal"
         android:paddingStart="@dimen/help_parent1_videos_padding_start"
-        android:paddingEnd="@dimen/help_parent_videos_padding_end"
+        android:paddingEnd="@dimen/layout_msg_inbox_margin_end"
         android:weightSum="2">
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/tv_type_here_margin_end"
+            android:layout_marginEnd="@dimen/tv_type_here_margin_end1"
             android:layout_weight="1.7"
             android:background="@drawable/bg_input_fieldnew"
-            android:paddingEnd="15dp">
+            android:paddingEnd="@dimen/tv_type_here_padding_end1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tel_send_msg_chat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/tv_type_here_margin_end"
+                android:layout_marginEnd="@dimen/tv_type_here_margin_end1"
                 android:layout_toStartOf="@+id/iv_attachment_chat"
                 app:hintEnabled="false">
 
@@ -137,8 +137,8 @@
 
             <ImageView
                 android:id="@+id/iv_attachment_chat"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="@dimen/iv_attachment_height"
+                android:layout_height="@dimen/iv_attachment_width"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ui2_icon_attachment"
@@ -150,13 +150,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            app:cardCornerRadius="8dp"
-            android:backgroundTint="@color/colorPrimary">
+            android:backgroundTint="@color/colorPrimary"
+            app:cardCornerRadius="8dp">
 
             <ImageView
                 android:id="@+id/iv_send_message_chat"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/iv_send_msg_height"
+                android:layout_height="@dimen/iv_send_msg_width"
                 android:layout_gravity="center"
                 android:src="@drawable/ui2_ic_icons8_sent_1" />
 

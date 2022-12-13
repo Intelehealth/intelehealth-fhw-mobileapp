@@ -1,44 +1,93 @@
 package org.intelehealth.app.activities.chatHelp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.help.adapter.ChatSupportAdapter_New;
+import org.intelehealth.app.activities.splash_activity.SplashActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
+import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.ui2.calendarviewcustom.CalendarViewDemoActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-public class ChatHelpActivity_New extends AppCompatActivity {
+public class ChatHelpActivity_New extends AppCompatActivity implements ClickListenerInterface {
     private static final String TAG = "ChatHelpActivity_New";
     TextInputEditText etSendMessage;
     TextInputLayout telSendMessage;
@@ -46,19 +95,26 @@ public class ChatHelpActivity_New extends AppCompatActivity {
     LinearLayout layoutCamera, layoutGallery, layoutDocument;
     View layoutChooseOptions;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+    private static final int PICKFILE_RESULT_CODE = 2002;
+
     private Handler mBackgroundHandler;
     RecyclerView rvChatSupport;
     ChatHelpAdapter_New chatHelpAdapter_new;
     List<ChatHelpModel> chattingDetailsList;
     FrameLayout layoutMediaOptions;
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private static final int BUFFER_SIZE = 1024 * 2;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_help_new_ui2);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         chattingDetailsList = new ArrayList<>();
-        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList);
+        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
 
 
         ImageView ivIsInternet = findViewById(R.id.iv_is_internet);
@@ -77,6 +133,16 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvChatSupport.setLayoutManager(layoutManager);
 
+        ImageView ivCallSupport = findViewById(R.id.iv_call_support);
+
+        ivCallSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatHelpActivity_New.this, CalendarViewDemoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ivSendMessage.setOnClickListener(v -> {
             fillDataInList();
 
@@ -89,9 +155,16 @@ public class ChatHelpActivity_New extends AppCompatActivity {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+        checkPerm();
+        etSendMessage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                layoutMediaOptions.setVisibility(View.GONE);
 
+                return false;
+            }
+        });
 
-        clickListeners();
     }
 
     private void fillDataInList() {
@@ -101,7 +174,7 @@ public class ChatHelpActivity_New extends AppCompatActivity {
 
 
         ChatHelpModel c1 = new ChatHelpModel("", outgoingMsg, "",
-                "Mon 5 at 4 pm", "", false,
+                getCurrentTime(), "", false,
                 false, false, false, false,
                 false, false, true, "", "");
         chattingDetailsList.add(c1);
@@ -112,7 +185,7 @@ public class ChatHelpActivity_New extends AppCompatActivity {
                 false, false, true, "");
         chattingDetailsList.add(c2);*/
 
-        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList);
+        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
         rvChatSupport.setAdapter(chatHelpAdapter_new);
 
         Log.d(TAG, "fillDataInList: chattingDetailsList size  :" + chattingDetailsList.size());
@@ -141,8 +214,36 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         });
 
         layoutGallery.setOnClickListener(v -> {
+            layoutMediaOptions.setVisibility(View.GONE);
+          /*  Intent intent = new Intent();
+            intent.setType("image/* video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,"Select Video"),PICK_IMAGE_FROM_GALLERY);
+
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+            startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);*/
+           /* Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setType("image/* video/*");
+            startActivityForResult(pickIntent, PICK_IMAGE_FROM_GALLERY);*/
+
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("*/*");
+            photoPickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+            startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_GALLERY);
+        });
+
+        layoutDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutMediaOptions.setVisibility(View.GONE);
+
+                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                chooseFile.setType("application/pdf");
+                startActivityForResult(
+                        Intent.createChooser(chooseFile, "Choose a file"),
+                        PICKFILE_RESULT_CODE
+                );
+            }
         });
     }
 
@@ -163,47 +264,128 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (data != null) {
                 Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                Log.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
+                if (selectedImage.toString().toLowerCase().contains("image") || selectedImage.toString().toLowerCase().contains(".jpeg") || selectedImage.toString().toLowerCase().contains(".jpg")) {
+                    Log.d(TAG, "onActivityResult: im image if");
+                    //handle image
+                    String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String picturePath = c.getString(columnIndex);
+                    c.close();
+                    //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                    Log.v("path", picturePath + "");
 
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
+                    // copy & rename the file
+                    String finalImageName = UUID.randomUUID().toString();
+                    final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                    BitmapUtils.copyFile(picturePath, finalFilePath);
+                    compressImageAndSave(finalFilePath);
+                } else if (selectedImage.toString().toLowerCase().contains("video") || selectedImage.toString().toLowerCase().contains(".mp4")) {
+                    //handle video
+                    String filemanagerstring = selectedImage.getPath();
+                    Log.d(TAG, "onActivityResult: video result : " + filemanagerstring);
+
+                    // MEDIA GALLERY
+                    String selectedImagePath = getPath(selectedImage);
+                    if (selectedImagePath != null) {
+                        ChatHelpModel c1 = new ChatHelpModel("", "", "",
+                                getCurrentTime(), "", false,
+                                false, true, false, false,
+                                false, false, false, selectedImagePath,
+                                "");
+                        chattingDetailsList.add(c1);
+                        Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
+                        rvChatSupport.setAdapter(chatHelpAdapter_new);
+                    }
+
+                }
+
+
             }
+        } else if (requestCode == PICKFILE_RESULT_CODE) {
+            Uri uri = data.getData();
+            String selectedDocPath = getPathNew(uri);
+            Log.d(TAG, "onActivityResult: src file path : " + selectedDocPath);
+            String filename = selectedDocPath.substring(selectedDocPath.lastIndexOf("/") + 1);
+            Log.d(TAG, "onActivityResult: filename  : " + filename);
+
+            ChatHelpModel c1 = new ChatHelpModel("", "", "",
+                    getCurrentTime(), "", false,
+                    true, false, false,
+                    false,
+                    false, false, false, selectedDocPath,
+                    "");
+            chattingDetailsList.add(c1);
+            Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+            chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
+            rvChatSupport.setAdapter(chatHelpAdapter_new);
         }
     }
 
-    // save image
+    public String getPathNew(Uri uri) {
+
+        String path = null;
+        String[] projection = {MediaStore.Files.FileColumns.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+
+        if (cursor == null) {
+            path = uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int column_index = cursor.getColumnIndexOrThrow(projection[0]);
+            path = cursor.getString(column_index);
+            cursor.close();
+        }
+
+        return ((path == null || path.isEmpty()) ? (uri.getPath()) : path);
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Video.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
+
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
-        File photo = new File(picturePath);
-        if (photo.exists()) {
-            try {
-                long length = photo.length();
-                length = length / 1024;
-                Log.e("------->>>>", length + "");
-            } catch (Exception e) {
-                System.out.println("File not found : " + e.getMessage() + e);
+        try {
+
+
+            File photo = new File(picturePath);
+            if (photo.exists()) {
+                try {
+                    long length = photo.length();
+                    length = length / 1024;
+                    Log.e("------->>>>", length + "");
+                } catch (Exception e) {
+                    System.out.println("File not found : " + e.getMessage() + e);
+                }
+                //update list from here
+                ChatHelpModel c1 = new ChatHelpModel("", "", "",
+                        getCurrentTime(), "", true,
+                        false, false, false, false,
+                        false, false, false, picturePath, "");
+                chattingDetailsList.add(c1);
+                Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
+                rvChatSupport.setAdapter(chatHelpAdapter_new);
+                //chatHelpAdapter_new.add(c1);
+                //updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
             }
-            //update list from here
-            ChatHelpModel c1 = new ChatHelpModel("", "", "",
-                    "", "", true,
-                    false, false, false, false,
-                    false, false, false, picturePath, "");
-            chattingDetailsList.add(c1);
-            Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
-            chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList);
-            rvChatSupport.setAdapter(chatHelpAdapter_new);
-            //chatHelpAdapter_new.add(c1);
-            //updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+
+        } catch (Exception e) {
+            Log.d(TAG, "saveImage: exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -237,5 +419,189 @@ public class ChatHelpActivity_New extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
+    private void checkPerm() {
+        if (checkAndRequestPermissions()) {
+            clickListeners();
+
+        }
+       /* PermissionListener permissionlistener = new PermissionListener() {
+
+            @Override
+            public void onPermissionGranted() {
+//                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+//                Timer t = new Timer();
+//                t.schedule(new splash(), 2000);
+
+//                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
+//                TempDialog.setMessage("Data migrating...");
+//                TempDialog.setCancelable(false);
+//                TempDialog.setProgress(i);
+//                TempDialog.show();
+
+
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(SplashActivity.this, getString(R.string.permission_denied) + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage(R.string.reject_permission_results)
+                .setPermissions(*//*Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE,*//*
+                        Manifest.permission.GET_ACCOUNTS,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int cameraPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+        int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
+        }
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void performOnClick(String whichItem, String mediaPath) {
+        if (!whichItem.isEmpty() && whichItem.equals("image")) {
+            showFullScreenImage(ChatHelpActivity_New.this, mediaPath);
+        } else if (!whichItem.isEmpty() && whichItem.equals("document")) {
+            openDocument(mediaPath);
+        }
+
+
+    }
+
+    private void openDocument(String mediaPath) {
+        Log.d(TAG, "openDocument: mediaPath : "+mediaPath);
+     /*   File file = new File(Environment.getExternalStorageDirectory(),
+                mediaPath);
+        Uri path = Uri.fromFile(file);
+        Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+        pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        pdfOpenintent.setDataAndType(path, "application/pdf");
+        try {
+            startActivity(pdfOpenintent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        File file = new File(mediaPath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
+    public void showFullScreenImage(Context context, String mediaPath) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_layout_full_screen_image_ui2, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView ivFullImage = convertView.findViewById(R.id.iv_full_image);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        Glide.with(ChatHelpActivity_New.this)
+                .load(mediaPath)
+                .thumbnail(0.3f)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(ivFullImage);
+
+        alertDialog.show();
+
+
+    }
+
+    private String getCurrentTime() {
+        LocalTime localTime = LocalTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        Date d = new Date();
+        String dayOfTheWeek = sdf.format(d).substring(0, 3);
+        String formattedTime = dayOfTheWeek + " at " + localTime.format(dateTimeFormatter);
+        return formattedTime;
+    }
 
 }

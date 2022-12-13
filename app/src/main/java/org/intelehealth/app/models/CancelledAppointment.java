@@ -1,104 +1,82 @@
-package org.intelehealth.app.appointment.model;
+package org.intelehealth.app.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class AppointmentInfo implements Serializable {
-    @Expose
-    @SerializedName("uuid")
-    private String uuid;
-    @Expose
+public class CancelledAppointment {
     @SerializedName("id")
-    private int id;
     @Expose
+    private Integer id;
     @SerializedName("slotDay")
+    @Expose
     private String slotDay;
-    @Expose
     @SerializedName("slotDate")
+    @Expose
     private String slotDate;
-    @Expose
     @SerializedName("slotJsDate")
+    @Expose
     private String slotJsDate;
-    @Expose
     @SerializedName("slotDuration")
-    private int slotDuration;
     @Expose
+    private Integer slotDuration;
     @SerializedName("slotDurationUnit")
+    @Expose
     private String slotDurationUnit;
-    @Expose
     @SerializedName("slotTime")
+    @Expose
     private String slotTime;
-    @Expose
     @SerializedName("speciality")
+    @Expose
     private String speciality;
-
-    @Expose
     @SerializedName("userUuid")
+    @Expose
     private String userUuid;
-    @Expose
     @SerializedName("drName")
+    @Expose
     private String drName;
-    @Expose
     @SerializedName("visitUuid")
+    @Expose
     private String visitUuid;
-    @Expose
-    @SerializedName("patientName")
-    private String patientName;
-    @Expose
-    @SerializedName("openMrsId")
-    private String openMrsId;
-    @Expose
     @SerializedName("patientId")
+    @Expose
     private String patientId;
+    @SerializedName("locationUuid")
     @Expose
+    private String locationUuid;
+    @SerializedName("hwUUID")
+    @Expose
+    private String hwUUID;
+    @SerializedName("patientName")
+    @Expose
+    private String patientName;
+    @SerializedName("openMrsId")
+    @Expose
+    private String openMrsId;
     @SerializedName("status")
+    @Expose
     private String status;
+    @SerializedName("createdBy")
     @Expose
+    private String createdBy;
+    @SerializedName("updatedBy")
+    @Expose
+    private String updatedBy;
+    @SerializedName("reason")
+    @Expose
+    private String reason;
     @SerializedName("createdAt")
-    private String createdAt;
     @Expose
+    private String createdAt;
     @SerializedName("updatedAt")
+    @Expose
     private String updatedAt;
 
-    private boolean prescription_exists = false;
-    //newly added for appointment
-    private String presc_received_time;
-    private String patientProfilePhoto;
-
-    public String getPrev_slot_day() {
-        return prev_slot_day;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPrev_slot_day(String prev_slot_day) {
-        this.prev_slot_day = prev_slot_day;
-    }
-
-    public String getPrev_slot_date() {
-        return prev_slot_date;
-    }
-
-    public void setPrev_slot_date(String prev_slot_date) {
-        this.prev_slot_date = prev_slot_date;
-    }
-
-    public String getPrev_slot_time() {
-        return prev_slot_time;
-    }
-
-    public void setPrev_slot_time(String prev_slot_time) {
-        this.prev_slot_time = prev_slot_time;
-    }
-
-    String  prev_slot_day,prev_slot_date,prev_slot_time;
-
-    public String getPatientProfilePhoto() {
-        return patientProfilePhoto;
-    }
-
-    public void setPatientProfilePhoto(String patientProfilePhoto) {
-        this.patientProfilePhoto = patientProfilePhoto;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSlotDay() {
@@ -117,11 +95,19 @@ public class AppointmentInfo implements Serializable {
         this.slotDate = slotDate;
     }
 
-    public int getSlotDuration() {
+    public String getSlotJsDate() {
+        return slotJsDate;
+    }
+
+    public void setSlotJsDate(String slotJsDate) {
+        this.slotJsDate = slotJsDate;
+    }
+
+    public Integer getSlotDuration() {
         return slotDuration;
     }
 
-    public void setSlotDuration(int slotDuration) {
+    public void setSlotDuration(Integer slotDuration) {
         this.slotDuration = slotDuration;
     }
 
@@ -173,6 +159,30 @@ public class AppointmentInfo implements Serializable {
         this.visitUuid = visitUuid;
     }
 
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getLocationUuid() {
+        return locationUuid;
+    }
+
+    public void setLocationUuid(String locationUuid) {
+        this.locationUuid = locationUuid;
+    }
+
+    public String getHwUUID() {
+        return hwUUID;
+    }
+
+    public void setHwUUID(String hwUUID) {
+        this.hwUUID = hwUUID;
+    }
+
     public String getPatientName() {
         return patientName;
     }
@@ -189,37 +199,36 @@ public class AppointmentInfo implements Serializable {
         this.openMrsId = openMrsId;
     }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSlotJsDate() {
-        return slotJsDate;
-    }
-
-    public void setSlotJsDate(String slotJsDate) {
-        this.slotJsDate = slotJsDate;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public String getCreatedAt() {
@@ -238,29 +247,4 @@ public class AppointmentInfo implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-
-    public String getPresc_received_time() {
-        return presc_received_time;
-    }
-
-    public void setPresc_received_time(String presc_received_time) {
-        this.presc_received_time = presc_received_time;
-    }
-
-    public boolean isPrescription_exists() {
-        return prescription_exists;
-    }
-
-    public void setPrescription_exists(boolean prescription_exists) {
-        this.prescription_exists = prescription_exists;
-    }
 }

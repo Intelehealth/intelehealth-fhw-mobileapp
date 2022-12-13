@@ -67,7 +67,6 @@
             android:layout_toEndOf="@+id/card_member_image"
             android:src="@drawable/ui2_ic_time"
             android:tint="@color/iconTintGray" />
-
         <TextView
             android:id="@+id/tv_date_appointment_todays"
             android:layout_width="wrap_content"

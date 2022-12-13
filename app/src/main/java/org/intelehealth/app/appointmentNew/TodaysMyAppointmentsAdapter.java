@@ -172,6 +172,19 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 }
             }
 
+            if (whichAppointments.equalsIgnoreCase("cancelled")) {
+                holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
+                holder.ivTime.setVisibility(View.VISIBLE);
+                holder.tvDate.setVisibility(View.VISIBLE);
+                holder.tvPrescRecStatus.setVisibility(View.GONE);
+                holder.tvPatientId.setVisibility(View.GONE);
+
+                holder.tvDate.setText(appointmentInfoModel.getSlotTime());
+                Log.d(TAG, "onBindViewHolder: time : "+appointmentInfoModel.getSlotDate());
+                Log.d(TAG, "onBindViewHolder: time : "+appointmentInfoModel.getSlotTime());
+
+            }
+
 
             holder.cardParent.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,7 +1,6 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,14 +24,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.appointmentNew.AllAppointmentsFragment;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.text.ParseException;
@@ -60,6 +57,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     Context context;
     String selectedDate = "";
     private SendSelectedDateInterface listener;
+    int MY_REQUEST_CODE = 5555;
+    String whichDate = "";
 
     public CustomCalendarViewUI2(Context context) {
         this.context = context;
@@ -76,6 +75,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     @Override
     public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog alertDialog = showDatePicker(context, "");
+        Bundle mArgs = getArguments();
+        assert mArgs != null;
+        whichDate = mArgs.getString("whichDate");
+        Log.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
         return alertDialog;
     }
 
@@ -190,7 +193,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
-        if(!tag.isEmpty() && tag.equals("default")){
+        if (!tag.isEmpty() && tag.equals("default")) {
 
         }
         if (spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth) {
@@ -670,7 +673,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         calendarInstanceDefault = Calendar.getInstance();
-        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH)+1;
+        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH) + 1;
         currentYear = calendarInstanceDefault.get(Calendar.YEAR);
         monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
 
@@ -697,24 +700,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         btnOkCalendar.setOnClickListener(v -> {
+            Intent i = new Intent()
+                    .putExtra("selectedDate", selectedDate)
+                    .putExtra("whichDate", whichDate);
+
+            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
             alertDialog.dismiss();
-
-          //  SendSelectedDateInterface sendDataInterface = new AllAppointmentsFragment();
-            //sendDataInterface.getSelectedDate(selectedDate, whichDate1);
-           /* LocalBroadcastManager.getInstance(context);
-            Intent intent = new Intent("SOME_ACTION");
-            intent.putExtra("selectedDate", selectedDate);
-            context.sendBroadcast(intent);*/
-
-          /*  LocalBroadcastManager.getInstance(context).sendBroadcast(
-                    new Intent("SOME_ACTION"));*/
-
-            try {
-                listener.getSelectedDate(selectedDate, whichDate1);
-            } catch (ClassCastException cce) {
-                cce.printStackTrace();
-
-            }
             Log.d(TAG, "dialog selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
         });
 
@@ -722,4 +713,6 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         return alertDialog;
     }
+
+
 }

@@ -15,6 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            android:layout_marginTop="@dimen/ma_icon_margin_top"
             android:background="@drawable/ui2_background_input_field_new">
 
             <EditText
@@ -266,6 +267,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_cancelled_apps_count_todays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -276,6 +278,16 @@
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/layout_no_data_found_cancelled"
+                    layout="@layout/layout_no_data_found_ui2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_cancelled_appointments"

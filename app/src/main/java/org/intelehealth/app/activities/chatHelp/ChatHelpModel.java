@@ -86,6 +86,14 @@ public class ChatHelpModel {
         return isIncomingMsgVideo;
     }
 
+    public String getIncomingMediaPath() {
+        return incomingMediaPath;
+    }
+
+    public void setIncomingMediaPath(String incomingMediaPath) {
+        this.incomingMediaPath = incomingMediaPath;
+    }
+
     public void setIncomingMsgVideo(boolean incomingMsgVideo) {
         isIncomingMsgVideo = incomingMsgVideo;
     }

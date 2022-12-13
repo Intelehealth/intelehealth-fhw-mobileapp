@@ -1639,6 +1639,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="search_for_faq">Search for FAQ</string>
     <string name="type_here">Type here</string>
     <string name="support_team">Support team</string>
+    <string name="chat_with_doctor">Chat with doctor</string>
 
     <!-- Informative videos  -->
     <string name="more_videos">More Videos</string>

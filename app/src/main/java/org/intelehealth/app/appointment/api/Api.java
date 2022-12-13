@@ -2,6 +2,8 @@ package org.intelehealth.app.appointment.api;
 
 
 
+import com.google.gson.JsonObject;
+
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
@@ -29,7 +31,8 @@ public interface Api {
 
     // https://uniceftraining.intelehealth.org:3004/api/appointment/getAppointmentSlots?fromDate=16/12/2021&toDate=31/12/2021&speciality=Neurologist
     @GET("api/appointment/getAppointmentSlots?")
-    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate")String mSelectedEndDate, @Query("speciality")String speciality);
+    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate")String mSelectedEndDate,
+                                    @Query("speciality")String speciality);
 
     @GET("api/appointment/getSlots?")
     Call<AppointmentListingResponse> getSlotsAll(@Query("fromDate") String mSelectedStartDate,
@@ -39,5 +42,11 @@ public interface Api {
 
     @POST
     Call<AppointmentDetailsResponse> bookAppointment(@Url String url,  @Body BookAppointmentRequest request);
+
+    @GET("api/appointment/getSlots?")
+    Call<JsonObject> getSlotsAll1(@Query("fromDate") String mSelectedStartDate,
+                                  @Query("toDate")String mSelectedEndDate,
+                                  @Query("locationUuid")String locationUuid
+    );
 
 }

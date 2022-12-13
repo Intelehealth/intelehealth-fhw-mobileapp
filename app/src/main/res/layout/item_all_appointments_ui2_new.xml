@@ -50,7 +50,7 @@
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image_all"
-            android:src="@drawable/ui2_ic_time"
+            android:src="@drawable/ui2_ic_calendar"
             android:tint="@color/iconTintGray" />
 
         <TextView

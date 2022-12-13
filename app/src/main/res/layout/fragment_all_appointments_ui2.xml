@@ -166,7 +166,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:lineHeight="@dimen/card_apps_options_line_height"
-                                android:text="NA"
+                                android:text="0"
                                 android:textColor="@color/textColorBlack"
                                 android:textSize="@dimen/card_apps_options_text_size"
                                 android:textStyle="bold" />
@@ -306,10 +306,18 @@
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Cancelled (NA)"
+                    android:text="Cancelled (0)"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
+                <include
+                    android:id="@+id/layout_no_data_found_cancelled"
+                    layout="@layout/layout_no_data_found_ui2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_all_cancelled_appointments"

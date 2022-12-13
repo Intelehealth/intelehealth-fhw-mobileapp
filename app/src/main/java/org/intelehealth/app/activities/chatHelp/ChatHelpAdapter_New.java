@@ -1,18 +1,30 @@
 package org.intelehealth.app.activities.chatHelp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -27,6 +39,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -39,16 +52,19 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
     Context context;
     List<ChatHelpModel> chattingDetailsList;
     private static final String TAG = "ChatHelpAdapter_New";
+    ClickListenerInterface clickListenerInterface;
+    String whichItem = "";
+    String mediaPath = "";
 
     public ChatHelpAdapter_New(Context context) {
         this.context = context;
 
     }
 
-    public ChatHelpAdapter_New(Context context, List<ChatHelpModel> chattingDetailsList) {
+    public ChatHelpAdapter_New(Context context, List<ChatHelpModel> chattingDetailsList, ClickListenerInterface clickListenerInterface) {
         this.context = context;
         this.chattingDetailsList = chattingDetailsList;
-
+        this.clickListenerInterface = clickListenerInterface;
     }
 
     @Override
@@ -59,23 +75,34 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
         return myViewHolder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onBindViewHolder(ChatHelpAdapter_New.MyViewHolder holder, int position) {
         ChatHelpModel chatHelpModel = chattingDetailsList.get(position);
         Log.d(TAG, "onBindViewHolder: image path : " + chatHelpModel.getOutgoingMediaPath());
-        Log.d(TAG, "onBindViewHolder: isimage : "+chatHelpModel.isOutgoingMsgImage());
-        Log.d(TAG, "onBindViewHolder: istext : "+chatHelpModel.isOutgoingMsgText());
+        Log.d(TAG, "onBindViewHolder: isimage : " + chatHelpModel.isOutgoingMsgImage());
+        Log.d(TAG, "onBindViewHolder: istext : " + chatHelpModel.isOutgoingMsgText());
+        Log.d(TAG, "onBindViewHolder: outgoing video path : " + chatHelpModel.getOutgoingMediaPath());
 
+        holder.tvIncomingMsgTime.setText(chatHelpModel.getOutgoingMsgTime());
         if (chatHelpModel.isOutgoingMsgText()) {
+
             Log.d(TAG, "onBindViewHolder: in if");
 
             holder.tvOutgoingMsg.setVisibility(View.VISIBLE);
             holder.cardOutgoingImage.setVisibility(View.GONE);
+            holder.layoutSentStatus.setVisibility(View.VISIBLE);
+            holder.cardOutgoingDocument.setVisibility(View.GONE);
+
             holder.tvOutgoingMsg.setText(chatHelpModel.getOutgoingMsg());
-        } else if (chatHelpModel.isOutgoingMsgImage() || chatHelpModel.isOutgoingMsgVideo()) {
+        } else if (chatHelpModel.isOutgoingMsgImage()) {
+            whichItem = "image";
+            mediaPath = chatHelpModel.getOutgoingMediaPath();
             holder.tvOutgoingMsg.setVisibility(View.GONE);
             holder.cardOutgoingImage.setVisibility(View.VISIBLE);
             Log.d(TAG, "onBindViewHolder: in else");
+            holder.layoutSentStatus.setVisibility(View.VISIBLE);
+            holder.cardOutgoingDocument.setVisibility(View.GONE);
 
             /*if (chatHelpModel.getOutgoingMediaPath() == null || chatHelpModel.getOutgoingMediaPath().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(context)) {
@@ -97,8 +124,43 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                 holder.ivSelectedImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
 
-        } else if (chatHelpModel.isOutgoingMsgDocument()) {
+        } else if (chatHelpModel.isOutgoingMsgVideo()) {
+            try {
+                holder.tvOutgoingMsg.setVisibility(View.GONE);
+                holder.cardOutgoingImage.setVisibility(View.VISIBLE);
+                holder.cardOutgoingDocument.setVisibility(View.GONE);
 
+                Log.d(TAG, "onBindViewHolder: in else");
+                holder.layoutSentStatus.setVisibility(View.VISIBLE);
+                Log.d(TAG, "onBindViewHolder1: outgoing video path1 : " + chatHelpModel.getOutgoingMediaPath());
+                //holder.ivSelectedImage.setImageBitmap(createVideoThumbNail(chatHelpModel.getOutgoingMediaPath()));
+
+                Glide.with(context).load(chatHelpModel.getOutgoingMediaPath())
+                        .asBitmap()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.ivSelectedImage);
+
+            } catch (Exception e) {
+                Log.d(TAG, "onBindViewHolder1: " + e.getLocalizedMessage());
+            }
+
+
+        } else if (chatHelpModel.isOutgoingMsgDocument()) {
+            whichItem = "document";
+            mediaPath = chatHelpModel.getOutgoingMediaPath();
+            String outgoingDocPath = chatHelpModel.getOutgoingMediaPath();
+            if (outgoingDocPath != null && !outgoingDocPath.isEmpty()) {
+                holder.layoutSentStatus.setVisibility(View.VISIBLE);
+                holder.tvOutgoingMsg.setVisibility(View.GONE);
+                holder.cardOutgoingImage.setVisibility(View.GONE);
+                holder.cardOutgoingDocument.setVisibility(View.VISIBLE);
+
+
+                String filename = outgoingDocPath.substring(outgoingDocPath.lastIndexOf("/") + 1);
+                holder.tvOutgoingDocFileName.setText(filename);
+
+            }
         }
 
         //for incoming msg
@@ -108,7 +170,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
             holder.tvIncomingMsg.setVisibility(View.VISIBLE);
             holder.cardIncomingImage.setVisibility(View.GONE);
             holder.tvIncomingMsg.setText(chatHelpModel.getOutgoingMsg());
-        } else if (chatHelpModel.isOutgoingMsgImage() || chatHelpModel.isOutgoingMsgVideo()) {
+        } else if (chatHelpModel.isIncomingMsgImage() || chatHelpModel.isIncomingMsgVideo()) {
             holder.tvIncomingMsg.setVisibility(View.GONE);
             holder.cardIncomingImage.setVisibility(View.VISIBLE);
             Log.d(TAG, "onBindViewHolder: in else");
@@ -120,10 +182,10 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
             }
             */
 
-            if (chatHelpModel.getOutgoingMediaPath() != null && !chatHelpModel.getOutgoingMediaPath().isEmpty()) {
+            if (chatHelpModel.getIncomingMediaPath() != null && !chatHelpModel.getIncomingMediaPath().isEmpty()) {
                 Log.d(TAG, "onBindViewHolder:  glide");
                 Glide.with(context)
-                        .load(chatHelpModel.getOutgoingMediaPath())
+                        .load(chatHelpModel.getIncomingMediaPath())
                         .thumbnail(0.3f)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -133,9 +195,32 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                 holder.ivIncomingMedia.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
 
-        } else if (chatHelpModel.isOutgoingMsgDocument()) {
+        } else if (chatHelpModel.isIncomingMsgDocument()) {
 
         }
+
+        holder.cardOutgoingImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    clickListenerInterface.performOnClick(whichItem, mediaPath);
+                } catch (ClassCastException cce) {
+                    cce.printStackTrace();
+
+                }
+            }
+        });
+        holder.cardOutgoingDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    clickListenerInterface.performOnClick(whichItem, mediaPath);
+                } catch (ClassCastException cce) {
+                    cce.printStackTrace();
+
+                }
+            }
+        });
 
     }
 
@@ -146,9 +231,10 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivSelectedImage,ivIncomingMedia;
-        CardView cardOutgoingImage,cardIncomingImage;
-        TextView tvOutgoingMsg,tvIncomingMsg;
+        ImageView ivSelectedImage, ivIncomingMedia;
+        CardView cardOutgoingImage, cardIncomingImage, cardOutgoingDocument;
+        TextView tvOutgoingMsg, tvIncomingMsg, tvOutgoingDocFileName, tvIncomingMsgTime;
+        RelativeLayout layoutSentStatus;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -158,6 +244,10 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
             cardIncomingImage = itemView.findViewById(R.id.card_incoming_image_or_video);
             ivIncomingMedia = itemView.findViewById(R.id.iv_incoming_image_or_video);
             tvIncomingMsg = itemView.findViewById(R.id.tv_incoming_msg);
+            layoutSentStatus = itemView.findViewById(R.id.layout_outgoing_msg_sent_status);
+            cardOutgoingDocument = itemView.findViewById(R.id.card_outgoing_doc);
+            tvOutgoingDocFileName = itemView.findViewById(R.id.tv_outgoing_doc_filename);
+            tvIncomingMsgTime = itemView.findViewById(R.id.tv_incoming_msg_time);
 
 
         }
@@ -223,4 +313,9 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
         if (bool) Log.d(TAG, "add: Item added to list");
         notifyDataSetChanged();
     }*/
+
+    public Bitmap createVideoThumbNail(String path) {
+        return ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+    }
+
 }

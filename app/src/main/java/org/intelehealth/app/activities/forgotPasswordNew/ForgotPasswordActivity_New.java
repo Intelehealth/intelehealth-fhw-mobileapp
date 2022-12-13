@@ -28,7 +28,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password_new);
+        setContentView(R.layout.activity_forgot_password_new_ui2);
 
         initUI();
 
@@ -46,8 +46,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         imageviewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
-               // startActivity(intent);
+                // Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
+                // startActivity(intent);
             }
         });
 
@@ -57,8 +57,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 layoutMobileNo.setVisibility(View.GONE);
                 layoutUsername.setVisibility(View.VISIBLE);
 
-                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.ui2_common_button_bg_selected));
-                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.ui2_common_primary_bg_disabled));
+                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
 
             }
         });
@@ -68,8 +68,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 layoutUsername.setVisibility(View.GONE);
                 layoutMobileNo.setVisibility(View.VISIBLE);
 
-                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.ui2_common_button_bg_selected));
-                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.ui2_common_primary_bg_disabled));
+                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
 
             }
         });

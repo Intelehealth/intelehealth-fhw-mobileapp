@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_incoming_msg_time"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/card_incoming_margin_start"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/help_card_incoming_margin_start"
+        android:layout_marginTop="@dimen/help_card_incoming_margin_top"
         android:gravity="end"
         android:orientation="vertical">
 
@@ -47,9 +47,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_outgoing_image_or_video"
-            android:layout_width="152dp"
-            android:layout_height="152dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="@dimen/iv_img_media_height_width"
+            android:layout_height="@dimen/iv_img_media_height_width"
+            android:layout_marginTop="@dimen/iv_img_media_margin_top"
             android:background="@drawable/ui2_bg_sent_image_chat"
             android:scaleType="fitXY"
             android:visibility="gone">
@@ -58,7 +58,7 @@
                 android:id="@+id/iv_outgoing_image_or_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/iv_img_media_margin1"
                 android:scaleType="fitXY"
                 android:src="@drawable/dummy_chat_help" />
 
@@ -68,7 +68,7 @@
             android:id="@+id/card_outgoing_doc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/help_card_doc_margin_top"
             android:backgroundTint="@color/grey_button_bg"
             android:scaleType="fitXY"
             android:visibility="gone"
@@ -77,14 +77,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/help_card_doc_margin1"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/iv_outgoing_image_or_video"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="15dp"
+                    android:layout_width="@dimen/help_card_doc_iv_height_width"
+                    android:layout_height="@dimen/help_card_doc_iv_height_width"
+                    android:padding="@dimen/help_card_doc_iv_padding"
                     android:scaleType="fitXY"
                     android:src="@drawable/ui2_ic_pdf_doc_attachment" />
 
@@ -92,8 +92,8 @@
                     android:id="@+id/tv_outgoing_doc_filename"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="20dp"
+                    android:textSize="@dimen/help_card_doc_tv_text_size"
+                    android:layout_marginEnd="@dimen/help_card_doc_tv_text_margin_end"
                     android:textColor="@color/header_title_color"
                     android:layout_gravity="center_vertical"
                     android:text="SampleFile.pdf" />
@@ -120,14 +120,14 @@
                 android:gravity="center"
                 android:text="Sent"
                 android:textColor="@color/textColorGray"
-                android:textSize="12sp" />
+                android:textSize="@dimen/help_card_tv_msg_sent_text_size" />
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="6dp"
+                android:layout_width="@dimen/help_card_msg_sent_height"
+                android:layout_height="@dimen/help_card_msg_sent_width"
+                android:layout_marginTop="@dimen/help_card_msg_sent_margin_top"
                 android:layout_toStartOf="@+id/tv_msg_send_status"
-                android:padding="5dp"
+                android:padding="@dimen/help_card_msg_sent_padding"
                 android:src="@drawable/ui2_ic_msg_sent" />
         </RelativeLayout>
 
@@ -157,11 +157,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_incoming_image_or_video"
-        android:layout_width="152dp"
-        android:layout_height="152dp"
+        android:layout_width="@dimen/iv_img_media_height_width"
+        android:layout_height="@dimen/iv_img_media_height_width"
+        android:layout_marginTop="@dimen/iv_img_media_margin_top"
         android:layout_below="@+id/tv_incoming_msg"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp"
         android:background="@drawable/ui2_bg_sent_image_chat"
         android:visibility="gone">
 
@@ -169,7 +169,7 @@
             android:id="@+id/iv_incoming_image_or_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/iv_img_media_margin1"
             android:src="@drawable/dummy_chat_help" />
 
     </androidx.cardview.widget.CardView>

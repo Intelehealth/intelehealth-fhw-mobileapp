@@ -98,6 +98,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutLocation"
                     style="@style/AutocompleteviewStyle"
+                    app:endIconDrawable="@drawable/ui2_ic_new_chevron_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top">
@@ -148,7 +149,7 @@
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:paddingStart="@dimen/common_edittext_padding_left"
-                        android:text="nurse_demo"
+                        android:text="nurse1"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
@@ -184,7 +185,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/common_edittext_padding_left"
-                        android:text="Nurse@123"
+                        android:text="Nurse123"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
