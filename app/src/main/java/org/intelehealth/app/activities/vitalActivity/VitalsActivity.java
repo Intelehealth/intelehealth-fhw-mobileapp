@@ -501,10 +501,20 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE)) {
-                        mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
-                    } else {
-                        mAbdominalGirth.setError(null);
+                    if(patientGender.equalsIgnoreCase("M")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE)) {
+                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                        } else {
+                            mAbdominalGirth.setError(null);
+                        }
+                    }
+                    else
+                    {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE)) {
+                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                        } else {
+                            mAbdominalGirth.setError(null);
+                        }
                     }
                 }
             }
@@ -908,13 +918,13 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
-        values.add(mAbdominalGirth);
         values.add(bloodGlucoseRandom_editText);
         values.add(bloodGlucosePostPrandial_editText);
         values.add(bloodGlucose_editText_fasting);
         values.add(haemoglobin_editText);
         values.add(uricAcid_editText);
         values.add(totalCholestrol_editText);
+        values.add(mAbdominalGirth);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -1183,6 +1193,38 @@ public class VitalsActivity extends AppCompatActivity {
                         break;
                     } else {
                         cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // abdominal girth
+            else if (i == 14) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if(patientGender.equalsIgnoreCase("M")) {
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE))) {
+                            et.setError(getString(R.string.abdominal_girth_male_error,
+                                    AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                            focusView = et;
+                            cancel = true;
+                            break;
+                        } else {
+                            cancel = false;
+                        }
+                    }
+                    else {
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE))) {
+                            et.setError(getString(R.string.abdominal_girth_male_error,
+                                    AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                            focusView = et;
+                            cancel = true;
+                            break;
+                        } else {
+                            cancel = false;
+                        }
                     }
                 } else {
                     cancel = false;
