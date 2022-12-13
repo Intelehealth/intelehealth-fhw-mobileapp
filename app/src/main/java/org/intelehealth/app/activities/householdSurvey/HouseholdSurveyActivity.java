@@ -39,6 +39,7 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private List<String> mPatientAidTypes = new ArrayList<>();
     private boolean mIsTriageMode = false;
     private String aidType;
+    private SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         mScreenBinding = ActivityHouseholdSurveyBinding.inflate(getLayoutInflater());
         View view = mScreenBinding.getRoot();
         setContentView(view);
-        setTitle(getString(R.string.livelihood_needs_assessment));
+        sessionManager = new SessionManager(this);
+//        setTitle(getString(R.string.livelihood_needs_assessment));
 
        /* getSupportFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FirstScreenFragment())
@@ -86,6 +89,15 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         aidType = getIntent().getStringExtra("aidType");
         mIsTriageMode = getIntent().getBooleanExtra("IsTriageMode", false);
         Log.v("aidTYpe", "aidTypeIntent" + aidType);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) { // As requested by Programs Team.
+            if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
+                setTitle("تقييم الحاجات الصحية المجتمعية");
+            else if (aidType.equalsIgnoreCase("General Aid"))
+                setTitle("المساعدة العامة");
+            else if (aidType.equalsIgnoreCase("Student Aid"))
+                setTitle("مساعدة الطلاب");
+        }
 
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
       /*  try {
@@ -324,8 +336,20 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 syncDAO.pushDataApi();
                 if (mIsTriageMode)
                     Toast.makeText(context, getString(R.string.triage_survey_saved), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
+                else {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) { // As requested by Programs Team.
+                        if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
+                            Toast.makeText(context, "تقييم الحاجات الصحية المجتمعية", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("General Aid"))
+                            Toast.makeText(context, "المساعدة العامة", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Student Aid"))
+                            Toast.makeText(context, "مساعدة الطلاب", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(context, aidType, Toast.LENGTH_SHORT).show();
+                    }
+                }
+//                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
             }
             if (isDraftMode) {
                 Toast.makeText(context, getString(R.string.household_survey_draft), Toast.LENGTH_SHORT).show();
