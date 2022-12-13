@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.myhexaville.androidwebrtc.com.shivam.androidwebrtc.tutorial.MediaStreamActivity">
+
+        <FrameLayout
+            android:id="@+id/incoming_surface_view_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--     <org.webrtc.SurfaceViewRenderer
+                     android:id="@+id/incoming_surface_view"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp"
+                android:text=""
+                android:textColor="#fff" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/self_surface_view_frame"
+            android:layout_width="156dip"
+            android:layout_height="156dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="24dip"
+            android:background="@color/colorPrimaryDark">
+
+            <!--    <org.webrtc.SurfaceViewRenderer
+                    android:id="@+id/self_surface_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp"
+                android:text="@string/you"
+                android:textColor="#fff" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:padding="16dip"
+            android:weightSum="4">
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/audio_imv"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_baseline_lens_24_white"
+                    android:contentDescription="@string/audio_on_off_button"
+                    android:padding="16dip"
+                    app:srcCompat="@drawable/ic_baseline_mic_24" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/call_end_imv"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_baseline_lens_24_white"
+                    android:contentDescription="@string/call_end_button"
+                    android:padding="16dip"
+                    app:srcCompat="@drawable/ic_baseline_call_24" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/video_imv"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_baseline_lens_24_white"
+                    android:contentDescription="@string/video_on_off_button"
+                    android:padding="16dip"
+                    app:srcCompat="@drawable/ic_baseline_videocam_24" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/flip_imv"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_baseline_lens_24_white"
+                    android:contentDescription="@string/video_on_off_button"
+                    android:padding="16dip"
+                    app:srcCompat="@drawable/ic_baseline_flip_camera_ios_24" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/connecting"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/calling_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/caller_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="48dip"
+                android:text="Doctor"
+                android:textColor="@color/gray_5"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/calling_hints_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caller_name_tv"
+                android:layout_centerHorizontal="true"
+                android:text="Calling"
+                android:textColor="@color/gray_3"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ripple_background_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:rb_color="#0099CC"
+                app:rb_duration="3000"
+                app:rb_radius="32dp"
+                app:rb_rippleAmount="4"
+                app:rb_scale="6">
+
+                <ImageView
+                    android:id="@+id/centerImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_baseline_call_24_white" />
+            </com.skyfishjy.library.RippleBackground>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="230dip"
+                android:layout_marginBottom="48dip"
+                android:padding="16dip"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/in_call_reject_imv"
+                        android:layout_width="70dip"
+                        android:layout_height="70dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_baseline_lens_24_red"
+                        android:contentDescription="@string/call_end_button"
+                        android:padding="16dip"
+                        app:srcCompat="@drawable/ic_baseline_call_24_white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/in_call_reject_imv"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dip"
+                        android:text="Decline"
+                        android:textColor="@color/gray_4"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/in_call_accept_imv"
+                        android:layout_width="70dip"
+                        android:layout_height="70dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_baseline_lens_24_green"
+                        android:contentDescription="@string/call_end_button"
+                        android:padding="16dip"
+                        app:srcCompat="@drawable/ic_baseline_call_24_white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/in_call_accept_imv"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dip"
+                        android:text="Accept"
+                        android:textColor="@color/gray_4"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>
+
+

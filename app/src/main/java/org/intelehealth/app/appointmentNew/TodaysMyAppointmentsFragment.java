@@ -324,9 +324,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         tvCompletedAppointments.setText("0");
         tvCompletedAppointmentsTitle.setText("Completed (0)");
 
-        //recyclerview for upcoming appointments
+        //recyclerview for completed appointments
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -397,7 +396,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
                 TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
         rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
-        Log.d(TAG, "getDataForCompletedAppointments:appointmentsDaoList :  " + appointmentsDaoList.size());
         tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
         tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
 
@@ -426,15 +424,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
 
     private void getSlots() {
-        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3005").getApi()
-                .getSlotsAll("13/12/2022",
-                        "13/12/2022",
-                        "9172f0c5-2a6d-43ba-84f8-37276a2db14b")
+        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
 
-      /*  String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
-*/
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
@@ -451,12 +445,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                             }
                         }
                         if (slotInfoResponse.getCancelledAppointments() != null) {
-                            Log.d(TAG, "onResponse: cancelled app size : " + slotInfoResponse.getCancelledAppointments().size());
                             if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-
                                 for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
                                     try {
                                         appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
 
@@ -466,7 +456,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                                 }
                             }
                         } else {
-                            Log.d(TAG, "onResponse:else  slotInfoResponse.getCancelledAppointments() is null ");
                         }
 
 
@@ -483,11 +472,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
-        Log.d(TAG, "getCancelledAppointments: searchPatientText : " + searchPatientText);
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText("Cancelled (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        Log.d(TAG, "getCancelledAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -512,7 +499,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
                 //recyclerview for cancelled appointments
 
-                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter= new
+                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new
                         TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
                 rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
 

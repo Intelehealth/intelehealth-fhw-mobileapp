@@ -105,19 +105,12 @@ public class AllAppointmentsFragment extends Fragment {
     String searchPatientText = "";
     View noDataFoundForUpcoming, noDataFoundForCompleted, noDataFoundForCancelled;
     TextView tvFromDate, tvToDate;
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private DatePickerDialog.OnDateSetListener mDateSetListener1;
-    private BroadcastReceiver localBroadcastReceiver;
     int MY_REQUEST_CODE = 5555;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
-        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(
-                localBroadcastReceiver,
-                new IntentFilter("SOME_ACTION"));
 
         initUI();
         clickListeners();
@@ -130,8 +123,6 @@ public class AllAppointmentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
                 container, false);
-        Log.d(TAG, "onCreateView: AllAppointmentsFragment");
-        localBroadcastReceiver = new LocalBroadcastReceiver();
 
         initUI();
         clickListeners();
@@ -690,7 +681,7 @@ public class AllAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
-                        cancelledAppointmentsList.add(appointmentInfo);
+                    cancelledAppointmentsList.add(appointmentInfo);
 
                 }
 
@@ -770,25 +761,13 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
-        Log.d(TAG, "getSlots: date1 : " + DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat());
-        Log.d(TAG, "getSlots: date2 : " + DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat());
-        Log.d(TAG, "getSlots: locationuuid : " + new SessionManager(getActivity()).getLocationUuid());
-        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        Log.d(TAG, "getSlots: baseurl : " + baseurl);
+        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
 
-        //  https://demo.intelehealth.org:3005/
-        //   https://uiux.intelehealth.org:3005
-        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3005").getApi()
-                .getSlotsAll("13/12/2022",
-                        "31/12/2022",
-                        "9172f0c5-2a6d-43ba-84f8-37276a2db14b")
-
-
-                /*   ApiClientAppointment.getInstance(baseurl).getApi()
-                           .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                                   DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                                   new SessionManager(getActivity()).getLocationUuid())
-           */
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                        new SessionManager(getActivity()).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
@@ -812,9 +791,7 @@ public class AllAppointmentsFragment extends Fragment {
                         }
 
                         if (slotInfoResponse.getCancelledAppointments() != null) {
-                            Log.d(TAG, "onResponse: cancelled app size : " + slotInfoResponse.getCancelledAppointments().size());
                             if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-
 
                                 for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
 
@@ -827,7 +804,6 @@ public class AllAppointmentsFragment extends Fragment {
                                 }
                             }
                         } else {
-                            Log.d(TAG, "onResponse:else  slotInfoResponse.getCancelledAppointments() is null ");
                         }
 
                         getAppointments();
@@ -835,97 +811,6 @@ public class AllAppointmentsFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-
-        Log.d(TAG, "getSlots: location : " + new SessionManager(getActivity()).getLocationUuid());
-
-    }
-
-    private void getSlots1() {
-        Log.d(TAG, "getSlots: date1 : " + DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat());
-        Log.d(TAG, "getSlots: date2 : " + DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat());
-        Log.d(TAG, "getSlots: locationuuid : " + new SessionManager(getActivity()).getLocationUuid());
-        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3005";
-        Log.d(TAG, "getSlots: baseurl : " + baseurl);
-
-        Log.d(TAG, "getSlots:  *** " + ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll1(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(getActivity()).getLocationUuid()));
-
-
-    /*    ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll1(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(getActivity()).getLocationUuid())
-*/
-        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3005").getApi()
-                .getSlotsAll1("12/12/2022",
-                        "11/01/2023",
-                        "9172f0c5-2a6d-43ba-84f8-37276a2db14b")
-
-
-                .enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
-                        if (response.body() == null) return;
-                        //AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-
-                        try {
-                            final String jsonData = response.body().toString();
-                            Log.d(TAG, "onResponse: jsonData my response : " + jsonData);
-                            JSONObject mainObject = new JSONObject(jsonData);
-                            final String status = mainObject.getString("status").trim();
-                            JSONArray dataArray = mainObject.getJSONArray("data");
-                            Log.d(TAG, "onResponse: dataarry : " + dataArray.length());
-                            JSONArray cancelledAppointmentsArray = mainObject.getJSONArray("cancelledAppointments");
-                            Log.d(TAG, "onResponse: cancelledAppointments : " + cancelledAppointmentsArray.length());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-
-
-                     /*   if (slotInfoResponse != null && slotInfoResponse.getData().size() > 0) {
-                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
-                                try {
-                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
-
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }else{
-                            Log.d(TAG, "onResponse:else  slotInfoResponse.getCancelledAppointments() is null ");
-                        }*/
-
-
-                        getAppointments();
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
                     }
                 });
@@ -999,103 +884,6 @@ public class AllAppointmentsFragment extends Fragment {
 
     }
 
-    private void selectDateRange() {
-        tvFromDate.setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
-                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                    mDateSetListener,
-                    year, month, day);
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-
-            datePickerDialog.show();
-        });
-
-        mDateSetListener = (datePicker, year, month, day) -> {
-            month = month + 1;
-
-            //String date = day + "-" + month + "-" + year;
-            String sDay = "";
-            if (day < 10) {
-                sDay = "0" + String.valueOf(day);
-            } else {
-                sDay = String.valueOf(day);
-            }
-
-            String sMonth = "";
-            if (month < 10) {
-                sMonth = "0" + String.valueOf(month);
-            } else {
-                sMonth = String.valueOf(month);
-            }
-            String date = year + "-" + sMonth + "-" + sDay;
-
-            //  String dateToshow = sDay + "-" + sMonth + "-" + year;
-
-
-            fromDate = sDay + "/" + sMonth + "/" + year;
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
-            tvFromDate.setText(dateToshow1 + ", " + year);
-
-            dismissDateFilterDialog();
-
-        };
-
-        tvToDate.setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
-                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                    mDateSetListener1,
-                    year, month, day);
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-
-            datePickerDialog.show();
-        });
-
-        mDateSetListener1 = (datePicker, year, month, day) -> {
-            month = month + 1;
-
-            //String date = day + "-" + month + "-" + year;
-            String sDay = "";
-            if (day < 10) {
-                sDay = "0" + String.valueOf(day);
-            } else {
-                sDay = String.valueOf(day);
-            }
-
-            String sMonth = "";
-            if (month < 10) {
-                sMonth = "0" + String.valueOf(month);
-            } else {
-                sMonth = String.valueOf(month);
-            }
-            String date = year + "-" + sMonth + "-" + sDay;
-
-            // String dateToshow = sDay + "-" + sMonth + "-" + year;
-            toDate = sDay + "/" + sMonth + "/" + year;
-
-            String dateToshow = sDay + "-" + sMonth + "-" + year;
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
-            tvToDate.setText(dateToshow1 + ", " + year);
-            dismissDateFilterDialog();
-
-        };
-
-
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void selectDateRangeNew() {
 
@@ -1129,10 +917,6 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void filterAsPerSelectedOptions() {
-        Log.d(TAG, "newselectDateRange: fromDate : " + fromDate);
-        Log.d(TAG, "newselectDateRange: todate : " + toDate);
-        Log.d(TAG, "newselectDateRange: whichAppointment : " + whichAppointment);
-
         if (whichAppointment.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()) {
             //all data
             Log.d(TAG, "filterAsPerSelectedOptions: all data");
@@ -1177,74 +961,6 @@ public class AllAppointmentsFragment extends Fragment {
             }, 2000);
         }
     }
-/*
-
-    @Override
-    public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
-       // frameLayoutDateFilter = parentView.findViewById(R.id.filter_frame_date_appointments);
-
-     //   tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
-       // tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
-       */
-/* Intent intent  = new Intent(getActivity(),MyAppointmentActivity.class);
-        startActivity(intent);*//*
-
-     */
-/*   FragmentTransaction ftr = this.getChildFragmentManager().beginTransaction();
-        ftr.detach(AllAppointmentsFragment.this).attach(AllAppointmentsFragment.this).commit();
-*//*
-
-
-
-        if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
-            fromDate = selectedDate;
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
-            if (!fromDate.isEmpty()) {
-                String[] splitedDate = fromDate.split("/");
-                autotvSearch.setText(dateToshow1 + ", " + splitedDate[2]);
-                Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
-
-            } else {
-                Log.d(TAG, "onClick: date empty");
-            }
-
-            dismissDateFilterDialog();
-        }
-        if (!whichDate.isEmpty() && whichDate.equals("todate")) {
-
-            toDate = selectedDate;
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
-            if (!toDate.isEmpty()) {
-                String[] splitedDate = toDate.split("/");
-                tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
-            } else {
-                Log.d(TAG, "onClick: date empty");
-            }
-
-            dismissDateFilterDialog();
-        }
-    }
-*/
-
-
-    private class LocalBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: ");
-            // safety check
-            if (intent == null || intent.getAction() == null) {
-                return;
-            }
-
-            if (intent.getAction().equals("SOME_ACTION")) {
-                //doSomeAction();
-                String selectedDate = intent.getExtras().getString("selectedDate");
-                Log.d(TAG, "onReceive: selectedDate in receiver : " + selectedDate);
-            }
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1253,18 +969,15 @@ public class AllAppointmentsFragment extends Fragment {
             Bundle bundle = data.getExtras();
             String selectedDate = bundle.getString("selectedDate");
             String whichDate = bundle.getString("whichDate");
-            Log.d(TAG, "onActivityResult: whichDate : " + whichDate);
-            Log.d(TAG, "onActivityResult: selectedDate : " + selectedDate);
+
             if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
                 fromDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
                 if (!fromDate.isEmpty()) {
                     String[] splitedDate = fromDate.split("/");
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
-                    Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
 
                 } else {
-                    Log.d(TAG, "onClick: date empty");
                 }
 
                 dismissDateFilterDialog();
@@ -1277,7 +990,6 @@ public class AllAppointmentsFragment extends Fragment {
                     String[] splitedDate = toDate.split("/");
                     tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
                 } else {
-                    Log.d(TAG, "onClick: date empty");
                 }
 
                 dismissDateFilterDialog();

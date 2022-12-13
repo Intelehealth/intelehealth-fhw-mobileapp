@@ -43,10 +43,4 @@ public interface Api {
     @POST
     Call<AppointmentDetailsResponse> bookAppointment(@Url String url,  @Body BookAppointmentRequest request);
 
-    @GET("api/appointment/getSlots?")
-    Call<JsonObject> getSlotsAll1(@Query("fromDate") String mSelectedStartDate,
-                                  @Query("toDate")String mSelectedEndDate,
-                                  @Query("locationUuid")String locationUuid
-    );
-
 }
