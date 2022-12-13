@@ -339,14 +339,14 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) { // As requested by Programs Team.
                         if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
-                            Toast.makeText(context, "تقييم الحاجات الصحية المجتمعية", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "تم إرسال تقييم الحاجة إلى صحة المجتمع!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("General Aid"))
-                            Toast.makeText(context, "المساعدة العامة", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "تقديم المساعدة العامة!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Student Aid"))
-                            Toast.makeText(context, "مساعدة الطلاب", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "تم إرسال المساعدة الطلابية!", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(context, aidType, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, aidType + " submitted!", Toast.LENGTH_SHORT).show();
                     }
                 }
 //                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
