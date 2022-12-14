@@ -43,4 +43,10 @@ public interface Api {
     @POST
     Call<AppointmentDetailsResponse> bookAppointment(@Url String url,  @Body BookAppointmentRequest request);
 
+    /*@GET("/api/openmrs/forgetPassword/requestOtp?")
+    Call<AppointmentListingResponse> forgotPassword(@Query("fromDate") String mSelectedStartDate,
+                                                 @Query("toDate")String mSelectedEndDate,
+                                                 @Query("locationUuid")String locationUuid
+    );*/
+
 }

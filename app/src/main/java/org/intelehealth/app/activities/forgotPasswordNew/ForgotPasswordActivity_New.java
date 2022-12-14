@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,23 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ForgotPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
+    Button etUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +51,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         // buttonUsername.setBackground(getResources().getDrawable(R.drawable.ui2_common_button_bg_selected));
         Button buttonContinue = findViewById(R.id.button_continue);
         Button buttonMobileNumber = findViewById(R.id.button_mobile_number);
+        etUsername = findViewById(R.id.edittext_username);
+
+
         RelativeLayout layoutMobileNo = findViewById(R.id.layout_parent_mobile_no);
         LinearLayout layoutUsername = findViewById(R.id.layout_parent_username);
         LinearLayout layoutChooseOption = findViewById(R.id.layout_choose_option);
@@ -46,8 +61,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         imageviewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
-                // startActivity(intent);
+                Intent intent = new Intent(ForgotPasswordActivity_New.this, SetupActivityNew.class);
+                startActivity(intent);
             }
         });
 
@@ -77,6 +92,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+           //     apiCallForRequestOTP(ForgotPasswordActivity_New.this);
+
                 Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
                 startActivity(intent);
             }
@@ -88,6 +105,34 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.spinner_value_layout, textArray, imageArray);
         spinner.setAdapter(adapter);
     }
+
+/*
+    private void apiCallForRequestOTP(Context context) {
+        String username = etUsername.getText().toString();
+        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
+
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                        new SessionManager(context).getLocationUuid())
+
+                .enqueue(new Callback<AppointmentListingResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
+                        // AppointmentListingResponse slotInfoResponse = response.body();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+
+    }
+*/
 
     public class SpinnerAdapter extends ArrayAdapter<String> {
 
