@@ -165,16 +165,16 @@ public class SearchPatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-//        String language = sessionManager.getAppLanguage();
-//        //In case of crash still the unicef should hold the current lang fix.
-//        if (!language.equalsIgnoreCase("")) {
-//            Locale locale = new Locale(language);
-//            Locale.setDefault(locale);
-//            Configuration config = new Configuration();
-//            config.locale = locale;
-//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//        }
-//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the unicef should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
