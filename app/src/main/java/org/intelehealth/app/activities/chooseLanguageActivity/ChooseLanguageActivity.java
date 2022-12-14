@@ -48,10 +48,10 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         initViews();
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-//        appLanguage = sessionManager.getAppLanguage();
-//        if (!appLanguage.equalsIgnoreCase("")) {
-//            setLocale(appLanguage);
-//        }
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
 
         if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
@@ -138,13 +138,13 @@ public class ChooseLanguageActivity extends AppCompatActivity {
     }
 
     //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-    /*public void setLocale(String appLanguage) {
+    public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    }*/
+    }
 
     public interface ItemSelectionListener {
         void onSelect(JSONObject jsonObject, int index);

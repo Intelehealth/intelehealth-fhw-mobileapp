@@ -265,15 +265,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        sessionManager = new SessionManager(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        DeviceInfoUtils.saveDeviceInfo(this);
 
-        catchFCMMessageData();
+        sessionManager = new SessionManager(this);
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
         String language = sessionManager.getAppLanguage();
+        //In case of crash still the unicef should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -281,6 +277,15 @@ public class HomeActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
+        DeviceInfoUtils.saveDeviceInfo(this);
+
+        catchFCMMessageData();
 
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
