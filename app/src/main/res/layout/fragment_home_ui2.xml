@@ -8,10 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="50dp">
+        android:paddingLeft="@dimen/home_frag_parent_padding_all"
+        android:paddingRight="@dimen/home_frag_parent_padding_all"
+        android:paddingTop="@dimen/home_frag_parent_padding_all"
+        android:paddingBottom="@dimen/home_frag_parent_padding_bottom">
 
         <TextView
             android:id="@+id/textlayout_find_patient"
@@ -25,6 +25,7 @@
             android:drawableTint="@color/colorPrimary"
             android:text="@string/find_patient"
             android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
             android:textColor="@color/textColorGray"
             android:importantForAutofill="no"
             android:maxLines="1"

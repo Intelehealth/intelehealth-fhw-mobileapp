@@ -533,8 +533,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -621,7 +621,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         yesButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            startActivityForResult(new Intent(context, ScheduleAppointmentActivity_New.class)
+            askReasonForRescheduleAppointment(AppointmentDetailsActivity.this);
+          /*  startActivityForResult(new Intent(context, ScheduleAppointmentActivity_New.class)
                     .putExtra("visitUuid", visitID)
                     .putExtra("patientUuid", patientUuid)
                     .putExtra("patientName", patientName)
@@ -632,11 +633,100 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                     .putExtra("app_start_time", app_start_time)
                     .putExtra("app_start_day", app_start_day)
                     .putExtra("speciality", visit_speciality), SCHEDULE_LISTING_INTENT
-            );
+            );*/
 
         });
 
         alertDialog.show();
+    }
+    private void askReasonForRescheduleAppointment(Context context) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_ask_reason_new_ui2, null);
+        alertdialogBuilder.setView(convertView);
+
+        final TextView titleTextView = convertView.findViewById(R.id.titleTv_new);
+        titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
+        final EditText reasonEtv = convertView.findViewById(R.id.reasonEtv_new);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioButton rb1 = convertView.findViewById(R.id.rb_no_doctor);
+        final RadioButton rb2 = convertView.findViewById(R.id.rb_no_patient);
+        final RadioButton rb3 = convertView.findViewById(R.id.rb_other_ask);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_no_doctor) {
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
+                } else if (checkedId == R.id.rb_no_patient) {
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
+                } else if (checkedId == R.id.rb_other_ask) {
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final Button textView = convertView.findViewById(R.id.btn_save_ask);
+        final Button btnCancel = convertView.findViewById(R.id.btn_cancel_ask);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                String reason = reasonEtv.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    startActivityForResult(new Intent(context, ScheduleAppointmentActivity_New.class)
+                            .putExtra("actionTag", "rescheduleAppointment")
+                            .putExtra("visitUuid", visitID)
+                            .putExtra("patientUuid", patientUuid)
+                            .putExtra("patientName", patientName)
+                            .putExtra("appointmentId", appointment_id)
+                            .putExtra("openMrsId", openmrsID)
+                            .putExtra("app_start_date", app_start_date)
+                            .putExtra("app_start_time", app_start_time)
+                            .putExtra("app_start_day", app_start_day)
+                            .putExtra("rescheduleReason", mEngReason)
+                            .putExtra("speciality", visit_speciality), SCHEDULE_LISTING_INTENT);
+
+                    Log.d(TAG, "onClick: speciality : "+visit_speciality);
+                }
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+        alertDialog.show();
+
     }
 
     private void askReason(Context context) {

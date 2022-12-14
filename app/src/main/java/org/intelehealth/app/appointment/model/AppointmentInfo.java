@@ -1,63 +1,64 @@
 package org.intelehealth.app.appointment.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class AppointmentInfo implements Serializable {
-
+    @Expose
     @SerializedName("uuid")
     private String uuid;
-
+    @Expose
     @SerializedName("id")
     private int id;
-
+    @Expose
     @SerializedName("slotDay")
     private String slotDay;
-
+    @Expose
     @SerializedName("slotDate")
     private String slotDate;
-
+    @Expose
     @SerializedName("slotJsDate")
     private String slotJsDate;
-
+    @Expose
     @SerializedName("slotDuration")
     private int slotDuration;
-
+    @Expose
     @SerializedName("slotDurationUnit")
     private String slotDurationUnit;
-
+    @Expose
     @SerializedName("slotTime")
     private String slotTime;
-
+    @Expose
     @SerializedName("speciality")
     private String speciality;
 
-
+    @Expose
     @SerializedName("userUuid")
     private String userUuid;
-
+    @Expose
     @SerializedName("drName")
     private String drName;
-
+    @Expose
     @SerializedName("visitUuid")
     private String visitUuid;
-
+    @Expose
     @SerializedName("patientName")
     private String patientName;
-
+    @Expose
     @SerializedName("openMrsId")
     private String openMrsId;
-
+    @Expose
     @SerializedName("patientId")
     private String patientId;
-
+    @Expose
     @SerializedName("status")
     private String status;
-
+    @Expose
     @SerializedName("createdAt")
     private String createdAt;
-
+    @Expose
     @SerializedName("updatedAt")
     private String updatedAt;
 

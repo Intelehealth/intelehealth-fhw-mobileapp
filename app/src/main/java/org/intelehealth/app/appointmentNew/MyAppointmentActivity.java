@@ -1,5 +1,6 @@
 package org.intelehealth.app.appointmentNew;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +19,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+
+import java.util.Objects;
 
 public class MyAppointmentActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
@@ -37,6 +41,7 @@ public class MyAppointmentActivity extends AppCompatActivity {
         View toolbar = findViewById(R.id.toolbar_my_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ImageView ivBackArrow  = toolbar.findViewById(R.id.iv_back_arrow_common);
 
         tvTitle.setText(getResources().getString(R.string.my_appointments));
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -45,6 +50,11 @@ public class MyAppointmentActivity extends AppCompatActivity {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+
+        ivBackArrow.setOnClickListener(v -> {
+            Intent intent = new Intent(MyAppointmentActivity.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+        });
 
         configureTabLayout();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -69,9 +79,12 @@ public class MyAppointmentActivity extends AppCompatActivity {
         PagerAdapter adapter = new MyAppointmentsPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount(), MyAppointmentActivity.this);
         viewPager.setAdapter(adapter);
-        int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 
-        viewPager.setOffscreenPageLimit(limit);
+        viewPager.setOffscreenPageLimit(adapter.getCount()-1);
+
+        // int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
+
+        //viewPager.setOffscreenPageLimit(limit);
 
         viewPager.addOnPageChangeListener(new
                 TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -91,6 +104,9 @@ public class MyAppointmentActivity extends AppCompatActivity {
             }
 
         });
+
+        Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =

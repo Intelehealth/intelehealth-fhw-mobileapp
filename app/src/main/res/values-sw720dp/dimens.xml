@@ -13,9 +13,9 @@
     <dimen name="common_hint_text_size">22sp</dimen>
     <dimen name="title_text_size">28sp</dimen>
 
-<!--
-    <dimen name="home_toolbar_layout_margin">8dp</dimen>
--->
+    <!--
+        <dimen name="home_toolbar_layout_margin">8dp</dimen>
+    -->
     <dimen name="home_toolbar_layout_margin_top">0dp</dimen>
     <dimen name="home_toolbar_layout_margin_start">8dp</dimen>
     <dimen name="home_toolbar_layout_margin_bottom">8dp</dimen>
@@ -34,6 +34,54 @@
     <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop1">20dp</dimen>
 
+    <dimen name="common_edittext_padding_top">12dp</dimen>
+    <dimen name="common_edittext_padding_right">14dp</dimen>
+    <dimen name="common_edittext_padding_bottom">12dp</dimen>
+    <dimen name="common_edittext_padding_left">14dp</dimen>
+    <dimen name="card_top_rounded_white_height">381dp</dimen>
+    <dimen name="card_top_rounded_white_width">360dp</dimen>
+
+    <dimen name="common_button_padding_top">14dp</dimen>
+    <dimen name="common_button_padding_right">16dp</dimen>
+    <dimen name="common_button_padding_bottom">14dp</dimen>
+    <dimen name="common_button_padding_left">16dp</dimen>
+    <dimen name="common_button_padding">14dp</dimen>
+
+    <dimen name="common_imageview_back_width">50dp</dimen>
+    <dimen name="common_imageview_back_height">30dp</dimen>
+
+    <dimen name="common_tv_icon_padding">10dp</dimen>
+    <dimen name="common_edittext_margin_top">10dp</dimen>
+    <dimen name="common_title_line_spacing">14sp</dimen>
+    <dimen name="common_forgotpass_margin_top">12dp</dimen>
+    <dimen name="common_title_letter_spacing">0.02</dimen>
+
+    <!--Login Screen UI2.0-->
+
+    <dimen name="welcome_back_top_margin">90dp</dimen>
+    <dimen name="image_intelehealth_login_height">135dp</dimen>
+    <dimen name="image_intelehealth_login_width">250dp</dimen>
+
+    <dimen name="login_collapsing_toolbar_height">100dp</dimen>
+    <dimen name="login_collapsing_layout_height">450dp</dimen>
+    <dimen name="tv_please_login_margin_top">14dp</dimen>
+    <dimen name="image_intelehealth_margin_top">17dp</dimen>
+    <dimen name="image_intelehealth_margin_bottom">10dp</dimen>
+
+    <dimen name="login_scroll_margin_top">-23dp</dimen>
+    <dimen name="layout_login_padding_start">30dp</dimen>
+    <dimen name="layout_login_padding_top">45dp</dimen>
+    <dimen name="layout_login_padding_end">30dp</dimen>
+    <dimen name="layout_login_padding_bottom">25dp</dimen>
+    <dimen name="tv_login_username_margin_top">25dp</dimen>
+    <dimen name="button_login_margin_top">70dp</dimen>
+
+    <!--
+        &lt;!&ndash;UI2.0 New Toolbar&ndash;&gt;
+        <dimen name="home_toolbar_layout_margin">8dp</dimen>
+
+    -->
+
     <!--Home Screen - Homefragment UI2.0-->
     <dimen name="home_parent_layout_padding">28dp</dimen>
     <dimen name="find_patient_padding_top">15dp</dimen>
@@ -41,8 +89,19 @@
     <dimen name="find_patient_padding_bottom">15dp</dimen>
     <dimen name="find_patient_padding_start">17dp</dimen>
     <dimen name="find_patient_height">70dp</dimen>
-    <dimen name="find_patient_hint_size">24sp</dimen>
+    <dimen name="find_patient_hint_size">18sp</dimen>
+    <dimen name="find_patient_margin_start">5dp</dimen>
+    <dimen name="find_patient_margin_end">7dp</dimen>
+    <dimen name="find_patient_padding">16dp</dimen>
+    <dimen name="find_patient_icon_padding">12dp</dimen>
+    <dimen name="find_patient_margin_top">5dp</dimen>
+    <dimen name="home_framelayout_margin_top">7dp</dimen>
+    <dimen name="home_framelayout_margin_bottom">20dp</dimen>
+    <dimen name="home_framelayout_padding_bottom">10dp</dimen>
 
+    <!-- new-->
+    <dimen name="find_patient_margin_start_new">19dp</dimen>
+    <dimen name="find_patient_margin_end_new">19dp</dimen>
     <dimen name="card_add_patient_home_height">140dp</dimen>
     <dimen name="card_add_patient_home_topmargin">40dp</dimen>
     <dimen name="common_card_corner_radius">12dp</dimen>
@@ -127,10 +186,8 @@
     <dimen name="notifi_arrow_margin_end">14dp</dimen>
 
 
-    <dimen name="design_bottom_navigation_text_size"
-        tools:override="true">18sp</dimen>
-    <dimen name="design_bottom_navigation_active_text_size"
-        tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">18sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">75dp</dimen>
 
 
@@ -292,6 +349,12 @@
     <dimen name="options_button_padding_bottom">20dp</dimen>
     <dimen name="options_button_padding_start">14dp</dimen>
     <dimen name="info_options_text_size">18sp</dimen>
+    <dimen name="otp_pinview_margin_end">12dp</dimen>
+
+
+    <dimen name="home_frag_parent_padding_all">8dp</dimen>
+    <dimen name="home_frag_parent_padding_bottom">70dp</dimen>
+
 
     <!--Navigation drawer UI2.0-->
 
@@ -708,6 +771,28 @@
     <dimen name="card_size_160dp">260dp</dimen>
     <dimen name="margin_68dp">88dp</dimen>
     <dimen name="size_120dp">200dp</dimen>
+
+    <!--UI2.0 Schedule appointment screen-->
+    <dimen name="schedule_parent_padding_start_end">28dp</dimen>
+    <dimen name="schedule_scroll_margin_top">44dp</dimen>
+    <dimen name="schedule_scroll_margin_bottom">90dp</dimen>
+    <dimen name="schedule_parent_sub_padding_bottom">80dp</dimen>
+    <dimen name="schedule_iv_calendar_height_width">30dp</dimen>
+    <dimen name="schedule_iv_month_margin_start">16dp</dimen>
+    <dimen name="schedule_iv_month_margin_top">5dp</dimen>
+    <dimen name="schedule_iv_month_line_height">26dp</dimen>
+    <dimen name="schedule_iv_month_text_Size">18sp</dimen>
+    <dimen name="schedule_iv_month_arrows_margin_end">16dp</dimen>
+    <dimen name="schedule_hor_calview_margin_top">20dp</dimen>
+    <dimen name="schedule_prev_app_details_margin_top">34dp</dimen>
+    <dimen name="schedule_pick_time_margin_top">24dp</dimen>
+    <dimen name="schedule_tv_morning_title_margin_top">20dp</dimen>
+    <dimen name="schedule_tv_morning_drawable_padding">128dp</dimen>
+    <dimen name="schedule_rv_morning_margin_top">20dp</dimen>
+    <dimen name="schedule_tv_afternoon_title_margin_top">28dp</dimen>
+    <dimen name="schedule_rv_afternoon_margin_top">16dp</dimen>
+    <dimen name="schedule_tv_evening_title_margin_top">28dp</dimen>
+    <dimen name="schedule_rv_evening_margin_top">20dp</dimen>
 
 
 </resources>

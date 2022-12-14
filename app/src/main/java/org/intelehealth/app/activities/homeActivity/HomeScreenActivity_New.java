@@ -25,6 +25,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -33,6 +35,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,6 +44,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,18 +64,25 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
+import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
+import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
+import org.intelehealth.app.database.dao.ProviderProfileDao;
 import org.intelehealth.app.models.CheckAppUpdateRes;
+import org.intelehealth.app.models.dto.ProviderProfileDTO;
 import org.intelehealth.app.profile.MyProfileFragment_New;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -79,12 +90,16 @@ import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
 import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -113,15 +128,22 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     SyncUtils syncUtils = new SyncUtils();
     int i = 5;
     Context context;
-    TextView tvTitleHomeScreenCommon;
+    TextView tvTitleHomeScreenCommon, tvAppLastSync;
     BottomNavigationView bottomNav;
     private CardView survey_snackbar_cv;
+    String firstLogin = "";
+    ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon;
+    TextView tvEditProfile, tvAppVersion, tvUsername, tvUserId;
+    LinearLayout menuResetApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
+
+        firstLogin = getIntent().getStringExtra("firstLogin");
+        Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
 
         loadFragment(new HomeFragment_New());
         // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -135,16 +157,15 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         }
         sessionManager = new SessionManager(this);
         initUI();
+    //}
+        clickListeners();
+
+        //currently user details are in local db
+        updateNavHeaderUserDetails();
+
     }
 
-
-    private void initUI() {
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        TextView tvAppVersion = findViewById(R.id.tv_app_version);
-        LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
-        imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-        survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
-
+       private void clickListeners() {
         Intent intent_exit = getIntent();
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
@@ -161,9 +182,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         }
 
 
-        View toolbarHome = findViewById(R.id.toolbar_home);
-
-        tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
         tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,8 +189,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
-        ImageView imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
+
         imageViewIsNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,16 +197,16 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        ivHamburger = findViewById(R.id.iv_hamburger);
 
-        ivHamburger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
+        if (ivHamburger != null) {
+            ivHamburger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
 
-            }
-        });
-        isNetworkAvailable(this);
+                }
+            });
+        }
 
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,14 +220,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //nav header
-        mNavigationView = findViewById(R.id.navigationview);
-        View headerView = mNavigationView.getHeaderView(0);
-        ImageView ivCloseDrawer = headerView.findViewById(R.id.iv_close_drawer);
-        ImageView ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
-        TextView tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
-        TextView tvUserId = headerView.findViewById(R.id.tv_userid);
-        TextView tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,6 +231,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         });
 
+
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,14 +239,48 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
             }
         });
+
+        menuResetApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void initUI() {
+        survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        tvAppVersion = findViewById(R.id.tv_app_version);
+        menuResetApp = findViewById(R.id.layout_reset_app);
+        imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
+
+        View toolbarHome = findViewById(R.id.toolbar_home);
+
+        tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
+        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+
+        imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
+        imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
+
+        ivHamburger = findViewById(R.id.iv_hamburger);
+        isNetworkAvailable(this);
+
+        //nav header
+        mNavigationView = findViewById(R.id.navigationview);
+        View headerView = mNavigationView.getHeaderView(0);
+        ivCloseDrawer = headerView.findViewById(R.id.iv_close_drawer);
+        ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
+        tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
+        tvUserId = headerView.findViewById(R.id.tv_userid);
+        tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
+
         setupDrawerContent(mNavigationView);
 
         //code from old home activity
-
         syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
-/*
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,7 +300,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 //                }
             }
         });
-*/
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
             mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
@@ -283,6 +326,16 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+
+
+        String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+        tvAppLastSync.setText(sync_text);
+        Log.d(TAG, "onReceive: sync_text : " + sync_text);
+
+
+        tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
+
+
     }
 
     private void showSnackBarAndRemoveLater() {
@@ -309,12 +362,96 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
         if (backStackEntryCount == 1) {
-            finish();
+            // finish();
+            wantToExitApp(this, "Exit App", getResources().getString(R.string.sure_to_exit),
+                    getResources().getString(R.string.yes), getResources().getString(R.string.no));
+
         } else {
             super.onBackPressed();
+
+
         }
     }
 
+    public void wantToExitApp(Context context, String title, String subTitle,
+                              String positiveBtnTxt, String negativeBtnTxt) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
+        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
+        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
+        Button noButton = convertView.findViewById(R.id.button_no_appointment);
+        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+
+        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+
+        dialog_title.setText(title);
+        tvInfo.setText(Html.fromHtml(subTitle));
+        yesButton.setText(positiveBtnTxt);
+        noButton.setText(negativeBtnTxt);
+
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        noButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
+        yesButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            moveTaskToBack(true);
+
+
+        });
+
+        alertDialog.show();
+    }
+
+    public void wantToLogoutFromApp(Context context, String title, String subTitle,
+                                    String positiveBtnTxt, String negativeBtnTxt) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
+        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
+        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
+        Button noButton = convertView.findViewById(R.id.button_no_appointment);
+        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+
+        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+
+        dialog_title.setText(title);
+        tvInfo.setText(Html.fromHtml(subTitle));
+        yesButton.setText(positiveBtnTxt);
+        noButton.setText(negativeBtnTxt);
+
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        noButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
+        yesButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            moveTaskToBack(true);
+
+
+        });
+
+        alertDialog.show();
+    }
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
@@ -473,6 +610,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.menu_logout:
+                wantToLogoutFromApp(this, "Logout", getResources().getString(R.string.sure_to_logout),
+                        getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
                 break;
             default:
@@ -507,9 +646,13 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
-        //UI2.0 if first time login then only show popup
+      /*  //UI2.0 if first time login then only show popup
         if (sessionManager.getIsLoggedIn()) {
-            sessionManager.setIsLoggedIn(false);
+            //sessionManager.setIsLoggedIn(true);
+            showLoggingInDialog();
+
+        }*/
+        if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
             showLoggingInDialog();
 
         }
@@ -632,7 +775,9 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 }
             }
 
-            setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            tvAppLastSync.setText(sync_text);
+            Log.d(TAG, "onReceive: sync_text : " + sync_text);
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
@@ -673,45 +818,47 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
-    private void setLastSyncTime(String dob) {
+    private String setLastSyncTime(String dob) {
         String convertedString = getFullMonthName(dob);
+        String sync_text = "";
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
-            //lastSyncTextView.setText(sync_text);
+            sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
+            // lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
+            sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
             // lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
+            sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
             // lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
+            sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
             // lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
+            sync_text = en__te_dob(convertedString); //to show text of English into telugu...
             //  lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
+            sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
             // lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
+            sync_text = en__as_dob(convertedString); //to show text of English into telugu...
             //  lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
+            sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
             //   lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
+            sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
             //  lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
+            sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
             //  lastSyncTextView.setText(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
+            sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
             // lastSyncTextView.setText(sync_text);
         } else {
             // lastSyncTextView.setText(dob);
         }
+        return sync_text;
     }
 
     @Override
@@ -774,5 +921,96 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 }
             };
 
+
+    private void logoutFromApp() {
+        //code from old homeactivity
+
+
+        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+
+//        parseLogOut();
+
+       /* AccountManager manager = AccountManager.get(HomeActivity.this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }*/
+     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        if (accountList.length > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
+            } else {
+                manager.removeAccount(accountList[0], null, null); // Legacy implementation
+            }
+        }
+*/
+        Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+        SyncUtils syncUtils = new SyncUtils();
+        syncUtils.syncBackground();
+        sessionManager.setReturningUser(false);
+        sessionManager.setLogout(true);
+
+
+    }
+
+    private void updateNavHeaderUserDetails() {
+        ProviderProfileDao providerProfileDao = new ProviderProfileDao();
+        try {
+            ProviderProfileDTO providerProfileDTO = providerProfileDao.getProvidersDetails();
+
+            boolean firstname = isValidField(providerProfileDTO.getFirstName());
+            boolean lastname = isValidField(providerProfileDTO.getLastName());
+            String userFullName = "";
+            if (firstname && lastname) {
+                userFullName = providerProfileDTO.getFirstName() + " " + providerProfileDTO.getLastName();
+            } else if (firstname) {
+                userFullName = providerProfileDTO.getFirstName();
+            } else if (lastname) {
+                userFullName = providerProfileDTO.getLastName();
+
+            }
+            tvUsername.setText(userFullName);
+
+            tvUserId.setText("CHW ID : " + sessionManager.getChwname());
+            Log.d(TAG, "initUI: path : " + providerProfileDTO.getImagePath());
+
+            if (providerProfileDTO.getImagePath() != null && !providerProfileDTO.getImagePath().isEmpty()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(providerProfileDTO.getImagePath());
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                byte[] imageArray = stream.toByteArray();
+                ivProfileIcon.setImageBitmap(bitmap);
+              /*  Glide.with(getActivity())
+                        .load(bitmap)
+                        .thumbnail(0.3f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(ivProfileImage);*/
+
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isValidField(String fieldName) {
+        if (fieldName != null && !fieldName.isEmpty() && !fieldName.equals("null")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 

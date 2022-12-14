@@ -67,14 +67,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             layoutUpcoming, layoutCancelled, layoutCompleted;
     RecyclerView rvUpcomingApp, rvCancelledApp, rvCompletedApp;
     LinearLayout layoutParentAll;
-    TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle;
+    TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle, tvCancelledAppsCount, tvCancelledAppsCountTitle;
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
     ImageView ivRefresh, ivClearText;
-    View noDataFoundForUpcoming, noDataFoundForCompleted;
+    View noDataFoundForUpcoming, noDataFoundForCompleted, noDataFoundForCancelled;
     EditText autotvSearch;
     String searchPatientText = "";
     String currentDate = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-         currentDate = dateFormat1.format(new Date());
+        currentDate = dateFormat1.format(new Date());
         String language = sessionManager.getAppLanguage();
 
         if (!language.equalsIgnoreCase("")) {
@@ -95,7 +96,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            Objects.requireNonNull(getActivity()).getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
+            requireActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -111,16 +112,20 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutCancelled = view.findViewById(R.id.layout_cancelled);
         layoutCompleted = view.findViewById(R.id.layout_completed);
         layoutParentAll = view.findViewById(R.id.layout_parent_all);
-        ivRefresh = Objects.requireNonNull(getActivity()).findViewById(R.id.imageview_is_internet_common);
+        ivRefresh = requireActivity().findViewById(R.id.imageview_is_internet_common);
 
         tvUpcomingAppointments = view.findViewById(R.id.tv_upcoming_appointments_todays);
         tvUpcomingAppointmentsTitle = view.findViewById(R.id.tv_upcoming_apps_count_todays);
         tvCompletedAppointments = view.findViewById(R.id.tv_completed_appointments_todays);
         tvCompletedAppointmentsTitle = view.findViewById(R.id.tv_completed_apps_count_todays);
+        tvCancelledAppsCount = view.findViewById(R.id.tv_cancelled_appointments_todays);
+        tvCancelledAppsCountTitle = view.findViewById(R.id.tv_cancelled_apps_count_todays);
 
         //no data found
         noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
         noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
+        noDataFoundForCancelled = view.findViewById(R.id.layout_no_data_found_cancelled);
+
         autotvSearch = view.findViewById(R.id.et_search_today);
         ivClearText = view.findViewById(R.id.iv_clear_today);
         ivClearText.setOnClickListener(v -> {
@@ -180,11 +185,13 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         searchPatientText = autotvSearch.getText().toString();
                         getUpcomingAppointments();
                         getCompletedAppointments();
+                        getCancelledAppointments();
+
                     } else {
-                       /* searchPatientText = "";
+                        searchPatientText = "";
 
                         Log.d(TAG, "afterTextChanged: in else");
-                        getAppointments();*/
+                        getAppointments();
                     }
                     return true;
                 }
@@ -263,13 +270,14 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getAppointments() {
         getUpcomingAppointments();
         getCompletedAppointments();
+        getCancelledAppointments();
     }
 
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppointments.setText("0");
         tvUpcomingAppointmentsTitle.setText("Completed (0)");
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText,currentDate);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
         Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         Log.d(TAG, "getUpcomingAppointments: searchPatientText " + searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
@@ -316,9 +324,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         tvCompletedAppointments.setText("0");
         tvCompletedAppointmentsTitle.setText("Completed (0)");
 
-        //recyclerview for upcoming appointments
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText,currentDate);
-        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
+        //recyclerview for completed appointments
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -381,7 +388,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
 
 
-
             } else {
 
             }
@@ -390,7 +396,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
                 TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
         rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
-        Log.d(TAG, "getDataForCompletedAppointments:appointmentsDaoList :  "+appointmentsDaoList.size());
         tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
         tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
 
@@ -419,11 +424,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
 
     private void getSlots() {
+        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
 
-        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
-
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
@@ -439,6 +444,20 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
+                        if (slotInfoResponse.getCancelledAppointments() != null) {
+                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
+                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+                                    try {
+                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                    } catch (DAOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } else {
+                        }
+
 
                         getAppointments();
                     }
@@ -451,4 +470,52 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     }
 
+    private void getCancelledAppointments() {
+        //recyclerview for getCancelledAppointments appointments
+        tvCancelledAppsCount.setText("0");
+        tvCancelledAppsCountTitle.setText("Cancelled (0)");
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFiltersForToday(searchPatientText, currentDate);
+        List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
+        try {
+            if (appointmentInfoList.size() > 0) {
+                rvCancelledApp.setVisibility(View.VISIBLE);
+                noDataFoundForCancelled.setVisibility(View.GONE);
+                for (int i = 0; i < appointmentInfoList.size(); i++) {
+                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime = dateFormat.format(new Date());
+                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+
+                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+
+                    long second = diff / 1000;
+                    long minutes = second / 60;
+                    cancelledAppointmentsList.add(appointmentInfo);
+
+                   /* if (minutes >= 0) {
+                        cancelledAppointmentsList.add(appointmentInfo);
+                    }*/
+                }
+
+                //recyclerview for cancelled appointments
+
+                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new
+                        TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
+                rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
+
+            } else {
+
+                rvCancelledApp.setVisibility(View.GONE);
+                noDataFoundForCancelled.setVisibility(View.VISIBLE);
+            }
+
+            tvCancelledAppsCount.setText(cancelledAppointmentsList.size() + "");
+            tvCancelledAppsCountTitle.setText("Cancelled (" + cancelledAppointmentsList.size() + ")");
+
+        } catch (Exception e) {
+            Log.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());
+        }
+
+
+    }
 }

@@ -189,6 +189,19 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             Log.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
             e.printStackTrace();
         }
+        if (whichAppointments.equalsIgnoreCase("cancelled")) {
+            holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
+            holder.ivTime.setVisibility(View.VISIBLE);
+            holder.tvDate.setVisibility(View.VISIBLE);
+            holder.tvPrescRecStatus.setVisibility(View.GONE);
+
+           String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", at " + appointmentInfoModel.getSlotTime();
+            holder.tvDate.setText(timeText);
+            //  holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
+            // imageView.setColorFilter(ContextCompat.getColor(context, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        }
+
 
         holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override

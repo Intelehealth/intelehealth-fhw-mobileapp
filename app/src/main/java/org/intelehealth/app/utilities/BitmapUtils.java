@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class BitmapUtils {
-
+    private static final String TAG = "BitmapUtils";
     /**
      * Rotate an image if required.
      *
@@ -99,7 +99,7 @@ public class BitmapUtils {
     public static boolean fileCompressed(String filePath) {
         File file = new File(filePath);
 
-
+        Log.d(TAG, "fileCompressed: filePath : "+filePath);
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -112,6 +112,8 @@ public class BitmapUtils {
         float maxWidth = 612.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
+        Log.d(TAG, "fileCompressed: actualWidth : "+actualWidth);
+        Log.d(TAG, "fileCompressed: actualHeight : "+actualHeight);
 
         if (actualHeight > maxHeight || actualWidth > maxWidth) {
             if (imgRatio < maxRatio) {

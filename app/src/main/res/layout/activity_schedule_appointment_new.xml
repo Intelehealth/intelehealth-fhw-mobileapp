@@ -89,12 +89,22 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/rv_horizontal_cal"
                 android:orientation="vertical">
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Previously scheduled appointment details"
+                    android:textColor="@color/textColorGray" />
+                <TextView
+                    android:id="@+id/tv_prev_scheduled_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorBlack" />
                 <TextView
                     android:id="@+id/tv_time_slot_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:text="Pick a time slot"
                     android:textColor="@color/textColorGray" />
 

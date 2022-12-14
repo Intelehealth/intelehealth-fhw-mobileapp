@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,6 +119,15 @@ public class SetupActivityNew extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         etAdminPassword = findViewById(R.id.admin_password);
 
+        ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
+        ivBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         r1 = findViewById(R.id.demoMindmap);
         r2 = findViewById(R.id.downloadMindmap);
 
@@ -159,6 +170,11 @@ public class SetupActivityNew extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void attemptLogin() {
 //        if (mAuthTask != null) {
@@ -366,6 +382,8 @@ public class SetupActivityNew extends AppCompatActivity {
 
                                                 Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                 intent.putExtra("setup", true);
+                                                intent.putExtra("firstLogin", "firstLogin");
+
                                                 //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {
                                                     sessionManager.setTriggerNoti("no");

@@ -446,4 +446,7 @@
         <item name="colorAccent">@color/lite_red</item>
     </style>
 
+    <style name="CalendarSpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_cal_view_bg_non_selected</item>
+    </style>
 </resources>

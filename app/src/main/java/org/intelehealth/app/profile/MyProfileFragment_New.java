@@ -3,7 +3,6 @@ package org.intelehealth.app.profile;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,13 +36,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -52,6 +50,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeFragment_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -95,6 +94,7 @@ public class MyProfileFragment_New extends Fragment {
     Button btnSave;
     SnackbarUtils snackbarUtils;
     SpinnerAdapter adapter;
+    View layoutToolbar;
 
     @Override
     public void onResume() {
@@ -107,19 +107,34 @@ public class MyProfileFragment_New extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_profile_ui2, container, false);
+
+
+        layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+        ivBackArrow.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_arrow_back_new));
+        if (ivBackArrow != null) {
+            ivBackArrow.setOnClickListener(v -> {
+
+                Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
+                startActivity(intent);
+            });
+
+        } else {
+            Log.d(TAG, "initUI: ivBackArrow is null");
+
+        }
+
         return view;
     }
 
     private void initUI() {
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(getActivity());
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
         TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
         TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
         ImageView ivIsInternet = layoutToolbar.findViewById(R.id.imageview_is_internet);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
-        ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
+
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
@@ -172,13 +187,6 @@ public class MyProfileFragment_New extends Fragment {
 
         layoutChangePassword.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChangePasswordActivity_New.class);
-            startActivity(intent);
-        });
-
-        ivBackArrow.setOnClickListener(v -> {
-       /*     FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-            fm.popBackStack();*/
-            Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
             startActivity(intent);
         });
 
@@ -315,7 +323,7 @@ public class MyProfileFragment_New extends Fragment {
 
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(R.string.select_profile_image);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -441,7 +449,7 @@ public class MyProfileFragment_New extends Fragment {
             @Override
             public void run() {
                 boolean flag = BitmapUtils.fileCompressed(filePath);
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (flag) {
@@ -535,7 +543,7 @@ public class MyProfileFragment_New extends Fragment {
             if (data != null) {
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = Objects.requireNonNull(getActivity()).getContentResolver().query(selectedImage, filePath, null, null, null);
+                Cursor c = requireActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
@@ -588,7 +596,7 @@ public class MyProfileFragment_New extends Fragment {
     }
 
     private void showPermissionDeniedAlert(String[] permissions) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getActivity()));
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.reject_permission_results);
@@ -601,7 +609,7 @@ public class MyProfileFragment_New extends Fragment {
         alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Objects.requireNonNull(getActivity()).finish();
+                requireActivity().finish();
             }
         });
 
@@ -620,7 +628,7 @@ public class MyProfileFragment_New extends Fragment {
     }
 
     private boolean checkAndRequestPermissions() {
-        int cameraPermission = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        int cameraPermission = ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.GET_ACCOUNTS);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -643,7 +651,7 @@ public class MyProfileFragment_New extends Fragment {
 
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(requireActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;

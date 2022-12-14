@@ -60,12 +60,12 @@ public class HomeFragment_New extends Fragment {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        ImageView viewHamburger = Objects.requireNonNull(getActivity()).findViewById(R.id.iv_hamburger);
+        ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_hamburger));
-        TextView tvLocation = Objects.requireNonNull(getActivity()).findViewById(R.id.tv_user_location_home);
+        TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
-        TextView tvLastSyncApp = Objects.requireNonNull(getActivity()).findViewById(R.id.tv_app_sync_time);
-        ImageView ivNotification = Objects.requireNonNull(getActivity()).findViewById(R.id.imageview_notifications_home);
+        TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
+        ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);

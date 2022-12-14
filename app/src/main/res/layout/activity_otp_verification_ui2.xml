@@ -8,21 +8,22 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageview_back"
+        android:id="@+id/imageview_back_otp_verify"
         android:layout_width="@dimen/common_imageview_back_width"
         android:layout_height="@dimen/common_imageview_back_height"
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/margin_32"
+        android:layout_marginTop="@dimen/iv_back_forgot_margin_top"
         android:src="@drawable/ic_baseline_arrow_back_24" />
 
     <TextView
         android:id="@+id/tv_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/margin_32"
+        android:layout_marginTop="@dimen/iv_back_forgot_margin_top"
         android:layout_marginEnd="10dp"
         android:drawableEnd="@drawable/info_svg"
         android:drawablePadding="5dp"
@@ -35,6 +36,7 @@
         android:id="@+id/tv_forgot_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageview_back_otp_verify"
         android:layout_marginTop="@dimen/forgot_password_top_margin"
         android:gravity="center_horizontal"
         android:text="@string/forgot_password"
@@ -107,24 +109,15 @@
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />
 
-                    <com.goodiebag.pinview.Pinview
+                    <include
                         android:id="@+id/pinview_otp"
+                        layout="@layout/otp_pinview_layout_ui2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textview_mobile_no_note"
-                        android:layout_marginTop="@dimen/margin_15"
+                        android:layout_marginTop="15dp"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="left"
-                        app:cursorVisible="true"
-                        app:forceKeyboard="true"
-                        app:hint="-"
-                        app:inputType="number"
-                        app:password="false"
-                        app:pinBackground="@drawable/ui2_common_input_bg"
-                        app:pinHeight="42dp"
-                        app:pinLength="6"
-                        app:pinWidth="35dp" />
+                        android:focusableInTouchMode="true" />
 
                     <TextView
                         android:id="@+id/textview_no_otp"
