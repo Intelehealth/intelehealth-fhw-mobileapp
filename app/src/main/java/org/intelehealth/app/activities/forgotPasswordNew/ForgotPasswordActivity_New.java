@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
@@ -23,6 +24,7 @@ import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -35,7 +37,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
-    Button etUsername;
+    Button etUsername, etMobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         Button buttonContinue = findViewById(R.id.button_continue);
         Button buttonMobileNumber = findViewById(R.id.button_mobile_number);
         etUsername = findViewById(R.id.edittext_username);
+        etMobileNo = findViewById(R.id.edittext_mobile_number);
 
 
         RelativeLayout layoutMobileNo = findViewById(R.id.layout_parent_mobile_no);
@@ -92,10 +95,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           //     apiCallForRequestOTP(ForgotPasswordActivity_New.this);
+                apiCallForRequestOTP(ForgotPasswordActivity_New.this);
 
-                Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
-                startActivity(intent);
+
             }
         });
 
@@ -106,33 +108,38 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-/*
     private void apiCallForRequestOTP(Context context) {
         String username = etUsername.getText().toString();
+        String mobileNo = etMobileNo.getText().toString();
+
+
         //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
         String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
 
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(context).getLocationUuid())
+                .forgotPassword(username,
+                        mobileNo)
 
-                .enqueue(new Callback<AppointmentListingResponse>() {
+                .enqueue(new Callback<ForgotPasswordApiResponseModel>() {
                     @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                    public void onResponse(Call<ForgotPasswordApiResponseModel> call, retrofit2.Response<ForgotPasswordApiResponseModel> response) {
                         if (response.body() == null) return;
-                        // AppointmentListingResponse slotInfoResponse = response.body();
+                        ForgotPasswordApiResponseModel forgotPasswordApiResponseModel = response.body();
 
+                        if (forgotPasswordApiResponseModel.getSuccess()) {
+                            Toast.makeText(context, forgotPasswordApiResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                    public void onFailure(Call<ForgotPasswordApiResponseModel> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
                     }
                 });
 
     }
-*/
 
     public class SpinnerAdapter extends ArrayAdapter<String> {
 

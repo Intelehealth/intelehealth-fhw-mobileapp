@@ -1,7 +1,6 @@
 package org.intelehealth.app.appointment.api;
 
 
-
 import com.google.gson.JsonObject;
 
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
@@ -10,6 +9,7 @@ import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -31,22 +31,26 @@ public interface Api {
 
     // https://uniceftraining.intelehealth.org:3004/api/appointment/getAppointmentSlots?fromDate=16/12/2021&toDate=31/12/2021&speciality=Neurologist
     @GET("api/appointment/getAppointmentSlots?")
-    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate")String mSelectedEndDate,
-                                    @Query("speciality")String speciality);
+    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate") String mSelectedEndDate,
+                                    @Query("speciality") String speciality);
 
     @GET("api/appointment/getSlots?")
     Call<AppointmentListingResponse> getSlotsAll(@Query("fromDate") String mSelectedStartDate,
-                                                 @Query("toDate")String mSelectedEndDate,
-                                                 @Query("locationUuid")String locationUuid
+                                                 @Query("toDate") String mSelectedEndDate,
+                                                 @Query("locationUuid") String locationUuid
     );
 
     @POST
-    Call<AppointmentDetailsResponse> bookAppointment(@Url String url,  @Body BookAppointmentRequest request);
+    Call<AppointmentDetailsResponse> bookAppointment(@Url String url, @Body BookAppointmentRequest request);
 
-    /*@GET("/api/openmrs/forgetPassword/requestOtp?")
-    Call<AppointmentListingResponse> forgotPassword(@Query("fromDate") String mSelectedStartDate,
-                                                 @Query("toDate")String mSelectedEndDate,
-                                                 @Query("locationUuid")String locationUuid
-    );*/
+    @POST("/api/openmrs/forgetPassword/requestOtp?")
+    Call<ForgotPasswordApiResponseModel> forgotPassword(@Query("userName") String userName,
+                                                        @Query("phoneNumber") String phoneNumber);
+
+    @POST("api/openmrs/forgetPassword/resetPassword?")
+    Call<ForgotPasswordApiResponseModel> resetPassword(@Query("newPassword") String newPassword,
+                                                        @Query("otp") String otp);
+
+
 
 }
