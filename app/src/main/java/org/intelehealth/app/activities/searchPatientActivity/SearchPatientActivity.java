@@ -84,7 +84,24 @@ public class SearchPatientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get the intent, verify the action and get the query
+        sessionManager = new SessionManager(this);
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the unicef should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         setContentView(R.layout.activity_search_patient);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
@@ -161,21 +178,6 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            }
 //        });
 
-        // Get the intent, verify the action and get the query
-        sessionManager = new SessionManager(this);
-
-        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the unicef should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
@@ -246,10 +248,10 @@ public class SearchPatientActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
     @Override
     protected void onDestroy() {
