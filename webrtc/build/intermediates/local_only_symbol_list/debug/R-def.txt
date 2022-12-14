@@ -205,6 +205,7 @@ string format_description
 string invalid_url_text
 string invalid_url_title
 string loading
+string mesg_hints
 string missing_url
 string muted
 string no

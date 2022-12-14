@@ -97,6 +97,8 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 setTitle("المساعدة العامة");
             else if (aidType.equalsIgnoreCase("Student Aid"))
                 setTitle("مساعدة الطلاب");
+        } else {
+            setTitle(aidType);
         }
 
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
@@ -344,8 +346,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                             Toast.makeText(context, "تقديم المساعدة العامة!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Student Aid"))
                             Toast.makeText(context, "تم إرسال المساعدة الطلابية!", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, aidType + " submitted!", Toast.LENGTH_SHORT).show();
                     }
                 }
