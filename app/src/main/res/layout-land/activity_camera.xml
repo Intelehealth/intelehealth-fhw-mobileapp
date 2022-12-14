@@ -8,7 +8,7 @@
     android:background="@color/colorPrimary"
     tools:context=".activities.cameraActivity.CameraActivity">
 
-    <!--<com.google.android.cameraview.CameraView
+    <com.google.android.cameraview.CameraView
         android:id="@+id/camera_surface_CameraView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -18,12 +18,7 @@
         android:adjustViewBounds="true"
         android:background="@android:color/black"
         app:aspectRatio="4:3"
-        app:facing="back" />-->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:importantForAccessibility="no" />
+        app:facing="back" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
