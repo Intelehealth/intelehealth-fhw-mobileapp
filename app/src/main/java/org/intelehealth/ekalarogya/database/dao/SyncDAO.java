@@ -41,6 +41,7 @@ import org.intelehealth.ekalarogya.utilities.NotificationID;
 import org.intelehealth.ekalarogya.utilities.PatientsFrameJson;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -397,7 +398,7 @@ public class SyncDAO {
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String request= gson.toJson(pushRequestApiCall);
+        String request = gson.toJson(pushRequestApiCall);
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
 //      String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //      push only happen if any one data exists.
@@ -410,7 +411,7 @@ public class SyncDAO {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             Logger.logD(TAG, "success" + pushResponseApiCall);
-                            String response= gson.toJson(pushResponseApiCall);
+                            String response = gson.toJson(pushResponseApiCall);
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
@@ -456,17 +457,17 @@ public class SyncDAO {
         return isSucess[0];
     }
 
-    public void syncUserStatus(Context context){
+    public void syncUserStatus(Context context) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(!IntelehealthApplication.isInBackground && !sessionManager.getProviderID().isEmpty()) {
-            String userUuid=sessionManager.getProviderID();
-            String userName=sessionManager.getChwname();
-            ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (!IntelehealthApplication.isInBackground && !sessionManager.getProviderID().isEmpty()) {
+            String userUuid = sessionManager.getProviderID();
+            String userName = sessionManager.getChwname();
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-            String []activitname=cn.getClassName().split("\\.");
-            String currentActivity="";
-            if(activitname!=null && activitname.length>0){
-                currentActivity=activitname[activitname.length-1];
+            String[] activitname = cn.getClassName().split("\\.");
+            String currentActivity = "";
+            if (activitname != null && activitname.length > 0) {
+                currentActivity = activitname[activitname.length - 1];
             }
             String appVersionName = BuildConfig.VERSION_NAME;
             String currentDeviceVersion = Build.VERSION.RELEASE;
@@ -474,16 +475,16 @@ public class SyncDAO {
             String deviceName = Settings.Global.getString(context.getContentResolver(), "device_name");
             Calendar calendar = Calendar.getInstance();
             long currentTime = calendar.getTimeInMillis();
-            long lastSyncTime=0;
+            long lastSyncTime = 0;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
-                if(!sessionManager.getPullExcutedTime().isEmpty()) {
-                    String datetime=sessionManager.getPullExcutedTime();
+                if (!sessionManager.getPullExcutedTime().isEmpty()) {
+                    String datetime = sessionManager.getPullExcutedTime();
                     Date date = dateFormat.parse(datetime);
                     lastSyncTime = date.getTime();
                 }
-            }catch (Exception e){
-               e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             UserStatusUpdateApiCall userStatusUpdateApiCall = new UserStatusUpdateApiCall();
@@ -497,11 +498,14 @@ public class SyncDAO {
             userStatusUpdateApiCall.setLastSyncTimestamp(lastSyncTime);
             userStatusUpdateApiCall.setName(userName);
             userStatusUpdateApiCall.setStatus("Active");
+            userStatusUpdateApiCall.setVillage(sessionManager.getVillageName());
+            userStatusUpdateApiCall.setSanch(sessionManager.getSanchName());
+
             String encoded = sessionManager.getEncoded();
             Gson gson = new Gson();
             Logger.logD(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
             Log.e(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
-            String request=gson.toJson(userStatusUpdateApiCall);
+            String request = gson.toJson(userStatusUpdateApiCall);
             String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";
 
             Single<ResponseBody> userStatusUpdateApiCallObservable = AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, "Basic " + encoded, userStatusUpdateApiCall);

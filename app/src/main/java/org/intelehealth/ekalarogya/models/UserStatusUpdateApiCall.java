@@ -46,6 +46,14 @@ public class UserStatusUpdateApiCall {
     @Expose
     private String status;
 
+    @SerializedName("village")
+    @Expose
+    private String village;
+
+    @SerializedName("sanch")
+    @Expose
+    private String sanch;
+
     public String getUserUuid() {
         return userUuid;
     }
@@ -124,5 +132,21 @@ public class UserStatusUpdateApiCall {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public String getSanch() {
+        return sanch;
+    }
+
+    public void setSanch(String sanch) {
+        this.sanch = sanch;
     }
 }
