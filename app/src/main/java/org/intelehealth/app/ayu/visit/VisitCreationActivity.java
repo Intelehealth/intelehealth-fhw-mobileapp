@@ -242,16 +242,19 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 mStep3ProgressBar.setProgress(10);
                 setTitle("3/4 Physical Examination");
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                mPhysicalExamNode = loadPhysicalExam();
+                //mPhysicalExamNode =
+                loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mPhysicalExamNode), PHYSICAL_EXAM_FRAGMENT).
+                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                         commit();
                 break;
             case STEP_3_PHYSICAL_SUMMARY_EXAMINATION:
-                mSummaryFrameLayout.setVisibility(View.VISIBLE);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), null), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
-                        commit();
+                if (isSavedPhysicalExam()) {
+                    mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                            commit();
+                }
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
                 mSummaryFrameLayout.setVisibility(View.GONE);
@@ -271,6 +274,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
+    private boolean isSavedPhysicalExam() {
+        return savePhysicalExamData();
+    }
+
     private boolean isSavedVisitReason() {
         Node node = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
         List<Node> optionList = node.getOptionsList();
@@ -285,23 +292,26 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private Node mPhysicalExamNode;
     private String mLastChiefComplainPhysicalString = "";
 
-    private Node loadPhysicalExam() {
+    private List<Node> loadPhysicalExam() {
         mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
         String[] exm = mLastChiefComplainPhysicalString.split(";");
         HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         for (String s : exm) {
-            String rootNodeName = s.split(":")[0];
-            String childNodeName = s.split(":")[1];
+            if (s.contains(":") && s.split(":").length >= 2) {
+                String rootNodeName = s.split(":")[0];
+                String childNodeName = s.split(":")[1];
 
-            List<String> list = new ArrayList<>();
-            if (map.containsKey(rootNodeName)) {
-                list = map.get(rootNodeName);
+                List<String> list = new ArrayList<>();
+                if (map.containsKey(rootNodeName)) {
+                    list = map.get(rootNodeName);
+                }
+                list.add(childNodeName);
+                map.put(rootNodeName, list);
             }
-            list.add(childNodeName);
-            map.put(rootNodeName, list);
         }
         String fileLocation = "physExam.json";
         Node filterNode = loadFileToNode(fileLocation);
+        physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), null);
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
             if (i == 0) {
@@ -314,7 +324,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
         }
         filterNode.setOptionsList(optionsList);
-        return filterNode;
+        return physicalExamMap.getSelectedNodes();
     }
 
     private Node mPastMedicalHistoryNode;
@@ -1062,7 +1072,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
 
-    private void savePhysicalExamData() {
+    private boolean savePhysicalExamData() {
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
@@ -1081,6 +1091,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         } else {
             questionsMissing();
         }
+        return insertDbPhysicalExam(physicalString);
     }
 
 
@@ -1146,10 +1157,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForResult.launch(cameraIntent);
     }
+
     SelectedBundle selectedBundle;
+
     public void setOnBundleSelected(SelectedBundle selectedBundle) {
         this.selectedBundle = selectedBundle;
     }
+
     public interface SelectedBundle {
         void onBundleSelect(Bundle bundle);
     }

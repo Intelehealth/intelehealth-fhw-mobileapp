@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -62,9 +63,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private OnItemSelection mOnItemSelection;
+    private boolean mIsForPhysicalExam;
+    private PhysicalExam mPhysicalExam;
 
-    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, int totalQuery, OnItemSelection onItemSelection) {
+    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isPhyExam, PhysicalExam physicalExam, int totalQuery, OnItemSelection onItemSelection) {
         mContext = context;
+        mIsForPhysicalExam = isPhyExam;
+        mPhysicalExam = physicalExam;
         mRecyclerView = recyclerView;
         mOnItemSelection = onItemSelection;
         mTotalQuery = totalQuery;
@@ -100,12 +105,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
-            genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-            genericViewHolder.tvQuestionCounter.setText((position + 1) + " of " + mTotalQuery + " questions"); //"1 of 10 questions"
+
 
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
+
+            if (mIsForPhysicalExam) {
+                Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
+                final String parent_name = mPhysicalExam.getExamParentNodeName(position);
+                String nodeText = parent_name + " : " + _mNode.findDisplay();
+
+                genericViewHolder.tvQuestion.setText(nodeText);
+                genericViewHolder.tvQuestionCounter.setText((position + 1) + " of " + mPhysicalExam.getTotalNumberOfExams() + " questions"); //"1 of 10 questions"
+
+            } else {
+                genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
+                genericViewHolder.tvQuestionCounter.setText((position + 1) + " of " + mTotalQuery + " questions"); //"1 of 10 questions"
+
+            }
 
 
             if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
@@ -159,7 +177,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     case "options":
                         // openCamera(context, imagePath, imageName);
-                        showOptionsData(genericViewHolder, mItemList.get(position).getOptionsList(), position);
+                        if (mIsForPhysicalExam)
+                            showOptionsData(genericViewHolder, mPhysicalExam.getExamNode(position).getOption(0).getOptionsList(), position);
+                        else
+                            showOptionsData(genericViewHolder, mItemList.get(position).getOptionsList(), position);
                         break;
                 }
             }

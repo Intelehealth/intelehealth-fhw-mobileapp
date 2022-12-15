@@ -81,7 +81,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node) {
                 //Log.v("onSelect", "node - " + node.getText());

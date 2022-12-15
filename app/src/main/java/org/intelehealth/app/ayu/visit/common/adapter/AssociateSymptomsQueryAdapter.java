@@ -88,7 +88,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 if (mItemList.get(position).getOptionsList()!=null && mItemList.get(position).getOptionsList().size() > 0) {
                     genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                     genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext,false,null, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
                         @Override
                         public void onSelect(Node node) {
 
