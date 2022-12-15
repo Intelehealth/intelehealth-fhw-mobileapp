@@ -653,7 +653,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         }*/
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
-            showLoggingInDialog();
+            //showLoggingInDialog();
 
         }
 

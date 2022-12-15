@@ -122,7 +122,7 @@ public class Node implements Serializable {
 
     private boolean isNoSelected;
 
-    private List<String> imagePathList;
+    private List<String> imagePathList = new ArrayList<>();
 
     public static String bullet = "\u2022";
     public static String big_bullet = "\u25CF";

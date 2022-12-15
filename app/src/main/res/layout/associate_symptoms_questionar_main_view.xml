@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        ></androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rcv_container"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingHorizontal="@dimen/padding_10"
+        android:paddingVertical="@dimen/padding_7"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size" />
+</RelativeLayout>

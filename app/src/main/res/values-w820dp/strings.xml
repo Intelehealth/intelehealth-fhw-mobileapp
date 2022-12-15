@@ -2,4 +2,18 @@
 <resources>
     <string name="app_version_string">App Version - %1$s</string>
     <string name="no_visit_created">No visit created</string>
+    <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
+    <string name="height_cm">Height (cm)*</string>
+    <string name="weight_kg">Weight (kg)*</string>
+    <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
+    <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
+    <string name="bp_sys">BP Sys</string>
+    <string name="bp_dia">BP Dia</string>
+    <string name="pulse_bpm">Pulse (bpm)</string>
+    <string name="spo2">SpO2 (%)</string>
+    <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
+    <string name="temperature_f_new">Temperature (F)</string>
+    <string name="confirm">Confirm</string>
+    <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
+    <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
 </resources>

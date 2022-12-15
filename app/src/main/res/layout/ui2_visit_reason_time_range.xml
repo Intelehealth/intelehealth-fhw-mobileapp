@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_number_range"
+            style="@style/edittext_textcolor"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_border_blue"
+            android:drawableEnd="@drawable/ui2_ic_dropdown"
+            android:drawablePadding="@dimen/margin_8"
+            android:hint="Select number"
+            android:inputType="textAutoComplete"
+            android:padding="@dimen/padding_10"
+            android:textColor="@color/ui2_black_text_color"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_duration_type"
+            style="@style/edittext_textcolor"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_border_blue"
+            android:drawableEnd="@drawable/ui2_ic_dropdown"
+            android:drawablePadding="@dimen/margin_8"
+            android:hint="Select duration type"
+            android:inputType="textAutoComplete"
+            android:padding="@dimen/padding_10"
+            android:textColor="@color/ui2_black_text_color"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_top"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/card_content_normal_text_size" />
+
+</RelativeLayout>

@@ -40,6 +40,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <activity
+            android:name=".ayu.visit.VisitCreationActivity"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew" />
 
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New1"

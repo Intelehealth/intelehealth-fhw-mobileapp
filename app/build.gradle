@@ -151,6 +151,7 @@ dependencies {
 
     implementation 'com.hbb20:ccp:2.6.1'
     implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

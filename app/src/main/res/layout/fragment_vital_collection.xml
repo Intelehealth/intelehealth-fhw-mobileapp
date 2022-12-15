@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ayu.visit.vital.VitalCollectionFragment">
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/button_skip_margin_start"
+        android:layout_marginEnd="@dimen/button_skip_margin_end"
+        android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+        android:background="@drawable/ui2_common_primary_bg"
+        android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+        android:drawableTint="@color/iconTintWhite"
+        android:lineHeight="@dimen/button_skip_line_height"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_vital_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_submit"
+        android:padding="@dimen/margin_24">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/enter_patient_s_body_measurement_details"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_height_lbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/height_cm"
+                        android:textColor="@color/gray_3"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/tv_height"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:background="@drawable/edittext_border"
+                        android:drawableEnd="@drawable/ui2_ic_dropdown"
+                        android:hint="Select"
+                        android:padding="@dimen/padding_10"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/edittext_textsize_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_wight_lbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/weight_kg"
+                        android:textColor="@color/gray_3"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/tv_weight"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:background="@drawable/edittext_border"
+                        android:drawableEnd="@drawable/ui2_ic_dropdown"
+                        android:hint="Select"
+                        android:padding="@dimen/padding_10"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/edittext_textsize_16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_bmi_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/bmi_index_auto_calculated"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/edittext_border"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_10"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_bmi_value"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Auto-Calculate"
+                    android:lineSpacingExtra="1sp"
+                    android:text=""
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_bmi_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:lineSpacingExtra="1sp"
+                    android:text=""
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_sub_title_vital_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/enter_the_patient_s_vitals"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_bp_sys_lbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/bp_sys"
+                        android:textColor="@color/gray_3"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/etv_bp_sys"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:background="@drawable/edittext_border"
+                        android:hint="Enter value"
+                        android:inputType="number"
+                        android:padding="@dimen/padding_10"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/edittext_textsize_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_bp_dia_lbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/bp_dia"
+                        android:textColor="@color/gray_3"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/etv_bp_dia"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:background="@drawable/edittext_border"
+                        android:hint="Enter value"
+                        android:inputType="number"
+                        android:padding="@dimen/padding_10"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/edittext_textsize_16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_spo2_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/spo2"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_spo2"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="E.g., 98%"
+                android:inputType="number"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="@dimen/edittext_textsize_16sp" />
+
+            <TextView
+                android:id="@+id/tv_pulse_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/pulse_bpm"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_pulse"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="E.g., 72 bpm"
+                android:inputType="number"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="@dimen/edittext_textsize_16sp" />
+
+            <TextView
+                android:id="@+id/tv_respiratory_rate_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/respiratory_rate_breaths_min"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_respiratory_rate"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="E.g., 24 breath/min"
+                android:inputType="number"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="@dimen/edittext_textsize_16sp" />
+
+            <TextView
+                android:id="@+id/tv_temperature_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/temperature_f_new"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_temperature"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="E.g., 98F"
+                android:inputType="number"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="@dimen/edittext_textsize_16sp" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

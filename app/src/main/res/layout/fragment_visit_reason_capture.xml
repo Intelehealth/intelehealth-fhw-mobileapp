@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/button_skip_margin_start"
+        android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_input_bg"
+            android:drawableTint="@color/iconTintWhite"
+            android:lineHeight="@dimen/button_skip_line_height"
+            android:paddingStart="@dimen/common_button_padding_left"
+            android:paddingTop="@dimen/common_button_padding_top"
+            android:paddingEnd="@dimen/common_button_padding_right"
+            android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/generic_back"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:drawableTint="@color/iconTintWhite"
+            android:lineHeight="@dimen/button_skip_line_height"
+            android:paddingStart="@dimen/common_button_padding_left"
+            android:paddingTop="@dimen/common_button_padding_top"
+            android:paddingEnd="@dimen/common_button_padding_right"
+            android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_footer"
+        android:padding="@dimen/margin_24">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:src="@drawable/ui2_ic_ayu_image" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
+                android:src="@drawable/chat_bubble_top" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ui2_chat_bubble_square_round"
+                android:padding="@dimen/padding_15">
+
+                <TextView
+                    android:id="@+id/tv_visit_reason_t1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="1sp"
+                    android:text="What is the reason for this visit?"
+                    android:textColor="@color/ui2_black_text_color"
+                    android:textSize="@dimen/text_18sp" />
+
+                <TextView
+                    android:id="@+id/tv_visit_reason_t2"
+                    style="@style/label_misc_txt_14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_visit_reason_t1"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Select one or multiple reasons" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_reasons"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_below="@+id/tv_visit_reason_t2"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:background="@drawable/edittext_border_blue"
+                    android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                    android:drawablePadding="@dimen/margin_8"
+                    android:hint="Type or select reason eg. Fever"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/padding_10"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_recently_search_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="Selected reasons"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_action_delete"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_empty_reason_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Not selected anything yet!"
+                    android:textColor="@color/ui2_black_text_color"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="normal" />
+
+                <LinearLayout
+                    android:id="@+id/ll_selected_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_toStartOf="@+id/iv_clear"
+                    android:orientation="horizontal"></LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_recently_search_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="Recently searched"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_empty_recent_search_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Not searched anything yet!"
+                    android:textColor="@color/ui2_black_text_color"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_recently_search_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="Most common reasons"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_empty_recent_search_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Not data found!"
+                    android:textColor="@color/ui2_black_text_color"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_recently_search_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="All reasons"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_all_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

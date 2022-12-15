@@ -22,7 +22,7 @@
             android:layout_height="@dimen/physical_exam_img_max_height"
             android:layout_gravity="center_horizontal"
             android:contentDescription="TODO"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,9 +96,9 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-           android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_done_24dp" />
 

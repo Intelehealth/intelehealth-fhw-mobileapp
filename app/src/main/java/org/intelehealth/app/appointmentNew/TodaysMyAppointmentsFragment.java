@@ -425,7 +425,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void getSlots() {
         //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
+        String baseurl = "https://uiux.intelehealth.org:3005";
 
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
