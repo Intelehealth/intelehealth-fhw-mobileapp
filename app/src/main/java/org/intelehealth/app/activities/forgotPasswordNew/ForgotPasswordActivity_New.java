@@ -18,16 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentListingResponse;
-import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
+import org.intelehealth.app.models.RequestOTPParamsModel_New;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +35,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
-    Button etUsername, etMobileNo;
+    TextInputEditText etUsername, etMobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,30 +109,33 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     private void apiCallForRequestOTP(Context context) {
         String username = etUsername.getText().toString();
         String mobileNo = etMobileNo.getText().toString();
-
+        Log.d(TAG, "apiCallForRequestOTP:username :  " + username);
+        Log.d(TAG, "apiCallForRequestOTP:mobileNo :  " + mobileNo);
 
         //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
+        String baseurl = "https://uiux.intelehealth.org:3004/";
 
+        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(username, mobileNo);
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .forgotPassword(username,
-                        mobileNo)
+                .requestOtp(inputModel)
 
-                .enqueue(new Callback<ForgotPasswordApiResponseModel>() {
+                .enqueue(new Callback<ForgotPasswordApiResponseModel_New>() {
                     @Override
-                    public void onResponse(Call<ForgotPasswordApiResponseModel> call, retrofit2.Response<ForgotPasswordApiResponseModel> response) {
+                    public void onResponse(Call<ForgotPasswordApiResponseModel_New> call, retrofit2.Response<ForgotPasswordApiResponseModel_New> response) {
                         if (response.body() == null) return;
-                        ForgotPasswordApiResponseModel forgotPasswordApiResponseModel = response.body();
+                        ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel = response.body();
+
 
                         if (forgotPasswordApiResponseModel.getSuccess()) {
                             Toast.makeText(context, forgotPasswordApiResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
+                            intent.putExtra("userUuid", forgotPasswordApiResponseModel.getData().getUuid());
                             startActivity(intent);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ForgotPasswordApiResponseModel> call, Throwable t) {
+                    public void onFailure(Call<ForgotPasswordApiResponseModel_New> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
                     }
                 });

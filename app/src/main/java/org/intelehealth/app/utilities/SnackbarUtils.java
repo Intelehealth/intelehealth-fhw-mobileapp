@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -37,4 +38,17 @@ public class SnackbarUtils {
         view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSuccess));
         snackbar.show();
     }
+
+    public void showSnackCoordinatorLayoutParentSuccess(Context context, CoordinatorLayout layoutParent, String message) {
+        Snackbar snackbar = Snackbar
+                .make(layoutParent, message, Snackbar.LENGTH_SHORT);
+        View view = snackbar.getView();
+        FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) view.getLayoutParams();
+        params1.gravity = Gravity.BOTTOM;
+        view.setLayoutParams(params1);
+        view.setBackgroundColor(ContextCompat.getColor(context, R.color.error_red));
+        snackbar.show();
+    }
+
+
 }

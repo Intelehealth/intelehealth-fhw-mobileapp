@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
+import org.intelehealth.app.models.ChangePasswordParamsModel_New;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
+import org.intelehealth.app.models.ResetPasswordResModel_New;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +25,7 @@ import retrofit2.Callback;
 public class ResetPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = "ResetPasswordActivity_N";
     String otp = "";
-
+    String userUuid= "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             otp = extras.getString("otp");
+            userUuid = extras.getString("userUuid");
         }
         TextInputEditText etNewPassword = findViewById(R.id.et_new_password);
         TextInputEditText etConfirmPassword = findViewById(R.id.et_confirm_password);
@@ -39,7 +43,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         btnSavePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(etNewPassword.getText().toString().equals(etConfirmPassword.getText().toString()) && !otp.isEmpty()){
+                if (etNewPassword.getText().toString().equals(etConfirmPassword.getText().toString()) && !otp.isEmpty()) {
                     apiCallForResetPassword(ResetPasswordActivity_New.this, etNewPassword.getText().toString(), otp);
                 }
             }
@@ -48,27 +52,31 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
     private void apiCallForResetPassword(Context context, String newPassword, String otp) {
         //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://" + "https://uiux.intelehealth.org:3005";
+        String baseurl = "https://uiux.intelehealth.org:3004/";
+
+        Log.d(TAG, "apiCallForResetPassword: newPassword : "+newPassword);
+        Log.d(TAG, "apiCallForResetPassword: otp : "+otp);
+
+        ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword,otp);
 
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .resetPassword("",
-                        "")
+                .resetPassword(userUuid, inputModel)
 
-                .enqueue(new Callback<ForgotPasswordApiResponseModel>() {
+                .enqueue(new Callback<ResetPasswordResModel_New>() {
                     @Override
-                    public void onResponse(Call<ForgotPasswordApiResponseModel> call, retrofit2.Response<ForgotPasswordApiResponseModel> response) {
+                    public void onResponse(Call<ResetPasswordResModel_New> call, retrofit2.Response<ResetPasswordResModel_New> response) {
                         if (response.body() == null) return;
-                        ForgotPasswordApiResponseModel forgotPasswordApiResponseModel = response.body();
+                        ResetPasswordResModel_New resetPasswordResModel_new = response.body();
 
-                        if (forgotPasswordApiResponseModel.getSuccess()) {
-                            Toast.makeText(context, forgotPasswordApiResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(context, ForgotPasswordOtpVerificationActivity_New.class);
+                        if (resetPasswordResModel_new.getSuccess()) {
+                            Toast.makeText(context, resetPasswordResModel_new.getMessage(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, SetupActivityNew.class);
                             startActivity(intent);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ForgotPasswordApiResponseModel> call, Throwable t) {
+                    public void onFailure(Call<ResetPasswordResModel_New> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
                     }
                 });

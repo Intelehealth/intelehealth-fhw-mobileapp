@@ -157,7 +157,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         }
         sessionManager = new SessionManager(this);
         initUI();
-    //}
+        //}
         clickListeners();
 
         //currently user details are in local db
@@ -165,7 +165,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     }
 
-       private void clickListeners() {
+    private void clickListeners() {
         Intent intent_exit = getIntent();
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
@@ -394,8 +394,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -434,8 +434,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -445,8 +445,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         yesButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            moveTaskToBack(true);
-
+            logout();
 
         });
 
@@ -617,21 +616,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             default:
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (fragment != null) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            loadFragment(fragment);
+            menuItem.setChecked(true);
+            setTitle(menuItem.getTitle());
+            mDrawerLayout.closeDrawers();
         }
-        loadFragment(fragment);
-       /*  FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContent, fragment).commit();
-        String backStateName = fragment.getClass().getName();
-        fragmentTransaction.addToBackStack(backStateName);*/
 
-        menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
-        mDrawerLayout.closeDrawers();
     }
 
     @Override
@@ -1012,5 +1008,43 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             return false;
         }
     }
+
+    public void logout() {
+
+        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+
+//        parseLogOut();
+
+       /* AccountManager manager = AccountManager.get(HomeActivity.this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }*/
+     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        if (accountList.length > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
+            } else {
+                manager.removeAccount(accountList[0], null, null); // Legacy implementation
+            }
+        }
+*/
+        Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+        SyncUtils syncUtils = new SyncUtils();
+        syncUtils.syncBackground();
+        sessionManager.setReturningUser(false);
+        sessionManager.setLogout(true);
+    }
+
 }
 

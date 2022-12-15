@@ -1,35 +1,31 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
-
-import retrofit2.Call;
-import retrofit2.Callback;
 
 
 public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity {
     private static final String TAG = "OtpVerificationActivity";
     //temporary OTP is hardcode
     String OTP = "111111";
-
+    String userUuid = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification_ui2);
 
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userUuid = extras.getString("userUuid");
+        }
         Button buttonVerifyOtp = findViewById(R.id.button_verify_otp);
         LinearLayout layoutPinView = findViewById(R.id.pinview_otp);
 
@@ -49,13 +45,18 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             String pin5 = tvPin5.getText().toString();
             String pin6 = tvPin5.getText().toString();
 
-
-            if (!pin1.isEmpty() && !pin2.isEmpty() && !pin3.isEmpty() && !pin4.isEmpty() && !pin5.isEmpty() && !pin6.isEmpty()) {
+            Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
+            intent.putExtra("otp", "111111");
+            intent.putExtra("userUuid", userUuid);
+            startActivity(intent);
+            /*if (!pin1.isEmpty() && !pin2.isEmpty() && !pin3.isEmpty() && !pin4.isEmpty() && !pin5.isEmpty() && !pin6.isEmpty()) {
                 String otp = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
                 Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
                 intent.putExtra("otp", otp);
+                intent.putExtra("userUuid", userUuid);
+
                 startActivity(intent);
-            }
+            }*/
         });
     }
 
