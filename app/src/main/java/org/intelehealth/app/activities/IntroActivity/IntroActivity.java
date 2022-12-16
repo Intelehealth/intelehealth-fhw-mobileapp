@@ -98,6 +98,8 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
+        btnNext = findViewById(R.id.btn_next);
+
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
         String appLanguage = sessionManager.getAppLanguage();
@@ -110,12 +112,13 @@ public class IntroActivity extends AppCompatActivity {
             getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
+        btnNext.setText(R.string.next);
+
         BASE_URL = "https://sila.swaida.org:3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
 
         layouts = new int[]{
                 R.layout.welcome_slide1,
