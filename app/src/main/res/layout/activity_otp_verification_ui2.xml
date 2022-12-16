@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login"
     android:layout_width="match_parent"
+    tools:context=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
@@ -118,19 +120,31 @@
                         android:layout_marginTop="15dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true" />
-
                     <TextView
-                        android:id="@+id/textview_no_otp"
+                        android:id="@+id/tv_otp_error"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/pinview_otp"
-                        android:layout_marginTop="@dimen/margin_20"
-                        android:text="@string/no_otp_received"
-                        android:textColor="@color/textColorGray"
-                        android:textSize="@dimen/common_label_text_size" />
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/pinview_otp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/enter_otp"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone" />
+
 
                 </RelativeLayout>
-
+                <TextView
+                    android:id="@+id/textview_no_otp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pinview_otp"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:text="@string/no_otp_received"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
                 <Button
                     android:id="@+id/button_verify_otp"
                     android:layout_width="match_parent"
