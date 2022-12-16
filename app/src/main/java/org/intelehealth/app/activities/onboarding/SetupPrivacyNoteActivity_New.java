@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -15,25 +17,43 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 
 public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
     TextView tvTermsAndPrivacy;
     CustomDialog customDialog;
+    private CardView cardNoteSnack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_privacy_note_ui2);
         tvTermsAndPrivacy = findViewById(R.id.tv_privacy_notice_link);
         Button btnSetup = findViewById(R.id.btn_setup);
+        cardNoteSnack = findViewById(R.id.card_note_snack_policy);
+
+        ImageView ivBack = findViewById(R.id.iv_setup_privacy_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SplashScreenActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         btnSetup.getBackground().setAlpha(60);
         CheckBox chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
 
@@ -74,8 +94,15 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
-                customDialog.showDialog1();
+                if (chkBoxPrivacyPolicy.isChecked()) {
+
+                    btnSetup.setBackgroundDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this, R.drawable.ui2_common_primary_bg));
+                    customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
+                    customDialog.showDialog1();
+                } else {
+                    showSnackBarAndRemoveLater();
+                }
+
             }
         });
 
@@ -159,5 +186,17 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void showSnackBarAndRemoveLater() {
+        cardNoteSnack.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cardNoteSnack.setVisibility(View.GONE);
+            }
+        }, 3000);
     }
 }

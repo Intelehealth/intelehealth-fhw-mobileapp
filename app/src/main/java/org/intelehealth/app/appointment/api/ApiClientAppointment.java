@@ -3,6 +3,8 @@ package org.intelehealth.app.appointment.api;
 
 
 
+import android.util.Log;
+
 import org.intelehealth.app.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
@@ -33,6 +35,7 @@ public class ApiClientAppointment {
     }
 
     public static synchronized ApiClientAppointment getInstance(String baseUrl) {
+        Log.d("TAG", "getInstance: ");
         if (instance == null) {
             instance = new ApiClientAppointment(baseUrl);
         }

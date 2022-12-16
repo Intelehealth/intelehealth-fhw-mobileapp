@@ -9,11 +9,18 @@ import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
-import org.intelehealth.app.models.ForgotPasswordApiResponseModel;
+import org.intelehealth.app.models.ChangePasswordModel_New;
+import org.intelehealth.app.models.ChangePasswordParamsModel_New;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
+import org.intelehealth.app.models.RequestOTPParamsModel_New;
+import org.intelehealth.app.models.ResetPasswordResModel_New;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -44,13 +51,15 @@ public interface Api {
     Call<AppointmentDetailsResponse> bookAppointment(@Url String url, @Body BookAppointmentRequest request);
 
     @POST("/api/openmrs/forgetPassword/requestOtp?")
-    Call<ForgotPasswordApiResponseModel> forgotPassword(@Query("userName") String userName,
-                                                        @Query("phoneNumber") String phoneNumber);
+    Call<ForgotPasswordApiResponseModel_New> requestOtp(@Body RequestOTPParamsModel_New requestOTPParamsModel_new);
 
-    @POST("api/openmrs/forgetPassword/resetPassword?")
-    Call<ForgotPasswordApiResponseModel> resetPassword(@Query("newPassword") String newPassword,
-                                                        @Query("otp") String otp);
+    @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
+    Call<ResetPasswordResModel_New> resetPassword(@Path("userUuid") String userUuid,
+                                                  @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
+    @POST("/openmrs/ws/rest/v1/password")
+    Call<JsonObject> changePassword(@Body ChangePasswordModel_New changePasswordParamsModel_new,
+                                    @Header("Authorization") String authHeader);
 
 
 }

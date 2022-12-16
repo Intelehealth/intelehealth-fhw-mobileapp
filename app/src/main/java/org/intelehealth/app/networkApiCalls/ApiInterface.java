@@ -1,11 +1,18 @@
 package org.intelehealth.app.networkApiCalls;
 
 
+import com.google.gson.JsonObject;
+
+import org.intelehealth.app.models.ChangePasswordModel_New;
+import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
+import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.app.models.RequestOTPParamsModel_New;
+import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.loginModel.LoginModel;
@@ -19,6 +26,7 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -64,6 +72,7 @@ public interface ApiInterface {
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
                                                   @Header("Authorization") String authHeader);
+
 
     @GET
     Observable<LoginProviderModel> LOGIN_PROVIDER_MODEL_OBSERVABLE(@Url String url,
@@ -127,8 +136,26 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader);
 
     @DELETE
-    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM(
             @Url String url,
             @Header("Authorization") String authHeader);
+
+
+    @POST("/openmrs/ws/rest/v1/password")
+    Observable<ResponseBody> CHANGE_PASSWORD_OBSERVABLE(@Body ChangePasswordModel_New changePasswordParamsModel_new,
+                                                        @Header("Authorization") String authHeader);
+
+    @POST("/api/openmrs/forgetPassword/requestOtp?")
+    Observable<ForgotPasswordApiResponseModel_New> REQUEST_OTP_OBSERVABLE(@Body RequestOTPParamsModel_New requestOTPParamsModel_new);
+
+
+    @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
+    Call<ResetPasswordResModel_New> resetPassword(@Path("userUuid") String userUuid,
+                                                  @Body ChangePasswordParamsModel_New changePasswordParamsModel_new,
+                                                  @Header("Authorization") String authHeader);
+
+    @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
+    Observable<ResetPasswordResModel_New> RESET_PASSWORD_OBSERVABLE(@Path("userUuid") String userUuid,
+                                                                    @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
 }

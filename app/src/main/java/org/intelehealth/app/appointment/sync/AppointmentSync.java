@@ -22,8 +22,8 @@ public class AppointmentSync {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
-        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3005";
-        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3005").getApi()
+        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3004").getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
