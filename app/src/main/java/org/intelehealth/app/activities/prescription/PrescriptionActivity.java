@@ -131,11 +131,11 @@ public class PrescriptionActivity extends AppCompatActivity {
     boolean isuploadPrescription = false;
     Button btnFollowUp;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        mContext = newBase;
-        super.attachBaseContext(LocaleHelper.updateLocale(newBase, new SessionManager(newBase).getAppLanguage()));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        mContext = newBase;
+//        super.attachBaseContext(LocaleHelper.updateLocale(newBase, new SessionManager(newBase).getAppLanguage()));
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

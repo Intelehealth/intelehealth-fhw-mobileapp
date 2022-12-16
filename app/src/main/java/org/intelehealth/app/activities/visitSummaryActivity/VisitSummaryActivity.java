@@ -1730,10 +1730,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return dataString;
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
 //    private void doConnect() {
 //
@@ -1862,23 +1862,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
     //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-//    public void setLocale(String appLanguage) {
-//        Resources res = getResources();
-//        Configuration conf = res.getConfiguration();
-//        Locale locale = new Locale(appLanguage);
-//        Locale.setDefault(locale);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            conf.setLocale(locale);
-//            getApplicationContext().createConfigurationContext(conf);
-//        }
-//        DisplayMetrics dm = res.getDisplayMetrics();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            conf.setLocales(new LocaleList(locale));
-//        } else {
-//            conf.locale = locale;
-//        }
-//        res.updateConfiguration(conf, dm);
-//    }
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            getApplicationContext().createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+    }
 
     private String convertCtoF(String temperature) {
 

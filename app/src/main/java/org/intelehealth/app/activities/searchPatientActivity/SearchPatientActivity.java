@@ -96,7 +96,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
@@ -138,7 +138,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     toolbarET.clearFocus();
                     toolbarClear.setVisibility(View.GONE);
                     toolbarSearch.setVisibility(View.GONE);
-                  //  firstQuery();
+                    //  firstQuery();
                 }
             }
         });
@@ -153,7 +153,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 List<PatientDTO> patientDTOList = new ArrayList<>();
                 recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
                 recyclerView.setAdapter(recycler);
-              //  firstQuery();
+                //  firstQuery();
             }
         });
         toolbarSearch.setOnClickListener(new View.OnClickListener() {
@@ -189,21 +189,21 @@ public class SearchPatientActivity extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (recycler != null) {
-                if (recycler.patients != null && recycler.patients.size() < limit) {
-                    return;
-                }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() ==
-                        recycler.getItemCount() - 1) {
-                    Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                    offset += limit;
-                    List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
-                    if (allPatientsFromDB.size() < limit) {
-                        fullyLoaded = true;
+                    if (recycler.patients != null && recycler.patients.size() < limit) {
+                        return;
                     }
-                    recycler.patients.addAll(allPatientsFromDB);
-                    recycler.notifyDataSetChanged();
+                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() ==
+                            recycler.getItemCount() - 1) {
+                        Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                        offset += limit;
+                        List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
+                        if (allPatientsFromDB.size() < limit) {
+                            fullyLoaded = true;
+                        }
+                        recycler.patients.addAll(allPatientsFromDB);
+                        recycler.notifyDataSetChanged();
+                    }
                 }
-            }
             }
         });
         new_patient = findViewById(R.id.new_patient);
@@ -225,7 +225,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-             //   firstQuery();
+                //   firstQuery();
             }
 
         }

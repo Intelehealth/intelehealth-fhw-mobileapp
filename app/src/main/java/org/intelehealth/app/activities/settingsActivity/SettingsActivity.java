@@ -232,10 +232,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new LanguagePreferenceFragment())
                 .commit();
-        setTitle(R.string.languages);
         sessionManager = new SessionManager(this);
         setupActionBar();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle(R.string.languages);
     }
 
     /**
@@ -281,7 +285,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         //code for adding version text on the bottom of the screen: By Nishita
 
         RelativeLayout lContainerLayout = new RelativeLayout(this);
-        RelativeLayout.LayoutParams rlayout = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.WRAP_CONTENT , RelativeLayout.LayoutParams.WRAP_CONTENT );
+        RelativeLayout.LayoutParams rlayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lContainerLayout.setLayoutParams(rlayout);
         Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_light);
         TextView mCustomView = new TextView(this);
@@ -290,9 +294,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         mCustomView.setTextColor(Color.BLACK);
         mCustomView.setTypeface(typeface);
         RelativeLayout.LayoutParams lParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lParams.bottomMargin=10;
+        lParams.bottomMargin = 10;
         mCustomView.setLayoutParams(lParams);
         lContainerLayout.addView(mCustomView);
         addContentView(lContainerLayout, lParams);
@@ -430,6 +434,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (language != null) {
                 setLocale(language);
             }
+            setUpdatedTitles();
         }
 
         public void saveLocale(String lang) {
@@ -458,6 +463,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             //  bindPreferenceSummaryToValue(findPreference("OriyaLang"));
 
             lang_prefer = findPreference("hindiLang");
+            setUpdatedTitles();
             lang_prefer.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newvalue) {
@@ -490,6 +496,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
+
+            loadLocale();
         }
 
         @Override
@@ -504,7 +512,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
 
-
+        public void setUpdatedTitles() {
+            getActivity().setTitle(R.string.languages);
+            lang_prefer.setTitle(getString(R.string.current_language));
+        }
     }
-
 }

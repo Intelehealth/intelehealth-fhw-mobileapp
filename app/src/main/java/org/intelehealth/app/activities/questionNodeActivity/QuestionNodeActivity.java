@@ -125,16 +125,16 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         sessionManager = new SessionManager(this);
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-//        String language = sessionManager.getAppLanguage();
-//        //In case of crash still the org should hold the current lang fix.
-//        if (!language.equalsIgnoreCase("")) {
-//            Locale locale = new Locale(language);
-//            Locale.setDefault(locale);
-//            Configuration config = new Configuration();
-//            config.locale = locale;
-//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//        }
-//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the org should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         filePath = new File(AppConstants.IMAGE_PATH);
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -235,10 +235,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
 
     public void onListClicked(View v, int groupPosition, int childPosition) {

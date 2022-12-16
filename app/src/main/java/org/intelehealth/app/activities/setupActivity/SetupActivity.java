@@ -161,6 +161,16 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the unicef should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -1375,7 +1385,7 @@ public class SetupActivity extends AppCompatActivity {
                 dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
-                mLoginButton.setEnabled(true );
+                mLoginButton.setEnabled(true);
             }
 
             @Override
@@ -1658,14 +1668,15 @@ public class SetupActivity extends AppCompatActivity {
         }
 
         //Start downloading mindmaps
-        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
+        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindAc" +
+                "maps.zip");
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
 }

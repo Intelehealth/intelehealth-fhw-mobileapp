@@ -67,10 +67,10 @@ public class SplashActivity extends AppCompatActivity {
         TokenRefreshUtils.refreshToken(this);
         initFirebaseRemoteConfig();
     }
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
     private void initFirebaseRemoteConfig() {
         FirebaseApp.initializeApp(this);

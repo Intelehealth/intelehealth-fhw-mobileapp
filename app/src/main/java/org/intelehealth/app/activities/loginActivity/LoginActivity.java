@@ -279,10 +279,10 @@ public class LoginActivity extends AppCompatActivity {
         //prajwal_changes
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
     /**
      * class UserLoginTask will authenticate user using email and password.

@@ -87,10 +87,10 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         populatingLanguages();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
     public void initViews() {
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
@@ -143,7 +143,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
     public interface ItemSelectionListener {

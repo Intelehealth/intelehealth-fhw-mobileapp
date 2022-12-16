@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.intelehealth.app.R;
@@ -98,6 +100,15 @@ public class IntroActivity extends AppCompatActivity {
 
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
+        String appLanguage = sessionManager.getAppLanguage();
+
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
         BASE_URL = "https://sila.swaida.org:3004/api/openmrs/";
 
@@ -241,7 +252,7 @@ public class IntroActivity extends AppCompatActivity {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
                 String textHighlight = getString(R.string.Ayu_name);
                 String newhighlight = two.replaceAll(textHighlight,
-                        "<font color='blue'>" + textHighlight + "</font>")
+                                "<font color='blue'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
 
@@ -306,13 +317,13 @@ public class IntroActivity extends AppCompatActivity {
                                     NewLocationDao newLocationDao = new NewLocationDao();
                                     newLocationDao.insertSetupLocations(location);
                                     List<String> state_locations = newLocationDao.getStateList(context);
-                                    if (state_locations.size() != 0 && state_locations.size()>1) {
+                                    if (state_locations.size() != 0 && state_locations.size() > 1) {
                                         selectedState = state_locations.get(1);
                                         List<String> district_locations = newLocationDao.getDistrictList(state_locations.get(1), context);
-                                        if (district_locations.size() != 0 && district_locations.size()>1) {
+                                        if (district_locations.size() != 0 && district_locations.size() > 1) {
                                             selectedDistrict = district_locations.get(1);
                                             List<String> village_locations = newLocationDao.getVillageList(state_locations.get(1), district_locations.get(1), context);
-                                            if (village_locations.size() != 0 && village_locations.size()>1) {
+                                            if (village_locations.size() != 0 && village_locations.size() > 1) {
                                                 selectedVillage = village_locations.get(1);
                                                 HashMap<String, String> hashMap4;
                                                 String village_uuid = newLocationDao.getVillageUuid(state_locations.get(1), district_locations.get(1), village_locations.get(1));
@@ -692,9 +703,9 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+//    }
 
 }
