@@ -1630,6 +1630,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>
     <string name="password_validation">Password length must be greater or equal to 8 and with combination of small, capital characters and digits</string>
+    <string name="enter_otp">Please enter OTP</string>
 
 
     <!--  Help UI2.0-->

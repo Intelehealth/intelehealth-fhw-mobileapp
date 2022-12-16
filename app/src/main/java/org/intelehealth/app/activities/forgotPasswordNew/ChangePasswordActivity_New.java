@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
@@ -65,6 +66,15 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+
+        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChangePasswordActivity_New.this, HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
 
         context = ChangePasswordActivity_New.this;
         cpd = new CustomProgressDialog(context);

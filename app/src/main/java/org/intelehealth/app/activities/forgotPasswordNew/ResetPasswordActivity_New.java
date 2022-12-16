@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +70,15 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         etNewPassword = findViewById(R.id.et_new_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
         Button btnSavePassword = findViewById(R.id.btn_save_password);
+        ImageView ivBack = findViewById(R.id.imageview_back_reset);
 
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResetPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
+                startActivity(intent);
+            }
+        });
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
 

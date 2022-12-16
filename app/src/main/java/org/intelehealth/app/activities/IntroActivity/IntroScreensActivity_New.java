@@ -18,6 +18,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
 
 public class IntroScreensActivity_New extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntroScreensActivity_New.this, SetupPrivacyNoteActivity_New.class);
+                Intent intent = new Intent(IntroScreensActivity_New.this, SplashScreenActivity.class);
                 startActivity(intent);
                finish();
             }
