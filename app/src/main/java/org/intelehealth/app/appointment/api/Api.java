@@ -1,12 +1,15 @@
 package org.intelehealth.app.appointment.api;
 
 
+import com.google.gson.JsonObject;
+
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
+import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
@@ -17,6 +20,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -52,6 +56,10 @@ public interface Api {
     @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
     Call<ResetPasswordResModel_New> resetPassword(@Path("userUuid") String userUuid,
                                                   @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
+
+    @POST("/openmrs/ws/rest/v1/password")
+    Call<JsonObject> changePassword(@Body ChangePasswordModel_New changePasswordParamsModel_new,
+                                    @Header("Authorization") String authHeader);
 
 
 }

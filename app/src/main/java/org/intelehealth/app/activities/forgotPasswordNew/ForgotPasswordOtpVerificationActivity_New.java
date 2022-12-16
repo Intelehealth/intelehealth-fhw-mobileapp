@@ -43,7 +43,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             String pin3 = tvPin3.getText().toString();
             String pin4 = tvPin4.getText().toString();
             String pin5 = tvPin5.getText().toString();
-            String pin6 = tvPin5.getText().toString();
+            String pin6 = tvPin6.getText().toString();
 
             Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
             intent.putExtra("otp", "111111");

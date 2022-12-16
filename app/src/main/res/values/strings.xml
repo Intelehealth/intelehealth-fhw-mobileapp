@@ -911,6 +911,8 @@
     <string name="about_us">About us</string>
     <string name="log_out">Log-out</string>
     <string name="reset_app_new">Reset app</string>
+    <string name="snack_policy">Please agree to terms &amp; conditions and Privacy policy</string>
+
 
 
     <string name="setup_new">Setup</string>
@@ -926,7 +928,6 @@
     <string name="your_patient_score">Your patient\nsatisfactions score</string>
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
-
 
 
     <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
@@ -1624,6 +1625,12 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm_new_password_1">Confirm new password</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
+    <string name="password_match">New password and confirm password must be equal</string>
+    <string name="password_changed_successfully">Password changed successfully</string>
+    <string name="username_not_found">Username not found</string>
+    <string name="mobile_not_registered">Mobile number not registered</string>
+    <string name="password_validation">Password length must be greater or equal to 8 and with combination of small, capital characters and digits</string>
+
 
     <!--  Help UI2.0-->
     <string name="search_for_help">Search for help</string>

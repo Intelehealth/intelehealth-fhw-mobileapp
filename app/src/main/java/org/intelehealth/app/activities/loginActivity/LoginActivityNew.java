@@ -296,6 +296,7 @@ public class LoginActivityNew extends AppCompatActivity {
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
+
         //cpd.show();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
