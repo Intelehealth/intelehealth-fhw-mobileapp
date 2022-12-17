@@ -85,10 +85,10 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
 
                 Log.v("OptionList", new Gson().toJson(mItemList.get(position).getOptionsList()));
-                if (mItemList.get(position).getOptionsList()!=null && mItemList.get(position).getOptionsList().size() > 0) {
+                if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                     genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                     genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext,false,null, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
                         @Override
                         public void onSelect(Node node) {
 
@@ -110,7 +110,10 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         }
                     });
                     genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
-                    genericViewHolder.questionsListingAdapter.addItem(genericViewHolder.currentRootOptionList.get(genericViewHolder.currentComplainNodeOptionsIndex));
+                    for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
+                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
+
+                    }
                 } else {
                     genericViewHolder.recyclerView.setVisibility(View.GONE);
                 }

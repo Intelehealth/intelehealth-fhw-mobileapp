@@ -1,8 +1,10 @@
 package org.intelehealth.app.ayu.visit.familyhist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +54,12 @@ public class FamilyHistoryFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mActionListener = (VisitCreationActionListener) context;
+        //sessionManager = new SessionManager(context);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -69,21 +77,21 @@ public class FamilyHistoryFragment extends Fragment {
             @Override
             public void onSelect(Node node) {
                 //Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1)
+                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
                     mCurrentComplainNodeOptionsIndex++;
-                else {
-                    mCurrentComplainNodeOptionsIndex = 0;
 
+                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        }
+                    }, 100);
+
+                    mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
+                }else{
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, null);
                 }
-                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                    }
-                }, 100);
-
-                mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
             }
 
             @Override

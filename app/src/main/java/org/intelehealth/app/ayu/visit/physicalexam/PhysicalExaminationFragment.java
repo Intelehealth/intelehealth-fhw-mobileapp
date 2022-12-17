@@ -30,6 +30,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
     //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
+    private int mCurrentChildComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private PhysicalExam physicalExam;
     private VisitCreationActionListener mActionListener;
@@ -77,26 +78,35 @@ public class PhysicalExaminationFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, physicalExam.getSelectedNodes().size(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, physicalExam.getTotalNumberOfExams(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node) {
                 Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < physicalExam.getSelectedNodes().size() - 1) {
-                    mCurrentComplainNodeOptionsIndex++;
+                if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams()-1) {
+                    //if (mCurrentChildComplainNodeOptionsIndex < physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size()) {
+                        //if (mCurrentChildComplainNodeOptionsIndex == physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size() - 1) {
+                        //    mCurrentChildComplainNodeOptionsIndex = 0;
+                            mCurrentComplainNodeOptionsIndex++;
+                       // } else {
+                        //    mCurrentChildComplainNodeOptionsIndex++;
+
+                        //}
 
 
-                    mQuestionsListingAdapter.addItem(physicalExam.getSelectedNodes().get(mCurrentComplainNodeOptionsIndex));
-                    recyclerView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                        }
-                    }, 100);
+                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
+                        recyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                            }
+                        }, 100);
 
-                    mActionListener.onProgress((int) 100 / physicalExam.getSelectedNodes().size());
+                        mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
+                   // }
                 } else {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, null);
                 }
+
             }
 
             @Override
@@ -116,7 +126,9 @@ public class PhysicalExaminationFragment extends Fragment {
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(physicalExam.getSelectedNodes().get(mCurrentComplainNodeOptionsIndex));
+        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).
+
+                getOption(0));
         return view;
     }
 }

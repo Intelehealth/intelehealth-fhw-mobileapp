@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <CalendarView
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/hamburger_margin_start"
+        android:background="@color/white"
         android:drawablePadding="@dimen/margin_8"
         android:hint="Type or select reason eg. Fever"
         android:inputType="textAutoComplete"
@@ -24,16 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cav_date"
-        android:layout_marginStart="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginVertical="@dimen/padding_12"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:minWidth="100dip"
-        android:paddingStart="@dimen/common_button_padding_left"
-        android:paddingTop="@dimen/common_button_padding_top"
-        android:paddingEnd="@dimen/common_button_padding_right"
-        android:paddingBottom="@dimen/common_button_padding_bottom"
         android:text="Select Date"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="@dimen/common_button_text_size" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

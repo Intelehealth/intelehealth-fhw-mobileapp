@@ -26,9 +26,11 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
+import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
@@ -84,6 +86,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
     public static final int STEP_4_PAST_MEDICAL_HISTORY = 6;
     public static final int STEP_5_FAMILY_HISTORY = 7;
+    public static final int STEP_5_HISTORY_SUMMARY = 8;
+    public static final int STEP_6_VISIT_SUMMARY = 9;
 
     private int mCurrentStep = STEP_1_VITAL;
 
@@ -257,6 +261,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
+                mStep4ProgressBar.setProgress(10);
+                setTitle("4/4. Medical history: Patient history");
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 mPastMedicalHistoryNode = loadPastMedicalHistory();
                 getSupportFragmentManager().beginTransaction().
@@ -265,13 +271,44 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
 
             case STEP_5_FAMILY_HISTORY:
+                mStep4ProgressBar.setProgress(50);
+                setTitle("4/4. Medical history: Family history");
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 mFamilyHistoryNode = loadFamilyHistory();
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(getIntent(), mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                         commit();
                 break;
+
+            case STEP_5_HISTORY_SUMMARY:
+                if (isSavedPastHistory()) {
+                    mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistory, familyHistory), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            commit();
+                }
+                break;
+            case STEP_6_VISIT_SUMMARY:
+                Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                intent1.putExtra("state", state);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("tag", intentTag);
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                intent1.putExtra("hasPrescription", "false");
+                // intent1.putStringArrayListExtra("exams", selectedExamsList);
+                startActivity(intent1);
+                break;
         }
+    }
+
+    private boolean isSavedPastHistory() {
+        return savePastHistoryData();
     }
 
     private boolean isSavedPhysicalExam() {
@@ -361,7 +398,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     optionList.add(mainNode.getOptionsList().get(j));
                 }
             }
-            optionList.add(mAssociateSymptomsNodeList.get(i));
+            if (mAssociateSymptomsNodeList.size() > 0)
+                optionList.add(mAssociateSymptomsNodeList.get(i));
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
 
@@ -1094,6 +1132,83 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         return insertDbPhysicalExam(physicalString);
     }
 
+    private String patientHistory, familyHistory;
+
+    /**
+     * @return
+     */
+    private boolean savePastHistoryData() {
+
+        patientHistory = mPastMedicalHistoryNode.generateLanguage();
+
+
+        //familyHistory = mFamilyHistoryNode.generateLanguage();
+        ArrayList<String> familyInsertionList = new ArrayList<>();
+        if (mFamilyHistoryNode.anySubSelected()) {
+            for (Node node : mFamilyHistoryNode.getOptionsList()) {
+                if (node.isSelected()) {
+                    String familyString = node.generateLanguage();
+                    String toInsert = node.getText() + " : " + familyString;
+                    toInsert = toInsert.replaceAll(Node.bullet, "");
+                    toInsert = toInsert.replaceAll(" - ", ", ");
+                    toInsert = toInsert.replaceAll("<br/>", "");
+                    if (org.apache.commons.lang3.StringUtils.right(toInsert, 2).equals(", ")) {
+                        toInsert = toInsert.substring(0, toInsert.length() - 2);
+                    }
+                    toInsert = toInsert + ".<br/>";
+                    familyInsertionList.add(toInsert);
+                }
+            }
+        }
+
+        for (int i = 0; i < familyInsertionList.size(); i++) {
+            if (i == 0) {
+                familyHistory = Node.bullet + familyInsertionList.get(i);
+            } else {
+                familyHistory = familyHistory + " " + Node.bullet + familyInsertionList.get(i);
+            }
+        }
+
+        familyHistory = familyHistory.replaceAll("null.", "");
+
+        List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
+
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                updateImageDatabase(imagePath);
+            }
+        }
+
+        return insertDbPastHistory(patientHistory, familyHistory);
+    }
+
+    /*Physical exam*/
+    private boolean insertDbPastHistory(String patientHistory, String familyHistory) {
+        Log.i(TAG, "insertDb: ");
+        boolean isInserted = false;
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(StringUtils.getValue(patientHistory));
+            isInserted = obsDAO.insertObs(obsDTO);
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(familyHistory));
+            isInserted = obsDAO.insertObs(obsDTO);
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        return isInserted;
+    }
 
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);

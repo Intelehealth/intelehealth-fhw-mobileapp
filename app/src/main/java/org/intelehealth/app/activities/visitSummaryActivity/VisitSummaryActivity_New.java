@@ -614,8 +614,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         weightView.setText(weight.getValue());
 
         Log.d(TAG, "onCreate: " + weight.getValue());
-        String mWeight = weight.getValue();
-        String mHeight = height.getValue();
+        String mWeight = weight.getValue().split(" ")[0];
+        String mHeight = height.getValue().split(" ")[0];
         if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
             double numerator = Double.parseDouble(mWeight) * 10000;
             double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);

@@ -79,4 +79,9 @@
         android:layout_marginTop="@dimen/margin_16"
         android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginVertical="8dip"
+        android:background="@color/textColorGray1" />
 </LinearLayout>
