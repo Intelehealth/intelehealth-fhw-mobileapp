@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         Button btnSetup = findViewById(R.id.btn_setup);
         btnSetup.getBackground().setAlpha(60);
         CheckBox chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
-
+        btnSetup.setEnabled(false);
 
         chkBoxPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,11 +45,11 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 if (((CompoundButton) view).isChecked()) {
                     chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_checkbox_checked));
                     btnSetup.setBackground(getResources().getDrawable(R.drawable.ui2_common_primary_bg));
-
+                    btnSetup.setEnabled(true);
                 } else {
                     btnSetup.getBackground().setAlpha(60);
                     chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_default_checkbox));
-
+                    btnSetup.setEnabled(false);
                 }
             }
         });
@@ -74,8 +75,12 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
-                customDialog.showDialog1();
+                if(chkBoxPrivacyPolicy.isChecked()) {
+                    customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
+                    customDialog.showDialog1();
+                }else{
+                    Toast.makeText(SetupPrivacyNoteActivity_New.this, "Please accept the terms & conditions!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

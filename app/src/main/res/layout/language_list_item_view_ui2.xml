@@ -10,7 +10,7 @@
 
     <RadioButton
         android:id="@+id/rb_choose_language"
-        android:layout_width="@dimen/rb_width_select_lang"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/rb_select_lang_padding"
         android:text="language"

@@ -95,8 +95,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         TokenRefreshUtils.refreshToken(this);
         initFirebaseRemoteConfig();
 
-        animateViews();
-        populatingLanguages();
+        if (sessionManager.isFirstTimeLaunch()) {
+            animateViews();
+            populatingLanguages();
+        } else {
+           new Handler().postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   nextActivity();
+               }
+           }, 5000);
+        }
+
         saveLanguage();
 
     }

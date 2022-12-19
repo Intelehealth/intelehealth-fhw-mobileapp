@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +38,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
-    Button etUsername, etMobileNo;
+    EditText etUsername, etMobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

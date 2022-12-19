@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,7 +14,6 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -39,6 +36,8 @@ import com.google.gson.Gson;
 import com.parse.Parse;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -48,8 +47,6 @@ import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -193,12 +190,36 @@ public class SetupActivityNew extends AppCompatActivity {
 
         boolean cancel = false;
         View focusView = null;
+        if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
+            autotvLocations.setError(getString(R.string.error_location_not_selected));
+            focusView = autotvLocations;
+            cancel = true;
+            autotvLocations.requestFocus();
+            return;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            etUsername.setError(getString(R.string.error_field_required));
+            focusView = etUsername;
+            cancel = true;
+            etUsername.requestFocus();
+            return;
+        }
+        if (!isEmailValid(email)) {
+            etUsername.setError(getString(R.string.error_invalid_email));
+            focusView = etUsername;
+            etUsername.requestFocus();
+            return;
+        }
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             etPassword.setError(getString(R.string.error_invalid_password));
             focusView = etPassword;
             cancel = true;
+            etPassword.requestFocus();
+            return;
         }
 /*
         if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
@@ -207,16 +228,6 @@ public class SetupActivityNew extends AppCompatActivity {
             cancel = true;
         }*/
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            etUsername.setError(getString(R.string.error_field_required));
-            focusView = etUsername;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            etUsername.setError(getString(R.string.error_invalid_email));
-            focusView = etUsername;
-
-        }
 
         //add state wise here...
 
@@ -226,18 +237,13 @@ public class SetupActivityNew extends AppCompatActivity {
         } else {
             location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
         }*/
-        if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
-            autotvLocations.setError(getString(R.string.error_location_not_selected));
-            focusView = autotvLocations;
-            cancel = true;
-        } else {
-            //  location = mLocations.get(autotvLocations.getse - 1);
-        }
+
 
         if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
             etAdminPassword.setError(getString(R.string.error_invalid_password));
             focusView = etAdminPassword;
             cancel = true;
+            etAdminPassword.requestFocus();
         }
         if (cancel) {
 
@@ -475,6 +481,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                             autotvLocations.setText(selectedValue);
                                             int pos = items.indexOf(selectedValue);
                                             location = locationList.getResults().get(pos);
+                                            autotvLocations.setError(null);
 
                                         }
                                     });
