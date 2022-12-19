@@ -7,98 +7,53 @@
 
 
     <!--toolbar-->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/fu_toolbat_txt_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginTop="@dimen/common_title_margin_top"
-        android:layout_marginEnd="@dimen/toolbar_margin_right"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/frame_10011"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- arrow-right -->
-        <ImageButton
-            android:id="@+id/iv_back_arrow_privacy"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:background="@null"
-            android:padding="@dimen/margin_5"
-            android:src="@drawable/ic_arrow_right"
-             />
+        <ImageView
+            android:id="@+id/iv_back_arrow_terms"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
 
-        <!-- Label -->
+            android:src="@drawable/ui2_ic_arrow_back_new" />
+
         <TextView
             android:id="@+id/tv_title_privacy"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_10"
-            android:gravity="top"
-            android:lineSpacingExtra="1sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+
+            android:layout_toEndOf="@+id/iv_back_arrow_terms"
+
             android:text="@string/privacy_policy"
-            android:textAppearance="@style/label"
-            android:textColor="@null"
-            android:textSize="@dimen/toolbar_text_size"
-            android:translationY="-0.28sp" />
+            android:textSize="@dimen/setup_privacy_screen_info" />
+    </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/fu_margin_start"
-        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/refresh"
-            android:layout_width="@dimen/margin_24"
-            android:layout_height="@dimen/margin_24"
-            android:background="@null"
-            android:src="@drawable/ic_refreshbtn" />
-    </LinearLayout>
-    </LinearLayout>
     <!--toolbar end-->
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/ll_action_bar">
 
-        <ScrollView
+        <TextView
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="false"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/content_margin_start"
+            android:layout_toEndOf="@+id/iv_back_arrow_terms"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/privacy_policy_content"
+            android:textSize="@dimen/info_options_text_size" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/content_margin_start"
-                android:layout_marginEnd="@dimen/content_margin_start"
-                android:layout_marginTop="@dimen/content_margin_start"
-                android:layout_marginBottom="@dimen/content_margin_start"
-                android:fontFamily="@font/lato_regular"
-                android:layout_toEndOf="@+id/iv_back_arrow_terms"
-                android:lineHeight="@dimen/margin_24"
-                android:text="@string/privacy_policy_content"
-                android:textSize="@dimen/info_options_text_size" />
-        </ScrollView>
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
     <LinearLayout
@@ -107,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/common_title_margin_top"
-        android:layout_marginBottom="@dimen/margin_24"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -115,14 +70,14 @@
             android:id="@+id/btn_decline_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/common_edittext_margin_top"
+            android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/hamburger_margin_top"
-            android:text="@string/decline"
+            android:text="@string/decline" android:onClick="declinePP"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
             android:textStyle="bold" />
@@ -131,16 +86,16 @@
             android:id="@+id/btn_accept_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/common_edittext_margin_top"
             android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
-            android:textColor="@color/white"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/hamburger_margin_top"
             android:text="@string/accept_new"
+            android:textColor="@color/white"
             android:textSize="@dimen/common_button_text_size" />
 
     </LinearLayout>

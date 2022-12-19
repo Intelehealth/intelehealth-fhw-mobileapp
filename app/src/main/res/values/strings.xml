@@ -872,7 +872,7 @@
     <string name="save">Save</string>
     <string name="reset_password">Reset Password?</string>
     <string name="please_reset_password">Please reset new password for \nyour account</string>
-    <string name="forgot_password_link"><u>Forgot password</u></string>
+    <string name="forgot_password_link"><u>Forgot password?</u></string>
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
     <string name="skip_new">Skip</string>
@@ -891,8 +891,7 @@
     <string name="provide_prescriptions_intro">Telemedicine doctor will provide a prescription. Prescription can be shared with the patient digitally or in print.</string>
     <string name="hello_i_am_ayu">Hello, I am AYU!</string>
     <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
-    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font>
- and <font color='#2F1E91'><u>privacy policy</u></font></string>
+    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy policy</string>

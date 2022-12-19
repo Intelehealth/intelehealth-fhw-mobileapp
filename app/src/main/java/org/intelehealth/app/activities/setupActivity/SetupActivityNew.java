@@ -496,6 +496,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                             int pos = items.indexOf(selectedValue);
                                             location = locationList.getResults().get(pos);
                                             autotvLocations.setError(null);
+                                            autotvLocations.setSelection(autotvLocations.getText().length());
 
                                         }
                                     });

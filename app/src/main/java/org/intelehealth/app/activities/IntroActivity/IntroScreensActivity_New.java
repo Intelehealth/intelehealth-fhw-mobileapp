@@ -53,14 +53,14 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         dotsLayout = findViewById(R.id.layoutDots_intro);
         Button btnSkip = findViewById(R.id.btn_skip_intro);
         ImageView ivBack = findViewById(R.id.iv_back_arrow);
-        ivBack.setOnClickListener(new View.OnClickListener() {
+        /*ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(IntroScreensActivity_New.this, SplashScreenActivity.class);
                 startActivity(intent);
                finish();
             }
-        });
+        });*/
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override

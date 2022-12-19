@@ -5,57 +5,55 @@
     android:layout_height="match_parent"
     tools:context=".activities.onboarding.TermsAndConditionsActivity_New">
 
-    <ImageView
-        android:id="@+id/iv_back_arrow_terms"
-        android:layout_width="@dimen/back_arrow_width"
-        android:layout_height="@dimen/back_arrow_height"
-        android:layout_marginStart="@dimen/back_arrow_margin_start"
-        android:layout_marginTop="@dimen/back_arrow_margin_top"
-        android:src="@drawable/ui2_ic_arrow_back_new" />
-
-    <TextView
-        android:id="@+id/tv_title_privacy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/title_margin_start"
-        android:layout_marginTop="@dimen/title_margin_top"
-        android:layout_toEndOf="@+id/iv_back_arrow_terms"
-        android:lineHeight="@dimen/title_margin_line_height"
-        android:text="@string/terms_of_use"
-        android:textSize="@dimen/setup_privacy_screen_info" />
-
     <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_back_arrow_terms"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
+
+            android:src="@drawable/ui2_ic_arrow_back_new" />
+
+        <TextView
+            android:id="@+id/tv_title_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+
+            android:layout_toEndOf="@+id/iv_back_arrow_terms"
+
+            android:text="Terms &amp; Conditions"
+            android:textSize="@dimen/setup_privacy_screen_info" />
+    </LinearLayout>
+
+
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/tv_title_privacy">
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginTop="10dp">
 
-        <ScrollView
+
+        <TextView
+            android:id="@+id/tv_term_condition"
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:scrollbarSize="10dp"
-            android:fadeScrollbars="false"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_terms_conditions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/content_margin_start"
-                android:layout_marginTop="@dimen/content_margin_top"
-                android:fontFamily="@font/lato_regular"
-                android:layout_toEndOf="@+id/iv_back_arrow_terms"
-                android:lineHeight="@dimen/content_line_height"
-                android:paddingEnd="10dp"
-                android:paddingBottom="30dp"
-                android:textSize="14sp" />
-
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/content_margin_start"
+            android:layout_toEndOf="@+id/iv_back_arrow_terms"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/privacy_policy_content"
+            android:textSize="14sp" />
 
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
     <LinearLayout
@@ -64,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="@dimen/buttons_layout_margin_bottom"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -77,6 +75,7 @@
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
             android:lineHeight="@dimen/button_line_height"
+            android:onClick="declineTC"
             android:padding="@dimen/padding_15"
             android:text="@string/decline"
             android:textColor="@color/colorPrimary"
@@ -93,11 +92,10 @@
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
+            android:onClick="acceptPP"
             android:padding="@dimen/padding_15"
-            android:layout_marginBottom="20dp"
             android:text="@string/accept_new"
             android:textSize="@dimen/common_button_text_size" />
-
 
 
     </LinearLayout>

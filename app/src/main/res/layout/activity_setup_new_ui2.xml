@@ -14,10 +14,10 @@
         android:layout_width="@dimen/back_arrow_demo1_width"
         android:layout_height="@dimen/back_arrow_demo1_height"
         android:layout_alignParentStart="true"
-
         android:layout_marginStart="@dimen/back_arrow_demo1_width"
         android:layout_marginTop="@dimen/back_arrow_demo1_width"
-        android:src="@drawable/ic_baseline_arrow_back_24"/>
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/tv_setup"
@@ -98,10 +98,10 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutLocation"
                     style="@style/AutocompleteviewStyle"
-                    app:endIconDrawable="@drawable/ui2_ic_new_chevron_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top">
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
 
                     <AutoCompleteTextView
                         android:id="@+id/autotv_select_location"
@@ -124,9 +124,9 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextviewInputTitleStyle"
                     android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="@string/username"
                     android:textColor="@color/textColorGray"
@@ -148,23 +148,24 @@
                         android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
+                        android:maxLength="16"
                         android:paddingStart="@dimen/common_edittext_padding_left"
-                        android:text="nurse"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
+                        android:text="nurse"
                         android:textSize="@dimen/common_hint_text_size"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="@string/password"
-                    style="@style/TextviewInputTitleStyle"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 
@@ -183,13 +184,14 @@
                         android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/enter_password1"
                         android:imeOptions="actionDone"
-                        android:text="Nurse123"
                         android:inputType="textPassword"
+                        android:maxLength="16"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
+                        android:text="Nurse123"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -197,8 +199,7 @@
                     android:id="@+id/tv_forgot_password1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/common_forgotpass_margin_top"
-
+                    android:layout_marginTop="@dimen/margin_16"
                     android:gravity="end"
                     android:text="@string/forgot_password_link"
                     android:textColor="@color/textColorGray"

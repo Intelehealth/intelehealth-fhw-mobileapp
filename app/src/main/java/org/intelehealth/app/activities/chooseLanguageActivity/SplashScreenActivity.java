@@ -125,7 +125,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (sessionManager.isFirstTimeLaunch()) {
                     Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     startActivity(intent);
-                    sessionManager.setFirstTimeLaunch(false);
+                    //sessionManager.setFirstTimeLaunch(false);
                 } else {
                 /*    Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
                     intent.putExtra("from", "splash");

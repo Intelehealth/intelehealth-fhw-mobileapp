@@ -8,20 +8,19 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.LastSyncWork;
+import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidGenerator;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.syncModule.SyncWorkManager;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -83,7 +82,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
@@ -115,10 +113,12 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
 
-    }public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+    }
+
+    public static String getFirebaseRTDBRootRefForDeviceInfo() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
 
@@ -127,6 +127,14 @@ public class AppConstants {
 
     //public static final String DEMO_URL = "demo.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
+
+    public static final int INTENT_FROM_AYU_FOR_SETUP = 1;
+    public static final int INTENT_FROM_HOME_FOR_PATIENT_CREATION = 2;
+
+    public static final int TERMS_CONDITIONS_ACCEPT = 1;
+    public static final int TERMS_CONDITIONS_DECLINE = 2;
+    public static final int PRIVACY_POLICY_ACCEPT = 3;
+    public static final int PRIVACY_POLICY_DECLINE = 4;
 
 }
 

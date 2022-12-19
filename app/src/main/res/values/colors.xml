@@ -120,6 +120,8 @@
 
     <color name="ui2_green">#0FD197</color>
 
+    <color name="ui2_link">#3F51B5</color>
+
     <color name="ui2_bmi1">#03A9F4</color>
     <color name="ui2_bmi2">#0FD197</color>
     <color name="ui2_bmi3">#FFC107</color>

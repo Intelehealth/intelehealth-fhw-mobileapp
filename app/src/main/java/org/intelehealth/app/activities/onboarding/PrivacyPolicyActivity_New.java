@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.app.AppConstants;
 
 public class PrivacyPolicyActivity_New extends AppCompatActivity {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
+    private int mIntentFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +29,8 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
-
-        ImageView ivBack = findViewById(R.id.iv_back_arrow_privacy);
+        mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
+        ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -41,8 +42,14 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            Intent intent = new Intent(this, IdentificationActivity_New.class);
-            startActivity(intent);
+            if(mIntentFrom == AppConstants.INTENT_FROM_AYU_FOR_SETUP){
+                setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
+                finish();
+            }else {
+                Intent intent = new Intent(this, IdentificationActivity_New.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
     }
@@ -50,7 +57,11 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
+        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
     }
 
+    public void declinePP(View view) {
+        setResult(AppConstants.PRIVACY_POLICY_DECLINE);
+        finish();
+    }
 }
