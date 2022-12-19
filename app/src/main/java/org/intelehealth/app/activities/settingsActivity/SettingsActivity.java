@@ -463,7 +463,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             //  bindPreferenceSummaryToValue(findPreference("OriyaLang"));
 
             lang_prefer = findPreference("hindiLang");
-            setUpdatedTitles();
             lang_prefer.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newvalue) {
