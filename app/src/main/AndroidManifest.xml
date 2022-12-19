@@ -262,7 +262,9 @@
             android:name=".activities.loginActivity.LoginActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
         <activity
             android:name=".activities.forgotPasswordNew.ResetPasswordActivity_New"
             android:exported="true"
@@ -465,7 +467,11 @@
             android:configChanges="uiMode"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+
+        </activity>
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
@@ -492,7 +498,10 @@
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
         <activity
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"

@@ -9,6 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
+        android:gravity="center"
+        android:imeOptions="actionNext"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />
 
@@ -17,6 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
+        android:imeOptions="actionNext"
+        android:gravity="center"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />
 
@@ -25,6 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
+        android:imeOptions="actionNext"
+        android:gravity="center"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />
 
@@ -32,7 +38,9 @@
         android:id="@+id/tv_pin_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
+        android:imeOptions="actionNext"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />
 
@@ -41,6 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
+        android:imeOptions="actionNext"
+        android:gravity="center"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />
 
@@ -48,6 +58,8 @@
         android:id="@+id/tv_pin_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:imeOptions="actionNext"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:inputType="number" />

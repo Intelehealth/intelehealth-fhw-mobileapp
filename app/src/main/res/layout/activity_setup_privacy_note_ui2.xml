@@ -96,6 +96,16 @@
             android:text="@string/setup" />
 
     </RelativeLayout>
+    <include
+        android:id="@+id/card_note_snack_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        layout="@layout/cutom_snackbar_policy_ui2"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24"
+     android:layout_alignParentBottom="true"/>
 </RelativeLayout>
 
 
