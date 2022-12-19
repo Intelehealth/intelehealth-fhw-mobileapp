@@ -34,6 +34,7 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
+    PatientProfile patientProfile = null;
 
 
 
@@ -175,5 +176,56 @@ public class ImagesPushDAO {
         }
         return true;
     }
+
+    //newly added for profile picture - ui2.0
+    public boolean loggedInUserProfileImagesPush() {
+        Log.d(TAG, "loggedInUserProfileImagesPush: ");
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ImagesDAO imagesDAO = new ImagesDAO();
+        String url = urlModifiers.setPatientProfileImageUrl();
+        //List<PatientProfile> patientProfiles = new ArrayList<>();
+        try {
+            patientProfile = imagesDAO.getUserProfileUnsyncedImages(sessionManager.getProviderID());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        if (patientProfile!=null ) {
+            Log.d(TAG, "loggedInUserProfileImagesPush: patientProfiles person  : "+patientProfile.getPerson());
+            Log.d(TAG, "loggedInUserProfileImagesPush: patientProfiles base64: "+patientProfile.getBase64EncodedImage());
+
+            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, patientProfile);
+            personProfilePicUpload.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                        @Override
+                        public void onSuccess(ResponseBody responseBody) {
+                            Log.d(TAG, "onSuccess: in push provider image response");
+                            Logger.logD(TAG, "success" + responseBody);
+                            try {
+                                imagesDAO.updateUnsyncedUserProfile(patientProfile.getPerson());
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            e.printStackTrace();
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+                        }
+                    });
+        }
+        sessionManager.setPullSyncFinished(true);
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+//        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+        return true;
+    }
+
 
 }

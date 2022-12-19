@@ -21,6 +21,18 @@ public class Data {
     @Expose
     private List<Encounterlist> encounterlist = null;
 
+    public List<ProviderList> getProviderlist() {
+        return providerlist;
+    }
+
+    public void setProviderlist(List<ProviderList> providerlist) {
+        this.providerlist = providerlist;
+    }
+
+    @SerializedName("providerlist")
+    @Expose
+    private List<ProviderList> providerlist = null;
+
     public List<PersonList> getPersonList() {
         return personList;
     }

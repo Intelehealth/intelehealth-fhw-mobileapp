@@ -19,6 +19,7 @@
         android:layout_marginEnd="@dimen/hamburger_margin_top"
         android:foregroundGravity="center_horizontal"
         android:visibility="visible"
+        android:background="?attr/selectableItemBackground"
         app:srcCompat="@drawable/ui2_ic_arrow_back_new" />
 
     <TextView

@@ -9,6 +9,7 @@
         android:layout_width="@dimen/iv_close_drawer_width"
         android:layout_height="@dimen/iv_close_drawer_height"
         android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackground"
         android:layout_marginTop="@dimen/iv_close_drawer_margin_top"
         android:layout_marginEnd="@dimen/iv_close_drawer_margin_end"
         android:src="@drawable/ui2_ic_close_drawer" />
