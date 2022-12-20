@@ -1,4 +1,3 @@
-
 package org.intelehealth.app.models.pushRequestApiCall;
 
 import com.google.gson.annotations.Expose;
@@ -17,9 +16,22 @@ public class PushRequestApiCall {
     @SerializedName("visits")
     @Expose
     private List<Visit> visits = null;
+
+    public List<Provider> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<Provider> providers) {
+        this.providers = providers;
+    }
+
     @SerializedName("encounters")
     @Expose
     private List<Encounter> encounters = null;
+    @SerializedName("providers")
+    @Expose
+    private List<Provider> providers = null;
+
 
     public List<Person> getPersons() {
         return persons;

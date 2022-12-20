@@ -850,4 +850,6 @@
     <dimen name="help_card_msg_sent_width">42dp</dimen>
     <dimen name="help_card_msg_sent_margin_top">7dp</dimen>
     <dimen name="help_card_msg_sent_padding">10dp</dimen>
+    <dimen name="iv_profile_drawer_height_width">70dp</dimen>
+
 </resources>

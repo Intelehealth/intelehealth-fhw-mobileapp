@@ -11,15 +11,19 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.ProviderProfileDao;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Address;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
@@ -30,16 +34,19 @@ import org.intelehealth.app.models.pushRequestApiCall.Name;
 import org.intelehealth.app.models.pushRequestApiCall.Ob;
 import org.intelehealth.app.models.pushRequestApiCall.Patient;
 import org.intelehealth.app.models.pushRequestApiCall.Person;
+import org.intelehealth.app.models.pushRequestApiCall.Provider;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class PatientsFrameJson {
+    private static final String TAG = "PatientsFrameJson";
     private PatientsDAO patientsDAO = new PatientsDAO();
     private SessionManager session;
     private VisitsDAO visitsDAO = new VisitsDAO();
     private EncounterDAO encounterDAO = new EncounterDAO();
     private ObsDAO obsDAO = new ObsDAO();
+    private ProviderDAO providerDAO = new ProviderDAO();
 
     public PushRequestApiCall frameJson() {
         session = new SessionManager(IntelehealthApplication.getAppContext());
@@ -58,6 +65,7 @@ public class PatientsFrameJson {
         List<Person> personList = new ArrayList<>();
         List<Visit> visitList = new ArrayList<>();
         List<Encounter> encounterList = new ArrayList<>();
+        List<Provider> providersList = new ArrayList<>();
 
         if (patientDTOList != null) {
             for (int i = 0; i < patientDTOList.size(); i++) {
@@ -144,9 +152,9 @@ public class PatientsFrameJson {
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
-          //  encounterProvider.setProvider(session.getProviderID());
+            //  encounterProvider.setProvider(session.getProviderID());
             encounterProvider.setProvider(encounterDTO.getProvideruuid());
-            Log.d("DTO","DTO:frame "+ encounterProvider.getProvider());
+            Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
             encounterProviderList.add(encounterProvider);
             encounter.setEncounterProviders(encounterProviderList);
 
@@ -174,19 +182,54 @@ public class PatientsFrameJson {
             encounter.setLocation(session.getLocationUuid());
 
             // encounterList.add(encounter);
-            if (speciality_row_exist_check(encounter.getVisit())){
+            if (speciality_row_exist_check(encounter.getVisit())) {
                 encounterList.add(encounter);
             }
 
-    }
+        }
+
+
+        //ui2.0 - for provider profile details
+        List<ProviderDTO> providerDetailsDTOList = null;
+        try {
+            providerDetailsDTOList = providerDAO.unsyncedProviderDetails(session.getProviderID());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (providerDetailsDTOList != null && providerDetailsDTOList.size() > 0) {
+            Log.d(TAG, "frameJson:providerDetailsDTOList size:  " + providerDetailsDTOList.size());
+            for (ProviderDTO providerDTO : providerDetailsDTOList) {
+                Provider provider = new Provider();
+                // if (visitDTO.getAttributes().size() > 0) {
+                provider.setFamilyName(providerDTO.getFamilyName());
+                provider.setGivenName(providerDTO.getGivenName());
+                provider.setEmailId(providerDTO.getEmailId());
+                provider.setDateofbirth(providerDTO.getDateofbirth());
+                provider.setGender(providerDTO.getGender());
+                provider.setTelephoneNumber(providerDTO.getTelephoneNumber());
+                provider.setProviderId(providerDTO.getProviderId());
+                provider.setCountryCode(providerDTO.getCountryCode());
+                provider.setMiddle_name(providerDTO.getMiddle_name());
+
+                providersList.add(provider);
+                //}
+
+            }
+        } else {
+            Log.d("TAG", "frameJson:providerDetailsDTOList is null  ");
+        }
+
 
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
+        pushRequestApiCall.setProviders(providersList);
+
         Gson gson = new Gson();
         String value = gson.toJson(pushRequestApiCall);
-        Log.d("OBS: ","OBS: " + value);
+        Log.d("OBS: ", "OBS: " + value);
 
 
         return pushRequestApiCall;

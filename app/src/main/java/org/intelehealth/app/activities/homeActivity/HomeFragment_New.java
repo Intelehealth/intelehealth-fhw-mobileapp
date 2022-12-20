@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -61,7 +63,20 @@ public class HomeFragment_New extends Fragment {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
-        viewHamburger.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_hamburger));
+        viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
+        DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
+
+        /*if (viewHamburger != null) {
+            viewHamburger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+
+                }
+            });
+        } else {
+            Log.d(TAG, "clickListeners: iv_hamburger null");
+        }*/
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);

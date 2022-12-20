@@ -22,6 +22,7 @@ import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescript
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.app.models.prescriptionUpload.ObsPrescription;
+import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
@@ -158,4 +159,14 @@ public interface ApiInterface {
     Observable<ResetPasswordResModel_New> RESET_PASSWORD_OBSERVABLE(@Path("userUuid") String userUuid,
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
+
+    @POST
+    Single<ResponseBody> PROVIDER_PROFILE_PIC_UPLOAD(@Url String url,
+                                                   @Body ProviderProfile patientProfile,
+                                                   @Header("Authorization") String authHeader);
+
+
+    @GET
+    Observable<ResponseBody> PROVIDER_PROFILE_PIC_DOWNLOAD(@Url String url,
+                                                         @Header("Authorization") String authHeader);
 }

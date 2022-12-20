@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ImageView
@@ -9,19 +10,37 @@
         android:layout_width="@dimen/iv_close_drawer_width"
         android:layout_height="@dimen/iv_close_drawer_height"
         android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackground"
         android:layout_marginTop="@dimen/iv_close_drawer_margin_top"
         android:layout_marginEnd="@dimen/iv_close_drawer_margin_end"
         android:src="@drawable/ui2_ic_close_drawer" />
-
-    <ImageView
-        android:id="@+id/iv_profile_icon"
-        android:layout_width="@dimen/iv_profile_drawer_width"
-        android:layout_height="@dimen/iv_profile_drawer_height"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/img_profile_header"
+        android:layout_width="@dimen/iv_profile_drawer_height_width"
+        android:layout_height="@dimen/iv_profile_drawer_height_width"
         android:layout_below="@+id/iv_close_drawer"
         android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
         android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
-        android:src="@drawable/ui2_dummy_profile_icon" />
+        android:elevation="0dp"
+        app:cardCornerRadius="45dp">
 
+        <ImageView
+            android:id="@+id/iv_profile_icon"
+            android:layout_width="@dimen/iv_profile_drawer_height_width"
+            android:layout_height="@dimen/iv_profile_drawer_height_width"
+            android:src="@drawable/avatar1" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!--  <ImageView
+          android:id="@+id/iv_profile_icon"
+          android:layout_width="@dimen/iv_profile_drawer_width"
+          android:layout_height="@dimen/iv_profile_drawer_height"
+          android:layout_below="@+id/iv_close_drawer"
+          android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
+          android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
+          android:src="@drawable/avatar1" />
+  -->
     <TextView
         android:id="@+id/tv_loggedin_username"
         android:layout_width="wrap_content"
@@ -29,9 +48,9 @@
         android:layout_below="@+id/iv_close_drawer"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_user_margin_top"
-        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:layout_toEndOf="@+id/img_profile_header"
         android:fontFamily="@font/lato_regular"
-        android:text="Vivek jain"
+        android:hint="User name"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/nav_header_username"
         android:textStyle="bold" />
@@ -43,10 +62,10 @@
         android:layout_below="@+id/tv_loggedin_username"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_userid_margin_top"
-        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:layout_toEndOf="@+id/img_profile_header"
         android:fontFamily="@font/lato_regular"
         android:lineSpacingExtra="@dimen/tv_reset_app_line_spacing"
-        android:text="CHW ID : 987654jK "
+        android:text="CHW ID :  "
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/nav_header_userid" />
 
@@ -57,7 +76,7 @@
         android:layout_below="@+id/tv_userid"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_edit_margin_top"
-        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:layout_toEndOf="@+id/img_profile_header"
         android:drawableEnd="@drawable/ui2_ic_arrow_right"
         android:drawablePadding="@dimen/common_tv_icon_padding"
         android:fontFamily="@font/lato_regular"

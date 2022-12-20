@@ -68,12 +68,9 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChangePasswordActivity_New.this, HomeScreenActivity_New.class);
-                startActivity(intent);
-            }
+        ivBack.setOnClickListener(v -> {
+            Intent intent = new Intent(ChangePasswordActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
         });
 
         context = ChangePasswordActivity_New.this;
@@ -117,14 +114,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
 
     public void apiCallForChangePassword(String currentPassword, String newPassword) {
         cpd.show();
-        String serverUrl = "https://uiux.intelehealth.org/";
-        // String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+        String serverUrl = "https://" + sessionManager.getServerUrl();
 
-        //cpd.show();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        Log.d(TAG, "UserLoginTask: encoded : " + sessionManager.getEncoded());
 
         ChangePasswordModel_New inputModel = new ChangePasswordModel_New(currentPassword, newPassword);
 
@@ -151,6 +144,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
                         //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, HomeScreenActivity_New.class);
                         startActivity(intent);
+                        finish();
                     }
                 }, 2000);
 

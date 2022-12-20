@@ -793,6 +793,7 @@
     <dimen name="schedule_rv_afternoon_margin_top">16dp</dimen>
     <dimen name="schedule_tv_evening_title_margin_top">28dp</dimen>
     <dimen name="schedule_rv_evening_margin_top">20dp</dimen>
+    <dimen name="iv_profile_drawer_height_width">70dp</dimen>
 
 
 </resources>

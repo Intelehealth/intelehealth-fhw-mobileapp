@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
@@ -99,19 +100,25 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ForgotPasswordActivity_New.class);
+        startActivity(intent);
+    }
+
     public void apiCallForResetPassword(Context context, String newPassword, String otp) {
         cpd.show();
-        String baseurl = "https://uiux.intelehealth.org:3004/";
-        // String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
 
-        //cpd.show();
+        SessionManager sessionManager = new SessionManager(context);
+        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ///, "Basic YWRtaW46QWRtaW4xMjM="
         ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword, otp);
 
-        ApiClient.changeApiBaseUrl(baseurl);
+        ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResetPasswordResModel_New> loginModelObservable = apiService.RESET_PASSWORD_OBSERVABLE(userUuid,
                 inputModel);
@@ -149,11 +156,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 cpd.dismiss();
                 snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, "Failed to change password",
                         layoutParent);
-                // snackbarUtils.showSnackCoordinatorLayoutParentSuccess(LoginActivityNew.this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
 
-                //Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                // mEmailSignInButton.setText(getString(R.string.action_sign_in));
-                //mEmailSignInButton.setEnabled(true);
             }
 
             @Override
@@ -164,38 +167,6 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
     }
 
-    private void apiCallForResetPasswordOld(Context context, String newPassword, String otp) {
-        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://uiux.intelehealth.org:3004/";
-
-        Log.d(TAG, "apiCallForResetPassword: newPassword : " + newPassword);
-        Log.d(TAG, "apiCallForResetPassword: otp : " + otp);
-
-        ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword, otp);
-
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .resetPassword(userUuid, inputModel)
-
-                .enqueue(new Callback<ResetPasswordResModel_New>() {
-                    @Override
-                    public void onResponse(Call<ResetPasswordResModel_New> call, retrofit2.Response<ResetPasswordResModel_New> response) {
-                        if (response.body() == null) return;
-                        ResetPasswordResModel_New resetPasswordResModel_new = response.body();
-
-                        if (resetPasswordResModel_new.getSuccess()) {
-                            Toast.makeText(context, resetPasswordResModel_new.getMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(context, SetupActivityNew.class);
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResetPasswordResModel_New> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-
-    }
 
     private void manageErrorFields() {
         etNewPassword.addTextChangedListener(new TextWatcher() {

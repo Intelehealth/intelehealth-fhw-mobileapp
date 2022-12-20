@@ -28,7 +28,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -40,7 +39,6 @@ import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,27 +63,30 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
-import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.ProviderProfileDao;
 import org.intelehealth.app.models.CheckAppUpdateRes;
-import org.intelehealth.app.models.dto.ProviderProfileDTO;
-import org.intelehealth.app.profile.MyProfileFragment_New;
+import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -93,11 +94,12 @@ import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
 import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -115,11 +117,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
@@ -172,8 +177,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         //}
         clickListeners();
 
-        //currently user details are in local db
-        updateNavHeaderUserDetails();
+
 
     }
 
@@ -210,15 +214,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         });
 
-        if (ivHamburger != null) {
-            ivHamburger.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-
-                }
-            });
-        }
 
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,9 +232,11 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             public void onClick(View v) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
 
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
+               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
                 Fragment fragment = new MyProfileFragment_New();
-                loadFragment(fragment);
+                loadFragment(fragment);*/
+                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -275,7 +272,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
 
-        ivHamburger = findViewById(R.id.iv_hamburger);
+        ivHamburger = toolbarHome.findViewById(R.id.iv_hamburger);
+        ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
+
+        ivHamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: icon clicked");
+                mDrawerLayout.openDrawer(GravityCompat.START);
+
+            }
+        });
+
         isNetworkAvailable(this);
 
         //nav header
@@ -340,10 +348,10 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
 
 
-        String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         tvAppLastSync.setText(sync_text);
-        Log.d(TAG, "onReceive: sync_text : " + sync_text);
-
+        Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
+*/
 
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
 
@@ -645,7 +653,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
+        //ui2.0 update user details in  nav header
+        updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
         Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
@@ -655,8 +664,9 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             showLoggingInDialog();
 
         }
+
+
         loadFragment(new HomeFragment_New());
-        ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
@@ -791,8 +801,15 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-            tvAppLastSync.setText(sync_text);
-            Log.d(TAG, "onReceive: sync_text : " + sync_text);
+            String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
+            tvAppLastSync.setText(lastSync);
+
+            //ui2.0 update user details in  nav header
+            updateNavHeaderUserDetails();
+
+            Log.d(TAG, "onReceive: sync_text : " + lastSync);
+            // android:text="Last sync: 8 pm, 02 December 2022"
+
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
@@ -970,7 +987,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         startActivity(intent);
         finish();
 
-        SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
@@ -979,42 +995,38 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     }
 
     private void updateNavHeaderUserDetails() {
-        ProviderProfileDao providerProfileDao = new ProviderProfileDao();
         try {
-            ProviderProfileDTO providerProfileDTO = providerProfileDao.getProvidersDetails();
+            ProviderDAO providerDAO = new ProviderDAO();
+            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+            if (providerDTO != null) {
+                boolean firstname = isValidField(providerDTO.getFamilyName());
+                boolean lastname = isValidField(providerDTO.getGivenName());
+                String userFullName = "";
+                if (firstname && lastname) {
+                    userFullName = providerDTO.getFamilyName() + " " + providerDTO.getGivenName();
+                } else if (firstname) {
+                    userFullName = providerDTO.getFamilyName();
+                } else if (lastname) {
+                    userFullName = providerDTO.getGivenName();
 
-            boolean firstname = isValidField(providerProfileDTO.getFirstName());
-            boolean lastname = isValidField(providerProfileDTO.getLastName());
-            String userFullName = "";
-            if (firstname && lastname) {
-                userFullName = providerProfileDTO.getFirstName() + " " + providerProfileDTO.getLastName();
-            } else if (firstname) {
-                userFullName = providerProfileDTO.getFirstName();
-            } else if (lastname) {
-                userFullName = providerProfileDTO.getLastName();
+                }
+                tvUsername.setText(userFullName);
+                tvUserId.setText(sessionManager.getChwname());
 
-            }
-            tvUsername.setText(userFullName);
+                if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
 
-            tvUserId.setText("CHW ID : " + sessionManager.getChwname());
-            Log.d(TAG, "initUI: path : " + providerProfileDTO.getImagePath());
+                    Glide.with(HomeScreenActivity_New.this)
+                            .load(providerDTO.getImagePath())
+                            .thumbnail(0.3f)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(ivProfileIcon);
 
-            if (providerProfileDTO.getImagePath() != null && !providerProfileDTO.getImagePath().isEmpty()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(providerProfileDTO.getImagePath());
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                byte[] imageArray = stream.toByteArray();
-                ivProfileIcon.setImageBitmap(bitmap);
-              /*  Glide.with(getActivity())
-                        .load(bitmap)
-                        .thumbnail(0.3f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfileImage);*/
+
+                }
 
             }
-
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -1059,7 +1071,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         startActivity(intent);
         finish();
 
-        SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
@@ -1148,6 +1159,5 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         }
     }
-
 }
 

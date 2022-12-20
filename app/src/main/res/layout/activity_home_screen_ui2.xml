@@ -20,15 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-<include
-    android:id="@+id/survey_snackbar_cv"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    layout="@layout/custom_snackbar"
-    android:layout_marginBottom="@dimen/margin_24"
-    android:layout_marginStart="@dimen/margin_24"
-    android:layout_marginEnd="@dimen/margin_24"
-    android:layout_above="@id/bottom_nav_home" />
+        <include
+            android:id="@+id/survey_snackbar_cv"
+            layout="@layout/custom_snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_nav_home"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_24" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_home"
@@ -36,33 +36,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/top_rounded_whitebg"
+            android:foregroundTint="@color/colorPrimary"
             app:elevation="8dip"
             app:itemBackground="@drawable/bottom_nav_tab_background"
             app:itemIconSize="@dimen/bottom_nav_icon_size"
-            android:foregroundTint="@color/colorPrimary"
             app:itemRippleColor="@color/colorPrimary2"
             app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_home_footer" />
-<!--
-        app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
--->
+        <!--
+                app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
+        -->
 
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationview"
-        app:theme="@style/NavigationDrawerItemStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/ui2_home_nav_drawer_background"
         android:fitsSystemWindows="false"
-        app:itemIconPadding="@dimen/itemIconPadding_drawer"
-        android:visibility="gone"
         app:headerLayout="@layout/nav_header_home_ui2"
+        app:itemIconPadding="@dimen/itemIconPadding_drawer"
         app:itemIconTint="@color/colorPrimary"
-        app:menu="@menu/activity_home_menu_drawer_ui2">
+        app:menu="@menu/activity_home_menu_drawer_ui2"
+        app:theme="@style/NavigationDrawerItemStyle">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -80,8 +79,8 @@
                 <ImageView
                     android:layout_width="@dimen/reset_app_icon_width"
                     android:layout_height="@dimen/reset_app_icon_height"
-                    android:padding="@dimen/reset_app_icon_padding"
                     android:layout_gravity="center"
+                    android:padding="@dimen/reset_app_icon_padding"
                     android:src="@drawable/ui2_ic_no_internet" />
 
                 <TextView
@@ -104,12 +103,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_reset_app"
                 android:layout_gravity="bottom"
-                android:textSize="@dimen/tv_app_version_text_size"
-                android:letterSpacing="@dimen/tv_app_version_letter_spacing"
-                android:textColor="@color/textColorGray"
                 android:layout_marginTop="@dimen/tv_app_version_margin_top"
                 android:gravity="center"
-                android:text="Version 2.0" />
+                android:letterSpacing="@dimen/tv_app_version_letter_spacing"
+                android:text="Version 2.0"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/tv_app_version_text_size" />
 
         </RelativeLayout>
 

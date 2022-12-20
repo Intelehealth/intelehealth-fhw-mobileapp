@@ -13,6 +13,7 @@
         android:layout_height="@dimen/hamburger_height"
         android:layout_marginStart="@dimen/common_all_card_start_margin"
         android:layout_marginTop="@dimen/hamburger_margin_top"
+        android:background="?attr/selectableItemBackground"
         android:layout_marginEnd="@dimen/hamburger_margin_top"
         android:foregroundGravity="center_horizontal"
         android:visibility="visible"

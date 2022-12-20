@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -184,7 +186,8 @@ public class ImagesDAO {
             contentValues.put("sync", "false");
             isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, "PP"});
             if (isupdate != 0)
-                isUpdated = true;
+                if (isupdate != 0)
+                    isUpdated = true;
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             isUpdated = false;
@@ -406,7 +409,81 @@ public class ImagesDAO {
         return isLocalImageExists;
     }
 
+    //added for push provider profile image to the server
+    public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
+        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : "+imagepath);
+        boolean isUpdated = false;
+        long isupdate = 0;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        String whereclause = "uuid = ?";
+        try {
+            // contentValues.put("uuid", uuid);
+            contentValues.put("imagePath", imagepath);
+            contentValues.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            //contentValues.put("sync", "false");
+            isupdate = localdb.update("tbl_provider", contentValues, whereclause, new String[]{uuid});
+            if (isupdate != 0)
+                isUpdated = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
 
+        }
+        return isUpdated;
+    }
+
+    public ProviderProfile getUserProfileUnsyncedImages(String uuid) throws DAOException {
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Base64Utils base64Utils = new Base64Utils();
+        ProviderProfile providerProfile = new ProviderProfile();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_provider where uuid = ? AND (sync = ? OR sync= ?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    providerProfile.setProviderid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    providerProfile.setFile(base64Utils.getBase64FromFileWithConversion(idCursor.getString(idCursor.getColumnIndexOrThrow("imagePath"))));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+
+        return providerProfile;
+    }
+
+    public boolean updateUnsyncedUserProfile(String uuid) throws DAOException {
+        boolean isUpdated = false;
+        long isupdate = 0;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+
+
+        try {
+            String updateQuery = "UPDATE tbl_provider SET sync = 'true' WHERE uuid = '" + uuid + "'  AND sync = '0' OR sync = 'false'";
+            Cursor c = localdb.rawQuery(updateQuery, null);
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isUpdated = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return isUpdated;
+    }
 
 }
 

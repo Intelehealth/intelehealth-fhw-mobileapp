@@ -146,12 +146,12 @@
     <dimen name="hamburger_margin_top">13dp</dimen> <!--15-->
     <dimen name="hamburger_margin_start">8dp</dimen>
 
-    <dimen name="home_location_margin_top">15dp</dimen>
+    <dimen name="home_location_margin_top">13dp</dimen>
     <dimen name="home_location_drawable_padding">7dp</dimen>
     <dimen name="text_last_updated_home_top_margin">5dp</dimen>
     <dimen name="image_home_toolbar_icon_height">30dp</dimen>
     <dimen name="image_home_toolbar_icon_width">25dp</dimen>
-    <dimen name="image_home_toolbar_icon_margintop">12dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop">10dp</dimen>
     <dimen name="image_home_toolbar_icon_marginend">10dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop1">14dp</dimen>
 
@@ -491,7 +491,7 @@
     <dimen name="iv_profile_drawer_margin_start">10dp</dimen>
     <dimen name="iv_profile_drawer_margin_top">20dp</dimen>
     <dimen name="tv_login_user_margin_start">15dp</dimen>
-    <dimen name="tv_login_user_margin_top">25dp</dimen>
+    <dimen name="tv_login_user_margin_top">23dp</dimen>
     <dimen name="tv_login_userid_margin_top">5dp</dimen>
     <dimen name="tv_login_edit_margin_top">5dp</dimen>
     <dimen name="tv_login_edit_line_height">21dp</dimen>
@@ -941,5 +941,6 @@
     <dimen name="help_card_msg_sent_width">35dp</dimen>
     <dimen name="help_card_msg_sent_margin_top">6dp</dimen>
     <dimen name="help_card_msg_sent_padding">5dp</dimen>
+    <dimen name="iv_profile_drawer_height_width">70dp</dimen>
 
 </resources>
