@@ -424,10 +424,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
 
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]")) {
-                        insertion = insertion.replaceAll("Yes [Describe]", "")
-                                .replaceAll("Other [Describe]", "")
-                                .replaceAll("[Describe]", "");
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
+                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
+                                .replaceAll("Other \\[Describe]", "")
+                                .replaceAll("\\[Describe]", "");
                     }
 
                     insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
@@ -449,10 +449,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     startActivity(intent);
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]")) {
-                        insertion = insertion.replaceAll("Yes [Describe]", "")
-                                .replaceAll("Other [Describe]", "")
-                                .replaceAll("[Describe]", "");
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
+                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
+                                .replaceAll("Other \\[Describe]", "")
+                                .replaceAll("\\[Describe]", "");
                     }
                     insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
 
