@@ -17,8 +17,10 @@ public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
+
     /**
      * This method will be responsible for initial sync/setup
+     *
      * @param fromActivity
      */
     public void initialSync(String fromActivity) {
@@ -30,16 +32,17 @@ public class SyncUtils {
         // sync data
         AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
     }
+
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        syncDAO.pushDataApi();
+        syncDAO.pushDataApi("syncutil");
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
-        imagesPushDAO.patientProfileImagesPush();
-       //ui2.0
-        imagesPushDAO.loggedInUserProfileImagesPush();
+        //  imagesPushDAO.patientProfileImagesPush();
+        //ui2.0
+      //  imagesPushDAO.loggedInUserProfileImagesPush();
 
 //        imagesPushDAO.obsImagesPush();
 
@@ -77,7 +80,7 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
-        isSynced = syncDAO.pushDataApi();
+        isSynced = syncDAO.pushDataApi("sync fore");
         Logger.logD(TAG, "Push ended");
 
 
@@ -94,9 +97,9 @@ public class SyncUtils {
 
         imagesPushDAO.patientProfileImagesPush();
         //ui2.0
-        imagesPushDAO.loggedInUserProfileImagesPush();
+        // imagesPushDAO.loggedInUserProfileImagesPush();
 //        imagesPushDAO.obsImagesPush();
-        
+
         /*
          * Handler is added for pushing image in sync foreground
          * to fix the issue of Phy exam and additional images not showing up sometimes

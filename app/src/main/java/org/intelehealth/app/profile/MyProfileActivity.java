@@ -1,12 +1,5 @@
 package org.intelehealth.app.profile;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -39,26 +32,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.AllAppointmentsAdapter;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.dto.ProviderDTO;
@@ -72,9 +67,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -91,14 +83,11 @@ import okhttp3.ResponseBody;
 
 public class MyProfileActivity extends AppCompatActivity {
     private static final String TAG = "MyProfileActivity";
-    String[] textArray = {"+91", "+99", "+20", "+22"};
-    Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp, R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge;
     LinearLayout layoutParent;
     TextView tvChangePhoto;
     String selectedGender;
-    Spinner spinnerCountries;
     ImageView ivProfileImage;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
     String dobToDb, dobToShow;
@@ -110,9 +99,9 @@ public class MyProfileActivity extends AppCompatActivity {
     String profileImagePAth = "";
     Button btnSave;
     SnackbarUtils snackbarUtils;
-    SpinnerAdapter adapter;
     // View layoutToolbar;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
+    private CountryCodePicker countryCodePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +137,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
                 startActivity(intent);
+                finish();
             }
         });
         tvTitle.setText(getResources().getString(R.string.my_profile));
@@ -174,17 +164,15 @@ public class MyProfileActivity extends AppCompatActivity {
         rbFemale = findViewById(R.id.rb_female);
         rbOther = findViewById(R.id.rb_other);
 
+        countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
+        countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
 
-        spinnerCountries = findViewById(R.id.spinner_countries_profile);
+
         ivProfileImage = findViewById(R.id.iv_profilePic);
         tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
 
 
         RelativeLayout layoutChangePassword = findViewById(R.id.view_change_password);
-
-        adapter = new SpinnerAdapter(this, R.layout.spinner_value_layout, textArray, imageArray);
-        spinnerCountries.setAdapter(adapter);
-
 
         //all click listeners
 
@@ -217,12 +205,6 @@ public class MyProfileActivity extends AppCompatActivity {
                         break;
                 }
 
-              /*  Log.d(TAG, "onCheckedChanged: selected  " + checkedRadioButton.getText().toString());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    checkedRadioButton.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                }else{
-
-                }*/
 
             }
         });
@@ -292,48 +274,29 @@ public class MyProfileActivity extends AppCompatActivity {
 
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 
-
-        //   saveLoginUserDetailsFromProviderDao();
-
+        // fetch user details if added
         fetchUserDetailsIfAdded();
 
     }
 
     private void fetchUserDetailsIfAdded() {
         try {
-
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             etUsername.setText(sessionManager.getChwname());
             etFirstName.setText(providerDTO.getFamilyName());
-            etMiddleName.setText("");
             etLastName.setText(providerDTO.getGivenName());
             etEmail.setText(providerDTO.getEmailId());
-            etMobileNo.setText(providerDTO.getTelephoneNumber());
-            Log.d(TAG, "fetchUserDetailsIfAdded:dob :  " + providerDTO.getDateofbirth());
-            Log.d(TAG, "fetchUserDetailsIfAdded:gender :  " + providerDTO.getGender());
+            etMiddleName.setText(providerDTO.getMiddle_name());
 
             tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(providerDTO.getDateofbirth()));
 
             String age = DateAndTimeUtils.getAge_FollowUp(providerDTO.getDateofbirth(), this);
             tvAge.setText(age);
+            String phoneWithCountryCode = providerDTO.getCountryCode() + providerDTO.getTelephoneNumber();
 
-           /* String selectedCountry = providerProfileDTO.getCountryCode();
-            if (selectedCountry != null && !selectedCountry.isEmpty()) {
-                if (selectedCountry.equals("91")) {
-                    spinnerCountries.setSelection(0, true);
+            countryCodePicker.setFullNumber(phoneWithCountryCode); // automatically assigns cc to spinner and number to edittext field.
 
-                } else if (selectedCountry.equals("99")) {
-                    spinnerCountries.setSelection(1, true);
-
-                } else if (selectedCountry.equals("20")) {
-                    spinnerCountries.setSelection(2, true);
-
-                } else if (selectedCountry.equals("22")) {
-                    spinnerCountries.setSelection(3, true);
-
-                }
-            }*/
 
             String gender = providerDTO.getGender();
             if (gender != null && !gender.isEmpty()) {
@@ -354,13 +317,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             }
 
-            Log.d(TAG, "initUI: path : " + providerDTO.getImagePath());
-
-            if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
-                if (NetworkConnection.isOnline(this)) {
-                    profilePicDownloaded(providerDTO);
-                }
-            }
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                 Glide.with(this)
                         .load(providerDTO.getImagePath())
@@ -372,33 +328,13 @@ public class MyProfileActivity extends AppCompatActivity {
             } else {
                 ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
             }
-       /*     if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(providerDTO.getImagePath());
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                ivProfileImage.setImageBitmap(bitmap);
-                Glide.with(MyProfileActivity.this)
-                        .load(bitmap).thumbnail(0.3f)
-                        .centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true).into(ivProfileImage);
 
-            }*/
-         /*   String imagePAth = AppConstants.IMAGE_PATH + sessionManager.getProviderID() + ".jpg";
-            if (providerProfileDTO.getImagePath() == null || providerProfileDTO.getImagePath().equalsIgnoreCase("")) {
-                if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-                    profilePicDownloaded(imagePAth);
+            Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+            if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(this)) {
+                    profilePicDownloaded(providerDTO);
                 }
-            }*/
-          /*  ImagesDAO imagesDAO = new ImagesDAO();
-            boolean isImageDownloaded = false;
-            try {
-                isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(
-                        imagePAth, sessionManager.getProviderID());
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
             }
-*/
-
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -431,17 +367,17 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfileDetailsToLocalDb() throws DAOException {
-        Log.d(TAG, "updateProfileDetailsToLocalDb: dobToDb :" + dobToDb);
-
+        String selectedCode = countryCodePicker.getSelectedCountryCodeWithPlus();
         ProviderDAO providerDAO = new ProviderDAO();
         ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
-        Log.d(TAG, "updateProfileDetailsToLocalDb: provider id :" + sessionManager.getProviderID());
         if (providerDTO != null) {
-            List<ProviderDTO> providersDetails = new ArrayList<>();
-            //String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, this);
-
-
-            ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etLastName.getText().toString().trim(), etFirstName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier());
+            ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
+                    providerDTO.getUseruuid(), etEmail.getText().toString().trim(),
+                    etMobileNo.getText().toString().trim(), providerDTO.getProviderId(),
+                    etLastName.getText().toString().trim(), etFirstName.getText().toString().trim(),
+                    providerDTO.getVoided(), selectedGender, dobToDb,
+                    providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode,
+                    etMiddleName.getText().toString().trim());
 
             String imagePath = "";
             if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
@@ -453,19 +389,11 @@ public class MyProfileActivity extends AppCompatActivity {
             if (imagePath != null && !imagePath.isEmpty())
                 inputDTO.setImagePath(imagePath);
 
-            Log.d(TAG, "updateProfileDetailsToLocalDb: imagePath : " + imagePath);
             try {
                 boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
                 if (isUpdated)
 
                     snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
-
-                if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-                    SyncDAO syncDAO = new SyncDAO();
-                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                    boolean push = syncDAO.pushDataApi();
-                     boolean pushImage = imagesPushDAO.loggedInUserProfileImagesPush();
-                }
 
 
                 final Handler handler = new Handler();
@@ -481,44 +409,6 @@ public class MyProfileActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public class SpinnerAdapter extends ArrayAdapter<String> {
-
-        private Context ctx;
-        private String[] contentArray;
-        private Integer[] imageArray;
-
-        public SpinnerAdapter(Context context, int resource, String[] objects, Integer[] imageArray) {
-            super(context, R.layout.spinner_value_layout, R.id.spinnerTextView, objects);
-            this.ctx = context;
-            this.contentArray = objects;
-            this.imageArray = imageArray;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
-        }
-
-        public View getCustomView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = inflater.inflate(R.layout.spinner_value_layout, parent, false);
-
-            TextView textView = (TextView) row.findViewById(R.id.spinnerTextView);
-            textView.setText(contentArray[position]);
-
-            ImageView imageView = (ImageView) row.findViewById(R.id.spinnerImages);
-            imageView.setImageResource(imageArray[position]);
-
-            return row;
         }
     }
 
@@ -543,7 +433,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        Log.v("saveImage", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
             try {
@@ -552,12 +442,14 @@ public class MyProfileActivity extends AppCompatActivity {
                 length = length / 1024;
                 Log.e("------->>>>", length + "");
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("File not found : " + e.getMessage() + e);
             }
 
             //   recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
             //   updateProfileImage(StringUtils.getFileNameWithoutExtension(photo));
 
+        } else {
         }
         updateProfileImage(picturePath);
 
@@ -574,14 +466,11 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfileImage(String imagePath) {
-        Log.d(TAG, "updateProfileImage: ");
-
-
+        //update profile image to local db after its selected
         profileImagePAth = imagePath;
-        //commented temporary
         ProviderDAO providerProfileDao = new ProviderDAO();
         try {
-            boolean isUpdated = providerProfileDao.updateProfilePicture(sessionManager.getProviderID(), imagePath);
+            boolean isUpdated = providerProfileDao.updateLoggedInUserProfileImage(imagePath, sessionManager.getProviderID());
             if (isUpdated) {
                 //  snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_photo_updated_new));
 
@@ -591,9 +480,8 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-            SyncDAO syncDAO = new SyncDAO();
             ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-             boolean pushImage = imagesPushDAO.loggedInUserProfileImagesPush();
+            imagesPushDAO.loggedInUserProfileImagesPush();
         }
 
     }
@@ -604,36 +492,60 @@ public class MyProfileActivity extends AppCompatActivity {
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Glide.with(MyProfileActivity.this).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                Glide.with(MyProfileActivity.this)
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f).centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(ivProfileImage);
 
                 saveImage(mCurrentPhotoPath);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (data != null) {
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                try {
+                    Uri selectedImage = data.getData();
+                    String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String picturePath = c.getString(columnIndex);
+                    c.close();
+                    //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                    Log.v("path", picturePath + "");
 
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                Log.d(TAG, "onActivityResult: mCurrentPhotoPath gallery : " + finalFilePath);
+                    // copy & rename the file
+                    String finalImageName = UUID.randomUUID().toString();
+                    final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
 
-                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                byte[] imageArray = stream.toByteArray();
-                //  ivProfileImage.setImageBitmap(bitmap);
-                Glide.with(MyProfileActivity.this).load(new File(finalFilePath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                    Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
 
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
+                    Thread thread = new Thread() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() //run on ui thread
+                            {
+                                public void run() {
+                                    Glide.with(MyProfileActivity.this)
+                                            .load(finalFilePath)
+                                            .thumbnail(0.3f)
+                                            .centerCrop()
+                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .skipMemoryCache(true)
+                                            .into(ivProfileImage);
+                                }
+                            });
+                        }
+                    };
+                    thread.start();
+
+                    BitmapUtils.copyFile(picturePath, finalFilePath);
+                    compressImageAndSave(finalFilePath);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -727,39 +639,44 @@ public class MyProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    public void profilePicDownloaded(ProviderDTO providerDTO) {
+    public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
+        Log.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(MyProfileActivity.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
-        String url = urlModifiers.patientProfileImageUrl(uuid);
-        Logger.logD("TAG", "profileimage url" + url);
-        Log.d(TAG, "profilePicDownloaded:  getEncoded : " + sessionManager.getEncoded());
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
+        String url = urlModifiers.getProviderProfileImageUrl(uuid);
+        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+
+
+        Observable<ResponseBody> profilePicDownload =
+                AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<ResponseBody>() {
                     @Override
                     public void onNext(ResponseBody file) {
+                        Log.d(TAG, "onNext: ");
                         DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                         downloadFilesUtils.saveToDisk(file, uuid);
-                        Logger.logD("TAG", file.toString());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
+                        e.printStackTrace();
+                        Logger.logD(TAG, e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Logger.logD("TAG", "complete" + providerDTO.getImagePath());
-                        PatientsDAO patientsDAO = new PatientsDAO();
+                        ProviderDAO providerDAO = new ProviderDAO();
                         boolean updated = false;
                         try {
-                            updated = patientsDAO.updatePatientPhoto(uuid,
-                                    AppConstants.IMAGE_PATH + uuid + ".jpg");
+                            updated = providerDAO.updateLoggedInUserProfileImage(profileImagePAth,
+                                    sessionManager.getProviderID());
+
                         } catch (DAOException e) {
+                            e.printStackTrace();
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
@@ -774,58 +691,16 @@ public class MyProfileActivity extends AppCompatActivity {
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
                         try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + uuid + ".jpg", uuid);
+                            isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(profileImagePAth,
+                                    sessionManager.getProviderID());
+
                         } catch (DAOException e) {
+                            e.printStackTrace();
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
                 });
     }
 
-/*
-    public void profilePicDownloaded(String profileImagePAth) {
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.patientProfileImageUrl(sessionManager.getProviderID());
-        Logger.logD("TAG", "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
-            @Override
-            public void onNext(ResponseBody file) {
-                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                downloadFilesUtils.saveToDisk(file, sessionManager.getProviderID());
-                Logger.logD("TAG", file.toString());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD("TAG", e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete: profileImagePAth : " + profileImagePAth);
-                ProviderDAO providerDAO = new ProviderDAO();
-                boolean updated = false;
-                try {
-                    updated = providerDAO.updateProfilePicture(sessionManager.getProviderID(), profileImagePAth);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                if (updated) {
-                    Log.d(TAG, "onComplete: profileImagePAth : " + profileImagePAth);
-                    Glide.with(MyProfileActivity.this).load(profileImagePAth).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
-                }
-                ImagesDAO imagesDAO = new ImagesDAO();
-                boolean isImageDownloaded = false;
-                try {
-                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(profileImagePAth, sessionManager.getProviderID());
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-        });
-    }
-*/
 
 }

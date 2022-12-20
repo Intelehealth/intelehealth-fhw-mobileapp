@@ -39,6 +39,29 @@ public class Provider {
     @Expose
     private String dateofbirth;
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getMiddle_name() {
+        return middle_name;
+    }
+
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
+    }
+
+    @SerializedName("countryCode")
+    @Expose
+    private String countryCode;
+    @SerializedName("middle_name")
+    @Expose
+    private String middle_name;
+
     public String getUseruuid() {
         return useruuid;
     }

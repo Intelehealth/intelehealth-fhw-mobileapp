@@ -6,11 +6,13 @@ import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -20,6 +22,8 @@ import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,8 +38,7 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
-    PatientProfile patientProfile = null;
-
+    ProviderProfile providerProfile = null;
 
 
     public boolean patientProfileImagesPush() {
@@ -51,6 +54,8 @@ public class ImagesPushDAO {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+        // Log.d(TAG, "patientProfileImagesPush: getBase64EncodedImage "+ patientProfile.getBase64EncodedImage());
         for (PatientProfile p : patientProfiles) {
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
             personProfilePicUpload.subscribeOn(Schedulers.io())
@@ -70,6 +75,7 @@ public class ImagesPushDAO {
                         @Override
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
+                            e.printStackTrace();
 //                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
                     });
@@ -177,46 +183,41 @@ public class ImagesPushDAO {
         return true;
     }
 
-    //newly added for profile picture - ui2.0
+    //newly added for profile picture upload- ui2.0
     public boolean loggedInUserProfileImagesPush() {
-        Log.d(TAG, "loggedInUserProfileImagesPush: ");
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
-        String url = urlModifiers.setPatientProfileImageUrl();
-        //List<PatientProfile> patientProfiles = new ArrayList<>();
+        String url = urlModifiers.setProviderProfileImageUrl();
         try {
-            patientProfile = imagesDAO.getUserProfileUnsyncedImages(sessionManager.getProviderID());
+            providerProfile = imagesDAO.getUserProfileUnsyncedImages(sessionManager.getProviderID());
+
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        if (patientProfile!=null ) {
-            Log.d(TAG, "loggedInUserProfileImagesPush: patientProfiles person  : "+patientProfile.getPerson());
-            Log.d(TAG, "loggedInUserProfileImagesPush: patientProfiles base64: "+patientProfile.getBase64EncodedImage());
+        if (providerProfile != null && providerProfile.getFile() != null && !providerProfile.getFile().isEmpty()) {
+            Log.d(TAG, "loggedInUserProfileImagesPush: in conditions : ");
 
-            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, patientProfile);
+            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_UPLOAD(url, providerProfile, "Basic " + encoded);
             personProfilePicUpload.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<ResponseBody>() {
                         @Override
                         public void onSuccess(ResponseBody responseBody) {
-                            Log.d(TAG, "onSuccess: in push provider image response");
-                            Logger.logD(TAG, "success" + responseBody);
                             try {
-                                imagesDAO.updateUnsyncedUserProfile(patientProfile.getPerson());
-                            } catch (DAOException e) {
+                                imagesDAO.updateUnsyncedUserProfile(providerProfile.getProviderid());
+
+                            } catch (Exception e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }
-//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
-                            e.printStackTrace();
-//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
                     });
         }

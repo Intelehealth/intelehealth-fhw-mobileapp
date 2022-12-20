@@ -288,9 +288,7 @@ public class LoginActivityNew extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
-        String serverUrl = AppConstants.DEMO_URL;
-        // String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-        String urlString = urlModifiers.loginUrl(serverUrl);
+        String urlString = urlModifiers.loginUrl(AppConstants.DEMO_URL);
 
         Log.d(TAG, "UserLoginTask: urlString : " + urlString);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
@@ -325,7 +323,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                String url = urlModifiers.loginUrlProvider(serverUrl, loginModel.getUser().getUuid());
+                String url = urlModifiers.loginUrlProvider(AppConstants.DEMO_URL, loginModel.getUser().getUuid());
                 Log.d(TAG, "onNext: url : " + url);
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);

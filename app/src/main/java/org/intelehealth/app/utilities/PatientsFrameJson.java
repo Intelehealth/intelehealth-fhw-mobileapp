@@ -198,7 +198,7 @@ public class PatientsFrameJson {
         }
 
         if (providerDetailsDTOList != null && providerDetailsDTOList.size() > 0) {
-            Log.d(TAG, "frameJson:providerDetailsDTOList size:  "+providerDetailsDTOList.size());
+            Log.d(TAG, "frameJson:providerDetailsDTOList size:  " + providerDetailsDTOList.size());
             for (ProviderDTO providerDTO : providerDetailsDTOList) {
                 Provider provider = new Provider();
                 // if (visitDTO.getAttributes().size() > 0) {
@@ -209,6 +209,8 @@ public class PatientsFrameJson {
                 provider.setGender(providerDTO.getGender());
                 provider.setTelephoneNumber(providerDTO.getTelephoneNumber());
                 provider.setProviderId(providerDTO.getProviderId());
+                provider.setCountryCode(providerDTO.getCountryCode());
+                provider.setMiddle_name(providerDTO.getMiddle_name());
 
                 providersList.add(provider);
                 //}

@@ -12,7 +12,25 @@ public class ProviderDTO {
     public ProviderDTO() {
     }
 
-    public ProviderDTO(String role, String useruuid, String emailId, String telephoneNumber, String providerId, String givenName, String familyName, Integer voided, String gender, String dateofbirth, String uuid, String identifier) {
+    public String getMiddle_name() {
+        return middle_name;
+    }
+
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public ProviderDTO(String role, String useruuid, String emailId, String telephoneNumber, String providerId,
+                       String givenName, String familyName, Integer voided, String gender, String dateofbirth,
+                       String uuid, String identifier, String countryCode, String middle_name) {
         this.role = role;
         this.useruuid = useruuid;
         this.emailId = emailId;
@@ -24,7 +42,10 @@ public class ProviderDTO {
         this.gender = gender;
         this.dateofbirth = dateofbirth;
         this.uuid = uuid;
+        this.countryCode = countryCode;
+        this.middle_name = middle_name;
         this.identifier = identifier;
+
     }
 
     @SerializedName("useruuid")
@@ -69,6 +90,14 @@ public class ProviderDTO {
     @SerializedName("identifier")
     @Expose
     private String identifier;
+
+    @SerializedName("middle_name")
+    @Expose
+    private String middle_name;
+
+    @SerializedName("countryCode")
+    @Expose
+    private String countryCode;
 
     String imagePath;
 

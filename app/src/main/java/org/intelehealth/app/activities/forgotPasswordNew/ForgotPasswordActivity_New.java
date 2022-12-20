@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
@@ -50,9 +52,6 @@ import retrofit2.Callback;
 
 public class ForgotPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
-    String[] textArray = {"+91", "+00", "+20", "+22"};
-    Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
-            R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
     TextInputEditText etUsername, etMobileNo;
     CustomProgressDialog cpd;
     SessionManager sessionManager = null;
@@ -62,6 +61,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     ImageView imageviewBack;
     TextView tvUsernameError, tvMobileError;
     String optionSelected = "username";
+    private CountryCodePicker countryCodePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,62 +86,49 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         Button buttonMobileNumber = findViewById(R.id.button_mobile_number);
         RelativeLayout layoutMobileNo = findViewById(R.id.layout_parent_mobile_no);
         LinearLayout layoutUsername = findViewById(R.id.layout_parent_username);
-        LinearLayout layoutChooseOption = findViewById(R.id.layout_choose_option);
 
-        imageviewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ForgotPasswordActivity_New.this, SetupActivityNew.class);
-                startActivity(intent);
-            }
+        imageviewBack.setOnClickListener(v -> {
+            Intent intent = new Intent(ForgotPasswordActivity_New.this, SetupActivityNew.class);
+            startActivity(intent);
         });
 
-        buttonUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                optionSelected = "username";
-                etMobileNo.setText("");
+        buttonUsername.setOnClickListener(v -> {
+            optionSelected = "username";
+            etMobileNo.setText("");
 
-                layoutMobileNo.setVisibility(View.GONE);
-                layoutUsername.setVisibility(View.VISIBLE);
-                tvMobileError.setVisibility(View.GONE);
-                tvUsernameError.setVisibility(View.GONE);
+            layoutMobileNo.setVisibility(View.GONE);
+            layoutUsername.setVisibility(View.VISIBLE);
+            tvMobileError.setVisibility(View.GONE);
+            tvUsernameError.setVisibility(View.GONE);
 
 
-                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-                etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
-            }
         });
-        buttonMobileNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                optionSelected = "mobile";
-                etUsername.setText("");
-                tvMobileError.setVisibility(View.GONE);
-                tvUsernameError.setVisibility(View.GONE);
+        buttonMobileNumber.setOnClickListener(v -> {
+            optionSelected = "mobile";
+            etUsername.setText("");
+            tvMobileError.setVisibility(View.GONE);
+            tvUsernameError.setVisibility(View.GONE);
 
-                layoutUsername.setVisibility(View.GONE);
-                layoutMobileNo.setVisibility(View.VISIBLE);
+            layoutUsername.setVisibility(View.GONE);
+            layoutMobileNo.setVisibility(View.VISIBLE);
 
-                buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-                buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-                etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-            }
+            buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
 
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (areInputFieldsValid(etUsername.getText().toString().trim(), etMobileNo.getText().toString())) {
-                    apiCallForRequestOTP(ForgotPasswordActivity_New.this, etUsername.getText().toString().trim(),
-                            etMobileNo.getText().toString().trim());
-                }
-
+        buttonContinue.setOnClickListener(v -> {
+            if (areInputFieldsValid(etUsername.getText().toString().trim(), etMobileNo.getText().toString())) {
+                apiCallForRequestOTP(ForgotPasswordActivity_New.this, etUsername.getText().toString().trim(),
+                        etMobileNo.getText().toString().trim());
             }
+
         });
 
 
@@ -153,24 +140,21 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         etMobileNo = findViewById(R.id.edittext_mobile_number);
         layoutParent = findViewById(R.id.login_parent);
         imageviewBack = findViewById(R.id.imageview_back_forgot_password);
-        Spinner spinner = findViewById(R.id.mySpinner);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvMobileError = findViewById(R.id.tv_mobile_error);
 
+        countryCodePicker = findViewById(R.id.countrycode_spinner_forgot);
+        countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
 
-        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.spinner_value_layout, textArray, imageArray);
-        spinner.setAdapter(adapter);
+
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         cpd.show();
-        String serverUrl = "https://uiux.intelehealth.org:3004/";
-        // String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-
+        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        Log.d(TAG, "UserLoginTask: encoded : " + sessionManager.getEncoded());
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(username, mobileNo);
 
         ApiClient.changeApiBaseUrl(serverUrl);
@@ -196,6 +180,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                             Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
                             intent.putExtra("userUuid", forgotPasswordApiResponseModel_new.getData().getUuid());
                             startActivity(intent);
+                            finish();
                         }
                     }, 2000);
 
@@ -224,9 +209,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to send OTP");
 
-                // Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                // mEmailSignInButton.setText(getString(R.string.action_sign_in));
-                //mEmailSignInButton.setEnabled(true);
             }
 
             @Override
@@ -235,88 +217,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             }
         });
 
-    }
-
-
-
-/*
-    private void apiCallForRequestOTP(Context context) {
-        String username = etUsername.getText().toString();
-        String mobileNo = etMobileNo.getText().toString();
-        Log.d(TAG, "apiCallForRequestOTP:username :  " + username);
-        Log.d(TAG, "apiCallForRequestOTP:mobileNo :  " + mobileNo);
-
-        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://uiux.intelehealth.org:3004/";
-
-        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(username, mobileNo);
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .requestOtp(inputModel)
-
-                .enqueue(new Callback<ForgotPasswordApiResponseModel_New>() {
-                    @Override
-                    public void onResponse(Call<ForgotPasswordApiResponseModel_New> call, retrofit2.Response<ForgotPasswordApiResponseModel_New> response) {
-                        if (response.body() == null) return;
-                        ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel = response.body();
-
-
-                        if (forgotPasswordApiResponseModel.getSuccess()) {
-                            SnackbarUtils snackbarUtils = new SnackbarUtils();
-                            snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, context.getString(R.string.password_changed_successfully));
-                            Toast.makeText(context, forgotPasswordApiResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
-                            intent.putExtra("userUuid", forgotPasswordApiResponseModel.getData().getUuid());
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ForgotPasswordApiResponseModel_New> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-
-    }
-*/
-
-
-    public class SpinnerAdapter extends ArrayAdapter<String> {
-
-        private Context ctx;
-        private String[] contentArray;
-        private Integer[] imageArray;
-
-        public SpinnerAdapter(Context context, int resource, String[] objects,
-                              Integer[] imageArray) {
-            super(context, R.layout.spinner_value_layout, R.id.spinnerTextView, objects);
-            this.ctx = context;
-            this.contentArray = objects;
-            this.imageArray = imageArray;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
-        }
-
-        public View getCustomView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = inflater.inflate(R.layout.spinner_value_layout, parent, false);
-
-            TextView textView = (TextView) row.findViewById(R.id.spinnerTextView);
-            textView.setText(contentArray[position]);
-
-            ImageView imageView = (ImageView) row.findViewById(R.id.spinnerImages);
-            imageView.setImageResource(imageArray[position]);
-
-            return row;
-        }
     }
 
     private void manageErrorFields() {

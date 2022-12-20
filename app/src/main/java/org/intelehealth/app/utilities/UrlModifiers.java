@@ -81,5 +81,19 @@ public class UrlModifiers {
 
     }
 
+    //ui2.0 for provider profile upload
+    public String setProviderProfileImageUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/uploaddocimage";
+        return BASE_URL;
+    }
+    //ui2.0 for provider profile download
+    public String getProviderProfileImageUrl(String providerUuid) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/di/";
+        String urlFinal = BASE_URL + providerUuid + "_image.png";
+        return urlFinal;
+    }
 
 }

@@ -61,6 +61,8 @@ public class ProviderDAO {
             values.put("dateofbirth", provider.getDateofbirth());
             values.put("gender", provider.getGender());
             values.put("providerId", provider.getProviderId());
+            values.put("middle_name", provider.getMiddle_name());
+            values.put("countryCode", provider.getCountryCode());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "false");
 
@@ -177,6 +179,8 @@ public class ProviderDAO {
                     providerDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     providerDTO.setProviderId(cursor.getString(cursor.getColumnIndexOrThrow("providerId")));
                     providerDTO.setImagePath(cursor.getString(cursor.getColumnIndexOrThrow("imagePath")));
+                    providerDTO.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    providerDTO.setCountryCode(cursor.getString(cursor.getColumnIndexOrThrow("countryCode")));
 
 
                 }
@@ -240,6 +244,8 @@ public class ProviderDAO {
             values.put("dateofbirth", provider.getDateofbirth());
             values.put("gender", provider.getGender());
             values.put("imagePath", provider.getImagePath());
+            values.put("middle_name", provider.getMiddle_name());
+            values.put("countryCode", provider.getCountryCode());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "false");
 
@@ -306,6 +312,8 @@ public class ProviderDAO {
                     providerProfileDTO.setEmailId(idCursor.getString(idCursor.getColumnIndexOrThrow("emailId")));
                     //providerProfileDTO.setImagePath(idCursor.getString(idCursor.getColumnIndexOrThrow("image_path")));
                     providerProfileDTO.setProviderId(idCursor.getString(idCursor.getColumnIndexOrThrow("providerId")));
+                    providerProfileDTO.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                    providerProfileDTO.setCountryCode(idCursor.getString(idCursor.getColumnIndexOrThrow("countryCode")));
 
                     providerDTOList.add(providerProfileDTO);
                 }
@@ -322,7 +330,37 @@ public class ProviderDAO {
 
         return providerDTOList;
     }
+    public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
+        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : "+imagepath);
+        Log.d(TAG, "updateLoggedInUserProfileImage: uuid : "+uuid);
 
+        boolean isUpdated = false;
+        long isupdate = 0;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        String whereclause = "uuid = ?";
+        try {
+            // contentValues.put("uuid", uuid);
+            contentValues.put("imagePath", imagepath);
+            contentValues.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            contentValues.put("sync", "false");
+            isupdate = localdb.update("tbl_provider", contentValues, whereclause, new String[]{uuid});
+            if (isupdate != 0)
+                isUpdated = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+      /*  if (isupdate == 0)
+            isUpdated = insertPatientProfileImages(imagepath, uuid);*/
+        return isUpdated;
+    }
+/*
     public boolean updateProfilePicture(String uuid, String imagePath) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -350,5 +388,6 @@ public class ProviderDAO {
 
         return true;
     }
+*/
 
 }

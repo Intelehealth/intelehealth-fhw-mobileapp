@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".profile.MyProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,8 +86,8 @@
                     android:id="@+id/iv_icon2"
                     android:layout_width="@dimen/iv_camera_width"
                     android:layout_height="@dimen/iv_camera_height"
-                    android:background="?attr/selectableItemBackground"
                     android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackground"
                     android:src="@drawable/ui2_ic_chevron_right" />
 
             </RelativeLayout>
@@ -111,16 +113,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
+                    android:enabled="false"
                     android:hint="Username"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
                     android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:textStyle="bold"
-                    android:enabled="false"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size" />
+                    android:textSize="@dimen/common_hint_text_size"
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -373,28 +375,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/layout_spinner_bg"
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/countrycode_spinner_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textview_mobile_no_note"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:layout_marginEnd="@dimen/spinner_countries_margin_end"
-                    android:background="@drawable/ui2_spinner_background">
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_spinner_background"
+                    android:gravity="center_vertical"
+                    app:ccp_countryPreference="us,in"
+                    app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
 
-                    <Spinner
-                        android:id="@+id/spinner_countries_profile"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spinner_countries_margin" />
+                <!--
+                                <LinearLayout
+                                    android:id="@+id/layout_spinner_bg"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
 
-                </LinearLayout>
+                                    android:layout_below="@+id/textview_mobile_no_note"
+                                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                    android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                                    android:background="@drawable/ui2_spinner_background">
+
+                                    <Spinner
+                                        android:id="@+id/spinner_countries_profile"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="@dimen/spinner_countries_margin" />
+
+                                </LinearLayout>
+                -->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                    android:layout_toEndOf="@+id/layout_spinner_bg"
+                    android:layout_toEndOf="@+id/countrycode_spinner_profile"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -404,9 +422,8 @@
                         android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/enter_phone_number"
                         android:imeOptions="actionNext"
-                        android:inputType="number"
+                        android:inputType="phone"
                         android:lineSpacingExtra="3sp"
-                        android:maxLength="10"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
