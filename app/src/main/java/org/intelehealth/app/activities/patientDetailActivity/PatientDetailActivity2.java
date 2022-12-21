@@ -46,10 +46,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -59,7 +55,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,9 +64,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -81,10 +78,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -94,8 +91,7 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -111,7 +107,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -157,6 +152,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     private boolean returning;
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -252,8 +248,55 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                         }
                     });
         });
+
+        mPersonalHeaderRelativeLayout = findViewById(R.id.relative_personal_header);
+        mAddressHeaderRelativeLayout = findViewById(R.id.relative_address_header);
+        mOthersHeaderRelativeLayout = findViewById(R.id.relative_others_header);
+        mPersonalHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_personal_extra);
+                ImageView imageView = findViewById(R.id.iv_personal_drop);
+                if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
+                    extraRelativeLayout.setVisibility(View.GONE);
+                    imageView.setRotation(180);
+                } else {
+                    extraRelativeLayout.setVisibility(View.VISIBLE);
+                    imageView.setRotation(0);
+                }
+            }
+        });
+        mAddressHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_address_extra);
+                ImageView imageView = findViewById(R.id.iv_address_drop);
+                if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
+                    extraRelativeLayout.setVisibility(View.GONE);
+                    imageView.setRotation(180);
+                } else {
+                    extraRelativeLayout.setVisibility(View.VISIBLE);
+                    imageView.setRotation(0);
+                }
+            }
+        });
+        mOthersHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_others_extra);
+                ImageView imageView = findViewById(R.id.iv_others_drop);
+                if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
+                    extraRelativeLayout.setVisibility(View.GONE);
+                    imageView.setRotation(180);
+                } else {
+                    extraRelativeLayout.setVisibility(View.VISIBLE);
+                    imageView.setRotation(0);
+                }
+            }
+        });
     }
 
+    private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
@@ -1059,6 +1102,17 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void backPress(View view) {
+        finish();
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Receiver class for Openmrs ID

@@ -1733,6 +1733,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
+    <string name="sync_strated">"Sync started! "</string>
 
 
     <!--END-->

@@ -104,7 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                public void run() {
                    nextActivity();
                }
-           }, 5000);
+           }, 3000);
         }
 
         saveLanguage();

@@ -38,6 +38,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
             public void onClick(View v) {
 //                Intent intent = new Intent(PrivacyPolicyActivity_New.this, SetupPrivacyNoteActivity_New.class);
 //                startActivity(intent); // TODO: add finish here...
+                finish();
             }
         });
 

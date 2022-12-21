@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item android:drawable="@drawable/ui2_rounded_rectangle_bg" />
+            <item android:drawable="@drawable/ic_baseline_expand_more_24" android:gravity="center_vertical|end" android:right="5dp" />
+
+        </layer-list>
+    </item>
+</selector>

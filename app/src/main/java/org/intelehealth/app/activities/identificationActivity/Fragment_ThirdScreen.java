@@ -39,10 +39,13 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +62,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -88,19 +90,17 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
-    private EditText relation_edittext, occupation_editText;
-    private Spinner caste_spinner, education_spinner, economicstatus_spinner;
+    private EditText mRelationNameEditText, mOccupationEditText;
+    private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
-    private TextView relation_error, occupation_error, caste_error, education_error, economic_error;
+    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
     ImagesDAO imagesDAO = new ImagesDAO();
     private Fragment_SecondScreen secondScreen;
     boolean fromThirdScreen = false;
     Patient patient1 = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     String patientID_edit;
-
-
 
 
     @Nullable
@@ -121,18 +121,108 @@ public class Fragment_ThirdScreen extends Fragment {
         frag3_btn_back = getActivity().findViewById(R.id.frag3_btn_back);
         frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
 
-        relation_edittext = view.findViewById(R.id.relation_edittext);
-        occupation_editText = view.findViewById(R.id.occupation_editText);
-        caste_spinner = view.findViewById(R.id.caste_spinner);
-        education_spinner = view.findViewById(R.id.education_spinner);
-        economicstatus_spinner = view.findViewById(R.id.economicstatus_spinner);
+        mRelationNameEditText = view.findViewById(R.id.relation_edittext);
+        mOccupationEditText = view.findViewById(R.id.occupation_editText);
+        mCasteSpinner = view.findViewById(R.id.caste_spinner);
+        mEducationSpinner = view.findViewById(R.id.education_spinner);
+        mEconomicstatusSpinner = view.findViewById(R.id.economicstatus_spinner);
 
-        relation_error = view.findViewById(R.id.relation_error);
-        occupation_error = view.findViewById(R.id.occupation_error);
-        caste_error = view.findViewById(R.id.caste_error);
-        education_error = view.findViewById(R.id.education_error);
-        economic_error = view.findViewById(R.id.economic_error);
+        mRelationNameErrorTextView = view.findViewById(R.id.relation_error);
+        mOccupationErrorTextView = view.findViewById(R.id.occupation_error);
+        mCasteErrorTextView = view.findViewById(R.id.caste_error);
+        mEducationErrorTextView = view.findViewById(R.id.education_error);
+        mEconomicErrorTextView = view.findViewById(R.id.economic_error);
 
+
+        mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
+        mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
+
+        mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mCasteErrorTextView.setVisibility(View.GONE);
+                    mCasteSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mEducationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mEducationErrorTextView.setVisibility(View.GONE);
+                    mEducationSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mEconomicstatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mEconomicErrorTextView.setVisibility(View.GONE);
+                    mEconomicstatusSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            /*if (this.editText.getId() == R.id.relation_edittext) {
+                if (val.isEmpty()) {
+                    mRelationNameErrorTextView.setVisibility(View.VISIBLE);
+                    mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mRelationNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mRelationNameErrorTextView.setVisibility(View.GONE);
+                    mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.occupation_editText) {
+                if (val.isEmpty()) {
+                    mOccupationErrorTextView.setVisibility(View.VISIBLE);
+                    mOccupationErrorTextView.setText(getString(R.string.error_field_required));
+                    mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mOccupationErrorTextView.setVisibility(View.GONE);
+                    mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }*/
+        }
     }
 
     @Override
@@ -151,8 +241,7 @@ public class Fragment_ThirdScreen extends Fragment {
             if (patientID_edit != null) {
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
-            }
-            else {
+            } else {
                 patient1.setUuid(patientDTO.getUuid());
                 setscreen(patientDTO.getUuid());
             }
@@ -186,7 +275,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 casteAdapter = ArrayAdapter.createFromResource(getActivity(),
                         castes, android.R.layout.simple_spinner_dropdown_item);
             }
-            caste_spinner.setAdapter(casteAdapter);
+            mCasteSpinner.setAdapter(casteAdapter);
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -200,7 +289,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 educationAdapter = ArrayAdapter.createFromResource(getActivity(),
                         educations, android.R.layout.simple_spinner_dropdown_item);
             }
-            education_spinner.setAdapter(educationAdapter);
+            mEducationSpinner.setAdapter(educationAdapter);
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -214,162 +303,161 @@ public class Fragment_ThirdScreen extends Fragment {
                 economicStatusAdapter = ArrayAdapter.createFromResource(getActivity(),
                         economics, android.R.layout.simple_spinner_dropdown_item);
             }
-            economicstatus_spinner.setAdapter(economicStatusAdapter);
+            mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
 
-        relation_edittext.setText(patient1.getSdw());
+        if (patient1.getSdw() != null && !patient1.getSdw().isEmpty())
+            mRelationNameEditText.setText(patient1.getSdw());
         Log.v(TAG, "relation: " + patient1.getSdw());
-        occupation_editText.setText(patient1.getOccupation());
-        
+        if (patient1.getOccupation() != null && !patient1.getOccupation().isEmpty())
+            mOccupationEditText.setText(patient1.getOccupation());
+
         // setting screen in edit for spinners...
         if (fromThirdScreen) {
             //caste
             if (patient1.getCaste() != null) {
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
-                caste_spinner.setSelection(0);
+                if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+                    mCasteSpinner.setSelection(0);
 //            else
 //                caste_spinner.setSelection(casteAdapter.getPosition(patient1.getCaste()));
 
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String caste = switch_hi_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String caste = switch_or_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String caste = switch_te_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String caste = switch_mr_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String caste = switch_as_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String caste = switch_ml_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String caste = switch_kn_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String caste = switch_ru_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String caste = switch_gu_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String caste = switch_bn_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String caste = switch_ta_caste_edit(patient1.getCaste());
-                    caste_spinner.setSelection(casteAdapter.getPosition(caste));
-                } else {
-                    caste_spinner.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                else {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        String caste = switch_hi_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        String caste = switch_or_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                        String caste = switch_te_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                        String caste = switch_mr_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        String caste = switch_as_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                        String caste = switch_ml_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                        String caste = switch_kn_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                        String caste = switch_ru_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                        String caste = switch_gu_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                        String caste = switch_bn_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                        String caste = switch_ta_caste_edit(patient1.getCaste());
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+                    } else {
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                    }
                 }
             }
-        }
-            
+
             //education status
             if (patient1.getEducation_level() != null) {
                 if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
-                    education_spinner.setSelection(0);
+                    mEducationSpinner.setSelection(0);
 //            else
 //                education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
 
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String education = switch_hi_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String education = switch_or_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String education = switch_te_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String education = switch_mr_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String education = switch_as_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String education = switch_gu_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String education = switch_ta_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String education = switch_bn_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String education = switch_ml_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String education = switch_kn_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String education = switch_ru_education_edit(patient1.getEducation_level());
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else {
-                        education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                     }
                 }
             }
 
-            
-            
+
             // economic statius
             if (patient1.getEconomic_status() != null) {
                 if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
-                    economicstatus_spinner.setSelection(0);
+                    mEconomicstatusSpinner.setSelection(0);
 //            else
 //                economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String economic = switch_or_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String economic = switch_te_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String economic = switch_mr_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String economic = switch_as_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String economic = switch_ml_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String economic = switch_kn_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String economic = switch_ru_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String economic = switch_gu_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String economic = switch_bn_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String economic = switch_ta_economic_edit(patient1.getEconomic_status());
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(economic));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else {
-                        economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                     }
                 }
             }
-            
-
 
 
         }
@@ -386,54 +474,67 @@ public class Fragment_ThirdScreen extends Fragment {
         View focusView = null;
 
         // validation - start
-        if (relation_edittext.getText().toString().equals("")) {
-            relation_error.setVisibility(View.VISIBLE);
+        /*if (mRelationNameEditText.getText().toString().equals("")) {
+            mRelationNameErrorTextView.setVisibility(View.VISIBLE);
+            mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
+            mRelationNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mRelationNameEditText.requestFocus();
             return;
-        }
-        else {
-            relation_error.setVisibility(View.GONE);
+        } else {
+            mRelationNameErrorTextView.setVisibility(View.GONE);
+            mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (occupation_editText.getText().toString().equals("")) {
-            occupation_error.setVisibility(View.VISIBLE);
+        if (mOccupationEditText.getText().toString().equals("")) {
+            mOccupationErrorTextView.setVisibility(View.VISIBLE);
+            mOccupationErrorTextView.setText(getString(R.string.error_field_required));
+            mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mOccupationEditText.requestFocus();
             return;
-        }
-        else {
-            occupation_error.setVisibility(View.GONE);
+        } else {
+            mOccupationErrorTextView.setVisibility(View.GONE);
+            mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (caste_spinner.getSelectedItemPosition() == 0) {
-            caste_error.setVisibility(View.VISIBLE);
+        if (mCasteSpinner.getSelectedItemPosition() == 0) {
+            mCasteErrorTextView.setVisibility(View.VISIBLE);
+            mCasteErrorTextView.setText(getString(R.string.error_field_required));
+            mCasteSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mCasteSpinner.requestFocus();
             return;
-        }
-        else {
-            caste_error.setVisibility(View.GONE);
+        } else {
+            mCasteErrorTextView.setVisibility(View.GONE);
+            mCasteSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (education_spinner.getSelectedItemPosition() == 0) {
-            education_error.setVisibility(View.VISIBLE);
+        if (mEducationSpinner.getSelectedItemPosition() == 0) {
+            mEducationErrorTextView.setVisibility(View.VISIBLE);
+            mEducationErrorTextView.setText(getString(R.string.error_field_required));
+            mEducationSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mEducationSpinner.requestFocus();
             return;
-        }
-        else {
-            education_error.setVisibility(View.GONE);
+        } else {
+            mEducationErrorTextView.setVisibility(View.GONE);
+            mEducationSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (economicstatus_spinner.getSelectedItemPosition() == 0) {
-            economic_error.setVisibility(View.VISIBLE);
+        if (mEconomicstatusSpinner.getSelectedItemPosition() == 0) {
+            mEconomicErrorTextView.setVisibility(View.VISIBLE);
+            mEconomicErrorTextView.setText(getString(R.string.error_field_required));
+            mEconomicstatusSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mEconomicstatusSpinner.requestFocus();
             return;
-        }
-        else {
-            economic_error.setVisibility(View.GONE);
-        }
+        } else {
+            mEconomicErrorTextView.setVisibility(View.GONE);
+            mEconomicstatusSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+        }*/
         // validation - end
 
 
         /**
          *  entering value in dataset start
          */
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
+
             String uuid = patientDTO.getUuid();
 
             // mobile no adding in patient attributes.
@@ -449,7 +550,7 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(relation_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(mRelationNameEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // occupation
@@ -457,7 +558,7 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(occupation_editText.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // caste
@@ -465,7 +566,7 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
             patientAttributesDTOList.add(patientAttributesDTO);
             Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
 
@@ -474,7 +575,7 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mEducationSpinner));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // economic status
@@ -482,15 +583,15 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(economicstatus_spinner));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicstatusSpinner));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
             patientDTO.setSyncd(false); // todo:uncomment later
-          //  patientDTO.setSyncd(true); // todo: remove ...just for testing.
+            //  patientDTO.setSyncd(true); // todo: remove ...just for testing.
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
-        }
-        
+
+
         // inserting data in db and uploading to server...
         try {
             Logger.logD(TAG, "insertpatinet ");
@@ -503,8 +604,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientID_edit, patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);
-            }
-            else {
+            } else {
                 isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
                 isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             }
@@ -524,12 +624,12 @@ public class Fragment_ThirdScreen extends Fragment {
                 intent.putExtra("tag", "newPatient");
                 intent.putExtra("hasPrescription", "false");
                 //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-             //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
-                intent.putExtra("BUNDLE",args);
+                intent.putExtra("BUNDLE", args);
                 intent.putExtra("patientUuid", patientID_edit);
                 getActivity().startActivity(intent);
                 startActivity(intent);

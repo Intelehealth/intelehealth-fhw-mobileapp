@@ -21,7 +21,7 @@
 
         <!--Personal Header-->
         <RelativeLayout
-            android:id="@+id/relative_personal_header"
+            android:id="@+id/relative_others_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -43,7 +43,7 @@
                 android:text="Other details"
                 android:textAppearance="@style/patdetail_header1" />
 
-            <ImageView
+            <ImageView android:id="@+id/iv_others_drop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -56,7 +56,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/relative_personal_header"
+            android:layout_below="@+id/relative_others_header"
             android:layout_marginTop="@dimen/margin_12"
             android:layout_marginBottom="@dimen/fu_card_margin_updown"
             android:background="@color/notifi_divider_color" />
@@ -88,6 +88,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/ll_others_extra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_relative"

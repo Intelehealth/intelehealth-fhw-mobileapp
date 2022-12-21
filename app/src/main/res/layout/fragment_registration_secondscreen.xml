@@ -1,375 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
+        android:layout_above="@+id/frame_nxtbtn_viewgrp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_24"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp">
+        android:fillViewport="true">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_24"
-        android:layout_marginEnd="@dimen/margin_24">
-
-
-        <!--Postal code and Country-->
-        <LinearLayout
-            android:id="@+id/postal_country"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
+
+
+            <!--Postal code and Country-->
+            <LinearLayout
+                android:id="@+id/postal_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/postalcode_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="Postal code*"
+                        android:textAppearance="@style/blur_txtview"
+
+                        android:textSize="@null" />
+
+                    <EditText
+                        android:id="@+id/postalcode_edittext"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:background="@drawable/edittext_border"
+                        android:hint="Enter Postal code"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/edittext_textsize_16sp" />
+
+                    <TextView
+                        android:id="@+id/postalcode_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="This field is mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/country_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="Country*"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null" />
+
+                    <Spinner
+                        android:id="@+id/country_spinner"
+                        style="@style/SmallSpinnerTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:entries="@array/countries"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
+                        android:paddingBottom="@dimen/margin_10" />
+
+                    <TextView
+                        android:id="@+id/country_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="This field is mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/linear_state"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_below="@+id/postal_country"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/postalcode_title"
+                    android:id="@+id/state_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Postal code*"
+                    android:text="State*"
                     android:textAppearance="@style/blur_txtview"
-                    
+
+                    android:textSize="@null" />
+
+                <Spinner
+                    android:id="@+id/state_spinner"
+                    style="@style/SmallSpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:entries="@array/states_india"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/state_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <!--District & City-->
+            <LinearLayout
+                android:id="@+id/linear_distr_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_state"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/district_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="District*"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null" />
+
+                    <Spinner
+                        android:id="@+id/district_spinner"
+                        style="@style/SmallSpinnerTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:entries="@array/district"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
+                        android:paddingBottom="@dimen/margin_10" />
+
+                    <TextView
+                        android:id="@+id/district_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="This field is mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/city_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="Village/Town/City*"
+                        android:textAppearance="@style/blur_txtview"
+
+                        android:textSize="@null" />
+
+                    <Spinner
+                        android:id="@+id/city_spinner"
+                        style="@style/SmallSpinnerTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:entries="@array/city"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
+                        android:paddingBottom="@dimen/margin_10" />
+
+                    <TextView
+                        android:id="@+id/city_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="This field is mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--Address 1-->
+            <LinearLayout
+                android:id="@+id/linear_address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_distr_city"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/address1_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Corresponding Address 1*"
+                    android:textAppearance="@style/blur_txtview"
+
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/postalcode_edittext"
+                    android:id="@+id/address1_edittext"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
-                    android:hint="Enter Postal code"
-                    android:textColorHint="@color/edittext_hint_color"
+                    android:hint="Enter patient address"
+                    android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
-                    android:inputType="number"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/postalcode_error"
+                    android:id="@+id/address1_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:textColor="@color/red"
                     android:text="This field is mandatory"
                     android:textAppearance="@style/registr_error_msg"
-                    android:textSize="@null" />
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
+            <!--Address 2-->
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/linear_address2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16dp"
-                android:layout_weight="1"
+                android:layout_below="@+id/linear_address1"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/country_title"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/address2_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Country*"
+                    android:text="Corresponding Address 2"
                     android:textAppearance="@style/blur_txtview"
+
                     android:textSize="@null" />
 
-                <Spinner
-                    android:id="@+id/country_spinner"
-                    style="@style/SmallSpinnerTheme"
+                <EditText
+                    android:id="@+id/address2_edittext"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/edittext_border"
+                    android:hint="Enter patient address"
+                    android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
-                    android:entries="@array/countries"
-                    />
-                
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
+
                 <TextView
-                    android:id="@+id/country_error"
+                    android:id="@+id/address2_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:textColor="@color/red"
                     android:text="This field is mandatory"
                     android:textAppearance="@style/registr_error_msg"
-                    android:textSize="@null" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/postal_country"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/state_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="State*"
-                android:textAppearance="@style/blur_txtview"
-                
-                android:textSize="@null" />
-
-            <Spinner
-                android:id="@+id/state_spinner"
-                style="@style/SpinnerTheme"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:entries="@array/states_india"
-                android:paddingBottom="@dimen/margin_10" />
-
-            <TextView
-                android:id="@+id/state_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="This field is mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
-
-        </LinearLayout>
-
-        <!--District & City-->
-        <LinearLayout
-            android:id="@+id/linear_distr_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_state"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/district_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="District*"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textSize="@null" />
-
-                <Spinner
-                    android:id="@+id/district_spinner"
-                    style="@style/SmallSpinnerTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:entries="@array/district"
-                    />
-
-                <TextView
-                    android:id="@+id/district_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:textColor="@color/red"
-                    android:text="This field is mandatory"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textSize="@null" />
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/city_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="Village/Town/City*"
-                    android:textAppearance="@style/blur_txtview"
-                    
-                    android:textSize="@null" />
-
-                <Spinner
-                    android:id="@+id/city_spinner"
-                    style="@style/SmallSpinnerTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:entries="@array/city"
-                    />
-
-                <TextView
-                    android:id="@+id/city_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:textColor="@color/red"
-                    android:text="This field is mandatory"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textSize="@null" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <!--Address 1-->
-        <LinearLayout
-            android:id="@+id/linear_address1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_distr_city"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/address1_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="Corresponding Address 1*"
-                android:textAppearance="@style/blur_txtview"
-                
-                android:textSize="@null" />
-
-            <EditText
-                android:id="@+id/address1_edittext"
-                style="@style/edittext_textcolor"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:background="@drawable/edittext_border"
-                android:hint="Enter patient address"
-                android:textColorHint="@color/edittext_hint_color"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:inputType="textCapWords"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/address1_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="This field is mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
-
-        </LinearLayout>
-
-        <!--Address 2-->
-        <LinearLayout
-            android:id="@+id/linear_address2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_address1"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/address2_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="Corresponding Address 2"
-                android:textAppearance="@style/blur_txtview"
-                
-                android:textSize="@null" />
-
-            <EditText
-                android:id="@+id/address2_edittext"
-                style="@style/edittext_textcolor"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:background="@drawable/edittext_border"
-                android:hint="Enter patient address"
-                android:textColorHint="@color/edittext_hint_color"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:inputType="textCapWords"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/address2_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="This field is mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
+        </RelativeLayout>
     </ScrollView>
 
 
@@ -406,7 +404,6 @@
                 android:background="@drawable/nxt_btn_secondscreen" />
         </LinearLayout>
     </FrameLayout>
-
 
 
 </RelativeLayout>

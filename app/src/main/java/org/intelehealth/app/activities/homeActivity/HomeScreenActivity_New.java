@@ -35,9 +35,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -76,13 +76,19 @@ import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
+import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.NotificationActivity;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.database.dao.ProviderProfileDao;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderDTO;
@@ -946,7 +952,10 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                             return true;
                         case R.id.bottom_nav_add_patient:
 
-                            return true;
+                            Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
+                            intent.putExtra("add_patient", "add_patient");
+                            startActivity(intent);
+                            return false;
                     }
 
                     return false;
