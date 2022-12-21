@@ -8,7 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -97,6 +100,8 @@ public class SetupActivityNew extends AppCompatActivity {
     private String mindmapURL = "";
     ///   AlertDialog dialogLoggingIn;
 
+    private TextView mLocationErrorTextView, mUserNameErrorTextView, mPasswordErrorTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,17 @@ public class SetupActivityNew extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         etAdminPassword = findViewById(R.id.admin_password);
+
+        mLocationErrorTextView = findViewById(R.id.tv_location_error);
+        mUserNameErrorTextView = findViewById(R.id.tv_username_error);
+        mPasswordErrorTextView = findViewById(R.id.tv_password_error);
+
+        mLocationErrorTextView.setVisibility(View.GONE);
+        mUserNameErrorTextView.setVisibility(View.GONE);
+        mPasswordErrorTextView.setVisibility(View.GONE);
+
+        etUsername.addTextChangedListener(new MyTextWatcher(etUsername));
+        etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
 
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -173,17 +189,52 @@ public class SetupActivityNew extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.et_username) {
+                if (val.isEmpty()) {
+                    mUserNameErrorTextView.setVisibility(View.VISIBLE);
+                    mUserNameErrorTextView.setText(getString(R.string.error_field_required));
+                    etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                } else {
+                    mUserNameErrorTextView.setVisibility(View.GONE);
+                    etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                }
+            } else if (this.editText.getId() == R.id.et_password) {
+                if (val.isEmpty()) {
+                    mPasswordErrorTextView.setVisibility(View.VISIBLE);
+                    mPasswordErrorTextView.setText(getString(R.string.error_field_required));
+                    etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                } else {
+                    mPasswordErrorTextView.setVisibility(View.GONE);
+                    etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                }
+            }
+        }
+    }
+
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
-        // Reset errors.
-        etUsername.setError(null);
-        etPassword.setError(null);
-        etAdminPassword.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = etUsername.getText().toString();
+        String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String admin_password = etAdminPassword.getText().toString();
 
@@ -191,35 +242,70 @@ public class SetupActivityNew extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
         if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
-            autotvLocations.setError(getString(R.string.error_location_not_selected));
-            focusView = autotvLocations;
-            cancel = true;
             autotvLocations.requestFocus();
+
+            mLocationErrorTextView.setVisibility(View.VISIBLE);
+            mLocationErrorTextView.setText(getString(R.string.error_location_not_selected));
+            autotvLocations.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             return;
+        } else {
+            mLocationErrorTextView.setVisibility(View.GONE);
+            autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            etUsername.setError(getString(R.string.error_field_required));
-            focusView = etUsername;
-            cancel = true;
+        if (TextUtils.isEmpty(userName)) {
             etUsername.requestFocus();
+
+            mUserNameErrorTextView.setVisibility(View.VISIBLE);
+            mUserNameErrorTextView.setText(getString(R.string.error_field_required));
+            etUsername.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
             return;
+        } else {
+            mUserNameErrorTextView.setVisibility(View.GONE);
+            etUsername.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
-        if (!isEmailValid(email)) {
-            etUsername.setError(getString(R.string.error_invalid_email));
-            focusView = etUsername;
+        if (!isEmailValid(userName)) {
             etUsername.requestFocus();
+
+            mUserNameErrorTextView.setVisibility(View.VISIBLE);
+            mUserNameErrorTextView.setText(getString(R.string.error_field_required));
+            etUsername.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
             return;
+        } else {
+            mUserNameErrorTextView.setVisibility(View.GONE);
+            etUsername.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            etPassword.setError(getString(R.string.error_invalid_password));
-            focusView = etPassword;
-            cancel = true;
+        if (TextUtils.isEmpty(password)) {
             etPassword.requestFocus();
+
+            mPasswordErrorTextView.setVisibility(View.VISIBLE);
+            mPasswordErrorTextView.setText(getString(R.string.error_invalid_password));
+            etPassword.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+
             return;
+        } else {
+            mPasswordErrorTextView.setVisibility(View.GONE);
+            etPassword.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            etPassword.requestFocus();
+
+            mPasswordErrorTextView.setVisibility(View.VISIBLE);
+            mPasswordErrorTextView.setText(getString(R.string.error_invalid_password));
+            etPassword.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+
+            return;
+        } else {
+            mPasswordErrorTextView.setVisibility(View.GONE);
+            etPassword.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 /*
         if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
@@ -239,40 +325,22 @@ public class SetupActivityNew extends AppCompatActivity {
         }*/
 
 
-        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
+      /*  if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
             etAdminPassword.setError(getString(R.string.error_invalid_password));
-            focusView = etAdminPassword;
-            cancel = true;
             etAdminPassword.requestFocus();
+            return;
+        }*/
+
+
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        if (location != null) {
+            Log.i(TAG, location.getDisplay());
+            TestSetup(AppConstants.DEMO_URL, userName, password, admin_password, location);
+            Log.d(TAG, "attempting setup");
         }
-        if (cancel) {
 
-          /*  // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            if (focusView != null) {
-                if (TextUtils.isEmpty(url)) {
-                    mUrlField.requestFocus();
-                    mUrlField.setError("Enter Url");
-                }
 
-                focusView.requestFocus();
-            }*/
-        } else {
-
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            if (location != null) {
-                Log.i(TAG, location.getDisplay());
-                TestSetup(AppConstants.DEMO_URL, email, password, admin_password, location);
-                Log.d(TAG, "attempting setup");
-            }
-
-//            if (village_name != null) {
-//                String urlString = mUrlField.getText().toString();
-//                TestSetup(urlString, email, password, admin_password, village_name);
-//                Log.d(TAG, "attempting setup");
-//            }
-        }
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
@@ -282,10 +350,9 @@ public class SetupActivityNew extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        Log.d(TAG, "TestSetup: urlString : "+urlString);
-        Log.d(TAG, "TestSetup: encoded : "+encoded);
-        Log.d(TAG, "TestSetup: encodednew : "+"Basic " + encoded);
-
+        Log.d(TAG, "TestSetup: urlString : " + urlString);
+        Log.d(TAG, "TestSetup: encoded : " + encoded);
+        Log.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
 
 
         //    showLoggingInDialog();
@@ -307,7 +374,7 @@ public class SetupActivityNew extends AppCompatActivity {
 
             @Override
             public void onNext(LoginModel loginModel) {
-                if(loginModel!= null){
+                if (loginModel != null) {
                     Boolean authencated = loginModel.getAuthenticated();
                     Gson gson = new Gson();
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
@@ -341,6 +408,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                                     sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                                     sessionManager.setBaseUrl(BASE_URL);
                                                     sessionManager.setSetupComplete(true);
+                                                    sessionManager.setFirstTimeLaunch(false);
                                                     Log.d(TAG, "onNext: 11");
                                                     // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                                     AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -434,7 +502,7 @@ public class SetupActivityNew extends AppCompatActivity {
 
                                     }
                                 });
-                    } else{
+                    } else {
                         Log.d(TAG, "onNext: loginmodel is null");
                     }
                 }
@@ -448,9 +516,13 @@ public class SetupActivityNew extends AppCompatActivity {
                 // progress.dismiss();
                 ///  dismissLoggingInDialog();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivityNew.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
-                etUsername.requestFocus();
-                etPassword.requestFocus();
+                dialogUtils.showCommonDialog(SetupActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -497,6 +569,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                             location = locationList.getResults().get(pos);
                                             autotvLocations.setError(null);
                                             autotvLocations.setSelection(autotvLocations.getText().length());
+                                            mLocationErrorTextView.setVisibility(View.GONE);
+                                            autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
                                         }
                                     });

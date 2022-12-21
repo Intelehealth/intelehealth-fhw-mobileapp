@@ -2,7 +2,6 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 
 public class DialogUtils {
     public interface CustomDialogListener {
@@ -110,5 +107,43 @@ public class DialogUtils {
         alertDialog.show();
     }
 
+    public void showCommonDialog(Context context, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_common_message, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
+        icon.setImageResource(iconResource);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(message);
+        positive_btn.setText(positiveBtnText);
+        negative_btn.setText(negativeBtnText);
+
+        if (isSingleButton) {
+            negative_btn.setVisibility(View.GONE);
+        }
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        negative_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+        });
+
+        positive_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+        });
+
+        alertDialog.show();
+    }
 }

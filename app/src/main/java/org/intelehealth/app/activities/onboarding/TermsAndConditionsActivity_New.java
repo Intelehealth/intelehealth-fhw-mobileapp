@@ -38,8 +38,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TermsAndConditionsActivity_New.this, SetupPrivacyNoteActivity_New.class);
-                startActivity(intent);
+               finish();
             }
         });
         TextView tvText = findViewById(R.id.tv_term_condition);

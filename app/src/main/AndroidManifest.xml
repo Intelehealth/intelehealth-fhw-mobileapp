@@ -157,7 +157,7 @@
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan">
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

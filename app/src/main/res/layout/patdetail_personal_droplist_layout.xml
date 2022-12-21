@@ -42,10 +42,10 @@
                 android:lineSpacingExtra="3sp"
                 android:text="Personal"
                 android:textColor="@color/textview_color"
-                android:textSize="@dimen/txtsize_patdetail_16sp"
-                 />
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageView
+                android:id="@+id/iv_personal_drop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -77,8 +77,7 @@
                 android:lineSpacingExtra="-3sp"
                 android:text="Details"
                 android:textColor="@color/textview_color"
-                android:textSize="@dimen/txtsize_patdetail_16sp"
-                />
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageButton
                 android:id="@+id/personal_edit"
@@ -90,6 +89,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/ll_personal_extra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_relative"

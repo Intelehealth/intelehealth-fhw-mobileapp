@@ -8,21 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NotificationID;
-import org.intelehealth.app.utilities.PatientsFrameJson;
-import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -32,7 +20,18 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NotificationID;
+import org.intelehealth.app.utilities.PatientsFrameJson;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -380,7 +379,8 @@ public class SyncDAO {
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
-        Logger.logD(TAG, "push request url" + url);
+        Logger.logD(TAG, "push request url - " + url);
+        Logger.logD(TAG, "push request encoded - " + encoded);
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
         if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
@@ -422,7 +422,7 @@ public class SyncDAO {
 
                         @Override
                         public void onError(Throwable e) {
-                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            Logger.logE(TAG, "Push Onerror " + e.getMessage(), null);
                             isSucess[0] = false;
                             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));

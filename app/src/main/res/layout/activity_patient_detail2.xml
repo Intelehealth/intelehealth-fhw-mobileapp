@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/margin_20dp"
                     android:layout_weight="1"
-                    android:background="@null"
+                    android:background="@null" android:onClick="syncNow"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
@@ -84,7 +84,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@null"
+                    android:background="@null" android:onClick="backPress"
                     android:src="@drawable/cancel_btn_cross" />
 
             </LinearLayout>

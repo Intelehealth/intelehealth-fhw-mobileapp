@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/common_title_margin_top"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="@null" android:onClick="syncNow"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_refreshbtn" />
 
@@ -80,7 +80,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="@null" android:onClick="cancelRegistration"
                 android:layout_gravity="center"
                 android:src="@drawable/cancel_btn_cross" />
 

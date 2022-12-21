@@ -124,6 +124,19 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    android:id="@+id/tv_location_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/error_location_not_selected"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="visible" />
+
+                <TextView
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -161,6 +174,19 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    android:id="@+id/tv_username_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/error_field_required"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="visible" />
+
+                <TextView
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,6 +220,19 @@
                         android:text="Nurse123"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_password_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/error_field_required"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tv_forgot_password1"

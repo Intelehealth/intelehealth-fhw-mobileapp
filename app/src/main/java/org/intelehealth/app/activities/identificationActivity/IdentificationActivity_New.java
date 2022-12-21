@@ -2,10 +2,6 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,24 +9,24 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.Serializable;
@@ -42,7 +38,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 public class IdentificationActivity_New extends AppCompatActivity {
-   // ActivityIdentificationNewBinding binding;
+    // ActivityIdentificationNewBinding binding;
     Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
     RelativeLayout relativeLayout;
     LinearLayout linearLayout;
@@ -108,11 +104,9 @@ public class IdentificationActivity_New extends AppCompatActivity {
 
                 if (patient_detail.equalsIgnoreCase("personal_edit")) {
                     setscreen(firstScreen);
-                }
-                else if (patient_detail.equalsIgnoreCase("address_edit")) {
+                } else if (patient_detail.equalsIgnoreCase("address_edit")) {
                     setscreen(secondScreen);
-                }
-                else if (patient_detail.equalsIgnoreCase("others_edit")) {
+                } else if (patient_detail.equalsIgnoreCase("others_edit")) {
                     setscreen(thirdScreen);
                 }
 
@@ -128,8 +122,7 @@ public class IdentificationActivity_New extends AppCompatActivity {
         Log.v(TAG, "reltion: " + patientID_edit);
         if (patientID_edit != null) {
             bundle.putString("patientUuid", patientID_edit);
-        }
-        else {
+        } else {
             bundle.putString("patientUuid", patientdto.getUuid());
         }
         bundle.putBoolean("fromSecondScreen", true);
@@ -156,17 +149,29 @@ public class IdentificationActivity_New extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        cancelRegistration(null);
+    }
+
+
+    public void cancelRegistration(View view) {
         patientRegistrationDialog(context,
                 getResources().getDrawable(R.drawable.close_patient_svg),
                 "Close patient registration?",
                 "Are you sure you want to close the patient registration?",
-                "No",
-                "Yes", new DialogUtils.CustomDialogListener() {
+                "Yes",
+                "No", new DialogUtils.CustomDialogListener() {
                     @Override
                     public void onDialogActionDone(int action) {
-
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
+                            finish();
                     }
                 });
     }
 
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

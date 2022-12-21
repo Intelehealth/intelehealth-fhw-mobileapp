@@ -442,7 +442,7 @@
     </style>
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
-        <item name="android:background">@drawable/small_spinner_bg</item>
+        <item name="android:background">@drawable/ui2_spinner_background_new</item>
         <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
     </style>
 
