@@ -124,10 +124,10 @@ public class DraftSurveyActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     private List<PatientDTO> fetchValueAttrFromPatAttrTbl(String patientuuid) throws DAOException {
 //         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

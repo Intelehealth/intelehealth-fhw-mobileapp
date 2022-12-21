@@ -1205,13 +1205,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             } else {
                 countryStateLayout.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mPostal")) {
+            /*if (obj.getBoolean("mPostal")) {
                 postal_layout.setVisibility(View.VISIBLE);
                 mPostal.setVisibility(View.VISIBLE);
             } else {
                 postal_layout.setVisibility(View.GONE);
                 mPostal.setVisibility(View.GONE);
-            }
+            }*/
 
             if (obj.getBoolean("mGenderM")) {
                 mGenderM.setVisibility(View.VISIBLE);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.database.SQLException;
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +39,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -99,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
-
+        setLocale(sessionManager.getAppLanguage());
         context = LoginActivity.this;
         sessionManager = new SessionManager(context);
         cpd = new CustomProgressDialog(context);
@@ -461,4 +465,16 @@ public class LoginActivity extends AppCompatActivity {
         return salt;
 
     }
+
+    //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+    public void setLocale(String appLanguage) {
+        final Locale myLocale = new Locale(appLanguage);
+        Locale.setDefault(myLocale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+    }
+
 }

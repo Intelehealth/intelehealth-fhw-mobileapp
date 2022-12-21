@@ -94,11 +94,16 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
             if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
                 setTitle("تقييم الحاجات الصحية المجتمعية");
             else if (aidType.equalsIgnoreCase("General Aid"))
-                setTitle("المساعدة العامة");
+                setTitle("تقييم حاجات عامة");
             else if (aidType.equalsIgnoreCase("Student Aid"))
-                setTitle("مساعدة الطلاب");
+                setTitle("تقييم حاجات طالب");
         } else {
-            setTitle(aidType);
+            if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
+                setTitle("Community Health Need Assessment");
+            else if (aidType.equalsIgnoreCase("General Aid"))
+                setTitle("General Need Assessment");
+            else if (aidType.equalsIgnoreCase("Student Aid"))
+                setTitle("Student Need Assessment");
         }
 
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
@@ -347,7 +352,12 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                         else if (aidType.equalsIgnoreCase("Student Aid"))
                             Toast.makeText(context, "تم إرسال المساعدة الطلابية!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, aidType + " submitted!", Toast.LENGTH_SHORT).show();
+                        if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
+                            Toast.makeText(context, "Community Health Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("General Aid"))
+                            Toast.makeText(context, "General Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Student Aid"))
+                            Toast.makeText(context, "Student Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
                     }
                 }
 //                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();

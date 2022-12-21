@@ -19,6 +19,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.Paint;
@@ -31,6 +32,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -68,6 +70,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.homeActivity.bluetooth.BTAdapter;
 import org.intelehealth.app.activities.householdSurvey.DraftSurveyActivity;
@@ -156,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, videoLibrary_textview, help_textview, followUp_textview, doctorAppointment_tv, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
     private BTAdapter btAdapter;
     private boolean mScanning;
@@ -269,6 +272,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         sessionManager = new SessionManager(this);
+        setLocale(sessionManager.getAppLanguage());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -331,7 +335,7 @@ public class HomeActivity extends AppCompatActivity {
 
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
-        //card textview referrenced to fix bug of localization not working in some cases...
+        //card textview referenced to fix bug of localization not working in some cases...
         /*newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);*/
 
@@ -349,6 +353,12 @@ public class HomeActivity extends AppCompatActivity {
 
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+
+        doctorAppointment_tv = findViewById(R.id.appointment_textview);
+        doctorAppointment_tv.setText(R.string.doctor_appointments);
+
+        followUp_textview = findViewById(R.id.follow_up_textView);
+        followUp_textview.setText(R.string.title_follow_up);
 
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -455,7 +465,7 @@ public class HomeActivity extends AppCompatActivity {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
 
                 if (isNetworkConnected()) {
-                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                     ivSync.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -471,7 +481,7 @@ public class HomeActivity extends AppCompatActivity {
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setTitle(getResources().getString(R.string.syncInProgress));
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
             mSyncProgressDialog.show();
@@ -614,7 +624,9 @@ public class HomeActivity extends AppCompatActivity {
             }*/
 
             case R.id.settingsOption:
-                settings();
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                intent.putExtra("intentType", "home");
+                startActivity(intent);
                 return true;
 
             case R.id.updateProtocolsOption: {
@@ -675,11 +687,9 @@ public class HomeActivity extends AppCompatActivity {
 //                                });
 //                        Dialog builderDialog = dialog.show();
 //                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
-
-                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(HomeActivity.this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
                                 .setPositiveButton(getString(R.string.button_ok), null)
@@ -1588,6 +1598,24 @@ public class HomeActivity extends AppCompatActivity {
 //    }
 
     private void displayComingSoonToast() {
-        Toast.makeText(HomeActivity.this, getString(R.string.generic_coming_soon), Toast.LENGTH_SHORT).show();
+        //do nothing
+//        Toast.makeText(HomeActivity.this, getString(R.string.generic_coming_soon), Toast.LENGTH_SHORT).show();
     }
+
+    //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+    public void setLocale(String appLanguage) {
+        final Locale myLocale = new Locale(appLanguage);
+        Locale.setDefault(myLocale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 }

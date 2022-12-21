@@ -20,16 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private Context mContext;
     private List<JSONObject> mItemList = new ArrayList<JSONObject>();
-
     ChooseLanguageActivity.ItemSelectionListener mItemSelectionListener;
 
     public LanguageListAdapter(Context context, List<JSONObject> itemList, ChooseLanguageActivity.ItemSelectionListener itemSelectionListener) {
         mContext = context;
         mItemList = itemList;
         mItemSelectionListener = itemSelectionListener;
-
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();

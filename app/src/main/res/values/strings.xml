@@ -346,7 +346,7 @@
     <string name="show_text">SHOW</string>
 
     <string name="new_patient">New Patient</string>
-    <string name="find_patient">Find/Create Patients</string>
+    <string name="find_patient">Create/Find Records</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
@@ -542,8 +542,8 @@
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
     <string name="location_setup">Setup Location - </string>
-    <string name="today_visits">Today\'s Visits</string>
-    <string name="active_visits">Active Visits</string>
+    <string name="today_visits">Today\'s Visits\n (Coming soon..)</string>
+    <string name="active_visits">Active Visits\n (Coming soon..)</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -581,7 +581,7 @@
     <string name="txt_others">Others</string>
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help</string>
+    <string name="Whatsapp_Help_Cardview">Help\n (Coming soon..)</string>
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
@@ -634,7 +634,7 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I, the social-healthcare worker, attest that I read the above statement to the participant and acquired their approval for data collection.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
@@ -686,7 +686,7 @@
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="due_on">Due Date:</string>
-    <string name="title_follow_up">Follow Up Visits</string>
+    <string name="title_follow_up">Follow Up Visits \n (Coming soon..)</string>
     <string name="location">Location</string>
 
     //----------reset app strings-------------
@@ -765,7 +765,7 @@
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
+    <string name="doctor_appointments">Doctor Appointments\n (Coming soon..)</string>
     <string name="slot_info">Slot info</string>
     <string name="appointment_booked">Appointment Booked</string>
     <string name="minutes_txt">minutes</string>
@@ -1542,8 +1542,8 @@
     <string name="since_when_you_are_supporting_family">Since when have you been the main responsible for supporting your family?</string>
     <string name="are_you_head_of_the_family">Are you the main responsible for providing for yourself and your family?</string>
     <string name="fhh_survey">FHH Survey</string>
-    <string name="general_aid_survey">General Aid</string>
-    <string name="student_aid_survey">Student Aid</string>
+    <string name="general_aid_survey">General Needs Assessment</string>
+    <string name="student_aid_survey">Student Needs Assessment</string>
     <string name="emergency_survey">Emergency Need Evaluation</string>
     <string name="syriana">Sila</string>
     <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>

@@ -457,7 +457,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_languages);
             setHasOptionsMenu(true);
 
-
             bindPreferenceSummaryToValue(findPreference("hindiLang"));
             // bindPreferenceSummaryToValue(findPreference("bengaliLang"));
             //  bindPreferenceSummaryToValue(findPreference("OriyaLang"));
@@ -514,6 +513,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void setUpdatedTitles() {
             getActivity().setTitle(R.string.languages);
             lang_prefer.setTitle(getString(R.string.current_language));
+            getActivity().onBackPressed();
         }
     }
 }

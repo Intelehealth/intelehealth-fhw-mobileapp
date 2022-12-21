@@ -342,7 +342,7 @@
     <string name="show_text">إظهار</string>
 
     <string name="new_patient">حالة جديدة</string>
-    <string name="find_patient">انشاء\بحث عن سجل</string>
+    <string name="find_patient">انشاء/ بحث عن سجل</string>
     <string name="video_library">مكتبة الفيديو</string>
 
     <string name="error_no_sd">هذه الميزة متاحة فقط للأجهزة مع بطاقات SD.</string>
@@ -538,8 +538,8 @@
     <string name="unable_to_get_proper_response">كانت هناك مشكلة في تنزيل بروتوكولات ، يرجى الاتصال بمسؤول النظام</string>
     <string name="last_synced">آخر تحديث -</string>
     <string name="location_setup">موقع الإعداد -</string>
-    <string name="today_visits">زيارات اليوم</string>
-    <string name="active_visits">زيارات نشطة</string>
+    <string name="today_visits">زيارات اليوم (قريباً...)</string>
+    <string name="active_visits">زيارات نشطة (قريباً...)</string>
     <string name="day">يوم</string>
     <string name="hour">ساعة</string>
     <string name="minute">اللحظة</string>
@@ -577,7 +577,7 @@
     <string name="txt_others">آخرون</string>
     <string name="do_you_need_help_please_contact_us">هل تحتاج مساعدة؟ الرجاء التواصل معنا!</string>
     <string name="whatsapp_helpline">خط المساعدة Whatsapp</string>
-    <string name="Whatsapp_Help_Cardview">مساعدة</string>
+    <string name="Whatsapp_Help_Cardview">مساعدة (قريباً...)</string>
     <string name="skip">تجاوز</string>
     <string name="start">ابدأ </string>
     <string name="who_is_this_napplication_for">لمن هذا التطبيق ؟</string>
@@ -588,14 +588,14 @@
     <string name="age_11_years_5_months">العمر: 11 سنة ، 5 أشهر</string>
     <string name="active_defaultTag">نشيط</string>
     <string name="since_when_have_you_had_this_symptom">منذ متى كان لديك هذا الأعراض؟</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \ n \ n أنا صلة ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \ n \ n أنا صلة  ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا أنا صلة ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا n\n\ أنا صلة  ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
     <string name="hello_my_name_is">\"مرحبا اسمي \"</string>
     <string name="i_need_assistance">\"وأنا بحاجة إلى بعض المساعدة.\"</string>
     <string name="economic_values_missing">القيم الاقتصادية مفقودة</string>
     <string name="education_values_missing">قيم التعليم مفقودة</string>
     <string name="intelehealth_a_telemedicine_platform">InteleHealth هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">صلة هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
+    <string name="arogya_sampada_a_telemedicine_platform"> صلة هو تطبيق الكتروني للخدمات الطبية الانسانية يربط العاملين الصحيين و المجتمعيين في المناطق الريفية و النائية مع أطباء عن بعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة للمرضى المحتاجين</string>
     <string name="intelehealth_name">intelehealth</string>
     <string name="Ayu_name">أيو</string>
     <string name="close_button">قريب</string>
@@ -630,7 +630,7 @@
     <string name="share">مشاركة</string>
     <string name="please_enter_mobile_number">الرجاء إدخال رقم الهاتف النقال</string>
     <string name="download_prescription_first_before_sharing">قم بتنزيل الوصفة الطبية أولاً قبل المشاركة</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*أنا (العامل الصحي) أؤكد أنني قرأت إشعار الخصوصية والموافقة على الحالة و حصلت على موافقته.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*أنا, العامل الصحي المجتمعي, أؤكد أنني قدر قرأت تصريح خصوصية المعلومات و حصلت على موافقة صاحب/ة السجل</string>
     <string name="enter_10_digits">أدخل 10 أرقام</string>
     <string name="enter_9_digits">أدخل 9 أرقام</string>
     <string name="please_read_out_privacy_consent_first">يرجى قراءة موافقة الخصوصية أولاً.</string>
@@ -682,7 +682,7 @@
     <string name="loading_more">تحميل المزيد ...</string>
     <string name="warning_app_update">يرجى تحديث التطبيق إلى أحدث إصدار.</string>
     <string name="due_on">تاريخ الاستحقاق:</string>
-    <string name="title_follow_up">متابعة الزيارات</string>
+    <string name="title_follow_up">متابعة الزيارات (قريباً...)</string>
     <string name="location">موقع</string>
 
     //----------reset app strings-------------
@@ -757,7 +757,7 @@
     <string name="please_select_appointment_slot">الرجاء تحديد فتحة الموعد</string>
     <string name="please_select_speciality">الرجاء تحديد التخصص!</string>
 
-    <string name="doctor_appointments">مواعيد الطبيب</string>
+    <string name="doctor_appointments">مواعيد الطبيب (قريباً...)</string>
     <string name="slot_info">معلومات الفتحة</string>
     <string name="appointment_booked">تم حجز الموعد</string>
     <string name="minutes_txt">الدقائق</string>
@@ -821,7 +821,7 @@
     <string name="select">اختر</string>
 
     <string name="name_of_investigator">اسم المحقق*</string>
-    <string name="village">قرية*</string>
+    <string name="village">قرية / حي مدينة*</string>
     <string name="block">حاجز*</string>
     <string name="district">مقاطعة</string>
     <string name="district_nashik">ناشيك</string>
@@ -1528,8 +1528,8 @@
     <string name="since_when_you_are_supporting_family">منذ متى و انت/ي تلعب/ين دور المسؤول الرئيسي في إعالة أسرتك؟</string>
     <string name="are_you_head_of_the_family">هل أنت المسؤول/ة الرئيسي/ة عن إعالة نفسك و أسرتك؟</string>
     <string name="fhh_survey">مسح FHH</string>
-    <string name="general_aid_survey">المساعدة العامة</string>
-    <string name="student_aid_survey">مساعدة الطلاب</string>
+    <string name="general_aid_survey">تقييم حاجات عامة</string>
+    <string name="student_aid_survey">تقييم حاجات طالب</string>
     <string name="emergency_survey">تقييم الاحتياجات الطبية الطارئة</string>
     <string name="syriana">سيريانا</string>
     <string name="table_pulse">النبض (نبضة/دقيقة)</string>

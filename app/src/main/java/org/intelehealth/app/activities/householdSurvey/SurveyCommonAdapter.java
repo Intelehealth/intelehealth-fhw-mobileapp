@@ -178,26 +178,20 @@ public class SurveyCommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     items[i] = LocaleHelper.isArabic(mContext) ? mItemList.get(position).getOptions().get(i).getTextAr() : mItemList.get(position).getOptions().get(i).getText();
                 }
 
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
                 builder.setTitle(mContext.getString(R.string.select_for, query))
                         .setItems(items, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 AnswerValue answerValue = new AnswerValue();
                                 answerValue.setArValue(mItemList.get(position).getOptions().get(which).getTextAr());
                                 answerValue.setEnValue(mItemList.get(position).getOptions().get(which).getText());
                                 mItemList.get(position).setAnswerValue(answerValue);
-
                                 dropdownTextView.setText(LocaleHelper.isArabic(mContext) ? mItemList.get(position).getAnswerValue().getArValue() : mItemList.get(position).getAnswerValue().getEnValue());
-
                                 dialog.dismiss();
                             }
                         });
-
-
                 builder.create().show();
             }
         });

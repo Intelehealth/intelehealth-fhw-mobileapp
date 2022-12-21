@@ -284,6 +284,7 @@ public class SplashActivity extends AppCompatActivity {
         if (sessionManager.isFirstTimeLaunch()) {
             Logger.logD(LOG_TAG, "Starting setup");
             Intent intent = new Intent(this, ChooseLanguageActivity.class);
+            intent.putExtra("intentType", "splash");
             startActivity(intent);
             finish();
         } else {

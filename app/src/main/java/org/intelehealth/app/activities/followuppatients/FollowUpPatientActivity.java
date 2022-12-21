@@ -93,10 +93,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         findViewById(R.id.new_patient).setVisibility(View.GONE);
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

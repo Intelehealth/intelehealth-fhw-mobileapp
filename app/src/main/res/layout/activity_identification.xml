@@ -621,7 +621,9 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/postal_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            tools:visibility="visible"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_postal_code"

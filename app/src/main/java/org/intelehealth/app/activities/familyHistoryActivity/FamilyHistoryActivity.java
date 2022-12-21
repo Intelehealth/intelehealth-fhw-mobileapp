@@ -305,10 +305,10 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         });*/
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     private String getFamilyHistoryVisitData() {
         String result = "";
