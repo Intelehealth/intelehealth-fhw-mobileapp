@@ -81,7 +81,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
                 } else {
                     tvOtpError.setVisibility(View.VISIBLE);
-                    tvOtpError.setText("OTP is incorrect. Please enter master OTP 111111");
+                    tvOtpError.setText("OTP is incorrect!");
 
                 }
 

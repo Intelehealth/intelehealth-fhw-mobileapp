@@ -197,7 +197,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         }
 
         initUI();
-        setDisplay(patientDTO.getUuid());
+
 
         personal_edit.setOnClickListener(v -> {
             Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
@@ -294,6 +294,12 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setDisplay(patientDTO.getUuid());
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;

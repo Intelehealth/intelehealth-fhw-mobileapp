@@ -625,14 +625,17 @@ public class Fragment_ThirdScreen extends Fragment {
                 intent.putExtra("hasPrescription", "false");
                 //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
                 //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("patientUuid", patientID_edit);
-                getActivity().startActivity(intent);
-                startActivity(intent);
+                if (patientID_edit == null) {
+                    getActivity().startActivity(intent);
+                }
+                //startActivity(intent);
+                getActivity().finish();
             } else {
                 Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
