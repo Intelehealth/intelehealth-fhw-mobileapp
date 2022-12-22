@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +77,7 @@ public class CameraActivity extends AppCompatActivity {
     private int mCurrentFlash;
 
     private Handler mBackgroundHandler;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     //Pass Custom File Name Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Image Name");
     private String mImageName = null;
@@ -295,17 +297,6 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
-        if (mFab != null) {
-            mFab.setOnClickListener(v -> {
-                if (mCameraView != null) {
-                    try {
-                        mCameraView.takePicture();
-                    } catch (NullPointerException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -313,12 +304,14 @@ public class CameraActivity extends AppCompatActivity {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
         CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
+        handler.postDelayed(this::initializeOnClick, 1000);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (mCameraView != null) mCameraView.stop();
+        mFab.setOnClickListener(null);
     }
 
     @Override
@@ -404,5 +397,19 @@ public class CameraActivity extends AppCompatActivity {
         //do nothing
         finish();
 
+    }
+
+    private void initializeOnClick() {
+        if (mFab != null) {
+            mFab.setOnClickListener(v -> {
+                if (mCameraView != null) {
+                    try {
+                        mCameraView.takePicture();
+                    } catch (NullPointerException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 }

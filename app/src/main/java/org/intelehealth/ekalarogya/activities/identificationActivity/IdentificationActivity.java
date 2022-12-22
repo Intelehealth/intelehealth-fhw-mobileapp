@@ -1216,7 +1216,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEconomic_status() == null || patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1235,7 +1235,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
-            // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
             if (patient1.getCaste() == null || patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
                 mCaste.setSelection(0);
@@ -5711,36 +5710,42 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     public void deleteSurveyData(int position, Object object) {
         if (object instanceof MedicalHistory) {
-            medicalHistoryList.remove(position);
-            medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
-            medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
-            if (!medicalHistoryList.isEmpty()) {
-                medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+            if (medicalHistoryList.size() != 0) { // Added this check to ensure  that the list isn't empty before removing the element - Added by Arpan Sircar
+                medicalHistoryList.remove(position);
+                medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+                if (!medicalHistoryList.isEmpty()) {
+                    medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+                }
+                medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                setViewPagerOffset(medicalHistoryViewPager);
             }
-            medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-            setViewPagerOffset(medicalHistoryViewPager);
         }
 
         if (object instanceof SmokingHistory) {
-            smokingHistoryList.remove(position);
-            smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
-            smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
-            if (!medicalHistoryList.isEmpty()) {
-                smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+            if (smokingHistoryList.size() != 0) { // Added this check to ensure  that the list isn't empty before removing the element - Added by Arpan Sircar
+                smokingHistoryList.remove(position);
+                smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+                if (!medicalHistoryList.isEmpty()) {
+                    smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+                }
+                smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                setViewPagerOffset(smokingHistoryViewPager);
             }
-            smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-            setViewPagerOffset(smokingHistoryViewPager);
         }
 
         if (object instanceof AlcoholConsumptionHistory) {
-            alcoholConsumptionHistoryList.remove(position);
-            alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
-            alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
-            if (!alcoholConsumptionHistoryList.isEmpty()) {
-                alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+            if (alcoholConsumptionHistoryList.size() != 0) { // Added this check to ensure  that the list isn't empty before removing the element - Added by Arpan Sircar
+                alcoholConsumptionHistoryList.remove(position);
+                alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+                if (!alcoholConsumptionHistoryList.isEmpty()) {
+                    alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+                }
+                alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                setViewPagerOffset(alcoholViewPager);
             }
-            alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-            setViewPagerOffset(alcoholViewPager);
         }
     }
 
