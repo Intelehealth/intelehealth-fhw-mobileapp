@@ -594,6 +594,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         return true;
     }
 
+
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
         Log.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(MyProfileActivity.this);
