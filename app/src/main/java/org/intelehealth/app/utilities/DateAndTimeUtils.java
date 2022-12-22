@@ -116,6 +116,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
+        Log.d(TAG, "getAge_FollowUp: s: " + s);
         Log.d("TAG", "getAge_FollowUp: s : " + s);
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -677,12 +678,15 @@ public class DateAndTimeUtils {
     }
 
     public static String getDateWithDayAndMonthFromDDMMFormat(String date) {
+        Log.d(TAG, "getDateWithDayAndMonthFromDDMMFormat: date : " + date);
         String finalDate = "";
         if (date != null && !date.isEmpty()) {
-
             String[] dateSplit = date.split("/");
             String month = dateSplit[1];
             String day = dateSplit[0];
+            if (!month.isEmpty() && month.length() == 1) {
+                month = "0" + month;
+            }
 
 
             String monthString = "";
@@ -809,4 +813,23 @@ public class DateAndTimeUtils {
         }
         return dateFormatted;
     }
+
+    public static String convertDateToYyyyMMddFormat(String dateToConvert) {
+        Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
+
+        java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
+        java.text.DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = null;
+        try {
+            date = inputFormat.parse(dateToConvert);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return outputFormat.format(date);
+    }
+
+
 }

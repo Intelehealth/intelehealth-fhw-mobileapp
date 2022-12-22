@@ -1,5 +1,7 @@
 package org.intelehealth.app.profile;
 
+import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
+
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -17,6 +19,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,11 +57,15 @@ import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointmentNew.AllAppointmentsFragment;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.ui2.calendarviewcustom.CalendarViewDemoActivity;
+import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
+import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -67,6 +76,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,7 +91,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge;
@@ -102,6 +112,9 @@ public class MyProfileActivity extends AppCompatActivity {
     // View layoutToolbar;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     private CountryCodePicker countryCodePicker;
+    int MY_REQUEST_CODE = 5555;
+    TextView tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +184,9 @@ public class MyProfileActivity extends AppCompatActivity {
         ivProfileImage = findViewById(R.id.iv_profilePic);
         tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
 
+        tvErrorFirstName = findViewById(R.id.tv_firstname_error);
+        tvErrorLastName = findViewById(R.id.tv_lastname_error);
+        tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
 
         RelativeLayout layoutChangePassword = findViewById(R.id.view_change_password);
 
@@ -227,56 +243,20 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-
-        //date selector
-        tvDob.setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            // datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
-
-            //  datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
-            datePickerDialog.show();
+        tvDob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
+                }
+            }
         });
-        mDateSetListener1 = (datePicker, year, month, day) -> {
-            month = month + 1;
-
-            //String date = day + "-" + month + "-" + year;
-            String sDay = "";
-            if (day < 10) {
-                sDay = "0" + day;
-            } else {
-                sDay = String.valueOf(day);
-            }
-
-            String sMonth = "";
-            if (month < 10) {
-                sMonth = "0" + month;
-            } else {
-                sMonth = String.valueOf(month);
-            }
-            dobToDb = year + "-" + sMonth + "-" + sDay;
-
-            dobToShow = sDay + "-" + sMonth + "-" + year;
-            tvDob.setText(dobToShow);
-            tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
-
-            String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, this);
-            tvAge.setText(age);
-            //yyyy-mm-dd
-
-        };
-
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 
         // fetch user details if added
         fetchUserDetailsIfAdded();
-
+        manageErrorFields();
     }
 
     private void fetchUserDetailsIfAdded() {
@@ -318,13 +298,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-                Glide.with(this)
-                        .load(providerDTO.getImagePath())
-                        .thumbnail(0.3f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfileImage);
+                Glide.with(this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
             } else {
                 ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
             }
@@ -367,49 +341,48 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfileDetailsToLocalDb() throws DAOException {
-        String selectedCode = countryCodePicker.getSelectedCountryCodeWithPlus();
-        ProviderDAO providerDAO = new ProviderDAO();
-        ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
-        if (providerDTO != null) {
-            ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
-                    providerDTO.getUseruuid(), etEmail.getText().toString().trim(),
-                    etMobileNo.getText().toString().trim(), providerDTO.getProviderId(),
-                    etLastName.getText().toString().trim(), etFirstName.getText().toString().trim(),
-                    providerDTO.getVoided(), selectedGender, dobToDb,
-                    providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode,
-                    etMiddleName.getText().toString().trim());
 
-            String imagePath = "";
-            if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
-                imagePath = profileImagePAth;
-            } else {
-                imagePath = providerDTO.getImagePath();
-            }
+        if (areInputFieldsValid()) {
+            String selectedCode = countryCodePicker.getSelectedCountryCodeWithPlus();
+            ProviderDAO providerDAO = new ProviderDAO();
+            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+            if (providerDTO != null) {
+                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etLastName.getText().toString().trim(), etFirstName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
 
-            if (imagePath != null && !imagePath.isEmpty())
-                inputDTO.setImagePath(imagePath);
+                String imagePath = "";
+                if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
+                    imagePath = profileImagePAth;
+                } else {
+                    imagePath = providerDTO.getImagePath();
+                }
 
-            try {
-                boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
-                if (isUpdated)
+                if (imagePath != null && !imagePath.isEmpty()) inputDTO.setImagePath(imagePath);
 
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
+                try {
+                    boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
+                    if (isUpdated)
 
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
-                        startActivity(intent);
-                    }
-                }, 2000);
+                    SyncDAO syncDAO = new SyncDAO();
+                    syncDAO.pushDataApi();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
+                            startActivity(intent);
+                        }
+                    }, 2000);
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+
     }
 
     void compressImageAndSave(final String filePath) {
@@ -492,11 +465,7 @@ public class MyProfileActivity extends AppCompatActivity {
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Glide.with(MyProfileActivity.this)
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f).centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true).into(ivProfileImage);
+                Glide.with(MyProfileActivity.this).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
 
                 saveImage(mCurrentPhotoPath);
             }
@@ -520,6 +489,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    ivProfileImage.invalidate();
 
                     Thread thread = new Thread() {
                         @Override
@@ -527,13 +497,7 @@ public class MyProfileActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() //run on ui thread
                             {
                                 public void run() {
-                                    Glide.with(MyProfileActivity.this)
-                                            .load(finalFilePath)
-                                            .thumbnail(0.3f)
-                                            .centerCrop()
-                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                            .skipMemoryCache(true)
-                                            .into(ivProfileImage);
+                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                                 }
                             });
                         }
@@ -612,25 +576,16 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
-        if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
-        }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
@@ -638,6 +593,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
         return true;
     }
+
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
         Log.d(TAG, "profilePicDownloaded: ");
@@ -648,59 +604,196 @@ public class MyProfileActivity extends AppCompatActivity {
         Log.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
-        Observable<ResponseBody> profilePicDownload =
-                AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
 
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        Log.d(TAG, "onNext: ");
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, uuid);
-                    }
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                Log.d(TAG, "onNext: ");
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, uuid);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Logger.logD(TAG, e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        ProviderDAO providerDAO = new ProviderDAO();
-                        boolean updated = false;
-                        try {
-                            updated = providerDAO.updateLoggedInUserProfileImage(profileImagePAth,
-                                    sessionManager.getProviderID());
+            @Override
+            public void onComplete() {
+                ProviderDAO providerDAO = new ProviderDAO();
+                boolean updated = false;
+                try {
+                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(MyProfileActivity.this)
-                                    .load(AppConstants.IMAGE_PATH + uuid + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(ivProfileImage);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(profileImagePAth,
-                                    sessionManager.getProviderID());
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
     }
 
+    @Override
+    public void getSelectedDate(String selectedDate, String whichDate) {
+        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+        if (!selectedDate.isEmpty()) {
+            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+            String dateForAge = selectedDate;
+            //dobToDb = dateForAge.replace("/","-");
+            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), this);
+            //for age
+            Log.d(TAG, "getSelectedDate: date : " + DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate));
+            String[] splitedDate = selectedDate.split("/");
+
+            Log.d(TAG, "getSelectedDate: age : " + age);
+            if (age != null && !age.isEmpty() && Integer.parseInt(age) > 10) {
+                tvAge.setText(age);
+                tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
+                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+            } else {
+                tvAge.setText("");
+                tvDob.setText("");
+
+            }
+
+
+        } else {
+            Log.d(TAG, "onClick: date empty");
+        }
+    }
+
+    private void manageErrorFields() {
+        Context context = MyProfileActivity.this;
+        etFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    if (TextUtils.isEmpty(etFirstName.getText().toString())) {
+                        tvErrorFirstName.setVisibility(View.VISIBLE);
+                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+                        return;
+                    } else {
+                        tvErrorFirstName.setVisibility(View.GONE);
+                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        etLastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(etLastName.getText().toString())) {
+                    tvErrorLastName.setVisibility(View.VISIBLE);
+                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+                    return;
+                } else {
+                    tvErrorLastName.setVisibility(View.GONE);
+                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
+                }
+            }
+        });
+
+
+        etMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
+                    tvErrorMobileNo.setVisibility(View.VISIBLE);
+                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+                    return;
+                } else {
+                    tvErrorMobileNo.setVisibility(View.GONE);
+                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
+                }
+            }
+        });
+
+
+    }
+
+    private boolean areInputFieldsValid() {
+        boolean result = false;
+        String firstName = etFirstName.getText().toString();
+        String lastName = etLastName.getText().toString();
+        String mobileNo = etMobileNo.getText().toString();
+
+        if (TextUtils.isEmpty(firstName)) {
+            result = false;
+            tvErrorFirstName.setVisibility(View.VISIBLE);
+            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+
+        } else if (TextUtils.isEmpty(lastName)) {
+            result = false;
+            tvErrorLastName.setVisibility(View.VISIBLE);
+            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+
+        } else if (TextUtils.isEmpty(mobileNo)) {
+            result = false;
+            tvErrorMobileNo.setVisibility(View.VISIBLE);
+            etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+
+        } else {
+            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+
+            result = true;
+        }
+
+        return result;
+    }
 
 }

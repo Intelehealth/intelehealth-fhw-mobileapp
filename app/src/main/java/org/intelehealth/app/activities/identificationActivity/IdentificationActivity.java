@@ -1800,7 +1800,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = syncDAO.pushDataApi("identifi");
+                boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (push)
@@ -2124,7 +2124,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean ispush = syncDAO.pushDataApi("Identifi");
+                boolean ispush = syncDAO.pushDataApi();
                 boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (ispush)

@@ -1006,6 +1006,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 tvUsername.setText(userFullName);
                 tvUserId.setText(sessionManager.getChwname());
 
+                Log.d(TAG, "updateNavHeaderUserDetails:provider id :  "+sessionManager.getProviderID());
+
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
 
                     Glide.with(HomeScreenActivity_New.this)
@@ -1017,6 +1019,15 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                             .into(ivProfileIcon);
 
 
+                }
+
+                // if imagepath is not available in local db
+
+                Log.d(TAG, "header: path : " + providerDTO.getImagePath());
+                if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+                    if (NetworkConnection.isOnline(this)) {
+                        profilePicDownloaded(providerDTO);
+                    }
                 }
 
             }
@@ -1152,5 +1163,69 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         }
     }
+
+    public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
+        Log.d(TAG, "profilePicDownloaded: ");
+        SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String uuid = sessionManager.getProviderID();
+        String url = urlModifiers.getProviderProfileImageUrl(uuid);
+        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+
+
+        Observable<ResponseBody> profilePicDownload =
+                AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        Log.d(TAG, "onNext: ");
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, uuid);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Logger.logD(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ProviderDAO providerDAO = new ProviderDAO();
+                        boolean updated = false;
+                        try {
+                            updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg",
+                                    sessionManager.getProviderID());
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                        if (updated) {
+                            Glide.with(HomeScreenActivity_New.this)
+                                    .load(AppConstants.IMAGE_PATH + uuid + ".jpg")
+                                    .thumbnail(0.3f)
+                                    .centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(ivProfileIcon);
+                        }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg",
+                                    sessionManager.getProviderID());
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+                });
+    }
+
 }
 

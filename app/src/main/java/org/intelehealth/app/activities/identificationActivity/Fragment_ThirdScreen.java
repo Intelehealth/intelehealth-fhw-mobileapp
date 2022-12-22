@@ -612,7 +612,7 @@ public class Fragment_ThirdScreen extends Fragment {
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = syncDAO.pushDataApi("frag third");
+                boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
             }
 

@@ -37,12 +37,12 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        syncDAO.pushDataApi("syncutil");
+        syncDAO.pushDataApi();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
         //  imagesPushDAO.patientProfileImagesPush();
         //ui2.0
-      //  imagesPushDAO.loggedInUserProfileImagesPush();
+        imagesPushDAO.loggedInUserProfileImagesPush();
 
 //        imagesPushDAO.obsImagesPush();
 
@@ -80,7 +80,7 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
-        isSynced = syncDAO.pushDataApi("sync fore");
+        isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
 
 
@@ -97,7 +97,7 @@ public class SyncUtils {
 
         imagesPushDAO.patientProfileImagesPush();
         //ui2.0
-        // imagesPushDAO.loggedInUserProfileImagesPush();
+        imagesPushDAO.loggedInUserProfileImagesPush();
 //        imagesPushDAO.obsImagesPush();
 
         /*
