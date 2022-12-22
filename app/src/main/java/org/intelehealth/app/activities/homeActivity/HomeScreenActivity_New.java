@@ -66,6 +66,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -80,6 +81,7 @@ import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivi
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderDTO;
@@ -90,10 +92,12 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
 import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -110,11 +114,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
