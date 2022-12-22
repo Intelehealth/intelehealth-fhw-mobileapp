@@ -61,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_loggedin_username"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/tv_login_userid_margin_top"
         android:layout_toEndOf="@+id/img_profile_header"
         android:fontFamily="@font/lato_regular"

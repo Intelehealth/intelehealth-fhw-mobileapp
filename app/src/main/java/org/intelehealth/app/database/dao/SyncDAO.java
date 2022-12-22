@@ -366,8 +366,7 @@ public class SyncDAO {
         cursor.close();
     }
 
-    public boolean pushDataApi(String fromWhichScreen) {
-        Log.d(TAG, "pushDataApi: in push api : "+fromWhichScreen);
+    public boolean pushDataApi() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
@@ -427,7 +426,7 @@ public class SyncDAO {
                                 //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
 
                                 //ui2.0 for provider profile details
-                                Log.d(TAG, "onSuccess: getProviderlist : "+pushResponseApiCall.getData().getProviderlist().size());
+                                Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
                                 for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
                                     try {
                                         providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");

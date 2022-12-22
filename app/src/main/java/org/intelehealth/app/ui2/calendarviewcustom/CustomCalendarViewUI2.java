@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomCalendarViewUI2 extends DialogFragment {
     public static final String TAG = "CustomCalendarViewUI2";
@@ -59,6 +60,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     private SendSelectedDateInterface listener;
     int MY_REQUEST_CODE = 5555;
     String whichDate = "";
+    List<CalendarviewYearModel> yearsList;
 
     public CustomCalendarViewUI2(Context context) {
         this.context = context;
@@ -176,7 +178,16 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     }
 
     private void setValuesToTheYearSpinnerForDefault(int currentYear) {
-        switch (currentYear) {
+        Log.d(TAG, "setValuesToTheYearSpinnerForDefault: currentYear : " + currentYear);
+
+        for (int i = 0; i < yearsList.size(); i++) {
+            CalendarviewYearModel calendarviewYearModel = yearsList.get(i);
+            if (currentYear == calendarviewYearModel.getYear()) {
+                spinnerYear.setSelection(i, true);
+                break;
+            }
+        }
+       /* switch (currentYear) {
             case 2022:
                 spinnerYear.setSelection(0, true);
                 break;
@@ -187,7 +198,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 spinnerYear.setSelection(2, true);
                 break;
 
-        }
+        }*/
 
     }
 
@@ -409,8 +420,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 //  if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
 
                 if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
-                    selectedDate = "";
+                    //for previous dates
+                    selectedDate = date + "/" + month + "/" + year;
                 } else {
+                    //for upcoming dates
                     selectedDate = date + "/" + month + "/" + year;
 
                 }
@@ -508,11 +521,20 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
     private void fillYearSpinner() {
 
-        List<CalendarviewYearModel> yearsList = new ArrayList<>();
-        int[] yearArray = {2022, 2023, 2024};
-        for (int i = 0; i < yearArray.length; i++) {
-            CalendarviewYearModel model1 = new CalendarviewYearModel(yearArray[i], false);
+        yearsList = new ArrayList<>();
+        int[] yearArray = {2018, 2019, 2020, 2021, 2022, 2023, 2024};
+        CalendarviewYearModel model1 = null;
+        int startYear = 1950;
+        for (int i = 0; i < 100; i++) {
+            if (startYear == currentYear) {
+                model1 = new CalendarviewYearModel(startYear, true);
+
+            } else {
+                model1 = new CalendarviewYearModel(startYear, false);
+
+            }
             yearsList.add(model1);
+            startYear = startYear + 1;
         }
 
 
@@ -700,13 +722,24 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         btnOkCalendar.setOnClickListener(v -> {
-            Intent i = new Intent()
-                    .putExtra("selectedDate", selectedDate)
-                    .putExtra("whichDate", whichDate);
 
-            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
+            //for get the selected date - if calendar view called from activity
+            if (listener != null) {
+                listener.getSelectedDate(selectedDate, "");
+            }
+
+
+            //for get the selected date - if calendar view called from fragment
+            if (getTargetFragment() != null) {
+                Intent intent = new Intent()
+                        .putExtra("selectedDate", selectedDate)
+                        .putExtra("whichDate", whichDate);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+
+            }
+
+
             alertDialog.dismiss();
-            Log.d(TAG, "dialog selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
         });
 
         alertDialog.show();

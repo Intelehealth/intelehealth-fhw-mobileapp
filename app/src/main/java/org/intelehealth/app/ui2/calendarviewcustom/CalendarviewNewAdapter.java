@@ -27,14 +27,17 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
     Calendar calendar;
     OnItemClickListener listener;
     private int selectedPos = -1;
+    int currentYear,currentMonth;
 
     public CalendarviewNewAdapter(Context context, List<CalendarviewModel> listOfDates,
-                                 CalendarviewNewAdapter.OnItemClickListener listener) {
+                                  CalendarviewNewAdapter.OnItemClickListener listener) {
         this.context = context;
         this.listOfDates = listOfDates;
         this.listener = listener;
 
         calendar = Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.getActualMaximum(Calendar.MONTH) + 1;
 
     }
 
@@ -68,9 +71,26 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
             }
         });
         changeToSelect(selectedPos, position, holder, calendarModel);
-        if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
+      /*  if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
             holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
-            holder.tvDate.setEnabled(false);
+            // holder.tvDate.setEnabled(false);
+        }
+*/
+
+       /* if (calendarModel.getSelectedYear() < currentYear) {
+            holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+
+        }*/
+
+        if(calendarModel.getSelectedYear() ==  currentYear && calendarModel.getSelectedMonth() ==  currentMonth){
+            if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
+                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+                // holder.tvDate.setEnabled(false);
+            }
+        }else{
+            if (calendarModel.isPrevMonth || calendarModel.isNextMonth){
+                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+            }
         }
 
     }
