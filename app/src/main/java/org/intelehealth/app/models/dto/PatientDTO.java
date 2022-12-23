@@ -65,6 +65,9 @@ public class PatientDTO implements Serializable {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+    private String son_dau_wife;
+    private String occupation;
+    private String caste;
 
     // for search tags...
     private boolean emergency = false;
@@ -254,6 +257,30 @@ public class PatientDTO implements Serializable {
 
     public void setPrescription_exists(boolean prescription_exists) {
         this.prescription_exists = prescription_exists;
+    }
+
+    public String getSon_dau_wife() {
+        return son_dau_wife;
+    }
+
+    public void setSon_dau_wife(String son_dau_wife) {
+        this.son_dau_wife = son_dau_wife;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getCaste() {
+        return caste;
+    }
+
+    public void setCaste(String caste) {
+        this.caste = caste;
     }
 
     @Override

@@ -125,7 +125,9 @@ public class IdentificationActivity_New extends AppCompatActivity {
         } else {
             bundle.putString("patientUuid", patientdto.getUuid());
         }
+        bundle.putBoolean("fromFirstScreen", true);
         bundle.putBoolean("fromSecondScreen", true);
+        bundle.putBoolean("fromThirdScreen", true);
         fragment.setArguments(bundle); // passing data to Fragment
 
         getSupportFragmentManager()

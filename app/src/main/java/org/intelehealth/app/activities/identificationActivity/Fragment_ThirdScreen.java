@@ -99,7 +99,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
     ImagesDAO imagesDAO = new ImagesDAO();
     private Fragment_SecondScreen secondScreen;
-    boolean fromThirdScreen = false;
+    boolean fromThirdScreen = false, fromSecondScreen = false;
     Patient patient1 = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     String patientID_edit;
@@ -241,29 +241,26 @@ public class Fragment_ThirdScreen extends Fragment {
 
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromThirdScreen = getArguments().getBoolean("fromSecondScreen");
+            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             patientID_edit = getArguments().getString("patientUuid");
 
-            if (patientID_edit != null) {
+          /*  if (patientID_edit != null) {
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
             } else {
                 patient1.setUuid(patientDTO.getUuid());
                 setscreen(patientDTO.getUuid());
+            }*/
+            if (patientID_edit != null) {
+                patientDTO.setUuid(patientID_edit);
+            } else {
+                // do nothing...
             }
         }
 
 
         frag3_btn_back.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("patientDTO", (Serializable) patientDTO);
-            bundle.putBoolean("fromSecondScreen", true);
-            secondScreen.setArguments(bundle); // passing data to Fragment
-
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_firstscreen, secondScreen)
-                    .commit();
+            onBackInsertIntoPatientDTO();
         });
 
         frag3_btn_next.setOnClickListener(v -> {
@@ -315,152 +312,153 @@ public class Fragment_ThirdScreen extends Fragment {
             Logger.logE("Identification", "#648", e);
         }
 
-        if (patient1.getSdw() != null && !patient1.getSdw().isEmpty())
-            mRelationNameEditText.setText(patient1.getSdw());
-        Log.v(TAG, "relation: " + patient1.getSdw());
-        if (patient1.getOccupation() != null && !patient1.getOccupation().isEmpty())
-            mOccupationEditText.setText(patient1.getOccupation());
+        if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().isEmpty())
+            mRelationNameEditText.setText(patientDTO.getSon_dau_wife());
+        Log.v(TAG, "relation: " + patientDTO.getSon_dau_wife());
+        
+        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().isEmpty())
+            mOccupationEditText.setText(patientDTO.getOccupation());
 
         // setting screen in edit for spinners...
-        if (fromThirdScreen) {
+        if (fromThirdScreen || fromSecondScreen) {
             //caste
-            if (patient1.getCaste() != null) {
-                if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+            if (patientDTO.getCaste() != null) {
+                if (patientDTO.getCaste().equals(getResources().getString(R.string.not_provided)))
                     mCasteSpinner.setSelection(0);
 //            else
-//                caste_spinner.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+//                caste_spinner.setSelection(casteAdapter.getPosition(patientDTO.getCaste()));
 
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String caste = switch_hi_caste_edit(patient1.getCaste());
+                        String caste = switch_hi_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String caste = switch_or_caste_edit(patient1.getCaste());
+                        String caste = switch_or_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String caste = switch_te_caste_edit(patient1.getCaste());
+                        String caste = switch_te_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String caste = switch_mr_caste_edit(patient1.getCaste());
+                        String caste = switch_mr_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String caste = switch_as_caste_edit(patient1.getCaste());
+                        String caste = switch_as_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String caste = switch_ml_caste_edit(patient1.getCaste());
+                        String caste = switch_ml_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String caste = switch_kn_caste_edit(patient1.getCaste());
+                        String caste = switch_kn_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String caste = switch_ru_caste_edit(patient1.getCaste());
+                        String caste = switch_ru_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String caste = switch_gu_caste_edit(patient1.getCaste());
+                        String caste = switch_gu_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String caste = switch_bn_caste_edit(patient1.getCaste());
+                        String caste = switch_bn_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String caste = switch_ta_caste_edit(patient1.getCaste());
+                        String caste = switch_ta_caste_edit(patientDTO.getCaste());
                         mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
                     } else {
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                        mCasteSpinner.setSelection(casteAdapter.getPosition(patientDTO.getCaste()));
                     }
                 }
             }
 
             //education status
-            if (patient1.getEducation_level() != null) {
-                if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            if (patientDTO.getEducation() != null) {
+                if (patientDTO.getEducation().equals(getResources().getString(R.string.not_provided)))
                     mEducationSpinner.setSelection(0);
 //            else
-//                education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//                education_spinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patientDTO.getEducation()) : 0);
 
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String education = switch_hi_education_edit(patient1.getEducation_level());
+                        String education = switch_hi_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String education = switch_or_education_edit(patient1.getEducation_level());
+                        String education = switch_or_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String education = switch_te_education_edit(patient1.getEducation_level());
+                        String education = switch_te_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String education = switch_mr_education_edit(patient1.getEducation_level());
+                        String education = switch_mr_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String education = switch_as_education_edit(patient1.getEducation_level());
+                        String education = switch_as_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String education = switch_gu_education_edit(patient1.getEducation_level());
+                        String education = switch_gu_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String education = switch_ta_education_edit(patient1.getEducation_level());
+                        String education = switch_ta_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String education = switch_bn_education_edit(patient1.getEducation_level());
+                        String education = switch_bn_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String education = switch_ml_education_edit(patient1.getEducation_level());
+                        String education = switch_ml_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String education = switch_kn_education_edit(patient1.getEducation_level());
+                        String education = switch_kn_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String education = switch_ru_education_edit(patient1.getEducation_level());
+                        String education = switch_ru_education_edit(patientDTO.getEducation());
                         mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                     } else {
-                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                        mEducationSpinner.setSelection(educationAdapter != null ? educationAdapter.getPosition(patientDTO.getEducation()) : 0);
                     }
                 }
             }
 
 
             // economic statius
-            if (patient1.getEconomic_status() != null) {
-                if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patientDTO.getEconomic() != null) {
+                if (patientDTO.getEconomic().equals(getResources().getString(R.string.not_provided)))
                     mEconomicstatusSpinner.setSelection(0);
 //            else
-//                economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//                economicstatus_spinner.setSelection(economicStatusAdapter.getPosition(patientDTO.getEconomic()));
 
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_hi_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_or_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String economic = switch_te_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_te_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String economic = switch_mr_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_mr_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String economic = switch_as_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_as_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String economic = switch_ml_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_ml_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String economic = switch_kn_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_kn_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String economic = switch_ru_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_ru_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String economic = switch_gu_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_gu_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String economic = switch_bn_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_bn_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String economic = switch_ta_economic_edit(patient1.getEconomic_status());
+                        String economic = switch_ta_economic_edit(patientDTO.getEconomic());
                         mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                     } else {
-                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                        mEconomicstatusSpinner.setSelection(economicStatusAdapter.getPosition(patientDTO.getEconomic()));
                     }
                 }
             }
@@ -470,7 +468,31 @@ public class Fragment_ThirdScreen extends Fragment {
 
     }
 
+    private void onBackInsertIntoPatientDTO() {
+        patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
+        patientDTO.setOccupation(mOccupationEditText.getText().toString());
+        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+        bundle.putBoolean("fromThirdScreen", true);
+        secondScreen.setArguments(bundle); // passing data to Fragment
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_firstscreen, secondScreen)
+                .commit();
+    }
+
     private void onPatientCreateClicked() {
+        patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
+        patientDTO.setOccupation(mOccupationEditText.getText().toString());
+        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();

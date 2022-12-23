@@ -63,7 +63,7 @@ public class Fragment_SecondScreen extends Fragment {
     private Fragment_ThirdScreen fragment_thirdScreen;
     private Fragment_FirstScreen firstScreen;
     private TextView mPostalCodeErrorTextView, mCountryNameErrorTextView, mStateNameErrorTextView, mDistrictNameErrorTextView, mCityNameErrorTextView, mAddress1ErrorTextView, mAddress2ErrorTextView;
-    boolean fromThirdScreen = false;
+    boolean fromThirdScreen = false, fromFirstScreen = false;
     String district;
     String city_village;
     String patientID_edit;
@@ -176,9 +176,15 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromThirdScreen = getArguments().getBoolean("fromSecondScreen");
+            fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
+            fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
             patientID_edit = getArguments().getString("patientUuid");
 
+            if (patientID_edit != null) {
+                patientDTO.setUuid(patientID_edit);
+            } else {
+               // do nothing...
+            }
         }
 
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -241,7 +247,7 @@ public class Fragment_SecondScreen extends Fragment {
         mCityNameSpinner.setAdapter(cityAdapter);
 
         // Setting up the screen when user came from SEcond screen.
-        if (fromThirdScreen) {
+        if (fromThirdScreen || fromFirstScreen) {
             if (patientDTO.getPostalcode() != null && !patientDTO.getPostalcode().isEmpty())
                 mPostalCodeEditText.setText(patientDTO.getPostalcode());
             if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().isEmpty())
@@ -262,14 +268,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         // Back Button click event.
         frag2_btn_back.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("patientDTO", (Serializable) patientDTO);
-            bundle.putBoolean("fromSecondScreen", true);
-            firstScreen.setArguments(bundle); // passing data to Fragment
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_firstscreen, firstScreen)
-                    .commit();
+            onBackInsertIntoPatientDTO();
         });
 
         // Next Button click event.
@@ -300,14 +299,14 @@ public class Fragment_SecondScreen extends Fragment {
                     String district = adapterView.getItemAtPosition(i).toString();
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-                    if (!fromThirdScreen) {
+                    if (!fromThirdScreen || fromFirstScreen) {
                         if (district.matches("Navi Mumbai")) {
                             ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
                                     R.array.city, android.R.layout.simple_spinner_dropdown_item);
                             mCityNameSpinner.setAdapter(cityAdapter);
 
                             // setting state according database when user clicks edit details
-                            if (fromThirdScreen)
+                            if (fromThirdScreen || fromFirstScreen)
                                 mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
                             else
                                 mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
@@ -342,7 +341,7 @@ public class Fragment_SecondScreen extends Fragment {
                         mDistrictNameSpinner.setAdapter(districtAdapter);
 
                         // setting state according database when user clicks edit details
-                        if (fromThirdScreen)
+                        if (fromThirdScreen || fromFirstScreen)
                             mDistrictNameSpinner.setSelection(districtAdapter.getPosition(String.valueOf(district)));
                         else
                             mDistrictNameSpinner.setSelection(districtAdapter.getPosition("Select"));
@@ -375,7 +374,7 @@ public class Fragment_SecondScreen extends Fragment {
                         mStateNameSpinner.setAdapter(stateAdapter);
 
                         // setting state according database when user clicks edit details
-                        if (fromThirdScreen)
+                        if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
                         else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
@@ -386,7 +385,7 @@ public class Fragment_SecondScreen extends Fragment {
                         mStateNameSpinner.setAdapter(stateAdapter);
 
                         // setting state according database when user clicks edit details
-                        if (fromThirdScreen)
+                        if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
                         else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
@@ -398,7 +397,7 @@ public class Fragment_SecondScreen extends Fragment {
                         mStateNameSpinner.setAdapter(stateAdapter);
 
                         // setting state according database when user clicks edit details
-                        if (fromThirdScreen)
+                        if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
                         else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
@@ -422,6 +421,31 @@ public class Fragment_SecondScreen extends Fragment {
 
     }
 
+    private void onBackInsertIntoPatientDTO() {
+        patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
+        patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+        patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
+        patientDTO.setCityvillage(StringUtils.getValue(mDistrictNameSpinner.getSelectedItem().toString() +
+                ":" + mCityNameSpinner.getSelectedItem().toString()));
+        patientDTO.setAddress1(mAddress1EditText.getText().toString());
+        patientDTO.setAddress2(mAddress2EditText.getText().toString());
+
+        Log.v("fragmemt_2", "values: " + mCountryNameSpinner.getSelectedItem().toString()
+                + "\n" + mStateNameSpinner.getSelectedItem().toString()
+                + "\n" + mDistrictNameSpinner.getSelectedItem().toString()
+                + "\n" + mCityNameSpinner.getSelectedItem().toString()
+                + "\n" + mAddress1EditText.getText().toString()
+                + "\n" + mAddress2EditText.getText().toString());
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+        bundle.putBoolean("fromSecondScreen", true);
+        firstScreen.setArguments(bundle); // passing data to Fragment
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_firstscreen, firstScreen)
+                .commit();
+    }
 
     private void onPatientCreateClicked() {
         Gson gson = new Gson();
