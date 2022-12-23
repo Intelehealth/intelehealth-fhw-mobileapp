@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.FollowUpModel;
@@ -99,6 +101,12 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         rv_week = findViewById(R.id.rv_thisweek);
         rv_month = findViewById(R.id.rv_thismonth);
         refresh = findViewById(R.id.refresh);
+        ImageButton ibButtonBack = findViewById(R.id.vector);
+        ibButtonBack.setOnClickListener(v -> {
+            Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+        });
+
     }
 
     private void followup_data() {
@@ -116,7 +124,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_Today(offset, currentDate);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_today = followUpModels.size();
-            if(totalCounts_today == 0 || totalCounts_today < 0)
+            if (totalCounts_today == 0 || totalCounts_today < 0)
                 today_nodata.setVisibility(View.VISIBLE);
             else
                 today_nodata.setVisibility(View.GONE);
@@ -130,7 +138,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private List<FollowUpModel> getChiefComplaint(List<FollowUpModel> followUpModels) {
         for (int i = 0; i < followUpModels.size(); i++) {
-            if(followUpModels.get(i).getUuid() != null) {
+            if (followUpModels.get(i).getUuid() != null) {
                 String visitUUID = followUpModels.get(i).getUuid();
                 Log.v("Followup", "visitid: " + visitUUID);
                 String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " +
@@ -145,8 +153,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                             String complaint = cursor.getString(cursor.getColumnIndexOrThrow("value"));
                             followUpModels.get(i).setChiefComplaint(complaint);
                             Log.v("Followup", "chiefcomplaint: " + complaint);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } while (cursor.moveToNext());
@@ -162,7 +169,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisWeek(offset);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_week = followUpModels.size();
-            if(totalCounts_week == 0 || totalCounts_week < 0)
+            if (totalCounts_week == 0 || totalCounts_week < 0)
                 week_nodata.setVisibility(View.VISIBLE);
             else
                 week_nodata.setVisibility(View.GONE);
@@ -179,7 +186,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisMonth(offset);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_month = followUpModels.size();
-            if(totalCounts_month == 0 || totalCounts_month < 0)
+            if (totalCounts_month == 0 || totalCounts_month < 0)
                 month_nodata.setVisibility(View.VISIBLE);
             else
                 month_nodata.setVisibility(View.GONE);
@@ -223,7 +230,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 try {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    Log.v("Followup::" ,"::"  + visitUuid);
+                    Log.v("Followup::", "::" + visitUuid);
                     String emergencyUuid = "";
                     encounterDAO = new EncounterDAO();
                     try {
@@ -249,8 +256,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 true,
                                 cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
-                    }
-                    else {
+                    } else {
                         modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
@@ -306,7 +312,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String patientID = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
-                    Log.v("Followup::" ,"::"  + visitUuid + "\n" + patientID);
+                    Log.v("Followup::", "::" + visitUuid + "\n" + patientID);
                     String emergencyUuid = "";
                     encounterDAO = new EncounterDAO();
                     try {
@@ -332,8 +338,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 true,
                                 cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
-                    }
-                    else {
+                    } else {
                         modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
@@ -398,47 +403,46 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String emergencyUuid = "";
                     encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
 
-                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                            modelList.add(new FollowUpModel(
-                                    visitUuid,
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                    true,
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
-                        }
-                        else {
-                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                    false,
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is NOT emergency visit.
-                        }
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                        modelList.add(new FollowUpModel(
+                                visitUuid,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                true,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
+                    } else {
+                        modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                false,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is NOT emergency visit.
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -449,8 +453,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
         return modelList;
     }
-
-
 
 
 }

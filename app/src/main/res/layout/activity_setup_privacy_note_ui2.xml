@@ -119,7 +119,7 @@
             android:layout_below="@+id/ll_tc_pp"
             android:layout_marginTop="@dimen/button_setup_margin_top"
             android:layout_marginBottom="@dimen/button_setup_margin_bottom"
-            android:background="@drawable/ui2_common_primary_bg"
+            android:background="@drawable/common_button_bg_primary_new_ui2"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:drawableTint="@color/iconTintWhite"
             android:paddingStart="@dimen/common_button_padding_left"

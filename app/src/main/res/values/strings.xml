@@ -861,7 +861,10 @@
     <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
     <string name="enter_verification_code">Enter verification code</string>
     <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
-    <string name="no_otp_received">Didn\'t receive OTP? <font color='#2F1E91'><u>Resend in time</u></font></string>
+    <string name="no_otp_received">Didn\'t receive OTP?</string>
+    <string name="resend_in_time">Resend in time</string>
+    <string name="resend_otp_in">Resend in</string>
+    <string name="resend_otp"><font color='#2E1E91'>Resend</font></string>
     <string name="help"><u>Help</u></string>
     <string name="enter_new_password">Enter new password</string>
     <string name="new_password">New password</string>
@@ -883,6 +886,7 @@
     <string name="profile_details_added">Profile details added successfully</string>
     <string name="profile_details_updated_new">Profile details updated successfully</string>
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
+    <string name="otp_sent_success">OTP sent successfully</string>
 
     <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
     <string name="provide_prescriptions">Provide prescriptions</string>

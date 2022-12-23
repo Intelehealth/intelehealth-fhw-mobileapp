@@ -37,6 +37,8 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.security.SecureRandom;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -52,8 +54,9 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     RelativeLayout layoutParent;
     CustomProgressDialog cpd;
     SnackbarUtils snackbarUtils;
-    TextView tvErrorNewPassword, tvErrorConfirmPassword;
+    TextView tvErrorNewPassword, tvErrorConfirmPassword, tvGeneratePassword;
     TextInputEditText etNewPassword, etConfirmPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,10 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         });
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
+        tvGeneratePassword = findViewById(R.id.tv_generate_password);
+        tvGeneratePassword.setOnClickListener(v -> {
+            randomString(8);
+        });
 
 
         btnSavePassword.setOnClickListener(v -> {
@@ -281,6 +288,19 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    void randomString(int len) {
+        String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+
+        etNewPassword.setText(sb.toString());
+        etConfirmPassword.setText(sb.toString());
+
     }
 
 

@@ -264,12 +264,14 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             etUsername.setText(sessionManager.getChwname());
-            etFirstName.setText(providerDTO.getFamilyName());
-            etLastName.setText(providerDTO.getGivenName());
+            etFirstName.setText(providerDTO.getGivenName());
+            etLastName.setText(providerDTO.getFamilyName());
             etEmail.setText(providerDTO.getEmailId());
             etMiddleName.setText(providerDTO.getMiddle_name());
 
             tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(providerDTO.getDateofbirth()));
+            //for updating in db
+            dobToDb = providerDTO.getDateofbirth();
 
             String age = DateAndTimeUtils.getAge_FollowUp(providerDTO.getDateofbirth(), this);
             tvAge.setText(age);
@@ -347,7 +349,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             if (providerDTO != null) {
-                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etLastName.getText().toString().trim(), etFirstName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
+                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
+                        providerDTO.getUseruuid(), etEmail.getText().toString().trim(),
+                        etMobileNo.getText().toString().trim(), providerDTO.getProviderId(),
+                        etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(),
+                        providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(),
+                        providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
 
                 String imagePath = "";
                 if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
@@ -371,8 +378,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
-                            startActivity(intent);
+                           // Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
+                          //  startActivity(intent);
                         }
                     }, 2000);
 

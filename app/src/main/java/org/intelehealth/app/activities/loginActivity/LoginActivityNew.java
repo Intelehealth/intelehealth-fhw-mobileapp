@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -14,12 +15,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -30,10 +33,15 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
+import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
+import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
@@ -70,6 +78,9 @@ public class LoginActivityNew extends AppCompatActivity {
     TextView tvUsernameError, tvPasswordError;
     CoordinatorLayout layoutParent;
     SnackbarUtils snackbarUtils;
+    private QuickActionCustom quickAction;
+    private QuickActionCustom quickIntent;
+    private static final int ID_DOWN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +135,14 @@ public class LoginActivityNew extends AppCompatActivity {
             }
         }
 
+
+        ImageView ivLoginDetails = findViewById(R.id.iv_login_details_info);
+        ivLoginDetails.setOnClickListener(v -> {
+            setTooltipForInternet("Enter the credentials given by intelehealth team");
+
+            quickAction.show(v);
+
+        });
 
         manageErrorFields();
     }
@@ -422,10 +441,14 @@ public class LoginActivityNew extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
 
-               // snackbarUtils.showSnackCoordinatorLayoutParentSuccess(LoginActivityNew.this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
+                    }
+                });
 
-                 Toast.makeText(LoginActivityNew.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
                 // mEmailSignInButton.setText(getString(R.string.action_sign_in));
                 //mEmailSignInButton.setEnabled(true);
             }
@@ -475,4 +498,46 @@ public class LoginActivityNew extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    private void setTooltipForInternet(String message) {
+        QuickActionCustom.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
+        QuickActionCustom.setDefaultTextColor(Color.BLACK);
+
+        ActionItemCustom nextItem = new ActionItemCustom(ID_DOWN, message);
+        quickAction = new QuickActionCustom(this, QuickActionCustom.HORIZONTAL);
+        quickAction.setColorRes(R.color.white);
+        quickAction.setTextColorRes(R.color.textColorBlack);
+        quickAction.addActionItem(nextItem);
+        quickAction.setTextColor(Color.BLACK);
+
+
+        //Set listener for action item clicked
+        quickAction.setOnActionItemClickListener(new QuickActionCustom.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(ActionItemCustom item) {
+                //here we can filter which action item was clicked with pos or actionId parameter
+                String title = item.getTitle();
+                //  Toast.makeText(LoginActivityNew.this, title + " selected", Toast.LENGTH_SHORT).show();
+                if (!item.isSticky()) quickAction.remove(item);
+            }
+        });
+
+        quickAction.setOnDismissListener(new QuickActionCustom.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                // Toast.makeText(HomeScreenActivity.this, "Dismissed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        sendIntent.setType("text/plain");
+
+        quickIntent = new QuickIntentActionCustom(this)
+                .setActivityIntent(sendIntent)
+                .create();
+        quickIntent.setAnimStyle(QuickActionCustom.Animation.REFLECT);
+    }
+
 }

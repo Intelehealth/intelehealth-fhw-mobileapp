@@ -95,6 +95,7 @@ import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -123,7 +124,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class HomeScreenActivity_New extends AppCompatActivity {
+public class HomeScreenActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
@@ -149,12 +150,15 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     LinearLayout menuResetApp;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     String firstLogin = "";
+    View toolbarHome;
+    NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
+        networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
         catchFCMMessageData();
 
@@ -173,7 +177,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         initUI();
         //}
         clickListeners();
-
 
 
     }
@@ -211,13 +214,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         });
 
-
-        imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quickAction.show(v);
-            }
-        });
 
         imageview_notifications_home.setOnClickListener(v -> {
             Intent intent = new Intent(this, NotificationActivity.class);
@@ -261,7 +257,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
 
-        View toolbarHome = findViewById(R.id.toolbar_home);
+        toolbarHome = findViewById(R.id.toolbar_home);
 
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
         tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
@@ -281,7 +277,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             }
         });
 
-        isNetworkAvailable(this);
+        //isNetworkAvailable(this);
 
         //nav header
         mNavigationView = findViewById(R.id.navigationview);
@@ -469,39 +465,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void isNetworkAvailable(Context context) {
-        int flag = 0;
-
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        if (!isConnected) {
-                            if (imageViewIsInternet != null) {
-                                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-                                flag = 1;
-                                setTooltipForInternet("Good internet.\nRefresh");
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (flag == 0) {
-            if (imageViewIsInternet != null) {
-                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
-
-                setTooltipForInternet("No internet");
-            }
-
-        }
-
-    }
 
     private void setTooltipForInternet(String message) {
         QuickActionCustom.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
@@ -650,6 +613,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        toolbarHome.setVisibility(View.VISIBLE);
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
@@ -664,6 +628,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
 
         loadFragment(new HomeFragment_New());
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
 
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
@@ -689,6 +654,10 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         Log.d(TAG, "onStart: 11");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
         //showBadge();
     }
 
@@ -895,6 +864,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         super.onStop();
         try {
             unregisterReceiver(syncBroadcastReceiver);
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -954,46 +925,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             };
 
 
-    private void logoutFromApp() {
-        //code from old homeactivity
-
-
-        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
-
-//        parseLogOut();
-
-       /* AccountManager manager = AccountManager.get(HomeActivity.this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }*/
-     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-        if (accountList.length > 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
-            } else {
-                manager.removeAccount(accountList[0], null, null); // Legacy implementation
-            }
-        }
-*/
-        Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
-        syncUtils.syncBackground();
-        sessionManager.setReturningUser(false);
-        sessionManager.setLogout(true);
-
-
-    }
-
     private void updateNavHeaderUserDetails() {
         try {
             ProviderDAO providerDAO = new ProviderDAO();
@@ -1003,17 +934,15 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 boolean lastname = isValidField(providerDTO.getGivenName());
                 String userFullName = "";
                 if (firstname && lastname) {
-                    userFullName = providerDTO.getFamilyName() + " " + providerDTO.getGivenName();
+                    userFullName = providerDTO.getGivenName() + " " + providerDTO.getFamilyName();
                 } else if (firstname) {
-                    userFullName = providerDTO.getFamilyName();
-                } else if (lastname) {
                     userFullName = providerDTO.getGivenName();
+                } else if (lastname) {
+                    userFullName = providerDTO.getFamilyName();
 
                 }
                 tvUsername.setText(userFullName);
                 tvUserId.setText(sessionManager.getChwname());
-
-                Log.d(TAG, "updateNavHeaderUserDetails:provider id :  "+sessionManager.getProviderID());
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
 
@@ -1030,7 +959,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
                 // if imagepath is not available in local db
 
-                Log.d(TAG, "header: path : " + providerDTO.getImagePath());
                 if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
                     if (NetworkConnection.isOnline(this)) {
                         profilePicDownloaded(providerDTO);
@@ -1234,5 +1162,16 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 });
     }
 
+    //update ui as per internet availability
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
 }
 

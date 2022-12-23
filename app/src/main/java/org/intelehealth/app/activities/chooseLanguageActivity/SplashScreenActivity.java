@@ -31,22 +31,16 @@ import androidx.transition.TransitionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
-import org.intelehealth.app.activities.splash_activity.SplashActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -93,7 +87,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+        //temporary commented
+       // initFirebaseRemoteConfig();
 
         if (sessionManager.isFirstTimeLaunch()) {
             animateViews();

@@ -1,8 +1,11 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,12 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
+import org.intelehealth.app.utilities.SnackbarUtils;
 
 
 public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity {
@@ -23,14 +28,16 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     //temporary OTP is hardcode
     String OTP = "111111";
     String userUuid = "";
-    TextView tvOtpError;
+    TextView tvOtpError, tvResendOtp;
     EditText etPin1, etPin2, etPin3, etPin4, etPin5, etPin6;
+    LinearLayout layoutParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification_ui2);
 
+        SnackbarUtils snackbarUtils = new SnackbarUtils();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -46,7 +53,19 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         etPin5 = layoutPinView.findViewById(R.id.et_pin_5);
         etPin6 = layoutPinView.findViewById(R.id.et_pin_6);
         tvOtpError = findViewById(R.id.tv_otp_error);
+        tvResendOtp = findViewById(R.id.textview_no_otp);
+        layoutParent = findViewById(R.id.layout_parent_otp);
 
+
+        tvResendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //api call for resend otp request
+                // snackbarUtils.showSnacksWithRelativeLayoutSuccess(ForgotPasswordOtpVerificationActivity_New.this, getResources().getString(R.string.otp_sent_success), layoutParent);
+
+
+            }
+        });
 
         ImageView ivBack = findViewById(R.id.imageview_back_otp_verify);
         ivBack.setOnClickListener(v -> {
@@ -91,6 +110,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         });
 
         handleEditextFocus();
+        resendOtp();
 
     }
 
@@ -181,4 +201,32 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
         }
     }
+
+    private void resendOtp() {
+        tvResendOtp.setEnabled(false);
+        String resendTime = getResources().getString(R.string.resend_otp_in);
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                String time = resendTime + " " + millisUntilFinished / 1000 + " seconds";
+                tvResendOtp.setText(time);
+            }
+
+            public void onFinish() {
+                tvResendOtp.setEnabled(true);
+
+                etPin1.setText("");
+                etPin2.setText("");
+                etPin3.setText("");
+                etPin4.setText("");
+                etPin5.setText("");
+                etPin6.setText("");
+                tvResendOtp.setText(getResources().getString(R.string.resend_otp));
+
+            }
+
+        }.start();
+    }
+
+
 }

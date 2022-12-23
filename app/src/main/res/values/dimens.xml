@@ -120,16 +120,16 @@
     <dimen name="image_intelehealth_login_width">204.73dp</dimen>
 
     <dimen name="login_collapsing_toolbar_height">80dp</dimen>
-    <dimen name="login_collapsing_layout_height">300dp</dimen>
+    <dimen name="login_collapsing_layout_height">350dp</dimen>
     <dimen name="tv_please_login_margin_top">10dp</dimen>
     <dimen name="image_intelehealth_margin_top">15dp</dimen>
     <dimen name="image_intelehealth_margin_bottom">5dp</dimen>
     <dimen name="login_scroll_margin_top">-17dp</dimen>
-    <dimen name="layout_login_padding_start">25dp</dimen>
+    <dimen name="layout_login_padding_start">24dp</dimen>
     <dimen name="layout_login_padding_top">40dp</dimen>
-    <dimen name="layout_login_padding_end">25dp</dimen>
+    <dimen name="layout_login_padding_end">24dp</dimen>
     <dimen name="layout_login_padding_bottom">20dp</dimen>
-    <dimen name="tv_login_username_margin_top">20dp</dimen>
+    <dimen name="tv_login_username_margin_top">24dp</dimen>
     <dimen name="button_login_margin_top">50dp</dimen>
     <!--  &lt;!&ndash;UI2.0 New Toolbar&ndash;&gt;
       <dimen name="home_toolbar_layout_margin">8dp</dimen>
@@ -354,7 +354,7 @@
     <dimen name="button_skip_margin_end">24dp</dimen>
     <dimen name="intro_image_height">250dp</dimen>
     <dimen name="intro_image_margin_top">20dp</dimen>
-    <dimen name="intro_heading_margin_top">30dp</dimen>
+    <dimen name="intro_heading_margin_top">80dp</dimen>
     <dimen name="intro_heading_line_height">30dp</dimen>
     <dimen name="intro_description_margin_top">20dp</dimen>
     <dimen name="intro_description_margin_end">24dp</dimen>
@@ -437,7 +437,7 @@
     <dimen name="layout_setup_padding_bottom">20dp</dimen>
     <dimen name="tv_location_margin_top">28dp</dimen>
     <dimen name="et_location_margin_top">8dp</dimen>
-    <dimen name="button_setup1_margin_bottom">10dp</dimen>
+    <dimen name="button_setup1_margin_bottom">15dp</dimen>
     <dimen name="button_setup1_margin_top">60dp</dimen>
 
     <!--Forgot password Screen UI2.0-->
@@ -445,17 +445,17 @@
     <dimen name="forgot_password_top_margin">40dp</dimen>
     <dimen name="forgot_pass_note_margin_top">10dp</dimen>
     <dimen name="forgot_pass_iv_margin_top">20dp</dimen>
-    <dimen name="layout_forgot_padding_start">22dp</dimen>
-    <dimen name="layout_forgot_padding_top">30dp</dimen>
-    <dimen name="layout_forgot_padding_end">25dp</dimen>
+    <dimen name="layout_forgot_padding_start">24dp</dimen>
+    <dimen name="layout_forgot_padding_top">45dp</dimen>
+    <dimen name="layout_forgot_padding_end">24dp</dimen>
     <dimen name="layout_forgot_padding_bottom">20dp</dimen>
-    <dimen name="btn_username_margin_end">10dp</dimen>
+    <dimen name="btn_username_margin_end">12dp</dimen>
     <dimen name="btn_mobile_margin_start">5dp</dimen>
     <dimen name="btn_options_text_Size">14sp</dimen>
     <dimen name="btn_continue_margin_top">50dp</dimen>
     <dimen name="iv_back_forgot_margin_top">28dp</dimen>
     <dimen name="iv_back_forgot_margin_start">10dp</dimen>
-    <dimen name="title_options_margin_top">25dp</dimen>
+    <dimen name="title_options_margin_top">24dp</dimen>
     <dimen name="info_options_margin_top">20dp</dimen>
     <dimen name="spinner_countries_margin_top">15dp</dimen>
     <dimen name="spinner_countries_margin_end">15dp</dimen>
@@ -513,9 +513,9 @@
     <dimen name="achievements_badge_height">70dp</dimen>
 
     <dimen name="achievements_badge_margin_start">25dp</dimen>
-    <dimen name="achievements_badge_margin_top">20dp</dimen>
+    <dimen name="achievements_badge_margin_top">28dp</dimen>
     <dimen name="achievements_userlevel_margin_start">10dp</dimen>
-    <dimen name="achievements_userlevel_margin_top">23dp</dimen>
+    <dimen name="achievements_userlevel_margin_top">30dp</dimen>
     <dimen name="achievements_user_score_margin_start">10dp</dimen>
     <dimen name="achievements_user_score_margin_top">7dp</dimen>
     <dimen name="achievements_user_score_line_Spacing">3sp</dimen>
@@ -942,5 +942,16 @@
     <dimen name="help_card_msg_sent_margin_top">6dp</dimen>
     <dimen name="help_card_msg_sent_padding">5dp</dimen>
     <dimen name="iv_profile_drawer_height_width">70dp</dimen>
+
+
+    <!--UI2.0 onboarding screens-->
+
+    <dimen name="tv_login_details_info_margin_end">9dp</dimen>
+    <dimen name="tv_login_details_info_height_width">20dp</dimen>
+    <dimen name="tv_title_info_otp_margin_top">15dp</dimen>
+    <dimen name="tv_help_on_otp_margin_end">25dp</dimen>
+    <dimen name="iv_help_info_margin_start">5dp</dimen>
+    <dimen name="iv_main_icon_otp_margin_top">32dp</dimen>
+    <dimen name="tv_resend_otp_margin_start">5dp</dimen>
 
 </resources>
