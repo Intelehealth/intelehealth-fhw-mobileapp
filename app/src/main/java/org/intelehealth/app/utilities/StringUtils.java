@@ -15,6 +15,8 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -26,6 +28,8 @@ import org.intelehealth.app.app.IntelehealthApplication;
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+    private static String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
+    private static String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -3707,4 +3711,24 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && BlockCharacterSet_Name.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
+    public static InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && BlockCharacterSet_Others.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
 }

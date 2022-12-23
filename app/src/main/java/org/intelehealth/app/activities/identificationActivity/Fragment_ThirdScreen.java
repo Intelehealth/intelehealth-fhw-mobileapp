@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
@@ -40,6 +41,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -135,7 +137,11 @@ public class Fragment_ThirdScreen extends Fragment {
 
 
         mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
+        mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
         mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
+        mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
 
         mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

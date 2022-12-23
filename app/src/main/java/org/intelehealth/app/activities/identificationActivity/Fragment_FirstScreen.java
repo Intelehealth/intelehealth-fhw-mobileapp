@@ -12,6 +12,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -113,8 +115,14 @@ public class Fragment_FirstScreen extends Fragment {
         other_icon = getActivity().findViewById(R.id.other_icon);
 
         mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
+        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
         mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
+        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
         mLastNameEditText = view.findViewById(R.id.lastname_edittext);
+        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
 
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);

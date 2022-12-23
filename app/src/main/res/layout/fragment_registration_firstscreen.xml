@@ -439,6 +439,7 @@
                         android:layout_marginStart="@dimen/fu_card_margin_updown"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
+                        android:maxLength="15"
                         android:background="@drawable/edittext_border"
                         android:hint="Phone Number"
                         android:inputType="phone"

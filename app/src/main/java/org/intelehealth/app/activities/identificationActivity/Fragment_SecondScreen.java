@@ -1,9 +1,12 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,7 +94,11 @@ public class Fragment_SecondScreen extends Fragment {
         mDistrictNameSpinner = view.findViewById(R.id.district_spinner);
         mCityNameSpinner = view.findViewById(R.id.city_spinner);
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
+        mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
+        mAddress2EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+
 
         mPostalCodeErrorTextView = view.findViewById(R.id.postalcode_error);
         mCountryNameErrorTextView = view.findViewById(R.id.country_error);
