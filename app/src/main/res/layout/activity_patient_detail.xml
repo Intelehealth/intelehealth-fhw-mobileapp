@@ -957,7 +957,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     tools:foreground="?android:attr/selectableItemBackground"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/blue_1"
                     android:text="@string/student_aid_survey" />
 
             </androidx.cardview.widget.CardView>
@@ -969,8 +969,7 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginTop="16dp">
 
                 <Button
                     android:id="@+id/generalaid_btn"
@@ -1037,7 +1036,6 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
-                android:visibility="gone"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="16dp">
 
@@ -1062,7 +1060,6 @@
                 android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
-                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout

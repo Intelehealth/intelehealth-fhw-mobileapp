@@ -101,7 +101,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray_2"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 
@@ -167,7 +166,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray_2"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 
@@ -275,7 +273,6 @@
                             android:id="@+id/help_relative"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray_2"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 
@@ -321,7 +318,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray_2"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 
@@ -437,7 +433,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/gray_2"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 

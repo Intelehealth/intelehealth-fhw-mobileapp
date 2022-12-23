@@ -1683,7 +1683,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/share_imageview"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_horizontal"
                         android:text="@string/share"
@@ -1692,13 +1691,13 @@
                         android:textSize="20sp" />
 
                     <ImageView
-                        android:id="@+id/share_imageview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_marginStart="35dp"
-                        android:paddingVertical="10dp"
-                        app:srcCompat="@drawable/ic_icons8_whatsapp_purple"></ImageView>
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        app:srcCompat="@drawable/ic_baseline_share_24" />
+
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

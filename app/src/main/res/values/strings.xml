@@ -542,8 +542,8 @@
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
     <string name="location_setup">Setup Location - </string>
-    <string name="today_visits">Today\'s Visits\n (Coming soon..)</string>
-    <string name="active_visits">Active Visits\n (Coming soon..)</string>
+    <string name="today_visits">Today\'s Visits</string>
+    <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -581,7 +581,7 @@
     <string name="txt_others">Others</string>
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help\n (Coming soon..)</string>
+    <string name="Whatsapp_Help_Cardview">Help</string>
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
@@ -686,7 +686,7 @@
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="due_on">Due Date:</string>
-    <string name="title_follow_up">Follow Up Visits \n (Coming soon..)</string>
+    <string name="title_follow_up">Follow Up Visits</string>
     <string name="location">Location</string>
 
     //----------reset app strings-------------
@@ -765,7 +765,7 @@
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
-    <string name="doctor_appointments">Doctor Appointments\n (Coming soon..)</string>
+    <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
     <string name="appointment_booked">Appointment Booked</string>
     <string name="minutes_txt">minutes</string>

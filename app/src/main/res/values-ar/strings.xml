@@ -538,8 +538,8 @@
     <string name="unable_to_get_proper_response">كانت هناك مشكلة في تنزيل بروتوكولات ، يرجى الاتصال بمسؤول النظام</string>
     <string name="last_synced">آخر تحديث -</string>
     <string name="location_setup">موقع الإعداد -</string>
-    <string name="today_visits">زيارات اليوم (قريباً...)</string>
-    <string name="active_visits">زيارات نشطة (قريباً...)</string>
+    <string name="today_visits">زيارات اليوم</string>
+    <string name="active_visits">زيارات نشطة</string>
     <string name="day">يوم</string>
     <string name="hour">ساعة</string>
     <string name="minute">اللحظة</string>
@@ -577,7 +577,7 @@
     <string name="txt_others">آخرون</string>
     <string name="do_you_need_help_please_contact_us">هل تحتاج مساعدة؟ الرجاء التواصل معنا!</string>
     <string name="whatsapp_helpline">خط المساعدة Whatsapp</string>
-    <string name="Whatsapp_Help_Cardview">مساعدة (قريباً...)</string>
+    <string name="Whatsapp_Help_Cardview">مساعدة</string>
     <string name="skip">تجاوز</string>
     <string name="start">ابدأ </string>
     <string name="who_is_this_napplication_for">لمن هذا التطبيق ؟</string>
@@ -682,7 +682,7 @@
     <string name="loading_more">تحميل المزيد ...</string>
     <string name="warning_app_update">يرجى تحديث التطبيق إلى أحدث إصدار.</string>
     <string name="due_on">تاريخ الاستحقاق:</string>
-    <string name="title_follow_up">متابعة الزيارات (قريباً...)</string>
+    <string name="title_follow_up">متابعة الزيارات</string>
     <string name="location">موقع</string>
 
     //----------reset app strings-------------
@@ -757,7 +757,7 @@
     <string name="please_select_appointment_slot">الرجاء تحديد فتحة الموعد</string>
     <string name="please_select_speciality">الرجاء تحديد التخصص!</string>
 
-    <string name="doctor_appointments">مواعيد الطبيب (قريباً...)</string>
+    <string name="doctor_appointments">مواعيد الطبيب</string>
     <string name="slot_info">معلومات الفتحة</string>
     <string name="appointment_booked">تم حجز الموعد</string>
     <string name="minutes_txt">الدقائق</string>
