@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
@@ -106,7 +107,9 @@ public class HomeFragment_New extends Fragment {
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+               /* Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+                startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), EndVisitActivity.class);
                 startActivity(intent);
             }
         });

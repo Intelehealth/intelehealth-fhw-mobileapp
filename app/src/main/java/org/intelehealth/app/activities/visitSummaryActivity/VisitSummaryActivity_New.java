@@ -287,6 +287,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+    private ImageButton backArrow;
 
 
     @Override
@@ -1489,6 +1490,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void initUI() {
         // textview - start
+        backArrow = findViewById(R.id.backArrow);
         profile_image = findViewById(R.id.profile_image);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
@@ -1537,12 +1539,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
 
-        ImageButton ibBackButton = findViewById(R.id.vector);
-        ibBackButton.setOnClickListener(new View.OnClickListener() {
+        backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-                startActivity(intent);
+                finish();
+                /*Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+                startActivity(intent);*/
             }
         });
 

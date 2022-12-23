@@ -104,8 +104,11 @@ public class PrescriptionActivity extends AppCompatActivity {
             visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header,
             btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
+    private LinearLayout presc_profile_header;
+    private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative,
+            advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview,
-            vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_testheader_expandview,
+            vs_diagnosis_header_expandview, vs_medication_header_expandview,vs_adviceheader_expandview, vs_testheader_expandview,
             vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             mCHWname, drname, dr_age_gender, qualification, dr_speciality,
@@ -134,6 +137,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     public static String prescription2;
     boolean hasLicense = false, isRespiratory = false;
     private static String mFileName = "config.json";
+    private ImageButton backArrow;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -185,6 +189,15 @@ public class PrescriptionActivity extends AppCompatActivity {
         btn_vs_share = findViewById(R.id.btn_vs_share);   // share
 
         btn_up_header = findViewById(R.id.btn_up_header);
+        presc_profile_header = findViewById(R.id.presc_profile_header);
+        dr_details_header_relative = findViewById(R.id.dr_details_header_relative);
+        diagnosis_header_relative = findViewById(R.id.diagnosis_header_relative);
+        medication_header_relative = findViewById(R.id.medication_header_relative);
+        advice_header_relative = findViewById(R.id.advice_header_relative);
+        test_header_relative = findViewById(R.id.test_header_relative);
+        referred_header_relative = findViewById(R.id.referred_header_relative);
+        followup_header_relative = findViewById(R.id.followup_header_relative);
+
         btnup_drdetails_header = findViewById(R.id.btnup_drdetails_header);
         btnup_diagnosis_header = findViewById(R.id.btnup_diagnosis_header);
         btnup_medication_header = findViewById(R.id.btnup_medication_header);
@@ -196,9 +209,15 @@ public class PrescriptionActivity extends AppCompatActivity {
         vs_drdetails_header_expandview = findViewById(R.id.vs_drdetails_header_expandview);
         vs_diagnosis_header_expandview = findViewById(R.id.vs_diagnosis_header_expandview);
         vs_medication_header_expandview = findViewById(R.id.vs_medication_header_expandview);
+        vs_adviceheader_expandview = findViewById(R.id.vs_adviceheader_expandview);
         vs_testheader_expandview = findViewById(R.id.vs_testheader_expandview);
         vs_speciality_header_expandview = findViewById(R.id.vs_speciality_header_expandview);
         vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+
+        backArrow = findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void fetchIntent() {
@@ -361,49 +380,56 @@ public class PrescriptionActivity extends AppCompatActivity {
     }
 
     private void expandableCardVisibilityHandling() {
-        btn_up_header.setOnClickListener(v -> {
+        presc_profile_header.setOnClickListener(v -> {
             if (vs_header_expandview.getVisibility() == View.VISIBLE)
                 vs_header_expandview.setVisibility(View.GONE);
             else
                 vs_header_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_drdetails_header.setOnClickListener(v -> {
+        dr_details_header_relative.setOnClickListener(v -> {
             if (vs_drdetails_header_expandview.getVisibility() == View.VISIBLE)
                 vs_drdetails_header_expandview.setVisibility(View.GONE);
             else
                 vs_drdetails_header_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_diagnosis_header.setOnClickListener(v -> {
+        diagnosis_header_relative.setOnClickListener(v -> {
             if (vs_diagnosis_header_expandview.getVisibility() == View.VISIBLE)
                 vs_diagnosis_header_expandview.setVisibility(View.GONE);
             else
                 vs_diagnosis_header_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_medication_header.setOnClickListener(v -> {
+        medication_header_relative.setOnClickListener(v -> {
             if (vs_medication_header_expandview.getVisibility() == View.VISIBLE)
                 vs_medication_header_expandview.setVisibility(View.GONE);
             else
                 vs_medication_header_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_test_header.setOnClickListener(v -> {
+        advice_header_relative.setOnClickListener(v -> { // todo: ddddd
+            if (vs_adviceheader_expandview.getVisibility() == View.VISIBLE)
+                vs_adviceheader_expandview.setVisibility(View.GONE);
+            else
+                vs_adviceheader_expandview.setVisibility(View.VISIBLE);
+        });
+
+        test_header_relative.setOnClickListener(v -> {
             if (vs_testheader_expandview.getVisibility() == View.VISIBLE)
                 vs_testheader_expandview.setVisibility(View.GONE);
             else
                 vs_testheader_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_speciality_header.setOnClickListener(v -> {
+        referred_header_relative.setOnClickListener(v -> {
             if (vs_speciality_header_expandview.getVisibility() == View.VISIBLE)
                 vs_speciality_header_expandview.setVisibility(View.GONE);
             else
                 vs_speciality_header_expandview.setVisibility(View.VISIBLE);
         });
 
-        btnup_followup_header.setOnClickListener(v -> {
+        followup_header_relative.setOnClickListener(v -> {
             if (vs_followup_header_expandview.getVisibility() == View.VISIBLE)
                 vs_followup_header_expandview.setVisibility(View.GONE);
             else
