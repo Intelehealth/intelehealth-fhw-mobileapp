@@ -160,6 +160,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
             btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
+            pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
             vs_add_notes;
@@ -507,42 +509,90 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_header_expandview.setVisibility(View.VISIBLE);
         });
 
+/*
         btn_up_vitals_header.setOnClickListener(v -> {
             if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
                 vs_vitals_header_expandview.setVisibility(View.GONE);
             else
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        vitals_header_relative.setOnClickListener(v -> {
+            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
+                vs_vitals_header_expandview.setVisibility(View.GONE);
+            else
+                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_visitreason_header.setOnClickListener(v -> {
             if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
             else
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        chiefcomplaint_header_relative.setOnClickListener(v -> {
+            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
+                vs_visitreason_header_expandview.setVisibility(View.GONE);
+            else
+                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_phyexam_header.setOnClickListener(v -> {
             if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
             else
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        physExam_header_relative.setOnClickListener(v -> {
+            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
+                vs_phyexam_header_expandview.setVisibility(View.GONE);
+            else
+                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_medhist_header.setOnClickListener(v -> {
             if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
                 vs_medhist_header_expandview.setVisibility(View.GONE);
             else
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        pathistory_header_relative.setOnClickListener(v -> {
+            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
+                vs_medhist_header_expandview.setVisibility(View.GONE);
+            else
+                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_special_vd_header.setOnClickListener(v -> {
             if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
                 vd_special_header_expandview.setVisibility(View.GONE);
             else
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        special_vd_header_relative.setOnClickListener(v -> {
+            if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
+                vd_special_header_expandview.setVisibility(View.GONE);
+            else
+                vd_special_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_addnotes_vd_header.setOnClickListener(v -> {
+            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
+                vd_addnotes_header_expandview.setVisibility(View.GONE);
+            else
+                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+        });
+*/
+        addnotes_vd_header_relative.setOnClickListener(v -> {
             if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
             else
@@ -1452,11 +1502,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btn_up_header = findViewById(R.id.btn_up_header);
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
+        vitals_header_relative = findViewById(R.id.vitals_header_relative);
         btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
+        chiefcomplaint_header_relative = findViewById(R.id.chiefcomplaint_header_relative);
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
+        physExam_header_relative = findViewById(R.id.physExam_header_relative);
         btn_up_medhist_header = findViewById(R.id.btn_up_medhist_header);
+        pathistory_header_relative = findViewById(R.id.pathistory_header_relative);
         btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
+        special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
+        addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
