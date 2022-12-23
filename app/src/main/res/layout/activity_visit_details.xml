@@ -469,7 +469,7 @@
 
             <!-- Frame 2608662 -->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/ll_3"
+                android:id="@+id/vs_card"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/notifi_header_icon"
                 android:layout_below="@+id/divider_2"
@@ -518,7 +518,7 @@
                 android:id="@+id/prescription_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_3"
+                android:layout_below="@+id/vs_card"
                 android:visibility="visible"
                 tools:visibility="visible"
                 android:layout_marginStart="@dimen/fu_margin_start"

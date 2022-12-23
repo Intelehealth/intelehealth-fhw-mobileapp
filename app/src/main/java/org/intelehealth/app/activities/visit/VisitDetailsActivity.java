@@ -57,7 +57,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private ImageView priorityTag, profile_image, icon_presc_details;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
-            followup_relative_block, followup_start_card, yes_no_followup_relative;
+            followup_relative_block, followup_start_card, yes_no_followup_relative,
+            vs_card, presc_relative;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate;
     private Button btn_end_visit, yes_followup_btn;
@@ -122,10 +123,26 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         // visit summary - start
         vs_arrowRight = findViewById(R.id.vs_arrowRight);
+        vs_card = findViewById(R.id.vs_card);
+        presc_relative = findViewById(R.id.presc_relative);
         vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
         adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
+/*
         vs_arrowRight.setOnClickListener(v -> {
+            Intent in = new Intent(this, VisitSummaryActivity_New.class);
+            in.putExtra("patientUuid", patientUuid);
+            in.putExtra("visitUuid", visitID);
+            in.putExtra("gender", gender);
+            in.putExtra("name", patientName);
+            in.putExtra("encounterUuidVitals", vitalsUUID);
+            in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+            in.putExtra("float_ageYear_Month", age);
+            in.putExtra("tag", "VisitDetailsActivity");
+            startActivity(in);
+        });
+*/
+        vs_card.setOnClickListener(v -> {
             Intent in = new Intent(this, VisitSummaryActivity_New.class);
             in.putExtra("patientUuid", patientUuid);
             in.putExtra("visitUuid", visitID);
@@ -148,6 +165,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
 
         if (hasPrescription) {
             presc_arrowRight.setVisibility(View.VISIBLE);
+            presc_relative.setClickable(true);
             presc_remind_block.setVisibility(View.GONE);
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
               //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
@@ -157,7 +175,25 @@ public class VisitDetailsActivity extends AppCompatActivity {
                 icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
             }
 
+/*
             presc_arrowRight.setOnClickListener(v -> {
+                Intent in = new Intent(this, PrescriptionActivity.class);
+                in.putExtra("patientname", patientName);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patient_photo", patient_photo_path);
+                in.putExtra("visit_ID", visitID);
+                in.putExtra("visit_startDate", visit_startDate);
+                in.putExtra("gender", gender);
+                in.putExtra("encounterUuidVitals", vitalsUUID);
+                in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+                in.putExtra("age", age);
+                in.putExtra("tag", "VisitDetailsActivity");
+                in.putExtra("followupDate", followupDate);
+                in.putExtra("openmrsID", openmrsID);
+                startActivity(in);
+            });
+*/
+            presc_relative.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
                 in.putExtra("patientname", patientName);
                 in.putExtra("patientUuid", patientUuid);
@@ -177,6 +213,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
         else {
             // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
             presc_arrowRight.setVisibility(View.GONE);
+            presc_relative.setClickable(false);
          //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
 
             String modifiedDate = "";
