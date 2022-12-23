@@ -1528,8 +1528,8 @@
     <string name="since_when_you_are_supporting_family">منذ متى و انت/ي تلعب/ين دور المسؤول الرئيسي في إعالة أسرتك؟</string>
     <string name="are_you_head_of_the_family">هل أنت المسؤول/ة الرئيسي/ة عن إعالة نفسك و أسرتك؟</string>
     <string name="fhh_survey">مسح FHH</string>
-    <string name="general_aid_survey">تقييم حاجات عامة</string>
-    <string name="student_aid_survey">تقييم حاجات طالب</string>
+    <string name="general_aid_survey">تقييم الحالة العامة للأسرة</string>
+    <string name="student_aid_survey">نقييم حاجات طالب</string>
     <string name="emergency_survey">تقييم الاحتياجات الطبية الطارئة</string>
     <string name="syriana">سيريانا</string>
     <string name="table_pulse">النبض (نبضة/دقيقة)</string>
@@ -1567,5 +1567,13 @@
     <string name="community_health_assessment">تقييم الحاجات الصحية المجتمعية</string>
     <string name="mobileno_not_available"> رقم الهاتف</string>
 
+    //new strings
+    <string name="sila_intro_text">مرحباً، اسمي صلة، مساعدتك الرقمية للخدمات الصحية والاجتماعية</string>
+    <string name="for_demo_only">للعرض التجريبي فقط</string>
+    <string name="select_settings">اختيار الاعدادات</string>
+    <string name="no_phone_no">لا يوجد رقم هاتف</string>
+    <string name="incomplete_survey_dialog">الاستبيان غير مكتمل. هل ترغب في حفظه كمسودة</string>
+    <string name="medical_emergency_need_assessment">تقييم انساني لحالة طبية اسعافية</string>
+    <string name="survey_acute_homecare_utilizers">استبيان مستخدمي الخدمات الطبية المنزلية</string>
 
 </resources>

@@ -34,7 +34,7 @@
                 android:fontFamily="@font/lato_regular"
                 android:gravity="center_horizontal|top"
                 android:lineSpacingExtra="2sp"
-                android:text="@string/hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen"
+                android:text="@string/sila_intro_text"
                 android:textSize="18sp" />
 
             <Button
@@ -50,7 +50,7 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="true"
-                android:text="@string/demo_version"
+                android:text="@string/for_demo_only"
                 android:visibility="visible" />
 
             <Button
@@ -66,7 +66,7 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="true"
-                android:text="@string/custom_setup" />
+                android:text="@string/select_settings" />
 
         </RelativeLayout>
 

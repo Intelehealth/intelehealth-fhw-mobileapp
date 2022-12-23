@@ -152,7 +152,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
     Button newVisit, button_householdSurvey, mTriageSurveyButton;
-    Button cha_button, generalaid_btn, studentaid_btn;
+    Button cha_button, generalaid_btn, studentaid_btn, emergencyaid_btn, homecareaid_btn;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -201,6 +201,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         cha_button = findViewById(R.id.cha_button);
         generalaid_btn = findViewById(R.id.generalaid_btn);
         studentaid_btn = findViewById(R.id.studentaid_btn);
+        emergencyaid_btn = findViewById(R.id.emergencyaid_btn);
+        homecareaid_btn = findViewById(R.id.acute_homecare_utilizers_btn);
 
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -331,6 +333,29 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(intentStudent);
             }
         });
+
+        emergencyaid_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStudent = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentStudent.putExtra("patientUuid", patientUuid);
+                intentStudent.putExtra("aidType", "Emergency Need Evaluation");
+                intentStudent.putExtra("isEditMode", true);
+                startActivity(intentStudent);
+            }
+        });
+
+        homecareaid_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStudent = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentStudent.putExtra("patientUuid", patientUuid);
+                intentStudent.putExtra("aidType", "Survey of acute homecare utilizers");
+                intentStudent.putExtra("isEditMode", true);
+                startActivity(intentStudent);
+            }
+        });
+
         // Aid section - End
 
         LoadFamilyMembers();

@@ -50,7 +50,8 @@
                     android:layout_marginTop="15dp"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="5sp"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -87,155 +88,6 @@
                                 android:text="sila.swaida.org"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                                    <androidx.cardview.widget.CardView
-                                        android:id="@+id/cardview_locations"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginHorizontal="10dp"
-                                        app:cardCornerRadius="10sp"
-                                        android:layout_marginTop="15dp"
-                                        app:cardElevation="5sp"
-                                        app:cardPreventCornerOverlap="false">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="vertical"
-                                            android:padding="10dp">
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:ems="10"
-                                                android:includeFontPadding="false"
-                                                android:textSize="16sp"
-                                                android:text="@string/location"
-                                                android:fontFamily="@font/lato_bold" />
-
-                                            <Space
-                                                android:layout_width="match_parent"
-                                                android:layout_height="10dp" />
-
-                                                <Spinner
-                                                    android:id="@+id/spinner_state"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:nextFocusForward="@+id/spinner_district"
-                                                    android:entries="@array/location_state"
-                                                    android:alpha="0.4"
-                                                    android:textAlignment="viewStart"
-                                                    android:focusable="true"
-                                                    />
-
-                                                <android.widget.Space
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="10dp"/>
-
-                                                <Spinner
-                                                    android:id="@+id/spinner_district"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:nextFocusForward="@+id/spinner_sanch"
-                                                    android:entries="@array/location_district"
-                                                    android:focusable="true"
-                                                    android:textAlignment="viewStart"
-                                                    android:alpha="0.4" />
-
-<!--                                                <android.widget.Space-->
-<!--                                                    android:layout_width="match_parent"-->
-<!--                                                    android:layout_height="10dp"/>-->
-
-<!--                                                <Spinner-->
-<!--                                                    android:id="@+id/spinner_sanch"-->
-<!--                                                    android:layout_width="match_parent"-->
-<!--                                                    android:layout_height="wrap_content"-->
-<!--                                                    android:nextFocusForward="@+id/spinner_village"-->
-<!--                                                    android:entries="@array/location_sanch"-->
-<!--                                                    android:focusable="true"-->
-<!--                                                    android:alpha="0.4"-->
-<!--                                                    />-->
-
-                                                <android.widget.Space
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="10dp"/>
-
-                                                <Spinner
-                                                    android:id="@+id/spinner_village"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:nextFocusForward="@+id/demoMindmap"
-                                                    android:entries="@array/location_village"
-                                                    android:focusable="true"
-                                                    android:textAlignment="viewStart"
-                                                    android:alpha="0.4"
-                                                    />
-
-                                                <android.widget.Space
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="10dp"/>
-
-
-                                        </LinearLayout>
-
-                                    </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="15dp"
-                    app:cardCornerRadius="10sp"
-                    app:cardElevation="5sp"
-                    app:cardPreventCornerOverlap="false">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:includeFontPadding="false"
-                            android:text="@string/choose_an_option_for_protocols"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="16sp" />
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp" />
-
-                        <RadioButton
-                            android:id="@+id/demoMindmap"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:fontFamily="@font/lato_regular"
-                            android:includeFontPadding="false"
-                            android:onClick="onRadioClick"
-                            android:text="@string/setup_use_demo_mindmap"
-                            android:textAppearance="@style/RobotoTextViewStyle"
-                            android:textSize="14sp" />
-
-
-                        <RadioButton
-                            android:id="@+id/downloadMindmap"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_regular"
-                            android:includeFontPadding="false"
-                            android:onClick="onRadioClick"
-                            android:text="@string/setup_download_mindmap"
-                            android:textAppearance="@style/RobotoTextViewStyle"
-                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -334,6 +186,157 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                                        android:id="@+id/cardview_locations"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="10dp"
+                                        app:cardCornerRadius="10sp"
+                                        android:layout_marginTop="15dp"
+                                        app:cardElevation="5sp"
+                                        app:cardPreventCornerOverlap="false">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical"
+                                            android:padding="10dp">
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:ems="10"
+                                                android:includeFontPadding="false"
+                                                android:textSize="16sp"
+                                                android:text="@string/location"
+                                                android:fontFamily="@font/lato_bold" />
+
+                                            <Space
+                                                android:layout_width="match_parent"
+                                                android:layout_height="10dp" />
+
+                                                <Spinner
+                                                    android:id="@+id/spinner_state"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:nextFocusForward="@+id/spinner_district"
+                                                    android:entries="@array/location_state"
+                                                    android:alpha="0.4"
+                                                    android:textAlignment="viewStart"
+                                                    android:focusable="true"
+                                                    />
+
+                                                <android.widget.Space
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="10dp"/>
+
+                                                <Spinner
+                                                    android:id="@+id/spinner_district"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:nextFocusForward="@+id/spinner_sanch"
+                                                    android:entries="@array/location_district"
+                                                    android:focusable="true"
+                                                    android:textAlignment="viewStart"
+                                                    android:alpha="0.4" />
+
+<!--                                                <android.widget.Space-->
+<!--                                                    android:layout_width="match_parent"-->
+<!--                                                    android:layout_height="10dp"/>-->
+
+<!--                                                <Spinner-->
+<!--                                                    android:id="@+id/spinner_sanch"-->
+<!--                                                    android:layout_width="match_parent"-->
+<!--                                                    android:layout_height="wrap_content"-->
+<!--                                                    android:nextFocusForward="@+id/spinner_village"-->
+<!--                                                    android:entries="@array/location_sanch"-->
+<!--                                                    android:focusable="true"-->
+<!--                                                    android:alpha="0.4"-->
+<!--                                                    />-->
+
+                                                <android.widget.Space
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="10dp"/>
+
+                                                <Spinner
+                                                    android:id="@+id/spinner_village"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:nextFocusForward="@+id/demoMindmap"
+                                                    android:entries="@array/location_village"
+                                                    android:focusable="true"
+                                                    android:textAlignment="viewStart"
+                                                    android:alpha="0.4"
+                                                    />
+
+                                                <android.widget.Space
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="10dp"/>
+
+
+                                        </LinearLayout>
+
+                                    </androidx.cardview.widget.CardView>
+
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    android:visibility="gone"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/choose_an_option_for_protocols"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="16sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <RadioButton
+                            android:id="@+id/demoMindmap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:onClick="onRadioClick"
+                            android:text="@string/setup_use_demo_mindmap"
+                            android:textAppearance="@style/RobotoTextViewStyle"
+                            android:textSize="14sp" />
+
+
+                        <RadioButton
+                            android:id="@+id/downloadMindmap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:onClick="onRadioClick"
+                            android:text="@string/setup_download_mindmap"
+                            android:textAppearance="@style/RobotoTextViewStyle"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <!--<Space
                     android:layout_width="match_parent"

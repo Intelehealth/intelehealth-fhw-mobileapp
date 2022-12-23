@@ -1542,8 +1542,8 @@
     <string name="since_when_you_are_supporting_family">Since when have you been the main responsible for supporting your family?</string>
     <string name="are_you_head_of_the_family">Are you the main responsible for providing for yourself and your family?</string>
     <string name="fhh_survey">FHH Survey</string>
-    <string name="general_aid_survey">General Needs Assessment</string>
-    <string name="student_aid_survey">Student Needs Assessment</string>
+    <string name="general_aid_survey">General Family Need Assessment</string>
+    <string name="student_aid_survey">Student Need Assessment</string>
     <string name="emergency_survey">Emergency Need Evaluation</string>
     <string name="syriana">Sila</string>
     <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>
@@ -1573,4 +1573,12 @@
     <string name="community_health_assessment">Community Health Need Assessment</string>
     <string name="mobileno_not_available">Phone number is not available.</string>
 
+    //new strings
+    <string name="sila_intro_text">Hi, my name is Sila, your social and health services digital assistant.</string>
+    <string name="for_demo_only">For Demo Only</string>
+    <string name="select_settings">Select Settings</string>
+    <string name="no_phone_no">No phone number</string>
+    <string name="incomplete_survey_dialog">The survey is incomplete, do you want to save it as a draft?</string>
+    <string name="medical_emergency_need_assessment">Medical Emergency Need Assessment</string>
+    <string name="survey_acute_homecare_utilizers">Survey of acute homecare utilizers</string>
 </resources>

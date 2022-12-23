@@ -46,7 +46,6 @@ public class SurveyCommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
-
     }
 
 

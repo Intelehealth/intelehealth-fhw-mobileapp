@@ -342,7 +342,7 @@
                             android:id="@+id/phone_checkbox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/mobileno_not_available"
+                            android:text="@string/no_phone_no"
                             android:paddingStart="5dp"/>
                         <!--Checkbox - mobile - End -->
 

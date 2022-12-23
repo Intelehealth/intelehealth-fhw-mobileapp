@@ -92,18 +92,26 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) { // As requested by Programs Team.
             if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
-                setTitle("تقييم الحاجات الصحية المجتمعية");
+                setTitle("استبيان الحاجات المحلية");
             else if (aidType.equalsIgnoreCase("General Aid"))
-                setTitle("تقييم حاجات عامة");
+                setTitle("تقييم الحالة العامة للأسرة");
             else if (aidType.equalsIgnoreCase("Student Aid"))
                 setTitle("تقييم حاجات طالب");
+            else if (aidType.equalsIgnoreCase("Emergency Need Evaluation"))
+                setTitle("تقييم انساني لحالة طبية اسعافية");
+            else if (aidType.equalsIgnoreCase("Survey of acute homecare utilizers"))
+                setTitle("استبيان مستخدمي الخدمات الطبية المنزلية");
         } else {
             if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
-                setTitle("Community Health Need Assessment");
+                setTitle("Community General Need Survey");
             else if (aidType.equalsIgnoreCase("General Aid"))
-                setTitle("General Need Assessment");
+                setTitle("General Family Need Assessment");
             else if (aidType.equalsIgnoreCase("Student Aid"))
                 setTitle("Student Need Assessment");
+            else if (aidType.equalsIgnoreCase("Emergency Need Evaluation"))
+                setTitle("Medical Emergency Need Assessment");
+            else if (aidType.equalsIgnoreCase("Survey of acute homecare utilizers"))
+                setTitle("Survey of acute homecare utilizers");
         }
 
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
@@ -215,9 +223,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         if (isDraftMode) {
             MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-
-            // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-            alertdialogBuilder.setMessage(R.string.alert_for_draft);
+            alertdialogBuilder.setMessage(getResources().getString(R.string.incomplete_survey_dialog));
             alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -238,8 +244,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
             Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
             positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
             negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
             //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             //IntelehealthApplication.setAlertDialogCustomTheme(this, aler
@@ -346,18 +350,26 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) { // As requested by Programs Team.
                         if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
-                            Toast.makeText(context, "تم إرسال تقييم الحاجة إلى صحة المجتمع!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "استبيان الحاجات المحلية المجتمع!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("General Aid"))
-                            Toast.makeText(context, "تقديم المساعدة العامة!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "تقييم الحالة العامة للأسرة العامة!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Student Aid"))
                             Toast.makeText(context, "تم إرسال المساعدة الطلابية!", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Emergency Need Evaluation"))
+                            Toast.makeText(context,"تقييم انساني لحالة طبية اسعافية الطلابية!",Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Survey of acute homecare utilizers"))
+                            Toast.makeText(context,"استبيان مستخدمي الخدمات الطبية المنزلية!",Toast.LENGTH_SHORT).show();
                     } else {
                         if (aidType.equalsIgnoreCase("Community Health Need Assessment"))
-                            Toast.makeText(context, "Community Health Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Community General Need Survey Submitted!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("General Aid"))
-                            Toast.makeText(context, "General Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "General Family Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Student Aid"))
                             Toast.makeText(context, "Student Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Emergency Need Evaluation"))
+                            Toast.makeText(context, "Medical Emergency Need Assessment Submitted!", Toast.LENGTH_SHORT).show();
+                        else if (aidType.equalsIgnoreCase("Survey of acute homecare utilizers"))
+                            Toast.makeText(context, "Survey of acute homecare utilizers Submitted!", Toast.LENGTH_SHORT).show();
                     }
                 }
 //                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();

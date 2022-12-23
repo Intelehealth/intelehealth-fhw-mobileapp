@@ -911,14 +911,14 @@
                 android:layout_marginTop="16dp">
 
                 <Button
-                    android:id="@+id/generalaid_btn"
+                    android:id="@+id/acute_homecare_utilizers_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     tools:foreground="?android:attr/selectableItemBackground"
-                    android:background="@color/green"
-                    android:text="@string/general_aid_survey" />
+                    android:background="@color/colorYellow"
+                    android:text="@string/survey_acute_homecare_utilizers" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -928,7 +928,26 @@
                 android:layout_marginHorizontal="30dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/emergencyaid_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/red"
+                    android:text="@string/medical_emergency_need_assessment" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
                 android:layout_marginTop="16dp">
 
                 <Button
@@ -942,6 +961,30 @@
                     android:text="@string/student_aid_survey" />
 
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/generalaid_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/green"
+                    android:text="@string/general_aid_survey" />
+            </androidx.cardview.widget.CardView>
+
+
+
             <!--Add buttons here for Aid - End -->
 
             <androidx.cardview.widget.CardView
