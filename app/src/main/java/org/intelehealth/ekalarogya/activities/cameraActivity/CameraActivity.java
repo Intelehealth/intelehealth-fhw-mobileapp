@@ -304,7 +304,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
         CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
-        handler.postDelayed(this::initializeOnClick, 1000);
+        handler.postDelayed(this::initializeOnClick, 1500);
     }
 
     @Override

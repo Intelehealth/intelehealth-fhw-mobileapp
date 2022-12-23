@@ -464,11 +464,16 @@ public class SyncDAO {
             String userName = sessionManager.getChwname();
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-            String[] activitname = cn.getClassName().split("\\.");
+
             String currentActivity = "";
-            if (activitname != null && activitname.length > 0) {
-                currentActivity = activitname[activitname.length - 1];
+
+            if (cn != null) {
+                String[] activitname = cn.getClassName().split("\\.");
+                if (activitname.length > 0) {
+                    currentActivity = activitname[activitname.length - 1];
+                }
             }
+
             String appVersionName = BuildConfig.VERSION_NAME;
             String currentDeviceVersion = Build.VERSION.RELEASE;
             String deviceModel = android.os.Build.MODEL;
@@ -476,7 +481,7 @@ public class SyncDAO {
             Calendar calendar = Calendar.getInstance();
             long currentTime = calendar.getTimeInMillis();
             long lastSyncTime = 0;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             try {
                 if (!sessionManager.getPullExcutedTime().isEmpty()) {
                     String datetime = sessionManager.getPullExcutedTime();

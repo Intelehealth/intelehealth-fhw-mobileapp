@@ -590,29 +590,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     private void getAssociatedSymptoms(int complaintIndex) {
 
-        List<Node> assoComplaintsNodes = new ArrayList<>();
-        assoComplaintsNodes.addAll(complaintsNodes);
+        List<Node> assoComplaintsNodes = new ArrayList<>(complaintsNodes);
 
-        for (int i = 0; i < complaintsNodes.get(complaintIndex).size(); i++) {
+        if (!assoComplaintsNodes.isEmpty()) {
+            for (int i = 0; i < complaintsNodes.get(complaintIndex).size(); i++) {
 
-            if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("Associated symptoms"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
+                if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("Associated symptoms"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
 
-                optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
+                    optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
-                assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
-                currentNode = assoComplaintsNodes.get(complaintIndex);
-                Log.e("CurrentNode", "" + currentNode);
+                    assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
+                    currentNode = assoComplaintsNodes.get(complaintIndex);
+                    Log.e("CurrentNode", "" + currentNode);
 
-            } else {
-                currentNode = complaintsNodes.get(complaintIndex);
+                } else {
+                    currentNode = complaintsNodes.get(complaintIndex);
+                }
             }
         }
     }
