@@ -50,7 +50,8 @@ public class HomeFragment_New extends Fragment {
 
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
-
+        View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        layoutToolbar.setVisibility(View.VISIBLE);
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);

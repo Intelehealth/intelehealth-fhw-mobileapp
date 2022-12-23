@@ -6,67 +6,61 @@
 
     <EditText
         android:id="@+id/et_pin_1"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
-        android:imeOptions="actionNext"
-        android:inputType="number"
-        android:maxLength="1" />
+        android:imeOptions="actionNext" />
 
     <EditText
         android:id="@+id/et_pin_2"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
         android:imeOptions="actionNext"
-        android:inputType="number"
-        android:maxLength="1" />
+
+        />
 
     <EditText
         android:id="@+id/et_pin_3"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
         android:imeOptions="actionNext"
-        android:inputType="number"
-        android:maxLength="1" />
+
+        />
 
     <EditText
         android:id="@+id/et_pin_4"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
-        android:imeOptions="actionNext"
-        android:inputType="number"
-        android:maxLength="1" />
+        android:imeOptions="actionNext" />
 
     <EditText
         android:id="@+id/et_pin_5"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
         android:imeOptions="actionNext"
-        android:inputType="number"
-        android:maxLength="1" />
+
+        />
 
     <EditText
         android:id="@+id/et_pin_6"
+        style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:gravity="center"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="1" />
+        android:imeOptions="actionDone" />
 </LinearLayout>

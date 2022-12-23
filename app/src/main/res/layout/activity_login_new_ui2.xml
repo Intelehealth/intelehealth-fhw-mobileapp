@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent_login"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".activities.loginActivity.LoginActivityNew">
 
@@ -98,16 +99,27 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ui2_ic_info_question_mark"
-                    android:drawablePadding="@dimen/common_tv_icon_padding"
-                    android:fontFamily="@font/lato_regular"
-                    android:text="@string/enter_login_details"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/common_header_text_size"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:layout_marginEnd="@dimen/tv_login_details_info_margin_end"
+                        android:text="@string/enter_login_details"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/common_header_text_size"
+                        android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/iv_login_details_info"
+                        android:layout_width="@dimen/tv_login_details_info_height_width"
+                        android:layout_height="@dimen/tv_login_details_info_height_width"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:src="@drawable/ui2_ic_info_question_mark"/>
+                </LinearLayout>
+
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"
@@ -229,13 +241,13 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginStart="@dimen/layout_login_padding_start"
         android:layout_marginEnd="@dimen/layout_login_padding_end"
-        android:layout_marginBottom="24dp"
         android:background="@drawable/ui2_common_primary_bg"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
         android:drawableTint="@color/iconTintWhite"
         android:fitsSystemWindows="true"
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"
+        android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
         android:text="@string/login" />

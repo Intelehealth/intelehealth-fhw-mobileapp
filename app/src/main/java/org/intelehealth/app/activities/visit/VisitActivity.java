@@ -6,15 +6,19 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
@@ -28,6 +32,11 @@ public class VisitActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
 
+        ImageButton ibBack = findViewById(R.id.vector);
+        ibBack.setOnClickListener(v -> {
+            Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+        });
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

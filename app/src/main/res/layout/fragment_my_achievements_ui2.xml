@@ -4,10 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/layout_toolbar_achievements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/achievements_badge_margin_start"
+        android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
+        android:layout_marginEnd="@dimen/achievements_badge_margin_start">
+
+        <TextView
+            android:id="@+id/tv_achievements_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/iv_back_arrow_common"
+            android:text="Title"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_header_text_size"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/iv_achievements_internet"
+            android:layout_width="@dimen/image_home_toolbar_icon_width"
+            android:layout_height="@dimen/image_home_toolbar_icon_height"
+            android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@+id/imageview_notifications_common"
+            android:foregroundGravity="center_horizontal"
+            android:tooltipText="Tooltip"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
     <ImageView
         android:id="@+id/iv_badge"
         android:layout_width="@dimen/achievements_badge_width"
         android:layout_height="@dimen/achievements_badge_height"
+        android:layout_below="@+id/layout_toolbar_achievements"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="@dimen/achievements_badge_margin_start"
         android:layout_marginTop="@dimen/achievements_badge_margin_top"
@@ -17,6 +49,7 @@
         android:id="@+id/tv_user_level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_toolbar_achievements"
         android:layout_marginStart="@dimen/achievements_userlevel_margin_start"
         android:layout_marginTop="@dimen/achievements_userlevel_margin_top"
         android:layout_toEndOf="@+id/iv_badge"

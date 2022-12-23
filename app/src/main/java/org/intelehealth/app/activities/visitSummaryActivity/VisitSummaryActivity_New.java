@@ -150,7 +150,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitSummaryActivity_New extends AppCompatActivity  implements AdapterInterface {
+public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
@@ -287,7 +287,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -306,7 +305,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
-        
+
     }
 
     private void fetchingIntent() {
@@ -403,72 +402,77 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
-            uploadButton.setVisibility(View.GONE); 
+            uploadButton.setVisibility(View.GONE);
 //            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
         } else {
-            String visitIDorderBy = "startdate";
-            String visitIDSelection = "uuid = ?";
-            String[] visitIDArgs = {visitUuid};
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-            }
-            if (visitIDCursor != null) visitIDCursor.close();
-            if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
+            if (visitUuid != null && !visitUuid.isEmpty()) {
+
+
+                String visitIDorderBy = "startdate";
+                String visitIDSelection = "uuid = ?";
+                String[] visitIDArgs = {visitUuid};
+                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                    visitIDCursor.moveToFirst();
+                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (visitIDCursor != null) visitIDCursor.close();
+                if (visitUUID != null && !visitUUID.isEmpty()) {
+                    addDownloadButton();
+                }
             }
         }
         // past visit checking based on intent - end
 
         showVisitID();  // display visit ID.
 
-        // Edit btn visibility based on user coming from Visit Details screen - Start
-        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-            editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
-            editPhysical.setVisibility(View.GONE);
-            editFamHist.setVisibility(View.GONE);
-            editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
-            add_additional_doc.setVisibility(View.GONE);
+        if (intentTag != null && !intentTag.isEmpty()) {
+            // Edit btn visibility based on user coming from Visit Details screen - Start
+            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+                editVitals.setVisibility(View.GONE);
+                editComplaint.setVisibility(View.GONE);
+                editPhysical.setVisibility(View.GONE);
+                editFamHist.setVisibility(View.GONE);
+                editMedHist.setVisibility(View.GONE);
+                editAddDocs.setVisibility(View.GONE);
+                add_additional_doc.setVisibility(View.GONE);
 
-            btn_bottom_printshare.setVisibility(View.VISIBLE);
-            btn_bottom_vs.setVisibility(View.GONE);
+                btn_bottom_printshare.setVisibility(View.VISIBLE);
+                btn_bottom_vs.setVisibility(View.GONE);
 
-            doc_speciality_card.setVisibility(View.GONE);
-            special_vd_card.setVisibility(View.VISIBLE);
-            vs_add_notes.setVisibility(View.GONE);
-            addnotes_vd_card.setVisibility(View.VISIBLE);
+                doc_speciality_card.setVisibility(View.GONE);
+                special_vd_card.setVisibility(View.VISIBLE);
+                vs_add_notes.setVisibility(View.GONE);
+                addnotes_vd_card.setVisibility(View.VISIBLE);
 
-            addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
-            if (!addnotes_value.equalsIgnoreCase("")) {
-                vd_addnotes_value.setText(addnotes_value);
+                addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
+                if (!addnotes_value.equalsIgnoreCase("")) {
+                    vd_addnotes_value.setText(addnotes_value);
+                } else {
+                    addnotes_value = "No notes added for Doctor.";
+                    vd_addnotes_value.setText(addnotes_value);
+                }
+            } else {
+                editVitals.setVisibility(View.VISIBLE);
+                editComplaint.setVisibility(View.VISIBLE);
+                editPhysical.setVisibility(View.VISIBLE);
+                editFamHist.setVisibility(View.VISIBLE);
+                editMedHist.setVisibility(View.VISIBLE);
+                editAddDocs.setVisibility(View.VISIBLE);
+                add_additional_doc.setVisibility(View.VISIBLE);
+
+                btn_bottom_printshare.setVisibility(View.GONE);
+                btn_bottom_vs.setVisibility(View.VISIBLE);
+
+                doc_speciality_card.setVisibility(View.VISIBLE);
+                special_vd_card.setVisibility(View.GONE);
+                vs_add_notes.setVisibility(View.VISIBLE);
+                addnotes_vd_card.setVisibility(View.GONE);
             }
-            else {
-                addnotes_value = "No notes added for Doctor.";
-                vd_addnotes_value.setText(addnotes_value);
-            }
-        }
-        else {
-            editVitals.setVisibility(View.VISIBLE);
-            editComplaint.setVisibility(View.VISIBLE);
-            editPhysical.setVisibility(View.VISIBLE);
-            editFamHist.setVisibility(View.VISIBLE);
-            editMedHist.setVisibility(View.VISIBLE);
-            editAddDocs.setVisibility(View.VISIBLE);
-            add_additional_doc.setVisibility(View.VISIBLE);
+            // Edit btn visibility based on user coming from Visit Details screen - End
 
-            btn_bottom_printshare.setVisibility(View.GONE);
-            btn_bottom_vs.setVisibility(View.VISIBLE);
-
-            doc_speciality_card.setVisibility(View.VISIBLE);
-            special_vd_card.setVisibility(View.GONE);
-            vs_add_notes.setVisibility(View.VISIBLE);
-            addnotes_vd_card.setVisibility(View.GONE);
         }
-        // Edit btn visibility based on user coming from Visit Details screen - End
 
     }
 
@@ -484,8 +488,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 vs_vitals_header_expandview.setVisibility(View.GONE);
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
@@ -550,15 +553,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     private void setViewsData() {
         physicalDoumentsUpdates();
 
-        queryData(String.valueOf(patientUuid));
+        if (patientUuid != null && patientUuid.isEmpty()) {
+            queryData(String.valueOf(patientUuid));
 
-        // Patient Photo
-        //1.
-        try {
-            profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+            // Patient Photo
+            //1.
+            try {
+                profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
+
         //2.
         if (patient.getPatient_photo() == null || patient.getPatient_photo().equalsIgnoreCase("")) {
             if (NetworkConnection.isOnline(context)) {
@@ -580,8 +586,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(profile_image);
-        }
-        else {
+        } else {
             profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
         }
         // photo - end
@@ -614,17 +619,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         weightView.setText(weight.getValue());
 
         Log.d(TAG, "onCreate: " + weight.getValue());
-        String mWeight = weight.getValue().split(" ")[0];
-        String mHeight = height.getValue().split(" ")[0];
-        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
-            double numerator = Double.parseDouble(mWeight) * 10000;
-            double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
-            double bmi_value = numerator / denominator;
-            mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
-        } else {
-            mBMI = "";
+        if (weight.getValue() != null) {
+            String mWeight = weight.getValue().split(" ")[0];
+            String mHeight = height.getValue().split(" ")[0];
+            if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+                double numerator = Double.parseDouble(mWeight) * 10000;
+                double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+                double bmi_value = numerator / denominator;
+                mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+            } else {
+                mBMI = "";
+            }
+            bmiView.setText(mBMI);
+
         }
-        bmiView.setText(mBMI);
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
         if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
@@ -652,14 +660,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
-            Log.v(TAG, "complaint: "  + value);
+            Log.v(TAG, "complaint: " + value);
             String valueArray[] = value.replace("<br>►Associated symptoms: <br>", "►<b>Associated symptoms</b>: <br/>")
                     .split("►<b>Associated symptoms</b>: <br/>");
 
             String[] headerchips = valueArray[0].split("►");
             List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
             List<String> cc_list = new ArrayList<>();
-            
+
             for (int i = 0; i < cc_tempvalues.size(); i++) {
                 if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
                     cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
@@ -683,8 +691,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 patientReports = reports[1];
                 patientDenies = assoValueBlock[1];
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            }
-            else if (valueArray[1].contains("• Patient reports")) {
+            } else if (valueArray[1].contains("• Patient reports")) {
                 // todo: handle later -> comment added on 14 nov 2022
             }
 
@@ -733,52 +740,55 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
-        try {
-            fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String fileuuid : fileuuidList) {
-                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
-                if (new File(filename).exists()) {
-                    fileList.add(new File(filename));
+
+        if (encounterUuidAdultIntial != null) {
+            try {
+                fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+                for (String fileuuid : fileuuidList) {
+                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                    if (new File(filename).exists()) {
+                        fileList.add(new File(filename));
+                    }
                 }
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        rowListItem = new ArrayList<>();
+            rowListItem = new ArrayList<>();
 
-        for (File file : fileList)
-            rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+            for (File file : fileList)
+                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mAdditionalDocsRecyclerView.setHasFixedSize(true);
-        mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
+            RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            mAdditionalDocsRecyclerView.setHasFixedSize(true);
+            mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                    AppConstants.IMAGE_PATH, this, true);
-        }
-        else {
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                    AppConstants.IMAGE_PATH, this, false);
-        }
+            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                        AppConstants.IMAGE_PATH, this, true);
+            } else {
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
+                        AppConstants.IMAGE_PATH, this, false);
+            }
 
-        mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
-        add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+            mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
+            add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
 
 
-        editAddDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            editAddDocs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 /*Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
                 addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 startActivity(addDocs);*/
-                selectImage();
-            }
-        });
-        // additional doc data - end
+                    selectImage();
+                }
+            });
+            // additional doc data - end
+        }
+
 
         // speciality data
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
@@ -836,18 +846,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
 
-        // Priority data
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String emergencyUuid = "";
-        try {
-            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        if (visitUuid != null) {
+            // Priority data
+            EncounterDAO encounterDAO = new EncounterDAO();
+            String emergencyUuid = "";
+            try {
+                emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+                flag.setChecked(true);
+            }
         }
 
-        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
-            flag.setChecked(true);
-        }
 
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -862,7 +875,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         });
         // todo: this code is present in uoload btn too so handle that later...
         // Priority data - end
-        
+
         // edit listeners - start
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1311,7 +1324,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             }
         });
         // edit listeners - end
-        
+
         // upload btn click - start
       /*  uploadButton.setOnClickListener(v -> {
             visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
@@ -1397,7 +1410,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -1468,6 +1481,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
 
+        ImageButton ibBackButton = findViewById(R.id.vector);
+        ibBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
+
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1536,7 +1558,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         // priority id
         flag = findViewById(R.id.flaggedcheckbox);
         // priority id - end
-        
+
         // edit - start
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
@@ -1566,7 +1588,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             sharePresc();
         });
         // Bottom Buttons - end
-
 
 
         // file set
@@ -1630,8 +1651,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-        }
-        else {
+        } else {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
             alertDialog.setPositiveButton(getResources().getString(R.string.ok),
@@ -1736,40 +1756,40 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     }
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
-                    String positiveBtnTxt, String negativeBtnTxt) {
+                                 String positiveBtnTxt, String negativeBtnTxt) {
 
-            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-            final LayoutInflater inflater = LayoutInflater.from(context);
-            View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-            alertdialogBuilder.setView(convertView);
-            ImageView icon = convertView.findViewById(R.id.dialog_icon);
-            TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-            TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-            Button positive_btn = convertView.findViewById(R.id.positive_btn);
-            Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
-            icon.setImageDrawable(drawable);
-            dialog_title.setText(title);
-            dialog_subtitle.setText(subTitle);
-            positive_btn.setText(positiveBtnTxt);
-            negative_btn.setText(negativeBtnTxt);
+        icon.setImageDrawable(drawable);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subTitle);
+        positive_btn.setText(positiveBtnTxt);
+        negative_btn.setText(negativeBtnTxt);
 
-            AlertDialog alertDialog = alertdialogBuilder.create();
-            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            negative_btn.setOnClickListener(v -> {
-                alertDialog.dismiss();
-            });
+        negative_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
 
-            positive_btn.setOnClickListener(v -> {
-                alertDialog.dismiss();
-                visitUploadBlock();
-            });
+        positive_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            visitUploadBlock();
+        });
 
-            alertDialog.show();
+        alertDialog.show();
     }
 
     private void visitUploadBlock() {
@@ -1858,10 +1878,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
                             // ie. visit is uploded successfully.
-                          visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
-                        "Visit successfully sent!",
-                        "Patient's visit has been successfully sent to the doctor.",
-                        "Okay");
+                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
+                                    "Visit successfully sent!",
+                                    "Patient's visit has been successfully sent to the doctor.",
+                                    "Okay");
 
 
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
@@ -2043,7 +2063,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
         //checks if prescription is downloaded and if so then sets the icon color.
         if (hasPrescription.equalsIgnoreCase("true")) {
-         //   ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+            //   ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
     }
 
@@ -2266,6 +2286,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
     // parse doctor details
     ClsDoctorDetails objClsDoctorDetails;
+
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
         objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
@@ -2276,7 +2297,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         // String docDigitallySign = "";
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
-          //  frameLayout_doctor.setVisibility(View.VISIBLE);   // todo: handle later.
+            //  frameLayout_doctor.setVisibility(View.VISIBLE);   // todo: handle later.
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ?
@@ -2293,11 +2314,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                     objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
 
-        //    mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim()); // todo: handle later
+            //    mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim()); // todo: handle later
         }
     }
 
     // query data
+
     /**
      * This methods retrieves patient data from database.
      *
@@ -2470,17 +2492,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     /*PhysExam images downlaod*/
     private void physcialExaminationImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
-        try {
-            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-            for (String images : imageList) {
-                if (imagesDAO.isLocalImageUuidExists(images))
-                    physcialExaminationDownloadText.setVisibility(View.GONE);
-                else
-                    physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+        if (encounterUuidAdultIntial != null) {
+            try {
+
+                List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                for (String images : imageList) {
+                    if (imagesDAO.isLocalImageUuidExists(images))
+                        physcialExaminationDownloadText.setVisibility(View.GONE);
+                    else
+                        physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
         }
+
         physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2592,8 +2618,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
                 recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
                         AppConstants.IMAGE_PATH, this, true);
-            }
-            else {
+            } else {
                 recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
                         AppConstants.IMAGE_PATH, this, false);
             }
@@ -2604,8 +2629,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
             if (recyclerViewAdapter != null) {
                 if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
                     recyclerViewAdapter.hideCancelBtnAddDoc(true);
-                }
-                else {
+                } else {
                     recyclerViewAdapter.hideCancelBtnAddDoc(false);
                 }
             }
@@ -2689,7 +2713,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                     default:
                 }
                 obsCursor.close();
-             //   addDownloadButton();
+                //   addDownloadButton();
                 //if any obs  found then end the visit
                 //endVisit();
             } else {
@@ -2707,27 +2731,32 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     }
 
     // speciality alrady exists checking
+
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
     private boolean speciality_row_exist_check(String uuid) {
         boolean isExists = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                new String[]{uuid});
 
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                isExists = true;
+        if (uuid != null) {
+            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+            db.beginTransaction();
+            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
+                    new String[]{uuid});
+
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    isExists = true;
+                }
             }
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
 
+        }
         return isExists;
+
     }
 
     // start activity for result
@@ -2740,9 +2769,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
             }
-        }
-        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if(data!=null) {
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            if (data != null) {
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -2790,10 +2818,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
     }
 
     // compress image
+
     /**
      * @param filePath Final Image path to compress.
-     *
-     * */
+     */
     // TODO: crash as there is no permission given in setup app section for firsttime user.
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
@@ -2828,6 +2856,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
 
     // udpate database block
+
     /**
      * This method updates patient details to database.
      *
@@ -2911,7 +2940,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
-                }
+                    }
                 });
     }
 

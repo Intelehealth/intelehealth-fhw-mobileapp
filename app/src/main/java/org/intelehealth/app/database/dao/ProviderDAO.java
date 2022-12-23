@@ -198,40 +198,10 @@ public class ProviderDAO {
 
     }
 
-  /*  public boolean updateProvidersProfile(List<ProviderDTO> providerDTOS) throws DAOException {
-
-        boolean isUpdated = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        try {
-            for (ProviderDTO provider : providerDTOS) {
-                isUpdated = updateProfileDetails(provider, db);
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            isUpdated = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-
-        }
-
-        return isUpdated;
-    }*/
 
     public boolean updateProfileDetails(ProviderDTO provider) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Log.d(TAG, "updateProfileDetails: uuid : " + provider.getUuid());
-        Log.d(TAG, "updateProfileDetails: first name: " + provider.getFamilyName());
-        Log.d(TAG, "updateProfileDetails: lastname :" + provider.getGivenName());
-        Log.d(TAG, "updateProfileDetails: emailId :" + provider.getEmailId());
-        Log.d(TAG, "updateProfileDetails: telephoneNumber :" + provider.getTelephoneNumber());
-        Log.d(TAG, "updateProfileDetails: gender :" + provider.getGender());
-        Log.d(TAG, "updateProfileDetails: imagePath :" + provider.getImagePath());
-        Log.d(TAG, "updateProfileDetails: useruuid :" + provider.getUseruuid());
-        Log.d(TAG, "updateProfileDetails: providerid :" + provider.getProviderId());
-        Log.d(TAG, "updateProfileDetails: dob :" + provider.getDateofbirth());
 
         int updatedCount = 0;
         ContentValues values = new ContentValues();
@@ -265,7 +235,6 @@ public class ProviderDAO {
 
     public boolean updateProviderProfileSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("updateProviderProfileSync", "updateProviderProfileSync profile " + uuid + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
@@ -279,7 +248,6 @@ public class ProviderDAO {
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
             sql.printStackTrace();
-            Logger.logD("profile", "updated" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -303,14 +271,12 @@ public class ProviderDAO {
                     providerProfileDTO = new ProviderDTO();
                     providerProfileDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     providerProfileDTO.setFamilyName(idCursor.getString(idCursor.getColumnIndexOrThrow("family_name")));
-                    // providerProfileDTO.setMiddleName(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                    providerProfileDTO.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                     providerProfileDTO.setGivenName(idCursor.getString(idCursor.getColumnIndexOrThrow("given_name")));
                     providerProfileDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                     providerProfileDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("dateofbirth")));
-                    //providerProfileDTO.setAge(idCursor.getString(idCursor.getColumnIndexOrThrow("age")));
                     providerProfileDTO.setTelephoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("telephoneNumber")));
                     providerProfileDTO.setEmailId(idCursor.getString(idCursor.getColumnIndexOrThrow("emailId")));
-                    //providerProfileDTO.setImagePath(idCursor.getString(idCursor.getColumnIndexOrThrow("image_path")));
                     providerProfileDTO.setProviderId(idCursor.getString(idCursor.getColumnIndexOrThrow("providerId")));
                     providerProfileDTO.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                     providerProfileDTO.setCountryCode(idCursor.getString(idCursor.getColumnIndexOrThrow("countryCode")));
@@ -331,8 +297,6 @@ public class ProviderDAO {
         return providerDTOList;
     }
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
-        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : "+imagepath);
-        Log.d(TAG, "updateLoggedInUserProfileImage: uuid : "+uuid);
 
         boolean isUpdated = false;
         long isupdate = 0;
@@ -360,34 +324,5 @@ public class ProviderDAO {
             isUpdated = insertPatientProfileImages(imagepath, uuid);*/
         return isUpdated;
     }
-/*
-    public boolean updateProfilePicture(String uuid, String imagePath) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        int updatedCount = 0;
-        ContentValues values = new ContentValues();
-        String selection = "uuid = ?";
-        try {
-            //values.put("uuid", uuid);
-            values.put("imagePath", imagePath);
-            values.put("sync", false);
-
-            updatedCount = db.update("tbl_provider", values, selection, new String[]{uuid});
-            //If no value is not found, then update fails so insert instead.
-            if (updatedCount == 0) {
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            Logger.logE(TAG, "exception ", e);
-
-        } finally {
-            db.endTransaction();
-
-        }
-
-        return true;
-    }
-*/
 
 }

@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 
 import java.util.Objects;
 
@@ -41,25 +42,18 @@ public class MyAchievementsFragment extends Fragment {
     }
 
     private void initUI() {
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
-        TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
-        ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
-        ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
-        ivBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
-                startActivity(intent);*/
-                FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();
-            }
-        });
-        tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        tvLastSyncApp.setVisibility(View.GONE);
-        ivNotification.setVisibility(View.GONE);
-        tvLocation.setText(getResources().getString(R.string.my_achievements));
+        View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        layoutToolbar.setVisibility(View.GONE);
+        TextView tvTitle = view.findViewById(R.id.tv_achievements_title);
+        tvTitle.setText(getResources().getString(R.string.my_achievements));
+        ImageView ivInternet = view.findViewById(R.id.iv_achievements_internet);
+        if (CheckInternetAvailability.isNetworkAvailable(getActivity())) {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        } else {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
