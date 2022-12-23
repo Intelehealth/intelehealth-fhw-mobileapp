@@ -58,7 +58,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative;
-    private ImageButton presc_arrowRight, vs_arrowRight;
+    private ImageButton presc_arrowRight, vs_arrowRight, backArrow;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate;
     private Button btn_end_visit, yes_followup_btn;
 
@@ -99,6 +99,10 @@ public class VisitDetailsActivity extends AppCompatActivity {
         // end visit - start
         endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
         btn_end_visit = findViewById(R.id.btn_end_visit);
+        backArrow = findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(v -> {
+            finish();
+        });
         // end visit - end
 
         // Patient Photo
@@ -316,4 +320,9 @@ public class VisitDetailsActivity extends AppCompatActivity {
         // end visit - end
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
