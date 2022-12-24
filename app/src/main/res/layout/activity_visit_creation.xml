@@ -47,7 +47,9 @@
             android:layout_toStartOf="@+id/img_btn_cancel"
             android:background="@null"
             android:contentDescription="imb_btn_refresh"
+            android:onClick="syncNow"
             app:srcCompat="@drawable/ic_refreshbtn" />
+
 
 
     </RelativeLayout>

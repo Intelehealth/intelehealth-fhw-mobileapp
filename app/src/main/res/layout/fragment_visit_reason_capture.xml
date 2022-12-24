@@ -139,14 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_action_delete"
-                    android:visibility="gone" />
+
 
                 <TextView
                     android:id="@+id/tv_empty_reason_lbl"
@@ -159,13 +152,11 @@
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
-                <LinearLayout
-                    android:id="@+id/ll_selected_container"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_selected_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:layout_toStartOf="@+id/iv_clear"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:layout_marginTop="@dimen/margin_16" />
             </RelativeLayout>
 
             <TextView

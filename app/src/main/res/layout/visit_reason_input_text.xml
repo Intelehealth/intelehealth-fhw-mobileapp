@@ -14,6 +14,7 @@
         android:drawablePadding="@dimen/margin_8"
         android:hint="Enter value"
         android:inputType="textAutoComplete"
+        android:maxLength="100"
         android:padding="@dimen/padding_10"
         android:textColorHint="@color/edittext_hint_color"
         android:textSize="@dimen/common_label_text_size" />

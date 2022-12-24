@@ -460,6 +460,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final TextView numberRangeTextView = view.findViewById(R.id.tv_number_range);
         final TextView durationTypeTextView = view.findViewById(R.id.tv_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        if (!node.getLanguage().isEmpty()) {
+            String[] val = node.getLanguage().trim().split(" ");
+            if (val.length == 2) {
+                numberRangeTextView.setText(val[0]);
+                durationTypeTextView.setText(val[1]);
+            }
+        }
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
