@@ -16,7 +16,9 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -28,8 +30,6 @@ import org.intelehealth.app.app.IntelehealthApplication;
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
-    private static String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
-    private static String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -3714,21 +3714,62 @@ public final class StringUtils {
 
     public static InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
         @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Name.contains(("" + charSequence))) {
-                return "";
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else
+                    keepOriginal = false;
             }
-            return null;
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);    // This allows only number and alphabets.
         }
     };
 
     public static InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
         @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Others.contains(("" + charSequence))) {
-                return "";
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else
+                    keepOriginal = false;
             }
-            return null;
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+         //   return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
+            return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets.
         }
     };
 }
