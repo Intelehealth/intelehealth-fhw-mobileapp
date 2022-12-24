@@ -67,6 +67,7 @@ public class Fragment_SecondScreen extends Fragment {
     String district;
     String city_village;
     String patientID_edit;
+    boolean patient_detail = false;
 
 
     @Nullable
@@ -112,6 +113,28 @@ public class Fragment_SecondScreen extends Fragment {
         mAddress1EditText.addTextChangedListener(new MyTextWatcher(mAddress1EditText));
         mAddress2EditText.addTextChangedListener(new MyTextWatcher(mAddress2EditText));
 
+        firstScreen = new Fragment_FirstScreen();
+        fragment_thirdScreen = new Fragment_ThirdScreen();
+        if (getArguments() != null) {
+            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
+            fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
+            fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
+            patient_detail = getArguments().getBoolean("patient_detail");
+         //   patientID_edit = getArguments().getString("patientUuid");
+
+           /* if (patientID_edit != null) {
+                patientDTO.setUuid(patientID_edit);
+            } else {
+                // do nothing...
+            }
+*/
+            if (patient_detail) {
+             //   patientDTO.setUuid(patientID_edit);
+            }
+            else {
+                // do nothing...
+            }
+        }
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -168,24 +191,10 @@ public class Fragment_SecondScreen extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        firstScreen = new Fragment_FirstScreen();
-        fragment_thirdScreen = new Fragment_ThirdScreen();
+
         personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
-
-        if (getArguments() != null) {
-            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
-            fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
-            patientID_edit = getArguments().getString("patientUuid");
-
-            if (patientID_edit != null) {
-                patientDTO.setUuid(patientID_edit);
-            } else {
-               // do nothing...
-            }
-        }
 
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -440,6 +449,7 @@ public class Fragment_SecondScreen extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
+        bundle.putBoolean("patient_detail", patient_detail);
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -557,7 +567,8 @@ public class Fragment_SecondScreen extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
-        bundle.putString("patientUuid", patientID_edit);
+     //   bundle.putString("patientUuid", patientID_edit);
+        bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()

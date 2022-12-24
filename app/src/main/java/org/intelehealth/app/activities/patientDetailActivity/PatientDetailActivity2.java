@@ -201,7 +201,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         personal_edit.setOnClickListener(v -> {
             Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
             intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("patient_detail", "personal_edit");
+            intent2.putExtra("ScreenEdit", "personal_edit");
+            intent2.putExtra("patient_detail", true);
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -212,7 +213,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         address_edit.setOnClickListener(v -> {
             Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
             intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("patient_detail", "address_edit");
+            intent2.putExtra("ScreenEdit", "address_edit");
+            intent2.putExtra("patient_detail", true);
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -223,7 +225,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         others_edit.setOnClickListener(v -> {
             Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
             intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("patient_detail", "others_edit");
+            intent2.putExtra("ScreenEdit", "others_edit");
+            intent2.putExtra("patient_detail", true);
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);

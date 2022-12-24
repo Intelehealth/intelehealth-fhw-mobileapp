@@ -103,6 +103,7 @@ public class Fragment_ThirdScreen extends Fragment {
     Patient patient1 = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     String patientID_edit;
+    boolean patient_detail = false;
 
 
     @Nullable
@@ -142,6 +143,45 @@ public class Fragment_ThirdScreen extends Fragment {
         mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
         mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
+        secondScreen = new Fragment_SecondScreen();
+        if (getArguments() != null) {
+            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
+            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+            patient_detail = getArguments().getBoolean("patient_detail");
+         //   patientID_edit = getArguments().getString("patientUuid");
+
+          /*  if (patientID_edit != null) {
+                patient1.setUuid(patientID_edit);
+                setscreen(patientID_edit);
+            } else {
+                patient1.setUuid(patientDTO.getUuid());
+                setscreen(patientDTO.getUuid());
+            }*/
+
+          /*  if (patientID_edit != null) {
+                patientDTO.setUuid(patientID_edit);
+            } else {
+                // do nothing...
+            }
+*/
+
+            if (patient_detail) {
+            //    patientDTO.setUuid(patientID_edit);
+            }
+            else {
+                // do nothing...
+            }
+
+         /*   if (patientID_edit != null) {
+                patientDTO.setUuid(patientID_edit);
+            } else if (patientDTO.getUuid() != null){
+                //  patientdto.setUuid(uuid);
+                patientID_edit = patientDTO.getUuid();
+            }
+            else {
+              //  do nothing
+            }*/
+        }
 
         mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -234,30 +274,10 @@ public class Fragment_ThirdScreen extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        secondScreen = new Fragment_SecondScreen();
+
         personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_done));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon));
-
-        if (getArguments() != null) {
-            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
-            patientID_edit = getArguments().getString("patientUuid");
-
-          /*  if (patientID_edit != null) {
-                patient1.setUuid(patientID_edit);
-                setscreen(patientID_edit);
-            } else {
-                patient1.setUuid(patientDTO.getUuid());
-                setscreen(patientDTO.getUuid());
-            }*/
-            if (patientID_edit != null) {
-                patientDTO.setUuid(patientID_edit);
-            } else {
-                // do nothing...
-            }
-        }
-
 
         frag3_btn_back.setOnClickListener(v -> {
             onBackInsertIntoPatientDTO();
@@ -478,6 +498,7 @@ public class Fragment_ThirdScreen extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromThirdScreen", true);
+        bundle.putBoolean("patient_detail", patient_detail);
         secondScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()
@@ -626,12 +647,12 @@ public class Fragment_ThirdScreen extends Fragment {
             boolean isPatientInserted = false;
             boolean isPatientImageInserted = false;
 
-            if (patientID_edit != null) {
+            if (patient_detail) {
                 /*isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientID_edit);
                 isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);*/
 
-                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientID_edit, patientAttributesDTOList);
-                isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);
+                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
+                isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
                 isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
                 isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
@@ -658,12 +679,12 @@ public class Fragment_ThirdScreen extends Fragment {
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
-                intent.putExtra("patientUuid", patientID_edit);
-                if (patientID_edit == null) {
+            //    intent.putExtra("patientUuid", patientID_edit);
+             //   if (patient_detail) {
                     getActivity().startActivity(intent);
-                }
+             //   }
                 //startActivity(intent);
-                getActivity().finish();
+              //  getActivity().finish();
             } else {
                 Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
