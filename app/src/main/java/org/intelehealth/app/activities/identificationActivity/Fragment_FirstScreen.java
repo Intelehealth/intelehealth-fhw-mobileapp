@@ -156,6 +156,18 @@ public class Fragment_FirstScreen extends Fragment {
          //   patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+
+/*
+            if (patientdto.getPatientPhoto() != null) {
+                Glide.with(getActivity())
+                        .load(new File(patientdto.getPatientPhoto()))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(patient_imgview);
+            }
+*/
         }
 
         // Setting up the screen when user came from Second screen.
@@ -375,7 +387,7 @@ public class Fragment_FirstScreen extends Fragment {
             public void onClick(View v) {
                 String patientTemp = "";
                 if (patientUuid.equalsIgnoreCase("")) {
-                    //  patientTemp = patientID_edit; // todo: uncomment later
+                      patientTemp = patientdto.getUuid(); // todo: uncomment later
                 } else {
                     patientTemp = patientUuid;
                 }
@@ -802,7 +814,11 @@ public class Fragment_FirstScreen extends Fragment {
 
         // mobile no - end
 
-        patientdto.setPatientPhoto(mCurrentPhotoPath);
+        if (mCurrentPhotoPath != null)
+            patientdto.setPatientPhoto(mCurrentPhotoPath);
+        else
+            patientdto.setPatientPhoto(patientdto.getPatientPhoto());
+
         patientdto.setFirstname(mFirstNameEditText.getText().toString());
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
         patientdto.setLastname(mLastNameEditText.getText().toString());
