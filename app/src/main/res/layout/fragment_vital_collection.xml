@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundWhite"
     tools:context=".ayu.visit.vital.VitalCollectionFragment">
 
     <Button
@@ -31,12 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_submit"
-        android:padding="@dimen/margin_24">
+        android:padding="8dip"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/margin_20">
 
             <TextView
                 android:id="@+id/tv_sub_title"
@@ -203,6 +206,7 @@
                         android:background="@drawable/edittext_border"
                         android:hint="Enter value"
                         android:inputType="number"
+                        android:maxLength="3"
                         android:padding="@dimen/padding_10"
                         android:textColorHint="@color/edittext_hint_color"
                         android:textSize="@dimen/edittext_textsize_16sp" />
@@ -234,6 +238,7 @@
                         android:background="@drawable/edittext_border"
                         android:hint="Enter value"
                         android:inputType="number"
+                        android:maxLength="3"
                         android:padding="@dimen/padding_10"
                         android:textColorHint="@color/edittext_hint_color"
                         android:textSize="@dimen/edittext_textsize_16sp" />
@@ -284,6 +289,7 @@
                 android:background="@drawable/edittext_border"
                 android:hint="E.g., 72 bpm"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"
                 android:textSize="@dimen/edittext_textsize_16sp" />
@@ -308,6 +314,7 @@
                 android:background="@drawable/edittext_border"
                 android:hint="E.g., 24 breath/min"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"
                 android:textSize="@dimen/edittext_textsize_16sp" />
@@ -332,6 +339,7 @@
                 android:background="@drawable/edittext_border"
                 android:hint="E.g., 98F"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"
                 android:textSize="@dimen/edittext_textsize_16sp" />

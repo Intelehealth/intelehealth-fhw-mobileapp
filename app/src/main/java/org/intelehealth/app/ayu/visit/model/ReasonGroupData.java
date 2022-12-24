@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ReasonGroupData {
     private String alphabet;
-    private List<String> reasons;
+    private List<ReasonData> reasons;
 
-    public List<String> getReasons() {
+    public List<ReasonData> getReasons() {
         return reasons;
     }
 
-    public void setReasons(List<String> reasons) {
+    public void setReasons(List<ReasonData> reasons) {
         this.reasons = reasons;
     }
 

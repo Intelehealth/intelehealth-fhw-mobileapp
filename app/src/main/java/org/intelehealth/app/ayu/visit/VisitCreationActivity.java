@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -20,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.common.collect.Lists;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -48,7 +48,9 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -60,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class VisitCreationActivity extends AppCompatActivity implements VisitCreationActionListener {
@@ -221,7 +222,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
 
             case STEP_2_VISIT_REASON_QUESTION:
-                selectedComplains = Lists.newArrayList((Set<String>) object);
+                selectedComplains = (List<String>) object;
                 loadChiefComplainNodeForSelectedNames(selectedComplains);
                 mStep2ProgressBar.setProgress(40);
                 setTitle("2/4 Visit reason : " + selectedComplains.get(0));
@@ -1277,6 +1278,16 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     public void setOnBundleSelected(SelectedBundle selectedBundle) {
         this.selectedBundle = selectedBundle;
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void showInfo(View view) {
     }
 
     public interface SelectedBundle {
