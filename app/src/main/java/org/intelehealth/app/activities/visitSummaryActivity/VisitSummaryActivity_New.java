@@ -160,6 +160,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
             btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
+            pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
             vs_add_notes;
@@ -285,6 +287,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+    private ImageButton backArrow;
 
 
     @Override
@@ -352,6 +355,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     intentTag + "\n" +
                     isPastVisit + "\n");
 */
+            queryData(String.valueOf(patientUuid));
         }
 
        /* // todo: testing - start
@@ -507,42 +511,90 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_header_expandview.setVisibility(View.VISIBLE);
         });
 
+/*
         btn_up_vitals_header.setOnClickListener(v -> {
             if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
                 vs_vitals_header_expandview.setVisibility(View.GONE);
             else
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        vitals_header_relative.setOnClickListener(v -> {
+            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
+                vs_vitals_header_expandview.setVisibility(View.GONE);
+            else
+                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_visitreason_header.setOnClickListener(v -> {
             if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
             else
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        chiefcomplaint_header_relative.setOnClickListener(v -> {
+            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
+                vs_visitreason_header_expandview.setVisibility(View.GONE);
+            else
+                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_phyexam_header.setOnClickListener(v -> {
             if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
             else
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        physExam_header_relative.setOnClickListener(v -> {
+            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
+                vs_phyexam_header_expandview.setVisibility(View.GONE);
+            else
+                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_medhist_header.setOnClickListener(v -> {
             if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
                 vs_medhist_header_expandview.setVisibility(View.GONE);
             else
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        pathistory_header_relative.setOnClickListener(v -> {
+            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
+                vs_medhist_header_expandview.setVisibility(View.GONE);
+            else
+                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_special_vd_header.setOnClickListener(v -> {
             if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
                 vd_special_header_expandview.setVisibility(View.GONE);
             else
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
         });
+*/
+        special_vd_header_relative.setOnClickListener(v -> {
+            if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
+                vd_special_header_expandview.setVisibility(View.GONE);
+            else
+                vd_special_header_expandview.setVisibility(View.VISIBLE);
+        });
 
+/*
         btn_up_addnotes_vd_header.setOnClickListener(v -> {
+            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
+                vd_addnotes_header_expandview.setVisibility(View.GONE);
+            else
+                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+        });
+*/
+        addnotes_vd_header_relative.setOnClickListener(v -> {
             if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
             else
@@ -1439,6 +1491,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void initUI() {
         // textview - start
+        backArrow = findViewById(R.id.backArrow);
         profile_image = findViewById(R.id.profile_image);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
@@ -1452,11 +1505,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btn_up_header = findViewById(R.id.btn_up_header);
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
+        vitals_header_relative = findViewById(R.id.vitals_header_relative);
         btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
+        chiefcomplaint_header_relative = findViewById(R.id.chiefcomplaint_header_relative);
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
+        physExam_header_relative = findViewById(R.id.physExam_header_relative);
         btn_up_medhist_header = findViewById(R.id.btn_up_medhist_header);
+        pathistory_header_relative = findViewById(R.id.pathistory_header_relative);
         btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
+        special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
+        addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
@@ -1481,12 +1540,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
 
-        ImageButton ibBackButton = findViewById(R.id.vector);
-        ibBackButton.setOnClickListener(new View.OnClickListener() {
+        backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-                startActivity(intent);
+                finish();
+                /*Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+                startActivity(intent);*/
             }
         });
 
@@ -3094,10 +3153,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 .replace(Node.bullet, ""));
 
         //String advice_web = stringToWeb(adviceReturned);
-        String advice_web = "";
+    //    String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
-        String advice_doctor__ = medicalAdviceTextView.getText().toString()
+/*        String advice_doctor__ = medicalAdviceTextView.getText().toString()
                 .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
                 .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
 
@@ -3127,7 +3186,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-        }
+        }*/
 
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -3263,7 +3322,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -3300,7 +3359,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 

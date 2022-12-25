@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -28,6 +29,7 @@ public class EndVisitActivity extends AppCompatActivity {
     RecyclerView recycler_today, recycler_week, recycler_month;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
+    private ImageButton backArrow;
 
 
     @Override
@@ -50,6 +52,11 @@ public class EndVisitActivity extends AppCompatActivity {
         recycler_today = findViewById(R.id.recycler_today);
         recycler_week = findViewById(R.id.recycler_week);
         recycler_month = findViewById(R.id.recycler_month);
+        backArrow = findViewById(R.id.backArrow);
+
+        backArrow.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void followup_data() {

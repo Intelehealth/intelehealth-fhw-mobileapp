@@ -96,7 +96,7 @@ public class IdentificationActivity_New extends AppCompatActivity {
             if (intent.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
                 patientID_edit = intent.getStringExtra("patientUuid");
-                patient_detail = intent.getStringExtra("patient_detail");
+                patient_detail = intent.getStringExtra("ScreenEdit");
                 patient1.setUuid(patientID_edit);
 
                 Bundle args = intent.getBundleExtra("BUNDLE");
@@ -125,7 +125,10 @@ public class IdentificationActivity_New extends AppCompatActivity {
         } else {
             bundle.putString("patientUuid", patientdto.getUuid());
         }
+        bundle.putBoolean("fromFirstScreen", true);
         bundle.putBoolean("fromSecondScreen", true);
+        bundle.putBoolean("fromThirdScreen", true);
+        bundle.putBoolean("patient_detail", true);
         fragment.setArguments(bundle); // passing data to Fragment
 
         getSupportFragmentManager()

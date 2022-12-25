@@ -12,6 +12,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +94,7 @@ public class Fragment_FirstScreen extends Fragment {
     //dob_indexValue == 15 then just get the dob_edittext editText value and add in the db.
     boolean fromSecondScreen = false;
     String patientID_edit;
+    boolean patient_detail = false;
 
 
     @Nullable
@@ -113,8 +116,14 @@ public class Fragment_FirstScreen extends Fragment {
         other_icon = getActivity().findViewById(R.id.other_icon);
 
         mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
+        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
         mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
+        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
         mLastNameEditText = view.findViewById(R.id.lastname_edittext);
+        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
 
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
@@ -141,98 +150,24 @@ public class Fragment_FirstScreen extends Fragment {
         mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
         mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
 
-    }
-
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.firstname_edittext) {
-                if (val.isEmpty()) {
-                    mFirstNameErrorTextView.setVisibility(View.VISIBLE);
-                    mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mFirstNameErrorTextView.setVisibility(View.GONE);
-                    mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.middlename_edittext) {
-                if (val.isEmpty()) {
-                    mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
-                    mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mMiddleNameErrorTextView.setVisibility(View.GONE);
-                    mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.lastname_edittext) {
-                if (val.isEmpty()) {
-                    mLastNameErrorTextView.setVisibility(View.VISIBLE);
-                    mLastNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mLastNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mLastNameErrorTextView.setVisibility(View.GONE);
-                    mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.dob_edittext) {
-                if (val.isEmpty()) {
-                    mDOBErrorTextView.setVisibility(View.VISIBLE);
-                    mDOBErrorTextView.setText(getString(R.string.error_field_required));
-                    mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mDOBErrorTextView.setVisibility(View.GONE);
-                    mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.age_edittext) {
-                if (val.isEmpty()) {
-                    mAgeErrorTextView.setVisibility(View.VISIBLE);
-                    mAgeErrorTextView.setText(getString(R.string.error_field_required));
-                    mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mAgeErrorTextView.setVisibility(View.GONE);
-                    mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.phoneno_edittext) {
-                if (val.isEmpty()) {
-                    mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                    mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
-                    mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mPhoneNumberErrorTextView.setVisibility(View.GONE);
-                    mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         fragment_secondScreen = new Fragment_SecondScreen();
-        personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon));
-        address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
-        other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
-
         if (getArguments() != null) {
             patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
-            patientID_edit = getArguments().getString("patientUuid");
+         //   patientID_edit = getArguments().getString("patientUuid");
+            patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+
+/*
+            if (patientdto.getPatientPhoto() != null) {
+                Glide.with(getActivity())
+                        .load(new File(patientdto.getPatientPhoto()))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(patient_imgview);
+            }
+*/
         }
 
         // Setting up the screen when user came from Second screen.
@@ -341,6 +276,95 @@ public class Fragment_FirstScreen extends Fragment {
 
             }
         }
+    }
+
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.firstname_edittext) {
+                if (val.isEmpty()) {
+                    mFirstNameErrorTextView.setVisibility(View.VISIBLE);
+                    mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mFirstNameErrorTextView.setVisibility(View.GONE);
+                    mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.middlename_edittext) {
+                if (val.isEmpty()) {
+                    mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
+                    mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mMiddleNameErrorTextView.setVisibility(View.GONE);
+                    mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.lastname_edittext) {
+                if (val.isEmpty()) {
+                    mLastNameErrorTextView.setVisibility(View.VISIBLE);
+                    mLastNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mLastNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mLastNameErrorTextView.setVisibility(View.GONE);
+                    mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.dob_edittext) {
+                if (val.isEmpty()) {
+                    mDOBErrorTextView.setVisibility(View.VISIBLE);
+                    mDOBErrorTextView.setText(getString(R.string.error_field_required));
+                    mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mDOBErrorTextView.setVisibility(View.GONE);
+                    mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.age_edittext) {
+                if (val.isEmpty()) {
+                    mAgeErrorTextView.setVisibility(View.VISIBLE);
+                    mAgeErrorTextView.setText(getString(R.string.error_field_required));
+                    mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mAgeErrorTextView.setVisibility(View.GONE);
+                    mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.phoneno_edittext) {
+                if (val.isEmpty()) {
+                    mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                    mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
+                    mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                    mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon));
+        address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
+        other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
+
+
 
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
@@ -363,7 +387,7 @@ public class Fragment_FirstScreen extends Fragment {
             public void onClick(View v) {
                 String patientTemp = "";
                 if (patientUuid.equalsIgnoreCase("")) {
-                    //  patientTemp = patientID_edit; // todo: uncomment later
+                      patientTemp = patientdto.getUuid(); // todo: uncomment later
                 } else {
                     patientTemp = patientUuid;
                 }
@@ -683,11 +707,22 @@ public class Fragment_FirstScreen extends Fragment {
         uuid = UUID.randomUUID().toString();
 
         Log.v(TAG, "reltion: " + patientID_edit);
-        if (patientID_edit != null) {
+        /*if (patientID_edit != null) {
             patientdto.setUuid(patientID_edit);
-        } else {
+        } else if (patientdto.getUuid() != null){
+          //  patientdto.setUuid(uuid);
+        }
+        else {
+            patientdto.setUuid(uuid);
+        }*/
+
+        if (patient_detail) {
+         //   patientdto.setUuid(patientID_edit);
+        }
+        else {
             patientdto.setUuid(uuid);
         }
+
 
         //frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
         if (mFirstNameEditText.getText().toString().equals("")) {
@@ -779,7 +814,11 @@ public class Fragment_FirstScreen extends Fragment {
 
         // mobile no - end
 
-        patientdto.setPatientPhoto(mCurrentPhotoPath);
+        if (mCurrentPhotoPath != null)
+            patientdto.setPatientPhoto(mCurrentPhotoPath);
+        else
+            patientdto.setPatientPhoto(patientdto.getPatientPhoto());
+
         patientdto.setFirstname(mFirstNameEditText.getText().toString());
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
         patientdto.setLastname(mLastNameEditText.getText().toString());
@@ -811,8 +850,9 @@ public class Fragment_FirstScreen extends Fragment {
         // Bundle data
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientdto);
-        bundle.putBoolean("fromSecondScreen", true);
-        bundle.putString("patientUuid", patientID_edit);
+        bundle.putBoolean("fromFirstScreen", true);
+        bundle.putBoolean("patient_detail", patient_detail);
+     //   bundle.putString("patientUuid", patientID_edit);
         fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()
