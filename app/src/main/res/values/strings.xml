@@ -696,7 +696,7 @@
     <string name="reset_app">Reset App</string>
     <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting App</string>
-    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset the app?</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
@@ -1742,6 +1742,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="sync_strated">"Sync started! "</string>
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided</string>
+    <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
+    <string name="please_wait_sync_progress">Please wait a moment while sync is in progress</string>
 
 
     <!--END-->

@@ -65,7 +65,10 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public static void patientRegistrationDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt, CustomDialogListener customDialogListener) {
+    public static void patientRegistrationDialog(Context context, Drawable drawable, String title,
+                                                 String subTitle, String positiveBtnTxt, String negativeBtnTxt,
+                                                 CustomDialogListener customDialogListener) {
+
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
