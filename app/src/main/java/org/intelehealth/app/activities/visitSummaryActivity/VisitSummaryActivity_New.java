@@ -77,6 +77,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -164,7 +166,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
-            vs_add_notes;
+            vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
@@ -287,7 +289,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow;
+    private ImageButton backArrow, priority_hint;
 
 
     @Override
@@ -910,6 +912,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
                 flag.setChecked(true);
+                flag.setEnabled(false);
             }
         }
 
@@ -925,7 +928,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             }
         });
-        // todo: this code is present in uoload btn too so handle that later...
         // Priority data - end
 
         // edit listeners - start
@@ -1506,6 +1508,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
         vitals_header_relative = findViewById(R.id.vitals_header_relative);
+        parentLayout = findViewById(R.id.parentLayout);
         btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
         chiefcomplaint_header_relative = findViewById(R.id.chiefcomplaint_header_relative);
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
@@ -1539,6 +1542,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
+        priority_hint = findViewById(R.id.priority_hint);
+
+        priority_hint.setOnClickListener(v -> {
+            Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
+//            Snackbar.make(parentLayout, R.string.priority_hint, Snackbar.LENGTH_SHORT).show();
+        });
 
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
