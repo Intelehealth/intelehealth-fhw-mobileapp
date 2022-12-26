@@ -12,8 +12,8 @@
         android:id="@+id/camera_surface_CameraView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_layout"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:background="@android:color/black"
@@ -29,6 +29,7 @@
         android:layout_alignParentTop="true" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

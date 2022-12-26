@@ -302,16 +302,6 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
-        if (mFab != null) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCameraView != null) {
-                        mCameraView.takePicture();
-                    }
-                }
-            });
-        }
 
         if (mRotateCamera != null) {
             mRotateCamera.setOnClickListener(v -> {
@@ -331,6 +321,16 @@ public class CameraActivity extends AppCompatActivity {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
         CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
+
+        // Set the OnClickListener after startCameraWithCheck callback so that pictures are clicked only after the camera is properly initialized
+        // If the user tries to click on the button before this, there shall be no response from the button.
+        if (mFab != null) {
+            mFab.setOnClickListener(v -> {
+                if (mCameraView != null) {
+                    mCameraView.takePicture();
+                }
+            });
+        }
     }
 
     @Override

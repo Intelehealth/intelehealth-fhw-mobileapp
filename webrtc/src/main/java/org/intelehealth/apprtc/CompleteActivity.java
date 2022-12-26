@@ -571,7 +571,7 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
     private void sendMessage(Object message) {
-        socket.emit("message", message);
+        if (socket != null) socket.emit("message", message);
     }
 
     private void initializeSurfaceViews() {

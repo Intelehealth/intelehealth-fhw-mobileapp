@@ -864,6 +864,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
+        items.remove("All");
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value

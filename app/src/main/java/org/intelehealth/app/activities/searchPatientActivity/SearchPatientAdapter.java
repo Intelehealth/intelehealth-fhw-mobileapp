@@ -43,18 +43,16 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     public void onBindViewHolder(@NonNull SearchPatientAdapter.Myholder holder, int position) {
         final PatientDTO patinet = patients.get(position);
         if (patinet != null) {
-            //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
-
-            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
-            //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
-            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
-
             if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + ", " + patinet.getOpenmrsId());
+                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname() + ", " + patinet.getOpenmrsId());
             else
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
+            String age = "";
+            if (patinet.getDateofbirth() != null && !patinet.getDateofbirth().isEmpty())
+                age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
+
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
             holder.bodyTextView.setText(body);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -82,17 +80,16 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
-      //  private TextView indicator;
+        //  private TextView indicator;
 
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
-           // indicator = itemView.findViewById(R.id.indicator);
+            // indicator = itemView.findViewById(R.id.indicator);
 
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
-
 }
