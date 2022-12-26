@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -614,6 +615,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onResume() {
         toolbarHome.setVisibility(View.VISIBLE);
+        String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
+        tvAppLastSync.setText(lastSync);
+
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
@@ -627,31 +631,19 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
 
 
-        loadFragment(new HomeFragment_New());
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
-//        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
-//            lastSyncAgo.setText(CalculateAgoTime());
-        }
-      /*  //UI2.0 if first time login then only show popup
-        if (sessionManager.getIsLoggedIn()) {
-            //sessionManager.setIsLoggedIn(true);
-            showLoggingInDialog();
-
-        }*/
-
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        Fragment fragment = new HomeFragment_New();
+        loadFragment(fragment);
 
         super.onResume();
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: 11");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
 
@@ -773,9 +765,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             //ui2.0 update user details in  nav header
             updateNavHeaderUserDetails();
 
-            Log.d(TAG, "onReceive: sync_text : " + lastSync);
-            // android:text="Last sync: 8 pm, 02 December 2022"
-
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
@@ -869,16 +858,20 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
             context.startService(serviceIntent);
         }
+
+
     }
 
     private boolean isNetworkConnected() {
@@ -1173,5 +1166,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
     }
+
+
+
 }
 

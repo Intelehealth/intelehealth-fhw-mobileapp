@@ -28,23 +28,27 @@ import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivi
 import org.intelehealth.app.activities.visit.VisitActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
 import java.util.Objects;
 
-public class HomeFragment_New extends Fragment {
+public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
     CardView followup_cardview, addpatient_cardview;
     TextView textlayout_find_patient;
-
+    NetworkUtils networkUtils;
+    ImageView ivInternet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
+        networkUtils = new NetworkUtils(getActivity(), this);
+
         return view;
     }
 
@@ -87,6 +91,8 @@ public class HomeFragment_New extends Fragment {
         ivNotification.setVisibility(View.VISIBLE);
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
+        ivInternet = requireActivity().findViewById(R.id.imageview_is_internet);
+
 
         CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
         CardView closedVisitsCardView = view.findViewById(R.id.closedVisitsCardView);
@@ -159,6 +165,36 @@ public class HomeFragment_New extends Fragment {
             intent.putExtra("add_patient", "add_patient");
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
     }
 }
 

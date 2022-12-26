@@ -167,7 +167,6 @@
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
-                        android:text="nurse"
                         android:textSize="@dimen/common_hint_text_size"
 
                         />
@@ -217,7 +216,6 @@
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
-                        android:text="Nurse123"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -3,7 +3,6 @@ package org.intelehealth.app.appointmentNew;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,7 +32,6 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
-import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -46,7 +46,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class TodaysMyAppointmentsFragment extends Fragment {
+public class TodaysMyAppointmentsFragmentNew extends Fragment {
     private static final String TAG = "TodaysMyAppointmentsFra";
     View view;
     LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions,
@@ -61,10 +61,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     EditText autotvSearch;
     String searchPatientText = "";
     String currentDate = "";
-    int totalUpcomingApps = 0;
-    int totalCancelled = 0;
-    int totalCompleted = 0;
-    private UpdateAppointmentsCount listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +87,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        //initialize all the views
         rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
         rvCancelledApp = view.findViewById(R.id.rv_cancelled_appointments);
         rvCompletedApp = view.findViewById(R.id.rv_completed_appointments);
@@ -129,8 +124,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-     /*   Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-        cardUpcomingAppointments.startAnimation(fadeOut);*/
+        Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
+        cardUpcomingAppointments.startAnimation(fadeOut);
 
         layoutUpcoming.setVisibility(View.VISIBLE);
         layoutCompleted.setVisibility(View.VISIBLE);
@@ -144,10 +139,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         getAppointments();
         getSlots();
 
-        searchPatient();
-    }
-
-    private void searchPatient() {
         autotvSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -202,9 +193,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-          /*  Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
+            Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardUpcomingAppointments.startAnimation(fadeOut);
-*/
+
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
@@ -222,9 +213,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-          /*  Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
+            Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardCancelledAppointments.startAnimation(fadeOut);
-*/
+
             layoutUpcoming.setVisibility(View.GONE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
@@ -242,8 +233,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-       /*     Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-            cardCompletedAppointments.startAnimation(fadeOut);*/
+            Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
+            cardCompletedAppointments.startAnimation(fadeOut);
 
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.GONE);
@@ -292,23 +283,18 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
-                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-
                     if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
-                totalUpcomingApps = upcomingAppointmentsList.size();
 
-                if (upcomingAppointmentsList.size() > 0) {
-                    TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
-                            TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
-                    rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
-                } else {
-                    rvUpcomingApp.setVisibility(View.GONE);
-                    noDataFoundForUpcoming.setVisibility(View.VISIBLE);
-                }
+                TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
+                        TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
+                rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
+            } else {
+                rvUpcomingApp.setVisibility(View.GONE);
+                noDataFoundForUpcoming.setVisibility(View.VISIBLE);
+
             }
             tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
             tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
@@ -386,25 +372,13 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 String patientProfilePath = getPatientProfile(appointmentsDaoList.get(i).getPatientId());
                 // String patientProfilePath = getPatientProfile("984af313-83c7-479e-b8a7-8e72e7384346");
                 appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
-                try {
-                    String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
-                    String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
-                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
 
-                    if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
-                        appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
-                    }
 
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
             } else {
 
             }
         }
         //recyclerview for completed appointments
-        totalCompleted = appointmentsDaoList.size();
-
         TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
                 TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
         rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
@@ -426,7 +400,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         if (idCursor.moveToFirst()) {
             do {
                 imagePath = idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo"));
-                Log.d(TAG, "getPatientProfile: imagePath : " + imagePath);
+
             } while (idCursor.moveToNext());
             idCursor.close();
         }
@@ -436,9 +410,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
 
     private void getSlots() {
-        String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
 
-        ApiClientAppointment.getInstance(serverUrl).getApi()
+        ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
@@ -478,6 +452,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         Log.v("onFailure", t.getMessage());
                     }
                 });
+
     }
 
     private void getCancelledAppointments() {
@@ -501,8 +476,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     long second = diff / 1000;
                     long minutes = second / 60;
                     cancelledAppointmentsList.add(appointmentInfo);
-                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
 
                    /* if (minutes >= 0) {
                         cancelledAppointmentsList.add(appointmentInfo);
@@ -511,7 +484,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
                 //recyclerview for cancelled appointments
 
-                totalCancelled = cancelledAppointmentsList.size();
                 TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new
                         TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
                 rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
@@ -530,22 +502,5 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         }
 
 
-    }
-
-    public static TodaysMyAppointmentsFragment newInstance() {
-        return new TodaysMyAppointmentsFragment();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof UpdateAppointmentsCount) {
-            listener = (UpdateAppointmentsCount) context;
-            int totalTodayApps = totalUpcomingApps + totalCancelled + totalCompleted;
-            listener.updateCount("today", totalTodayApps);
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentCommunicationListener");
-        }
     }
 }

@@ -131,13 +131,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         openMrsId = getIntent().getStringExtra("openMrsId");
 */
 
-        //temporary hardcode parameters for temporary use
-      /*  visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
-        patientUuid = "68617ab0-f826-4668-92dd-ab411ad6ab60";
-        patientName = "Test User2";
-        speciality = "General Physician";
-        openMrsId = "13TR2-8";
-*/
         //for reschedule appointment as per old flow
         actionTag = getIntent().getStringExtra("actionTag");
         if(actionTag!=null && !actionTag.isEmpty() && actionTag.equals("rescheduleAppointment")){

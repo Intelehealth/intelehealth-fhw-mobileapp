@@ -165,7 +165,6 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
 
 
@@ -226,6 +225,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
                 intent.putExtra("appointment_id", appointmentInfoModel.getId());
                 intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
+                intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
 
                 context.startActivity(intent);
 
