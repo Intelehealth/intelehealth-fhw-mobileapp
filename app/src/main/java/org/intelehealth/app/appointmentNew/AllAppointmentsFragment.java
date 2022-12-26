@@ -106,6 +106,10 @@ public class AllAppointmentsFragment extends Fragment {
     View noDataFoundForUpcoming, noDataFoundForCompleted, noDataFoundForCancelled;
     TextView tvFromDate, tvToDate;
     int MY_REQUEST_CODE = 5555;
+    private UpdateAppointmentsCount listener;
+    int totalUpcomingApps = 0;
+    int totalCancelled = 0;
+    int totalCompleted = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -629,21 +633,24 @@ public class AllAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
+                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+
                     if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
 
                 //recyclerview for upcoming appointments
+                if (upcomingAppointmentsList.size() > 0) {
+                    AllAppointmentsAdapter allAppointmentsAdapter = new
+                            AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
+                    rvUpcomingApp.setAdapter(allAppointmentsAdapter);
+                } else {
 
-                AllAppointmentsAdapter allAppointmentsAdapter = new
-                        AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
-                rvUpcomingApp.setAdapter(allAppointmentsAdapter);
-
-            } else {
-
-                rvUpcomingApp.setVisibility(View.GONE);
-                noDataFoundForUpcoming.setVisibility(View.VISIBLE);
+                    rvUpcomingApp.setVisibility(View.GONE);
+                    noDataFoundForUpcoming.setVisibility(View.VISIBLE);
+                }
             }
 
             tvUpcomingAppsCount.setText(upcomingAppointmentsList.size() + "");
@@ -681,6 +688,9 @@ public class AllAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
+                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+
                     cancelledAppointmentsList.add(appointmentInfo);
 
                 }
@@ -761,8 +771,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
-        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://uiux.intelehealth.org:3004";
+        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
 
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
@@ -843,6 +852,8 @@ public class AllAppointmentsFragment extends Fragment {
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
+                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
+
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
                     }
@@ -996,4 +1007,22 @@ public class AllAppointmentsFragment extends Fragment {
             }
         }
     }
+
+    public static TodaysMyAppointmentsFragment newInstance() {
+        return new TodaysMyAppointmentsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof UpdateAppointmentsCount) {
+            listener = (UpdateAppointmentsCount) context;
+            int totalAllApps = totalUpcomingApps + totalCancelled + totalCompleted;
+            listener.updateCount("all", totalAllApps);
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentCommunicationListener");
+        }
+    }
+
 }

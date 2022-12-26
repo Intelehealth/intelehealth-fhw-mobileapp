@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -72,6 +73,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -91,7 +93,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface {
+public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface,NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge;
@@ -114,12 +116,16 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private CountryCodePicker countryCodePicker;
     int MY_REQUEST_CODE = 5555;
     TextView tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
-
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_ui2);
+
+        networkUtils = new NetworkUtils(MyProfileActivity.this, this);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -142,7 +148,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         sessionManager = new SessionManager(this);
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -154,12 +160,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
         tvTitle.setText(getResources().getString(R.string.my_profile));
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-        }
 
         //initialize all input fields
 
@@ -802,5 +803,32 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
         return result;
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
 }

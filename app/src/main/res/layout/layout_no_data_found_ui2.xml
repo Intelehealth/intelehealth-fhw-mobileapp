@@ -11,22 +11,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        >
+        android:layout_gravity="start">
 
         <ImageView
             android:id="@+id/search_bg_icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_search_icon_background" />
+            android:src="@drawable/ic_search_icon_background"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/search_pat_not_found_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/search_bg_icon"
-            android:layout_centerHorizontal="true"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
             android:lineSpacingExtra="4sp"
             android:text="@string/no_data_found"

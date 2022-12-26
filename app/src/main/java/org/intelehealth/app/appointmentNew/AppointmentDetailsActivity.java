@@ -7,6 +7,7 @@ import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUU
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -87,7 +88,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     private ImageView priorityTag;
     private boolean isEmergency, hasPrescription;
     private String patientName, patientUuid, gender, age, openmrsID,
-            visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day;
+            visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day, prescription_received_time;
     SQLiteDatabase db;
     boolean isVisitStartsIn = false;
     private String vitalsUUID, adultInitialUUID;
@@ -115,6 +116,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         tvTitle.setText(getResources().getString(R.string.appointment_details));
+        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ivBack.setOnClickListener(v -> {
+            Intent intent = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
+            startActivity(intent);
+        });
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
         } else {
@@ -130,6 +136,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         stateAppointmentStarted = findViewById(R.id.state_appointment_started);
         stateAppointmentPrescription = findViewById(R.id.state_prescription_appointment);
+        //this is for remind doctor functionality
         layoutPrescButtons = findViewById(R.id.layout_presc_buttons);
         layoutContactAction = findViewById(R.id.layout_contact_action);
         tvPrescStatus = findViewById(R.id.tv_presc_status_new);
@@ -163,7 +170,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         tvPrevAppTime = findViewById(R.id.tv_prev_app_time);
 
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
+        Intent intent = this.getIntent(); // The intent was passed to the activity from adapter
         if (intent != null) {
             patientName = intent.getStringExtra("patientname");
             patientUuid = intent.getStringExtra("patientUuid");
@@ -177,6 +184,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             app_start_time = intent.getStringExtra("app_start_time");
             appointment_id = intent.getIntExtra("appointment_id", 0);
             app_start_day = intent.getStringExtra("app_start_day");
+            prescription_received_time = intent.getStringExtra("prescription_received_time");
 
 
             // appointment_id = getIntent().getIntExtra("appointment_id");
@@ -273,11 +281,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary2));
         }
 
+        Log.d(TAG, "initUI: hasPrescription : " + hasPrescription);
 
         if (hasPrescription) {
+            Log.d(TAG, "initUI: ");
             //prescription received  state - make "stateAppointmentStarted" visible,
             // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible, "layoutPrescButtons" gone
-
+            layoutEndVisit.setVisibility(View.VISIBLE);
+            layoutSummaryBtns.setVisibility(View.GONE);
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
@@ -288,9 +299,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             fabHelp.setVisibility(View.GONE);
             //presc_arrowRight.setVisibility(View.VISIBLE);
             // presc_remind_block.setVisibility(View.GONE);
-            String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-            modifiedDate = timeAgoFormat(modifiedDate);
-            tvPrescStatus.setText("Received " + modifiedDate);
+            //String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+            // modifiedDate = timeAgoFormat(modifiedDate);4
+
+
+            tvPrescStatus.setText("Received " + prescription_received_time);
+            Log.d(TAG, "initUI: modified date> " + prescription_received_time);
             ivDrawerPrescription.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
                 in.putExtra("patientname", patientName);
@@ -341,7 +355,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         // visit summary - start
         vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
         adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
-
+        Log.d(TAG, "initUI: openmrsid : " + openmrsID);
         ivDrawerVisitSummary.setOnClickListener(v -> {
             Intent in = new Intent(this, VisitSummaryActivity_New.class);
             in.putExtra("patientUuid", patientUuid);
@@ -351,6 +365,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             in.putExtra("encounterUuidVitals", vitalsUUID);
             in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
             in.putExtra("float_ageYear_Month", age);
+            in.putExtra("openMrsId", openmrsID);
             in.putExtra("tag", "AppointmentDetailsActivity");
             startActivity(in);
         });
@@ -639,6 +654,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         alertDialog.show();
     }
+
     private void askReasonForRescheduleAppointment(Context context) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -699,7 +715,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 if (reason.isEmpty()) {
                     Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
                     return;
-                }else{
+                } else {
                     startActivityForResult(new Intent(context, ScheduleAppointmentActivity_New.class)
                             .putExtra("actionTag", "rescheduleAppointment")
                             .putExtra("visitUuid", visitID)
@@ -713,7 +729,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                             .putExtra("rescheduleReason", mEngReason)
                             .putExtra("speciality", visit_speciality), SCHEDULE_LISTING_INTENT);
 
-                    Log.d(TAG, "onClick: speciality : "+visit_speciality);
+                    Log.d(TAG, "onClick: speciality : " + visit_speciality);
                 }
 
             }
@@ -802,6 +818,42 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         });
         alertDialog.show();
 
+    }
+
+    public static String fetchPrescriptionReceivedTime(String visitUUID) {
+        Log.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
+        String modifiedDate = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if (visitUUID != null) {
+            Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                            " e.encounter_type_uuid = ? and" +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                            " o.conceptuuid = ? and " +
+                            " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
+                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        String receivedTime = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        Log.v("receivedTime", "receivedTime: " + modifiedDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return modifiedDate;
     }
 
 }

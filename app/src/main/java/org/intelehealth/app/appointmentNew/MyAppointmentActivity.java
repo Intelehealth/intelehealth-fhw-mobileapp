@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -24,8 +26,11 @@ import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 
 import java.util.Objects;
 
-public class MyAppointmentActivity extends AppCompatActivity {
+public class MyAppointmentActivity extends AppCompatActivity implements UpdateAppointmentsCount {
+    private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
+    TabLayout tabLayout;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class MyAppointmentActivity extends AppCompatActivity {
         View toolbar = findViewById(R.id.toolbar_my_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-        ImageView ivBackArrow  = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ImageView ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow_common);
 
         tvTitle.setText(getResources().getString(R.string.my_appointments));
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -70,17 +75,17 @@ public class MyAppointmentActivity extends AppCompatActivity {
     }
 
     public void configureTabLayout() {
-        TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
+        tabLayout = findViewById(R.id.tablayout_appointments);
 
         tabLayout.addTab(tabLayout.newTab().setText("Today's"));
         tabLayout.addTab(tabLayout.newTab().setText("All appointments"));
 
-        ViewPager viewPager = findViewById(R.id.pager_appointments);
+        viewPager = findViewById(R.id.pager_appointments);
         PagerAdapter adapter = new MyAppointmentsPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount(), MyAppointmentActivity.this);
         viewPager.setAdapter(adapter);
 
-        viewPager.setOffscreenPageLimit(adapter.getCount()-1);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
 
         // int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 
@@ -142,4 +147,27 @@ public class MyAppointmentActivity extends AppCompatActivity {
                     return false;
                 }
             };
+
+
+    @Override
+    public void updateCount(String whichFrag, int count) {
+        Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
+
+        Log.d(TAG, "updateCount: count : " + count);
+
+        if (whichFrag != null && !whichFrag.isEmpty() && whichFrag.equals("today")) {
+
+        } else if (whichFrag != null && !whichFrag.isEmpty() && whichFrag.equals("all")) {
+
+        }
+/*        new TabLayoutMediator(tabLayout, viewPager,
+                (TabLayout.Tab tab, int position) -> {
+                    if (position == 0)
+                        tab.setText("Received (" + count + ")").setIcon(R.drawable.presc_tablayout_icon);
+                    else
+                        tab.setText("Pending (" + count + ")").setIcon(R.drawable.presc_tablayout_icon);
+
+                }
+        ).attach();*/
+    }
 }
