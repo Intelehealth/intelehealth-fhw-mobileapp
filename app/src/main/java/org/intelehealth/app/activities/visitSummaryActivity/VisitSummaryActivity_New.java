@@ -1681,7 +1681,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
             editText.setText(patient.getPhone_number());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1695,7 +1695,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         public void onClick(DialogInterface dialog, int which) {
 
                             if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                String phoneNumber = "+91" + editText.getText().toString();
+                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
                                 String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                         + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 

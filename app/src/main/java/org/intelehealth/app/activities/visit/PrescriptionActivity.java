@@ -956,7 +956,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
             String whatsapp_url = partial_whatsapp_presc_url.concat(visitID);
 
-            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
             editText.setText(patient.getPhone_number());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -969,7 +969,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
 
                             if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                String phoneNumber = "+91" + editText.getText().toString();
+                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
                                 String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                         + whatsapp_url + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString();
 
