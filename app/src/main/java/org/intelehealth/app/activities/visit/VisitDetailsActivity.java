@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidF
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
@@ -15,6 +16,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -26,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -37,7 +40,9 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +64,9 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
-    private ImageButton presc_arrowRight, vs_arrowRight, backArrow;
-    private String vitalsUUID, adultInitialUUID, obsservermodifieddate;
+    private ImageButton presc_arrowRight, vs_arrowRight, backArrow,
+            pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
+    private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno;
     private Button btn_end_visit, yes_followup_btn;
 
     @Override
@@ -101,10 +107,54 @@ public class VisitDetailsActivity extends AppCompatActivity {
         endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
         btn_end_visit = findViewById(R.id.btn_end_visit);
         backArrow = findViewById(R.id.backArrow);
+        // end visit - end
+
+        pat_call_btn = findViewById(R.id.pat_call_btn);
+        pat_whatsapp_btn = findViewById(R.id.pat_whatsapp_btn);
+        dr_call_btn = findViewById(R.id.dr_call_btn);
+        dr_whatsapp_btn = findViewById(R.id.dr_whatsapp_btn);
+
+        try {
+            pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        Log.v("VD", "vd_pat_phone: " + pat_phoneno);
+
+        pat_call_btn.setOnClickListener(v -> {
+            if (pat_phoneno != null) {
+                Intent i1 = new Intent(Intent.ACTION_DIAL);
+                i1.setData(Uri.parse("tel:" + pat_phoneno));
+                startActivity(i1);
+            }
+            else {
+                Toast.makeText(VisitDetailsActivity.this, "Mobile number not provided", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        pat_whatsapp_btn.setOnClickListener(v -> {
+            if (pat_phoneno != null) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        pat_phoneno, "Hi"))));
+            }
+            else {
+                Toast.makeText(VisitDetailsActivity.this, "Mobile number not provided", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dr_call_btn.setOnClickListener(v -> {
+            finish();
+        });
+
+        dr_whatsapp_btn.setOnClickListener(v -> {
+            finish();
+        });
+
         backArrow.setOnClickListener(v -> {
             finish();
         });
-        // end visit - end
 
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
