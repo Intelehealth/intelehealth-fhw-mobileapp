@@ -23,4 +23,5 @@
     <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
+    <string name="mobile_no_not_provided">Mobile number not provided</string>
 </resources>

@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModif
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
@@ -32,11 +33,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -66,8 +69,9 @@ public class VisitDetailsActivity extends AppCompatActivity {
             vs_card, presc_relative;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow,
             pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
-    private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno;
+    private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
+    private ClsDoctorDetails clsDoctorDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,36 +125,33 @@ public class VisitDetailsActivity extends AppCompatActivity {
         }
         Log.v("VD", "vd_pat_phone: " + pat_phoneno);
 
+        // Fetching dr details from Local db.
+        drDetails = fetchDrDetailsFromLocalDb(visitID);
+        Gson gson = new Gson();
+        clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
+        Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+
+        dr_MobileNo = clsDoctorDetails.getPhoneNumber();
+        dr_WhatsappNo = clsDoctorDetails.getWhatsapp();
+        // end
+
+        // calling and whatsapp - start
         pat_call_btn.setOnClickListener(v -> {
-            if (pat_phoneno != null) {
-                Intent i1 = new Intent(Intent.ACTION_DIAL);
-                i1.setData(Uri.parse("tel:" + pat_phoneno));
-                startActivity(i1);
-            }
-            else {
-                Toast.makeText(VisitDetailsActivity.this, "Mobile number not provided", Toast.LENGTH_SHORT).show();
-            }
+            calling_feature(pat_phoneno);
         });
 
         pat_whatsapp_btn.setOnClickListener(v -> {
-            if (pat_phoneno != null) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        pat_phoneno, "Hi"))));
-            }
-            else {
-                Toast.makeText(VisitDetailsActivity.this, "Mobile number not provided", Toast.LENGTH_SHORT).show();
-            }
+            whatsapp_feature(pat_phoneno);
         });
 
         dr_call_btn.setOnClickListener(v -> {
-            finish();
+            calling_feature(dr_MobileNo);
         });
 
         dr_whatsapp_btn.setOnClickListener(v -> {
-            finish();
+            whatsapp_feature(dr_WhatsappNo);
         });
+        // calling and whatsapp - end
 
         backArrow.setOnClickListener(v -> {
             finish();
@@ -405,6 +406,38 @@ public class VisitDetailsActivity extends AppCompatActivity {
             endvisit_relative_block.setVisibility(View.GONE);
         }
         // end visit - end
+    }
+
+    /**
+     * This will open Whatsapp with a pre-defined message to be sent to the user.
+     * @param phoneno
+     */
+    // TODO: check with Sagar for this message to be passed...
+    private void whatsapp_feature(String phoneno) {
+        if (phoneno != null) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneno, "Hi"))));
+        }
+        else {
+            Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * This will open up Dialer with the phone number passed for user to initiate call.
+     * @param phoneno
+     */
+    private void calling_feature(String phoneno) {
+        if (phoneno != null) {
+            Intent i1 = new Intent(Intent.ACTION_DIAL);
+            i1.setData(Uri.parse("tel:" + phoneno));
+            startActivity(i1);
+        }
+        else {
+            Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
