@@ -5,8 +5,8 @@
 
     <!--UI2.0-->
     <!--Home Screen UI2.0-->
-    <dimen name="common_button_height">48dp</dimen>
-    <dimen name="common_button_width">312dp</dimen>
+    <dimen name="common_button_height">96dp</dimen>
+    <dimen name="common_button_width">624dp</dimen>
     <dimen name="common_button_text_size">20sp</dimen>
     <dimen name="common_header_text_size">24sp</dimen>
     <dimen name="common_label_text_size">20sp</dimen>
@@ -798,5 +798,8 @@
     <!--UI2.0 onboarding screens-->
 
     <dimen name="tv_login_details_info_margin_end">12dp</dimen>
+
+    <dimen name="margin_14">28dp</dimen>
+    <dimen name="margin_30">60dp</dimen>
 
 </resources>
