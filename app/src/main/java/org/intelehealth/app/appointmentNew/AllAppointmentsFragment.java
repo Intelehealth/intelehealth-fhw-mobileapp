@@ -1018,7 +1018,7 @@ public class AllAppointmentsFragment extends Fragment {
         if (context instanceof UpdateAppointmentsCount) {
             listener = (UpdateAppointmentsCount) context;
             int totalAllApps = totalUpcomingApps + totalCancelled + totalCompleted;
-            listener.updateCount("all", totalAllApps);
+            listener.updateCount("all", 2000);
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentCommunicationListener");
