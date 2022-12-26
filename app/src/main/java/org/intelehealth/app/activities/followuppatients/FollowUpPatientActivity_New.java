@@ -129,6 +129,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             else
                 today_nodata.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+            rv_today.setNestedScrollingEnabled(false);
             rv_today.setAdapter(adapter_new);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -174,6 +175,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             else
                 week_nodata.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+            rv_week.setNestedScrollingEnabled(false);
             rv_week.setAdapter(adapter_new);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -191,6 +193,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             else
                 month_nodata.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+            rv_month.setNestedScrollingEnabled(false);
             rv_month.setAdapter(adapter_new);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);

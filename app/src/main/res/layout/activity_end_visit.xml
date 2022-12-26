@@ -61,7 +61,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
-                    android:text="End visits"
+                    android:text="@string/close_visits"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
                     android:textAppearance="@style/label"
@@ -82,7 +82,8 @@
     <!--    Toolbar - end -->
 
     <!--ScrollView - start -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_relative"
@@ -124,7 +125,7 @@
                 android:layout_below="@+id/you_can_add"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:text="No follow up data"
+                android:text="No data found"
                 android:visibility="gone"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
@@ -139,6 +140,7 @@
                 android:padding="@dimen/card_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
             <!--            This week-->
@@ -162,7 +164,7 @@
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:visibility="gone"
-                android:text="No follow up data"
+                android:text="No data found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -176,6 +178,7 @@
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
             <!-- This month -->
@@ -200,7 +203,7 @@
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:visibility="gone"
-                android:text="No follow up data"
+                android:text="No data found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -214,10 +217,11 @@
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
         </RelativeLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!--ScrollView - end -->
 </RelativeLayout>
