@@ -79,6 +79,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -99,7 +100,7 @@ import java.util.Objects;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class PrescriptionActivity extends AppCompatActivity {
+public class PrescriptionActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag,
             visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header,
@@ -137,7 +138,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     public static String prescription2;
     boolean hasLicense = false, isRespiratory = false;
     private static String mFileName = "config.json";
-    private ImageButton backArrow;
+    private ImageButton backArrow, refresh;
+    private NetworkUtils networkUtils;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -152,6 +154,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         }
 
         initUI();
+        networkUtils = new NetworkUtils(this, this);
         fetchIntent();
         setDataToView();
         expandableCardVisibilityHandling();
@@ -215,6 +218,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
 
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
         backArrow.setOnClickListener(v -> {
             finish();
         });
@@ -712,10 +716,13 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
-        super.onStart();
+
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
     }
 
     @Override
@@ -728,6 +735,13 @@ public class PrescriptionActivity extends AppCompatActivity {
             unregisterReceiver(receiver);
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1643,6 +1657,17 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         downloadPrescriptionDefault();
         downloadDoctorDetails();
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
     }
 
 }

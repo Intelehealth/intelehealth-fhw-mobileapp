@@ -3,22 +3,33 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisWeeks_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.todays_NotEndedVisits;
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,12 +37,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EndVisitActivity extends AppCompatActivity {
+public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     RecyclerView recycler_today, recycler_week, recycler_month;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
-    private ImageButton backArrow;
+    private ImageButton backArrow, refresh;
     TextView today_nodata, week_nodata, month_nodata;
+    private NetworkUtils networkUtils;
+    private ObjectAnimator syncAnimator;
 
 
     @Override
@@ -45,9 +58,13 @@ public class EndVisitActivity extends AppCompatActivity {
         }
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        networkUtils = new NetworkUtils(this, this);
         initViews();
-        followup_data();
+        endVisits_data();
 
+        refresh.setOnClickListener(v -> {
+            syncNow(EndVisitActivity.this, refresh, syncAnimator);
+        });
     }
 
     private void initViews() {
@@ -58,13 +75,14 @@ public class EndVisitActivity extends AppCompatActivity {
         week_nodata = findViewById(R.id.week_nodata);
         month_nodata = findViewById(R.id.month_nodata);
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
 
         backArrow.setOnClickListener(v -> {
             finish();
         });
     }
 
-    private void followup_data() {
+    private void endVisits_data() {
         todays_EndVisits();
         thisWeeks_EndVisits();
         thisMonths_EndVisits();
@@ -104,6 +122,34 @@ public class EndVisitActivity extends AppCompatActivity {
             month_nodata.setVisibility(View.VISIBLE);
         else
             month_nodata.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
 

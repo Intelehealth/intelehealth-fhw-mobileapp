@@ -62,6 +62,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -98,6 +99,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -118,7 +120,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PatientDetailActivity2 extends AppCompatActivity {
+public class PatientDetailActivity2 extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
@@ -152,6 +154,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     private boolean returning;
+    private ImageButton refresh;
+    private NetworkUtils networkUtils;
 
     @Override
     public void onBackPressed() {
@@ -168,6 +172,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         String language = sessionManager.getAppLanguage();
         context = PatientDetailActivity2.this;
 
+        networkUtils = new NetworkUtils(this, this);
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -416,6 +421,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
 
     private void initUI() {
+        refresh = findViewById(R.id.refresh);
+
         profile_image = findViewById(R.id.profile_image);
         name_txtview = findViewById(R.id.name_txtview);
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
@@ -1141,15 +1148,29 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
         super.onStart();
+        registerReceiver(reMyreceive, filter);
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        unregisterReceiver(reMyreceive);
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+   /* @Override
     protected void onDestroy() {
         unregisterReceiver(reMyreceive);
         super.onDestroy();
-    }
+    }*/
 
     // Dialog show
     public void startVisitDialog(Context context, Drawable drawable, String title, String subTitle,
@@ -1295,5 +1316,15 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         startActivity(intent2);
     }
 
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
 
 }

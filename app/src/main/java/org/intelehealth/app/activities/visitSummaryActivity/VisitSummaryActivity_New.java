@@ -119,6 +119,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -152,7 +153,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface {
+public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
@@ -289,7 +290,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow, priority_hint;
+    private ImageButton backArrow, priority_hint, refresh;
+    private NetworkUtils networkUtils;
 
 
     @Override
@@ -307,6 +309,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         initUI();
+        networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
@@ -1494,6 +1497,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void initUI() {
         // textview - start
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
         profile_image = findViewById(R.id.profile_image);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
@@ -2606,10 +2610,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     @Override
     protected void onStart() {
+        super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
-        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
     }
 
     @Override
@@ -2622,6 +2628,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             unregisterReceiver(receiver);
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -3465,7 +3478,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         return formatted;
     }
-
     // Print - end
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
 
 }

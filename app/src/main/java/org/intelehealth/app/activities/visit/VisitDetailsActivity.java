@@ -43,6 +43,7 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -56,7 +57,7 @@ import java.util.List;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class VisitDetailsActivity extends AppCompatActivity {
+public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
@@ -67,11 +68,12 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
-    private ImageButton presc_arrowRight, vs_arrowRight, backArrow,
+    private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
             pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
     private ClsDoctorDetails clsDoctorDetails;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
+
+        networkUtils = new NetworkUtils(this, this);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -111,6 +115,7 @@ public class VisitDetailsActivity extends AppCompatActivity {
         endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
         btn_end_visit = findViewById(R.id.btn_end_visit);
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
         // end visit - end
 
         pat_call_btn = findViewById(R.id.pat_call_btn);
@@ -444,5 +449,33 @@ public class VisitDetailsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }

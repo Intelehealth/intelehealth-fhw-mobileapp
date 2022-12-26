@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.Serializable;
@@ -37,7 +39,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class IdentificationActivity_New extends AppCompatActivity {
+public class IdentificationActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     // ActivityIdentificationNewBinding binding;
     Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
     RelativeLayout relativeLayout;
@@ -58,6 +60,8 @@ public class IdentificationActivity_New extends AppCompatActivity {
     private Fragment_FirstScreen firstScreen;
     private Fragment_SecondScreen secondScreen;
     private Fragment_ThirdScreen thirdScreen;
+    private ImageButton refresh;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,7 @@ public class IdentificationActivity_New extends AppCompatActivity {
         }
 
         initUI();
+        networkUtils = new NetworkUtils(this, this);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -141,6 +146,7 @@ public class IdentificationActivity_New extends AppCompatActivity {
         i_privacy = getIntent();
         context = IdentificationActivity_New.this;
         label = findViewById(R.id.label);
+        refresh = findViewById(R.id.refresh);
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         getSupportFragmentManager()
@@ -175,6 +181,34 @@ public class IdentificationActivity_New extends AppCompatActivity {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
             Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
     }
 }
