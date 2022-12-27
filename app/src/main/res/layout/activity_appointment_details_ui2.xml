@@ -106,7 +106,7 @@
                             android:layout_height="@dimen/cp_pencil_height"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/cp_gender_margin_start"
-                            android:layout_marginTop="1dp"
+                            android:layout_marginTop="-1dp"
                             android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
@@ -509,10 +509,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/ad_icons_margin_top"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="ExtraText">
 
                     <ImageView
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/iv_call_doctor_app"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"
@@ -520,7 +521,7 @@
                         android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_call_green" />
                     <ImageView
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/iv_whatsapp_doctor_app"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"

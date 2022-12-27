@@ -80,7 +80,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     LinearLayout layoutPrescButtons, layoutContactAction, layoutEndVisit;
     TextView tvPrescStatus, tvRescheduleOnTitle, tvAppointmentTime, tvPatientName, tvOpenMrsID, tvGenderAgeText, tvChiefComplaintTxt,
             tvVisitId, tvVisitStartDate, tvVisitStartTime, tvDrSpeciality, tvPrevAppDate, tvPrevAppTime;
-    ImageView ivPrescription, ivDrawerPrescription, ivProfileImage, ivDrawerVisitSummary, ivCallPatient, ivWhatsappPatient;
+    ImageView ivPrescription, ivDrawerPrescription, ivProfileImage, ivDrawerVisitSummary, ivCallPatient, ivWhatsappPatient,
+            ivWhatsappDoctor, ivCallDoctor;
     Button btnEndVisit, btnRescheduleAppointment, btnCancelAppointment;
     View layoutSummaryBtns;
     FloatingActionButton fabHelp;
@@ -168,6 +169,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         ivWhatsappPatient = findViewById(R.id.iv_whatsapp_patient_app);
         tvPrevAppDate = findViewById(R.id.tv_prev_app_date);
         tvPrevAppTime = findViewById(R.id.tv_prev_app_time);
+        ivWhatsappDoctor = findViewById(R.id.iv_whatsapp_doctor_app);
+        ivCallDoctor = findViewById(R.id.iv_call_doctor_app);
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity from adapter
@@ -180,6 +183,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             visit_speciality = intent.getStringExtra("visit_speciality");
+            Log.d(TAG, "initUI: visit_speciality : " + visit_speciality);
             app_start_date = intent.getStringExtra("app_start_date");
             app_start_time = intent.getStringExtra("app_start_time");
             appointment_id = intent.getIntExtra("appointment_id", 0);
@@ -293,7 +297,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
             layoutPrescButtons.setVisibility(View.GONE);
-            // tvPrescStatus.setText("Received 2 hours ago");
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary1));
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_prescription_green));
             fabHelp.setVisibility(View.GONE);
@@ -389,6 +392,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         }
 
+        handleWhatsappAndCall();
+
         //prescription pending  state : click event - make "stateAppointmentStarted" visible,
         // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible, "layoutPrescButtons" visible
        /*  stateAppointmentStarted.setVisibility(View.VISIBLE);
@@ -456,6 +461,55 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         btnEndVisit.setVisibility(View.GONE);
         layoutSummaryBtns.setVisibility(View.GONE);
         stateAppointmentPrescription.setVisibility(View.GONE);*/
+
+    }
+
+    private void handleWhatsappAndCall() {
+        try {
+            String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
+            Log.d(TAG, "handleWhatsappAndCall: patientPhoneNo : " + patientPhoneNo);
+            //for patient
+
+            if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
+                ivWhatsappPatient.setOnClickListener(v -> {
+                    String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                });
+                ivCallPatient.setOnClickListener(v -> {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(patientPhoneNo));
+                    startActivity(intent);
+                });
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        //for doctor
+
+        try {
+            String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
+            //for patient
+
+            if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
+                ivWhatsappPatient.setOnClickListener(v -> {
+                    String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                });
+                ivCallPatient.setOnClickListener(v -> {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(patientPhoneNo));
+                    startActivity(intent);
+                });
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -785,7 +785,7 @@
     <dimen name="apps_details_profile_iv_width">40dp</dimen>
     <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="card_profile_details_margin_start">12dp</dimen>
-    <dimen name="card_profile_name_text_size">16sp</dimen>
+    <dimen name="card_profile_name_text_size">14sp</dimen>
     <dimen name="cp_gender_margin_start">4dp</dimen>
     <dimen name="fu_gender_text_size">14sp</dimen>
     <dimen name="cp_pencil_width">14dp</dimen>
