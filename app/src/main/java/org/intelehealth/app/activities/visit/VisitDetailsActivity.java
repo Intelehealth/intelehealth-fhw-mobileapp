@@ -134,10 +134,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         drDetails = fetchDrDetailsFromLocalDb(visitID);
         Gson gson = new Gson();
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
-        Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
 
-        dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
-        dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
+        if (clsDoctorDetails != null) {
+            Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+            dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
+            dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
+        }
         // end
 
         // calling and whatsapp - start
