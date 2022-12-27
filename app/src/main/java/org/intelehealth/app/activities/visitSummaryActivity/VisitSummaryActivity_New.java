@@ -1871,8 +1871,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             // Additional Notes - Start
             try {
                 String addnotes = additional_notes_edittext.getText().toString();
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
-            } catch (DAOException e) {
+                Log.v("addnotes", "addnotes: " + addnotes);
+                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+                else
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No Data", ADDITIONAL_NOTES);
+            }
+            catch (DAOException e) {
                 e.printStackTrace();
                 Log.v("hospitalType", "hospitalType: " + e.getMessage());
             }

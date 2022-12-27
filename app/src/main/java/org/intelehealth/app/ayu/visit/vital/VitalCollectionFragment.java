@@ -174,7 +174,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // add a list
         final String[] data = new String[mHeightMasterList.size()];
         for (int i = 0; i < mHeightMasterList.size(); i++) {
-            data[i] = mHeightMasterList.get(i) + " cm";
+            data[i] = String.valueOf(mHeightMasterList.get(i)) /*+ " cm"*/;
         }
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
@@ -198,7 +198,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // add a list
         final String[] data = new String[mWeightMasterList.size()];
         for (int i = 0; i < mWeightMasterList.size(); i++) {
-            data[i] = mWeightMasterList.get(i) + " kg";
+            data[i] = String.valueOf(mWeightMasterList.get(i)) /*+ " kg"*/;
         }
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
