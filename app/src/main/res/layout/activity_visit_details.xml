@@ -211,14 +211,14 @@
                 android:orientation="horizontal">
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/pat_call_btn"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
                     android:src="@drawable/ic_icon8_phone" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/pat_whatsapp_btn"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -437,7 +437,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/dr_call_btn"
                         android:layout_width="@dimen/fu_icon_width"
                         android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
@@ -445,7 +445,7 @@
                         android:src="@drawable/ic_icon8_phone" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/dr_whatsapp_btn"
                         android:layout_width="@dimen/fu_icon_width"
                         android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"

@@ -23,6 +23,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -38,7 +39,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class NotificationActivity extends AppCompatActivity implements AdapterInterface {
+public class NotificationActivity extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
@@ -48,6 +49,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
     private List<NotificationModel> todayPresc_list, yesterdayPresc_list;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         }
 
         initViews();
+        networkUtils = new NetworkUtils(this, this);
         viewsActions();
         clickListeners();
     }
@@ -124,11 +127,11 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
             adapter.notifyDataSetChanged();
         });
 
-        refresh.setOnClickListener(v -> {
+     /*   refresh.setOnClickListener(v -> {
             // refresh data.
             showNotifications();
             Toast.makeText(this, "Refreshed Successfully", Toast.LENGTH_SHORT).show();
-        });
+        });*/
 
         filter.setOnClickListener(v -> {
             // filter options
@@ -206,5 +209,33 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     @Override
     public void deleteAddDoc_Item(List<DocumentObject> list, int position) {
 
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }

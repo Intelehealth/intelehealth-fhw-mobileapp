@@ -77,6 +77,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -117,6 +119,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -150,7 +153,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface {
+public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
@@ -164,7 +167,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
-            vs_add_notes;
+            vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
@@ -287,7 +290,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow;
+    private ImageButton backArrow, priority_hint, refresh;
+    private NetworkUtils networkUtils;
 
 
     @Override
@@ -305,6 +309,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         initUI();
+        networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
@@ -910,6 +915,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
                 flag.setChecked(true);
+                flag.setEnabled(false);
             }
         }
 
@@ -925,7 +931,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             }
         });
-        // todo: this code is present in uoload btn too so handle that later...
         // Priority data - end
 
         // edit listeners - start
@@ -1492,6 +1497,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void initUI() {
         // textview - start
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
         profile_image = findViewById(R.id.profile_image);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
@@ -1506,6 +1512,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
         vitals_header_relative = findViewById(R.id.vitals_header_relative);
+        parentLayout = findViewById(R.id.parentLayout);
         btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
         chiefcomplaint_header_relative = findViewById(R.id.chiefcomplaint_header_relative);
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
@@ -1539,6 +1546,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
+        priority_hint = findViewById(R.id.priority_hint);
+
+        priority_hint.setOnClickListener(v -> {
+            Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
+//            Snackbar.make(parentLayout, R.string.priority_hint, Snackbar.LENGTH_SHORT).show();
+        });
 
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1672,7 +1685,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
             editText.setText(patient.getPhone_number());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1686,7 +1699,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         public void onClick(DialogInterface dialog, int which) {
 
                             if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                String phoneNumber = "+91" + editText.getText().toString();
+                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
                                 String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                         + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
@@ -2602,10 +2615,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     @Override
     protected void onStart() {
+        super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
-        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
     }
 
     @Override
@@ -2618,6 +2633,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             unregisterReceiver(receiver);
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -3461,7 +3483,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         return formatted;
     }
-
     // Print - end
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
 
 }

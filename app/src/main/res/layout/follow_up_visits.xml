@@ -97,7 +97,8 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frame_10021"
@@ -150,6 +151,7 @@
                 android:padding="@dimen/card_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
 <!--            This week-->
@@ -186,6 +188,7 @@
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
             <!-- This month -->
@@ -223,9 +226,10 @@
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
         </RelativeLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

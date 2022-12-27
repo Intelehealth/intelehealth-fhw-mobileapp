@@ -4,7 +4,9 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModif
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
@@ -15,6 +17,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -26,18 +29,24 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +57,7 @@ import java.util.List;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class VisitDetailsActivity extends AppCompatActivity {
+public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
@@ -59,9 +68,12 @@ public class VisitDetailsActivity extends AppCompatActivity {
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
-    private ImageButton presc_arrowRight, vs_arrowRight, backArrow;
-    private String vitalsUUID, adultInitialUUID, obsservermodifieddate;
+    private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
+            pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
+    private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
+    private ClsDoctorDetails clsDoctorDetails;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +85,8 @@ public class VisitDetailsActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
+
+        networkUtils = new NetworkUtils(this, this);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -101,10 +115,52 @@ public class VisitDetailsActivity extends AppCompatActivity {
         endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
         btn_end_visit = findViewById(R.id.btn_end_visit);
         backArrow = findViewById(R.id.backArrow);
+        refresh = findViewById(R.id.refresh);
+        // end visit - end
+
+        pat_call_btn = findViewById(R.id.pat_call_btn);
+        pat_whatsapp_btn = findViewById(R.id.pat_whatsapp_btn);
+        dr_call_btn = findViewById(R.id.dr_call_btn);
+        dr_whatsapp_btn = findViewById(R.id.dr_whatsapp_btn);
+
+        try {
+            pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        Log.v("VD", "vd_pat_phone: " + pat_phoneno);
+
+        // Fetching dr details from Local db.
+        drDetails = fetchDrDetailsFromLocalDb(visitID);
+        Gson gson = new Gson();
+        clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
+        Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+
+        dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
+        dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
+        // end
+
+        // calling and whatsapp - start
+        pat_call_btn.setOnClickListener(v -> {
+            calling_feature(pat_phoneno);
+        });
+
+        pat_whatsapp_btn.setOnClickListener(v -> {
+            whatsapp_feature(pat_phoneno);
+        });
+
+        dr_call_btn.setOnClickListener(v -> {
+            calling_feature(dr_MobileNo);
+        });
+
+        dr_whatsapp_btn.setOnClickListener(v -> {
+            whatsapp_feature(dr_WhatsappNo);
+        });
+        // calling and whatsapp - end
+
         backArrow.setOnClickListener(v -> {
             finish();
         });
-        // end visit - end
 
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
@@ -357,9 +413,69 @@ public class VisitDetailsActivity extends AppCompatActivity {
         // end visit - end
     }
 
+    /**
+     * This will open Whatsapp with a pre-defined message to be sent to the user.
+     * @param phoneno
+     */
+    // TODO: check with Sagar for this message to be passed...
+    private void whatsapp_feature(String phoneno) {
+        if (phoneno != null) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneno, "Hello this is nurse1 from Telemedicine project. I am connecting with you regarding your recent visit."))));
+        }
+        else {
+            Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * This will open up Dialer with the phone number passed for user to initiate call.
+     * @param phoneno
+     */
+    private void calling_feature(String phoneno) {
+        if (phoneno != null) {
+            Intent i1 = new Intent(Intent.ACTION_DIAL);
+            i1.setData(Uri.parse("tel:" + phoneno));
+            startActivity(i1);
+        }
+        else {
+            Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -18,21 +19,27 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.utilities.NetworkUtils;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends FragmentActivity {
+public class VisitActivity extends FragmentActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private int receivedTotal = 0;
     private int pendingTotal = 0;
+    private ImageButton ibBack, refresh;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
 
-        ImageButton ibBack = findViewById(R.id.vector);
+        networkUtils = new NetworkUtils(this, this);
+        ibBack = findViewById(R.id.vector);
+        refresh = findViewById(R.id.refresh);
+
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
@@ -98,5 +105,32 @@ public class VisitActivity extends FragmentActivity {
         });
     }
 
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

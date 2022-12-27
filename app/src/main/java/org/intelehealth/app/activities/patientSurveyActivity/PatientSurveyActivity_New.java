@@ -33,6 +33,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -45,7 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class PatientSurveyActivity_New extends AppCompatActivity {
+public class PatientSurveyActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientSurveyActivity_New.class.getSimpleName();
     String patientUuid;
     String visitUuid;
@@ -57,7 +58,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
     SQLiteDatabase db;
 
     EditText mComments;
-    ImageButton mSkip;
+    ImageButton mSkip, refresh;
     Button mSubmit;
     private RatingBar ratingBar;
 
@@ -65,6 +66,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
     String comments;
 
     SessionManager sessionManager = null;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
 
         getIntentValues();
         initUI();
+        networkUtils = new NetworkUtils(this, this);
         clickListeners();
     }
 
@@ -133,6 +136,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
         mSkip = findViewById(R.id.cancelbtn);
         mSubmit = findViewById(R.id.btn_submit);
         ratingBar = (RatingBar) findViewById(R.id.ratingbar);
+        refresh = findViewById(R.id.refresh);
     }
 
 
@@ -228,5 +232,32 @@ public class PatientSurveyActivity_New extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d("TAG", "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        }
+        else {
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

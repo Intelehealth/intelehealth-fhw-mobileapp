@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
@@ -15,6 +16,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -93,6 +95,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
 import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -108,6 +111,7 @@ import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,6 +158,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     View toolbarHome;
     NetworkUtils networkUtils;
     String currentFragment;
+    private AlertDialog resetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,12 +249,147 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
         });
 
+        // Reset's App...
         menuResetApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                resetApp();
             }
         });
+    }
+
+    private void resetApp() {
+        if ((isNetworkConnected())) {
+            showSimpleDialog(getString(R.string.app_sync), getString(R.string.please_wait_sync_progress));
+            boolean isSynced = syncUtils.syncForeground("home");
+            if (isSynced) {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() { //Do something after 100ms
+                        showResetConfirmationDialog();
+                    }
+                }, 3000);
+            } else {
+               // mResetSyncDialog.dismiss();
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+            }
+        } else {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+        }
+    }
+
+    private void showResetConfirmationDialog() {
+        resetDialog.dismiss();
+        patientRegistrationDialog(context,
+                getResources().getDrawable(R.drawable.close_patient_svg),
+                getString(R.string.reset_app_new),
+                getString(R.string.sure_to_reset_app),
+                getString(R.string.generic_yes),
+                getString(R.string.no), new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            showResetProgressbar();
+                            deleteCache(getApplicationContext());
+
+                          //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
+//                            deleteCache(getApplicationContext());
+/*
+                            new Handler(Looper.getMainLooper())
+                                    .postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            resetDialog.dismiss();
+                                            deleteCache(getApplicationContext());
+                                        }
+                                    }, 2000);
+*/
+                        }
+                    }
+                });
+    }
+
+    private void showResetProgressbar() {
+        mRefreshProgressDialog = new ProgressDialog(context, R.style.AlertDialogStyle);
+        mRefreshProgressDialog.setTitle(R.string.resetting_app_dialog);
+        mRefreshProgressDialog.setCancelable(false);
+        mRefreshProgressDialog.setProgress(i);
+        mRefreshProgressDialog.show();
+    }
+
+    public void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            boolean success = deleteDir(dir);
+            if (success) {
+                clearAppData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    private void clearAppData() {
+        try {
+            // clearing app data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                mRefreshProgressDialog.dismiss();
+                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+            } else {
+                String packageName = getApplicationContext().getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("pm clear " + packageName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showSimpleDialog(String title, String subtitle) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subtitle);
+        positive_btn.setVisibility(View.GONE);
+        negative_btn.setVisibility(View.GONE);
+
+        resetDialog = alertdialogBuilder.create();
+        resetDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        resetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        resetDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        resetDialog.show();
     }
 
     private void initUI() {

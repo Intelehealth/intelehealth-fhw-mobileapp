@@ -1,16 +1,24 @@
 package org.intelehealth.app.syncModule;
 
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import androidx.work.WorkManager;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationUtils;
 
 public class SyncUtils {
@@ -128,4 +136,33 @@ public class SyncUtils {
 
         return isSynced;
     }
+
+    /**
+     * Clicking on this btn will start Sync.
+     * @param view Refresh button view.
+     */
+    public static void syncNow(Context context, View view, ObjectAnimator syncAnimator) {
+        syncAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setInterpolator(new LinearInterpolator());
+
+        if (NetworkConnection.isOnline(context)) {
+            view.clearAnimation();
+            syncAnimator.start();
+            new SyncUtils().syncBackground();
+
+            new Handler(Looper.getMainLooper())
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_SHORT).show();
+                        }
+                    }, 1200);
+
+        }
+        else {
+            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 }

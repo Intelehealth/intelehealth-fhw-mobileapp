@@ -301,7 +301,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-                Glide.with(this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                Glide.with(this)
+                        .load(providerDTO.getImagePath())
+                        .thumbnail(0.3f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(ivProfileImage);
             } else {
                 ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
             }
@@ -473,7 +478,13 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Glide.with(MyProfileActivity.this).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                Glide.with(MyProfileActivity.this)
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(ivProfileImage);
 
                 saveImage(mCurrentPhotoPath);
             }
