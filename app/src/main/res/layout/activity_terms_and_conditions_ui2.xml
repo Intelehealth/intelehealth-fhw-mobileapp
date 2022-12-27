@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/ll_action_bar"
-        android:layout_marginTop="10dp">
+        >
 
 
         <TextView
