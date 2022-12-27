@@ -63,13 +63,13 @@
             android:id="@+id/checkbox_privacy_policy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/chk_box_ayu_margin_top"
             android:button="@drawable/ui2_ic_default_checkbox" />
 
         <LinearLayout
             android:id="@+id/ll_tc_pp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/checkbox_privacy_policy"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_toEndOf="@+id/checkbox_privacy_policy">
 

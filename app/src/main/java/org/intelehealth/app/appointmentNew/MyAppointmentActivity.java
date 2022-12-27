@@ -31,6 +31,8 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     BottomNavigationView bottomNav;
     TabLayout tabLayout;
     ViewPager viewPager;
+    String fromFragment = "";
+    int totalCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,19 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+              /*  Log.d(TAG, "onTabSelected:position : : " + tab.getPosition());
+                if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("today")) {
+                    if (tab.getPosition() == 0) {
+                        tab.setText("Today's (" + totalCount + ")");
+
+                    }
+                } else if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("all")) {
+                    if (tab.getPosition() == 1) {
+                        tab.setText("All appointments (" + totalCount + ")");
+
+                    }
+
+                }*/
             }
 
             @Override
@@ -155,11 +170,9 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
         Log.d(TAG, "updateCount: count : " + count);
 
-        if (whichFrag != null && !whichFrag.isEmpty() && whichFrag.equals("today")) {
+        fromFragment = whichFrag;
+        totalCount = count;
 
-        } else if (whichFrag != null && !whichFrag.isEmpty() && whichFrag.equals("all")) {
-
-        }
 /*        new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)

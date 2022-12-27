@@ -153,6 +153,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     String firstLogin = "";
     View toolbarHome;
     NetworkUtils networkUtils;
+    String currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -614,6 +615,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "check11onResume: home");
+        loadLastSelectedFragment();
         toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
         tvAppLastSync.setText(lastSync);
@@ -634,8 +637,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        Fragment fragment = new HomeFragment_New();
-        loadFragment(fragment);
 
         super.onResume();
     }
@@ -1167,7 +1168,40 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        // put string value
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        assert currentFragment != null;
+        outState.putString("currentFragment", currentFragment.getTag());
+        super.onSaveInstanceState(outState);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        // get values from saved state
+        currentFragment = savedInstanceState.getString("currentFragment");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
+    private void loadLastSelectedFragment() {
+        Fragment fragment = null;
+        if (currentFragment != null && !currentFragment.isEmpty()) {
+            if (currentFragment.contains("home")) {
+                fragment = new HomeFragment_New();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+
+            } else if (currentFragment.contains("help")) {
+                fragment = new HelpFragment_New();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+
+            } else if (currentFragment.contains("achievements")) {
+                fragment = new MyAchievementsFragment();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            }
+        }
+        loadFragment(fragment);
+
+    }
 }
 

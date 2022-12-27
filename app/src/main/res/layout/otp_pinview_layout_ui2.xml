@@ -11,7 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:imeOptions="actionNext" />
+        android:imeOptions="actionNext"
+        android:paddingStart="@dimen/otp_pinview_padding_start_end"
+        android:paddingTop="@dimen/otp_pinview_padding_top_bottom"
+        android:paddingEnd="@dimen/otp_pinview_padding_start_end"
+        android:paddingBottom="@dimen/otp_pinview_padding_top_bottom" />
 
     <EditText
         android:id="@+id/et_pin_2"
@@ -42,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:imeOptions="actionNext" />
+        android:imeOptions="actionNext"
+       />
 
     <EditText
         android:id="@+id/et_pin_5"
@@ -53,6 +58,7 @@
         android:background="@drawable/otp_pinview_bg_pin_ui2"
         android:imeOptions="actionNext"
 
+
         />
 
     <EditText
@@ -62,5 +68,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:imeOptions="actionDone" />
+        android:imeOptions="actionDone"
+      />
 </LinearLayout>
