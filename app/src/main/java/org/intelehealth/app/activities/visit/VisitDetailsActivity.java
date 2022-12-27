@@ -136,8 +136,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
         Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
 
-        dr_MobileNo = clsDoctorDetails.getPhoneNumber();
-        dr_WhatsappNo = clsDoctorDetails.getWhatsapp();
+        dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
+        dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         // end
 
         // calling and whatsapp - start
@@ -423,7 +423,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(
                             String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneno, "Hi"))));
+                                    phoneno, "Hello this is nurse1 from Telemedicine project. I am connecting with you regarding your recent visit."))));
         }
         else {
             Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
