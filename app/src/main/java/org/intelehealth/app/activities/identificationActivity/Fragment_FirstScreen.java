@@ -14,9 +14,11 @@ import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,6 +39,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -49,6 +53,7 @@ import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
@@ -61,7 +66,9 @@ import org.joda.time.PeriodType;
 import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -95,6 +102,7 @@ public class Fragment_FirstScreen extends Fragment {
     boolean fromSecondScreen = false;
     String patientID_edit;
     boolean patient_detail = false;
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
 
 
     @Nullable
@@ -385,22 +393,7 @@ public class Fragment_FirstScreen extends Fragment {
         patient_imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String patientTemp = "";
-                if (patientUuid.equalsIgnoreCase("")) {
-                      patientTemp = patientdto.getUuid(); // todo: uncomment later
-                } else {
-                    patientTemp = patientUuid;
-                }
-
-                File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
-                if (!filePath.exists()) {
-                    filePath.mkdir();
-                }
-
-                Intent cameraIntent = new Intent(getActivity(), CameraActivity.class);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                   checkPerm();
             }
         });
 
@@ -669,6 +662,106 @@ public class Fragment_FirstScreen extends Fragment {
             }
         });
         // Age - end
+    }
+
+    private void checkPerm() {
+        if (checkAndRequestPermissions()) {
+            takePicture();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(getActivity());
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getActivity().finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int cameraPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    private void takePicture() {
+        String patientTemp = "";
+        if (patientUuid.equalsIgnoreCase("")) {
+            patientTemp = patientdto.getUuid();
+        } else {
+            patientTemp = patientUuid;
+        }
+
+        File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
+        if (!filePath.exists()) {
+            filePath.mkdir();
+        }
+
+        Intent cameraIntent = new Intent(getActivity(), CameraActivity.class);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
+        startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
     }
 
     // gender
