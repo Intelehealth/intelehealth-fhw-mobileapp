@@ -71,7 +71,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     ImageView ivPrevMonth, ivNextMonth;
     int monthNumber;
     String monthNAmeFromNo;
-    TextView tvSelectedMonthYear, tvPrevSelectedAppDetails;
+    TextView tvSelectedMonthYear, tvPrevSelectedAppDetails, tvTitleReschedule;
     Calendar calendarInstance;
     String yearToCompare = "";
     String monthToCompare = "";
@@ -119,7 +119,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+
         initUI();
+
 
    /*
   // intent params as per old flow
@@ -132,8 +134,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 */
 
         //for reschedule appointment as per old flow
-        actionTag = getIntent().getStringExtra("actionTag");
-        if(actionTag!=null && !actionTag.isEmpty() && actionTag.equals("rescheduleAppointment")){
+        actionTag = getIntent().getStringExtra("actionTag").toLowerCase();
+        if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("rescheduleappointment")) {
+
+            tvPrevSelectedAppDetails.setVisibility(View.VISIBLE);
+            tvTitleReschedule.setVisibility(View.VISIBLE);
+
+
             appointmentId = getIntent().getIntExtra("appointmentId", 0);
             visitUuid = getIntent().getStringExtra("visitUuid");
             patientUuid = getIntent().getStringExtra("patientUuid");
@@ -147,10 +154,23 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
             String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " at " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
+        } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("visitsummary")) {
+
+            visitUuid = getIntent().getStringExtra("visitUuid");
+            patientUuid = getIntent().getStringExtra("patientUuid");
+            patientName = getIntent().getStringExtra("patientName");
+            appointmentId = getIntent().getIntExtra("appointmentId", 0);
+            openMrsId = getIntent().getStringExtra("openMrsId");
+            speciality = getIntent().getStringExtra("speciality");
+
         }
 
+        if (speciality != null) {
+            getSlots();
 
-
+        } else {
+            Toast.makeText(this, "Speciality must not be null", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initUI() {
@@ -161,7 +181,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         btnBookAppointment = findViewById(R.id.btn_book_appointment);
         btnBookAppointment.setOnClickListener(v -> {
             Log.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
-            if (!selectedDateTime.isEmpty()){
+            if (!selectedDateTime.isEmpty()) {
                 bookAppointmentDialog(ScheduleAppointmentActivity_New.this, selectedDateTime);
 
                 //------before reschedule need to cancel appointment----
@@ -173,8 +193,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                                     bookAppointment(slotInfo, null);
                                 }*/
 
-            }
-            else{
+            } else {
                 Toast.makeText(this, "Please select time slot", Toast.LENGTH_SHORT).show();
 
             }
@@ -196,6 +215,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivNextMonth = findViewById(R.id.iv_next_month1);
         tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
         tvPrevSelectedAppDetails = findViewById(R.id.tv_prev_scheduled_details);
+        tvTitleReschedule = findViewById(R.id.tv_title_reschedule);
 
 
         calendarInstance = Calendar.getInstance();
@@ -224,20 +244,21 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivPrevMonth.setOnClickListener(v -> {
             getPreviousMonthDates();
         });
-        getSlots();
+
     }
 
 
     private void getSlots() {
         Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
         Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
+        Log.d(TAG, "getSlots: speciality : " + speciality);
 
         // Dermatologist
         // General Physician
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, "General Physician")
+                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
@@ -647,7 +668,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                                 /*setResult(RESULT_OK);
                                 finish();*/
-                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, HomeScreenActivity_New.class);
+                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
                             startActivity(intent);
                             finish();
                         }

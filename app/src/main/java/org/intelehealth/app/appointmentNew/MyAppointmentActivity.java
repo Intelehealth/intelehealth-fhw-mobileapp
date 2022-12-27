@@ -166,12 +166,12 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
     @Override
     public void updateCount(String whichFrag, int count) {
-        Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
+      //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
 
-        Log.d(TAG, "updateCount: count : " + count);
+      //  Log.d(TAG, "updateCount: count : " + count);
 
-        fromFragment = whichFrag;
-        totalCount = count;
+     /*   fromFragment = whichFrag;
+        totalCount = count;*/
 
 /*        new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {

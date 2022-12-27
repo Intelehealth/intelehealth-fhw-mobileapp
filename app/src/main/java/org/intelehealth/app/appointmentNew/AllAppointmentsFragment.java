@@ -772,6 +772,9 @@ public class AllAppointmentsFragment extends Fragment {
 
     private void getSlots() {
         String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        Log.d(TAG, "getSlots: getActivity()).getLocationUuid() : " + new SessionManager(getActivity()).getLocationUuid());
+        Log.d(TAG, "getSlots: date 1 : " + DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat());
+        Log.d(TAG, "getSlots: date 2 : " + DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat());
 
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
@@ -861,17 +864,16 @@ public class AllAppointmentsFragment extends Fragment {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
-                //recyclerview for completed appointments
-                AllAppointmentsAdapter allAppointmentsFragment = new
-                        AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-                rvCompletedApp.setAdapter(allAppointmentsFragment);
-
-            } else {
             }
-        }
-        Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
+
+        }
+        //recyclerview for completed appointments
+        AllAppointmentsAdapter allAppointmentsFragment = new
+                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+        rvCompletedApp.setAdapter(allAppointmentsFragment);
 
     }
 

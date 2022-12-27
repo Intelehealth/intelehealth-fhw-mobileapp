@@ -52,7 +52,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
     private static final String TAG = "MyAllAppointmentsAdapte";
     Context context;
     List<AppointmentInfo> appointmentsList;
-    String whichAppointments;
+    String whichAppointments ="";
 
     public AllAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentsList, String whichAppointments) {
         this.context = context;
@@ -154,9 +154,10 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             }
 
         }
-
+        Log.d(TAG, "onBindViewHolder: whichAppointments : "+whichAppointments);
         try {
             if (whichAppointments.equalsIgnoreCase("completed")) {
+                Log.d(TAG, "onBindViewHolder: in completed");
                 //bcz of common UI
                 //hide  : ivTime, tvDate, tvPatientId
                 //show :  tvPrescRecStatus
@@ -166,7 +167,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
-
+                Log.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));

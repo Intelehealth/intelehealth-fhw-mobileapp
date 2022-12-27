@@ -90,8 +90,10 @@
                 android:layout_below="@+id/rv_horizontal_cal"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/tv_title_reschedule"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="30dp"
                     android:text="Previously scheduled appointment details"
                     android:textColor="@color/textColorGray" />
@@ -99,6 +101,8 @@
                     android:id="@+id/tv_prev_scheduled_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+
                     android:textColor="@color/textColorBlack" />
                 <TextView
                     android:id="@+id/tv_time_slot_title"
