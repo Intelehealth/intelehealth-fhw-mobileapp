@@ -902,6 +902,7 @@
     <string name="generate_bill">Generate Bill</string>
     <string name="confirm_tests">Please confirm the test(s)</string>
     <string name="intelehealth_address">Telehealth Innovations Foundation\n14A, Shreeji Arcade,\nOpp Nitin Company , Panchpakhadi\nThane, 400602, Maharashtra, India.</string>
+    <string name="scd_address">MySmartCareDoc Pvt Ltd. \n 6-3-1192/1/1,\n Suite No 813, White House,\n Block- III, Kundanbagh, Begumpet,\n Hyderabad, TS, India – 500016</string>
     <string name="consultation_charges">Consultation Charges</string>
     <string name="follow_up_charges">Follow-Up Charges</string>
     <string name="total_amount">Total Amount</string>
@@ -942,5 +943,4 @@
     <string name="aadhar_number_details">Aadhar Card Number</string>
     <string name="abdominal_girth_vitals">Abdominal Girth (inches)</string>
     <string name="make_payment">Make Payment</string>
-    <string name="scd_address">MySmartCareDoc Pvt Ltd. \n 6-3-1192/1/1, Suite No 813, White House Block- III, Kundanbagh, Begumpet, Hyderabad, TS, India – 500016</string>
 </resources>

@@ -2,10 +2,12 @@ package org.intelehealth.app.activities.billConfirmation;
 
 import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_MIDDLE;
 import static org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity.curPrinterInterface;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
@@ -37,6 +39,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -64,6 +67,7 @@ import com.rt.printerlibrary.setting.BitmapSetting;
 import com.rt.printerlibrary.setting.CommonSetting;
 import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.FuncUtils;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -82,6 +86,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -217,8 +222,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
         patientDetailsTV.setText(patientDetails);
         manageCardView(selectedTests);
-        if(!billType.equals("NA"))
-        {
+        if (!billType.equals("NA")) {
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
             confirmBillCV.setVisibility(View.GONE);
@@ -266,7 +270,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             @Override
             public void onClick(View view) {
                 boolean billSuccess = syncBillToServer();
-                if(billSuccess) {
+                if (billSuccess) {
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
@@ -322,10 +326,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         String thisDate = currentDate.format(todayDate);
         String encounter_uuid = UUID.randomUUID().toString();
         success = createEncounter(encounter_uuid, thisDate);
-        if(success) {
+        if (success) {
             success = createObs(encounter_uuid);
         }
-        if(success)
+        if (success)
             success = syncUtils.syncForeground("bill");
         return success;
     }
@@ -383,8 +387,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         }
 
 
-        if (selectedTests.contains(getString(R.string.blood_glucose_non_fasting)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_non_fasting))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -397,8 +400,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_fasting)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_fasting))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -411,8 +413,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_post_prandial)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_post_prandial))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -425,8 +426,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_random)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_random))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -439,8 +439,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.uric_acid)))
-        {
+        if (selectedTests.contains(getString(R.string.uric_acid))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_URIC_ACID_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -453,8 +452,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.total_cholestrol)))
-        {
+        if (selectedTests.contains(getString(R.string.total_cholestrol))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -467,8 +465,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.haemoglobin)))
-        {
+        if (selectedTests.contains(getString(R.string.haemoglobin))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -481,8 +478,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.visit_summary_bp)))
-        {
+        if (selectedTests.contains(getString(R.string.visit_summary_bp))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BP_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -547,66 +543,66 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
 
     private void setPrices() {
-            if (consultCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
-                price = getPrice(price, price.indexOf('.'));
-                consultChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (followUPCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Followup");
-                price = getPrice(price, price.indexOf('.'));
-                followUpChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucoseRCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
-                price = getPrice(price, price.indexOf('.'));
-                glucoseRChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucoseFCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
-                price = getPrice(price, price.indexOf('.'));
-                glucoseFChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucosePPNCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
-                price = getPrice(price, price.indexOf('.'));
-                glucosePPNChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucoseNFCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
-                price = getPrice(price, price.indexOf('.'));
-                glucoseNFChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (uricAcidCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
-                price = getPrice(price, price.indexOf('.'));
-                uricAcidChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (haemoglobinCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
-                price = getPrice(price, price.indexOf('.'));
-                haemoglobinChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (cholesterolCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
-                price = getPrice(price, price.indexOf('.'));
-                cholesterolChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (bpCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("BP Test");
-                price = getPrice(price, price.indexOf('.'));
-                bpChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
+        if (consultCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
+            price = getPrice(price, price.indexOf('.'));
+            consultChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (followUPCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Followup");
+            price = getPrice(price, price.indexOf('.'));
+            followUpChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseRCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseRChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseFCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseFChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucosePPNCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+            price = getPrice(price, price.indexOf('.'));
+            glucosePPNChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseNFCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseNFChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (uricAcidCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+            price = getPrice(price, price.indexOf('.'));
+            uricAcidChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (haemoglobinCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+            price = getPrice(price, price.indexOf('.'));
+            haemoglobinChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (cholesterolCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+            price = getPrice(price, price.indexOf('.'));
+            cholesterolChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (bpCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("BP Test");
+            price = getPrice(price, price.indexOf('.'));
+            bpChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
 
         totalAmountTV.setText("₹" + String.valueOf(total_amount) + "/-");
     }
@@ -758,9 +754,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         }
     }
 
-    /**This function implements the Razorpay functionality
-    By: Nishita Goyal
-    Ticket: SCD-13*/
+    /**
+     * This function implements the Razorpay functionality
+     * By: Nishita Goyal
+     * Ticket: SCD-13
+     */
     private void makePayment() {
         String sAmount = String.valueOf(total_amount);
         // rounding off the amount.
