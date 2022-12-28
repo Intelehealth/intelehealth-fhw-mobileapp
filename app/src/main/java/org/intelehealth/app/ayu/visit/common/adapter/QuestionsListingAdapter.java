@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         Log.v("ImageCaptured", new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
-        notifyDataSetChanged();
+        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
 
     public interface OnItemSelection {
@@ -81,7 +82,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void addItem(Node node) {
         mItemList.add(node);
-        notifyDataSetChanged();
+        notifyItemInserted(mItemList.size() - 1);
     }
 
     public List<Node> geItems() {
@@ -107,12 +108,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
 
-
+            genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
 
             if (mIsForPhysicalExam) {
+
                 Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
                 final String parent_name = mPhysicalExam.getExamParentNodeName(position);
                 String nodeText = parent_name + " : " + _mNode.findDisplay();
@@ -132,20 +134,22 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 for (int i = 0; i < imgs.length; i++) {
                     View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
                     ImageView imageView = v2.findViewById(R.id.image);
-                    String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
-                    try {
-                        // get input stream
-                        InputStream ims = mContext.getAssets().open(drawableName);
-                        // load image as Drawable
-                        Drawable d = Drawable.createFromStream(ims, null);
-                        // set image to ImageView
-                        imageView.setImageDrawable(d);
-                        imageView.setMinimumHeight(150);
-                        imageView.setMinimumWidth(300);
-                        genericViewHolder.referenceContainerLinearLayout.addView(v2);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
+                        String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
+                        try {
+                            // get input stream
+                            InputStream ims = mContext.getAssets().open(drawableName);
+                            // load image as Drawable
+                            Drawable d = Drawable.createFromStream(ims, null);
+                            // set image to ImageView
+                            imageView.setImageDrawable(d);
+                            imageView.setMinimumHeight(150);
+                            imageView.setMinimumWidth(300);
+                            genericViewHolder.referenceContainerLinearLayout.addView(v2);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
 
+                        }
                     }
                 }
             } else {
@@ -201,6 +205,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         break;
                     case "camera":
                         // openCamera(context, imagePath, imageName);
+                        Log.v("showCameraView", "onBindViewHolder 2");
                         showCameraView(mItemList.get(position), genericViewHolder, position);
                         break;
 
@@ -220,9 +225,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void run() {
                     genericViewHolder.spinKitView.setVisibility(View.GONE);
                     genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
-                    mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
+                    //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
                 }
-            }, 2000);
+            }, 1000);
+
+            if (!mItemList.get(position).getImagePathList().isEmpty()) {
+                Log.v("showCameraView", "onBindViewHolder 1");
+                showCameraView(mItemList.get(position), genericViewHolder, position);
+            }
         }
     }
 
@@ -258,6 +268,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
         recyclerView.setAdapter(associateSymptomsQueryAdapter);
         holder.singleComponentContainer.addView(view);
+        mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
     }
 
 
@@ -307,6 +318,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData 1");
                     showCameraView(options.get(0), holder, index);
                     break;
 
@@ -373,6 +385,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             break;
                         case "camera":
                             // openCamera(context, imagePath, imageName);
+                            Log.v("showCameraView", "showOptionsData 2");
                             showCameraView(node, holder, index);
                             break;
 
@@ -384,7 +397,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             holder.recyclerView.setAdapter(optionsChipsGridAdapter);
-            for (int i = 0; i < options.size(); i++) {
+            /*for (int i = 0; i < options.size(); i++) {
                 String type = options.get(i).getInputType();
 
                 if (type == null || type.isEmpty() && (options.get(i).getOptionsList() != null && !options.get(i).getOptionsList().isEmpty())) {
@@ -395,19 +408,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     // openCamera(context, imagePath, imageName);
                     showCameraView(options.get(i), holder, index);
                 }
-            }
+            }*/
         }
 
     }
 
     private void showCameraView(Node node, GenericViewHolder holder, int index) {
         Log.v("showCameraView", new Gson().toJson(node));
-        Log.v("ImagePathList", new Gson().toJson(node.getImagePathList()));
-        holder.singleComponentContainer.removeAllViews();
+        Log.v("showCameraView", "ImagePathList - "+new Gson().toJson(node.getImagePathList()));
+        holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
-        newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+        //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -420,13 +433,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
 
-
+                mOnItemSelection.onSelect(node);
             }
         });
 
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_added_image);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        ImageGridAdapter imageGridAdapter = new ImageGridAdapter(recyclerView, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+        imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+
+        ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
             @Override
             public void onImageRemoved(int index) {
 
@@ -434,15 +448,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             @Override
             public void onNewImageRequest() {
-
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
             }
         });
-        recyclerView.setAdapter(imageGridAdapter);
-        holder.singleComponentContainer.addView(view);
-        if (node.getImagePathList().isEmpty())
+        imagesRcv.setAdapter(imageGridAdapter);
+        Log.v("showCameraView", "ImagePathList recyclerView - "+imagesRcv.getAdapter().getItemCount());
+
+
+        if (node.getImagePathList().isEmpty()) {
             newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
-        else
+            submitButton.setVisibility(View.GONE);
+            imagesRcv.setVisibility(View.GONE);
+        } else {
             newImageCaptureLinearLayout.setVisibility(View.GONE);
+            submitButton.setVisibility(View.VISIBLE);
+            imagesRcv.setVisibility(View.VISIBLE);
+        }
+
+        holder.otherContainerLinearLayout.addView(view);
 
     }
 
@@ -560,6 +584,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -674,7 +700,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Node node;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
-        LinearLayout singleComponentContainer, referenceContainerLinearLayout;
+        LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
 
@@ -683,6 +709,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
             referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
+            otherContainerLinearLayout = itemView.findViewById(R.id.ll_others_container);
             tvReferenceDesc = itemView.findViewById(R.id.tv_reference_desc);
             spinKitView = itemView.findViewById(R.id.spin_kit);
             bodyLayout = itemView.findViewById(R.id.rl_body);

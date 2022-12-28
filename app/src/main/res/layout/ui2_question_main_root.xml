@@ -118,6 +118,13 @@
                     android:layout_below="@+id/tv_question_desc"
                     android:layout_marginTop="@dimen/margin_16"
                     android:orientation="vertical" />
+                <LinearLayout
+                    android:id="@+id/ll_others_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_question_desc"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:orientation="vertical" />
 
             </LinearLayout>
 

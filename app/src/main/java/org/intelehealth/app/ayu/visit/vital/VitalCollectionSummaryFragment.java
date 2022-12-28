@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 /**
@@ -86,6 +89,15 @@ public class VitalCollectionSummaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
+            }
+        });
+        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (NetworkConnection.isOnline(getActivity())) {
+                    new SyncUtils().syncBackground();
+                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;

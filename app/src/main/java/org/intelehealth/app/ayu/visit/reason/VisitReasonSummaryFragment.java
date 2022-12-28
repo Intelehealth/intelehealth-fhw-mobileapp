@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,8 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
@@ -79,7 +82,33 @@ public class VisitReasonSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, null);
             }
         });
-
+        view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, null);
+            }
+        });
+        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, null);
+            }
+        });
+        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, null);
+            }
+        });
+        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (NetworkConnection.isOnline(getActivity())) {
+                    new SyncUtils().syncBackground();
+                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         prepareSummary();
         return view;
     }
@@ -124,6 +153,12 @@ public class VisitReasonSummaryFragment extends Fragment {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(complainName);
+                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, null);
+                    }
+                });
 
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
