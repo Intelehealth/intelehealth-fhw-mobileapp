@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -92,8 +93,8 @@ public class FollowUpNotificationWorker extends Worker {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
         String currentDate_new = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where (o.conceptuuid = ? and o.value like '%"+ currentDate_new +"%') or (o.conceptuuid = ? and o.value like '%"+ currentDate +"%'))))";
-        final Cursor cursor = db.rawQuery(query,  new String[]{UuidDictionary.CONCEPT_RESOLUTION, UuidDictionary.FOLLOW_UP_VISIT});
+        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where (o.conceptuuid = ? and o.value like '%" + currentDate_new + "%') or (o.conceptuuid = ? and o.value like '%" + currentDate + "%'))))";
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.CONCEPT_RESOLUTION, UuidDictionary.FOLLOW_UP_VISIT});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -129,7 +130,14 @@ public class FollowUpNotificationWorker extends Worker {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
         Notification notification = mBuilder
                 .setSmallIcon(R.drawable.ic_cloud_upload)
                 .setAutoCancel(true).setContentTitle(title)

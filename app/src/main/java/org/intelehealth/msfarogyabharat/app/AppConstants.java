@@ -62,10 +62,11 @@ public class AppConstants {
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();
 
+    // permissions
+    public static final int CAMERA_PERMISSIONS = 69420;
 
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
-
 
     public static int REPEAT_INTERVAL = 15;
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
@@ -79,7 +80,6 @@ public class AppConstants {
             new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
                     .setConstraints(MY_CONSTRAINTS)
                     .build();
-
 
 
     // Added by Venu to make the Sync Issue Solutions as intele_safe.

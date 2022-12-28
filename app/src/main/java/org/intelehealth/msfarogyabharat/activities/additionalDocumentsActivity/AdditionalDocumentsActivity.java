@@ -210,21 +210,15 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     }
 
     void compressImageAndSave(final String filePath, String filename) {
-        getBackgroundHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath, filename);
-                        } else
-                            Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        getBackgroundHandler().post(() -> {
+            boolean flag = BitmapUtils.fileCompressed(filePath);
+            runOnUiThread(() -> {
+                if (flag) {
+                    saveImage(filePath, filename);
+                } else
+                    Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            });
 
-            }
         });
     }
 
