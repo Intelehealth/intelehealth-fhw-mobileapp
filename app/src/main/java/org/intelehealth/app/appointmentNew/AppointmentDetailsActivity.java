@@ -469,7 +469,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
             Log.d(TAG, "handleWhatsappAndCall: patientPhoneNo : " + patientPhoneNo);
             //for patient
-
             if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
                 ivWhatsappPatient.setOnClickListener(v -> {
                     String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
@@ -479,20 +478,22 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 });
                 ivCallPatient.setOnClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse(patientPhoneNo));
+                    intent.setData(Uri.parse("tel:" + patientPhoneNo));
                     startActivity(intent);
                 });
+            }else{
+
             }
-        } catch (DAOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //for doctor
 
-        try {
+        /*try {
             String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
             //for patient
-
+z
             if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
                 ivWhatsappPatient.setOnClickListener(v -> {
                     String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
@@ -509,7 +510,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-
+*/
     }
 
 
