@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/intelehealth"
+                    android:text="@string/intelehealth_name"
                     android:textSize="20sp"
                     android:textColor="@color/colorPrimaryDark"/>
 
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/intelehealth_address"
+                    android:text="@string/scd_address"
                     android:textAlignment="center"
                     android:textSize="14sp" />
 
