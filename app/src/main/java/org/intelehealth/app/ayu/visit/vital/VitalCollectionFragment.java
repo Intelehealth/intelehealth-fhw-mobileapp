@@ -507,7 +507,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         cancel = true;
                         break;
-                    }else{
+                    } else {
                         mPulseErrorTextView.setVisibility(View.GONE);
                         mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
                     }
@@ -670,7 +670,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 results.setBpsys((mBpSysEditText.getText().toString()));
             }
             if (mTemperatureEditText.getText() != null) {
-                results.setTemperature((mTemperatureEditText.getText().toString()));
+                if (configUtils.fahrenheit()) {
+                    results.setTemperature(convertFtoC(mTemperatureEditText.getText().toString()));
+                } else {
+                    results.setTemperature((mTemperatureEditText.getText().toString()));
+                }
             }
             if (mRespEditText.getText() != null) {
                 results.setResp((mRespEditText.getText().toString()));
@@ -913,7 +917,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return true;
     }
 
-    private String ConvertFtoC(String temperature) {
+    private String convertFtoC(String temperature) {
 
         if (temperature != null && temperature.length() > 0) {
             String result = "";

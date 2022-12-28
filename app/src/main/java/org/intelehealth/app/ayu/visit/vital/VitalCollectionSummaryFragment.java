@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.vital;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,11 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+
+import java.text.DecimalFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +57,35 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
     }
+    private String convertFtoC(String temperature) {
 
+        if (temperature != null && temperature.length() > 0) {
+            String result = "";
+            double fTemp = Double.parseDouble(temperature);
+            double cTemp = ((fTemp - 32) * 5 / 9);
+            Log.i("TAG", "uploadTemperatureInC: " + cTemp);
+            DecimalFormat dtime = new DecimalFormat("#.##");
+            cTemp = Double.parseDouble(dtime.format(cTemp));
+            result = String.valueOf(cTemp);
+            return result;
+        }
+        return "";
+
+    }
+
+    private String convertCtoF(String temperature) {
+
+        String result = "";
+        double a = Double.parseDouble(String.valueOf(temperature));
+        Double b = (a * 9 / 5) + 32;
+
+        DecimalFormat dtime = new DecimalFormat("#.##");
+        b = Double.parseDouble(dtime.format(b));
+
+        result = String.valueOf(b);
+        return result;
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,7 +96,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
         ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
         ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
         ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " bpm");
-        ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+        if(new ConfigUtils(getActivity()).fahrenheit()){
+            ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(mVitalsObject.getTemperature()));
+        }else{
+            ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+        }
+
         ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
         ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " breaths/min");
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
