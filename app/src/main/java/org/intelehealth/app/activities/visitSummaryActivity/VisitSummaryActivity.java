@@ -4246,6 +4246,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checks if prescription is downloaded and if so then sets the icon color.
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+                    card_print.setVisibility(View.VISIBLE);
+                    card_share.setVisibility(View.VISIBLE);
+                }
+                else {
+                    card_print.setVisibility(View.GONE);
+                    card_share.setVisibility(View.GONE);
                 }
 
 
@@ -4316,6 +4322,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //checks if prescription is downloaded and if so then sets the icon color.
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+            card_print.setVisibility(View.VISIBLE);
+            card_share.setVisibility(View.VISIBLE);
+        }
+        else {
+            card_print.setVisibility(View.GONE);
+            card_share.setVisibility(View.GONE);
         }
     }
 
