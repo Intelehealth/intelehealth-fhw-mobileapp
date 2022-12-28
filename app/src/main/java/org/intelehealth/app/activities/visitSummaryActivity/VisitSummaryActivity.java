@@ -624,8 +624,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
-        card_print.setVisibility(View.GONE);
-        card_share.setVisibility(View.GONE);
+
+//        card_print.setVisibility(View.GONE);
+//        card_share.setVisibility(View.GONE);
         generateBillBtn.setVisibility(View.GONE);
 
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
@@ -4766,11 +4767,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
         String mState = patient.getState_province();
         String mCountry = patient.getCountry();
+
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
         String mOccupation = patient.getOccupation();
         String mGender = patient.getGender();
+
         Calendar c = Calendar.getInstance();
         System.out.println(getString(R.string.current_time) + c.getTime());
+
         String[] columnsToReturn = {"startdate"};
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
@@ -4782,6 +4786,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
         String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
             mPatHist = "";
@@ -4804,9 +4809,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity.this, mFileName)));
             }//Load the config file
+
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
+
                     mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
@@ -4819,6 +4827,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         String mComplaint = complaint.getValue();
+
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
@@ -4846,6 +4855,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
         }
+
         if (mComplaint.contains("जुड़े लक्षण")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
@@ -4854,13 +4864,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
         }
+
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
         }
+
         String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
         String para_close = "</p>";
+
         Calendar today = Calendar.getInstance();
         Calendar dob = Calendar.getInstance();
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
@@ -4897,29 +4911,119 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
             followUpDateStr = followUpDate;
         }
+
         String followUp_web = stringToWeb_sms(followUpDateStr);
+
         String doctor_web = stringToWeb_sms(doctorName);
 
         String heading = prescription1;
         String heading2 = prescription2;
         String heading3 = "<br/>";
+
         String bp = mBP;
         if (bp.equals("/") || bp.equals("null/null")) bp = "";
+
         String address = mState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
+
         String fam_hist = mFamHist;
         String pat_hist = mPatHist;
+
         if (fam_hist.trim().isEmpty()) {
             fam_hist = getString(R.string.no_history_family_found);
         } else {
             fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
         }
+
         if (pat_hist.trim().isEmpty()) {
             pat_hist = getString(R.string.no_history_patient_illness_found);
         }
+
+//        // Generate an HTML document on the fly:
+//        String fontFamilyFile = "";
+//        if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
+//            Log.d("font", "font: " + objClsDoctorDetails.getFontOfSign());
+//            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
+//            }
+//        }
+//        String font_face = "<style>" +
+//                "                @font-face {" +
+//                "                    font-family: \"MyFont\";" +
+//                fontFamilyFile +
+//                "                }" +
+//                "            </style>";
+//
+//        String doctorSign = "";
+//        String doctrRegistartionNum = "";
+//        // String docDigitallySign = "";
+//        String doctorDetailStr = "";
+//        if (objClsDoctorDetails != null) {
+//            //  docDigitallySign = "Digitally Signed By";
+//            doctorSign = objClsDoctorDetails.getTextOfSign();
+//
+//            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
+//                    objClsDoctorDetails.getRegistrationNumber() : "";
+//
+//            doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
+//
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
+//                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
+//                    + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//                            doctrRegistartionNum;
+//
+//                    Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
+//
+////                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+////                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
+//
+////                            + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>"
+//            /*+*/
+//
+//                   /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
+//                    + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
+//
+//            /*"</div>"*/;
+//
+//        }
+
+//        if (isRespiratory) {
         String htmlDocument =
                 String.format("<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
                                 "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                                 "<br><br>" +
+
+                                /*"<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +*/
+//                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                /* doctorDetailStr +*/
+
+
+                                "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
+                                "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                                "<br><br>" +
+
+                                  /*  "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*/
+
+                                   /* "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +*/
+
+                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
+                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+
+                                  /*  "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    para_open + "%s" + para_close + "<br><br>" +*/
+
                                 "<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
                                 "%s </b><br>" +
                                 "<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
@@ -4929,15 +5033,99 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
                                 "%s" + "</b><br>" +
                                 "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
-                                "%s" + "</b><br>",
-                        heading, heading2, /*heading3,*/ mPatientName, age, mGender,
+                                "%s" + "</b><br>"
+                        //+
+                        /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
+
+                        /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
+
+                        // doctorDetailStr
+                        /*"<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +*/
+
+                        /*  doctrRegistartionNum + "</p>" +*/
+
+                        /*"</div>"*/
+                        ,
+                        heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
+//                            address, mPatientOpenMRSID, mDate,
+
+                            /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*/
+
+//                            (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
+//                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+
+                        /*pat_hist, fam_hist,*/ /*mComplaint,*/
                         !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
                         !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
                         !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
                         !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
                         !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
                         !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
+
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
+        //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+/*        } else {
+            htmlDocument =
+                    String.format( "<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
+                                    "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
+                                    "<br><br>" +
+
+                                  *//*  "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +*//*
+
+                                    "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
+                                    "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                                    "<br><br>" +
+
+                                   *//* "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*//*
+
+         *//* "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +*//*
+
+         *//*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
+                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*//*
+
+         *//* "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    para_open + "%s" + para_close + "<br><br>" +*//*
+
+                                    "<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+                                    "%s </b><br>" +
+                                    "<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
+                                    "%s </b><br>" +
+                                    "<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
+                                    "%s " + "</b><br>" +
+                                    "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
+                                    "%s" + "</b><br>" +
+                                    "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
+                                    "%s" + "</b><br>" +
+                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+
+                                   *//* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*//*
+                                    doctorDetailStr +
+                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" +
+
+                                   *//* + doctrRegistartionNum + "</span>" +*//*
+                                    "</div>"
+
+                            , heading, heading2,*//* heading3,*//* mPatientName, age, mGender, *//*mSdw*//* *//*address, mPatientOpenMRSID, mDate,*//*
+         *//*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*//*
+
+         *//* (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
+                            (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",*//*
+
+         *//*pat_hist, fam_hist,*//* *//*mComplaint,*//*
+
+                            diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            Log.d("html","html:ppp "+ Html.fromHtml(htmlDocument));
+            // webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+        }*/
+        //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+
         return htmlDocument;
     }
 
