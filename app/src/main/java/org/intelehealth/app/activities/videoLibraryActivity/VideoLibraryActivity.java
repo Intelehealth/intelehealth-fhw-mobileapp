@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 
 
@@ -116,4 +117,8 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
 
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 }

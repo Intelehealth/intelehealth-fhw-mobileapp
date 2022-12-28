@@ -120,19 +120,14 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
 
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
-//        Locale locale = new Locale(appLanguage);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
         Resources res = context.getResources();
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);

@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
-        setLocale(sessionManager.getAppLanguage());
+//        setLocale(sessionManager.getAppLanguage());
         context = LoginActivity.this;
         sessionManager = new SessionManager(context);
         cpd = new CustomProgressDialog(context);
@@ -283,10 +283,10 @@ public class LoginActivity extends AppCompatActivity {
         //prajwal_changes
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     /**
      * class UserLoginTask will authenticate user using email and password.

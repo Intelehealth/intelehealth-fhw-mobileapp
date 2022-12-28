@@ -291,10 +291,10 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
 
     private boolean insertDb(String value) {

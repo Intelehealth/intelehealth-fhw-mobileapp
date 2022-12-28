@@ -427,7 +427,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private void onEndVisit() {
         //meera
         if (downloaded) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
             alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
             alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                 @Override
@@ -449,7 +449,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         } else {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
             alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
             alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
@@ -467,10 +467,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(this);
-//        appLanguage = sessionManager1.getAppLanguage();
-//        if (!appLanguage.equalsIgnoreCase("")) {
-//            setLocale(appLanguage);
-//        }
+        appLanguage = sessionManager1.getAppLanguage();
+//        setLocale(appLanguage);
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -1730,10 +1728,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return dataString;
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
 //    private void doConnect() {
 //

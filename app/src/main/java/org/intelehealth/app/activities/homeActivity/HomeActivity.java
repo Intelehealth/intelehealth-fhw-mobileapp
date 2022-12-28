@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -272,7 +273,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         sessionManager = new SessionManager(this);
-        setLocale(sessionManager.getAppLanguage());
+//        setLocale(sessionManager.getAppLanguage());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -1592,10 +1593,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }*/
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
 
     private void displayComingSoonToast() {
         //do nothing

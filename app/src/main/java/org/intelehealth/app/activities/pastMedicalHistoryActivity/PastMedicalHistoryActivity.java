@@ -355,10 +355,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         }
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
 
     private void onListClick(View v, int groupPosition, int childPosition) {

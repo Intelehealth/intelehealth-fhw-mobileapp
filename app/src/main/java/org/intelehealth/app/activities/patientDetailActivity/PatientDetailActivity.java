@@ -51,6 +51,7 @@ import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -350,7 +351,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentStudent = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentStudent.putExtra("patientUuid", patientUuid);
-                intentStudent.putExtra("aidType", "Survey of acute homecare utilizers");
+                intentStudent.putExtra("aidType", "Community General Need Survey");
                 intentStudent.putExtra("isEditMode", true);
                 startActivity(intentStudent);
             }
@@ -1705,6 +1706,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
 }

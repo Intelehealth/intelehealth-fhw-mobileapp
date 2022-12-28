@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -76,6 +77,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.IReturnValues;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -1429,7 +1431,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("family situation")) {
                     patient1.setMaritalstatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("family relationship members")) {
+                if (name.equalsIgnoreCase("The family relationship")) {
                     patient1.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("status of husband")) {
@@ -1679,7 +1681,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         values.add(mRelationship);
         values.add(mOccupation);*/
 
-/*
+
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
@@ -1699,7 +1701,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             return;
         }
-*/
+
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
@@ -1755,7 +1757,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+                return;
             }
 
 /*
@@ -2294,7 +2296,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family relationship members"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
             String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
             String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
             patientAttributesDTO.setValue(relationHOHInfoJson);
@@ -3113,8 +3115,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         values.add(mRelationship);
         values.add(mOccupation);*/
 
-/*
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+
+        /*if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -3129,10 +3131,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
             return;
-        }
-*/
+        }*/
+
 
             if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                     && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
@@ -3186,7 +3187,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+                    return;
                 }
 
 /*
@@ -3570,7 +3571,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family relationship members"));
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
                 String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
                 String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
                 patientAttributesDTO.setValue(relationHOHInfoJson);
@@ -5346,4 +5347,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.poViewPager);
     } */
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 }

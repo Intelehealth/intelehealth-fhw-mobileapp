@@ -87,7 +87,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-        String language = sessionManager.getAppLanguage();
+        /*String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -96,7 +96,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());*/
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {

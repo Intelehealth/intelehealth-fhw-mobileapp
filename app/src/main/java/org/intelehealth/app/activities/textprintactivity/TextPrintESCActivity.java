@@ -889,8 +889,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         return text;
     }
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 }

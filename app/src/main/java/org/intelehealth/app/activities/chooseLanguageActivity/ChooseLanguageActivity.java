@@ -101,10 +101,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-    }*/
 
     public void initViews() {
         mToolbar = findViewById(R.id.toolbar);
@@ -113,7 +109,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         mToolbar.setTitleTextColor(Color.WHITE);
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         appLanguage = sessionManager.getAppLanguage();
-        setLocale(appLanguage);
+//        setLocale(appLanguage);
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         SaveButton = findViewById(R.id.save_button);

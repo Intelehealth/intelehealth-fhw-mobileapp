@@ -235,10 +235,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
 
     public void onListClicked(View v, int groupPosition, int childPosition) {

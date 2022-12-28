@@ -26,7 +26,7 @@
                 android:id="@+id/tv_intro_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen"
+                android:text="@string/sila_intro_text"
                 android:layout_below="@id/ayu_logo"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="45dp"
