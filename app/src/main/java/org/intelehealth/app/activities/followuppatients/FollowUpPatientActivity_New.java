@@ -216,13 +216,13 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "value1 is NOT NULL GROUP BY a.patientuuid";
 */
 
-        // TODO: encounter is not null -- statement is removed | Add this later... " a.enddate is NOT NULL "
+        // TODO: encounter is not null -- statement is removed | Add this later... " a.enddate is NOT NULL " --> Added...
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " +
                 "b.patient_photo, a.enddate, b.uuid, b.first_name, " +
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, " +
                 "SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
+                "a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
                 "date(substr(o.value, 7, 4)||'-'||substr(o.value, 4,2)||'-'||substr(o.value, 1,2)) = DATE('now') AND " +
                 "o.value is NOT NULL GROUP BY a.patientuuid";
@@ -298,11 +298,11 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "o.obsservermodifieddate >= date(date('now', 'weekday 0', '-7 days'), 'weekday 0') AND " +
                 "o.value is NOT NULL GROUP BY a.patientuuid";
 */
-        // TODO: end date is removed later add it again.
+        // TODO: end date is removed later add it again. --> Added... Only ended visits will show up for follow up.
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, b.patient_photo, a.enddate, b.uuid, b.first_name, " +
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
+                "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
                 "STRFTIME('%Y',date(substr(o.value, 7, 4)||'-'||substr(o.value, 4,2)||'-'||substr(o.value, 1,2))) = STRFTIME('%Y',DATE('now')) " +
                 "AND STRFTIME('%W',date(substr(o.value, 7, 4)||'-'||substr(o.value, 4,2)||'-'||substr(o.value, 1,2))) = STRFTIME('%W',DATE('now')) AND " +
@@ -388,11 +388,11 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "o.obsservermodifieddate >= date(date('now', 'weekday 0', '-7 days'), 'weekday 0') AND " +
                 "o.value is NOT NULL GROUP BY a.patientuuid";
 */
-        // TODO: end date is removed later add it again.
+        // TODO: end date is removed later add it again. --> Added...
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, b.patient_photo, a.enddate, b.uuid, b.first_name, " +
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
+                "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
                 "STRFTIME('%Y',date(substr(o.value, 7, 4)||'-'||substr(o.value, 4,2)||'-'||substr(o.value, 1,2))) = STRFTIME('%Y',DATE('now')) AND " +
                 "STRFTIME('%m',date(substr(o.value, 7, 4)||'-'||substr(o.value, 4,2)||'-'||substr(o.value, 1,2))) = STRFTIME('%m',DATE('now')) AND " +

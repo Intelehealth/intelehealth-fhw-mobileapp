@@ -137,6 +137,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             Intent i = new Intent(context, VisitDetailsActivity.class);
             i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
             i.putExtra("gender", model.getGender());
+            i.putExtra("patientUuid", model.getPatientuuid());
             i.putExtra("age", age);
             i.putExtra("openmrsID", model.getOpenmrs_id());
             i.putExtra("priority_tag", model.isEmergency());
