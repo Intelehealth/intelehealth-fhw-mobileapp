@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dip">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_image"
-        android:layout_width="48dip"
-        android:layout_height="48dip"
-        android:background="@drawable/edittext_border_blue" />
+        android:layout_width="100dip"
+        android:layout_height="72dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/edittext_border_blue"
+        app:riv_border_color="#0FD197"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="8dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="false"
+        app:riv_tile_mode="repeat" />
 
     <ImageView
         android:id="@+id/iv_add_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/ic_baseline_add_24_green" />
+        android:background="@drawable/ic_baseline_add_24_green"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_image_delete"

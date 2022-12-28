@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -52,8 +53,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
 
-    TextView mHeight, mWeight, mBMI, mBmiStatusTextView;
-    EditText mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mResp;
+    TextView mHeightTextView, mWeightTextView, mBMITextView, mBmiStatusTextView;
+    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView;
+    EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
 
     private String heightvalue;
@@ -124,26 +126,99 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection, container, false);
 
-        mHeight = view.findViewById(R.id.tv_height);
-        mWeight = view.findViewById(R.id.tv_weight);
-        mHeight.setOnClickListener(this);
-        mWeight.setOnClickListener(this);
+        mHeightTextView = view.findViewById(R.id.tv_height);
+        mWeightTextView = view.findViewById(R.id.tv_weight);
+        mHeightTextView.setOnClickListener(this);
+        mWeightTextView.setOnClickListener(this);
 
-        mBMI = view.findViewById(R.id.tv_bmi_value);
+        mBMITextView = view.findViewById(R.id.tv_bmi_value);
         mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);
 
-        mBpSys = view.findViewById(R.id.etv_bp_sys);
-        mBpDia = view.findViewById(R.id.etv_bp_dia);
+        mBpSysEditText = view.findViewById(R.id.etv_bp_sys);
+        mBpDiaEditText = view.findViewById(R.id.etv_bp_dia);
 
-        mSpo2 = view.findViewById(R.id.etv_spo2);
-        mPulse = view.findViewById(R.id.etv_pulse);
-        mResp = view.findViewById(R.id.etv_respiratory_rate);
-        mTemperature = view.findViewById(R.id.etv_temperature);
+        mSpo2EditText = view.findViewById(R.id.etv_spo2);
+        mPulseEditText = view.findViewById(R.id.etv_pulse);
+        mRespEditText = view.findViewById(R.id.etv_respiratory_rate);
+        mTemperatureEditText = view.findViewById(R.id.etv_temperature);
+
+        // errors
+        mHeightErrorTextView = view.findViewById(R.id.tv_height_error);
+        mWeightErrorTextView = view.findViewById(R.id.tv_weight_error);
+
+        mBpSysErrorTextView = view.findViewById(R.id.etv_bp_sys_error);
+        mBpDiaErrorTextView = view.findViewById(R.id.etv_bp_dia_error);
+
+        mSpo2ErrorTextView = view.findViewById(R.id.etv_spo2_error);
+
+        mPulseErrorTextView = view.findViewById(R.id.etv_pulse_error);
+
+        mRespErrorTextView = view.findViewById(R.id.etv_respiratory_rate_error);
+
+        mTemperatureErrorTextView = view.findViewById(R.id.etv_temperature_error);
+
+        mHeightErrorTextView.setVisibility(View.GONE);
+        mWeightErrorTextView.setVisibility(View.GONE);
+        mBpSysErrorTextView.setVisibility(View.GONE);
+        mBpDiaErrorTextView.setVisibility(View.GONE);
+        mSpo2ErrorTextView.setVisibility(View.GONE);
+        mPulseErrorTextView.setVisibility(View.GONE);
+        mRespErrorTextView.setVisibility(View.GONE);
+        mTemperatureErrorTextView.setVisibility(View.GONE);
+
+        mBpSysEditText.addTextChangedListener(new MyTextWatcher(mBpSysEditText));
+        mBpDiaEditText.addTextChangedListener(new MyTextWatcher(mBpDiaEditText));
+        mSpo2EditText.addTextChangedListener(new MyTextWatcher(mSpo2EditText));
+        mPulseEditText.addTextChangedListener(new MyTextWatcher(mPulseEditText));
+        mRespEditText.addTextChangedListener(new MyTextWatcher(mRespEditText));
+        mTemperatureEditText.addTextChangedListener(new MyTextWatcher(mTemperatureEditText));
 
         mSubmitButton = view.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
 
         return view;
+    }
+
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.etv_bp_sys) {
+                if (val.isEmpty()) {
+                    mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                    mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+                    mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mBpSysErrorTextView.setVisibility(View.GONE);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.etv_bp_dia) {
+                if (val.isEmpty()) {
+                    mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                    mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
+                    mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mBpDiaErrorTextView.setVisibility(View.GONE);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+        }
     }
 
     @Override
@@ -179,9 +254,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mHeight.setText(data[which]);
+                mHeightTextView.setText(data[which]);
                 heightvalue = String.valueOf(mHeightMasterList.get(which));
                 calculateBMI();
+                mHeightErrorTextView.setVisibility(View.GONE);
+                mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
             }
         });
 
@@ -203,9 +280,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mWeight.setText(data[which]);
+                mWeightTextView.setText(data[which]);
                 weightvalue = String.valueOf(mWeightMasterList.get(which));
                 calculateBMI();
+
+                mWeightErrorTextView.setVisibility(View.GONE);
+                mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
             }
         });
 
@@ -241,7 +321,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     public void calculateBMI() {
 
-        mBMI.setText("");
+        mBMITextView.setText("");
         mBmiStatusTextView.setText("");
         if (weightvalue == null || weightvalue.isEmpty() || heightvalue == null || heightvalue.isEmpty()) {
             return;
@@ -250,8 +330,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
         double bmi_value = numerator / denominator;
         DecimalFormat df = new DecimalFormat("0.00");
-        mBMI.setText(df.format(bmi_value) + " kg/m");
-        Log.d("BMI", "BMI: " + mBMI.getText().toString());
+        mBMITextView.setText(df.format(bmi_value) + " kg/m");
+        Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
         //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -263,14 +343,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
                 weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
 
-            mBMI.setText("");
+            mBMITextView.setText("");
             mBmiStatusTextView.setText("");
             double numerator = Double.parseDouble(weight) * 10000;
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value) + " kg/m");
-            Log.d("BMI", "BMI: " + mBMI.getText().toString());
+            mBMITextView.setText(df.format(bmi_value) + " kg/m");
+            Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
             BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -278,7 +358,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mBmiStatusTextView.setTextColor(getResources().getColor(bmiStatus.getColor()));
         } else {
             // do nothing
-            mBMI.setText("");
+            mBMITextView.setText("");
         }
     }
 
@@ -302,40 +382,40 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-                mHeight.setText(value);
+                mHeightTextView.setText(value);
                 break;
             case UuidDictionary.WEIGHT: //Weight
-                mWeight.setText(value);
+                mWeightTextView.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse
-                mPulse.setText(value);
+                mPulseEditText.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
-                mBpSys.setText(value);
+                mBpSysEditText.setText(value);
                 break;
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
-                mBpDia.setText(value);
+                mBpDiaEditText.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
 
-                mTemperature.setText(value);
+                mTemperatureEditText.setText(value);
 
 
                 break;
             //    Respiratory added by mahiti dev team
             case UuidDictionary.RESPIRATORY: //Respiratory
-                mResp.setText(value);
+                mRespEditText.setText(value);
                 break;
             case UuidDictionary.SPO2: //SpO2
-                mSpo2.setText(value);
+                mSpo2EditText.setText(value);
                 break;
             default:
                 break;
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if (mBMI.getText().toString().equalsIgnoreCase("")) {
-            calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
+        if (mBMITextView.getText().toString().equalsIgnoreCase("")) {
+            calculateBMI_onEdit(mHeightTextView.getText().toString(), mWeightTextView.getText().toString());
         }
     }
 
@@ -343,119 +423,183 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         boolean cancel = false;
         View focusView = null;
 
-        //BP vaidations added by Prajwal.
-        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
-                !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if (mBpSys.getText().toString().isEmpty()) {
-                mBpSys.requestFocus();
+        String height = mHeightTextView.getText().toString().trim();
+        String weight = mWeightTextView.getText().toString().trim();
+        if (height.isEmpty()) {
+            mHeightErrorTextView.setVisibility(View.VISIBLE);
+            mHeightErrorTextView.setText(getString(R.string.error_field_required));
+            mHeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        } else {
+            mHeightErrorTextView.setVisibility(View.GONE);
+            mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
+        }
+
+        if (weight.isEmpty()) {
+            mWeightErrorTextView.setVisibility(View.VISIBLE);
+            mWeightErrorTextView.setText(getString(R.string.error_field_required));
+            mWeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        } else {
+            mWeightErrorTextView.setVisibility(View.GONE);
+            mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
+        }
+
+        /*//BP vaidations added by Prajwal.
+        if (mBpSysEditText.getText().toString().isEmpty() && !mBpDiaEditText.getText().toString().isEmpty() ||
+                !mBpSysEditText.getText().toString().isEmpty() && mBpDiaEditText.getText().toString().isEmpty()) {
+            if (mBpSysEditText.getText().toString().isEmpty()) {
+                mBpSysEditText.requestFocus();
 //                mBpSys.setError("Enter field");
-                mBpSys.setError(getResources().getString(R.string.error_field_required));
-                return false;
-            } else if (mBpDia.getText().toString().isEmpty()) {
-                mBpDia.requestFocus();
-//                mBpDia.setError("Enter field");
-                mBpDia.setError(getResources().getString(R.string.error_field_required));
+                mBpSysEditText.setError(getResources().getString(R.string.error_field_required));
                 return false;
             }
-        }
+
+            if (mBpDiaEditText.getText().toString().isEmpty()) {
+                mBpDiaEditText.requestFocus();
+//                mBpDia.setError("Enter field");
+                mBpDiaEditText.setError(getResources().getString(R.string.error_field_required));
+                return false;
+            }
+        }else{
+            if (val.isEmpty()) {
+                mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+                mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            } else {
+                mBpSysErrorTextView.setVisibility(View.GONE);
+                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+            mBpDiaErrorTextView.setVisibility(View.GONE);
+            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+            mBpSysErrorTextView.setVisibility(View.GONE);
+            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }*/
 
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
         /*values.add(mHeight);
         values.add(mWeight);*/
-        values.add(mPulse);
-        values.add(mBpSys);
-        values.add(mBpDia);
-        values.add(mTemperature);
-        values.add(mResp);
-        values.add(mSpo2);
+
+        values.add(mBpSysEditText); //0
+        values.add(mBpDiaEditText); // 1
+        values.add(mSpo2EditText);// 2
+        values.add(mPulseEditText); // 3
+        values.add(mRespEditText); // 4
+        values.add(mTemperatureEditText); // 5
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
 
-            if (i == 0) {
+            if (i == 3) {
                 EditText et = values.get(i);
                 String abc2 = et.getText().toString().trim();
                 if (!abc2.isEmpty() && !abc2.equals("0.0")) {
                     if ((Double.parseDouble(abc2) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
                             (Double.parseDouble(abc2) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-                        et.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        //et.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
                         focusView = et;
+                        mPulseErrorTextView.setText(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        mPulseErrorTextView.setVisibility(View.VISIBLE);
+                        mPulseEditText.requestFocus();
+                        mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         cancel = true;
                         break;
+                    }else{
+                        mPulseErrorTextView.setVisibility(View.GONE);
+                        mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
                     }
 //       }
                 } else {
-                    focusView = et;
-                    cancel = true;
+                    mPulseErrorTextView.setVisibility(View.GONE);
+                    mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
+                }
+
+            } else if (i == 0) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
+                        //et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+
+                        mBpSysErrorTextView.setText(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                        mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                        mBpSysEditText.requestFocus();
+                        mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        cancel = true;
+                        break;
+                    } else {
+                        mBpSysErrorTextView.setVisibility(View.GONE);
+                        mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
+                    }
+//       }
+                } else {
+                    mBpSysErrorTextView.setVisibility(View.GONE);
+                    mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
                 }
 
             } else if (i == 1) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (!abc1.isEmpty() && !abc1.equals("0.0")) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
-                        et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-//       }
-                } else {
-                    focusView = et;
-                    cancel = true;
-                }
-
-            } else if (i == 2) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
-                        et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                        focusView = et;
+                        //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        mBpDiaErrorTextView.setText(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                        mBpDiaEditText.requestFocus();
+                        mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         cancel = true;
                         break;
                     } else {
-                        cancel = false;
+                        mBpDiaErrorTextView.setVisibility(View.GONE);
+                        mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
                     }
 //       }
                 } else {
-                    focusView = et;
-                    cancel = true;
+                    mBpDiaErrorTextView.setVisibility(View.GONE);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
                 }
 
-            } else if (i == 3) {
+            } else if (i == 5) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if (configUtils.celsius()) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
                                 (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
-                            et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                            focusView = et;
+                            //et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                            mTemperatureEditText.requestFocus();
+                            mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                             cancel = true;
                             break;
                         } else {
-                            cancel = false;
+                            mTemperatureErrorTextView.setVisibility(View.GONE);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
                         }
                     } else if (configUtils.fahrenheit()) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
                                 (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
-                            et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                            focusView = et;
+                            //et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                            mTemperatureEditText.requestFocus();
+                            mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                             cancel = true;
                             break;
                         } else {
-                            cancel = false;
+                            mTemperatureErrorTextView.setVisibility(View.GONE);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
                         }
                     }
                 } else {
-                    focusView = et;
-                    cancel = true;
+                    mTemperatureErrorTextView.setVisibility(View.GONE);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
                 }
             } else if (i == 4) {
                 EditText et = values.get(i);
@@ -463,17 +607,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
-                        et.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
-                        focusView = et;
+                        //et.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        mRespErrorTextView.setText(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        mRespErrorTextView.setVisibility(View.VISIBLE);
+                        mRespEditText.requestFocus();
+                        mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         cancel = true;
                         break;
                     } else {
-                        cancel = false;
+                        mRespErrorTextView.setVisibility(View.GONE);
+                        mRespEditText.setBackgroundResource(R.drawable.edittext_border);
                     }
 //       }
                 } else {
-                    focusView = et;
-                    cancel = true;
+                    mRespErrorTextView.setVisibility(View.GONE);
+                    mRespEditText.setBackgroundResource(R.drawable.edittext_border);
                 }
             } else {
                 EditText et = values.get(i);
@@ -481,65 +629,66 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
-                        et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
-                        focusView = et;
+                        //et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        mSpo2ErrorTextView.setText(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                        mSpo2EditText.requestFocus();
+                        mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         cancel = true;
                         break;
                     } else {
-                        cancel = false;
+                        mSpo2ErrorTextView.setVisibility(View.GONE);
+                        mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
                     }
 //       }
                 } else {
-                    focusView = et;
-                    cancel = true;
+                    mSpo2ErrorTextView.setVisibility(View.GONE);
+                    mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
                 }
             }
         }
-
         if (cancel) {
-            // There was an error - focus the first form field with an error.
-            focusView.requestFocus();
-            Toast.makeText(getActivity(), "Please fill the all vitals data!", Toast.LENGTH_SHORT).show();
             return false;
-        } else {
-            try {
-                if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
-                    results.setHeight((mHeight.getText().toString()));
-                } else if (mHeight.getText().toString().equals("")) {
-                    results.setHeight("0");
-                }
-                if (mWeight.getText() != null) {
-                    results.setWeight((mWeight.getText().toString()));
-                }
-                if (mPulse.getText() != null) {
-                    results.setPulse((mPulse.getText().toString()));
-                }
-                if (mBpDia.getText() != null) {
-                    results.setBpdia((mBpDia.getText().toString()));
-                }
-                if (mBpSys.getText() != null) {
-                    results.setBpsys((mBpSys.getText().toString()));
-                }
-                if (mTemperature.getText() != null) {
-                    results.setTemperature((mTemperature.getText().toString()));
-                }
-                if (mResp.getText() != null) {
-                    results.setResp((mResp.getText().toString()));
-                }
-                if (mSpo2.getText() != null) {
-                    results.setSpo2((mSpo2.getText().toString()));
-                }
-                if (mSpo2.getText() != null) {
-                    results.setBmi(mBMI.getText().toString().split(" ")[0]);
-                }
+        }
 
-
-            } catch (NumberFormatException e) {
-                //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        try {
+            if (!height.equals("")) {
+                results.setHeight(height);
+            } else {
+                results.setHeight("0");
             }
+            if (!weight.isEmpty()) {
+                results.setWeight(weight);
+            }
+            if (mPulseEditText.getText() != null) {
+                results.setPulse((mPulseEditText.getText().toString()));
+            }
+            if (mBpDiaEditText.getText() != null) {
+                results.setBpdia((mBpDiaEditText.getText().toString()));
+            }
+            if (mBpSysEditText.getText() != null) {
+                results.setBpsys((mBpSysEditText.getText().toString()));
+            }
+            if (mTemperatureEditText.getText() != null) {
+                results.setTemperature((mTemperatureEditText.getText().toString()));
+            }
+            if (mRespEditText.getText() != null) {
+                results.setResp((mRespEditText.getText().toString()));
+            }
+            if (mSpo2EditText.getText() != null) {
+                results.setSpo2((mSpo2EditText.getText().toString()));
+            }
+            if (mSpo2EditText.getText() != null) {
+                results.setBmi(mBMITextView.getText().toString().split(" ")[0]);
+            }
+
+
+        } catch (NumberFormatException e) {
+            //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
 
 //
-        }
+
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();

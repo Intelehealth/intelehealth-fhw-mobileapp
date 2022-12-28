@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +36,9 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
 
-    private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
-
-    public void setLabelJSON(JSONObject json) {
-        mThisScreenLanguageJsonObject = json;
+    public void refresh(List<ReasonGroupData> itemList) {
+        mItemList = itemList;
+        notifyDataSetChanged();
     }
 
     @Override

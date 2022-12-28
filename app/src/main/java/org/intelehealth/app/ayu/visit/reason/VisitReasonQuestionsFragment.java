@@ -95,7 +95,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                       recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                     }
                 }, 100);
 

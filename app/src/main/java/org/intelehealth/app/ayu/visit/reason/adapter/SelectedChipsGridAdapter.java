@@ -25,6 +25,7 @@ public class SelectedChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public interface OnItemSelection {
         public void onSelect(String data);
+        public void onRemoved(String data);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -85,6 +86,7 @@ public class SelectedChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.
                     mOnItemSelection.onSelect(tvName.getText().toString());
                     mItemList.remove(tvName.getText().toString());
                     notifyDataSetChanged();
+                    mOnItemSelection.onRemoved(tvName.getText().toString());
                 }
             });
 
