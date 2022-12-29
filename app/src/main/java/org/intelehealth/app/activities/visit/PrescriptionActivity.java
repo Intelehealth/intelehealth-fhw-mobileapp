@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -140,6 +142,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     private static String mFileName = "config.json";
     private ImageButton backArrow, refresh;
     private NetworkUtils networkUtils;
+    private ObjectAnimator syncAnimator;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -219,8 +222,13 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
+
         backArrow.setOnClickListener(v -> {
             finish();
+        });
+
+        refresh.setOnClickListener(v -> {
+            syncNow(PrescriptionActivity.this, refresh, syncAnimator);
         });
     }
 
