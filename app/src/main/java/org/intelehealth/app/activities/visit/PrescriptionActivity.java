@@ -572,7 +572,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             case UuidDictionary.FOLLOW_UP_VISIT: {
                 if (!followUpDate.isEmpty()) {
-                    followUpDate = followUpDate + "," + value;
+                  //  followUpDate = followUpDate + "," + value;    // commented to avoid duplicate display again...
                 } else {
                     followUpDate = date_formatter(value.substring(0,10), "dd-MM-yyyy", "dd MMM, yyyy");
                 }

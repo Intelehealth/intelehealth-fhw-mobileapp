@@ -10,6 +10,7 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.getDateInDDMMMMYYYYFormat;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,10 +60,10 @@ import java.util.List;
 
 public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID,
-    visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
+    visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
-    visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
+    visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView priorityTag, profile_image, icon_presc_details;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
@@ -261,7 +262,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
                 in.putExtra("age", age);
                 in.putExtra("tag", "VisitDetailsActivity");
-                in.putExtra("followupDate", followupDate);
+                in.putExtra("followupDate", followUpDate_format);
                 in.putExtra("openmrsID", openmrsID);
                 startActivity(in);
             });
@@ -377,13 +378,18 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         followupDate_txt = findViewById(R.id.followup_date_txtv);
         followup_info = findViewById(R.id.followup_info);
         yes_followup_btn = findViewById(R.id.yes_followup_btn);
+        followup_accept_text = findViewById(R.id.followup_accept_text);
 
         if (followupDate != null) {
+            followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM,yyyy");
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
             followupDate_txt.setText("Follow up on " + followupDate);
             followup_info.setText("Please take " + patientName + "'s follow-up visit.");
+
+            followup_accept_text.setText("The doctor suggested a follow-up visit on " +
+                    followUpDate_format + ". Does the patient want to take a follow-up visit?");
             Log.v("vd", "vd: " + followup_info);
         }
         else {
