@@ -75,34 +75,28 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
         instance.setConfigSettingsAsync(configSettings);
 
-        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull Task<Boolean> task) {
-                if (task.isSuccessful() && !isFinishing()) {
-                    long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE && false) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                        alertDialogBuilder.show();
-                    } else {
-                        checkPerm();
-                    }
+        instance.fetchAndActivate().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !isFinishing()) {
+                long force_update_version_code = instance.getLong("force_update_version_code");
+                if (force_update_version_code > BuildConfig.VERSION_CODE) {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+                    alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), (dialog, which) -> {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                        }
+                        dialog.dismiss();
+                        finish();
+                    });
+                    alertDialogBuilder.show();
                 } else {
                     checkPerm();
                 }
+            } else {
+                checkPerm();
             }
         });
     }
