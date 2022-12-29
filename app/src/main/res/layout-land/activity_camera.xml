@@ -6,37 +6,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".activities.camera_activity.CameraActivity">
+    tools:context=".activities.cameraActivity.CameraActivity">
 
-    <com.google.android.cameraview.CameraView
-        android:id="@+id/camera_surface_CameraView"
-        android:layout_width="wrap_content"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:background="@android:color/black"
-        app:aspectRatio="4:3"
-        app:facing="back" />
+        android:importantForAccessibility="no" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignEnd="@id/camera_surface_CameraView"
-        android:layout_alignRight="@id/camera_surface_CameraView"
+        android:layout_alignEnd="@id/viewFinder"
         android:layout_alignParentTop="true" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/take_picture"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_camera"
-        app:useCompatPadding="true"
-        tools:ignore="RelativeOverlap" />
+        android:layout_centerVertical="true">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/take_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_camera"
+            app:useCompatPadding="true"
+            tools:ignore="RelativeOverlap" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/rotate_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/take_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_rotate"
+            app:useCompatPadding="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

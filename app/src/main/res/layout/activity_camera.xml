@@ -8,24 +8,17 @@
     android:background="@color/colorPrimary"
     tools:context=".activities.cameraActivity.CameraActivity">
 
-    <com.google.android.cameraview.CameraView
-        android:id="@+id/camera_surface_CameraView"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button_layout"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:background="@android:color/black"
-        app:aspectRatio="4:3"
-        app:facing="back" />
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
