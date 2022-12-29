@@ -17,11 +17,13 @@ public class FollowUpModel {
     boolean emergency;
     String patient_photo;
     String chiefComplaint;
+    String obsservermodifieddate = "";
 
     public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name,
                          String last_name, String date_of_birth, String phone_number, String gender,
                          String visit_start_date,
-                         String visit_speciality, String followup_date, String sync, boolean emergency, String patient_photo) {
+                         String visit_speciality, String followup_date, String sync,
+                         boolean emergency, String patient_photo, String obsservermodifieddate) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.openmrs_id = openmrs_id;
@@ -36,6 +38,7 @@ public class FollowUpModel {
         this.sync = sync;
         this.emergency = emergency;
         this.patient_photo = patient_photo;
+        this.obsservermodifieddate = obsservermodifieddate;
     }
 
     public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String visit_speciality, String followup_date, String sync) {
@@ -158,5 +161,13 @@ public class FollowUpModel {
 
     public void setChiefComplaint(String chiefComplaint) {
         this.chiefComplaint = chiefComplaint;
+    }
+
+    public String getObsservermodifieddate() {
+        return obsservermodifieddate;
+    }
+
+    public void setObsservermodifieddate(String obsservermodifieddate) {
+        this.obsservermodifieddate = obsservermodifieddate;
     }
 }

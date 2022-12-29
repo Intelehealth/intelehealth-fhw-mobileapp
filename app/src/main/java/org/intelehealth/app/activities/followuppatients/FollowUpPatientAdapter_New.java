@@ -147,6 +147,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             i.putExtra("followup_date", model.getFollowup_date());
             i.putExtra("patient_photo", model.getPatient_photo());
             i.putExtra("chief_complaint", model.getChiefComplaint());
+            i.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+            i.putExtra("hasPrescription", true);    // True since without presc there cannot be No Follow up Given so...
             context.startActivity(i);
         });
     }
