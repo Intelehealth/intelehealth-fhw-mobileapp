@@ -220,7 +220,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " +
                 "b.patient_photo, a.enddate, b.uuid, b.first_name, " +
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, " +
-                "SUBSTR(o.value,1,10) AS value_text " +
+                "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -258,7 +258,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 true,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), // ie. visit is emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
                     } else {
                         modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
@@ -274,7 +275,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 false,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -300,7 +302,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 */
         // TODO: end date is removed later add it again. --> Added... Only ended visits will show up for follow up.
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, b.patient_photo, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -340,7 +342,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 true,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
                     } else {
                         modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
@@ -356,7 +359,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 false,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                     }
 
                 } catch (Exception e) {
@@ -390,7 +394,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 */
         // TODO: end date is removed later add it again. --> Added...
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, b.patient_photo, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -428,7 +432,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 true,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
                     } else {
                         modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
@@ -444,7 +449,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 false,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")))); // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

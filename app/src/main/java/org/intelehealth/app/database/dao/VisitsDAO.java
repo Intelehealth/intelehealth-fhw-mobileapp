@@ -638,7 +638,7 @@ public class VisitsDAO {
         db.beginTransaction();
 
         // Todays cursor
-        final Cursor today_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
+     /*   final Cursor today_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
                 "(substr(startdate, 1, 4) ||'-'|| substr(startdate, 6,2) ||'-'|| substr(startdate, 9,2)) = DATE('now') AND enddate IS NULL", new String[]{});
         if (today_cursor.moveToFirst()) {
             do {
@@ -658,7 +658,7 @@ public class VisitsDAO {
             }
             while (week_cursor.moveToNext());
         }
-            week_cursor.close();
+            week_cursor.close();*/
 
             // Month cursor
         final Cursor month_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +

@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +45,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -140,6 +144,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     private static String mFileName = "config.json";
     private ImageButton backArrow, refresh;
     private NetworkUtils networkUtils;
+    private ObjectAnimator syncAnimator;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -219,9 +224,16 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
+
         backArrow.setOnClickListener(v -> {
             finish();
         });
+
+/*
+        refresh.setOnClickListener(v -> {
+            syncNow(PrescriptionActivity.this, refresh, syncAnimator);
+        });
+*/
     }
 
     private void fetchIntent() {
@@ -291,10 +303,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // dr details - end
 
         // download btn - start
-        downloadBtn.setOnClickListener(new View.OnClickListener() {
+        refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getApplication())) {
+                    syncAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
+                    syncAnimator.setInterpolator(new LinearInterpolator());
+                    syncAnimator.setRepeatCount(Animation.INFINITE);
+                    syncAnimator.start();
                     Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
@@ -564,7 +580,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             case UuidDictionary.FOLLOW_UP_VISIT: {
                 if (!followUpDate.isEmpty()) {
-                    followUpDate = followUpDate + "," + value;
+                  //  followUpDate = followUpDate + "," + value;    // commented to avoid duplicate display again...
                 } else {
                     followUpDate = date_formatter(value.substring(0,10), "dd-MM-yyyy", "dd MMM, yyyy");
                 }
@@ -940,12 +956,17 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitID, true);
-                        Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
                 downloadDoctorDetails();
+                syncAnimator.end();
+            }
+            else {
+                syncAnimator.end();
+                Toast.makeText(PrescriptionActivity.this, "Prescription is up to date.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (DAOException e) {
