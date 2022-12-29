@@ -140,6 +140,7 @@ public class Fragment_FirstScreen extends Fragment {
         mAgeEditText = view.findViewById(R.id.age_edittext);
         mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
         mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
+        Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
 
 
@@ -300,7 +301,6 @@ public class Fragment_FirstScreen extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -316,14 +316,14 @@ public class Fragment_FirstScreen extends Fragment {
                     mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             } else if (this.editText.getId() == R.id.middlename_edittext) {
-                if (val.isEmpty()) {
+               /* if (val.isEmpty()) {
                     mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
                     mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
                     mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
                     mMiddleNameErrorTextView.setVisibility(View.GONE);
                     mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
+                }*/
             } else if (this.editText.getId() == R.id.lastname_edittext) {
                 if (val.isEmpty()) {
                     mLastNameErrorTextView.setVisibility(View.VISIBLE);
@@ -829,7 +829,7 @@ public class Fragment_FirstScreen extends Fragment {
             mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (mMiddleNameEditText.getText().toString().equals("")) {
+       /* if (mMiddleNameEditText.getText().toString().equals("")) {
             mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
             mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
             mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -838,7 +838,7 @@ public class Fragment_FirstScreen extends Fragment {
         } else {
             mMiddleNameErrorTextView.setVisibility(View.GONE);
             mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+        }*/
 
         if (mLastNameEditText.getText().toString().equals("")) {
             mLastNameErrorTextView.setVisibility(View.VISIBLE);
@@ -891,6 +891,7 @@ public class Fragment_FirstScreen extends Fragment {
             return;
         } else {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
+            Log.v("phone", "phone: " + s);
             if (s.length() < 10) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                 mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
@@ -901,6 +902,20 @@ public class Fragment_FirstScreen extends Fragment {
                 mPhoneNumberErrorTextView.setVisibility(View.GONE);
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
+
+              if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
+                      && s.length() > 10) {
+                  mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                  mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
+                  mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                  mPhoneNumberEditText.requestFocus();
+                  return;
+              }
+              else {
+                  mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                  mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+              }
+            // Indian mobile number max
         }
 
         // mobile no - start

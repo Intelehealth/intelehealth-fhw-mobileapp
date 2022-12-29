@@ -119,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Middle Name*"
+                    android:text="Middle Name"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
