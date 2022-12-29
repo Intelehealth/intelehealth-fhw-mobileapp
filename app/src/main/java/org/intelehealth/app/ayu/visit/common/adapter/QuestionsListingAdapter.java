@@ -281,7 +281,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             Node node = options.get(0);
             String type = node.getInputType();
 
-            if (type == null || type.isEmpty() && !node.getOptionsList().isEmpty()) {
+            if (node.getOptionsList()!=null && !node.getOptionsList().isEmpty()) {
                 type = "options";
             }
             Log.v("Node", "Type - " + type);
@@ -415,13 +415,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void showCameraView(Node node, GenericViewHolder holder, int index) {
         Log.v("showCameraView", new Gson().toJson(node));
-        Log.v("showCameraView", "ImagePathList - "+new Gson().toJson(node.getImagePathList()));
+        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(getImagePath(), "");
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
@@ -453,7 +461,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
         imagesRcv.setAdapter(imageGridAdapter);
-        Log.v("showCameraView", "ImagePathList recyclerView - "+imagesRcv.getAdapter().getItemCount());
+        Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
 
 
         if (node.getImagePathList().isEmpty()) {

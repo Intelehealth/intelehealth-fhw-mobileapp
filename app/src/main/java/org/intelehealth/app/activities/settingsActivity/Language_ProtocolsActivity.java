@@ -465,4 +465,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    public void backPress(View view) {
+        finish();
+    }
 }

@@ -57,4 +57,8 @@ public class AboutUsActivity extends AppCompatActivity {
 
 
     }
+
+    public void backPress(View view) {
+        finish();
+    }
 }

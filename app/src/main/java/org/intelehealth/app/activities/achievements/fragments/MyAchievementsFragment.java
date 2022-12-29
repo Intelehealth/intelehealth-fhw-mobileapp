@@ -64,7 +64,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
     public void configureTabLayout() {
         TabLayout tabLayout = view.findViewById(R.id.tablayout_achievements);
-
+        tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText("Overall"));
         tabLayout.addTab(tabLayout.newTab().setText("Daily"));
         tabLayout.addTab(tabLayout.newTab().setText("Date range"));
