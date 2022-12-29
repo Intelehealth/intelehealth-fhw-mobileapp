@@ -45,6 +45,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -227,9 +229,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             finish();
         });
 
+/*
         refresh.setOnClickListener(v -> {
             syncNow(PrescriptionActivity.this, refresh, syncAnimator);
         });
+*/
     }
 
     private void fetchIntent() {
@@ -299,10 +303,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // dr details - end
 
         // download btn - start
-        downloadBtn.setOnClickListener(new View.OnClickListener() {
+        refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getApplication())) {
+                    syncAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
+                    syncAnimator.setInterpolator(new LinearInterpolator());
+                    syncAnimator.setRepeatCount(Animation.INFINITE);
+                    syncAnimator.start();
                     Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
@@ -948,12 +956,17 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitID, true);
-                        Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
                 downloadDoctorDetails();
+                syncAnimator.end();
+            }
+            else {
+                syncAnimator.end();
+                Toast.makeText(PrescriptionActivity.this, "Prescription is up to date.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (DAOException e) {
