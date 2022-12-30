@@ -37,6 +37,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
@@ -68,12 +69,14 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
     private ProgressBar progress;
+    private VisitCountInterface mlistener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_visit_received, container, false);
         initUI(view);
+        mlistener = (VisitCountInterface) getActivity();
         return view;
     }
 
@@ -129,6 +132,9 @@ public class VisitReceivedFragment extends Fragment implements EndVisitCountsInt
         thisMonths_Visits();
 
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+        if (mlistener != null)
+            mlistener.receivedCount(totalCounts);
+
     }
 
     private void visitData() {

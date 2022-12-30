@@ -20,6 +20,7 @@
         android:layout_marginVertical="@dimen/margin_15">
 
         <TextView
+            android:id="@+id/reminder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/notifi_reminders"
@@ -33,6 +34,7 @@
             android:background="@color/notifi_divider_color" />
 
         <TextView
+            android:id="@+id/incomplete_act"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/notifi_incompl_activity"
@@ -47,6 +49,7 @@
             android:background="@color/notifi_divider_color" />
 
         <TextView
+            android:id="@+id/archieved_notifi"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/notifi_archived_notifi"

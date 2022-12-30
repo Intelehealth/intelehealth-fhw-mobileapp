@@ -44,7 +44,8 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
     private RecyclerView recycler_today, recycler_yesterday;
-    private TextView notifi_header_title, today_nodata, yesterday_nodata;
+    private TextView notifi_header_title, today_nodata, yesterday_nodata,
+            reminder, incomplete_act, archieved_notifi;
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
@@ -104,6 +105,9 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         notifi_header_title = findViewById(R.id.notifi_header_title);
         refresh = findViewById(R.id.refresh);
         filter = findViewById(R.id.filter);
+        reminder = findViewById(R.id.reminder);
+        incomplete_act = findViewById(R.id.incomplete_act);
+        archieved_notifi = findViewById(R.id.archieved_notifi);
         recycler_today = findViewById(R.id.recycler_today);
         recycler_yesterday = findViewById(R.id.recycler_yesterday);
         filter_framelayout = findViewById(R.id.filter_framelayout);
@@ -134,6 +138,28 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         });*/
 
         filter.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        reminder.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+        incomplete_act.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+        archieved_notifi.setOnClickListener(v -> {
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);

@@ -33,6 +33,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -64,12 +65,14 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
     private androidx.appcompat.widget.SearchView searchview_pending;
     private ImageView closeButton;
     private ProgressBar progress;
+    private VisitCountInterface mlistener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_visit_pending, container, false);
         initUI(view);
+        mlistener = (VisitCountInterface) getActivity();
         return view;
     }
 
@@ -119,6 +122,8 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
         thisWeeks_Visits();
         thisMonths_Visits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+        if (mlistener != null)
+            mlistener.pendingCount(totalCounts);
     }
 
     private void visitData() {

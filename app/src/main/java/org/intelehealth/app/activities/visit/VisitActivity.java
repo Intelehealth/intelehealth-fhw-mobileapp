@@ -20,16 +20,19 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.VisitCountInterface;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends FragmentActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    private int receivedTotal = 0;
-    private int pendingTotal = 0;
+public class VisitActivity extends FragmentActivity implements
+        NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
     private ImageButton ibBack, refresh;
     private NetworkUtils networkUtils;
+    TabLayout tabLayout;
+    ViewPager2 viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,25 +60,18 @@ public class VisitActivity extends FragmentActivity implements NetworkUtils.Inte
 
 
     public void configureTabLayout() {
-        TabLayout tabLayout = findViewById(R.id.tablayout_appointments);
-        ViewPager2 viewPager = findViewById(R.id.pager_appointments);
+        tabLayout = findViewById(R.id.tablayout_appointments);
+        viewPager = findViewById(R.id.pager_appointments);
         VisitPagerAdapter adapter = new VisitPagerAdapter
                 (VisitActivity.this);
         viewPager.setAdapter(adapter);
 
-        EndVisitCountsInterface countsInterface = new VisitReceivedFragment();
-        receivedTotal = countsInterface.getPrescCount();
-        pendingTotal = countsInterface.getPrescCount();
-
-        receivedTotal = 15;
-        pendingTotal = 10;
-
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)
-                        tab.setText("Received (" + receivedTotal + ")").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Received (" + 0 + ")").setIcon(R.drawable.presc_tablayout_icon);
                     else
-                        tab.setText("Pending (" + pendingTotal + ")").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Pending (" + 0 + ")").setIcon(R.drawable.presc_tablayout_icon);
 
                 }
         ).attach();
@@ -133,4 +129,14 @@ public class VisitActivity extends FragmentActivity implements NetworkUtils.Inte
         }
     }
 
+    @Override
+    public void receivedCount(int count) {
+        Log.v("ccount", "received_count: " + count);
+        tabLayout.getTabAt(0).setText("Received (" + count + ")");
+    }
+
+    @Override
+    public void pendingCount(int count) {
+        tabLayout.getTabAt(1).setText("Pending (" + count + ")");
+    }
 }
