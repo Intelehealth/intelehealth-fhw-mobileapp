@@ -55,7 +55,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public interface OnItemSelection {
-        void onSelect(Node node);
+        void onSelect(Node node, int index);
 
         void needTitleChange(String title);
 
@@ -349,7 +349,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!type.isEmpty()) {
                         holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
-                        mOnItemSelection.onSelect(node);
+                        mOnItemSelection.onSelect(node, index);
                     }
                     Log.v("Node", "Type - " + type);
                     switch (type) {
@@ -441,7 +441,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
 
-                mOnItemSelection.onSelect(node);
+                mOnItemSelection.onSelect(node, index);
             }
         });
 
@@ -521,7 +521,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
                 node.setSelected(true);
                 notifyDataSetChanged();
-                mOnItemSelection.onSelect(node);
+                mOnItemSelection.onSelect(node, index);
             }
         });
         numberRangeTextView.setOnClickListener(new View.OnClickListener() {
@@ -621,7 +621,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //   node.setSelected(true);
                         //}
                     }
-                    mOnItemSelection.onSelect(node);
+                    mOnItemSelection.onSelect(node, index);
                 }
             }
         });
@@ -662,7 +662,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //   node.setSelected(true);
                         //}
                     }
-                    mOnItemSelection.onSelect(node);
+                    mOnItemSelection.onSelect(node, index);
                 }
             }
         });
@@ -690,7 +690,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (!submitButton.getText().toString().trim().contains("-")) {
                     Toast.makeText(mContext, "Please select the date", Toast.LENGTH_SHORT).show();
                 } else
-                    mOnItemSelection.onSelect(node);
+                    mOnItemSelection.onSelect(node, index);
             }
         });
 

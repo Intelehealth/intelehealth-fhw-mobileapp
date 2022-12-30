@@ -72,7 +72,7 @@
             <ImageView
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:src="@drawable/ui2_ic_ayu_image" />
+                android:src="@drawable/ui2_ic_ayu_image_blue" />
 
             <ImageView
                 android:layout_width="wrap_content"
