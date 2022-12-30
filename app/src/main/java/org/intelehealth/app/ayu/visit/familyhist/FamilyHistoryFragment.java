@@ -75,7 +75,11 @@ public class FamilyHistoryFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false,null,mCurrentRootOptionList.size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
-            public void onSelect(Node node) {
+            public void onSelect(Node node, int index) {
+                // avoid the scroll for old data change
+                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                    return;
+                }
                 //Log.v("onSelect", "node - " + node.getText());
                 if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
                     mCurrentComplainNodeOptionsIndex++;

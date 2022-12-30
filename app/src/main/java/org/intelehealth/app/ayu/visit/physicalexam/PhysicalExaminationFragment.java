@@ -80,7 +80,11 @@ public class PhysicalExaminationFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, physicalExam.getTotalNumberOfExams(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
-            public void onSelect(Node node) {
+            public void onSelect(Node node, int index) {
+                // avoid the scroll for old data change
+                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                    return;
+                }
                 Log.v("onSelect", "node - " + node.getText());
                 if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams()-1) {
                     //if (mCurrentChildComplainNodeOptionsIndex < physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size()) {

@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
-            public void onSelect(Node node) {
+            public void onSelect(Node node, int index) {
+                Log.v("onSelect", "index - "+index+" \t mCurrentComplainNodeOptionsIndex - "+mCurrentComplainNodeOptionsIndex);
+                // avoid the scroll for old data change
+                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                    return;
+                }
                 //Log.v("onSelect", "node - " + node.getText());
                 if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
                     mCurrentComplainNodeOptionsIndex++;

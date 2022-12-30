@@ -90,7 +90,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                     genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 1, new QuestionsListingAdapter.OnItemSelection() {
                         @Override
-                        public void onSelect(Node node) {
+                        public void onSelect(Node node, int index) {
 
                         }
 
