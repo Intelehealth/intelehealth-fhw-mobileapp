@@ -3,7 +3,10 @@ package org.intelehealth.app.appointment.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.app.models.RescheduledAppointmentsModel;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class AppointmentInfo implements Serializable {
     @Expose
@@ -58,9 +61,24 @@ public class AppointmentInfo implements Serializable {
     @Expose
     @SerializedName("createdAt")
     private String createdAt;
+
+
+    public List<RescheduledAppointmentsModel> getRescheduledAppointments() {
+        return rescheduledAppointments;
+    }
+
+    public void setRescheduledAppointments(List<RescheduledAppointmentsModel> rescheduledAppointments) {
+        this.rescheduledAppointments = rescheduledAppointments;
+    }
+
     @Expose
     @SerializedName("updatedAt")
     private String updatedAt;
+
+    //this parameter added for rescheduledAppointments
+    @SerializedName("rescheduledAppointments")
+    @Expose
+    private List<RescheduledAppointmentsModel> rescheduledAppointments = null;
 
     private boolean prescription_exists = false;
     //newly added for appointment
@@ -91,7 +109,7 @@ public class AppointmentInfo implements Serializable {
         this.prev_slot_time = prev_slot_time;
     }
 
-    String  prev_slot_day,prev_slot_date,prev_slot_time;
+    String prev_slot_day, prev_slot_date, prev_slot_time;
 
     public String getPatientProfilePhoto() {
         return patientProfilePhoto;

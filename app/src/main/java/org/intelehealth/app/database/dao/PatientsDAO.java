@@ -760,6 +760,7 @@ public class PatientsDAO {
 
 
                 patientDTO = new PatientDTO();
+                patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 patientDTO.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 patientDTO.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));

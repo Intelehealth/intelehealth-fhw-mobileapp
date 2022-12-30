@@ -293,13 +293,37 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         } else {
             //appointment scheduled and time has been passed
-            //prescription pending  state - make "stateAppointmentStarted" visible, "tvAppointmentTime" gone, "stateAppointmentPrescription" visible
+            //prescription pending  state - make "stateAppointmentStarted" visible,
+            // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible
 
 
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary2));
+        }
+
+
+        //appointment rescheduled
+        AppointmentInfo appointmentInfo = appointmentDAO.getDetailsOfRescheduledAppointment(visitID, String.valueOf(appointment_id));
+        if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null && !appointmentInfo.getPrev_slot_date().isEmpty()) {
+            stateAppointmentPrescription.setVisibility(View.GONE);
+            layoutPrescButtons.setVisibility(View.GONE);
+            btnEndVisit.setVisibility(View.GONE);
+            layoutSummaryBtns.setVisibility(View.VISIBLE);
+            layoutContactAction.setVisibility(View.GONE);
+            // tvAppointmentTime.setVisibility(View.VISIBLE);
+            //make layoutPrevScheduledOn visible to show prev rescheduled timing
+            layoutPrevScheduledOn.setVisibility(View.VISIBLE);
+            tvRescheduleOnTitle.setVisibility(View.VISIBLE);
+            // tvAppointmentTime.setText("Starts in 1 day");
+            String date = appointmentInfo.getPrev_slot_date();
+            if (date != null && !date.isEmpty()) {
+                tvPrevAppDate.setText(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(date));
+
+            }
+            tvPrevAppTime.setText(appointmentInfo.getPrev_slot_time());
+
         }
 
         Log.d(TAG, "initUI: hasPrescription : " + hasPrescription);
@@ -389,31 +413,16 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         // visit summary - end
 
 
-        //appointment rescheduled
-        AppointmentInfo appointmentInfo = appointmentDAO.getDetailsOfRescheduledAppointment(visitID, String.valueOf(appointment_id));
-        if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null && !appointmentInfo.getPrev_slot_date().isEmpty()) {
-            stateAppointmentPrescription.setVisibility(View.GONE);
-            layoutPrescButtons.setVisibility(View.GONE);
-            btnEndVisit.setVisibility(View.GONE);
-            layoutSummaryBtns.setVisibility(View.VISIBLE);
-            layoutContactAction.setVisibility(View.GONE);
-            // tvAppointmentTime.setVisibility(View.VISIBLE);
-            //make layoutPrevScheduledOn visible to show prev rescheduled timing
-            // layoutPrevScheduledOn.setVisibility(View.VISIBLE);
-            tvRescheduleOnTitle.setVisibility(View.VISIBLE);
-            // tvAppointmentTime.setText("Starts in 1 day");
-            tvPrevAppDate.setText(appointmentInfo.getPrev_slot_date());
-            tvPrevAppDate.setText(appointmentInfo.getPrev_slot_time());
-
-        }
-
         handleWhatsappAndCall();
 
         //edit patient details - Redirect to Identification activity
         ibEdit.setOnClickListener(v -> {
             PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
+            Log.d(TAG, "initUI: phoneno : " + patientPhoneNo);
             patientDTO.setPatientPhoto(patient_photo_path);
             patientDTO.setOpenmrsId(openmrsID);
+            patientDTO.setPhonenumber(patientPhoneNo);
+
             Intent intent2 = new Intent(AppointmentDetailsActivity.this, IdentificationActivity_New.class);
             intent2.putExtra("patientUuid", patientUuid);
             intent2.putExtra("ScreenEdit", "personal_edit");
@@ -424,6 +433,17 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
         });
+
+        //kaveri
+        //if appointment is rescheduled and prescription is pending then hide layout summary buttons i.e. cancel and reschedule
+        if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null &&
+                !appointmentInfo.getPrev_slot_date().isEmpty() && !hasPrescription && !isVisitStartsIn) {
+            layoutSummaryBtns.setVisibility(View.GONE);
+            stateAppointmentStarted.setVisibility(View.VISIBLE);
+            tvAppointmentTime.setVisibility(View.GONE);
+            stateAppointmentPrescription.setVisibility(View.VISIBLE);
+            tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary2));
+        }
 
     }
 

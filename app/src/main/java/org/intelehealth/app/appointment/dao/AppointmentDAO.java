@@ -6,14 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.models.Patient;
-import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.models.RescheduledAppointmentsModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -28,7 +26,6 @@ public class AppointmentDAO {
 
 
     public void insert(AppointmentInfo appointmentInfo) throws DAOException {
-        Log.d(TAG, "insert: appointmentInfo : " + appointmentInfo.getStatus());
         AppointmentInfo checkAppointmentInfo = getAppointmentByVisitId(appointmentInfo.getVisitUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -52,6 +49,15 @@ public class AppointmentDAO {
             values.put("status", appointmentInfo.getStatus());
             values.put("created_at", appointmentInfo.getCreatedAt());
 
+            if (appointmentInfo.getRescheduledAppointments() != null && appointmentInfo.getRescheduledAppointments().size() > 0) {
+                int rescheduledSize = appointmentInfo.getRescheduledAppointments().size();
+                RescheduledAppointmentsModel rescheduledAppointmentsModel = appointmentInfo.getRescheduledAppointments().get(rescheduledSize - 1);
+
+                values.put("prev_slot_day", rescheduledAppointmentsModel.getSlotDay());
+                values.put("prev_slot_date", rescheduledAppointmentsModel.getSlotDate());
+                values.put("prev_slot_time", rescheduledAppointmentsModel.getSlotTime());
+
+            }
             createdRecordsCount = db.insertWithOnConflict("tbl_appointments", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
 
@@ -349,10 +355,6 @@ public class AppointmentDAO {
     public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid,
                                                     String prev_slot_day, String prev_slot_date,
                                                     String prev_slot_time) throws DAOException {
-        Log.d(TAG, "updatePreviousAppointmentDetails: visit_uuid : " + visit_uuid);
-        Log.d(TAG, "updatePreviousAppointmentDetails: prev_slot_day : " + prev_slot_day);
-        Log.d(TAG, "updatePreviousAppointmentDetails: prev_slot_date : " + prev_slot_date);
-        Log.d(TAG, "updatePreviousAppointmentDetails: prev_slot_time : " + prev_slot_time);
 
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
