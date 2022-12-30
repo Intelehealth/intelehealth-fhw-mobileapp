@@ -89,7 +89,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     private ImageView priorityTag;
     private boolean isEmergency, hasPrescription;
     private String patientName, patientUuid, gender, age, openmrsID,
-            visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day, prescription_received_time;
+            visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,
+            app_start_time, app_start_day, prescription_received_time, appointmentStatus;
     SQLiteDatabase db;
     boolean isVisitStartsIn = false;
     private String vitalsUUID, adultInitialUUID;
@@ -214,6 +215,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             patient_photo_path = intent.getStringExtra("patient_photo");
+            appointmentStatus = intent.getStringExtra("status");
 
 
         }
@@ -443,6 +445,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary2));
+        }
+
+        if (appointmentStatus != null && !appointmentStatus.isEmpty() && appointmentStatus.equalsIgnoreCase("cancelled")) {
+            layoutSummaryBtns.setVisibility(View.GONE);
+            stateAppointmentStarted.setVisibility(View.VISIBLE);
+            tvAppointmentTime.setVisibility(View.GONE);
+            stateAppointmentPrescription.setVisibility(View.GONE);
+
         }
 
     }

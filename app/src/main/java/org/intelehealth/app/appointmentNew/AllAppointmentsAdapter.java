@@ -227,6 +227,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 intent.putExtra("appointment_id", appointmentInfoModel.getId());
                 intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
                 intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                intent.putExtra("status", appointmentInfoModel.getStatus());
 
                 context.startActivity(intent);
 

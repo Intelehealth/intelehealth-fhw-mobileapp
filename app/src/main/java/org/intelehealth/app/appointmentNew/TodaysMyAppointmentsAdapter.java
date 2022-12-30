@@ -211,6 +211,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("appointment_id", appointmentInfoModel.getId());
                     intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
                     intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                    intent.putExtra("status", appointmentInfoModel.getStatus());
 
                     context.startActivity(intent);
 
