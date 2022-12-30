@@ -78,6 +78,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -92,11 +93,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -145,6 +148,21 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     private ImageButton backArrow, refresh;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
+    ObsDTO complaint = new ObsDTO();
+    ObsDTO famHistory = new ObsDTO();
+    ObsDTO patHistory = new ObsDTO();
+    ObsDTO phyExam = new ObsDTO();
+    ObsDTO height = new ObsDTO();
+    ObsDTO weight = new ObsDTO();
+    ObsDTO pulse = new ObsDTO();
+    ObsDTO bpSys = new ObsDTO();
+    ObsDTO bpDias = new ObsDTO();
+    ObsDTO temperature = new ObsDTO();
+    ObsDTO spO2 = new ObsDTO();
+    ObsDTO resp = new ObsDTO();
+    String medHistory;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -482,11 +500,61 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
      */
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
+            case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
+                complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
+                break;
+            }
+            case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination
+                phyExam.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEIGHT: //Height
+            {
+                height.setValue(value);
+                break;
+            }
+            case UuidDictionary.WEIGHT: //Weight
+            {
+                weight.setValue(value);
+                break;
+            }
+            case UuidDictionary.PULSE: //Pulse
+            {
+                pulse.setValue(value);
+                break;
+            }
+            case UuidDictionary.SYSTOLIC_BP: //Systolic BP
+            {
+                bpSys.setValue(value);
+                break;
+            }
+            case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
+            {
+                bpDias.setValue(value);
+                break;
+            }
+            case UuidDictionary.TEMPERATURE: //Temperature
+            {
+                temperature.setValue(value);
+                break;
+            }
+            //    Respiratory added by mahiti dev team
+            case UuidDictionary.RESPIRATORY: //Respiratory
+            {
+                resp.setValue(value);
+                break;
+            }
+            case UuidDictionary.SPO2: //SpO2
+            {
+                spO2.setValue(value);
+                break;
+            }
+
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
-                if (!diagnosisReturned.isEmpty()) {
-                    diagnosisReturned = diagnosisReturned + "\n\n" + Node.bullet + " " + value;
+                if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
+                    diagnosisReturned = diagnosisReturned + ",\n" + value;
                 } else {
-                    diagnosisReturned = Node.bullet + " " + value;
+                    diagnosisReturned = value;
                 }
                 diagnosis_txt.setText(diagnosisReturned);
                 break;
@@ -495,31 +563,29 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             case UuidDictionary.JSV_MEDICATIONS: {
                 Log.i("TAG", "parse_va: " + value);
                 Log.i("TAG", "parseData: rx" + rxReturned);
-                if (!rxReturned.trim().isEmpty()) {
-                    rxReturned = rxReturned + "\n\n" + Node.bullet + " " + value;
+                if (!rxReturned.trim().isEmpty() && !rxReturned.contains(value)) {
+                    rxReturned = rxReturned + "\n" + value;
                 } else {
-                    rxReturned = Node.bullet + " " + value;
+                    rxReturned = value;
                 }
                 Log.i("TAG", "parseData: rxfin" + rxReturned);
                 medication_txt.setText(rxReturned);
                 //checkForDoctor();
                 break;
             }
-
             case UuidDictionary.MEDICAL_ADVICE: {
-                if (!adviceReturned.isEmpty()) {
-                    if (adviceReturned.contains("Start Audio"))
-                        adviceReturned = Node.bullet + " " +value;
-                    else
-                        adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
-
+                if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
+                    adviceReturned = adviceReturned + "\n" + value;
                     Log.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
                     Log.d("GAME", "GAME_2: " + adviceReturned);
                 }
-
+              /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
+                    medicalAdviceCard.setVisibility(View.VISIBLE);
+                }*/
                 //medicalAdviceTextView.setText(adviceReturned);
+                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
 
                 int j = adviceReturned.indexOf('<');
                 int i = adviceReturned.lastIndexOf('>');
@@ -544,51 +610,55 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
-              /*  adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
-                advice_txt.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
-                advice_txt.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview", "hyper_textview: " + advice_txt.getText().toString());*/
+               /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
                 //checkForDoctor();
                 break;
             }
-
             case UuidDictionary.REQUESTED_TESTS: {
-                if (!testsReturned.isEmpty()) {
+                if (!testsReturned.isEmpty() && !testsReturned.contains(value)) {
                     testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
                     testsReturned = Node.bullet + " " + value;
                 }
                 test_txt.setText(testsReturned);
+              /*  if (requestedTestsCard.getVisibility() != View.VISIBLE) {
+                    requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                requestedTestsTextView.setText(testsReturned);*/
+                //checkForDoctor();
                 break;
             }
+            case UuidDictionary.ADDITIONAL_COMMENTS: {
 
-//            case UuidDictionary.ADDITIONAL_COMMENTS: {
 //                additionalCommentsCard.setVisibility(View.GONE);
-////                if (!additionalReturned.isEmpty()) {
-////                    additionalReturned = additionalReturned + "," + value;
-////                } else {
-////                    additionalReturned = value;
-////                }
-//////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
-//////                    additionalCommentsCard.setVisibility(View.VISIBLE);
-//////                }
-////                additionalCommentsTextView.setText(additionalReturned);
-//                //checkForDoctor();
-//                break;
-//            }
 
-            case UuidDictionary.FOLLOW_UP_VISIT: {
-                if (!followUpDate.isEmpty()) {
-                  //  followUpDate = followUpDate + "," + value;    // commented to avoid duplicate display again...
+                if (!additionalReturned.isEmpty() && !additionalReturned.contains(value)) {
+                    additionalReturned = additionalReturned + "," + value;
                 } else {
-                    followUpDate = date_formatter(value.substring(0,10), "dd-MM-yyyy", "dd MMM, yyyy");
+                    additionalReturned = value;
                 }
-
-                followup_date_txt.setText(followUpDate);
-                followup_subtext.setText("The doctor suggested a follow-up visit on " + followUpDate +
-                        ". Does the patient want to take a follow-up visit?");
-
+////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
+////                    additionalCommentsCard.setVisibility(View.VISIBLE);
+////                }
+//                additionalCommentsTextView.setText(additionalReturned);
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.FOLLOW_UP_VISIT: {
+                if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
+                    followUpDate = followUpDate + "," + value;
+                } else {
+                    followUpDate = value;
+                }
+              /*  if (followUpDateCard.getVisibility() != View.VISIBLE) {
+                    followUpDateCard.setVisibility(View.VISIBLE);
+                }
+                followUpDateTextView.setText(followUpDate);*/
+                //checkForDoctor();
                 break;
             }
 
@@ -1092,21 +1162,21 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         visitIDCursor.close();
         String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
 
-     /*   String mPatHist = patHistory.getValue();
+        String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
             mPatHist = "";
         }
         String mFamHist = famHistory.getValue();
         if (mFamHist == null) {
             mFamHist = "";
-        }*/
+        }
 
-      /*  mHeight = height.getValue();
+        mHeight = height.getValue();
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
-        mPulse = pulse.getValue();*/
+        mPulse = pulse.getValue();
         
-       /* try {
+        try {
             JSONObject obj = null;
             if (hasLicense) {
                 obj = new JSONObject(Objects.requireNonNullElse
@@ -1156,7 +1226,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+//                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+                mComplaint = "Test Complaint";
             }
         } else {
 
@@ -1169,7 +1240,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             }
         } else {
 
-        }*/
+        }
 
 
         if (mPatientOpenMRSID == null) {
@@ -1194,11 +1265,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
 
-        //String advice_web = stringToWeb(adviceReturned);
-        String advice_web = "";
+        String advice_web = stringToWeb(adviceReturned);
+      //  String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
-        String advice_doctor__ = medication_txt.getText().toString()
+   /*     String advice_doctor__ = medication_txt.getText().toString()
                 .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
                 .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
 
@@ -1214,7 +1285,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-        }
+        }*/
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
 
@@ -1250,10 +1321,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
         String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
 
-//        String fam_hist = mFamHist;
-//        String pat_hist = mPatHist;
+        String fam_hist = mFamHist;
+        String pat_hist = mPatHist;
 
-     /*   if (fam_hist.trim().isEmpty()) {
+        if (fam_hist.trim().isEmpty()) {
             fam_hist = getString(R.string.no_history_family_found);
         } else {
             fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
@@ -1261,7 +1332,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
         if (pat_hist.trim().isEmpty()) {
             pat_hist = getString(R.string.no_history_patient_illness_found);
-        }*/
+        }
 
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
@@ -1295,7 +1366,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
                     getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
             
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + details.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
                     (details.getQualification() == null || details.getQualification().equalsIgnoreCase("null")
@@ -1320,10 +1391,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
@@ -1337,17 +1408,18 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                  //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    "<img src=\"https://uiux.intelehealth.org/ds/6dea2d57-e84f-482c-9d3b-2e7dcc3501b3_sign.png\" alt=\"Girl in a jacket\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
-                            /*(!TextUtils.isEmpty(mHeight)) ? mHeight :*/ "", /*(!TextUtils.isEmpty(mWeight)) ? mWeight :*/ "",
-                            /*(!TextUtils.isEmpty(mBMI)) ? mBMI :*/ "", (!TextUtils.isEmpty(bp)) ? bp : "",
-                            /*(!TextUtils.isEmpty(mPulse)) ? mPulse :*/ "", /*(!TextUtils.isEmpty(mTemp)) ? mTemp :*/ "",
-                            /*(!TextUtils.isEmpty(mresp)) ? mresp :*/ "", /*(!TextUtils.isEmpty(mSPO2)) ? mSPO2 : */"",
-                            /*pat_hist, fam_hist,*/
-                            /*mComplaint*/ "", diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "",
+                            (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
+                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            pat_hist, fam_hist,
+                            mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -1594,10 +1666,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         idCursor1.close();
         String[] columns = {"value", " conceptuuid"};
 
-/*
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            String[] famHistArgs = {adultInitialUUID, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -1606,13 +1677,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
         }
-*/
 
-/*
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            String[] medHistArgs = {adultInitialUUID, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
@@ -1634,12 +1703,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
-*/
 
         //vitals display code
-     /*   String visitSelection = "encounteruuid = ? AND voided!='1'";
-        String[] visitArgs = {encounterVitals};
-        if (encounterVitals != null) {
+        String visitSelection = "encounteruuid = ? AND voided!='1'";
+        String[] visitArgs = {vitalsUUID};
+        if (vitalsUUID != null) {
             try {
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor != null && visitCursor.moveToFirst()) {
@@ -1655,11 +1723,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             } catch (SQLException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-        }*/
+        }
 
         //adult intails display code
-      /*  String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
-        String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
+        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
+        String[] encounterargs = {adultInitialUUID, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
         try {
             if (encountercursor != null && encountercursor.moveToFirst()) {
@@ -1674,7 +1742,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             }
         } catch (SQLException sql) {
             FirebaseCrashlytics.getInstance().recordException(sql);
-        }*/
+        }
 
         downloadPrescriptionDefault();
         downloadDoctorDetails();
@@ -1689,6 +1757,17 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
+    }
+
+    private String convertCtoF(String temperature) {
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
     }
 
 }

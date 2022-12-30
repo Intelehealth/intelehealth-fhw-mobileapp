@@ -2393,7 +2393,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ?
                     getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
@@ -3317,9 +3317,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //                    "</div>";
 
 
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
+                    (objClsDoctorDetails.getQualification() == null ||
+                            objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" :
+                            objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
@@ -3329,7 +3332,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
         if (isRespiratory) {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -3357,7 +3360,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                  //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                            "<img src=\"https://uiux.intelehealth.org/ds/6dea2d57-e84f-482c-9d3b-2e7dcc3501b3_sign.png\" alt=\"Girl in a jacket\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
