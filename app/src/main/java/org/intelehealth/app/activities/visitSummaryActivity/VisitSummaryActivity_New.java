@@ -1693,7 +1693,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void sharePresc() {
         if (hasPrescription.equalsIgnoreCase("true")) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+            final LayoutInflater inflater = LayoutInflater.from(context);
+            View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
+            alertdialogBuilder.setView(convertView);
+
+            EditText editText = convertView.findViewById(R.id.editText_mobileno);
+            Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
+           /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             EditText editText = new EditText(this);
             editText.setInputType(InputType.TYPE_CLASS_PHONE);
 
@@ -1702,51 +1710,80 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                     return null;
                 }
-            };
+            };*/
+
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
             String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+            editText.setText(patient.getPhone_number());
+
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-            editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
-            editText.setText(patient.getPhone_number());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+          //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
+           /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             editText.setLayoutParams(layoutParams);
             alertDialog.setView(editText);
+*/
+         //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+            sharebtn.setOnClickListener(v -> {
+                if (!editText.getText().toString().equalsIgnoreCase("")) {
+                    String phoneNumber = /*"+91" +*/ editText.getText().toString();
+                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                            + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
-            //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-            alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
-            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                    // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(
+                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                            phoneNumber, whatsappMessage))));
 
-                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                    // isreturningWhatsapp = true;
 
-                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(
-                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                                        phoneNumber, whatsappMessage))));
+                } else {
+                    Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
+                            Toast.LENGTH_SHORT).show();
+                }
 
-                                // isreturningWhatsapp = true;
+            });
 
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            AlertDialog alertDialog = alertdialogBuilder.create();
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+            alertDialog.show();
 
-            AlertDialog dialog = alertDialog.show();
+//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
+//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
+//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+//
+//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
+//                                startActivity(new Intent(Intent.ACTION_VIEW,
+//                                        Uri.parse(
+//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+//                                                        phoneNumber, whatsappMessage))));
+//
+//                                // isreturningWhatsapp = true;
+//
+//                            } else {
+//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    });
+
+           /* AlertDialog dialog = alertDialog.show();
             Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
         } else {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
             alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                     new DialogInterface.OnClickListener() {
@@ -1759,7 +1796,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
+
+            Toast.makeText(context, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
         }
     }
 
