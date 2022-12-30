@@ -1413,7 +1413,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                   //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    "<img src=" + sign_url + " alt=\"Girl in a jacket\">" + // doctor signature...
+                                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
