@@ -29,10 +29,12 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -45,7 +47,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ChangePasswordActivity_New extends AppCompatActivity {
+public class ChangePasswordActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ChangePasswordActivity_";
     TextInputEditText etCurrentPassword, etNewPassword, etNewPasswordConfirm;
     String encoded = null;
@@ -56,16 +58,18 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
     SessionManager sessionManager = null;
     TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword;
     RelativeLayout layoutParent;
-
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password_new_ui2);
 
+        networkUtils = new NetworkUtils(ChangePasswordActivity_New.this, this);
 
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(v -> {
@@ -102,12 +106,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
         });
 
         tvTitle.setText(getResources().getString(R.string.change_password));
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-        }
 
         manageErrorFields();
     }
@@ -323,5 +322,32 @@ public class ChangePasswordActivity_New extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
 }

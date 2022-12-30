@@ -50,16 +50,5 @@ public interface Api {
     @POST
     Call<AppointmentDetailsResponse> bookAppointment(@Url String url, @Body BookAppointmentRequest request);
 
-    @POST("/api/openmrs/forgetPassword/requestOtp?")
-    Call<ForgotPasswordApiResponseModel_New> requestOtp(@Body RequestOTPParamsModel_New requestOTPParamsModel_new);
-
-    @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
-    Call<ResetPasswordResModel_New> resetPassword(@Path("userUuid") String userUuid,
-                                                  @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
-
-    @POST("/openmrs/ws/rest/v1/password")
-    Call<JsonObject> changePassword(@Body ChangePasswordModel_New changePasswordParamsModel_new,
-                                    @Header("Authorization") String authHeader);
-
 
 }

@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:elevation="0dp"
-                app:cardCornerRadius="45dp">
+                app:cardCornerRadius="@dimen/iv_profile_photo_corner_radius">
 
                 <ImageView
                     android:id="@+id/iv_profilePic"
@@ -408,11 +408,15 @@
                     android:layout_below="@+id/textview_mobile_no_note"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                    android:paddingStart="@dimen/country_code_picker_padding_start"
+                    android:paddingTop="@dimen/country_code_picker_padding_top"
+                    android:paddingEnd="@dimen/country_code_picker_padding_start"
+                    android:paddingBottom="@dimen/country_code_picker_padding_top"
                     android:layout_weight="1"
                     android:background="@drawable/ui2_spinner_background"
                     android:gravity="center_vertical"
                     app:ccp_countryPreference="us,in"
-                    app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
+                    app:ccp_textSize="@dimen/country_code_picker_text_size" />
 
                 <!--
                                 <LinearLayout

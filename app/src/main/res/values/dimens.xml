@@ -785,7 +785,7 @@
     <dimen name="apps_details_profile_iv_width">40dp</dimen>
     <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="card_profile_details_margin_start">12dp</dimen>
-    <dimen name="card_profile_name_text_size">16sp</dimen>
+    <dimen name="card_profile_name_text_size">14sp</dimen>
     <dimen name="cp_gender_margin_start">4dp</dimen>
     <dimen name="fu_gender_text_size">14sp</dimen>
     <dimen name="cp_pencil_width">14dp</dimen>
@@ -953,5 +953,17 @@
     <dimen name="iv_help_info_margin_start">5dp</dimen>
     <dimen name="iv_main_icon_otp_margin_top">32dp</dimen>
     <dimen name="tv_resend_otp_margin_start">5dp</dimen>
+    <dimen name="chk_box_ayu_margin_top">0dp</dimen>
+    <dimen name="back_arrow_forgot_margin_start">24dp</dimen>
+    <dimen name="country_code_picker_text_size">16sp</dimen>
+    <dimen name="country_code_picker_padding_start">0dp</dimen>
+    <dimen name="country_code_picker_padding_top">0dp</dimen>
+    <dimen name="otp_pinview_padding_start_end">12dp</dimen>
+    <dimen name="otp_pinview_padding_top_bottom">6dp</dimen>
+    <dimen name="otp_pinview_text_size">16sp</dimen>
+    <dimen name="otp_pinview_margin_top">15dp</dimen>
+    <dimen name="reset_new_pass_margin_top">8dp</dimen>
+    <dimen name="iv_profile_photo_corner_radius">45dp</dimen>
+    <dimen name="et_search_patient_height">46dp</dimen>
 
 </resources>

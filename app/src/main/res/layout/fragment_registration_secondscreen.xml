@@ -393,7 +393,9 @@
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/fu_card_margin_updown"
                 android:layout_weight="1"
-                android:background="@drawable/back_btn_patregistra" />
+                android:background="@drawable/ui2_common_primary_bg_disabled"
+                android:text="@string/generic_back"
+                android:textColor="@color/primary_text" />
 
             <Button
                 android:id="@+id/frag2_btn_next"
@@ -402,7 +404,10 @@
                 android:layout_marginEnd="@dimen/margin_24"
                 android:layout_toEndOf="@+id/btn_back_firstscreen"
                 android:layout_weight="1"
-                android:background="@drawable/nxt_btn_secondscreen" />
+                android:background="@drawable/ui2_common_primary_bg"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:text="@string/next" />
         </LinearLayout>
     </FrameLayout>
 

@@ -97,6 +97,7 @@ import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -292,7 +293,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
     private ImageButton backArrow, priority_hint, refresh;
     private NetworkUtils networkUtils;
-
+    private static final int SCHEDULE_LISTING_INTENT = 2001;
+    Button btnAppointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -738,8 +740,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String patientReports = "No data added.";
             String patientDenies = "No data added.";
 
-            if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+            if (valueArray[0].contains("• Patient reports") && valueArray[0].contains("• Patient denies")) {
+                String assoValueBlock[] = valueArray[0].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                         .split("• Patient denies -<br/>");
 
                 // index 0 - Reports
@@ -748,7 +750,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 patientReports = reports[1];
                 patientDenies = assoValueBlock[1];
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            } else if (valueArray[1].contains("• Patient reports")) {
+            } else if (valueArray[0].contains("• Patient reports")) {
                 // todo: handle later -> comment added on 14 nov 2022
             }
 
@@ -1667,6 +1669,25 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
+
+        // navigation for book appointmnet
+        btnAppointment = findViewById(R.id.btn_vs_appointment);
+        btnAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class)
+                        .putExtra("visitUuid", visitUuid)
+                        .putExtra("patientUuid", patientUuid)
+                        .putExtra("patientName", patientName)
+                        .putExtra("appointmentId", 0)
+                        .putExtra("actionTag", "visitSummary")
+                        .putExtra("openMrsId", patient.getOpenmrs_id())
+                        .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
+                );
+                finish();
+
+            }
+        });
     }
 
     private void sharePresc() {
@@ -1884,7 +1905,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             // Additional Notes - Start
             try {
                 String addnotes = additional_notes_edittext.getText().toString();
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+                Log.v("addnotes", "addnotes: " + addnotes);
+                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+                else
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No Data", ADDITIONAL_NOTES);
             } catch (DAOException e) {
                 e.printStackTrace();
                 Log.v("hospitalType", "hospitalType: " + e.getMessage());
@@ -2008,8 +2033,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 
         positive_btn.setOnClickListener(v -> {
-            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);
+            //commented to stop navigation bcz navigation from appointment
+          /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);*/
             alertDialog.dismiss();
         });
 
@@ -3175,7 +3201,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 .replace(Node.bullet, ""));
 
         //String advice_web = stringToWeb(adviceReturned);
-    //    String advice_web = "";
+        //    String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
 /*        String advice_doctor__ = medicalAdviceTextView.getText().toString()
@@ -3485,8 +3511,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }

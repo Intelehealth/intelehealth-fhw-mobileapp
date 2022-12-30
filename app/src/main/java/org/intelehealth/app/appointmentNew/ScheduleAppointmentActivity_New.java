@@ -29,10 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -42,10 +44,12 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
+import org.intelehealth.app.appointment.sync.AppointmentSync;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -61,7 +65,7 @@ import java.util.Spliterator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleAppointmentActivity_New extends AppCompatActivity {
+public class ScheduleAppointmentActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ScheduleAppointmentActi";
     RecyclerView rvMorningSlots, rvAfternoonSlots, rvEveningSlots;
     RecyclerView rvHorizontalCal;
@@ -71,7 +75,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     ImageView ivPrevMonth, ivNextMonth;
     int monthNumber;
     String monthNAmeFromNo;
-    TextView tvSelectedMonthYear, tvPrevSelectedAppDetails;
+    TextView tvSelectedMonthYear, tvPrevSelectedAppDetails, tvTitleReschedule;
     Calendar calendarInstance;
     String yearToCompare = "";
     String monthToCompare = "";
@@ -92,11 +96,14 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     String actionTag = "";
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_appointment_new);
+        networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
 
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -105,21 +112,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         }
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date());
-        Log.d(TAG, "onCreate: mSelectedStartDate : " + mSelectedStartDate);
-        Log.d(TAG, "onCreate: mSelectedEndDate : " + mSelectedEndDate);
 
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         tvTitle.setText("Schedule appointment");
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-        }
         initUI();
+
 
    /*
   // intent params as per old flow
@@ -131,16 +132,14 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         openMrsId = getIntent().getStringExtra("openMrsId");
 */
 
-        //temporary hardcode parameters for temporary use
-      /*  visitUuid = "e57040f6-6746-4ab2-949c-0a3a343dbac2";
-        patientUuid = "68617ab0-f826-4668-92dd-ab411ad6ab60";
-        patientName = "Test User2";
-        speciality = "General Physician";
-        openMrsId = "13TR2-8";
-*/
         //for reschedule appointment as per old flow
-        actionTag = getIntent().getStringExtra("actionTag");
-        if(actionTag!=null && !actionTag.isEmpty() && actionTag.equals("rescheduleAppointment")){
+        actionTag = getIntent().getStringExtra("actionTag").toLowerCase();
+        if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("rescheduleappointment")) {
+
+            tvPrevSelectedAppDetails.setVisibility(View.VISIBLE);
+            tvTitleReschedule.setVisibility(View.VISIBLE);
+
+
             appointmentId = getIntent().getIntExtra("appointmentId", 0);
             visitUuid = getIntent().getStringExtra("visitUuid");
             patientUuid = getIntent().getStringExtra("patientUuid");
@@ -154,10 +153,23 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
 
             String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " at " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
+        } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("visitsummary")) {
+
+            visitUuid = getIntent().getStringExtra("visitUuid");
+            patientUuid = getIntent().getStringExtra("patientUuid");
+            patientName = getIntent().getStringExtra("patientName");
+            appointmentId = getIntent().getIntExtra("appointmentId", 0);
+            openMrsId = getIntent().getStringExtra("openMrsId");
+            speciality = getIntent().getStringExtra("speciality");
+
         }
 
+        if (speciality != null) {
+            getSlots();
 
-
+        } else {
+            Toast.makeText(this, "Speciality must not be null", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initUI() {
@@ -168,7 +180,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         btnBookAppointment = findViewById(R.id.btn_book_appointment);
         btnBookAppointment.setOnClickListener(v -> {
             Log.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
-            if (!selectedDateTime.isEmpty()){
+            if (!selectedDateTime.isEmpty()) {
                 bookAppointmentDialog(ScheduleAppointmentActivity_New.this, selectedDateTime);
 
                 //------before reschedule need to cancel appointment----
@@ -180,8 +192,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                                     bookAppointment(slotInfo, null);
                                 }*/
 
-            }
-            else{
+            } else {
                 Toast.makeText(this, "Please select time slot", Toast.LENGTH_SHORT).show();
 
             }
@@ -203,6 +214,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivNextMonth = findViewById(R.id.iv_next_month1);
         tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
         tvPrevSelectedAppDetails = findViewById(R.id.tv_prev_scheduled_details);
+        tvTitleReschedule = findViewById(R.id.tv_title_reschedule);
 
 
         calendarInstance = Calendar.getInstance();
@@ -231,20 +243,21 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         ivPrevMonth.setOnClickListener(v -> {
             getPreviousMonthDates();
         });
-        getSlots();
+
     }
 
 
     private void getSlots() {
         Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
         Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
+        Log.d(TAG, "getSlots: speciality : " + speciality);
 
         // Dermatologist
         // General Physician
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, "General Physician")
+                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
@@ -623,6 +636,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
+        Gson gson = new Gson();
+
+        Log.e(TAG, "push request model for appointment : " + gson.toJson(request));
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
@@ -654,7 +670,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                                 /*setResult(RESULT_OK);
                                 finish();*/
-                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, HomeScreenActivity_New.class);
+                            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+
+                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -696,6 +714,38 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         String[] resultMonth = DateAndTimeUtils.getMonthAndYearFromGivenDate(date);
         String finalDate = splitedDate[0] + result + " " + resultMonth[0];
         return finalDate;
+    }
+
+    //update ui as per internet availability
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
     }
 
 }

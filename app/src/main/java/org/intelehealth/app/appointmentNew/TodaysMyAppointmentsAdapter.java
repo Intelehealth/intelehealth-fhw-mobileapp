@@ -163,7 +163,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPatientId.setVisibility(View.GONE);
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
+                holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                Log.d(TAG, "onBindViewHolder:time :  "+appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
                 } else {
@@ -209,6 +210,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
                     intent.putExtra("appointment_id", appointmentInfoModel.getId());
                     intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
+                    intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
 
                     context.startActivity(intent);
 

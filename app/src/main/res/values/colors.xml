@@ -133,6 +133,7 @@
     <color name="ui2_chat_bubble_color">#E6FFF3</color>
     <color name="ui2_black_text_color">#1B163A</color>
     <color name="error_red">#FF475D</color>
+    <color name="ui2_transparent">#221B163A</color>
 
 
     <!--END-->

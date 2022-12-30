@@ -41,8 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_location_home"
         android:layout_marginTop="@dimen/find_patient_margin_top"
+        android:layout_marginStart="2dp"
         android:layout_toEndOf="@+id/iv_hamburger"
-        android:text="Last sync: 8 pm, 02 December 2022"
+        android:text="Last sync: "
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/common_label_text_size" />
 

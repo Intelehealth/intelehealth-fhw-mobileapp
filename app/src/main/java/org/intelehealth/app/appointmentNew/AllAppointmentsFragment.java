@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -106,6 +107,10 @@ public class AllAppointmentsFragment extends Fragment {
     View noDataFoundForUpcoming, noDataFoundForCompleted, noDataFoundForCancelled;
     TextView tvFromDate, tvToDate;
     int MY_REQUEST_CODE = 5555;
+    private UpdateAppointmentsCount listener;
+    int totalUpcomingApps = 0;
+    int totalCancelled = 0;
+    int totalCompleted = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -124,16 +129,10 @@ public class AllAppointmentsFragment extends Fragment {
         parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
                 container, false);
 
-        initUI();
-        clickListeners();
-
-
         return parentView;
     }
 
     private void setFiltersToTheGroup(FilterOptionsModel inputModel) {
-
-
         //fill the list
         boolean result = false;
         if (filtersList.size() > 0) {
@@ -170,7 +169,6 @@ public class AllAppointmentsFragment extends Fragment {
 
         for (int index = 0; index < filtersList.size(); index++) {
             Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_custom_ui2, chipGroup, false);
-            // final Chip chip = new Chip(Objects.requireNonNull(getActivity()));
 
             FilterOptionsModel filterOptionsModel = filtersList.get(index);
             final String tagName = filterOptionsModel.getFilterValue();
@@ -178,36 +176,30 @@ public class AllAppointmentsFragment extends Fragment {
                     TypedValue.COMPLEX_UNIT_DIP, 10,
                     getResources().getDisplayMetrics()
             );
-            //   chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
             chip.setText(tagName);
-            // chip.setCloseIconResource(R.drawable.ui2_ic_close_drawer);
-            //   chip.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
             chip.setCloseIconEnabled(true);
             chip.setBackground(getResources().getDrawable(R.drawable.ui2_ic_selcted_chip_bg));
 
             chipGroup.addView(chip);
 
-            chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    filtersList.remove(filterOptionsModel);
-                    chipGroup.removeView(chip);
+            chip.setOnCloseIconClickListener(v -> {
+                filtersList.remove(filterOptionsModel);
+                chipGroup.removeView(chip);
 
-                    if (tagName.contains("appointment")) {
-                        manageUIAsPerChips("upcoming");
-
-                    }
-                    if (filtersList != null && filtersList.size() == 0) {
-                        tvResultsFor.setVisibility(View.GONE);
-                        scrollChips.setVisibility(View.GONE);
-                        fromDate = "";
-                        toDate = "";
-                        whichAppointment = "";
-                        getAppointments();
-
-                    }
+                if (tagName.contains("appointment")) {
+                    manageUIAsPerChips("upcoming");
 
                 }
+                if (filtersList != null && filtersList.size() == 0) {
+                    tvResultsFor.setVisibility(View.GONE);
+                    scrollChips.setVisibility(View.GONE);
+                    fromDate = "";
+                    toDate = "";
+                    whichAppointment = "";
+                    getAppointments();
+
+                }
+
             });
 
         }
@@ -230,7 +222,6 @@ public class AllAppointmentsFragment extends Fragment {
 
 
     private void initUI() {
-        Log.d(TAG, "onCreateView: AllAppointmentsFragment");
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
@@ -283,6 +274,7 @@ public class AllAppointmentsFragment extends Fragment {
         noDataFoundForCancelled = parentView.findViewById(R.id.layout_no_data_found_cancelled);
 
 
+        //make hide and visible results for textview and chips layout
         if (isChipInit) {
             tvResultsFor.setVisibility(View.VISIBLE);
             scrollChips.setVisibility(View.VISIBLE);
@@ -296,9 +288,8 @@ public class AllAppointmentsFragment extends Fragment {
 
 
         updateCardBackgrounds("upcoming");
-
-        getAppointments();
         getSlots();
+        getAppointments();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -333,15 +324,12 @@ public class AllAppointmentsFragment extends Fragment {
             }
             return false;
         });
-        layoutParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (frameLayoutFilter.isShown())
-                    frameLayoutFilter.setVisibility(View.GONE);
-                if (frameLayoutDateFilter.isShown())
-                    frameLayoutDateFilter.setVisibility(View.GONE);
+        layoutParent.setOnClickListener(v -> {
+            if (frameLayoutFilter.isShown())
+                frameLayoutFilter.setVisibility(View.GONE);
+            if (frameLayoutDateFilter.isShown())
+                frameLayoutDateFilter.setVisibility(View.GONE);
 
-            }
         });
 
         //click listeners for filters
@@ -387,27 +375,22 @@ public class AllAppointmentsFragment extends Fragment {
 
             }
         });
-        autotvSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (!autotvSearch.getText().toString().isEmpty()) {
-                        searchPatientText = autotvSearch.getText().toString();
-                        getUpcomingAppointments(fromDate, toDate, searchPatientText);
-                        getCompletedAppointments(fromDate, toDate, searchPatientText);
-                        getCancelledAppointments(fromDate, toDate, searchPatientText);
+        autotvSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (!autotvSearch.getText().toString().isEmpty()) {
+                    searchPatientText = autotvSearch.getText().toString();
+                    getUpcomingAppointments(fromDate, toDate, searchPatientText);
+                    getCompletedAppointments(fromDate, toDate, searchPatientText);
+                    getCancelledAppointments(fromDate, toDate, searchPatientText);
 
 
-                    } else {
-                        searchPatientText = "";
-
-                        Log.d(TAG, "afterTextChanged: in else");
-                        getAppointments();
-                    }
-                    return true;
+                } else {
+                    searchPatientText = "";
+                    getAppointments();
                 }
-                return false;
+                return true;
             }
+            return false;
         });
 
         autotvSearch.addTextChangedListener(new TextWatcher() {
@@ -438,6 +421,7 @@ public class AllAppointmentsFragment extends Fragment {
 
 
     private void updateCardBackgrounds(String cardName) {
+        // update all 3 cards background as per selection
         if (cardName.equals("upcoming")) {
             cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
@@ -460,7 +444,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void updateMAinLayoutAsPerOptionSelected(String cardName) {
-        Log.d(TAG, "updateMAinLayoutAsPerOptionSelected: cardName : " + cardName);
+        //adjust main layout as per option selected like figma prototype
         if (cardName.equals("upcoming")) {
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
@@ -507,7 +491,6 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "upcoming";
 
-                    Log.d(TAG, "onRadioButtonClicked:upcoming " + selectedAppointmentOption);
                     rbUpcoming.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
                     rbCancelled.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
                     rbCompleted.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
@@ -523,7 +506,6 @@ public class AllAppointmentsFragment extends Fragment {
                     rbUpcoming.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
                     rbCancelled.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
                     rbCompleted.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
-                    Log.d(TAG, "onRadioButtonClicked:cancelled " + selectedAppointmentOption);
                     updateCardBackgrounds("cancelled");
                     updateMAinLayoutAsPerOptionSelected("cancelled");
 
@@ -629,19 +611,19 @@ public class AllAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
+                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+
                     if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
-
-                //recyclerview for upcoming appointments
 
                 AllAppointmentsAdapter allAppointmentsAdapter = new
                         AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
                 rvUpcomingApp.setAdapter(allAppointmentsAdapter);
 
             } else {
-
                 rvUpcomingApp.setVisibility(View.GONE);
                 noDataFoundForUpcoming.setVisibility(View.VISIBLE);
             }
@@ -649,7 +631,8 @@ public class AllAppointmentsFragment extends Fragment {
             tvUpcomingAppsCount.setText(upcomingAppointmentsList.size() + "");
             tvUpcomingAppsCountTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             Log.d(TAG, "getUpcomingAppointments: e : " + e.getLocalizedMessage());
         }
 
@@ -681,6 +664,9 @@ public class AllAppointmentsFragment extends Fragment {
 
                     long second = diff / 1000;
                     long minutes = second / 60;
+                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+
                     cancelledAppointmentsList.add(appointmentInfo);
 
                 }
@@ -760,65 +746,6 @@ public class AllAppointmentsFragment extends Fragment {
 
     }
 
-    private void getSlots() {
-        //String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-        String baseurl = "https://uiux.intelehealth.org:3004";
-
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(getActivity()).getLocationUuid())
-
-                .enqueue(new Callback<AppointmentListingResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                        if (response.body() == null) return;
-                        AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-
-
-                        if (slotInfoResponse != null && slotInfoResponse.getData().size() > 0) {
-                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
-                                try {
-                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
-
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } else {
-                        }
-
-                        getAppointments();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-
-        Log.d(TAG, "getSlots: location : " + new SessionManager(getActivity()).getLocationUuid());
-
-    }
-
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
@@ -843,6 +770,8 @@ public class AllAppointmentsFragment extends Fragment {
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
+                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
+
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
                     }
@@ -850,17 +779,16 @@ public class AllAppointmentsFragment extends Fragment {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
-                //recyclerview for completed appointments
-                AllAppointmentsAdapter allAppointmentsFragment = new
-                        AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-                rvCompletedApp.setAdapter(allAppointmentsFragment);
-
-            } else {
             }
-        }
-        Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
+
+        }
+        //recyclerview for completed appointments
+        AllAppointmentsAdapter allAppointmentsFragment = new
+                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+        rvCompletedApp.setAdapter(allAppointmentsFragment);
 
     }
 
@@ -995,5 +923,83 @@ public class AllAppointmentsFragment extends Fragment {
                 dismissDateFilterDialog();
             }
         }
+    }
+
+    public static TodaysMyAppointmentsFragment newInstance() {
+        return new TodaysMyAppointmentsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof UpdateAppointmentsCount) {
+            listener = (UpdateAppointmentsCount) context;
+            int totalAllApps = totalUpcomingApps + totalCancelled + totalCompleted;
+            listener.updateCount("all", 2000);
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentCommunicationListener");
+        }
+    }
+
+    private void getSlots() {
+        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
+        Log.d(TAG, "getSlots: getActivity()).getLocationUuid() : " + new SessionManager(getActivity()).getLocationUuid());
+        Log.d(TAG, "getSlots: date 1 : " + DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat());
+        Log.d(TAG, "getSlots: date 2 : " + DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat());
+
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                        new SessionManager(getActivity()).getLocationUuid())
+
+                .enqueue(new Callback<AppointmentListingResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
+                        AppointmentListingResponse slotInfoResponse = response.body();
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAllAppointments();
+
+
+                        if (slotInfoResponse != null && slotInfoResponse.getData().size() > 0) {
+                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+
+                                try {
+                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
+
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        if (slotInfoResponse.getCancelledAppointments() != null) {
+                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
+
+                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+
+                                    try {
+                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                    } catch (DAOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } else {
+                        }
+
+                        getAppointments();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+
+        Log.d(TAG, "getSlots: location : " + new SessionManager(getActivity()).getLocationUuid());
+
     }
 }

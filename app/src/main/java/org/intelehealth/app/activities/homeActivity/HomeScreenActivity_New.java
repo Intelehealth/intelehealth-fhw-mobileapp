@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -156,6 +157,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     String firstLogin = "";
     View toolbarHome;
     NetworkUtils networkUtils;
+    String currentFragment;
     private AlertDialog resetDialog;
 
     @Override
@@ -753,7 +755,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "check11onResume: home");
+        loadLastSelectedFragment();
         toolbarHome.setVisibility(View.VISIBLE);
+        String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
+        tvAppLastSync.setText(lastSync);
+
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
@@ -767,31 +774,17 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
 
 
-        loadFragment(new HomeFragment_New());
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
-//        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
-//            lastSyncAgo.setText(CalculateAgoTime());
-        }
-      /*  //UI2.0 if first time login then only show popup
-        if (sessionManager.getIsLoggedIn()) {
-            //sessionManager.setIsLoggedIn(true);
-            showLoggingInDialog();
-
-        }*/
-
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
 
         super.onResume();
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: 11");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
 
@@ -913,9 +906,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             //ui2.0 update user details in  nav header
             updateNavHeaderUserDetails();
 
-            Log.d(TAG, "onReceive: sync_text : " + lastSync);
-            // android:text="Last sync: 8 pm, 02 December 2022"
-
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
@@ -1009,16 +999,20 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
             context.startService(serviceIntent);
         }
+
+
     }
 
     private boolean isNetworkConnected() {
@@ -1312,6 +1306,42 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        // put string value
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        assert currentFragment != null;
+        outState.putString("currentFragment", currentFragment.getTag());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        // get values from saved state
+        currentFragment = savedInstanceState.getString("currentFragment");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void loadLastSelectedFragment() {
+        Fragment fragment = null;
+        if (currentFragment != null && !currentFragment.isEmpty()) {
+            if (currentFragment.contains("home")) {
+                fragment = new HomeFragment_New();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+
+            } else if (currentFragment.contains("help")) {
+                fragment = new HelpFragment_New();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+
+            } else if (currentFragment.contains("achievements")) {
+                fragment = new MyAchievementsFragment();
+                bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            }
+        }
+        loadFragment(fragment);
+
     }
 }
 

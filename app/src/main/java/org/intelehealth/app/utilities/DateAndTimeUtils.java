@@ -323,7 +323,7 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime() {
-        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.ENGLISH);
         Date todayDate = new Date();
         return date.format(todayDate);
     }
@@ -526,6 +526,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getDisplayDateAndTime(String dateTime) {
+        Log.d(TAG, "getDisplayDateAndTime: dateTime : "+dateTime);
         String finalDate = "";
         String hourFormated = "";
         String textTime;
@@ -533,7 +534,7 @@ public class DateAndTimeUtils {
 
             String[] splitedString = dateTime.split("\\s+");
             String[] splitedTime = splitedString[1].split(":");
-            if (Integer.parseInt(splitedTime[0]) > 12) {
+            if (Integer.parseInt(splitedTime[0]) >= 12) {
                 hourFormated = getTwelveHourFormat(splitedTime[0]);
                 textTime = "pm";
             } else {
@@ -576,6 +577,9 @@ public class DateAndTimeUtils {
     public static String getTwelveHourFormat(String hour) {
         String hourString = "";
         switch (hour) {
+            case "12":
+                hourString = "12";
+                break;
             case "13":
                 hourString = "01";
                 break;

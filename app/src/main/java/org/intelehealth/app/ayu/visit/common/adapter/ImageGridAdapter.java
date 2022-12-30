@@ -1,6 +1,7 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.app.R;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mItemList = itemList;
         mOnImageAction = onImageAction;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
+        Log.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
     }
-
-    private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,23 +55,32 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
-            genericViewHolder.image = mItemList.get(position);
+            if (position < mItemList.size()) {
+                genericViewHolder.image = mItemList.get(position);
+            }
             genericViewHolder.index = position;
-            Glide.with(mContext)
-                    .load(genericViewHolder.image)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .thumbnail(0.1f)
-                    .into(genericViewHolder.mainImageView);
+            Log.v("ImageGridAdapter", "genericViewHolder.image - " + genericViewHolder.image);
+            if (genericViewHolder.image != null && !genericViewHolder.image.isEmpty()) {
+                Glide.with(mContext)
+                        .load(genericViewHolder.image)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .thumbnail(0.1f)
+                        .into(genericViewHolder.mainImageView);
+                genericViewHolder.addImageView.setVisibility(View.GONE);
+            } else {
+                genericViewHolder.addImageView.setVisibility(View.VISIBLE);
+            }
 
         }
     }
 
     @Override
     public int getItemCount() {
-        return mItemList.size();
+        return mItemList.size()+1;
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {

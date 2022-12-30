@@ -18,12 +18,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class AppointmentSync {
+    private static final String TAG = "AppointmentSync";
+
     public static void getAppointments(Context context) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
+        Log.d(TAG, "getAppointments: selectedStartDate : " + selectedStartDate);
+        Log.d(TAG, "getAppointments: selectedEndDate : " + selectedEndDate);
+
         String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance("https://uiux.intelehealth.org:3004").getApi()
+        ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
@@ -40,6 +45,20 @@ public class AppointmentSync {
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        if (slotInfoResponse.getCancelledAppointments() != null) {
+                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
+                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+                                    try {
+                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                    } catch (DAOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } else {
                         }
                     }
 

@@ -91,22 +91,22 @@
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
                             android:layout_marginStart="@dimen/cp_gender_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
                             android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
-                            android:layout_gravity="center"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
                             android:textSize="@dimen/card_profile_name_text_size" />
 
                         <ImageButton
-                            android:id="@+id/icons8_edit"
+                            android:id="@+id/edit_patient_appointment"
                             android:layout_width="@dimen/cp_pencil_width"
                             android:layout_height="@dimen/cp_pencil_height"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/cp_gender_margin_start"
-                            android:layout_marginTop="1dp"
+                            android:layout_marginTop="-1dp"
                             android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
@@ -188,9 +188,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/cp_margin_start"
-                    android:src="@drawable/ui2_frame_priority" />
+                    android:src="@drawable/ui2_frame_priority"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/chief_complaint_txt"
@@ -269,7 +269,7 @@
                         android:drawableTint="@color/textColorGray"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                        android:text="20 July 2022"
+                        android:hint="date"
                         android:textAppearance="@style/fu_detiails_date"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/cp_male_textsize" />
@@ -285,7 +285,7 @@
                         android:drawableTint="@color/textColorGray"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                        android:text="10:00 am"
+                        android:hint="time"
                         android:textAppearance="@style/fu_detiails_date"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/cp_male_textsize" />
@@ -294,7 +294,7 @@
 
             </RelativeLayout>
 
-
+            <!-- ui for state appointment started-->
             <RelativeLayout
                 android:id="@+id/state_appointment_started"
                 android:layout_width="match_parent"
@@ -316,6 +316,7 @@
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/cp_male_textsize"
                     android:visibility="gone" />
+
 
                 <LinearLayout
                     android:id="@+id/ll_1"
@@ -349,7 +350,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="60dp"
                         android:layout_toEndOf="@+id/fu_details_calendar"
-                        android:drawableStart="@drawable/ui2_ic_time_spent"
+                        android:drawableStart="@drawable/ui2_ic_icons8_time_1"
                         android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                         android:drawableTint="@color/textColorBlack"
                         android:gravity="center_vertical"
@@ -509,18 +510,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/ad_icons_margin_top"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="ExtraText">
 
                     <ImageView
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/iv_call_doctor_app"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
                         android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_call_green" />
+
                     <ImageView
-                        android:id="@+id/frame_26088"
+                        android:id="@+id/iv_whatsapp_doctor_app"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"

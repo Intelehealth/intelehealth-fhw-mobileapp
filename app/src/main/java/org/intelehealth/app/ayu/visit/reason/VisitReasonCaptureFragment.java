@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,15 +23,15 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
+import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,11 +43,13 @@ public class VisitReasonCaptureFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private AutoCompleteTextView mVisitReasonAutoCompleteTextView;
-    private LinearLayout mSelectedComplainLinearLayout;
+    private RecyclerView mSelectedComplainRecyclerView;
     private TextView mEmptyReasonLabelTextView;
-    private ImageView mClearImageView;
+    //private ImageView mClearImageView;
 
-    private Set<String> mSelectedComplains = new HashSet<String>();
+    private List<String> mSelectedComplains = new ArrayList<>();
+    private List<ReasonGroupData> mVisitReasonItemList;
+    private ReasonListingAdapter mReasonListingAdapter;
 
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
@@ -79,8 +79,8 @@ public class VisitReasonCaptureFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visit_reason_capture, container, false);
-        mSelectedComplainLinearLayout = view.findViewById(R.id.ll_selected_container);
-        mClearImageView = view.findViewById(R.id.iv_clear);
+        mSelectedComplainRecyclerView = view.findViewById(R.id.rcv_selected_container);
+        //mClearImageView = view.findViewById(R.id.iv_clear);
         mEmptyReasonLabelTextView = view.findViewById(R.id.tv_empty_reason_lbl);
         mVisitReasonAutoCompleteTextView = view.findViewById(R.id.actv_reasons);
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
@@ -95,15 +95,17 @@ public class VisitReasonCaptureFragment extends Fragment {
         });
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        List<ReasonGroupData> itemList = getVisitReasonList();
-        ReasonListingAdapter reasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), itemList, new ReasonListingAdapter.OnItemSelection() {
+        mVisitReasonItemList = getVisitReasonList();
+        mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(String name) {
-                mSelectedComplains.add(name);
-                showSelectedComplains();
+                if (!mSelectedComplains.contains(name)) {
+                    mSelectedComplains.add(name);
+                    showSelectedComplains();
+                }
             }
         });
-        recyclerView.setAdapter(reasonListingAdapter);
+        recyclerView.setAdapter(mReasonListingAdapter);
 
         String[] mindmapsNames = getVisitReasonFilesNamesOnly();
 
@@ -123,33 +125,57 @@ public class VisitReasonCaptureFragment extends Fragment {
                 }
             }
         });
-        mClearImageView.setOnClickListener(new View.OnClickListener() {
+       /* mClearImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedComplains.clear();
                 mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
                 mClearImageView.setVisibility(View.GONE);
-                mSelectedComplainLinearLayout.setVisibility(View.GONE);
+                mSelectedComplainRecyclerView.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Selection clear!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         return view;
     }
 
     private void showSelectedComplains() {
-        mSelectedComplainLinearLayout.removeAllViews();
         if (mSelectedComplains.isEmpty()) {
             mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
-            mClearImageView.setVisibility(View.GONE);
-            mSelectedComplainLinearLayout.setVisibility(View.GONE);
+            //mClearImageView.setVisibility(View.GONE);
+            mSelectedComplainRecyclerView.setVisibility(View.GONE);
         } else {
             mEmptyReasonLabelTextView.setVisibility(View.GONE);
-            mClearImageView.setVisibility(View.VISIBLE);
-            mSelectedComplainLinearLayout.setVisibility(View.VISIBLE);
+            //mClearImageView.setVisibility(View.VISIBLE);
+            mSelectedComplainRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        for (String value : mSelectedComplains) {
+
+        mSelectedComplainRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        SelectedChipsGridAdapter reasonChipsGridAdapter = new SelectedChipsGridAdapter(mSelectedComplainRecyclerView, getActivity(), mSelectedComplains, new SelectedChipsGridAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(String data) {
+
+            }
+
+            @Override
+            public void onRemoved(String data) {
+                for (int i = 0; i < mVisitReasonItemList.size(); i++) {
+                    List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
+                    for (int j = 0; j < reasonDataList.size(); j++) {
+                        ReasonData reasonData = reasonDataList.get(j);
+                        if (reasonData.getReasonName().equalsIgnoreCase(data)) {
+                            mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
+                            break;
+                        }
+                    }
+                }
+                mReasonListingAdapter.refresh(mVisitReasonItemList);
+            }
+        });
+        mSelectedComplainRecyclerView.setAdapter(reasonChipsGridAdapter);
+
+        /*for (String value : mSelectedComplains) {
             View itemView = View.inflate(getActivity(), R.layout.ui2_chips_for_reason_item_view, null);
             TextView nameTextView = itemView.findViewById(R.id.tv_name);
             nameTextView.setBackgroundResource(R.drawable.ui2_common_primary_bg);
@@ -159,7 +185,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             Space space = new Space(getActivity());
             space.setMinimumWidth(16);
             mSelectedComplainLinearLayout.addView(space);
-        }
+        }*/
     }
 
     private String[] getVisitReasonFilesNamesOnly() {
@@ -198,10 +224,13 @@ public class VisitReasonCaptureFragment extends Fragment {
         for (char c = 'A'; c <= 'Z'; ++c) {
             ReasonGroupData reasonGroupData = new ReasonGroupData();
             reasonGroupData.setAlphabet(String.valueOf(c));
-            List<String> list = new ArrayList<>();
+            List<ReasonData> list = new ArrayList<ReasonData>();
             for (int i = 0; i < fileNames.length; i++) {
+
                 if (fileNames[i].toUpperCase().startsWith(String.valueOf(c))) {
-                    list.add(fileNames[i]);
+                    ReasonData reasonData = new ReasonData();
+                    reasonData.setReasonName(fileNames[i]);
+                    list.add(reasonData);
                 }
             }
             reasonGroupData.setReasons(list);

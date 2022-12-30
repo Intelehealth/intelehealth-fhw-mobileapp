@@ -52,7 +52,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
     private static final String TAG = "MyAllAppointmentsAdapte";
     Context context;
     List<AppointmentInfo> appointmentsList;
-    String whichAppointments;
+    String whichAppointments ="";
 
     public AllAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentsList, String whichAppointments) {
         this.context = context;
@@ -113,7 +113,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 if (minutes > 0) {
                     if (minutes >= 60) {
                         long hours = minutes / 60;
-                        if (hours > 24) {
+                        if (hours > 12) {
 
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                             holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
@@ -154,9 +154,10 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             }
 
         }
-
+        Log.d(TAG, "onBindViewHolder: whichAppointments : "+whichAppointments);
         try {
             if (whichAppointments.equalsIgnoreCase("completed")) {
+                Log.d(TAG, "onBindViewHolder: in completed");
                 //bcz of common UI
                 //hide  : ivTime, tvDate, tvPatientId
                 //show :  tvPrescRecStatus
@@ -165,9 +166,8 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
-
+                Log.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
@@ -226,6 +226,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
                 intent.putExtra("appointment_id", appointmentInfoModel.getId());
                 intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
+                intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
 
                 context.startActivity(intent);
 

@@ -88,7 +88,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                     genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                     genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, genericViewHolder.node.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+                    genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 1, new QuestionsListingAdapter.OnItemSelection() {
                         @Override
                         public void onSelect(Node node) {
 
@@ -110,10 +110,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         }
                     });
                     genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
-                    for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
-                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
+                    //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
+                    // genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
+                    genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
 
-                    }
+                    //}
                 } else {
                     genericViewHolder.recyclerView.setVisibility(View.GONE);
                 }

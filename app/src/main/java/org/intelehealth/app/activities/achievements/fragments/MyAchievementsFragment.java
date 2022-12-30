@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.achievements.fragments;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +19,23 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.NetworkUtils;
 
 import java.util.Objects;
 
-public class MyAchievementsFragment extends Fragment {
+public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface{
     private static final String TAG = "MyAchievementsFragmentN";
     View view;
+    ImageView ivInternet;    NetworkUtils networkUtils;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
+        networkUtils = new NetworkUtils(getActivity(), this);
 
         return view;
     }
@@ -46,13 +52,8 @@ public class MyAchievementsFragment extends Fragment {
         layoutToolbar.setVisibility(View.GONE);
         TextView tvTitle = view.findViewById(R.id.tv_achievements_title);
         tvTitle.setText(getResources().getString(R.string.my_achievements));
-        ImageView ivInternet = view.findViewById(R.id.iv_achievements_internet);
-        if (CheckInternetAvailability.isNetworkAvailable(getActivity())) {
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+         ivInternet = view.findViewById(R.id.iv_achievements_internet);
 
-        }
 
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
@@ -63,7 +64,7 @@ public class MyAchievementsFragment extends Fragment {
 
     public void configureTabLayout() {
         TabLayout tabLayout = view.findViewById(R.id.tablayout_achievements);
-
+        tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText("Overall"));
         tabLayout.addTab(tabLayout.newTab().setText("Daily"));
         tabLayout.addTab(tabLayout.newTab().setText("Date range"));
@@ -96,4 +97,33 @@ public class MyAchievementsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d(TAG, "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 }
