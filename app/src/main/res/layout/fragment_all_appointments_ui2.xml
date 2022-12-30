@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/today_apps_parent_margin_top"
-        android:paddingBottom="40dp">
+        android:paddingBottom="60dp">
 
         <RelativeLayout
             android:id="@+id/layout_all_appoints_filter"

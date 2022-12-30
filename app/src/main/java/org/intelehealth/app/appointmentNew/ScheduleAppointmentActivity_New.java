@@ -608,17 +608,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             request.setAppointmentId(appointmentId);
             request.setReason("reason");
         }
-        Log.d(TAG, "22bookAppointment: day : " + slotInfoForBookApp.getSlotDay());
-        Log.d(TAG, "22bookAppointment: getSlotDate : " + slotInfoForBookApp.getSlotDate());
-        Log.d(TAG, "22bookAppointment: getSlotDuration : " + slotInfoForBookApp.getSlotDuration());
-        Log.d(TAG, "22bookAppointment: getSlotDurationUnit : " + slotInfoForBookApp.getSlotDurationUnit());
-        Log.d(TAG, "22bookAppointment: getSlotTime : " + slotInfoForBookApp.getSlotTime());
-        Log.d(TAG, "22bookAppointment: getSpeciality : " + slotInfoForBookApp.getSpeciality());
-        Log.d(TAG, "22bookAppointment: getUserUuid : " + slotInfoForBookApp.getUserUuid());
-        Log.d(TAG, "22bookAppointment: getDrName : " + slotInfoForBookApp.getDrName());
-        Log.d(TAG, "22bookAppointment: patientName : " + patientName);
-        Log.d(TAG, "22bookAppointment: patientUuid : " + patientUuid);
-        Log.d(TAG, "22bookAppointment: openMrsId : " + openMrsId);
+
 
         request.setSlotDay(slotInfoForBookApp.getSlotDay());
         request.setSlotDate(slotInfoForBookApp.getSlotDate());
@@ -638,7 +628,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
         Gson gson = new Gson();
 
-        Log.e(TAG, "push request model for appointment : " + gson.toJson(request));
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");

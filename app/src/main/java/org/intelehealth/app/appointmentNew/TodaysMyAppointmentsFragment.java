@@ -276,8 +276,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         tvUpcomingAppointments.setText("0");
         tvUpcomingAppointmentsTitle.setText("Completed (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
-        Log.d(TAG, "getUpcomingAppointments: searchPatientText " + searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
         try {
@@ -418,7 +416,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private String getPatientProfile(String patientUuid) {
-        Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String imagePath = "";
@@ -429,7 +426,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         if (idCursor.moveToFirst()) {
             do {
                 imagePath = idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo"));
-                Log.d(TAG, "getPatientProfile: imagePath : " + imagePath);
             } while (idCursor.moveToNext());
             idCursor.close();
         }
