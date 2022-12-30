@@ -636,8 +636,8 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientDTO.setSyncd(false); // todo:uncomment later
-            //  patientDTO.setSyncd(true); // todo: remove ...just for testing.
+            patientDTO.setSyncd(false);
+            //  patientDTO.setSyncd(true);
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
 
 

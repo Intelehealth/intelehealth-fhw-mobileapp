@@ -109,7 +109,6 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
 
-        // TODO: remove this block logic later as its only for testing Visit summary screen.
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
