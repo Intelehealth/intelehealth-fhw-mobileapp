@@ -23,21 +23,24 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.NetworkUtils;
 
 import java.util.Objects;
 
-public class MyAppointmentActivity extends AppCompatActivity implements UpdateAppointmentsCount {
+public class MyAppointmentActivity extends AppCompatActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
     TabLayout tabLayout;
     ViewPager viewPager;
     String fromFragment = "";
     int totalCount;
-
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_appointment_new_ui2);
+        networkUtils = new NetworkUtils(MyAppointmentActivity.this, this);
 
         initUI();
 
@@ -47,16 +50,11 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_my_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         ImageView ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow_common);
 
         tvTitle.setText(getResources().getString(R.string.my_appointments));
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-        }
 
         ivBackArrow.setOnClickListener(v -> {
             Intent intent = new Intent(MyAppointmentActivity.this, HomeScreenActivity_New.class);
@@ -166,9 +164,9 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
     @Override
     public void updateCount(String whichFrag, int count) {
-      //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
+        //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
 
-      //  Log.d(TAG, "updateCount: count : " + count);
+        //  Log.d(TAG, "updateCount: count : " + count);
 
      /*   fromFragment = whichFrag;
         totalCount = count;*/
@@ -182,5 +180,37 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
                 }
         ).attach();*/
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
+    }
+
+    //update ui as per internet availability
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
     }
 }

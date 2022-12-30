@@ -29,10 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -42,10 +44,12 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
+import org.intelehealth.app.appointment.sync.AppointmentSync;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -61,7 +65,7 @@ import java.util.Spliterator;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleAppointmentActivity_New extends AppCompatActivity {
+public class ScheduleAppointmentActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ScheduleAppointmentActi";
     RecyclerView rvMorningSlots, rvAfternoonSlots, rvEveningSlots;
     RecyclerView rvHorizontalCal;
@@ -92,11 +96,14 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
     String actionTag = "";
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_appointment_new);
+        networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
 
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -105,20 +112,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         }
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date());
-        Log.d(TAG, "onCreate: mSelectedStartDate : " + mSelectedStartDate);
-        Log.d(TAG, "onCreate: mSelectedEndDate : " + mSelectedEndDate);
 
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         tvTitle.setText("Schedule appointment");
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
-
-        }
 
         initUI();
 
@@ -637,6 +636,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
+        Gson gson = new Gson();
+
+        Log.e(TAG, "push request model for appointment : " + gson.toJson(request));
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
@@ -668,6 +670,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
                             Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                                 /*setResult(RESULT_OK);
                                 finish();*/
+                            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+
                             Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
                             startActivity(intent);
                             finish();
@@ -710,6 +714,38 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity {
         String[] resultMonth = DateAndTimeUtils.getMonthAndYearFromGivenDate(date);
         String finalDate = splitedDate[0] + result + " " + resultMonth[0];
         return finalDate;
+    }
+
+    //update ui as per internet availability
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
     }
 
 }

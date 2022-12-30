@@ -750,7 +750,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 patientReports = reports[1];
                 patientDenies = assoValueBlock[1];
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            } else if (valueArray[1].contains("• Patient reports")) {
+            } else if (valueArray[0].contains("• Patient reports")) {
                 // todo: handle later -> comment added on 14 nov 2022
             }
 
@@ -1684,6 +1684,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         .putExtra("openMrsId", patient.getOpenmrs_id())
                         .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
+                finish();
 
             }
         });
@@ -1909,8 +1910,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
                 else
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, "No Data", ADDITIONAL_NOTES);
-            }
-            catch (DAOException e) {
+            } catch (DAOException e) {
                 e.printStackTrace();
                 Log.v("hospitalType", "hospitalType: " + e.getMessage());
             }
@@ -3201,7 +3201,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 .replace(Node.bullet, ""));
 
         //String advice_web = stringToWeb(adviceReturned);
-    //    String advice_web = "";
+        //    String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
 /*        String advice_doctor__ = medicalAdviceTextView.getText().toString()
@@ -3511,8 +3511,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }

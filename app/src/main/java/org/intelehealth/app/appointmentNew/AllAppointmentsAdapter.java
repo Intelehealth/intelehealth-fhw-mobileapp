@@ -113,7 +113,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 if (minutes > 0) {
                     if (minutes >= 60) {
                         long hours = minutes / 60;
-                        if (hours > 24) {
+                        if (hours > 12) {
 
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                             holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
