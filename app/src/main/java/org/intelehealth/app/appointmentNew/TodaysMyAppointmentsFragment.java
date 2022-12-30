@@ -34,6 +34,7 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -141,10 +143,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         params.gravity = Gravity.TOP;
 
         layoutUpcoming.setLayoutParams(params);
-        getAppointments();
-        getSlots();
 
         searchPatient();
+        getSlots();
+        getAppointments();
+
     }
 
     private void searchPatient() {
@@ -301,19 +304,19 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 }
                 totalUpcomingApps = upcomingAppointmentsList.size();
 
-                if (upcomingAppointmentsList.size() > 0) {
-                    TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
-                            TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
-                    rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
-                } else {
-                    rvUpcomingApp.setVisibility(View.GONE);
-                    noDataFoundForUpcoming.setVisibility(View.VISIBLE);
-                }
+                TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
+                        TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
+                rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
+            } else {
+                rvUpcomingApp.setVisibility(View.GONE);
+                noDataFoundForUpcoming.setVisibility(View.VISIBLE);
             }
+
             tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
             tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
 
@@ -434,52 +437,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     }
 
-
-    private void getSlots() {
-        String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
-
-        ApiClientAppointment.getInstance(serverUrl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
-                .enqueue(new Callback<AppointmentListingResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                        if (response.body() == null) return;
-                        AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
-                            try {
-                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
-                            } catch (DAOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } else {
-                        }
-
-
-                        getAppointments();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-    }
-
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
@@ -548,4 +505,50 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     + " must implement OnFragmentCommunicationListener");
         }
     }
+
+    private void getSlots() {
+        String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        ApiClientAppointment.getInstance(serverUrl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
+                .enqueue(new Callback<AppointmentListingResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
+                        AppointmentListingResponse slotInfoResponse = response.body();
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAllAppointments();
+                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+
+                            try {
+                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if (slotInfoResponse.getCancelledAppointments() != null) {
+                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
+                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+                                    try {
+                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                    } catch (DAOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } else {
+                        }
+
+
+                        getAppointments();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+    }
+
 }

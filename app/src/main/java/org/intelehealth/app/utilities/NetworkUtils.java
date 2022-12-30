@@ -16,6 +16,10 @@ public class NetworkUtils {
     InternetCheckUpdateInterface listener;
     private boolean isConnected = false;
 
+    public NetworkUtils(Context context) {
+        this.context = context;
+    }
+
     public NetworkUtils(Context context, InternetCheckUpdateInterface listener) {
         this.context = context;
         this.listener = listener;
@@ -49,7 +53,7 @@ public class NetworkUtils {
 
     }
 
-    private boolean isNetworkAvailable(Context context) {
+    public boolean isNetworkAvailable(Context context) {
         int flag = 0;
 
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

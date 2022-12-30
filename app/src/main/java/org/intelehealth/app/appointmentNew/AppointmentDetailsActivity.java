@@ -1,17 +1,15 @@
 package org.intelehealth.app.appointmentNew;
 
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModifiedDateForPrescGiven;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,10 +21,10 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -43,12 +41,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -57,14 +55,16 @@ import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,7 +74,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AppointmentDetailsActivity extends AppCompatActivity {
+public class AppointmentDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "AppointmentDetailsActiv";
     RelativeLayout stateAppointmentPrescription, layoutPrevScheduledOn, layoutPatientHistory, layoutVisitSummary, stateAppointmentStarted;
     LinearLayout layoutPrescButtons, layoutContactAction, layoutEndVisit;
@@ -97,6 +97,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     private String mEngReason = "";
     SessionManager sessionManager;
     AppointmentDAO appointmentDAO;
+    private ClsDoctorDetails clsDoctorDetails;
+    String dr_MobileNo = "";
+    String dr_WhatsappNo = "";
+    NetworkUtils networkUtils;
+    ImageView ivIsInternet;
+    ImageButton ibEdit;
+    private PatientDTO patientDTO;
+    String patientPhoneNo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +113,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         appointmentDAO = new AppointmentDAO();
+        networkUtils = new NetworkUtils(AppointmentDetailsActivity.this, this);
+
 
         initUI();
 
@@ -114,7 +124,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
         tvTitle.setText(getResources().getString(R.string.appointment_details));
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
@@ -122,18 +132,25 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
             startActivity(intent);
         });
-        if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-        }
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        Intent intent1 = getIntent();
+        if (intent1 != null) {
+            Bundle args = intent1.getBundleExtra("BUNDLE");
+            if (args != null) {
+                patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+
+            }
+            // privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+        }
+
+
+        ibEdit = findViewById(R.id.edit_patient_appointment);
 
         stateAppointmentStarted = findViewById(R.id.state_appointment_started);
         stateAppointmentPrescription = findViewById(R.id.state_prescription_appointment);
@@ -190,8 +207,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             app_start_day = intent.getStringExtra("app_start_day");
             prescription_received_time = intent.getStringExtra("prescription_received_time");
 
-
-            // appointment_id = getIntent().getIntExtra("appointment_id");
             Log.d(TAG, "initUI: appointment_id : " + appointment_id);
             followupDate = intent.getStringExtra("followup_date");
             if (followupDate == null)
@@ -203,6 +218,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         }
 
+
         if (patientUuid != null && !patientUuid.isEmpty()) {
             String[] DobAndGender = PatientsDAO.getPatientDobAgeGender(patientUuid);
             if (DobAndGender.length > 0) {
@@ -210,6 +226,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 tvGenderAgeText.setText(DobAndGender[0] + " " + age1);
                 gender = DobAndGender[0];
                 age = DobAndGender[1];
+            }
+
+            //get patient phone number from local db
+            try {
+                patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
         }
         // Patient Photo
@@ -245,7 +268,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         tvDrSpeciality.setText(visit_speciality);
 
-        //appointment started state - make "stateAppointmentStarted" visible
+        //appointment started state - make "state AppointmentStarted" visible
         String timeText = getAppointmentStartsInTime(app_start_date, app_start_time);
         tvVisitStartDate.setText(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date));
         tvVisitStartTime.setText(app_start_time);
@@ -257,21 +280,15 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             layoutSummaryBtns.setVisibility(View.VISIBLE);
 
 
-            btnRescheduleAppointment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String subtitle = "Are you sure you want to Reschedule the appointment for <b>" + patientName + "?</b>";
-                    rescheduleAppointment(AppointmentDetailsActivity.this, "Reschedule appointment?", subtitle, "Yes", "No");
+            btnRescheduleAppointment.setOnClickListener(v -> {
+                String subtitle = "Are you sure you want to Reschedule the appointment for <b>" + patientName + "?</b>";
+                rescheduleAppointment(AppointmentDetailsActivity.this, "Reschedule appointment?", subtitle, "Yes", "No");
 
-                }
             });
-            btnCancelAppointment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String subtitle = "Are you sure you want to cancel the appointment for<b>" + patientName + "?</b>";
-                    cancelAppointment(AppointmentDetailsActivity.this, "Cancel appointment?", subtitle, "Yes", "No");
+            btnCancelAppointment.setOnClickListener(v -> {
+                String subtitle = "Are you sure you want to cancel the appointment for<b>" + patientName + "?</b>";
+                cancelAppointment(AppointmentDetailsActivity.this, "Cancel appointment?", subtitle, "Yes", "No");
 
-                }
             });
 
         } else {
@@ -303,11 +320,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             //presc_arrowRight.setVisibility(View.VISIBLE);
             // presc_remind_block.setVisibility(View.GONE);
             //String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-            // modifiedDate = timeAgoFormat(modifiedDate);4
-
-
+            // modifiedDate = timeAgoFormat(modifiedDate);
             tvPrescStatus.setText("Received " + prescription_received_time);
-            Log.d(TAG, "initUI: modified date> " + prescription_received_time);
             ivDrawerPrescription.setOnClickListener(v -> {
                 Intent in = new Intent(this, PrescriptionActivity.class);
                 in.putExtra("patientname", patientName);
@@ -358,7 +372,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         // visit summary - start
         vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
         adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
-        Log.d(TAG, "initUI: openmrsid : " + openmrsID);
+
         ivDrawerVisitSummary.setOnClickListener(v -> {
             Intent in = new Intent(this, VisitSummaryActivity_New.class);
             in.putExtra("patientUuid", patientUuid);
@@ -381,10 +395,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             stateAppointmentPrescription.setVisibility(View.GONE);
             layoutPrescButtons.setVisibility(View.GONE);
             btnEndVisit.setVisibility(View.GONE);
-            layoutSummaryBtns.setVisibility(View.GONE);
+            layoutSummaryBtns.setVisibility(View.VISIBLE);
             layoutContactAction.setVisibility(View.GONE);
             // tvAppointmentTime.setVisibility(View.VISIBLE);
-            layoutPrevScheduledOn.setVisibility(View.VISIBLE);
+            //make layoutPrevScheduledOn visible to show prev rescheduled timing
+            // layoutPrevScheduledOn.setVisibility(View.VISIBLE);
             tvRescheduleOnTitle.setVisibility(View.VISIBLE);
             // tvAppointmentTime.setText("Starts in 1 day");
             tvPrevAppDate.setText(appointmentInfo.getPrev_slot_date());
@@ -394,123 +409,98 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         handleWhatsappAndCall();
 
-        //prescription pending  state : click event - make "stateAppointmentStarted" visible,
-        // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible, "layoutPrescButtons" visible
-       /*  stateAppointmentStarted.setVisibility(View.VISIBLE);
-        tvAppointmentTime.setVisibility(View.GONE);
-        fabHelp.setVisibility(View.VISIBLE);
-        tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary2));
-        stateAppointmentPrescription.setVisibility(View.VISIBLE);
-        stateAppointmentPrescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivDrawerPrescription.setVisibility(View.GONE);
-                layoutPrescButtons.setVisibility(View.VISIBLE);
-            }
-        });*/
+        //edit patient details - Redirect to Identification activity
+        ibEdit.setOnClickListener(v -> {
+            PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
+            patientDTO.setPatientPhoto(patient_photo_path);
+            patientDTO.setOpenmrsId(openmrsID);
+            Intent intent2 = new Intent(AppointmentDetailsActivity.this, IdentificationActivity_New.class);
+            intent2.putExtra("patientUuid", patientUuid);
+            intent2.putExtra("ScreenEdit", "personal_edit");
+            intent2.putExtra("patient_detail", true);
 
-        //prescription received  state - make "stateAppointmentStarted" visible,
-        // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible, "layoutPrescButtons" gone
-     /* stateAppointmentStarted.setVisibility(View.VISIBLE);
-        tvAppointmentTime.setVisibility(View.GONE);
-        stateAppointmentPrescription.setVisibility(View.VISIBLE);
-        layoutPrescButtons.setVisibility(View.GONE);
-        tvPrescStatus.setText("Received 2 hours ago");
-        tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary1));
-        ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_prescription_green));
-        fabHelp.setVisibility(View.GONE);*/
-
-        //prescription pending  state : click event - make "stateAppointmentStarted" visible,
-        // "tvAppointmentTime" gone, "stateAppointmentPrescription" visible, "layoutPrescButtons" visible
-        /*stateAppointmentStarted.setVisibility(View.VISIBLE);
-        tvAppointmentTime.setVisibility(View.GONE);
-        stateAppointmentPrescription.setVisibility(View.VISIBLE);
-        fabHelp.setVisibility(View.GONE);
-        tvPrescStatus.setText("Received 2 hours ago");
-        tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary1));
-        ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_prescription_green));
-        stateAppointmentPrescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layoutPrescButtons.setVisibility(View.GONE);
-                layoutEndVisit.setVisibility(View.VISIBLE);
-            }
-        });*/
-
-        //appointment pending
-     /*  stateAppointmentStarted.setVisibility(View.VISIBLE);
-        tvAppointmentTime.setVisibility(View.VISIBLE);
-        stateAppointmentPrescription.setVisibility(View.GONE);
-        layoutPrescButtons.setVisibility(View.GONE);
-        btnEndVisit.setVisibility(View.GONE);
-        layoutContactAction.setVisibility(View.GONE);
-        layoutVisitSummary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layoutSummaryBtns.setVisibility(View.VISIBLE);
-
-            }
-        });*/
-
-
-        //appointment with patient history
-      /*       layoutPatientHistory.setVisibility(View.VISIBLE);
-        layoutPrevScheduledOn.setVisibility(View.GONE);
-        layoutContactAction.setVisibility(View.GONE);
-        layoutPrescButtons.setVisibility(View.GONE);
-        btnEndVisit.setVisibility(View.GONE);
-        layoutSummaryBtns.setVisibility(View.GONE);
-        stateAppointmentPrescription.setVisibility(View.GONE);*/
+            Bundle args = new Bundle();
+            args.putSerializable("patientDTO", (Serializable) patientDTO);
+            intent2.putExtra("BUNDLE", args);
+            startActivity(intent2);
+        });
 
     }
 
     private void handleWhatsappAndCall() {
         try {
-            String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
             Log.d(TAG, "handleWhatsappAndCall: patientPhoneNo : " + patientPhoneNo);
             //for patient
-            if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
-                ivWhatsappPatient.setOnClickListener(v -> {
+
+            ivWhatsappPatient.setOnClickListener(v -> {
+                if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
                     String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
-                });
-                ivCallPatient.setOnClickListener(v -> {
+                } else {
+                    Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+                }
+            });
+            ivCallPatient.setOnClickListener(v -> {
+                if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse("tel:" + patientPhoneNo));
                     startActivity(intent);
-                });
-            }else{
+                } else {
+                    Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         //for doctor
 
-        /*try {
-            String patientPhoneNo = PatientsDAO.phoneNumber(patientUuid);
-            //for patient
-z
-            if (patientPhoneNo != null && !patientPhoneNo.isEmpty()) {
-                ivWhatsappPatient.setOnClickListener(v -> {
-                    String url = "https://api.whatsapp.com/send?phone=" + patientPhoneNo;
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+        // Fetching dr details from Local db.
+        String drDetails = fetchDrDetailsFromLocalDb(visitID);
+        Gson gson = new Gson();
+        clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
+
+        if (clsDoctorDetails != null) {
+            Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+            dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
+            dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
+
+            try {
+
+                ivWhatsappDoctor.setOnClickListener(v -> {
+                    if (dr_WhatsappNo != null && !dr_WhatsappNo.isEmpty()) {
+                        String url = "https://api.whatsapp.com/send?phone=" + dr_WhatsappNo;
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+
+                    }
                 });
-                ivCallPatient.setOnClickListener(v -> {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse(patientPhoneNo));
-                    startActivity(intent);
+
+
+                ivCallDoctor.setOnClickListener(v -> {
+                    if (dr_MobileNo != null && !dr_MobileNo.isEmpty()) {
+                        Intent i1 = new Intent(Intent.ACTION_DIAL);
+                        i1.setData(Uri.parse("tel:" + dr_MobileNo));
+                        startActivity(i1);
+                    } else {
+                        Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+
+                    }
+
                 });
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
+
         }
-*/
     }
 
 
@@ -543,6 +533,7 @@ z
     }
 
     private String getAppointmentStartsInTime(String soltDate, String slotTime) {
+        //for setting appointment starting in time
         String timeText = "";
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -559,7 +550,7 @@ z
                 isVisitStartsIn = true;
                 if (minutes >= 60) {
                     long hours = minutes / 60;
-                    if (hours > 24) {
+                    if (hours > 12) {
 
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", at " + slotTime;
                     } else {
@@ -680,8 +671,8 @@ z
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -909,6 +900,39 @@ z
         }
 
         return modifiedDate;
+    }
+
+
+    //update ui as per internet availability
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
     }
 
 }

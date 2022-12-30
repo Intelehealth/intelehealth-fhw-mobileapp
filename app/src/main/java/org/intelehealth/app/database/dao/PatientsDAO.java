@@ -94,7 +94,6 @@ public class PatientsDAO {
         db.beginTransaction();
         List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
-
             Logger.logD("create", "create has to happen");
             values.put("uuid", uuid);
             values.put("openmrs_id", patientDTO.getOpenmrsId());
@@ -749,5 +748,38 @@ public class PatientsDAO {
         return result;
     }
 
+    public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
+        PatientDTO patientDTO =null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
+                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
+
+
+        if (cursor.moveToFirst()) {
+            do {
+
+
+                patientDTO = new PatientDTO();
+                patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
+                patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return patientDTO;
+    }
 
 }

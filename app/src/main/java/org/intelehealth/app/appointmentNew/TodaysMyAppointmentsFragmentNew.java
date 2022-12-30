@@ -137,8 +137,6 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
         layoutUpcoming.setLayoutParams(params);
         getAppointments();
-        getSlots();
-
         autotvSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -405,53 +403,6 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             idCursor.close();
         }
         return imagePath;
-
-    }
-
-
-    private void getSlots() {
-        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
-
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
-                .enqueue(new Callback<AppointmentListingResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                        if (response.body() == null) return;
-                        AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
-                            try {
-                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
-                            } catch (DAOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } else {
-                        }
-
-
-                        getAppointments();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
 
     }
 
