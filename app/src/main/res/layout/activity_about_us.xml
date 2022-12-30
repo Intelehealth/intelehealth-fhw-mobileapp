@@ -51,7 +51,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
-                    android:padding="@dimen/margin_5"
+                    android:padding="@dimen/margin_5" android:onClick="backPress"
                     android:src="@drawable/ic_arrow_right" />
 
                 <!-- Label -->

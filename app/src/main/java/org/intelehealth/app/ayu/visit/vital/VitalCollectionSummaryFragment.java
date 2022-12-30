@@ -57,6 +57,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
     }
+
     private String convertFtoC(String temperature) {
 
         if (temperature != null && temperature.length() > 0) {
@@ -86,6 +87,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         return result;
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,16 +96,37 @@ public class VitalCollectionSummaryFragment extends Fragment {
         ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight());
         ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight());
         ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
-        ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
-        ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " bpm");
-        if(new ConfigUtils(getActivity()).fahrenheit()){
-            ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(mVitalsObject.getTemperature()));
-        }else{
-            ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+
+        if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
+        else
+            ((TextView) view.findViewById(R.id.tv_bp)).setText("N/A");
+        if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " bpm");
+        else
+            ((TextView) view.findViewById(R.id.tv_pulse)).setText("N/A");
+
+        if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
+            if (new ConfigUtils(getActivity()).fahrenheit()) {
+                ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(mVitalsObject.getTemperature()));
+            } else {
+                ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+            }
+        } else {
+
+            ((TextView) view.findViewById(R.id.tv_temperature)).setText("N/A");
         }
 
-        ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
-        ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " breaths/min");
+        if (mVitalsObject.getSpo2() != null && !mVitalsObject.getSpo2().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
+        else
+            ((TextView) view.findViewById(R.id.tv_spo2)).setText("N/A");
+
+        if (mVitalsObject.getResp() != null && !mVitalsObject.getResp().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " breaths/min");
+        else
+            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText("N/A");
+
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

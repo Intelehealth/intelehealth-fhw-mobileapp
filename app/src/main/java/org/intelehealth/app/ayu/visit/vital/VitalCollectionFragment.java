@@ -669,7 +669,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (mBpSysEditText.getText() != null) {
                 results.setBpsys((mBpSysEditText.getText().toString()));
             }
-            if (mTemperatureEditText.getText() != null) {
+            if (mTemperatureEditText.getText() != null && !mTemperatureEditText.getText().toString().isEmpty()) {
                 if (configUtils.fahrenheit()) {
                     results.setTemperature(convertFtoC(mTemperatureEditText.getText().toString()));
                 } else {
