@@ -80,7 +80,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_horizontal_cal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/layout_cal_view"
                 android:layout_marginTop="16dp" />
 
@@ -131,7 +131,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_morning_time_slots"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="16dp" />
 
                 <TextView
@@ -152,7 +152,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_afternoon_time_slots"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="12dp" />
 
                 <TextView
