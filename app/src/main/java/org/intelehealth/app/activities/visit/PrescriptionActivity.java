@@ -161,6 +161,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
     String medHistory;
+    String sign_url;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -1226,8 +1227,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-//                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
-                mComplaint = "Test Complaint";
+               mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+             //   mComplaint = "Test Complaint";
             }
         } else {
 
@@ -1362,7 +1363,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (details != null) {
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
-            
+
+            sign_url = "https://uiux.intelehealth.org/ds/" + details.getUuid() + "_sign.png";
+            Log.v("signurl", "signurl: " + sign_url);
+
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
                     getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
             
@@ -1409,7 +1413,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                   //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    "<img src=\"https://uiux.intelehealth.org/ds/6dea2d57-e84f-482c-9d3b-2e7dcc3501b3_sign.png\" alt=\"Girl in a jacket\">" + // doctor signature...
+                                    "<img src=" + sign_url + " alt=\"Girl in a jacket\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"

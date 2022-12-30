@@ -273,6 +273,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     SwitchMaterial flag;
     private Handler mBackgroundHandler;
     private List<DocumentObject> rowListItem;
+    String sign_url;
 
     ImageButton editVitals;
     ImageButton editComplaint;
@@ -3153,8 +3154,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-             //   mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
-                mComplaint = "Test Complaint";
+                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
+             //   mComplaint = "Test Complaint";
             }
         } else {
 
@@ -3305,6 +3306,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
+            sign_url = "https://uiux.intelehealth.org/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -3330,6 +3332,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     "</div>";
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
+
         if (isRespiratory) {
             String htmlDocument =
                     String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -3361,7 +3364,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                   //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                            "<img src=\"https://uiux.intelehealth.org/ds/6dea2d57-e84f-482c-9d3b-2e7dcc3501b3_sign.png\" alt=\"Girl in a jacket\">" + // doctor signature...
+                            "<img src=" + sign_url + " alt=\"Girl in a jacket\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"

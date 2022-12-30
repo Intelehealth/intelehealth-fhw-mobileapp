@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class ClsDoctorDetails{
 
+	@SerializedName("uuid")
+	private String uuid;
+
 	@SerializedName("whatsapp")
 	private String whatsapp;
 
@@ -114,6 +117,14 @@ public class ClsDoctorDetails{
 		return textOfSign;
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -130,4 +141,5 @@ public class ClsDoctorDetails{
 			",textOfSign = '" + textOfSign + '\'' + 
 			"}";
 		}
+
 }
