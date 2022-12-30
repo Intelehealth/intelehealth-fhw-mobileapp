@@ -2253,22 +2253,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 spO2.setValue(value);
                 break;
             }
-/*
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = diagnosisReturned + ",\n" + value;
                 } else {
                     diagnosisReturned = value;
                 }
-                if (diagnosisCard.getVisibility() != View.VISIBLE) {
+              /*  if (diagnosisCard.getVisibility() != View.VISIBLE) {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
-                diagnosisTextView.setText(diagnosisReturned);
+                diagnosisTextView.setText(diagnosisReturned);*/
                 //checkForDoctor();
                 break;
             }
-*/
-/*
             case UuidDictionary.JSV_MEDICATIONS: {
                 Log.i(TAG, "parseData: val:" + value);
                 Log.i(TAG, "parseData: rx" + rxReturned);
@@ -2278,103 +2275,98 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     rxReturned = value;
                 }
                 Log.i(TAG, "parseData: rxfin" + rxReturned);
-                if (prescriptionCard.getVisibility() != View.VISIBLE) {
+               /* if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
-                prescriptionTextView.setText(rxReturned);
+                prescriptionTextView.setText(rxReturned);*/
                 //checkForDoctor();
                 break;
             }
-*/
-//            case UuidDictionary.MEDICAL_ADVICE: {
-//                if (!adviceReturned.isEmpty()) {
-//                    adviceReturned = adviceReturned + "\n" + value;
-//                    Log.d("GAME", "GAME: " + adviceReturned);
-//                } else {
-//                    adviceReturned = value;
-//                    Log.d("GAME", "GAME_2: " + adviceReturned);
-//                }
-//                if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
-//                    medicalAdviceCard.setVisibility(View.VISIBLE);
-//                }
-//                //medicalAdviceTextView.setText(adviceReturned);
-//                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
-//
-//                int j = adviceReturned.indexOf('<');
-//                int i = adviceReturned.lastIndexOf('>');
-//                if (i >= 0 && j >= 0) {
-//                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
-//                } else {
-//                    medicalAdvice_HyperLink = "";
-//                }
-//
-//                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
-//
-//                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-//                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
-//
-//                /*
-//                 * variable a contains the hyperlink sent from webside.
-//                 * variable b contains the string data (medical advice) of patient.
-//                 * */
-//               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
-//                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
-//                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
-//
-//                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
-//                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
-//                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
-//                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-//                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
-//                //checkForDoctor();
-//                break;
-//            }
-/*
+            case UuidDictionary.MEDICAL_ADVICE: {
+                if (!adviceReturned.isEmpty()) {
+                    adviceReturned = adviceReturned + "\n" + value;
+                    Log.d("GAME", "GAME: " + adviceReturned);
+                } else {
+                    adviceReturned = value;
+                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                }
+              /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
+                    medicalAdviceCard.setVisibility(View.VISIBLE);
+                }*/
+                //medicalAdviceTextView.setText(adviceReturned);
+                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
+
+                int j = adviceReturned.indexOf('<');
+                int i = adviceReturned.lastIndexOf('>');
+                if (i >= 0 && j >= 0) {
+                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
+                } else {
+                    medicalAdvice_HyperLink = "";
+                }
+
+                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+
+                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+
+                /*
+                 * variable a contains the hyperlink sent from webside.
+                 * variable b contains the string data (medical advice) of patient.
+                 * */
+               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
+                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
+
+                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+               /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
+                //checkForDoctor();
+                break;
+            }
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
                     testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
                     testsReturned = Node.bullet + " " + value;
                 }
-                if (requestedTestsCard.getVisibility() != View.VISIBLE) {
+              /*  if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
                 }
-                requestedTestsTextView.setText(testsReturned);
+                requestedTestsTextView.setText(testsReturned);*/
                 //checkForDoctor();
                 break;
             }
-*/
-//            case UuidDictionary.ADDITIONAL_COMMENTS: {
-//
+            case UuidDictionary.ADDITIONAL_COMMENTS: {
+
 //                additionalCommentsCard.setVisibility(View.GONE);
-//
-////                if (!additionalReturned.isEmpty()) {
-////                    additionalReturned = additionalReturned + "," + value;
-////                } else {
-////                    additionalReturned = value;
+
+                if (!additionalReturned.isEmpty()) {
+                    additionalReturned = additionalReturned + "," + value;
+                } else {
+                    additionalReturned = value;
+                }
+////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
+////                    additionalCommentsCard.setVisibility(View.VISIBLE);
 ////                }
-//////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
-//////                    additionalCommentsCard.setVisibility(View.VISIBLE);
-//////                }
-////                additionalCommentsTextView.setText(additionalReturned);
-//                //checkForDoctor();
-//                break;
-//            }
-/*
+//                additionalCommentsTextView.setText(additionalReturned);
+                //checkForDoctor();
+                break;
+            }
             case UuidDictionary.FOLLOW_UP_VISIT: {
                 if (!followUpDate.isEmpty()) {
                     followUpDate = followUpDate + "," + value;
                 } else {
                     followUpDate = value;
                 }
-                if (followUpDateCard.getVisibility() != View.VISIBLE) {
+              /*  if (followUpDateCard.getVisibility() != View.VISIBLE) {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
-                followUpDateTextView.setText(followUpDate);
+                followUpDateTextView.setText(followUpDate);*/
                 //checkForDoctor();
                 break;
             }
-*/
 
             default:
                 Log.i(TAG, "parseData: " + value);
@@ -3161,7 +3153,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+             //   mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
+                mComplaint = "Test Complaint";
             }
         } else {
 
@@ -3200,7 +3193,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
 
-        //String advice_web = stringToWeb(adviceReturned);
+        String advice_web = stringToWeb(adviceReturned);
         //    String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
@@ -3347,10 +3340,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
@@ -3368,9 +3361,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
+                            (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "",
+                            (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
