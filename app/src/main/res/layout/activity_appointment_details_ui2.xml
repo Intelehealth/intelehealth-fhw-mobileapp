@@ -486,7 +486,7 @@
                             android:layout_marginTop="@dimen/ad_male_margin_start"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                            android:text="Speciality"
+                            android:text="@string/speciality"
                             android:textAppearance="@style/details_head2"
                             android:textColor="@color/textColorBlack"
                             android:textSize="@dimen/ad_title_text_size" />

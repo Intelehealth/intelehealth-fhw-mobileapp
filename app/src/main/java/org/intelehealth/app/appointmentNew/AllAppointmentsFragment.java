@@ -379,9 +379,9 @@ public class AllAppointmentsFragment extends Fragment {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (!autotvSearch.getText().toString().isEmpty()) {
                     searchPatientText = autotvSearch.getText().toString();
-                    getUpcomingAppointments(fromDate, toDate, searchPatientText);
-                    getCompletedAppointments(fromDate, toDate, searchPatientText);
-                    getCancelledAppointments(fromDate, toDate, searchPatientText);
+                    getUpcomingAppointments();
+                    getCompletedAppointments();
+                    getCancelledAppointments();
 
 
                 } else {
@@ -531,20 +531,20 @@ public class AllAppointmentsFragment extends Fragment {
 
         if (whichAppointment.isEmpty()) {
             //call both
-            getUpcomingAppointments(fromDate, toDate, searchPatientText);
-            getCompletedAppointments(fromDate, toDate, searchPatientText);
-            getCancelledAppointments(fromDate, toDate, searchPatientText);
+            getUpcomingAppointments();
+            getCompletedAppointments();
+            getCancelledAppointments();
 
 
         } else if (whichAppointment.equals("upcoming")) {
             //upcoming
-            getUpcomingAppointments(fromDate, toDate, searchPatientText);
+            getUpcomingAppointments();
 
         } else if (whichAppointment.equals("completed")) {
-            getCompletedAppointments(fromDate, toDate, searchPatientText);
+            getCompletedAppointments();
 
         } else if (whichAppointment.equals("cancelled")) {
-            getCancelledAppointments(fromDate, toDate, searchPatientText);
+            getCancelledAppointments();
 
         }
 
@@ -580,22 +580,17 @@ public class AllAppointmentsFragment extends Fragment {
 
     private void getAppointments() {
         //whichAppointment = "";
-        getUpcomingAppointments(fromDate, toDate, searchPatientText);
-        getCompletedAppointments(fromDate, toDate, searchPatientText);
-        getCancelledAppointments(fromDate, toDate, searchPatientText);
+        getUpcomingAppointments();
+        getCompletedAppointments();
+        getCancelledAppointments();
 
     }
 
-    private void getUpcomingAppointments(String fromDate, String toDate,
-                                         String searchPatientText) {
+    private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
-        Log.d(TAG, "getUpcomingAppointments: fromDate : " + fromDate);
-        Log.d(TAG, "getUpcomingAppointments: toDate : " + toDate);
-        Log.d(TAG, "getUpcomingAppointments: searchPatientText : " + searchPatientText);
         tvUpcomingAppsCount.setText("0");
         tvUpcomingAppsCountTitle.setText("Completed (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
-        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -633,22 +628,16 @@ public class AllAppointmentsFragment extends Fragment {
 
         } catch (
                 Exception e) {
-            Log.d(TAG, "getUpcomingAppointments: e : " + e.getLocalizedMessage());
         }
 
 
     }
 
-    private void getCancelledAppointments(String fromDate, String toDate,
-                                          String searchPatientText) {
+    private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
-        Log.d(TAG, "getCancelledAppointments: fromDate : " + fromDate);
-        Log.d(TAG, "getCancelledAppointments: toDate : " + toDate);
-        Log.d(TAG, "getCancelledAppointments: searchPatientText : " + searchPatientText);
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText("Cancelled (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, searchPatientText);
-        Log.d(TAG, "getCancelledAppointments: appointmentInfoList size : " + appointmentInfoList.size());
         List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -687,16 +676,12 @@ public class AllAppointmentsFragment extends Fragment {
             tvCancelledAppsCountTitle.setText("Cancelled (" + cancelledAppointmentsList.size() + ")");
 
         } catch (Exception e) {
-            Log.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());
         }
 
 
     }
 
-    private void getCompletedAppointments(String fromDate, String toDate, String searchPatientText) {
-        Log.d(TAG, "55getCompletedAppointments: searchPatientText : " + searchPatientText);
-        Log.d(TAG, "55getCompletedAppointments:fromDate :  " + fromDate);
-        Log.d(TAG, "55getCompletedAppointments:toDate :  " + toDate);
+    private void getCompletedAppointments() {
 
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText("Completed (0)");
@@ -741,7 +726,6 @@ public class AllAppointmentsFragment extends Fragment {
                 tvCompletedAppsCountTitle.setText("Completed (" + completedAppointmentsList.size() + ")");
             }
         } catch (Exception e) {
-            Log.d(TAG, "getCompletedAppointments: e : " + e.getLocalizedMessage());
         }
 
     }
@@ -770,7 +754,6 @@ public class AllAppointmentsFragment extends Fragment {
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
-                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
 
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
@@ -779,7 +762,6 @@ public class AllAppointmentsFragment extends Fragment {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG, "getDataForCompletedAppointments: comp size : " + appointmentsDaoList.size());
 
             }
 
@@ -847,26 +829,25 @@ public class AllAppointmentsFragment extends Fragment {
     private void filterAsPerSelectedOptions() {
         if (whichAppointment.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()) {
             //all data
-            Log.d(TAG, "filterAsPerSelectedOptions: all data");
-            getUpcomingAppointments(fromDate, toDate, searchPatientText);
-            getCompletedAppointments(fromDate, toDate, searchPatientText);
-            getCancelledAppointments(fromDate, toDate, searchPatientText);
+            getUpcomingAppointments();
+            getCompletedAppointments();
+            getCancelledAppointments();
 
         } else if (whichAppointment.isEmpty() && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //all
-            getUpcomingAppointments(fromDate, toDate, searchPatientText);
-            getCompletedAppointments(fromDate, toDate, searchPatientText);
-            getCancelledAppointments(fromDate, toDate, searchPatientText);
+            getUpcomingAppointments();
+            getCompletedAppointments();
+            getCancelledAppointments();
 
         } else if (whichAppointment.equals("upcoming") && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //upcoming
-            getUpcomingAppointments(fromDate, toDate, searchPatientText);
+            getUpcomingAppointments();
 
         } else if (whichAppointment.equals("completed") && !fromDate.isEmpty() && !toDate.isEmpty()) {
-            getCompletedAppointments(fromDate, toDate, searchPatientText);
+            getCompletedAppointments();
 
         } else if (whichAppointment.equals("cancelled") && !fromDate.isEmpty() && !toDate.isEmpty()) {
-            getCancelledAppointments(fromDate, toDate, searchPatientText);
+            getCancelledAppointments();
 
         }
 
