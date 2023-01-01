@@ -131,8 +131,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
         cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-     /*   Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-        cardUpcomingAppointments.startAnimation(fadeOut);*/
 
         layoutUpcoming.setVisibility(View.VISIBLE);
         layoutCompleted.setVisibility(View.VISIBLE);
@@ -205,9 +203,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-          /*  Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-            cardUpcomingAppointments.startAnimation(fadeOut);
-*/
+
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
@@ -225,9 +221,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-          /*  Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-            cardCancelledAppointments.startAnimation(fadeOut);
-*/
+
             layoutUpcoming.setVisibility(View.GONE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
@@ -245,8 +239,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
             cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-       /*     Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
-            cardCompletedAppointments.startAnimation(fadeOut);*/
 
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.GONE);
@@ -260,9 +252,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         });
 
-        ivRefresh.setOnClickListener(v -> {
-            // Toast.makeText(getActivity(), "Refreshed Successfully", Toast.LENGTH_SHORT).show();
-        });
     }
 
     private void getAppointments() {
@@ -274,7 +263,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppointments.setText("0");
-        tvUpcomingAppointmentsTitle.setText("Completed (0)");
+        tvUpcomingAppointmentsTitle.setText("Upcoming (0)");
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
@@ -309,7 +298,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 rvUpcomingApp.setVisibility(View.GONE);
                 noDataFoundForUpcoming.setVisibility(View.VISIBLE);
             }
-
+            Log.d(TAG, "getUpcomingAppointments:upcomingAppointmentsList size :  " + upcomingAppointmentsList.size());
             tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
             tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
 
@@ -348,20 +337,16 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         completedAppointmentsList.add(appointmentInfo);
                     }
                 }
-            } else {
-
-                rvCompletedApp.setVisibility(View.GONE);
-                noDataFoundForCompleted.setVisibility(View.VISIBLE);
-
-
             }
         } catch (Exception e) {
 
         }
-
         if (completedAppointmentsList.size() > 0) {
 
             getDataForCompletedAppointments(completedAppointmentsList);
+        } else {
+            rvCompletedApp.setVisibility(View.GONE);
+            noDataFoundForCompleted.setVisibility(View.VISIBLE);
         }
 
     }

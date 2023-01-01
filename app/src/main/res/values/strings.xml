@@ -1676,8 +1676,21 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="view_patient_history">View patient history</string>
     <string name="reschedule">Reschedule</string>
     <string name="no_data_found">No data found</string>
-
     <string name="confirm_appointment">Confirm appointment?</string>
+    <string name="cancel_appointment_new">Cancel appointment?</string>
+    <string name="sure_to_cancel_appointment">Are you sure you want to cancel the appointment for </string>
+    <string name="sure_to_reschedule_appointment">Are you sure you want to Reschedule the appointment for </string>
+    <string name="reschedule_appointment_new">Reschedule appointment?</string>
+    <string name="speciality">Speciality</string>
+    <string name="schedule_appointment">Schedule appointment</string>
+    <string name="sure_to_book_appointment">Are you sure, patient want to book the appointment on </string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="evening">Evening</string>
+    <string name="pick_time_slot">Pick a time slot</string>
+    <string name="enter_cred">Enter the credentials given by intelehealth team</string>
+
+
 
     <!--    Follow-up new screens -->
     <string name="label">Follow-up visits(9)</string>

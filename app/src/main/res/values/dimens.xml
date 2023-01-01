@@ -966,4 +966,43 @@
     <dimen name="iv_profile_photo_corner_radius">45dp</dimen>
     <dimen name="et_search_patient_height">46dp</dimen>
 
+
+    <!--UI2.0 Schedule appointment-->
+    <dimen name="schedule_app_padding_start_end">24dp</dimen>
+    <dimen name="schedule_app_margin_top">40dp</dimen>
+    <dimen name="schedule_app_margin_bottom">80dp</dimen>
+    <dimen name="schedule_app_margin_bottom1">50dp</dimen>
+    <dimen name="iv_time_height_width">25dp</dimen>
+    <dimen name="hor_calview_month_margin_start">12dp</dimen>
+    <dimen name="hor_calview_month_margin_top">3dp</dimen>
+    <dimen name="hor_calview_month_line_height">21dp</dimen>
+    <dimen name="hor_calview_month_text_size">14sp</dimen>
+    <dimen name="iv_prev_month_margin_end">10dp</dimen>
+    <dimen name="rv_hor_calview_margin_top">16dp</dimen>
+    <dimen name="tv_reschedule_margin_top">30dp</dimen>
+    <dimen name="tv_pick_slot_margin_top">20dp</dimen>
+    <dimen name="tv_slot_time_drawable_padding">8dp</dimen>
+    <dimen name="tv_slot_time_margin_top">16dp</dimen>
+    <dimen name="tv_slot_time_text_size">14sp</dimen>
+    <dimen name="tv_slot_time_noon_margin_top">24dp</dimen>
+    <dimen name="tv_slot_width">100dp</dimen>
+    <dimen name="tv_slot_height">40dp</dimen>
+    <dimen name="tv_slot_margin_end">12dp</dimen>
+    <dimen name="tv_slot_margin_bottom">18dp</dimen>
+    <dimen name="tv_slot_padding_all">8dp</dimen>
+    <dimen name="tv_slot_time_text_size1">14sp</dimen>
+    <dimen name="tv_slot_time_line_height">21dp</dimen>
+    <dimen name="tv_slot_time_duration">12sp</dimen>
+    <dimen name="tv_pick_slot_text_size">14sp</dimen>
+    <!--UI2.0 horizontal calview-->
+    <dimen name="tv_cal_view_date_height">60dp</dimen>
+    <dimen name="tv_cal_view_date_width">50dp</dimen>
+    <dimen name="tv_cal_view_date_margin_top">10dp</dimen>
+    <dimen name="tv_cal_view_date_margin_end">20dp</dimen>
+    <dimen name="tv_cal_view_date_margin_bottom">10dp</dimen>
+    <dimen name="tv_cal_view_date_text_size">14sp</dimen>
+    <dimen name="tv_cal_view_date_day_margin_top">5dp</dimen>
+    <dimen name="tv_cal_view_date_day_text_size">12sp</dimen>
+    <dimen name="icons_appoint_height">40dp</dimen>
+
 </resources>

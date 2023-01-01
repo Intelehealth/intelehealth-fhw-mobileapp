@@ -2,6 +2,21 @@ package org.intelehealth.app.appointmentNew;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,45 +24,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.ScheduleListingActivity;
-import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
-import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -60,7 +50,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Spliterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,20 +106,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
-        tvTitle.setText("Schedule appointment");
+        tvTitle.setText(getResources().getString(R.string.schedule_appointment));
 
         initUI();
-
-
-   /*
-  // intent params as per old flow
-   appointmentId = getIntent().getIntExtra("appointmentId", 0);
-        visitUuid = getIntent().getStringExtra("visitUuid");
-        patientUuid = getIntent().getStringExtra("patientUuid");
-        patientName = getIntent().getStringExtra("patientName");
-        speciality = getIntent().getStringExtra("speciality");
-        openMrsId = getIntent().getStringExtra("openMrsId");
-*/
 
         //for reschedule appointment as per old flow
         actionTag = getIntent().getStringExtra("actionTag").toLowerCase();
@@ -183,14 +161,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (!selectedDateTime.isEmpty()) {
                 bookAppointmentDialog(ScheduleAppointmentActivity_New.this, selectedDateTime);
 
-                //------before reschedule need to cancel appointment----
-                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                //    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                             /*   if (appointmentId != 0) {
-                                    askReason(slotInfo);
-                                } else {
-                                    bookAppointment(slotInfo, null);
-                                }*/
 
             } else {
                 Toast.makeText(this, "Please select time slot", Toast.LENGTH_SHORT).show();
@@ -238,9 +208,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         getAllDatesOfSelectedMonth(calendarInstance, true, String.valueOf(currentMonth), String.valueOf(currentYear), String.valueOf(currentMonth));
 
         ivNextMonth.setOnClickListener(v -> {
+            //get next months dates for horizontal calendar view
             getNextMonthDates();
         });
         ivPrevMonth.setOnClickListener(v -> {
+            //get this months dates for horizontal calendar view
+
             getPreviousMonthDates();
         });
 
@@ -248,12 +221,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
 
     private void getSlots() {
-        Log.d(TAG, "getSlots: mSelectedStartDate : " + mSelectedStartDate);
-        Log.d(TAG, "getSlots: mSelectedEndDate : " + mSelectedEndDate);
-        Log.d(TAG, "getSlots: speciality : " + speciality);
-
-        // Dermatologist
-        // General Physician
+        //api for get appointment slots for selected date and doctor speciality
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
@@ -334,23 +302,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 setDataForMorningAppointments(slotInfoMorningList);
                 setDataForEveningAppointments(slotInfoEveningList);
 
-                //------before reschedule need to cancel appointment----
-                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                //    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                             /*   if (appointmentId != 0) {
-                                    askReason(slotInfo);
-                                } else {
-                                    bookAppointment(slotInfo, null);
-                                }*/
-
             }
         });
         rvAfternoonSlots.setAdapter(slotListingAdapter);
-                       /* if (slotListingAdapter.getItemCount() == 0) {
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }*/
+
     }
 
     private void setDataForEveningAppointments(List<SlotInfo> slotInfoList) {
@@ -366,23 +321,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForMorningAppointments(slotInfoMorningList);
-                //------before reschedule need to cancel appointment----
-                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                //    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                             /*   if (appointmentId != 0) {
-                                    askReason(slotInfo);
-                                } else {
-                                    bookAppointment(slotInfo, null);
-                                }*/
 
             }
         });
         rvEveningSlots.setAdapter(slotListingAdapter);
-                       /* if (slotListingAdapter.getItemCount() == 0) {
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }*/
+
     }
 
     private void setDataForMorningAppointments(List<SlotInfo> slotInfoList) {
@@ -399,31 +342,16 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
 
-                //------before reschedule need to cancel appointment----
-                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                //    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                             /*   if (appointmentId != 0) {
-                                    askReason(slotInfo);
-                                } else {
-                                    bookAppointment(slotInfo, null);
-                                }*/
-
             }
         });
         rvMorningSlots.setAdapter(slotListingAdapter);
-                       /* if (slotListingAdapter.getItemCount() == 0) {
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }*/
+
 
     }
 
     private void getAllDatesOfSelectedMonth(Calendar calendar,
                                             boolean isCurrentMonth,
                                             String selectedMonth, String selectedYear, String selectedMonthForDays) {
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : " + selectedMonth);
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : " + selectedYear);
 
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDay;
@@ -462,7 +390,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 }
 
             } catch (ParseException e) {
-                Log.d(TAG, "getAllDatesOfSelectedMonth: e : " + e.getLocalizedMessage());
                 e.printStackTrace();
             }
         }
@@ -555,6 +482,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
     private void enableDisablePreviousButton(boolean wantToEnable) {
+        //for enable and disable previous month button if month is less than current month
         if (wantToEnable) {
             ivPrevMonth.setEnabled(true);
             ivPrevMonth.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -578,8 +506,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
-
-        String infoText = "Are you sure, patient want to \nbook the appointment on " + "<b>" + selectedDateTime + "?</b>";
+        String infoText = getResources().getString(R.string.sure_to_book_appointment) + "<b>" + selectedDateTime + "?</b>";
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();
@@ -589,8 +516,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         yesButton.setOnClickListener(v -> {
-          /*  Intent i_back = new Intent(context.getApplicationContext(), MyAppointmentActivity.class);
-            context.startActivity(i_back);*/
+
             bookAppointment();
         });
 
@@ -645,7 +571,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                             Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
                             getSlots();
                         } else {
-                            Log.d(TAG, "onResponse: resche appointmentId  :" + appointmentId);
                             if (!actionTag.isEmpty() && appointmentId != 0) {
                                 //reschedule appointment - update local db with prev appointment details
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();

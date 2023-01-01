@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_horizontal_view"
-    android:layout_width="50dp"
-    android:layout_height="60dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginBottom="10dp"
+    android:layout_width="@dimen/tv_cal_view_date_width"
+    android:layout_height="@dimen/tv_cal_view_date_height"
+    android:layout_marginTop="@dimen/tv_cal_view_date_margin_top"
+    android:layout_marginEnd="@dimen/tv_cal_view_date_margin_end"
+    android:layout_marginBottom="@dimen/tv_cal_view_date_margin_bottom"
     android:background="@drawable/bg_horizontal_cal_view_ui2">
 
     <LinearLayout
@@ -21,20 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|top"
-            android:text="20"
+            android:hint="20"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
+            android:textSize="@dimen/tv_cal_view_date_text_size"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_date_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/tv_cal_view_date_day_margin_top"
             android:gravity="center"
-            android:text="wed"
+            android:hint="wed"
             android:textColor="@color/colorPrimary"
-            android:textSize="12sp"
+            android:textSize="@dimen/tv_cal_view_date_day_text_size"
             android:textStyle="bold" />
 
     </LinearLayout>
