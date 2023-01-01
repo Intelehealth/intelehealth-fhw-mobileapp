@@ -54,13 +54,6 @@
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
         <activity
-            android:name=".appointmentNew.ScheduleAppointmentActivity_New1"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".activities.chatHelp.ChatHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -164,10 +157,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".appointmentNew.VisitSummaryDetailsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
-        <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -179,11 +168,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
-            android:exported="true"
-            android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui2.SwipeDeleteTestActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
@@ -232,11 +216,6 @@
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
-        <activity
-            android:name=".ui2.TestDialogsUI2Activity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"

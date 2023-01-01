@@ -69,9 +69,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
@@ -92,9 +92,6 @@ import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
-import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
-import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -134,8 +131,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
-    private QuickActionCustom quickAction;
-    private QuickActionCustom quickIntent;
     private DrawerLayout mDrawerLayout;
     SessionManager sessionManager;
     Dialog dialogLoginSuccess;
@@ -271,7 +266,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     }
                 }, 3000);
             } else {
-               // mResetSyncDialog.dismiss();
+                // mResetSyncDialog.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
                 dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
@@ -295,7 +290,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                             showResetProgressbar();
                             deleteCache(getApplicationContext());
 
-                          //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
+                            //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
 //                            deleteCache(getApplicationContext());
 /*
                             new Handler(Looper.getMainLooper())
@@ -605,48 +600,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         });
 
         alertDialog.show();
-    }
-
-
-    private void setTooltipForInternet(String message) {
-        QuickActionCustom.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
-        QuickActionCustom.setDefaultTextColor(Color.BLACK);
-
-        ActionItemCustom nextItem = new ActionItemCustom(ID_DOWN, message);
-        quickAction = new QuickActionCustom(this, QuickActionCustom.HORIZONTAL);
-        quickAction.setColorRes(R.color.white);
-        quickAction.setTextColorRes(R.color.textColorBlack);
-        quickAction.addActionItem(nextItem);
-        quickAction.setTextColor(Color.BLACK);
-
-
-        //Set listener for action item clicked
-        quickAction.setOnActionItemClickListener(new QuickActionCustom.OnActionItemClickListener() {
-            @Override
-            public void onItemClick(ActionItemCustom item) {
-                //here we can filter which action item was clicked with pos or actionId parameter
-                String title = item.getTitle();
-                Toast.makeText(HomeScreenActivity_New.this, title + " selected", Toast.LENGTH_SHORT).show();
-                if (!item.isSticky()) quickAction.remove(item);
-            }
-        });
-
-        quickAction.setOnDismissListener(new QuickActionCustom.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                // Toast.makeText(HomeScreenActivity.this, "Dismissed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-        sendIntent.setType("text/plain");
-
-        quickIntent = new QuickIntentActionCustom(this)
-                .setActivityIntent(sendIntent)
-                .create();
-        quickIntent.setAnimStyle(QuickActionCustom.Animation.REFLECT);
     }
 
 

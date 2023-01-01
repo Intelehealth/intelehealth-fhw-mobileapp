@@ -194,11 +194,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             visit_speciality = intent.getStringExtra("visit_speciality");
-            Log.d(TAG, "initUI: visit_speciality : " + visit_speciality);
             app_start_date = intent.getStringExtra("app_start_date");
             app_start_time = intent.getStringExtra("app_start_time");
             appointment_id = intent.getIntExtra("appointment_id", 0);
@@ -209,8 +207,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 followupDate = getFollowupDataForVisitUUID(visitID);
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
-            patient_photo_path = intent.getStringExtra("patient_photo");
             appointmentStatus = intent.getStringExtra("status");
+            PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
+            patient_photo_path = patientDTO.getPatientPhoto();
 
 
         }
