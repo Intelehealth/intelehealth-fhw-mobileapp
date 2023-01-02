@@ -89,6 +89,7 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -269,7 +270,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String sign_url;
 
     ImageButton editVitals;
-    ImageButton editComplaint;
+    ImageButton editComplaint, cc_details_edit, ass_symp_edit;
     ImageButton editPhysical;
     ImageButton editFamHist;
     ImageButton editMedHist;
@@ -404,6 +405,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
+            cc_details_edit.setVisibility(View.GONE);
+            ass_symp_edit.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
@@ -438,6 +441,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
                 editVitals.setVisibility(View.GONE);
                 editComplaint.setVisibility(View.GONE);
+                cc_details_edit.setVisibility(View.GONE);
+                ass_symp_edit.setVisibility(View.GONE);
                 editPhysical.setVisibility(View.GONE);
                 editFamHist.setVisibility(View.GONE);
                 editMedHist.setVisibility(View.GONE);
@@ -462,6 +467,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } else {
                 editVitals.setVisibility(View.VISIBLE);
                 editComplaint.setVisibility(View.VISIBLE);
+                cc_details_edit.setVisibility(View.VISIBLE);
+                ass_symp_edit.setVisibility(View.VISIBLE);
                 editPhysical.setVisibility(View.VISIBLE);
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
@@ -1070,7 +1077,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 //complaintDialog.show();
                 AlertDialog alertDialog = complaintDialog.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -1719,6 +1731,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // edit - start
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
+        cc_details_edit = findViewById(R.id.cc_details_edit);
+        ass_symp_edit = findViewById(R.id.ass_symp_edit);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
