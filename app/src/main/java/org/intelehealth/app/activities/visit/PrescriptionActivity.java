@@ -129,7 +129,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private SessionManager sessionManager;
-    String diagnosisReturned = "", rxReturned = "", testsReturned = "", adviceReturned = "", doctorName = "",
+    String diagnosisReturned = "", rxReturned = "", testsReturned = "", referredSpeciality = "", adviceReturned = "", doctorName = "",
             additionalReturned = "", followUpDate = "";
     String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
@@ -892,6 +892,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
 
+        String referredSpeciality_web = stringToWeb(referredSpeciality);
+
         String advice_web = stringToWeb(adviceReturned);
         //  String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
@@ -1362,6 +1364,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 //checkForDoctor();
                 break;
             }
+            case UuidDictionary.REFERRED_SPECIALIST: {
+                if (!referredSpeciality.isEmpty() && !referredSpeciality.contains(value)) {
+                    referredSpeciality = referredSpeciality + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    referredSpeciality = Node.bullet + " " + value;
+                }
+                referred_speciality_txt.setText(referredSpeciality);
+            }
             case UuidDictionary.ADDITIONAL_COMMENTS: {
 
 //                additionalCommentsCard.setVisibility(View.GONE);
@@ -1447,6 +1457,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             diagnosisReturned = "";
             rxReturned = "";
             testsReturned = "";
+            referredSpeciality = "";
             adviceReturned = "";
             additionalReturned = "";
             followUpDate = "";
@@ -1720,6 +1731,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
                     advice_txt.setText("");
+                  //  medicalAdviceCard.setVisibility(View.GONE);
+                }
+                if (!referredSpeciality.isEmpty()) {
+                    referredSpeciality = "";
+                    referred_speciality_txt.setText("");
                   //  medicalAdviceCard.setVisibility(View.GONE);
                 }
                 if (!testsReturned.isEmpty()) {
@@ -2105,6 +2121,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
+
+        String referredSpeciality_web = stringToWeb(referredSpeciality);
 
         String advice_web = stringToWeb(adviceReturned);
       //  String advice_web = "";
