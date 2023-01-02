@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -290,6 +291,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private static final int DIALOG_CAMERA_PERMISSION_REQUEST = 3000;
+    private static final int DIALOG_GALLERY_PERMISSION_REQUEST = 4000;
     Button btnAppointment;
 
     @Override
@@ -410,7 +413,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
+          //  editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
 //            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
@@ -446,8 +449,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 editPhysical.setVisibility(View.GONE);
                 editFamHist.setVisibility(View.GONE);
                 editMedHist.setVisibility(View.GONE);
-                editAddDocs.setVisibility(View.GONE);
-                add_additional_doc.setVisibility(View.GONE);
+              //  editAddDocs.setVisibility(View.GONE);
+             //   add_additional_doc.setVisibility(View.GONE);
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
@@ -1603,18 +1606,52 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (allGranted) {
                 checkPerm();
             } else {
-                showPermissionDeniedAlert(permissions);
+                showPermissionDeniedAlert(permissions, 2);
+            }
+        }
+        else if (requestCode == DIALOG_CAMERA_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm(0);
+            } else {
+                showPermissionDeniedAlert(permissions, 0);
+            }
+        }
+
+        else if (requestCode == DIALOG_GALLERY_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm(1);
+            } else {
+                showPermissionDeniedAlert(permissions, 1);
             }
         }
     }
 
-    private void showPermissionDeniedAlert(String[] permissions) {
+    private void showPermissionDeniedAlert(String[] permissions, int id) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
         alertdialogBuilder.setMessage(R.string.reject_permission_results);
         alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                checkPerm();
+                if (id == 2)
+                    checkPerm();
+                else if (id == 0)
+                    checkPerm(0);
+                else if (id == 1)
+                    checkPerm(1);
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
@@ -1652,6 +1689,45 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
             return false;
         }
+        return true;
+    }
+
+    private boolean checkAndRequestPermissions(int id) {
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (id == 0) {
+            int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.CAMERA);
+            }
+
+            if (!listPermissionsNeeded.isEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(listPermissionsNeeded.toArray
+                            (new String[listPermissionsNeeded.size()]), DIALOG_CAMERA_PERMISSION_REQUEST);
+                }
+                return false;
+            }
+
+        }
+
+        if (id == 1) {
+            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+
+            if (!listPermissionsNeeded.isEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(listPermissionsNeeded.toArray
+                            (new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
+                }
+                return false;
+            }
+
+        }
+
         return true;
     }
 
@@ -1717,6 +1793,26 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
+    // Permission - start
+    private void checkPerm(int item) {
+        if (item == 0) {
+            if (checkAndRequestPermissions(item)) {
+                Intent cameraIntent = new Intent(VisitSummaryActivity_New.this, CameraActivity.class);
+                String imageName = UUID.randomUUID().toString();
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+            }
+        }
+        else if (item == 1) {
+            if (checkAndRequestPermissions(item)) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+            }
+        }
+    }
+
+    // Permission - end
 
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
@@ -1729,21 +1825,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                    Intent cameraIntent = new Intent(VisitSummaryActivity_New.this, CameraActivity.class);
-                    String imageName = UUID.randomUUID().toString();
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-
+                    checkPerm(item);
                 } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                    checkPerm(item);
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
         });
-        builder.show();
+      //  builder.show();
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+
     }
 
     private void initUI() {
