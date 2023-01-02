@@ -1474,8 +1474,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(listPermissionsNeeded.toArray
+                        (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            }
             return false;
         }
         return true;

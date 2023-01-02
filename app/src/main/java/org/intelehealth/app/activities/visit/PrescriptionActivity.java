@@ -6,17 +6,21 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -28,7 +32,9 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.print.PdfPrint;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -68,7 +74,6 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -99,6 +104,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -163,6 +169,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     String medHistory;
     String sign_url;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -383,7 +390,729 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     "Okay");
         });
         // follow up - yes - end
+
+        // presc pdf downlaod - start
+        downloadBtn.setOnClickListener(v -> {
+            checkPerm();
+        });
     }
+
+    // permission code - start
+    private void checkPerm() {
+        if (checkAndRequestPermissions()) {
+            try {
+                doWebViewPrint_downloadBtn();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(listPermissionsNeeded.toArray
+                        (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            }
+            return false;
+        }
+        return true;
+    }
+    // permission code - end
+
+    // presc create - start
+    private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
+
+        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+
+        // Get a print adapter instance
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+        Log.d("webview content height", "webview content height: " + contentHeight);
+
+        if (contentHeight > 2683 && contentHeight <= 3000) {
+            //medium size prescription...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+        } else if (contentHeight == 0) {
+            //in case of webview bug of 0 contents...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+        } else if (contentHeight > 3000) {
+            //large size prescription...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+        } else {
+            //small size prescription...
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            Log.d("PrintPDF", "PrintPDF");
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+
+            //end...
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
+                }
+            }
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    new PrintAttributes.Builder().build());
+
+        }
+    }
+
+    private String showVisitID() {
+        String hideVisitUUID = "";
+        if (visitID != null && !visitID.isEmpty()) {
+            hideVisitUUID = visitID;
+            hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+          //  visitView.setText("XXXX" + hideVisitUUID);
+            hideVisitUUID = "XXXX" + hideVisitUUID;
+        }
+        return hideVisitUUID;
+    }
+
+
+    private void doWebViewPrint_downloadBtn() throws ParseException {
+        // Create a WebView object specifically for printing
+        WebView webView = new WebView(this);
+        webView.setWebViewClient(new WebViewClient() {
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("Patient WebView", "page finished loading " + url);
+                int webview_heightContent = view.getContentHeight();
+                Log.d("variable i", "variable i: " + webview_heightContent);
+                createWebPrintJob_downloadBtn(view, webview_heightContent);
+                mWebView = null;
+            }
+        });
+
+        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
+        String mPatientOpenMRSID = patient.getOpenmrs_id();
+        String mPatientDob = patient.getDate_of_birth();
+        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
+                ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
+        String mCityState = patient.getCity_village();
+        String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
+        String mState = patient.getState_province();
+        String mCountry = patient.getCountry();
+
+        String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
+        String mOccupation = patient.getOccupation();
+        String mGender = patient.getGender();
+
+        Calendar c = Calendar.getInstance();
+        System.out.println(getString(R.string.current_time) + c.getTime());
+
+        String[] columnsToReturn = {"startdate"};
+        String visitIDorderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {visitID};
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        visitIDCursor.close();
+        String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+
+        String mPatHist = patHistory.getValue();
+        if (mPatHist == null) {
+            mPatHist = "";
+        }
+        String mFamHist = famHistory.getValue();
+        if (mFamHist == null) {
+            mFamHist = "";
+        }
+
+        mHeight = height.getValue();
+        mWeight = weight.getValue();
+        mBP = bpSys.getValue() + "/" + bpDias.getValue();
+        mPulse = pulse.getValue();
+
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
+            }//Load the config file
+
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+//                    mTemp = "Temperature(F): " + temperature.getValue();
+                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        mresp = resp.getValue();
+        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        String mComplaint = complaint.getValue();
+
+        //Show only the headers of the complaints in the printed prescription
+        String[] complaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        mComplaint = "";
+        String colon = ":";
+        String mComplaint_new = "";
+        if (complaints != null) {
+            for (String comp : complaints) {
+                if (!comp.trim().isEmpty()) {
+                    mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                }
+            }
+            if (!mComplaint.isEmpty()) {
+                mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
+                mComplaint = mComplaint.replaceAll("<b>", "");
+                mComplaint = mComplaint.replaceAll("</b>", "");
+            }
+        }
+
+        if (mComplaint.contains("Associated symptoms")) {
+            String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+                //   mComplaint = "Test Complaint";
+            }
+        } else {
+
+        }
+
+        if (mComplaint.contains("जुड़े लक्षण")) {
+            String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+            }
+        } else {
+
+        }
+
+
+        if (mPatientOpenMRSID == null) {
+            mPatientOpenMRSID = getString(R.string.patient_not_registered);
+        }
+
+        String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+        String para_close = "</p>";
+
+        Calendar today = Calendar.getInstance();
+        Calendar dob = Calendar.getInstance();
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(mPatientDob);
+        dob.setTime(date);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        String rx_web = stringToWeb(rxReturned);
+
+        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
+                .replace(Node.bullet, ""));
+
+        String advice_web = stringToWeb(adviceReturned);
+        //  String advice_web = "";
+//        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
+//                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
+   /*     String advice_doctor__ = medication_txt.getText().toString()
+                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
+
+        if (advice_doctor__.indexOf("Start") != -1 ||
+                advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
+
+            String advice_split = new StringBuilder(advice_doctor__)
+                    .delete(advice_doctor__.indexOf("Start"),
+                            advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
+
+            advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
+            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+        } else {
+            advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
+            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+        }*/
+
+        String diagnosis_web = stringToWeb(diagnosisReturned);
+
+//        String comments_web = stringToWeb(additionalReturned);
+
+        String followUpDateStr = "";
+        if (followUpDate != null && followUpDate.contains(",")) {
+            String[] spiltFollowDate = followUpDate.split(",");
+            if (spiltFollowDate[0] != null && spiltFollowDate[0].contains("-")) {
+                String remainingStr = "";
+                for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
+                    remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
+                }
+                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+            } else {
+                followUpDateStr = followUpDate;
+            }
+        } else {
+            followUpDateStr = followUpDate;
+        }
+
+        String followUp_web = stringToWeb(followUpDateStr);
+
+        String doctor_web = stringToWeb(doctorName);
+
+        String heading = prescription1;
+        String heading2 = prescription2;
+        String heading3 = "<br/>";
+
+        //  String bp = mBP;
+        String bp = "";
+        if (bp.equals("/") || bp.equals("null/null")) bp = "";
+
+        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
+
+        String fam_hist = mFamHist;
+        String pat_hist = mPatHist;
+
+        if (fam_hist.trim().isEmpty()) {
+            fam_hist = getString(R.string.no_history_family_found);
+        } else {
+            fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
+        }
+
+        if (pat_hist.trim().isEmpty()) {
+            pat_hist = getString(R.string.no_history_patient_illness_found);
+        }
+
+        // Generate an HTML document on the fly:
+        String fontFamilyFile = "";
+        if (details != null && details.getFontOfSign() != null) {
+            if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+            } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+            } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+            }
+        }
+
+        String font_face = "<style>" +
+                "                @font-face {" +
+                "                    font-family: \"MyFont\";" +
+                fontFamilyFile +
+                "                }" +
+                "            </style>";
+
+        String doctorSign = "";
+        String doctrRegistartionNum = "";
+        // String docDigitallySign = "";
+        String doctorDetailStr = "";
+        if (details != null) {
+            //  docDigitallySign = "Digitally Signed By";
+            doctorSign = details.getTextOfSign();
+
+            sign_url = "https://uiux.intelehealth.org/ds/" + details.getUuid() + "_sign.png";
+            Log.v("signurl", "signurl: " + sign_url);
+
+            doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
+                    getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
+
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + details.getName() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
+                    (details.getQualification() == null || details.getQualification().equalsIgnoreCase("null")
+                            ? "" : details.getQualification() + ", ") + details.getSpecialization() + "</span><br>" +
+                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getPhoneNumber()) ?
+                    //  getString(R.string.dr_phone_number) + details.getPhoneNumber() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getEmailId()) ?
+                    getString(R.string.dr_email) + details.getEmailId() : "") + "</span><br>" +
+                    "</div>";
+        }
+
+        if (isRespiratory) {
+            String htmlDocument =
+                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                    /* doctorDetailStr +*/
+                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
+                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
+                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    para_open + "%s" + para_close + "<br><br>" +
+                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                                    "%s<br>" +
+                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
+                                    doctorDetailStr +
+                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
+                                    "</div>"
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
+                            (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "",
+                            (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
+                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            pat_hist, fam_hist,
+                            mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+        } else {
+            String htmlDocument =
+                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+                                    /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
+                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    para_open + "%s" + para_close + "<br><br>" +
+                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                                    "%s<br>" +
+                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                                    "%s<br>" +
+                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                                    doctorDetailStr +
+                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                                    "</div>"
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
+                            /*(!TextUtils.isEmpty(mHeight)) ? mHeight :*/ "",
+                            /*(!TextUtils.isEmpty(mWeight)) ? mWeight :*/ "",
+                            /*(!TextUtils.isEmpty(mBMI)) ? mBMI :*/ "",
+                            (!TextUtils.isEmpty(bp)) ? bp : "",
+                            /*(!TextUtils.isEmpty(mPulse)) ? mPulse :*/ "",
+                            /*(!TextUtils.isEmpty(mTemp)) ? mTemp :*/ "",
+                            /*(!TextUtils.isEmpty(mSPO2)) ? mSPO2 :*/ "",
+                            /*pat_hist, fam_hist,*/
+                            /*mComplaint*/ "",
+                            diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+        }
+
+
+        /**
+         * +
+         * "<b><p id=\"comments_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
+         * "%s"
+         */
+
+        // Keep a reference to WebView object until you pass the PrintDocumentAdapter
+        // to the PrintManager
+        mWebView = webView;
+    }
+
+    // presc create - end
+
+    // presc pdf downlaod - end
 
     private void followupScheduledSuccess(Context context, Drawable drawable, String title, String subTitle,
                                         String neutral) {
@@ -412,7 +1141,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
 
         positive_btn.setOnClickListener(v -> {
-            /*Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            /*Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
             alertDialog.dismiss();
         });
