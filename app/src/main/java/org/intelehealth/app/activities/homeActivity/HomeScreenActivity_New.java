@@ -657,7 +657,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         selectDrawerItem(menuItem);
-                        return true;
+                        return false;
                     }
                 });
     }
@@ -670,7 +670,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                 fragment = new MyAchievementsFragment();
-
                 break;
             case R.id.menu_video_lib:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
@@ -687,10 +686,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             case R.id.menu_logout:
                 wantToLogoutFromApp(this, "Logout", getResources().getString(R.string.sure_to_logout),
                         getResources().getString(R.string.yes), getResources().getString(R.string.no));
-
                 break;
             default:
         }
+
+        mDrawerLayout.closeDrawers();
 
         if (fragment != null) {
             try {
@@ -701,7 +701,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             loadFragment(fragment);
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
-            mDrawerLayout.closeDrawers();
         }
 
     }
