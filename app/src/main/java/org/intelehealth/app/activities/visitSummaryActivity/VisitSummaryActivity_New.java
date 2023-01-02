@@ -1003,14 +1003,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        textInput.setTitle(R.string.question_text_input);
-                        final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                      //  textInput.setTitle(R.string.question_text_input);
+                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
+                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
+                        textInput.setView(convertView);
+
+                     //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
+                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+                        sharebtn.setVisibility(View.GONE);
+
                         if (complaint.getValue() != null) {
                             dialogEditText.setText(Html.fromHtml(complaint.getValue()));
                         } else {
                             dialogEditText.setText("");
                         }
-                        textInput.setView(dialogEditText);
+                        Log.v("complai", "complai: " + complaint.getValue());
+                      //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1023,13 +1032,31 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 dialog.dismiss();
                             }
                         });
-                        textInput.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
-                        AlertDialog alertDialog = textInput.show();
+                        AlertDialog alertDialog = textInput.create();
+                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+                        alertDialog.show();
+
+                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
