@@ -413,7 +413,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
-          //  editAddDocs.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
 //            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
@@ -449,8 +449,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 editPhysical.setVisibility(View.GONE);
                 editFamHist.setVisibility(View.GONE);
                 editMedHist.setVisibility(View.GONE);
-              //  editAddDocs.setVisibility(View.GONE);
-             //   add_additional_doc.setVisibility(View.GONE);
+                editAddDocs.setVisibility(View.GONE);
+                add_additional_doc.setVisibility(View.GONE);
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
