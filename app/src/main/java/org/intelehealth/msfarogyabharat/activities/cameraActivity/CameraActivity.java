@@ -84,6 +84,12 @@ public class CameraActivity extends AppCompatActivity {
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
 
+    private static final int[] FLASH_OPTIONS = {ImageCapture.FLASH_MODE_AUTO, ImageCapture.FLASH_MODE_ON, ImageCapture.FLASH_MODE_OFF};
+    private static final int[] FLASH_ICONS = {R.drawable.ic_flash_auto, R.drawable.ic_flash_on, R.drawable.ic_flash_off};
+    private static final int[] FLASH_TITLES = {R.string.flash_auto, R.string.flash_off, R.string.flash_on,};
+
+    private int mCurrentFlash = 0;
+
     void compressImageAndSave(final String filePath, String mfilename) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -334,17 +340,10 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_flash) {
-            if (mCamera.getCameraInfo().hasFlashUnit()) {
-                mCamera.getCameraControl().enableTorch(!isTorchOn());
-                if (!isTorchOn()) {
-                    item.setTitle(getString(R.string.flash_off));
-                    item.setIcon(R.drawable.ic_flash_off);
-                } else {
-                    item.setTitle(getString(R.string.flash_on));
-                    item.setIcon(R.drawable.ic_flash_on);
-                }
-            }
-
+            mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+            item.setTitle(FLASH_TITLES[mCurrentFlash]);
+            item.setIcon(FLASH_ICONS[mCurrentFlash]);
+            imageCapture.setFlashMode(FLASH_OPTIONS[mCurrentFlash]);
             return true;
         }
         return super.onOptionsItemSelected(item);
