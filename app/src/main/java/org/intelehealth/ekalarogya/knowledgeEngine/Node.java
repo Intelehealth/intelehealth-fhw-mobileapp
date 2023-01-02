@@ -12,6 +12,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -689,6 +690,79 @@ public class Node implements Serializable {
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        textInput.setView(dialogEditText);
+        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                } else {
+                    node.setSelected(false);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+
+                node.setSelected(true);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+//                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = textInput.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    public static void askBP(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
+        textInput.setTitle(R.string.question_text_input);
+        final EditText dialogEditText = new EditText(context);
+        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        InputFilter inputFilter = (charSequence, i, i1, spanned, i2, i3) -> {
+            if (!charSequence.toString().matches("[0-9/]"))
+                return charSequence.toString().replace(charSequence.toString(), "");
+            else
+                return charSequence;
+        };
+
+        dialogEditText.setFilters(new InputFilter[]{inputFilter});
+
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1445,6 +1519,9 @@ public class Node implements Serializable {
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);
+                break;
+            case "bloodpressure":
+                askBP(questionNode, context, adapter);
                 break;
             case "date":
                 askDate(questionNode, context, adapter);
