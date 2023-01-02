@@ -49,7 +49,7 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitPendingFragment extends Fragment implements EndVisitCountsInterface {
+public class VisitPendingFragment extends Fragment {
     private RecyclerView recycler_today, recycler_week, recycler_month;
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
@@ -122,8 +122,9 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
         thisWeeks_Visits();
         thisMonths_Visits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+
         if (mlistener != null)
-            mlistener.pendingCount(totalCounts);
+            mlistener.pendingCount(totalCounts_month);   // To avoid duplicate counts.
     }
 
     private void visitData() {
@@ -757,12 +758,6 @@ public class VisitPendingFragment extends Fragment implements EndVisitCountsInte
             }
         });
 */
-    }
-
-    @Override
-    public int getPrescCount() {
-        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-        return totalCounts;
     }
 
     /**
