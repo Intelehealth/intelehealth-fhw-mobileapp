@@ -60,6 +60,7 @@ this.attributes = printAttributes;
             path.mkdirs();
         }
         File file = new File(path, filename);
+        if (file.exists()) file.delete();
         try {
             file.createNewFile();
             return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE);
