@@ -1193,7 +1193,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 });
 
                 AlertDialog alertDialog = physicalDialog.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -1297,7 +1302,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 //                historyDialog.show();
                 AlertDialog alertDialog = historyDialog.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -1403,7 +1413,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 //                famHistDialog.show();
                 AlertDialog alertDialog = famHistDialog.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
