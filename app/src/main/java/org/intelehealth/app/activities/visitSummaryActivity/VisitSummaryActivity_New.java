@@ -701,6 +701,35 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         pulseView.setText(pulse.getValue());
         spO2View.setText(spO2.getValue());
 
+        // temperature - start
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
+            }
+            if (obj.getBoolean("mCelsius")) {
+                tempcel.setVisibility(View.VISIBLE);
+                tempfaren.setVisibility(View.GONE);
+                tempView.setText(temperature.getValue());
+                Log.d("temp", "temp_C: " + temperature.getValue());
+            } else if (obj.getBoolean("mFahrenheit")) {
+                tempfaren.setVisibility(View.VISIBLE);
+                tempcel.setVisibility(View.GONE);
+                if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
+                    tempView.setText(convertCtoF(temperature.getValue()));
+                    Log.d("temp", "temp_F: " + tempView.getText().toString());
+                }
+            }
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        // temperature - end
+
+        jsonBasedPrescTitle();
         if (isRespiratory) {
             respiratoryText.setVisibility(View.VISIBLE);
             respiratory.setVisibility(View.VISIBLE);
@@ -1646,31 +1675,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
-        try {
-            JSONObject obj = null;
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
-            }
-            if (obj.getBoolean("mCelsius")) {
-                tempcel.setVisibility(View.VISIBLE);
-                tempfaren.setVisibility(View.GONE);
-                tempView.setText(temperature.getValue());
-                Log.d("temp", "temp_C: " + temperature.getValue());
-            } else if (obj.getBoolean("mFahrenheit")) {
-                tempfaren.setVisibility(View.VISIBLE);
-                tempcel.setVisibility(View.GONE);
-                if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
-                    tempView.setText(convertCtoF(temperature.getValue()));
-                    Log.d("temp", "temp_F: " + tempView.getText().toString());
-                }
-            }
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
 
         spO2View = findViewById(R.id.textView_pulseox_value);
         respiratory = findViewById(R.id.textView_respiratory_value);
