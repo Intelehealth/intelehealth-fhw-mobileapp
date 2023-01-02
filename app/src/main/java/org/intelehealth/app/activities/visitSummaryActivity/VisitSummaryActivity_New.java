@@ -5,21 +5,25 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -284,6 +288,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private ImageButton backArrow, priority_hint, refresh;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
     Button btnAppointment;
 
     @Override
@@ -1397,13 +1402,86 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // json based presc header - end
 
         downloadbtn.setOnClickListener(v -> {
+            checkPerm();
+        });
+    }
+
+    // permission code - start
+    private void checkPerm() {
+        if (checkAndRequestPermissions()) {
             try {
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        });
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    // permission code - end
 
     private void jsonBasedPrescTitle() {
         //Check for license key and load the correct config file
