@@ -154,7 +154,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     private boolean returning;
-    private ImageButton refresh;
+    private ImageButton refresh, cancelbtn;
     private NetworkUtils networkUtils;
 
     @Override
@@ -239,6 +239,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             startActivity(intent2);
         });
 
+        cancelbtn.setOnClickListener(v -> {
+            Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
+            startActivity(i);
+        });
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
@@ -422,6 +426,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     private void initUI() {
         refresh = findViewById(R.id.refresh);
+        cancelbtn = findViewById(R.id.cancelbtn);
 
         profile_image = findViewById(R.id.profile_image);
         name_txtview = findViewById(R.id.name_txtview);
