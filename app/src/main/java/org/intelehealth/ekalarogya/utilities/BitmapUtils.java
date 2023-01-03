@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.util.Log;
 
+import androidx.camera.core.ImageProxy;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 public class BitmapUtils {
 
@@ -226,4 +229,17 @@ public class BitmapUtils {
         return inSampleSize;
     }
 
+    public static Bitmap imageProxyToBitmap(ImageProxy image) {
+        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        buffer.rewind();
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.get(bytes);
+        byte[] clonedBytes = bytes.clone();
+        try {
+            return rotateImageIfRequired(clonedBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

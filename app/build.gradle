@@ -125,6 +125,13 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:common-java8:1.1.1"
+
+    def camerax_version = "1.1.0-beta01"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
-
