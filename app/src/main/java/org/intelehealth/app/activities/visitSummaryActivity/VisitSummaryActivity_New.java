@@ -67,6 +67,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,9 +88,11 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -245,7 +248,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView add_docs_title, vd_addnotes_value;
+    TextView add_docs_title, vd_addnotes_value, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
 
     TextView respiratory;
@@ -287,13 +290,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow, priority_hint, refresh;
+    private ImageButton backArrow, priority_hint, refresh, filter;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private static final int DIALOG_CAMERA_PERMISSION_REQUEST = 3000;
     private static final int DIALOG_GALLERY_PERMISSION_REQUEST = 4000;
     Button btnAppointment;
+    private FrameLayout filter_framelayout;
+    private View hl_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1579,6 +1584,42 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         downloadbtn.setOnClickListener(v -> {
             checkPerm();
         });
+
+        filter.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        reminder.setOnClickListener(v -> {
+            // filter options
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        incomplete_act.setOnClickListener(v -> {
+            // filter options
+            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
+            startActivity(intent);
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        archieved_notifi.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
     }
 
     // permission code - start
@@ -1846,6 +1887,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void initUI() {
         // textview - start
+        filter_framelayout = findViewById(R.id.filter_framelayout);
+        filter = findViewById(R.id.filter);
+
+        reminder = findViewById(R.id.reminder);
+        reminder.setText(getResources().getString(R.string.action_home));
+
+        incomplete_act = findViewById(R.id.incomplete_act);
+        incomplete_act.setText(getResources().getString(R.string.action_end_visit));
+
+        archieved_notifi = findViewById(R.id.archieved_notifi);
+        archieved_notifi.setVisibility(View.GONE);
+        hl_2 = findViewById(R.id.hl_2);
+        hl_2.setVisibility(View.GONE);
+
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
         profile_image = findViewById(R.id.profile_image);

@@ -21,11 +21,12 @@
 
         <TextView
             android:id="@+id/reminder"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/notifi_reminders"
             android:layout_marginBottom="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
+            android:layout_marginEnd="@dimen/margin_30"
             android:textColor="@color/header_title_color"/>
 
         <View
@@ -35,17 +36,20 @@
 
         <TextView
             android:id="@+id/incomplete_act"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/notifi_incompl_activity"
             android:layout_marginTop="@dimen/margin_12"
-            android:layout_marginBottom="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
+            android:layout_marginEnd="@dimen/margin_30"
             android:textColor="@color/header_title_color"/>
 
         <View
+            android:id="@+id/hl_2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+
+            android:layout_marginTop="@dimen/margin_12"
             android:background="@color/notifi_divider_color" />
 
         <TextView
@@ -56,6 +60,7 @@
             android:paddingEnd="@dimen/margin_50"
             android:layout_marginTop="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
+
             android:textColor="@color/header_title_color"/>
 
 

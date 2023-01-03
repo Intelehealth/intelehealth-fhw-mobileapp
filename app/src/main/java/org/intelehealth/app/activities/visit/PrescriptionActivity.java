@@ -57,6 +57,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -125,7 +126,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             vs_diagnosis_header_expandview, vs_medication_header_expandview,vs_adviceheader_expandview, vs_testheader_expandview,
             vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
-            mCHWname, drname, dr_age_gender, qualification, dr_speciality,
+            mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi,
             diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private SessionManager sessionManager;
@@ -151,7 +152,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     public static String prescription2;
     boolean hasLicense = false, isRespiratory = false;
     private static String mFileName = "config.json";
-    private ImageButton backArrow, refresh;
+    private ImageButton backArrow, refresh, filter;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
     ObsDTO complaint = new ObsDTO();
@@ -171,6 +172,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
+    private FrameLayout filter_framelayout;
+    private View hl_2;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     @Override
@@ -193,6 +196,20 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
     private void initUI() {
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        filter_framelayout = findViewById(R.id.filter_framelayout);
+        filter = findViewById(R.id.filter);
+
+        reminder = findViewById(R.id.reminder);
+        reminder.setText(getResources().getString(R.string.action_home));
+
+        incomplete_act = findViewById(R.id.incomplete_act);
+        incomplete_act.setText(getResources().getString(R.string.action_end_visit));
+
+        archieved_notifi = findViewById(R.id.archieved_notifi);
+        archieved_notifi.setVisibility(View.GONE);
+        hl_2 = findViewById(R.id.hl_2);
+        hl_2.setVisibility(View.GONE);
 
         patName_txt = findViewById(R.id.textView_name_value);
         profile_image = findViewById(R.id.profile_image);
@@ -394,6 +411,42 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // presc pdf downlaod - start
         downloadBtn.setOnClickListener(v -> {
             checkPerm();
+        });
+
+        filter.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        reminder.setOnClickListener(v -> {
+            // filter options
+            Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        incomplete_act.setOnClickListener(v -> {
+            // filter options
+            Intent intent = new Intent(PrescriptionActivity.this, EndVisitActivity.class);
+            startActivity(intent);
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+        archieved_notifi.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
         });
     }
 

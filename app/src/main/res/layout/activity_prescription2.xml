@@ -85,7 +85,7 @@
                 android:src="@drawable/download_icon_toolbar" />
 
             <ImageButton
-                android:id="@+id/cancelbtn"
+                android:id="@+id/filter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -1200,7 +1200,20 @@
             android:textSize="@dimen/common_button_text_size" />
 
     </LinearLayout>
-
     <!--Button - end -->
+
+    <FrameLayout
+        android:id="@+id/filter_framelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="@dimen/margin_45"
+        android:layout_alignParentEnd="true">
+
+        <include layout="@layout/notifi_filter_layout" />
+
+    </FrameLayout>
+
 
 </RelativeLayout>
