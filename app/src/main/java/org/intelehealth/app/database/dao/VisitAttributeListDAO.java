@@ -167,12 +167,12 @@ public class VisitAttributeListDAO {
      * @return
      */
     public static String fetchSpecialityValue(String visitUUID) {
-        String specialityValue = "";
+        String specialityValue = "No data found";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and voided = 0",
-                new String[]{visitUUID});
+        Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0",
+                new String[]{visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {

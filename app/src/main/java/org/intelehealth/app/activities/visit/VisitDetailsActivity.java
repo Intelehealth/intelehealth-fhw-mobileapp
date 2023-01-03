@@ -365,12 +365,15 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);
-        if (visit_speciality != null)
+        visit_speciality = fetchSpecialityValue(visitID);
+        visit_speciality_txt.setText(visit_speciality);
+
+       /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
         else {
             visit_speciality = fetchSpecialityValue(visitID);
             visit_speciality_txt.setText(visit_speciality);
-        }
+        }*/
         // speciality - end
 
         // follow up - start
