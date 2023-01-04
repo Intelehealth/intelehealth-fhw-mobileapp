@@ -351,6 +351,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
+                                android:visibility="gone"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
 
@@ -441,6 +442,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
+                                android:visibility="gone"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
 
@@ -622,6 +624,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
+                                android:visibility="gone"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
@@ -663,6 +666,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -705,6 +709,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -747,6 +752,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -790,6 +796,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -832,6 +839,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -874,6 +882,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />

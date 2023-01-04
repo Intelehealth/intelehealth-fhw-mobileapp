@@ -267,6 +267,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.setHouseholdUuid(houseHoldValue);
                 Intent i = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 i.putExtra("privacy", "Accept");
+                i.putExtra("newMember", "newMemberYes");
+                i.putExtra("address1", patient_new.getAddress1());
+                i.putExtra("postalCode", patient_new.getPostal_code());
                 startActivity(i);
             }
         });

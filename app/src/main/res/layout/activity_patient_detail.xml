@@ -651,7 +651,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/padding_card"
-                            android:visibility="gone"
                             app:cardCornerRadius="5dp"
                             app:cardElevation="2dp"
                             app:cardUseCompatPadding="true">

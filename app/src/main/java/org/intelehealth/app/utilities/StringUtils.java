@@ -3743,6 +3743,38 @@ public final class StringUtils {
                 default:
                     return val;
             }
+        } else if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "जनरल फिजिशियन":
+                    val = "General Physician";
+                    break;
+                case "न्यूरोलॉजिस्ट":
+                    val = "Neurologist";
+                    break;
+                case "नवजात रोग विशेषज्ञ":
+                    val = "Neonatologist";
+                    break;
+                case "इन्फेक्शनिस्ट":
+                    val = "Infectionist";
+                    break;
+                case "बालरोगतज्ञ":
+                    val = "Pediatrician";
+                    break;
+                case "फिजियोथेरेपिस्ट":
+                    val = "Physiotherapist";
+                    break;
+                case "हृदयरोगतज्ज्ञ":
+                    val = "Cardiologist";
+                    break;
+                case "स्त्रीरोगतज्ज्ञ":
+                    val = "Gynecologist";
+                    break;
+                case "त्वचारोगतज्ज्ञ":
+                    val = "Dermatologist";
+                    break;
+                default:
+                    return val;
+            }
         } else {
             return val;
         }
@@ -3778,6 +3810,38 @@ public final class StringUtils {
                     break;
                 case "Dermatologist":
                     val = "त्वचा रोग विशेषज्ञ";
+                    break;
+                default:
+                    return val;
+            }
+        } else if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "General Physician":
+                    val = "जनरल फिजिशियन";
+                    break;
+                case "Neurologist":
+                    val = "न्यूरोलॉजिस्ट";
+                    break;
+                case "Neonatologist":
+                    val = "नवजात रोग विशेषज्ञ";
+                    break;
+                case "Infectionist":
+                    val = "इन्फेक्शनिस्ट";
+                    break;
+                case "Pediatrician":
+                    val = "बालरोगतज्ञ";
+                    break;
+                case "Physiotherapist":
+                    val = "फिजियोथेरेपिस्ट";
+                    break;
+                case "Cardiologist":
+                    val = "हृदयरोगतज्ज्ञ";
+                    break;
+                case "Gynecologist":
+                    val = "स्त्रीरोगतज्ज्ञ";
+                    break;
+                case "Dermatologist":
+                    val = "त्वचारोगतज्ज्ञ";
                     break;
                 default:
                     return val;

@@ -109,7 +109,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
     CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV, makePaymentCV;
     TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected;
-    String paymentStatus = "";
+    String paymentStatus = "Paid";
     Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
     int total_amount = 0;
@@ -716,7 +716,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             return;
         }
         document.close();
-        Toast.makeText(this, "successfully pdf created", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.successfully_pdf_created), Toast.LENGTH_SHORT).show();
     }
 
     private void openPdf(String path) {

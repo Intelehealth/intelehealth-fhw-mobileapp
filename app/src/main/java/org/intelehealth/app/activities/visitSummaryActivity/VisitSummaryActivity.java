@@ -1858,6 +1858,54 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 items.set(i,"त्वचा रोग विशेषज्ञ");
             }
         }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+        {
+            if(items.contains("General Physician"))
+            {
+                int i = items.indexOf("General Physician");
+                items.set(i,"जनरल फिजिशियन");
+            }
+            if(items.contains("Neurologist"))
+            {
+                int i = items.indexOf("Neurologist");
+                items.set(i,"न्यूरोलॉजिस्ट");
+            }
+            if(items.contains("Neonatologist"))
+            {
+                int i = items.indexOf("Neonatologist");
+                items.set(i,"नवजात रोग विशेषज्ञ");
+            }
+            if(items.contains("Infectionist"))
+            {
+                int i = items.indexOf("Infectionist");
+                items.set(i,"इन्फेक्शनिस्ट");
+            }
+            if(items.contains("Pediatrician"))
+            {
+                int i = items.indexOf("Pediatrician");
+                items.set(i,"बालरोगतज्ञ");
+            }
+            if(items.contains("Physiotherapist"))
+            {
+                int i = items.indexOf("Physiotherapist");
+                items.set(i,"फिजियोथेरेपिस्ट");
+            }
+            if(items.contains("Cardiologist"))
+            {
+                int i = items.indexOf("Cardiologist");
+                items.set(i,"हृदयरोगतज्ज्ञ");
+            }
+            if(items.contains("Gynecologist"))
+            {
+                int i = items.indexOf("Gynecologist");
+                items.set(i,"स्त्रीरोगतज्ज्ञ");
+            }
+            if(items.contains("Dermatologist"))
+            {
+                int i = items.indexOf("Dermatologist");
+                items.set(i,"त्वचारोगतज्ज्ञ");
+            }
+        }
     }
 
     /**

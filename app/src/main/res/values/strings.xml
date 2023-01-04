@@ -943,4 +943,5 @@
     <string name="aadhar_number_details">Aadhar Card Number</string>
     <string name="abdominal_girth_vitals">Abdominal Girth (inches)</string>
     <string name="make_payment">Make Payment</string>
+    <string name="successfully_pdf_created">PDF Successfully Created!!</string>
 </resources>

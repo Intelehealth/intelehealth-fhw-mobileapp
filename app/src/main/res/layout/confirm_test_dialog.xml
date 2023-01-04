@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:enabled="false"
+        android:visibility="gone"
         android:text="@string/blood_glucose_non_fasting" />
 
     <com.google.android.material.checkbox.MaterialCheckBox

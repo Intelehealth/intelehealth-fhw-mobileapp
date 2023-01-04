@@ -233,7 +233,6 @@
                             <RadioButton
                                 android:id="@+id/identification_gender_other"
                                 android:layout_width="wrap_content"
-                                android:visibility="gone"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/female_icon"
@@ -657,6 +656,7 @@
                                 android:imeOptions="actionUnspecified"
                                 android:maxLength="25"
                                 android:maxLines="1"
+                                android:inputType="phone"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 

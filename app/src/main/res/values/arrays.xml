@@ -7,7 +7,7 @@
 <!--        <item>ଓଡିଆ</item>-->
 <!--        <item>తెలుగు</item>-->
 <!--        <item>ગુજરાતી</item>-->
-<!--        <item>मराठी</item>-->
+        <item>मराठी</item>
 <!--        <item>ಕನ್ನಡ</item>-->
 <!--        <item>অসমীয়া</item>-->
 <!--        <item>മലയാളം</item>-->
@@ -24,7 +24,7 @@
 <!--        <item>or</item>-->
 <!--        <item>te</item>-->
 <!--        <item>gu</item>-->
-<!--        <item>mr</item>-->
+        <item>mr</item>
 <!--        <item>kn</item>-->
 <!--        <item>as</item>-->
 <!--        <item>ml</item>-->
@@ -39,6 +39,7 @@
         <item>Select Specialization</item>
         <item>General Physician</item>
     </string-array>
+
 
     <string-array name="speciality_value_hindi">
         <item>स्पेशलाइज़ेशन चुनिए</item>
@@ -73,6 +74,13 @@
 
     <string-array name="countries_hi">
         <item>देश चुनें</item>
+        <item>India</item>
+        <!--        <item>United States</item>-->
+        <!--        <item>Philippines</item>-->
+    </string-array>
+
+    <string-array name="countries_mr">
+        <item>देश निवडा</item>
         <item>India</item>
         <!--        <item>United States</item>-->
         <!--        <item>Philippines</item>-->
@@ -416,6 +424,39 @@
 
     <string-array name="states_india_hi">
         <item>राज्य चुनें</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_india_mr">
+        <item>राज्य निवडा</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>

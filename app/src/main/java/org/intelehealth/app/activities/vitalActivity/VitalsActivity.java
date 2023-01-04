@@ -35,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -1562,7 +1563,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getWeight());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1574,7 +1574,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getPulse());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1586,7 +1585,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getBpsys());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1598,7 +1596,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getBpdia());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1610,7 +1607,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getTemperature());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1622,7 +1618,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getResp());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1634,7 +1629,6 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1744,35 +1738,30 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     private String ConvertFtoC(String temperature) {
+        if (temperature != null && temperature.length() > 0) {
+            //This new code has been added as previous throwing errors for Marathi language: By Nishita
+            String resultVal;
+            NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+            double a = Double.parseDouble(temperature);
+            double b = ((a - 32) * 5 / 9);
+            resultVal = nf.format(b);
+            return resultVal;
 
-        if(temperature != null && temperature.length() > 0) {
-            String result = "";
-            double fTemp = Double.parseDouble(temperature);
-            double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-            DecimalFormat dtime = new DecimalFormat("#.##");
-            cTemp = Double.parseDouble(dtime.format(cTemp));
-            result = String.valueOf(cTemp);
-            return result;
         }
         return "";
-
     }
-
     private String convertCtoF(String temperature) {
 
-        String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        b = Double.parseDouble(dtime.format(b));
-
-        result = String.valueOf(b);
-        return result;
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
 
     }
-
     @Override
     public void onBackPressed() {
     }
