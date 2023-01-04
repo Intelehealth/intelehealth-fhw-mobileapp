@@ -134,7 +134,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setTitle(getResources().getString(R.string.wash_hands));
         LayoutInflater factory = LayoutInflater.from(this);
@@ -151,7 +151,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         //alertDialog.show();
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));*/
         //pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         selectedExamsList = new ArrayList<>();

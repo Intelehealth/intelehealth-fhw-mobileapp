@@ -962,6 +962,7 @@
     <string name="total_cholesterol_calibration">कुल कोलेस्ट्रॉल अंशांकन</string>
     <string name="blood_glucose_non_fasting">रक्त ग्लूकोज (गैर-उपवास)</string>
     <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>
+    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>
     <string name="blood_glucose_post_prandial">रक्त ग्लूकोज (पोस्ट-प्रांडियल)</string>
     <string name="blood_glucose_fasting">रक्त ग्लूकोज (उपवास)</string>
     <string name="haemoglobin">हीमोग्लोबिन (मिलीग्राम / डीएल)</string>
