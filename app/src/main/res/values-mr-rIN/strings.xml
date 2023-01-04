@@ -938,5 +938,7 @@
     <string name="abdominal_girth_vitals">पोटाचा घेर (इंच)</string>
     <string name="make_payment">पेमेंट करा</string>
     <string name="successfully_pdf_created">PDF यशस्वीरित्या तयार केली!!</string>
+    <string name="hba1c">HbA1c (%)</string>
+
 
 </resources>

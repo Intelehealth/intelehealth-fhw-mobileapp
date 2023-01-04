@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:enabled="false"
-        android:text="@string/blood_glucose_fasting" />
+        android:text="@string/hba1c" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/glucose_ppn_CB"
@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:enabled="false"
+        android:visibility="gone"
         android:text="@string/blood_glucose_post_prandial" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
@@ -58,6 +59,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:enabled="false"
+        android:visibility="gone"
         android:text="@string/uric_acid" />
 
 

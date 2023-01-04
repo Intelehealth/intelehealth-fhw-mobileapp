@@ -309,7 +309,7 @@
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
                         android:minLines="2"
-                        android:text="@string/blood_glucose_fasting"
+                        android:text="@string/hba1c"
                         android:textSize="14sp" />
 
                     <TextView

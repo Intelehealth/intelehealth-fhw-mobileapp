@@ -494,7 +494,9 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow
+                        android:visibility="gone"
+                        >
 
                         <TextView
                             android:id="@+id/textView_glucose_post_prandial"
@@ -523,7 +525,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/blood_glucose_fasting"
+                            android:text="@string/hba1c"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -557,7 +559,8 @@
                     </TableRow>
 
                     <!--Uric Acid-->
-                    <TableRow>
+                    <TableRow
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textView_uricAcid"

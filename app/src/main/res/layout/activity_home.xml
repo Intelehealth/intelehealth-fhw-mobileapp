@@ -43,6 +43,50 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview_newpat"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="16dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_new_patient"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="TODO"
+                                app:srcCompat="@drawable/ic_add_patient" />
+
+                            <TextView
+                                android:id="@+id/newPatients_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/iv_new_patient"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="@font/lato_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/title_activity_identification"
+                                android:textAlignment="center"
+                                android:textSize="20sp" />
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_find_patient"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -86,6 +130,13 @@
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_today_patient"
@@ -144,14 +195,6 @@
                     </androidx.cardview.widget.CardView>
 
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_active_patients"
                         android:layout_width="0dp"
@@ -206,6 +249,13 @@
 
                     </androidx.cardview.widget.CardView>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_video_libraby"
                         android:layout_width="0dp"
@@ -249,13 +299,6 @@
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_help_whatsapp"
@@ -303,6 +346,13 @@
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
                     <androidx.cardview.widget.CardView
                         android:id="@+id/btnFollowUp"
                         android:layout_width="0dp"
@@ -342,77 +392,6 @@
                                 android:text="@string/title_follow_up"
                                 android:textAlignment="center"
                                 android:textSize="20sp" />
-
-                        </RelativeLayout>
-
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/manualsyncbutton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:padding="16dp"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="5dp"
-                        app:cardUseCompatPadding="true">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:id="@+id/iv_sync"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_centerHorizontal="true"
-                                android:contentDescription="TODO"
-                                app:srcCompat="@drawable/ic_sync" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/iv_sync"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="16dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/lastsynctextview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_margin="8dp"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:includeFontPadding="false"
-                                    android:text="@string/lastsync"
-                                    android:textAlignment="center"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:id="@+id/lastsyncago"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:includeFontPadding="false"
-                                    android:textSize="14sp"
-                                    android:visibility="gone"
-                                    tools:text="2 hours ago"
-                                    tools:visibility="visible" />
-
-                            </LinearLayout>
 
                         </RelativeLayout>
 
@@ -464,7 +443,68 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/manualsyncbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="16dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_sync"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="TODO"
+                            app:srcCompat="@drawable/ic_sync" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_sync"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/lastsynctextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="8dp"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:text="@string/lastsync"
+                                android:textAlignment="center"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/lastsyncago"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:textSize="14sp"
+                                android:visibility="gone"
+                                tools:text="2 hours ago"
+                                tools:visibility="visible" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
                 <!--<androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"
                     android:layout_width="match_parent"
