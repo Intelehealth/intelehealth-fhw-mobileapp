@@ -141,7 +141,9 @@ public class SyncUtils {
      * Clicking on this btn will start Sync.
      * @param view Refresh button view.
      */
-    public static void syncNow(Context context, View view, ObjectAnimator syncAnimator) {
+    public static boolean syncNow(Context context, View view, ObjectAnimator syncAnimator) {
+        boolean isSynced = false;
+
         syncAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setInterpolator(new LinearInterpolator());
 
@@ -150,6 +152,7 @@ public class SyncUtils {
             syncAnimator.start();
             new SyncUtils().syncBackground();
 
+            isSynced = true;
             new Handler(Looper.getMainLooper())
                     .postDelayed(new Runnable() {
                         @Override
@@ -160,9 +163,11 @@ public class SyncUtils {
 
         }
         else {
+            isSynced = false;
             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
         }
 
+        return isSynced;
     }
 
 }

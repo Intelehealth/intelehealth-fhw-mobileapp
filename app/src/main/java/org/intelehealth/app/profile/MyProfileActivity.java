@@ -1,8 +1,10 @@
 package org.intelehealth.app.profile;
 
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -117,15 +120,22 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     int MY_REQUEST_CODE = 5555;
     TextView tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
     NetworkUtils networkUtils;
-    ImageView ivIsInternet;
+    ImageView ivIsInternet, refresh;
+    private ObjectAnimator syncAnimator;
+    private boolean isSynced = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_ui2);
 
-        networkUtils = new NetworkUtils(MyProfileActivity.this, this);
+        // Status Bar color -> White
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
 
+        networkUtils = new NetworkUtils(MyProfileActivity.this, this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -147,6 +157,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(this);
         View toolbar = findViewById(R.id.toolbar_common);
+        refresh = toolbar.findViewById(R.id.imageview_is_internet_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
 
@@ -161,6 +172,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
         tvTitle.setText(getResources().getString(R.string.my_profile));
 
+        refresh.setOnClickListener(v -> {
+            isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
+            if (isSynced)
+                fetchUserDetailsIfAdded();
+          //  Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+        });
 
         //initialize all input fields
 
