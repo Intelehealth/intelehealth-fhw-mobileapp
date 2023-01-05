@@ -1447,10 +1447,17 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 } else {
                     followUpDate = value;
                 }
-              /*  if (followUpDateCard.getVisibility() != View.VISIBLE) {
-                    followUpDateCard.setVisibility(View.VISIBLE);
+                if (followup_date_block.getVisibility() != View.VISIBLE) {
+                    followup_date_block.setVisibility(View.VISIBLE);
                 }
-                followUpDateTextView.setText(followUpDate);*/
+                if (no_followup_txt.getVisibility() == View.VISIBLE) {
+                    no_followup_txt.setVisibility(View.GONE);
+                }
+
+                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "dd-MM-yyyy", "dd MMMM,yyyy");
+                followup_date_txt.setText(followUpDate_format);
+                followup_subtext.setText("The doctor suggested a follow-up visit on " +
+                        followUpDate_format + ". Does the patient want to take a follow-up visit?");
                 //checkForDoctor();
                 break;
             }
