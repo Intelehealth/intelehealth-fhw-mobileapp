@@ -47,8 +47,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
             String dob = patinet.getDateofbirth();
-            String body = context.getString(R.string.identification_screen_prompt_dob) + " " + dob +
-                    "\n" + context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
             if (patinet.getOpenmrsId() != null)
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()

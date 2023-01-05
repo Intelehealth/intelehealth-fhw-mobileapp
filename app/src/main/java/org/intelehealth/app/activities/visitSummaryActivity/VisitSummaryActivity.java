@@ -752,7 +752,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
-            generateBillBtn.setVisibility(View.VISIBLE);
+//            generateBillBtn.setVisibility(View.VISIBLE);
         }
 
         //spinner is being populated with the speciality values...
@@ -775,6 +775,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
+            speciality_spinner.setSelection(9);
+            speciality_spinner.setEnabled(false);
+
         } else {
             stringArrayAdapter =
                     new ArrayAdapter<String>
@@ -783,7 +786,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
 
-        if (special_value != null) {
+        if (special_value != null && !special_value.equalsIgnoreCase("EMPTY")) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
         } else {
@@ -880,9 +883,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
-            card_share.setVisibility(View.VISIBLE);
+            /*card_share.setVisibility(View.VISIBLE);
             card_print.setVisibility(View.VISIBLE);
-            generateBillBtn.setVisibility(View.VISIBLE);
+            generateBillBtn.setVisibility(View.VISIBLE);*/
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -934,8 +937,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
-                        downloadButton.setVisibility(View.VISIBLE);
-                        generateBillBtn.setVisibility(View.VISIBLE);
+                        /*downloadButton.setVisibility(View.VISIBLE);
+                        generateBillBtn.setVisibility(View.VISIBLE);*/
                     }
 
 
@@ -1024,9 +1027,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
-                                        generateBillBtn.setVisibility(View.VISIBLE);
+//                                        generateBillBtn.setVisibility(View.VISIBLE);
                                     }
-
+                                    endVisit();
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +
                                             getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
@@ -1806,7 +1809,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
-        getAppointmentDetails(visitUuid);
+//        getAppointmentDetails(visitUuid);
     }
 
     private void translateSpecialities(List<String> items) {
@@ -4322,9 +4325,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     editMedHist.setVisibility(View.GONE);
                     editAddDocs.setVisibility(View.GONE);
                     uploadButton.setVisibility(View.GONE);
-                    card_print.setVisibility(View.VISIBLE);
+                    /*card_print.setVisibility(View.VISIBLE);
                     card_share.setVisibility(View.VISIBLE);
-                    generateBillBtn.setVisibility(View.VISIBLE);
+                    generateBillBtn.setVisibility(View.VISIBLE);*/
                 }
             }
 
@@ -4469,7 +4472,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     default:
                 }
                 obsCursor.close();
-                addDownloadButton();
+//                addDownloadButton();
                 //if any obs  found then end the visit
                 //endVisit();
 
@@ -4704,7 +4707,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //}
 
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+//                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
                         } else {
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
 
@@ -4769,7 +4772,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SCHEDULE_LISTING_INTENT) {
-            getAppointmentDetails(visitUuid);
+//            getAppointmentDetails(visitUuid);
         }
     }
 
