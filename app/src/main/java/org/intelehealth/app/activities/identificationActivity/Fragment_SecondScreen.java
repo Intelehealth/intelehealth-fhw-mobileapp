@@ -252,7 +252,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         //city
         cityAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.city));
+                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.navi_mumbai_city));
         mCityNameSpinner.setAdapter(cityAdapter);
 
         // Setting up the screen when user came from SEcond screen.
@@ -308,10 +308,10 @@ public class Fragment_SecondScreen extends Fragment {
                     String district = adapterView.getItemAtPosition(i).toString();
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-                    if (!fromThirdScreen || fromFirstScreen) {
+                 //   if (!fromThirdScreen || fromFirstScreen) {
                         if (district.matches("Navi Mumbai")) {
                             ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                    R.array.city, android.R.layout.simple_spinner_dropdown_item);
+                                    R.array.navi_mumbai_city, android.R.layout.simple_spinner_dropdown_item);
                             mCityNameSpinner.setAdapter(cityAdapter);
 
                             // setting state according database when user clicks edit details
@@ -320,10 +320,19 @@ public class Fragment_SecondScreen extends Fragment {
                             else
                                 mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
 
-                        } else {
-                            // show errro msg
+                        } else if (district.matches("Kurla")){
+                            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                    R.array.kurla_city, android.R.layout.simple_spinner_dropdown_item);
+                            mCityNameSpinner.setAdapter(cityAdapter);
+
+                            // setting state according database when user clicks edit details
+                            if (fromThirdScreen || fromFirstScreen)
+                                mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
+                            else
+                                mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
+
                         }
-                    }
+              //      }
                 }
 
             }
@@ -356,7 +365,13 @@ public class Fragment_SecondScreen extends Fragment {
                             mDistrictNameSpinner.setSelection(districtAdapter.getPosition("Select"));
 
                     } else {
+                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.select, android.R.layout.simple_spinner_dropdown_item);
+                        mDistrictNameSpinner.setAdapter(districtAdapter);
 
+                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.select, android.R.layout.simple_spinner_dropdown_item);
+                        mCityNameSpinner.setAdapter(cityAdapter);
                     }
                 }
 

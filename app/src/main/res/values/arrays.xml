@@ -66,14 +66,18 @@
         <item>Navi Mumbai</item>
     </string-array>
 
-    <string-array name="city">
+    <string-array name="navi_mumbai_city">
+        <item>Select</item>
+        <item>Airoli</item>
+        <item>Ghansoli</item>
+        <item>Rabale</item>
+    </string-array>
+
+    <string-array name="kurla_city">
         <item>Select</item>
         <item>Thane</item>
         <item>Mulund</item>
         <item>Bhandup</item>
-        <item>Airoli</item>
-        <item>Ghansoli</item>
-        <item>Rabale</item>
     </string-array>
 
 
@@ -81,6 +85,7 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
+
     <string-array name="countries">
 <!--        <item>Select Country</item>-->
         <item>Select</item>
@@ -612,6 +617,10 @@
 
     <string-array name="location_district">
         <item>Select District</item>
+    </string-array>
+
+    <string-array name="select">
+        <item>Select</item>
     </string-array>
 
     <string-array name="location_sanch">

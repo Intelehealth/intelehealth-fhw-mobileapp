@@ -243,7 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
-                        android:entries="@array/city"
+                        android:entries="@array/navi_mumbai_city"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
