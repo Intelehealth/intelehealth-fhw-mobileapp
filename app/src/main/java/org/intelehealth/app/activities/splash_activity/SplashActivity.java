@@ -43,16 +43,13 @@ import java.util.Locale;
 public class SplashActivity extends AppCompatActivity {
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     SessionManager sessionManager = null;
-    //    ProgressDialog TempDialog;
-    //int i = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_activity);
-//        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
-        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
@@ -61,9 +58,11 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
         initFirebaseRemoteConfig();
+
     }
 
     private void initFirebaseRemoteConfig() {
@@ -131,39 +130,6 @@ public class SplashActivity extends AppCompatActivity {
                 }, 2000);
             }
         }
-       /* PermissionListener permissionlistener = new PermissionListener() {
-
-            @Override
-            public void onPermissionGranted() {
-//                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-//                Timer t = new Timer();
-//                t.schedule(new splash(), 2000);
-
-//                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
-//                TempDialog.setMessage("Data migrating...");
-//                TempDialog.setCancelable(false);
-//                TempDialog.setProgress(i);
-//                TempDialog.show();
-
-
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(SplashActivity.this, getString(R.string.permission_denied) + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        };
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage(R.string.reject_permission_results)
-                .setPermissions(*//*Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,*//*
-                        Manifest.permission.GET_ACCOUNTS,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check();*/
     }
 
     @Override
@@ -188,8 +154,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private void showPermissionDeniedAlert(String[] permissions) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.reject_permission_results);
         alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
             @Override
@@ -211,10 +175,7 @@ public class SplashActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
         positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
         negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
@@ -286,7 +247,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-//        TempDialog.dismiss();
         super.onDestroy();
     }
 
