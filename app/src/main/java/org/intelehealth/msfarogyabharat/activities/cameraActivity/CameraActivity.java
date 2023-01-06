@@ -3,14 +3,13 @@ package org.intelehealth.msfarogyabharat.activities.cameraActivity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,30 +20,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.core.TorchState;
-import androidx.camera.extensions.HdrImageCaptureExtender;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.databinding.ActivityCameraBinding;
+import org.intelehealth.msfarogyabharat.utilities.BitmapUtils;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import org.intelehealth.msfarogyabharat.R;
-import org.intelehealth.msfarogyabharat.app.AppConstants;
-import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
-import org.intelehealth.msfarogyabharat.utilities.BitmapUtils;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -77,6 +75,11 @@ public class CameraActivity extends AppCompatActivity {
     //private CameraView mCameraView;
     private FloatingActionButton mFab;
 
+    private static final int[] FLASH_OPTIONS = {ImageCapture.FLASH_MODE_AUTO, ImageCapture.FLASH_MODE_ON, ImageCapture.FLASH_MODE_OFF};
+    private static final int[] FLASH_ICONS = {R.drawable.ic_flash_auto, R.drawable.ic_flash_on, R.drawable.ic_flash_off};
+    private static final int[] FLASH_TITLES = {R.string.flash_auto, R.string.flash_off, R.string.flash_on,};
+    private int mCurrentFlash = 0;
+
     private Handler mBackgroundHandler;
 
     //Pass Custom File Name Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Image Name");
@@ -85,6 +88,11 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
+
+    private ActivityCameraBinding binding;
+    private ImageCapture imageCapture = null;
+    private CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+    private ProcessCameraProvider cameraProvider;
 
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
@@ -223,17 +231,16 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityCameraBinding.inflate(getLayoutInflater());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey(SET_IMAGE_NAME))
-                mImageName = extras.getString(SET_IMAGE_NAME);
+            if (extras.containsKey(SET_IMAGE_NAME)) mImageName = extras.getString(SET_IMAGE_NAME);
             if (extras.containsKey(SHOW_DIALOG_MESSAGE))
                 mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
-            if (extras.containsKey(SET_IMAGE_PATH))
-                mFilePath = extras.getString(SET_IMAGE_PATH);
+            if (extras.containsKey(SET_IMAGE_PATH)) mFilePath = extras.getString(SET_IMAGE_PATH);
         }
-        setContentView(R.layout.activity_camera);
+        setContentView(binding.getRoot());
         mPreviewView = findViewById(R.id.previewView);
         mFab = findViewById(R.id.take_picture);
 
@@ -245,12 +252,18 @@ public class CameraActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(false);
 
         }
+
+        if (isCameraPermissionGranted()) {
+            startCamera();
+            binding.takePicture.setOnClickListener(view -> takePhoto());
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_PERMISSIONS);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
     }
 
 
@@ -263,158 +276,88 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_flash) {
-            if (mCamera.getCameraInfo().hasFlashUnit()) {
-                mCamera.getCameraControl().enableTorch(!isTorchOn());
-                if (!isTorchOn()) {
-                    item.setTitle(getString(R.string.flash_off));
-                    item.setIcon(R.drawable.ic_flash_off);
-                } else {
-                    item.setTitle(getString(R.string.flash_on));
-                    item.setIcon(R.drawable.ic_flash_on);
-                }
-            }
-
+            mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+            item.setTitle(FLASH_TITLES[mCurrentFlash]);
+            item.setIcon(FLASH_ICONS[mCurrentFlash]);
+            imageCapture.setFlashMode(FLASH_OPTIONS[mCurrentFlash]);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean isTorchOn() {
-        if (mCamera == null) {
-            return false;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == AppConstants.CAMERA_PERMISSIONS) {
+            if (isCameraPermissionGranted()) {
+                startCamera();
+            } else {
+                Toast.makeText(CameraActivity.this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+            }
         }
-        return mCamera.getCameraInfo().getTorchState().getValue() == TorchState.ON;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    private boolean isCameraPermissionGranted() {
+        return ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void startCamera() {
         if (mDialogMessage != null) {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                    .setMessage(mDialogMessage)
-                    .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this).setMessage(mDialogMessage).setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             AlertDialog dialog = builder.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
         }
-        /*if (mCameraView != null)
-            mCameraView.start();*/
+
         final ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
-        cameraProviderFuture.addListener(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindPreview(cameraProvider);
-
-                } catch (ExecutionException | InterruptedException e) {
-                    // No errors need to be handled for this Future.
-                    // This should never be reached.
-                }
+        cameraProviderFuture.addListener(() -> {
+            try {
+                cameraProvider = cameraProviderFuture.get();
+                bindPreview(cameraProvider);
+            } catch (ExecutionException | InterruptedException e) {
+                // No errors need to be handled for this Future.
+                // This should never be reached.
             }
         }, ContextCompat.getMainExecutor(this));
     }
 
     void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
-        Log.d(TAG, "bindPreview ");
-        Preview preview = new Preview.Builder()
+        Preview preview = new Preview.Builder().build();
+        preview.setSurfaceProvider(binding.previewView.getSurfaceProvider());
+
+        imageCapture = new ImageCapture
+                .Builder()
                 .build();
 
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build();
+        CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
 
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .build();
+        try {
+            cameraProvider.unbindAll();
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+        } catch (Exception ignored) {
 
-        ImageCapture.Builder builder = new ImageCapture.Builder();
-
-        //Vendor-Extensions (The CameraX extensions dependency in build.gradle)
-        HdrImageCaptureExtender hdrImageCaptureExtender = HdrImageCaptureExtender.create(builder);
-
-        // Query if extension is available (optional).
-        if (hdrImageCaptureExtender.isExtensionAvailable(cameraSelector)) {
-            // Enable the extension if available.
-            hdrImageCaptureExtender.enableExtension(cameraSelector);
         }
-
-        final ImageCapture imageCapture = builder
-                .setTargetRotation(this.getWindowManager().getDefaultDisplay().getRotation())
-                .setFlashMode(ImageCapture.FLASH_MODE_AUTO)
-                .build();
-
-        preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
-        cameraProvider.unbindAll();
-        mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis, imageCapture);
-
-
-        if (mFab != null) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (mImageName == null) {
-                        mImageName = "IMG";
-                    }
-
-                    final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath+"/") + mImageName + ".jpg";
-
-
-                    File file = new File(filePath);
-
-                    ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
-                    imageCapture.takePicture(outputFileOptions, executor, new ImageCapture.OnImageSavedCallback() {
-                        @Override
-                        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(CameraActivity.this, getResources().getString(R.string.image_saved), Toast.LENGTH_SHORT).show();
-                                    compressImageAndSave(filePath);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError(@NonNull ImageCaptureException error) {
-                            error.printStackTrace();
-                        }
-                    });
-
-                }
-            });
-        }
-
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setMessage(getString(R.string.permission_camera_rationale))
-                .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                });
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this).setMessage(getString(R.string.permission_camera_rationale)).setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                request.proceed();
+            }
+        }).setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                request.cancel();
+            }
+        });
         AlertDialog dialog = builder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
     }
@@ -427,6 +370,33 @@ public class CameraActivity extends AppCompatActivity {
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     void showNeverAskForCamera() {
         Toast.makeText(this, getString(R.string.permission_camera_never_askagain), Toast.LENGTH_SHORT).show();
+    }
+
+    private void takePhoto() {
+        if (imageCapture == null) return;
+
+        //file....
+        if (mImageName == null) {
+            mImageName = "IMG";
+        }
+
+        final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath) + File.separator + mImageName + ".jpg";
+
+        ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(new File(filePath)).build();
+
+        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), new ImageCapture.OnImageSavedCallback() {
+            @Override
+            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                if (outputFileResults.getSavedUri() != null) {
+                    compressImageAndSave(outputFileResults.getSavedUri().getPath());
+                }
+            }
+
+            @Override
+            public void onError(@NonNull ImageCaptureException exception) {
+
+            }
+        });
     }
 
     private Handler getBackgroundHandler() {
