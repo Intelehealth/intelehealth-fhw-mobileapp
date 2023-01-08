@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -43,7 +44,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,32 +101,30 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         //toolbar views
-        //toolbarET = findViewById(R.id.toolbar_ET);
+        toolbarET = findViewById(R.id.toolbar_ET);
         toolbarClear = findViewById(R.id.toolbar_clear);
         toolbarSearch = findViewById(R.id.toolbar_search);
-       toolbarFilter = findViewById(R.id.toolbar_filter);
+        toolbarFilter = findViewById(R.id.toolbar_filter);
 
-     /*   toolbarET.addTextChangedListener(new TextWatcher() {
+        toolbarET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                toolbarClear.setVisibility(View.VISIBLE);
-                toolbarSearch.setVisibility(View.VISIBLE);
+                if (TextUtils.isEmpty(s.toString())) {
+                    toolbarSearch.setVisibility(View.GONE);
+                    toolbarClear.setVisibility(View.GONE);
+                } else {
+                    toolbarSearch.setVisibility(View.VISIBLE);
+                    toolbarClear.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if (toolbarET.getText().toString().isEmpty()){
-                    toolbarET.clearFocus();
-                    toolbarClear.setVisibility(View.GONE);
-                    toolbarSearch.setVisibility(View.GONE);
-                    toolbarET.notify();
-                    firstQuery();
-                }
             }
 
-        });*/
+        });
         toolbarClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,12 +151,12 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
 
-        toolbarFilter.setOnClickListener(new View.OnClickListener() {
+        /*toolbarFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 displaySingleSelectionDialog();
             }
-        });
+        });*/
 
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
@@ -170,14 +172,6 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -296,7 +290,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             Logger.logE("firstquery", "exception", e);
         }
     }
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
@@ -348,7 +342,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     /**
      * This method is called when no search result is found for patient.
@@ -543,10 +537,26 @@ public class SearchPatientActivity extends AppCompatActivity {
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+
         Log.d("patientUUID_list", "list: "+ patientUUID_List.toString());
+
+        if(isValidDate(search))
+        {
+            SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = format1.parse(search);
+                search = format2.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
-                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
+                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' OR date_of_birth LIKE '%" + search + "%'" + "ORDER BY first_name ASC",
                         new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
@@ -570,7 +580,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         }
         else {
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' OR date_of_birth LIKE '%" + search + "%'" + "ORDER BY first_name ASC",
                     null);
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
@@ -723,6 +733,17 @@ private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
     }
 }
 

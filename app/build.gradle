@@ -15,7 +15,7 @@ android {
         enabled = true
     }
     defaultConfig {
-        applicationId "org.intelehealth.app"
+        applicationId "com.smartcaredoc.app"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

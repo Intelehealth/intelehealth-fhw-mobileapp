@@ -90,6 +90,7 @@
     <string name="identification_screen_checkbox_female">स्त्री</string>
     <string name="identification_screen_checkbox_other">इतर</string>
     <string name="identification_screen_prompt_birthday">जन्म तारीख*</string>
+    <string name="identification_screen_prompt_dob">जन्म तारीख:</string>
     <string name="identification_screen_prompt_age">वय: *</string>
     <string name="identification_screen_prompt_time">वेळः</string>
     <string name="identification_screen_prompt_city">गाव / नगर / शहर *</string>

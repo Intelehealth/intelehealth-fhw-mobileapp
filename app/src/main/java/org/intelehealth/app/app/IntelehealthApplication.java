@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 import com.rt.printerlibrary.printer.RTPrinter;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
@@ -113,7 +115,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
     }
 

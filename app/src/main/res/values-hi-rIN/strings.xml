@@ -89,6 +89,7 @@
     <string name="identification_screen_checkbox_female">महिला</string>
     <string name="identification_screen_checkbox_other">अन्य</string>
     <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>
+    <string name="identification_screen_prompt_dob">जन्म की तारीख:</string>
     <string name="identification_screen_prompt_age">उम्र:</string>
     <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
     <string name="identification_screen_prompt_state">राज्य *</string>
