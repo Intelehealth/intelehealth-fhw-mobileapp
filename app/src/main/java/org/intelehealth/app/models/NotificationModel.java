@@ -26,6 +26,7 @@ public class NotificationModel {
     private String date_of_birth;
     private String followupDate;
     private String openmrsID;
+    private String isDeleted;
 
     // firstname and lastname not in table bt just fetched to store value before storing in desc table.
 
@@ -179,5 +180,13 @@ public class NotificationModel {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

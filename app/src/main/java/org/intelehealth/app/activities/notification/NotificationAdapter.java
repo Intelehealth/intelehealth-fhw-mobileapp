@@ -114,7 +114,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             delete_imgview = itemView.findViewById(R.id.delete_imgview);
             open_presc_btn = itemView.findViewById(R.id.open_presc_btn);
 
-            search_name.setOnTouchListener(new OnSwipeTouchListener(context) {
+            scroll_relative.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override
                 public void onSwipeLeft() {
                     super.onSwipeLeft();

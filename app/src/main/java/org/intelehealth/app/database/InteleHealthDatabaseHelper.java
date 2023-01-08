@@ -55,11 +55,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
      * This will maintain all the types of notifications and its data.
      */
     public static final String CREATE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS tbl_notifications (" +
-            "patientuuid TEXT UNIQUE," +
-            "description TEXT," +
-            "obs_server_modified_date TEXT," +
+            "uuid TEXT PRIMARY KEY," +
+            "description TEXT UNIQUE," +
             "notification_type TEXT," +
-            "sync TEXT)";
+            "obs_server_modified_date TEXT," +
+            "isdeleted TEXT)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +

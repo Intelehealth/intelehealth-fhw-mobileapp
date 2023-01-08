@@ -380,6 +380,7 @@ public class EncounterDAO {
                     model.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                     model.setOpenmrsID(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setIsDeleted("false");
                     patientDTOList.add(model);
                 }
                 while (idCursor.moveToNext());

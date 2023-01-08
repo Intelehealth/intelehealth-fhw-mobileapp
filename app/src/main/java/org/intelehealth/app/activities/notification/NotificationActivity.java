@@ -2,7 +2,9 @@ package org.intelehealth.app.activities.notification;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.check_visit_is_VISIT_COMPLETE_ENC;
 import static org.intelehealth.app.database.dao.NotificationDAO.deleteNotification;
+import static org.intelehealth.app.database.dao.NotificationDAO.fetchAllFrom_NotificationTbl;
 import static org.intelehealth.app.database.dao.NotificationDAO.insertNotifications;
+import static org.intelehealth.app.database.dao.NotificationDAO.showOnly_NonDeletedNotification;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +31,9 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,8 +98,14 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
 
     private void viewsActions() {
         showNotifications();
-        int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
-        notifi_header_title.setText(getString(R.string.five_presc_received,total_presc_count));
+        count();
+    }
+
+    private void count() {
+      //  int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
+        int total_presc_count = 0;
+        total_presc_count = adapter != null ? adapter.getItemCount() : total_presc_count;
+        notifi_header_title.setText(getString(R.string.five_presc_received, total_presc_count));
     }
 
     private void initViews() {
@@ -186,13 +196,34 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         Log.v("Notifi_Activity", "todaysDate: " + currentDate);
 
         todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
+        List<NotificationModel> list = new ArrayList<>();
+        boolean value = false;
+        for (NotificationModel model : todayPresc_list) {
+            value = fetchAllFrom_NotificationTbl(model);
+            if (!value)
+                list.add(model);
+        }
+        todayPresc_list.clear();
+        todayPresc_list.addAll(list);
+        insertNotifications(todayPresc_list);
+
         if (todayPresc_list.size() <= 0) {
             today_nodata.setVisibility(View.VISIBLE);
         }
         else {
-            insertNotifications(todayPresc_list);
+            Date c = Calendar.getInstance().getTime();
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String todaysDate = df.format(c);
+            System.out.println("Current time => " + todaysDate); // todays date: 2023-01-05
+
+            List<NotificationModel> todaysList = new ArrayList<>();
+            for (NotificationModel notificationModel : todayPresc_list) {
+                todaysList.add(showOnly_NonDeletedNotification(notificationModel, todaysDate));
+            }
+
             today_nodata.setVisibility(View.GONE);
-            adapter = new NotificationAdapter(this, todayPresc_list, this);
+            adapter = new NotificationAdapter(this, todaysList, this);
             recycler_today.setAdapter(adapter);
         }
 
@@ -207,29 +238,55 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
 
         yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
+        List<NotificationModel> list = new ArrayList<>();
+        boolean value = false;
+        for (NotificationModel model : yesterdayPresc_list) {
+            value = fetchAllFrom_NotificationTbl(model);
+            if (!value)
+                list.add(model);
+        }
+        yesterdayPresc_list.clear();
+        yesterdayPresc_list.addAll(list);
+        insertNotifications(yesterdayPresc_list);
+
         if (yesterdayPresc_list.size() <= 0) {
             yesterday_nodata.setVisibility(View.VISIBLE);
         }
         else {
-            insertNotifications(yesterdayPresc_list);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -1);
+            String yesterdaysDate = df.format(cal.getTime());
+            System.out.println("Current time => " + yesterdaysDate); // yesterdays date: 2023-01-04
+
+            List<NotificationModel> yesterdaysList = new ArrayList<>();
+            for (NotificationModel notificationModel : yesterdayPresc_list) {
+                yesterdaysList.add(showOnly_NonDeletedNotification(notificationModel, yesterdaysDate));
+            }
+
             yesterday_nodata.setVisibility(View.GONE);
-            adapter = new NotificationAdapter(this, yesterdayPresc_list, this);
+            adapter = new NotificationAdapter(this, yesterdaysList, this);
             recycler_yesterday.setAdapter(adapter);
         }
     }
 
     @Override
     public void deleteNotifi_Item(List<NotificationModel> patientDTOList, int position) {
-        deleteNotification(patientDTOList.get(position));
-        patientDTOList.remove(position);
-        if (patientDTOList.size() <= 0) {
-            today_nodata.setVisibility(View.VISIBLE);
-            yesterday_nodata.setVisibility(View.VISIBLE);
+        boolean isDeleted = false;
+        isDeleted = deleteNotification(patientDTOList.get(position));
+        if (isDeleted) {
+            patientDTOList.remove(position);
+            if (patientDTOList.size() <= 0) {
+                today_nodata.setVisibility(View.VISIBLE);
+                yesterday_nodata.setVisibility(View.VISIBLE);
+            }
+            else {
+                today_nodata.setVisibility(View.GONE);
+                yesterday_nodata.setVisibility(View.GONE);
+            }
         }
-        else {
-            today_nodata.setVisibility(View.GONE);
-            yesterday_nodata.setVisibility(View.GONE);
-        }
+        count();
+
     }
 
     @Override
