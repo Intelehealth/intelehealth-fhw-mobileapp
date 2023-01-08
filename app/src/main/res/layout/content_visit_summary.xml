@@ -611,6 +611,7 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
+            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
@@ -1233,6 +1234,7 @@
                 android:layout_marginBottom="@dimen/padding_card"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="2dp"
+                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout

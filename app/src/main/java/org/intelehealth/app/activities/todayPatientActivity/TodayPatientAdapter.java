@@ -258,6 +258,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 }
             });
         }
+        else
+        {
+            if(todayPatientModel.getEnddate()!=null)
+                holder.btnEndVisit.setText(context.getString(R.string.visit_closed));
+
+        }
     }
 
     @Override

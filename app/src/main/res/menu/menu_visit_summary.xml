@@ -17,6 +17,7 @@
         android:id="@+id/summary_endVisit"
         android:orderInCategory="300"
         android:title="@string/action_end_visit"
+        android:visible="false"
         app:showAsAction="never">
 
     </item>

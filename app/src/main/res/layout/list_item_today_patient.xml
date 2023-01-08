@@ -112,6 +112,7 @@
                 <ImageView
                     android:id="@+id/iv_prescription"
                     android:layout_width="30dp"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_prescription_gray"
                     android:tag="0" />

@@ -1720,7 +1720,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
 
-            Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
+            /*Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -1733,6 +1733,21 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            startActivity(intent);*/
+
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+            intent.putExtra("patientUuid", patientUuid);
+            intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+            intent.putExtra("state", state);
+            intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientLastName", patientLName);
+            intent.putExtra("gender", patientGender);
+            intent.putExtra("tag", intentTag);
+            intent.putExtra("hasPrescription", "false");
             startActivity(intent);
         }
     }
