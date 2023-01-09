@@ -31,6 +31,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
 
 import org.intelehealth.ekalarogya.models.AnswerResult;
@@ -567,24 +568,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if (mgender.equalsIgnoreCase("M")) {
-            currentNode.fetchItem("0");
-        } else if (mgender.equalsIgnoreCase("F")) {
-            currentNode.fetchItem("1");
-        }
+        if (currentNode != null) {
+            if (mgender.equalsIgnoreCase("M")) {
+                currentNode.fetchItem("0");
+            } else if (mgender.equalsIgnoreCase("F")) {
+                currentNode.fetchItem("1");
+            }
 
-        // flaoting value of age is passed to Node for comparison...
-        currentNode.fetchAge(float_ageYear_Month);
+            // flaoting value of age is passed to Node for comparison...
+            currentNode.fetchAge(float_ageYear_Month);
 
 
-        adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
-        question_recyclerView.setAdapter(adapter);
-        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+            adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
+            question_recyclerView.setAdapter(adapter);
+            recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);*/
-        setTitle(patientName + ": " + currentNode.findDisplay());
+            setTitle(patientName + ": " + currentNode.findDisplay());
+        }
+        else {
+            Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
     }
 
@@ -609,7 +616,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
                     assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
                     currentNode = assoComplaintsNodes.get(complaintIndex);
-                    Log.e("CurrentNode", "" + currentNode);
+                 //   Log.e("CurrentNode", "" + currentNode);
 
                 } else {
                     currentNode = complaintsNodes.get(complaintIndex);
@@ -676,19 +683,21 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             mgender = PatientsDAO.fetch_gender(patientUuid);
 
-            if (mgender.equalsIgnoreCase("M")) {
-                currentNode.fetchItem("0");
-            } else if (mgender.equalsIgnoreCase("F")) {
-                currentNode.fetchItem("1");
+            if (currentNode != null) {
+                if (mgender.equalsIgnoreCase("M")) {
+                    currentNode.fetchItem("0");
+                } else if (mgender.equalsIgnoreCase("F")) {
+                    currentNode.fetchItem("1");
+                }
+
+                // flaoting value of age is passed to Node for comparison...
+                currentNode.fetchAge(float_ageYear_Month);
+
+                adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
+                question_recyclerView.setAdapter(adapter);
+                //setTitle(patientName + ": " + currentNode.getText());
+                setTitle(patientName + ": " + currentNode.findDisplay());
             }
-
-            // flaoting value of age is passed to Node for comparison...
-            currentNode.fetchAge(float_ageYear_Month);
-
-            adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
-            question_recyclerView.setAdapter(adapter);
-            //setTitle(patientName + ": " + currentNode.getText());
-            setTitle(patientName + ": " + currentNode.findDisplay());
         }
     }
 
