@@ -1346,16 +1346,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                intent1.putExtra("advicefrom", "");
-                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                startActivity(intent1);
+                if (encounterVitals != null) {
+                    Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                    intent1.putExtra("patientUuid", patientUuid);
+                    intent1.putExtra("visitUuid", visitUuid);
+                    intent1.putExtra("encounterUuidVitals", encounterVitals);
+                    intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                    intent1.putExtra("name", patientName);
+                    intent1.putExtra("tag", "edit");
+                    intent1.putExtra("advicefrom", "");
+                    intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    startActivity(intent1);
+                }
+                else {
+                    Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
 
