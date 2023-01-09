@@ -34,8 +34,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -257,10 +261,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onSelect(Node data) {
                 Log.v("data", new Gson().toJson(data));
-                node.setSelected(false);
+                mItemList.get(position).setSelected(false);
                 for (int i = 0; i < node.getOptionsList().size(); i++) {
                     if (node.getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
-                        node.setSelected(true);
+                        mItemList.get(position).setSelected(true);
 
                     }
                 }
@@ -281,7 +285,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             Node node = options.get(0);
             String type = node.getInputType();
 
-            if (node.getOptionsList()!=null && !node.getOptionsList().isEmpty()) {
+            if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
                 type = "options";
             }
             Log.v("Node", "Type - " + type);
@@ -330,8 +334,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
+            if (mItemList.get(index).isMultiChoice()) {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+            } else {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+
+            }
             holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
-            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, options, new OptionsChipsGridAdapter.OnItemSelection() {
+            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {
                     mItemList.get(index).setSelected(false);
@@ -394,6 +404,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             showOptionsData(holder, node.getOptionsList(), index);
                             break;
                     }
+                    //notifyDataSetChanged();
                 }
             });
             holder.recyclerView.setAdapter(optionsChipsGridAdapter);
@@ -676,21 +687,51 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // display the selected date by using a toast
-                submitButton.setText(dayOfMonth + "-" + month + "-" + year);
+                submitButton.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
             }
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!submitButton.getText().toString().trim().contains("-")) {
+                String d = submitButton.getText().toString().trim();
+                if (!d.contains("-")) {
                     Toast.makeText(mContext, "Please select the date", Toast.LENGTH_SHORT).show();
-                } else
+                } else {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                    Date date = cal.getTime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                    String dateString = simpleDateFormat.format(date);
+                    if (!dateString.equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        } else {
+                            node.addLanguage(dateString);
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    } else {
+                        if (node.isRequired()) {
+                            node.setSelected(false);
+                        } else {
+                            node.setSelected(true);
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                            } else {
+                                node.addLanguage("Question not answered");
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        }
+                    }
                     mOnItemSelection.onSelect(node, index);
+                }
             }
         });
 

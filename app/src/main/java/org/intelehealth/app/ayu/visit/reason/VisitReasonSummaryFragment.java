@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +122,7 @@ public class VisitReasonSummaryFragment extends Fragment {
         List<String> list = new ArrayList<>();
         String associatedSymptomsString = "";
         for (String s : spt) {
-            //System.out.println(s);
+            Log.e("node", s);
             if (s.trim().startsWith("Associated symptoms:")) {
                 associatedSymptomsString = s;
             } else {
@@ -172,10 +173,12 @@ public class VisitReasonSummaryFragment extends Fragment {
                 mComplainSummaryLinearLayout.addView(view);
             }
         }
-        String[] spt1 = associatedSymptomsString.split("•");
+        String[] spt1 = associatedSymptomsString.trim().split("•");
+        Log.e("node", associatedSymptomsString);
+        Log.e("node", String.valueOf(spt1.length));
         mAssociateSymptomsLinearLayout.removeAllViews();
         for (String value : spt1) {
-
+            Log.e("node", value);
             if (value.contains(" - ")) {
                 String k = value.substring(0, value.indexOf(" - ")).trim();
                 String v = value.substring(value.indexOf(" - ") + 2).trim();
