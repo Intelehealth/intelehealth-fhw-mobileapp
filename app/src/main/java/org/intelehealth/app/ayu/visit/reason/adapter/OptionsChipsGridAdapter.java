@@ -1,6 +1,7 @@
 package org.intelehealth.app.ayu.visit.reason.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
+    private Node mParentNode;
     private List<Node> mItemList = new ArrayList<Node>();
 
     public interface OnItemSelection {
@@ -29,9 +30,10 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private OnItemSelection mOnItemSelection;
 
-    public OptionsChipsGridAdapter(RecyclerView recyclerView, Context context, List<Node> itemList, OnItemSelection onItemSelection) {
+    public OptionsChipsGridAdapter(RecyclerView recyclerView, Context context, Node parentNode, List<Node> itemList, OnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
+        mParentNode = parentNode;
         mOnItemSelection = onItemSelection;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
@@ -56,6 +58,9 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
             genericViewHolder.tvName.setText(mItemList.get(position).getText());
+
+            //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
+
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
@@ -83,10 +88,18 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mItemList.get(index).setSelected(true);
+                    Log.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
+                    if (!mParentNode.isMultiChoice()) {
+                        for (int i = 0; i < mItemList.size(); i++) {
+                            mItemList.get(i).setSelected(i == index);
+                        }
+                    } else {
+                        mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+
+                    }
+
                     mOnItemSelection.onSelect(mItemList.get(index));
-                    tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                    tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                    notifyDataSetChanged();
                 }
             });
 

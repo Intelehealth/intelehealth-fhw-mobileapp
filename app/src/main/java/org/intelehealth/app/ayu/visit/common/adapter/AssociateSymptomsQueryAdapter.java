@@ -154,7 +154,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View view) {
                     mItemList.get(index).setNoSelected(false);
+
                     mItemList.get(index).setSelected(true);
+
                     if (mItemList.get(index).getAssociated_symptoms() == 1) {
                         mItemList.get(index).setAssociated_symptoms(0);
                     } else {
@@ -167,6 +169,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             noTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mItemList.get(index).setSelected(true);
+
                     if (mItemList.get(index).isNoSelected()) {
                         mItemList.get(index).setNoSelected(false);
 

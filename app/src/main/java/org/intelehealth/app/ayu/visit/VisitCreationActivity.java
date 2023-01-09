@@ -6,8 +6,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -54,6 +57,7 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -329,12 +333,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private boolean isSavedVisitReason() {
         Node node = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
         List<Node> optionList = node.getOptionsList();
+
         Node associateSymptomsNode = optionList.get(optionList.size() - 1);
-        optionList.remove(optionList.size() - 1);
-        node.setOptionsList(optionList);
+        //optionList.remove(optionList.size() - 1);
+        //node.setOptionsList(optionList);
         insertion = "";
         formatComplainRecord(node);
-        formatComplainRecord(associateSymptomsNode);
+        //formatComplainRecord(associateSymptomsNode);
         return insertChiefComplainToDb(insertion);
     }
 
@@ -507,7 +512,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         // generate language from current node
 
         String complaintString = currentNode.generateLanguage();
-        Log.v("complaintString", "Value - " + complaintString);
+        Log.v("formatComplainRecord", "Value - " + complaintString);
         if (complaintString != null && !complaintString.isEmpty()) {
             //     String complaintFormatted = complaintString.replace("?,", "?:");
 
@@ -523,7 +528,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
             }
         }
-
+        Log.v("formatComplainRecord", "Value - " + insertion);
         return insertion;
 
     }
@@ -828,7 +833,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
-    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
@@ -848,6 +853,48 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     }
                 }
             });
+    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPhotoPath = "";
+                        if(data!=null){
+                            Uri selectedImage = data.getData();
+                            String[] filePath = {MediaStore.Images.Media.DATA};
+                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                            c.moveToFirst();
+                            int columnIndex = c.getColumnIndex(filePath[0]);
+                            String picturePath = c.getString(columnIndex);
+                            c.close();
+                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                            Log.v("path", picturePath + "");
+
+                            // copy & rename the file
+                            String finalImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+
+                            // Handle the Intent
+
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("image", currentPhotoPath);
+                            selectedBundle.onBundleSelect(bundle);
+
+                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                            Log.i(TAG, currentPhotoPath);
+                            //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+                            updateImageDatabase(mLastSelectedImageName);
+                        }else {
+                            Toast.makeText(VisitCreationActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
+
     private String mLastSelectedImageName = "";
 
     public void openCamera() {
@@ -867,15 +914,46 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
-        mStartForResult.launch(cameraIntent);
+        mStartForCameraResult.launch(cameraIntent);
     }
-    private static final int MY_CAMERA_REQUEST_CODE = 100;
+
+    private void galleryStart() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mStartForGalleryResult.launch(intent);
+    }
+
+    private static final int MY_CAMERA_REQUEST_CODE = 1001;
+    private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitCreationActivity.this);
+        builder.setTitle("Add Image by");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    cameraStart();
+
+                } else if (item == 1) {
+                    galleryStart();
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+
     private void validatePermissionAndIntent() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         } else {
-            cameraStart();
+            //cameraStart();
+            selectImage();
         }
     }
 
@@ -884,7 +962,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                cameraStart();
+//                cameraStart();
+                selectImage();
             } else {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }

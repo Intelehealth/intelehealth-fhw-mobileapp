@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_question"
                     android:lineSpacingExtra="1sp"
-                    android:text="Select any one" />
+                    android:text="@string/select_any_one" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_container"

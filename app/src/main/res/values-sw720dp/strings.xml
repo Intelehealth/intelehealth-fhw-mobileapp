@@ -25,5 +25,7 @@
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
     <string name="please_wait_sync_progress">Please wait a moment while sync is in progress</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
+    <string name="select_any_one">Select any one</string>
+    <string name="select_one_or_more">Select one or more</string>
 
 </resources>
