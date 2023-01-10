@@ -288,7 +288,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+            /*if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
@@ -315,7 +315,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         }
                     }
                 }
-            }
+            }*/
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -448,7 +448,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
                     Intent intent = new Intent
-                            (QuestionNodeActivity.this, PhysicalExamActivity.class);
+                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);

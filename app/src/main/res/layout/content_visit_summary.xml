@@ -662,7 +662,6 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
@@ -745,7 +744,6 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
@@ -797,7 +795,6 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
@@ -848,7 +845,6 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
@@ -1577,13 +1573,13 @@ app:layout_constraintStart_toEndOf="@+id/gd"
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:id="@+id/button_download"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@color/colorPrimary">
 
                 <TextView

@@ -808,7 +808,7 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">त्यानंतर प्रोटोकॉल डाउनलोड केला जातो। प्रोटोकॉल डाउनलोडची पुनरावृत्ती करण्यासाठी \'होय\' दाबा। डेमो प्रोटोकॉलसह सातत्यासाठी \'नाही\' दाबा।</string>
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="app_version_string">अनुप्रयोग आवृत्ती - %1$s</string>
     <string name="table_spo2" translatable="false">"SpO2 (%) ऑक्सीजन "</string>
     <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावे %1$s आणि %2$s</string>
@@ -930,6 +930,7 @@
     <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
     <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
+    <string name="blood_glucose_random_vitals">रक्तातील ग्लुकोज (रँडम)</string>
     <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपाशीपोटी)</string>
     <string name="haemoglobin">िमोग्लोबिन (mg/dL)</string>

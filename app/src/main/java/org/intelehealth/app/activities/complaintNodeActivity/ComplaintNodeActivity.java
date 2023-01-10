@@ -334,11 +334,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
 
             if (selection.isEmpty()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(ComplaintNodeActivity.this);
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-                alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
-                alertDialogBuilder.setMessage(getString(R.string.complaint_required));
-                alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle(getResources().getString(R.string.complaint_dialog_title));
+                alertDialogBuilder.setMessage(getResources().getString(R.string.complaint_required));
+                alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -353,7 +353,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             } else {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-                alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
+                alertDialogBuilder.setTitle(getResources().getString(R.string.complaint_dialog_title));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
                 alertDialogBuilder.setView(convertView);
@@ -361,7 +361,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 listView.setDivider(null);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
                 listView.setAdapter(arrayAdapter);
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

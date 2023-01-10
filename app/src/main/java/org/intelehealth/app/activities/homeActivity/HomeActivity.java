@@ -159,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge, newPatient_textview;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
@@ -320,8 +320,8 @@ public class HomeActivity extends AppCompatActivity {
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         //card textview referrenced to fix bug of localization not working in some cases...
-        /*newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);*/
+        newPatient_textview = findViewById(R.id.newPatients_textview);
+        newPatient_textview.setText(R.string.new_patient);
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
