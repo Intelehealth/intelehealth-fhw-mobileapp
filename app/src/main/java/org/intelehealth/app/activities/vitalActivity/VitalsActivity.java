@@ -626,10 +626,10 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_GLUCOSE_FASTING) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_GLUCOSE_FASTING)) {
-                        bloodGlucose_editText_fasting.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HbA1c) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HbA1c)) {
+                        bloodGlucose_editText_fasting.setError(getString(R.string.hba1c_validation,
+                                AppConstants.MINIMUM_HbA1c, AppConstants.MAXIMUM_HbA1c));
                     } else {
                         bloodGlucose_editText_fasting.setError(null);
                     }
@@ -1126,10 +1126,10 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
-                        et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_HbA1c)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_HbA1c))) {
+                        et.setError(getString(R.string.hba1c_validation,
+                                AppConstants.MINIMUM_HbA1c, AppConstants.MAXIMUM_HbA1c));
                         focusView = et;
                         cancel = true;
                         break;

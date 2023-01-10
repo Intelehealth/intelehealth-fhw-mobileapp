@@ -881,6 +881,7 @@
     <string name="identification_screen_picker_minute">मिनट</string>
     <string name="glucose_non_fasting_validation">ब्लड ग्लूकोज (नॉन फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_fasting_validation">ब्लड ग्लूकोज (फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="hba1c_validation">HbA1c %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_random_validation">ब्लड ग्लूकोज़ (यादृच्छिक) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_post_prandial_validation">ब्लड ग्लूकोज़ (पोस्ट-प्रैंडिअल) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="hemoglobin_validation">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>

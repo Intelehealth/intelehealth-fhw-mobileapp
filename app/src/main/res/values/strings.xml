@@ -375,6 +375,7 @@
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+    <string name="hba1c_validation">HbA1c should be in between %1$s and %2$s</string>
     <string name="glucose_random_validation">Blood Glucose (Random) should be in between %1$s and %2$s</string>
     <string name="glucose_post_prandial_validation">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>

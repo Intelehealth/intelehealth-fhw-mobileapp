@@ -65,6 +65,9 @@ public class AppConstants {
     public static final String MINIMUM_GLUCOSE_FASTING = "30";
     public static final String MAXIMUM_GLUCOSE_FASTING = "300";
 
+    public static final String MINIMUM_HbA1c = "0";
+    public static final String MAXIMUM_HbA1c = "10";
+
     public static final String MINIMUM_GLUCOSE_RANDOM = "30";
     public static final String MAXIMUM_GLUCOSE_RANDOM = "500";
 

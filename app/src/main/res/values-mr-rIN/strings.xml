@@ -811,6 +811,7 @@
     <string name="table_spo2" translatable="false">"SpO2 (%) ऑक्सीजन "</string>
     <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="hba1c_validation">HbA1c दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_random_validation">रक्तातील ग्लुकोज (रँडम ब्लड शुगर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_post_prandial_validation">रक्तातील ग्लुकोज (Post-Prandial) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="hemoglobin_validation">हिमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
