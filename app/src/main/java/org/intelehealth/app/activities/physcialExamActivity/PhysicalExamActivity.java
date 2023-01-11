@@ -118,7 +118,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(PhysicalExamActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {

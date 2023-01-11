@@ -14,6 +14,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -148,7 +149,16 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(billConfirmationActivity.this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
         //editText
         not_paying_reasonTIL = findViewById(R.id.reasonTIL);
@@ -768,7 +778,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         checkout.setImage(R.drawable.scd_logo);
         JSONObject object = new JSONObject();
         try {
-            object.put("name", "SmartCareDoc");
+            object.put("name", "MySmartCareDoc");
             object.put("description", "Test payment");
             object.put("theme.color", "#2E1E91");
             object.put("currency", "INR");

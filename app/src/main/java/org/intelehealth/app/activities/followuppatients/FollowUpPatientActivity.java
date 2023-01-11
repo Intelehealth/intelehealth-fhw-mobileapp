@@ -60,7 +60,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(FollowUpPatientActivity.this);
         String language = sessionManager.getAppLanguage();
 
         //In case of crash still the app should hold the current lang fix.

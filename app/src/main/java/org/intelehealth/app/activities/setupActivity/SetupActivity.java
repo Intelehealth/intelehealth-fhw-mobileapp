@@ -145,7 +145,16 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         getSupportActionBar();
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(SetupActivity.this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the unicef should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
 

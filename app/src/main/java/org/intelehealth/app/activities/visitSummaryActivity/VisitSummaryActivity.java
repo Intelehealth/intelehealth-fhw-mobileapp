@@ -334,7 +334,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuItemCompat.getActionView(internetCheck);
 
         isNetworkAvailable(this);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(VisitSummaryActivity.this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mCHWname = findViewById(R.id.chw_details);
@@ -421,7 +421,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void onEndVisit() {
         //meera
         if (downloaded) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
@@ -445,7 +445,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         } else {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
             alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {

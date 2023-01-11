@@ -121,9 +121,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
         context = QuestionNodeActivity.this;
+        sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);

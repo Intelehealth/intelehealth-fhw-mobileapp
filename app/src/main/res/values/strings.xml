@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartCareDoc</string>
+    <string name="app_name">MySmartCareDoc</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">SmartCareDoc</string>
+    <string name="title_activity_login">MySmartCareDoc</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -375,6 +375,7 @@
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+    <string name="hba1c_validation">HbA1c should be in between %1$s and %2$s</string>
     <string name="glucose_random_validation">Blood Glucose (Random) should be in between %1$s and %2$s</string>
     <string name="glucose_post_prandial_validation">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
@@ -568,7 +569,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using SmartCareDoc. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using MySmartCareDoc. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -609,8 +610,8 @@
     <string name="caste_values_missing">Caste values are missing</string>
     <string name="state_values_missing">State values are missing</string>
     <string name="country_values_missing">Country values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">SmartCareDoc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">SmartCareDoc</string>
+    <string name="intelehealth_a_telemedicine_platform">MySmartCareDoc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">MySmartCareDoc</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>

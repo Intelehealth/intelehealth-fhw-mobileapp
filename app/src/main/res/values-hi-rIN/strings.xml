@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">स्मार्टकेयरडॉक्</string>
+    <string name="app_name" translatable="false">माईस्मार्टकेयरडॉक</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">स्मार्टकेयरडॉक्</string>
+    <string name="title_activity_login">माईस्मार्टकेयरडॉक</string>
     <string name="prompt_email">उपयोगकर्ता नाम</string>
     <string name="prompt_password">कुंजिका</string>
     <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
@@ -590,8 +590,8 @@
     <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है| यहाँ मेरा विवरण है</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">स्मार्टकेयरडॉक् एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
-    <string name="intelehealth_name">स्मार्टकेयरडॉक्</string>
+    <string name="intelehealth_a_telemedicine_platform">माईस्मार्टकेयरडॉक एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_name">माईस्मार्टकेयरडॉक</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
@@ -817,7 +817,7 @@
     <string name = "visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
 
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें -"</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, स्मार्टकेयरडॉक् का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, माईस्मार्टकेयरडॉक का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
 
 
     <string name="yes">हां</string>
@@ -882,6 +882,7 @@
     <string name="identification_screen_picker_minute">मिनट</string>
     <string name="glucose_non_fasting_validation">ब्लड ग्लूकोज (नॉन फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_fasting_validation">ब्लड ग्लूकोज (फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="hba1c_validation">HbA1c %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_random_validation">ब्लड ग्लूकोज़ (यादृच्छिक) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="glucose_post_prandial_validation">ब्लड ग्लूकोज़ (पोस्ट-प्रैंडिअल) %1$s और %2$s के बीच होना चाहिए</string>
     <string name="hemoglobin_validation">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>

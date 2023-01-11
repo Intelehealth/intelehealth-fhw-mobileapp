@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(LoginActivity.this);
 
         context = LoginActivity.this;
         sessionManager = new SessionManager(context);

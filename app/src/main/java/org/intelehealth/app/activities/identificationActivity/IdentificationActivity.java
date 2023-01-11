@@ -736,7 +736,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(IdentificationActivity.this);
         toolbar = findViewById(R.id.toolbar);
 
         mFirstName = findViewById(R.id.identification_first_name);

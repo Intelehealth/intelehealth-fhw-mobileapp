@@ -92,7 +92,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(TodayPatientActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {

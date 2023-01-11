@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">स्मार्टकेयरडॉक्</string>
+    <string name="app_name">माईस्मार्टकेयरडॉक</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">पुढे</string>
@@ -40,7 +40,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">स्मार्टकेयरडॉक्</string>
+    <string name="title_activity_login">माईस्मार्टकेयरडॉक</string>
     <string name="prompt_email">वापरकर्तानाव</string>
     <string name="prompt_password">संकेतशब्द</string>
     <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
@@ -558,7 +558,7 @@
     <string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
     <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अद्यतनित करा</string>
     <string name="update">अद्यतनित करा</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, माईस्मार्टकेयरडॉक वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा "</string>
 
     <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा - "</string>
 
@@ -593,8 +593,8 @@
     <string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
-    <string name="intelehealth_a_telemedicine_platform">स्मार्टकेयरडॉक् हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
-    <string name="intelehealth_name">स्मार्टकेयरडॉक्</string>
+    <string name="intelehealth_a_telemedicine_platform">माईस्मार्टकेयरडॉक हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_name">माईस्मार्टकेयरडॉक</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">"सक्रिय"</string>
@@ -812,6 +812,7 @@
     <string name="table_spo2" translatable="false">"SpO2 (%) ऑक्सीजन "</string>
     <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="hba1c_validation">HbA1c दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_random_validation">रक्तातील ग्लुकोज (रँडम ब्लड शुगर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_post_prandial_validation">रक्तातील ग्लुकोज (Post-Prandial) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="hemoglobin_validation">हिमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
@@ -882,7 +883,7 @@
     <string name="generate_bill">बिल तयार करा</string>
     <string name="confirm_tests">कृपया चाचणीची पुष्टी करा</string>
     <string name="intelehealth_address">टेलिहेल्थ इनोव्हेशन फाऊंडेशन\n14A, श्रीजी आर्केड,\nनितीन कंपनीसमोर, पाचपाखाडी\nठाणे, 400602, महाराष्ट्र, भारत.</string>
-    <string name="scd_address">MySmartCareDoc Pvt Ltd. 6-3-1192/1/1, सुट क्रमांक ८१३, व्हाईट हाऊस, ब्लॉक- III, कुंदनबाग, बेगमपेट, हैदराबाद, टीएस, भारत - 500016</string>
+    <string name="scd_address">माईस्मार्टकेयरडॉक Pvt Ltd. 6-3-1192/1/1, सुट क्रमांक ८१३, व्हाईट हाऊस, ब्लॉक- III, कुंदनबाग, बेगमपेट, हैदराबाद, टीएस, भारत - 500016</string>
     <string name="consultation_charges">सल्ला शुल्क</string>
     <string name="follow_up_charges">फॉलो-अप शुल्क</string>
     <string name="total_amount">एकूण रक्कम</string>
