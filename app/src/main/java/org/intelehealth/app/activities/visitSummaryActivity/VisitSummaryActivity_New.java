@@ -5,18 +5,6 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,15 +38,11 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -75,6 +59,18 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -93,7 +89,6 @@ import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -759,9 +754,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
             Log.v(TAG, "complaint: " + value);
-            String valueArray[] = value.replace("<br>►Associated symptoms: <br>", "►<b>Associated symptoms</b>: <br/>")
-                    .split("►<b>Associated symptoms</b>: <br/>");
-
+            String valueArray[] = value.split("►<b> Associated symptoms</b>:  <br/>");
+            Log.v(TAG, "complaint: " + valueArray[0]);
             String[] headerchips = valueArray[0].split("►");
             List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
             List<String> cc_list = new ArrayList<>();
@@ -779,8 +773,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String patientReports = "No data added.";
             String patientDenies = "No data added.";
 
-            if (valueArray[0].contains("• Patient reports") && valueArray[0].contains("• Patient denies")) {
-                String assoValueBlock[] = valueArray[0].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+            if (valueArray[0] != null)
+                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+
+            if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                         .split("• Patient denies -<br/>");
 
                 // index 0 - Reports
@@ -1011,12 +1008,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                      //  textInput.setTitle(R.string.question_text_input);
+                        //  textInput.setTitle(R.string.question_text_input);
                         final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
                         View convertView = inflater.inflate(R.layout.dialog_edittext, null);
                         textInput.setView(convertView);
 
-                     //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
                         EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
                         Button sharebtn = convertView.findViewById(R.id.sharebtn);
                         sharebtn.setVisibility(View.GONE);
@@ -1027,7 +1024,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             dialogEditText.setText("");
                         }
                         Log.v("complai", "complai: " + complaint.getValue());
-                      //  textInput.setView(dialogEditText);
+                        //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1153,12 +1150,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                      //  textInput.setTitle(R.string.question_text_input);
+                        //  textInput.setTitle(R.string.question_text_input);
                         final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
                         View convertView = inflater.inflate(R.layout.dialog_edittext, null);
                         textInput.setView(convertView);
 
-                     //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
                         EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
                         Button sharebtn = convertView.findViewById(R.id.sharebtn);
                         sharebtn.setVisibility(View.GONE);
@@ -1167,7 +1164,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         else
                             dialogEditText.setText("");
-                      //  textInput.setView(dialogEditText);
+                        //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1187,7 +1184,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 dialog.dismiss();
                             }
                         });
-                      //  AlertDialog dialog = textInput.show();
+                        //  AlertDialog dialog = textInput.show();
                         AlertDialog alertDialog = textInput.create();
                         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
                         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
@@ -1296,12 +1293,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                      //  textInput.setTitle(R.string.question_text_input);
+                        //  textInput.setTitle(R.string.question_text_input);
                         final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
                         View convertView = inflater.inflate(R.layout.dialog_edittext, null);
                         textInput.setView(convertView);
 
-                     //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
                         EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
                         Button sharebtn = convertView.findViewById(R.id.sharebtn);
                         sharebtn.setVisibility(View.GONE);
@@ -1310,7 +1307,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
                         else
                             dialogEditText.setText("");
-                    //    textInput.setView(dialogEditText);
+                        //    textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1413,7 +1410,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
 
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-              //  dialogInterface.dismiss();
+                //  dialogInterface.dismiss();
             }
         });
 
@@ -1438,12 +1435,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                         // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                      //  textInput.setTitle(R.string.question_text_input);
+                        //  textInput.setTitle(R.string.question_text_input);
                         final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
                         View convertView = inflater.inflate(R.layout.dialog_edittext, null);
                         textInput.setView(convertView);
 
-                      //  final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        //  final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
                         EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
                         Button sharebtn = convertView.findViewById(R.id.sharebtn);
                         sharebtn.setVisibility(View.GONE);
@@ -1452,7 +1449,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
                         else
                             dialogEditText.setText("");
-                    //    textInput.setView(dialogEditText);
+                        //    textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1649,8 +1646,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } else {
                 showPermissionDeniedAlert(permissions, 2);
             }
-        }
-        else if (requestCode == DIALOG_CAMERA_PERMISSION_REQUEST) {
+        } else if (requestCode == DIALOG_CAMERA_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
@@ -1663,9 +1659,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } else {
                 showPermissionDeniedAlert(permissions, 0);
             }
-        }
-
-        else if (requestCode == DIALOG_GALLERY_PERMISSION_REQUEST) {
+        } else if (requestCode == DIALOG_GALLERY_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
@@ -1844,8 +1838,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
-        }
-        else if (item == 1) {
+        } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
@@ -1874,7 +1867,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             }
         });
-      //  builder.show();
+        //  builder.show();
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -2098,13 +2091,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-          //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
+            //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
            /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             editText.setLayoutParams(layoutParams);
             alertDialog.setView(editText);
 */
-         //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+            //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
             sharebtn.setOnClickListener(v -> {
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -3574,7 +3567,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
-             //   mComplaint = "Test Complaint";
+                //   mComplaint = "Test Complaint";
             }
         } else {
 
@@ -3782,8 +3775,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                  //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                            "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
+                                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
@@ -4319,7 +4312,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 
     private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
-        
+
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         // Get a print adapter instance

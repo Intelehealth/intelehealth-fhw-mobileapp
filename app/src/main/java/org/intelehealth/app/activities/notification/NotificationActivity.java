@@ -25,6 +25,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -86,7 +88,12 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         viewsActions();
         clickListeners();
     }
-
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
+    }
     private void showNotifications() {
         try {
             todays_Presc_notification();
