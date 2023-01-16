@@ -463,6 +463,13 @@ public class SyncDAO {
             String userUuid = sessionManager.getProviderID();
             String userName = sessionManager.getChwname();
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+            if(am == null || am.getRunningTasks(1)==null || am.getRunningTasks(1).size()==0)
+            {
+                Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                return;    // AEAT-427: crash handled.
+            }
+
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
 
             String currentActivity = "";
