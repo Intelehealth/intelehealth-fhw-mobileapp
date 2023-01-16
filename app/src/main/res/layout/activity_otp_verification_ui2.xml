@@ -26,29 +26,35 @@
             android:layout_marginTop="@dimen/back_arrow_demo1_width"
             android:src="@drawable/ic_baseline_arrow_back_24" />
 
-
-        <TextView
-            android:id="@+id/tv_forgot_password"
+        <LinearLayout
+            android:id="@+id/rv_help_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/back_arrow_demo1_width"
-            android:layout_toStartOf="@+id/iv_help_info_otp"
-            android:drawableTint="@color/iconTintWhite"
-            android:text="@string/help"
-            android:textColor="@color/textColorWhite"
-            android:textSize="@dimen/common_hint_text_size" />
-
-        <ImageView
-            android:id="@+id/iv_help_info_otp"
-            android:layout_width="@dimen/back_arrow_demo1_width"
-            android:layout_height="@dimen/back_arrow_demo1_width"
             android:layout_alignParentEnd="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/iv_help_info_margin_start"
             android:layout_marginTop="@dimen/back_arrow_demo1_width"
             android:layout_marginEnd="@dimen/tv_help_on_otp_margin_end"
-            android:src="@drawable/info_svg"
-            android:tint="@color/white" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/iv_help_info_otp"
+                android:drawableTint="@color/iconTintWhite"
+                android:text="@string/help"
+                android:textColor="@color/textColorWhite"
+                android:textSize="@dimen/common_hint_text_size" />
+
+            <ImageView
+                android:id="@+id/iv_help_info_otp"
+                android:layout_width="@dimen/back_arrow_demo1_width"
+                android:layout_height="@dimen/back_arrow_demo1_width"
+                android:layout_marginStart="@dimen/iv_help_info_margin_start"
+                android:src="@drawable/info_svg"
+                android:tint="@color/white" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_forgot_password"
@@ -93,8 +99,7 @@
         android:orientation="vertical"
         android:paddingStart="@dimen/padding_25"
         android:paddingTop="@dimen/padding_30"
-        android:paddingEnd="@dimen/padding_25"
-       >
+        android:paddingEnd="@dimen/padding_25">
 
         <ScrollView
             android:layout_width="match_parent"

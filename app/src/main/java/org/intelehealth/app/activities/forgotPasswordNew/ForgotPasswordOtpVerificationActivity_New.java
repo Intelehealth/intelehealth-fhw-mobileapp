@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.utilities.SnackbarUtils;
 
@@ -30,7 +31,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     String userUuid = "";
     TextView tvOtpError, tvResendOtp;
     EditText etPin1, etPin2, etPin3, etPin4, etPin5, etPin6;
-    LinearLayout layoutParent;
+    LinearLayout layoutParent, rvHelpInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         tvOtpError = findViewById(R.id.tv_otp_error);
         tvResendOtp = findViewById(R.id.textview_no_otp);
         layoutParent = findViewById(R.id.layout_parent_otp);
+        rvHelpInfo = findViewById(R.id.rv_help_info);
 
 
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +75,10 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             startActivity(intent);
         });
 
+        rvHelpInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ChatSupportHelpActivity_New.class);
+            startActivity(intent);
+        });
 
         buttonVerifyOtp.setOnClickListener(v -> {
             String pin1 = etPin1.getText().toString();
