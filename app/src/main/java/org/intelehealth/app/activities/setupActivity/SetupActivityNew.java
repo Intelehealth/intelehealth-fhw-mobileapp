@@ -284,7 +284,7 @@ public class SetupActivityNew extends AppCompatActivity {
             etPassword.requestFocus();
 
             mPasswordErrorTextView.setVisibility(View.VISIBLE);
-            mPasswordErrorTextView.setText(getString(R.string.error_invalid_password));
+            mPasswordErrorTextView.setText(getString(R.string.error_field_required));
             etPassword.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
 
