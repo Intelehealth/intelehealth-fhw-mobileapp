@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
 
@@ -138,5 +141,12 @@ public class VisitActivity extends FragmentActivity implements
     @Override
     public void pendingCount(int count) {
         tabLayout.getTabAt(1).setText("Pending (" + count + ")");
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
     }
 }
