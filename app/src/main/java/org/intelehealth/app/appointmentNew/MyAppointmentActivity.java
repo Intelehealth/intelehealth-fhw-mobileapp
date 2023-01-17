@@ -1,11 +1,15 @@
 package org.intelehealth.app.appointmentNew;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 
 import java.util.Objects;
@@ -33,6 +38,8 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     int totalCount;
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
+    private ObjectAnimator syncAnimator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +59,9 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
         tvTitle.setText(getResources().getString(R.string.my_appointments));
 
+        ivIsInternet.setOnClickListener(v -> {
+            SyncUtils.syncNow(MyAppointmentActivity.this, ivIsInternet, syncAnimator);
+        });
 
         ivBackArrow.setOnClickListener(v -> {
             Intent intent = new Intent(MyAppointmentActivity.this, HomeScreenActivity_New.class);
