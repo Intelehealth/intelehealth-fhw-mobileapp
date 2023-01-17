@@ -145,6 +145,10 @@ public class ChatActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        if(getIntent().getBooleanExtra("isForVideo",false)){
+
+        }
     }
 
     public void hideSoftKeyboard() {
@@ -436,7 +440,7 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessageNow(View view) {
         hideSoftKeyboard();
         if (mToUUId.isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.please_wait_for_doctor), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_wait_for_doctor), Toast.LENGTH_SHORT).show();
             return;
         }
         String message = mMessageEditText.getText().toString().trim();
