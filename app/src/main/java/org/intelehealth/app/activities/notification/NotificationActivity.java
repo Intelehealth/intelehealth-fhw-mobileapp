@@ -6,9 +6,7 @@ import static org.intelehealth.app.database.dao.NotificationDAO.fetchAllFrom_Not
 import static org.intelehealth.app.database.dao.NotificationDAO.insertNotifications;
 import static org.intelehealth.app.database.dao.NotificationDAO.showOnly_NonDeletedNotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.animation.ObjectAnimator;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -20,6 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -50,13 +51,13 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
     private RecyclerView recycler_today, recycler_yesterday;
-    private TextView notifi_header_title, today_nodata, yesterday_nodata,
-            reminder, incomplete_act, archieved_notifi;
+    private TextView notifi_header_title, today_nodata, yesterday_nodata, reminder, incomplete_act, archieved_notifi;
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
     private List<NotificationModel> todayPresc_list, yesterdayPresc_list;
     private NetworkUtils networkUtils;
+    private ObjectAnimator syncAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -88,12 +88,14 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         viewsActions();
         clickListeners();
     }
+
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
             Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showNotifications() {
         try {
             todays_Presc_notification();
@@ -109,7 +111,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     }
 
     private void count() {
-      //  int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
+        //  int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
         int total_presc_count = 0;
         total_presc_count = adapter != null ? adapter.getItemCount() : total_presc_count;
         notifi_header_title.setText(getString(R.string.five_presc_received, total_presc_count));
@@ -148,40 +150,34 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
             adapter.notifyDataSetChanged();
         });
 
-     /*   refresh.setOnClickListener(v -> {
-            // refresh data.
-            showNotifications();
-            Toast.makeText(this, "Refreshed Successfully", Toast.LENGTH_SHORT).show();
-        });*/
+        refresh.setOnClickListener(v -> {
+            SyncUtils.syncNow(NotificationActivity.this, refresh, syncAnimator);
+        });
 
         filter.setOnClickListener(v -> {
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
 
         reminder.setOnClickListener(v -> {
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
         incomplete_act.setOnClickListener(v -> {
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
         archieved_notifi.setOnClickListener(v -> {
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
 
         arrow_right.setOnClickListener(v -> {
@@ -207,8 +203,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         boolean value = false;
         for (NotificationModel model : todayPresc_list) {
             value = fetchAllFrom_NotificationTbl(model);
-            if (!value)
-                list.add(model);
+            if (!value) list.add(model);
         }
         todayPresc_list.clear();
         todayPresc_list.addAll(list);
@@ -216,8 +211,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
 
         if (todayPresc_list.size() <= 0) {
             today_nodata.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             Date c = Calendar.getInstance().getTime();
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -249,8 +243,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         boolean value = false;
         for (NotificationModel model : yesterdayPresc_list) {
             value = fetchAllFrom_NotificationTbl(model);
-            if (!value)
-                list.add(model);
+            if (!value) list.add(model);
         }
         yesterdayPresc_list.clear();
         yesterdayPresc_list.addAll(list);
@@ -258,8 +251,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
 
         if (yesterdayPresc_list.size() <= 0) {
             yesterday_nodata.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -1);
@@ -286,8 +278,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
             if (patientDTOList.size() <= 0) {
                 today_nodata.setVisibility(View.VISIBLE);
                 yesterday_nodata.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 today_nodata.setVisibility(View.GONE);
                 yesterday_nodata.setVisibility(View.GONE);
             }
@@ -306,8 +297,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -318,6 +308,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();
