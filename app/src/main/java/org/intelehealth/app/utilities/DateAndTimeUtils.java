@@ -526,7 +526,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getDisplayDateAndTime(String dateTime) {
-        Log.d(TAG, "getDisplayDateAndTime: dateTime : "+dateTime);
+        Log.d(TAG, "getDisplayDateAndTime: dateTime : " + dateTime);
         String finalDate = "";
         String hourFormated = "";
         String textTime;
@@ -835,5 +835,8 @@ public class DateAndTimeUtils {
         return outputFormat.format(date);
     }
 
-
+    public static String getTodaysDateInRequiredFormat(String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        return simpleDateFormat.format(new Date());
+    }
 }
