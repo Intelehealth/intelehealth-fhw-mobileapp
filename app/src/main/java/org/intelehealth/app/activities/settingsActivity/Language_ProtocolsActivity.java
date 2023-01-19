@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -57,7 +59,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Language_ProtocolsActivity extends AppCompatActivity {
     private Spinner lang_spinner;
-    private ImageButton reset_btn, update_protocols_btn;
+    private ImageButton reset_btn, update_protocols_btn, btRefresh;
     private String selected_language = "English";
     private Context context;
     private ArrayAdapter<String> langAdapter;
@@ -66,13 +68,14 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private TextView snackbar_text;
     String key = null;
     String licenseUrl = null;
-  //  private CustomProgressDialog customProgressDialog;
+    //  private CustomProgressDialog customProgressDialog;
     private DownloadMindMaps mTask;
     private ProgressDialog mProgressDialog;
     private String mindmapURL = "";
     private AlertDialog alertDialog;
     private String appLanguage;
     EditText text, url;
+    private ObjectAnimator syncAnimator;
 
 
     @Override
@@ -98,6 +101,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         snackbar_cv = findViewById(R.id.snackbar_cv);
         snackbar_text = findViewById(R.id.snackbar_text);
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
+        btRefresh = findViewById(R.id.refresh);
     }
 
     private void clickListeners() {
@@ -118,7 +122,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         else
             lang_spinner.setSelection(langAdapter.getPosition("English"));
 
-        lang_spinner.setSelection(i,false);
+        lang_spinner.setSelection(i, false);
         lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
@@ -142,7 +146,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         reset_btn.setOnClickListener(v -> {
             sessionManager.setAppLanguage("en");
             lang_spinner.setSelection(0, false);
-          //  showSnackBarAndRemoveLater("Language successfully changed to English!");
+            //  showSnackBarAndRemoveLater("Language successfully changed to English!");
         });
 
         // language spinner - end
@@ -152,6 +156,10 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             updateProtocols();
         });
         // update protocols - end
+
+        btRefresh.setOnClickListener(v -> {
+            SyncUtils.syncNow(Language_ProtocolsActivity.this, btRefresh, syncAnimator);
+        });
     }
 
     private void updateProtocols() {
@@ -278,7 +286,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     // Dialog - start
     public void dialog(Context context, Drawable drawable, String title, String subTitle,
-                                                 String positiveBtnTxt, String negativeBtnTxt, boolean toDisable) {
+                       String positiveBtnTxt, String negativeBtnTxt, boolean toDisable) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -299,8 +307,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         if (toDisable) {
             positive_btn.setVisibility(View.GONE);
             negative_btn.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             positive_btn.setVisibility(View.VISIBLE);
             negative_btn.setVisibility(View.VISIBLE);
         }
@@ -337,6 +344,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     /**
      * Setting the language selected by user as app language.
+     *
      * @param // appLanguage
      */
     public void setLocale(String locale_code, String language) {
@@ -371,7 +379,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     }
 
     private void getMindmapDownloadURL(String url, String key) {
-       // customProgressDialog.show();
+        // customProgressDialog.show();
         dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
                 "Changing protocols", "Please wait while the protocols are being changed.",
                 "Yes", "No", true);
@@ -386,11 +394,11 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                     .subscribe(new DisposableObserver<DownloadMindMapRes>() {
                         @Override
                         public void onNext(DownloadMindMapRes res) {
-                          //  customProgressDialog.dismiss();
+                            //  customProgressDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, alertDialog,"home", true);
+                                mTask = new DownloadMindMaps(context, alertDialog, "home", true);
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 /**
@@ -398,7 +406,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                                  */
                                 showSnackBarAndRemoveLater("Protocols have been successfully changed!");
                                 checkExistingMindMaps();
-                              //  alertDialog.dismiss();
+                                //  alertDialog.dismiss();
 
                             } else {
                                 Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
@@ -407,7 +415,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                          //  customProgressDialog.dismiss();
+                            //  customProgressDialog.dismiss();
                             alertDialog.dismiss();
                             Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
                         }
