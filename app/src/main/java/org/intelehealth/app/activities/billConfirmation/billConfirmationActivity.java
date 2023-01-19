@@ -413,7 +413,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         obsDTO.setConceptuuid(UuidDictionary.BILL_VISIT_TYPE);
         obsDTO.setEncounteruuid(encounter_uuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(visitType);
+        if (visitType.equalsIgnoreCase("Consultation"))
+            obsDTO.setValue(visitType + " - 15");
+        else
+            obsDTO.setValue(visitType + " - 10");
         obsDTO.setUuid(AppConstants.NEW_UUID);
 
         try {
