@@ -337,7 +337,7 @@ public class FourthScreenFragment extends Fragment {
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
-//        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 //        if (NetworkConnection.isOnline(getActivity().getApplication())) {
 //            SyncDAO syncDAO = new SyncDAO();
 //            boolean ispush = syncDAO.pushDataApi();
@@ -408,34 +408,120 @@ public class FourthScreenFragment extends Fragment {
 
                 if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.averageAnnualHouseholdIncomeRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero_thirty_thousand)))
+                            binding.annualHouseholdIncome0.setChecked(true);
 
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.thirty_fifty_thousand)))
+                            binding.annualHouseholdIncome1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.fifty_thousand_one_lakh)))
+                            binding.annualHouseholdIncome2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.one_lakh_two_lakh_fifty_thousand)))
+                            binding.annualHouseholdIncome4.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_two_lakh_fifty_thousand)))
+                            binding.annualHouseholdIncome4.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("monthlyFoodExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.monthlyFoodExpenditureRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero_fifteen_hundred)))
+                            binding.monthlyFoodExpense0.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.fifteen_twenty_five_hundred)))
+                            binding.monthlyFoodExpense1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.twenty_five_hundred_five_thousand)))
+                            binding.monthlyFoodExpense2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.five_ten_thousand)))
+                            binding.monthlyFoodExpense3.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_ten_thousand)))
+                            binding.monthlyFoodExpense4.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("annualHealthExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.annualHealthExpenditureRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero_five_thousand)))
+                            binding.healthExpense0.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.five_thousand_one_ten_thousand)))
+                            binding.healthExpense1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.ten_thousand_one_twenty_thousand)))
+                            binding.healthExpense2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.twenty_thousand_one_thirty_thousand)))
+                            binding.healthExpense3.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_thirty_thousand)))
+                            binding.greaterThanThirtyThousandRadioButton.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("annualEducationExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.annualEducationExpenditureRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero)))
+                            binding.annualEducationExpense0.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero_ten_thousand)))
+                            binding.annualEducationExpense1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.ten_twenty_thousand)))
+                            binding.annualEducationExpense2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.twenty_forty_thousand)))
+                            binding.annualEducationExpense3.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.forty_thousand_one_lakh)))
+                            binding.annualEducationExpense4.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_one_lakh)))
+                            binding.annualEducationExpense5.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("annualClothingExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.annualClothingExpenditureRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.zero_ten_thousand)))
+                            binding.annualClothingExpense0.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.ten_twenty_thousand)))
+                            binding.annualClothingExpense1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.twenty_forty_thousand)))
+                            binding.annualClothingExpense2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.forty_thousand_one_lakh)))
+                            binding.annualClothingExpense3.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_one_lakh)))
+                            binding.annualClothingExpense4.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("monthlyIntoxicantsExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.monthlyIntoxicantsExpenditureRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.one_to_six_hundred)))
+                            binding.intoxicExpense0.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.six_hundred_one_thousand)))
+                            binding.intoxicExpense1.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.thousand_to_fifteen_hundred)))
+                            binding.intoxicExpense2.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.fifteen_hundred_to_twenty_five_hundred)))
+                            binding.intoxicExpense3.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.more_than_twenty_five_hundred)))
+                            binding.intoxicExpense4.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("householdBPLCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));

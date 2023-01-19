@@ -259,7 +259,7 @@ public class FifthScreenFragment extends Fragment {
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
-//        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 //        if (NetworkConnection.isOnline(getActivity().getApplication())) {
 //            SyncDAO syncDAO = new SyncDAO();
 //            boolean ispush = syncDAO.pushDataApi();
