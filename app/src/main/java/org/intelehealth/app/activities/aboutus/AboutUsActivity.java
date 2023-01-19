@@ -4,16 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_New;
+import org.intelehealth.app.syncModule.SyncUtils;
 
 /**
  * Created by: Prajwal Waingankar On: 25/Nov/2022
@@ -23,6 +26,8 @@ public class AboutUsActivity extends AppCompatActivity {
     private RecyclerView images_recyclerview;
     private AboutUsAdapter adapter;
     private TextView globe_link, info_link;
+    private ImageView ivRefresh;
+    private ObjectAnimator syncAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,11 @@ public class AboutUsActivity extends AppCompatActivity {
 
         info_link = findViewById(R.id.info_link);
         info_link.setMovementMethod(LinkMovementMethod.getInstance());  // When you need to show custom text rather than link to user.
+
+        ivRefresh = findViewById(R.id.refresh);
+        ivRefresh.setOnClickListener(v -> {
+            SyncUtils.syncNow(AboutUsActivity.this, ivRefresh, syncAnimator);
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         images_recyclerview.setLayoutManager(layoutManager);
