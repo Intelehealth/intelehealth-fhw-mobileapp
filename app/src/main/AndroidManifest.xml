@@ -300,7 +300,7 @@
             android:permission="" />
 
         <provider
-            android:authorities="org.intelehealth.app.fileprovider"
+            android:authorities="com.smartcaredoc.app.fileprovider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
