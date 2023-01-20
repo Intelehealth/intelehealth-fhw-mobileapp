@@ -43,7 +43,7 @@ public class DailyAchievementsFragment extends Fragment {
         });
 
         TextView tvTodaysDate = view.findViewById(R.id.tv_todays_date);
-        tvTodaysDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
+        tvTodaysDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy"));
 
         patientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
     }

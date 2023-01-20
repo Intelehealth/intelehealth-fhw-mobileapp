@@ -69,6 +69,9 @@ public class PatientDTO implements Serializable {
     private String occupation;
     private String caste;
 
+    private String createdDate;
+    private String providerUUID;
+
     // for search tags...
     private boolean emergency = false;
     private String visit_startdate;
@@ -281,6 +284,22 @@ public class PatientDTO implements Serializable {
 
     public void setCaste(String caste) {
         this.caste = caste;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getProviderUUID() {
+        return providerUUID;
+    }
+
+    public void setProviderUUID(String providerUUID) {
+        this.providerUUID = providerUUID;
     }
 
     @Override

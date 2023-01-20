@@ -73,6 +73,7 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -148,7 +149,7 @@ public class Fragment_ThirdScreen extends Fragment {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
-         //   patientID_edit = getArguments().getString("patientUuid");
+            //   patientID_edit = getArguments().getString("patientUuid");
 
           /*  if (patientID_edit != null) {
                 patient1.setUuid(patientID_edit);
@@ -166,9 +167,8 @@ public class Fragment_ThirdScreen extends Fragment {
 */
 
             if (patient_detail) {
-            //    patientDTO.setUuid(patientID_edit);
-            }
-            else {
+                //    patientDTO.setUuid(patientID_edit);
+            } else {
                 // do nothing...
             }
 
@@ -335,7 +335,7 @@ public class Fragment_ThirdScreen extends Fragment {
         if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().isEmpty())
             mRelationNameEditText.setText(patientDTO.getSon_dau_wife());
         Log.v(TAG, "relation: " + patientDTO.getSon_dau_wife());
-        
+
         if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().isEmpty())
             mOccupationEditText.setText(patientDTO.getOccupation());
 
@@ -584,61 +584,85 @@ public class Fragment_ThirdScreen extends Fragment {
          *  entering value in dataset start
          */
 
-            String uuid = patientDTO.getUuid();
+        String uuid = patientDTO.getUuid();
 
-            // mobile no adding in patient attributes.
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // mobile no adding in patient attributes.
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // son/daughter/wife of
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRelationNameEditText.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // son/daughter/wife of
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mRelationNameEditText.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // occupation
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // occupation
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // caste
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
-            patientAttributesDTOList.add(patientAttributesDTO);
-            Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
+        // caste
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
+        patientAttributesDTOList.add(patientAttributesDTO);
+        Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
 
-            // education
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducationSpinner));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // education
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEducationSpinner));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // economic status
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicstatusSpinner));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // economic status
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicstatusSpinner));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientDTO.setSyncd(false);
-            //  patientDTO.setSyncd(true);
-            Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
+        // createdDate
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("createdDate"));
+        if (patientDTO.getCreatedDate() != null) {
+            patientAttributesDTO.setValue(patientDTO.getCreatedDate());
+        } else {
+            patientAttributesDTO.setValue(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy"));
+        }
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //providerUUID
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("providerUUID"));
+        if (patientDTO.getProviderUUID() != null) {
+            patientAttributesDTO.setValue(patientDTO.getProviderUUID());
+        } else {
+            patientAttributesDTO.setValue(sessionManager.getProviderID());
+        }
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
+        patientDTO.setSyncd(false);
+        //  patientDTO.setSyncd(true);
+        Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
 
 
         // inserting data in db and uploading to server...
@@ -679,12 +703,12 @@ public class Fragment_ThirdScreen extends Fragment {
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
-            //    intent.putExtra("patientUuid", patientID_edit);
-             //   if (patient_detail) {
-                    getActivity().startActivity(intent);
-             //   }
+                //    intent.putExtra("patientUuid", patientID_edit);
+                //   if (patient_detail) {
+                getActivity().startActivity(intent);
+                //   }
                 //startActivity(intent);
-              //  getActivity().finish();
+                //  getActivity().finish();
             } else {
                 Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
             }

@@ -126,7 +126,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus;
     SessionManager sessionManager = null;
-//    Patient patientDTO = new Patient();
+    //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     private boolean hasLicense = false;
     SQLiteDatabase db = null;
@@ -522,6 +522,12 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                }
+                if (name.equalsIgnoreCase("createdDate")) {
+                    patientDTO.setCreatedDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("providerUUID")) {
+                    patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1326,8 +1332,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
