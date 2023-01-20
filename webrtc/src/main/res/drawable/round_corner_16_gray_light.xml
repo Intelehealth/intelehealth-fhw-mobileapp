@@ -7,10 +7,10 @@
         android:startColor="@color/gray_0"
         android:type="linear" />
     <corners
-        android:bottomLeftRadius="16dip"
-        android:bottomRightRadius="16dip"
-        android:radius="16dip"
-        android:topLeftRadius="16dip"
-        android:topRightRadius="16dip" />
+        android:bottomLeftRadius="12dip"
+        android:bottomRightRadius="12dip"
+        android:radius="12dip"
+        android:topLeftRadius="12dip"
+        android:topRightRadius="12dip" />
 
 </shape>

@@ -51,5 +51,9 @@
     <string name="call_end_aler_txt">Do you want to end the video call ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="type_text_here_str">Type text here ...</string>
+    <string name="type_text_here_str">Type here ...</string>
+
+    <string name="take_photo_lbl">Take Photo</string>
+    <string name="choose_from_gallery_lbl">Choose from Gallery</string>
+    <string name="cancel_lbl">Cancel</string>
 </resources>
