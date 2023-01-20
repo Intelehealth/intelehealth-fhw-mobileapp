@@ -51,4 +51,10 @@
     <string name="call_end_aler_txt">ଆପଣ ଭିଡିଓ କଲ୍ ଶେଷ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="yes">ହଁ</string>
     <string name="no">ନା</string>
+
+    <string name="type_text_here_str">Type here ...</string>
+
+    <string name="take_photo_lbl">Take Photo</string>
+    <string name="choose_from_gallery_lbl">Choose from Gallery</string>
+    <string name="cancel_lbl">Cancel</string>
 </resources>

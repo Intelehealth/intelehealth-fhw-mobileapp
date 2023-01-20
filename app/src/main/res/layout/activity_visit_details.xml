@@ -441,7 +441,7 @@
                         android:layout_width="@dimen/fu_icon_width"
                         android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
-                        android:background="@null"
+                        android:background="@null" android:onClick="startVideoChat"
                         android:src="@drawable/ic_icon8_phone" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -450,7 +450,7 @@
                         android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/fu_margin_start"
-                        android:background="@null"
+                        android:background="@null" android:onClick="startTextChat"
                         android:src="@drawable/ic_icon8_whatsapp" />
 
                 </LinearLayout>

@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
@@ -80,7 +81,7 @@ public class CallListenerBackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.v(TAG, "onStartCommand");
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        Intent notificationIntent = new Intent(this, HomeScreenActivity_New.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
@@ -95,7 +96,7 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-//        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
         //do heavy work on a background thread
 
         // Write a message to the database
@@ -149,7 +150,7 @@ public class CallListenerBackgroundService extends Service {
                                 Log.v(TAG, "Current time - " + new Date());
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
+                                if (seconds >= 30) {
                                     isOldNotification = true;
                                 }
                             } catch (ParseException e) {

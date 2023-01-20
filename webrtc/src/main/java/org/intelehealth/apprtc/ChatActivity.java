@@ -1,17 +1,20 @@
 package org.intelehealth.apprtc;
 
-import android.content.BroadcastReceiver;
+import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -20,7 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,10 +48,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.intelehealth.apprtc.adapter.ChatListingAdapter;
 import org.intelehealth.apprtc.data.Constants;
+import org.intelehealth.apprtc.utils.BitmapUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,6 +64,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -80,6 +94,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        mImagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
+        ;
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
         }
@@ -100,8 +116,9 @@ public class ChatActivity extends AppCompatActivity {
         Log.v("mToUUId", String.valueOf(mToUUId));
         Log.v("mVisitUUID", String.valueOf(mVisitUUID));
         Log.v("mPatientName", String.valueOf(mPatientName));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mPatientName);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setTitle(mPatientName);
+        ((TextView) findViewById(R.id.title_incoming_tv)).setText(mPatientName);
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
 
@@ -145,6 +162,10 @@ public class ChatActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        if (getIntent().getBooleanExtra("isForVideo", false)) {
+
+        }
     }
 
     public void hideSoftKeyboard() {
@@ -436,7 +457,7 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessageNow(View view) {
         hideSoftKeyboard();
         if (mToUUId.isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.please_wait_for_doctor), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_wait_for_doctor), Toast.LENGTH_SHORT).show();
             return;
         }
         String message = mMessageEditText.getText().toString().trim();
@@ -447,28 +468,144 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.chat_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void endChat(View view) {
+        finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            finish();
-            return true;
-        } else if (itemId == R.id.video_call_menu) {
-            startActivity(new Intent(this, CompleteActivity.class)
-                    .putExtra("roomId", mPatientUUid)
-                    .putExtra("nurseId", mFromUUId)
-            );
+    public void vCallNow(View view) {
+        startActivity(new Intent(this, CompleteActivity.class)
+                .putExtra("roomId", mPatientUUid)
+                .putExtra("nurseId", mFromUUId)
+        );
 
-            return true;
+    }
+
+    public void loadAttachment(View view) {
+        validatePermissionAndIntent();
+    }
+
+    private String mLastSelectedImageName = "";
+
+
+    private void cameraStart() {
+        /*File file = new File(AppConstants.IMAGE_PATH);
+        final String imagePath = file.getAbsolutePath();
+        final String imageName = UUID.randomUUID().toString();
+        mLastSelectedImageName = imageName;
+        Intent cameraIntent = new Intent(VisitCreationActivity.this, CameraActivity.class);
+        File filePath = new File(imagePath);
+        if (!filePath.exists()) {
+            boolean res = filePath.mkdirs();
         }
-        return super.onOptionsItemSelected(item);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
+        //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
+        mStartForCameraResult.launch(cameraIntent);*/
     }
+
+    private void galleryStart() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mStartForGalleryResult.launch(intent);
+    }
+
+    private static final int MY_CAMERA_REQUEST_CODE = 1001;
+    private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), getString(R.string.cancel_lbl)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        builder.setTitle("Add Image by");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    cameraStart();
+
+                } else if (item == 1) {
+                    galleryStart();
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+
+    private void validatePermissionAndIntent() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+        } else {
+            //cameraStart();
+            selectImage();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                cameraStart();
+                selectImage();
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPhotoPath = "";
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            String[] filePath = {MediaStore.Images.Media.DATA};
+                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                            c.moveToFirst();
+                            int columnIndex = c.getColumnIndex(filePath[0]);
+                            String picturePath = c.getString(columnIndex);
+                            c.close();
+                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                            Log.v("path", picturePath + "");
+
+                            // copy & rename the file
+                            String finalImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = mImagePath + finalImageName + ".jpg";
+                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+
+                            // Handle the Intent
+
+
+                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                            Log.i(TAG, currentPhotoPath);
+
+                            try {
+                                JSONObject inputJsonObject = new JSONObject();
+                                inputJsonObject.put("fromUser", mFromUUId);
+                                inputJsonObject.put("toUser", mToUUId);
+                                inputJsonObject.put("patientId", mPatientUUid);
+                                inputJsonObject.put("message", "New Image Sent!");
+                                inputJsonObject.put("ContentType", "IMAGE");
+                                inputJsonObject.put("filePath", currentPhotoPath);
+
+                                addNewMessage(inputJsonObject);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
+    public String mImagePath = "";
 
 }

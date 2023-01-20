@@ -8,6 +8,59 @@
     tools:context="org.intelehealth.apprtc.ChatActivity">
 
     <RelativeLayout
+        android:id="@+id/header_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_rounded_bottom_corner"
+        android:minHeight="64dip">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginTop="16dip"
+            android:layout_marginBottom="16dip"
+            android:onClick="endChat"
+            app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
+
+        <TextView
+            android:id="@+id/title_incoming_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dip"
+            android:layout_marginTop="16dip"
+            android:layout_toEndOf="@+id/back_iv"
+            android:text="Incoming call"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/call_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginTop="16dip"
+            android:layout_marginEnd="16dip"
+            android:layout_marginBottom="16dip"
+            android:onClick="vCallNow"
+            app:srcCompat="@drawable/call_icon_new" />
+
+        <ImageView
+            android:id="@+id/sync_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/call_iv"
+            app:srcCompat="@drawable/sync_icon_new" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/footer_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,13 +89,13 @@
 
         <ImageView
             android:id="@+id/send_imv"
-            android:layout_width="36dip"
-            android:layout_height="36dip"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/round_corner_16_blue_light"
             android:onClick="sendMessageNow"
-            android:padding="8dip"
+            android:padding="16dip"
             app:srcCompat="@drawable/ic_baseline_send_24_white" />
 
         <LinearLayout
@@ -68,7 +121,7 @@
         <EditText
             android:id="@+id/text_etv"
             android:layout_width="match_parent"
-            android:layout_height="36dip"
+            android:layout_height="?actionBarSize"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dip"
             android:layout_marginEnd="16dip"
@@ -84,10 +137,18 @@
             android:inputType="text"
             android:maxLines="4"
             android:minHeight="36dip"
-            android:padding="8dip"
+            android:padding="16dip"
             android:textColor="@color/gray_4"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
+        <ImageView
+            android:id="@+id/send_attachment_imv"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignEnd="@+id/text_etv"
+            android:onClick="loadAttachment"
+            android:padding="16dip"
+            app:srcCompat="@drawable/attachment_icon_new" />
 
     </RelativeLayout>
 
@@ -96,6 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/header_ll"
         android:layout_margin="16dip"
         android:visibility="visible" />
 

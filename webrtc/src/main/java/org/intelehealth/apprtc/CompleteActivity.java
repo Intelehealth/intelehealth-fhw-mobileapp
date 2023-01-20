@@ -1,5 +1,10 @@
 package org.intelehealth.apprtc;
 
+import static org.webrtc.SessionDescription.Type.ANSWER;
+import static org.webrtc.SessionDescription.Type.OFFER;
+import static io.socket.client.Socket.EVENT_CONNECT;
+import static io.socket.client.Socket.EVENT_DISCONNECT;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +18,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -58,11 +64,6 @@ import java.util.List;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import static io.socket.client.Socket.EVENT_CONNECT;
-import static io.socket.client.Socket.EVENT_DISCONNECT;
-import static org.webrtc.SessionDescription.Type.ANSWER;
-import static org.webrtc.SessionDescription.Type.OFFER;
-
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
     private static final int RC_CALL = 111;
@@ -75,6 +76,7 @@ public class CompleteActivity extends AppCompatActivity {
     private boolean isInitiator;
     private boolean isChannelReady;
     private boolean isStarted;
+    private boolean mIsStartNewCall = false;
 
 
     MediaConstraints audioConstraints;
@@ -115,12 +117,14 @@ public class CompleteActivity extends AppCompatActivity {
 
     private String mRoomId = "foo";
     private String mDoctorName = "Doctor";
+    private String mDoctorUUID = "Doctor";
     private String mNurseId = "Doctor";
     private boolean mIsInComingRequest = false;
     private Ringtone mRingtone;
 
     BroadcastReceiver broadcastReceiver;
     boolean mMicrophonePluggedIn = false;
+    private JSONObject mRoomJsonObject = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,16 +136,14 @@ public class CompleteActivity extends AppCompatActivity {
             mDoctorName = getIntent().getStringExtra("doctorname");
         if (getIntent().hasExtra("nurseId"))
             mNurseId = getIntent().getStringExtra("nurseId");
+        if (getIntent().hasExtra("doctorUUID"))
+            mDoctorUUID = getIntent().getStringExtra("doctorUUID");
 
-        if (mIsInComingRequest) {
-            binding.callingLayout.setVisibility(View.VISIBLE);
-            binding.rippleBackgroundContent.startRippleAnimation();
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            //mRingtone.setLooping(true);
-            mRingtone.play();
-        } else {
-            binding.callingLayout.setVisibility(View.GONE);
+        try {
+            mRoomJsonObject.put("room", mRoomId);
+            mRoomJsonObject.put("connectToDrId", mDoctorUUID);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         binding.callerNameTv.setText(mDoctorName);
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +152,8 @@ public class CompleteActivity extends AppCompatActivity {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId);
+                    socket.emit("create or join", mRoomId); // incoming
+                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -169,6 +172,7 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (socket != null) {
                     socket.emit("create or join", mRoomId);
+                    //socket.emit("create_or_join_hw", mRoomId);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -255,10 +259,22 @@ public class CompleteActivity extends AppCompatActivity {
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(broadcastReceiver, receiverFilter);
 
-        start();
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
+        start();
+        if (mIsInComingRequest) {
+            binding.callingLayout.setVisibility(View.VISIBLE);
+            binding.rippleBackgroundContent.startRippleAnimation();
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            //mRingtone.setLooping(true);
+            mRingtone.play();
+
+        } else {
+            binding.callingLayout.setVisibility(View.GONE);
+
+        }
     }
 
     private void stopRinging() {
@@ -269,6 +285,7 @@ public class CompleteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
@@ -278,6 +295,8 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (socket != null)
                     socket.emit("bye");
+                else
+                    finish();
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.no, null);
@@ -425,11 +444,11 @@ public class CompleteActivity extends AppCompatActivity {
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
-                if (!mIsInComingRequest) {
+                Log.v("RoomJsonObject", mRoomJsonObject.toString());
+                if (!mIsInComingRequest)
+                    socket.emit("create_or_join_hw", mRoomJsonObject);
 
-                    socket.emit("create or join", mRoomId);
 
-                }
             }).on("ipaddr", args -> {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");
             }).on("bye", args -> {
@@ -438,7 +457,8 @@ public class CompleteActivity extends AppCompatActivity {
 
             }).on("call", args -> {
                 Log.d(TAG, "connectToSignallingServer: call");
-                socket.emit("create or join", mRoomId);
+                //socket.emit("create or join", mRoomId);
+                socket.emit("create_or_join_hw", mRoomJsonObject);
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
                 disconnectAll();
@@ -448,12 +468,18 @@ public class CompleteActivity extends AppCompatActivity {
             }).on("full", args -> {
                 Log.d(TAG, "connectToSignallingServer: full");
             }).on("join", args -> {
+                for (int i = 0; i < args.length; i++) {
+                    Log.d(TAG, "join - " + args[i]);
+                }
                 Log.d(TAG, "connectToSignallingServer: join");
                 Log.d(TAG, "connectToSignallingServer: Another peer made a request to join room");
                 Log.d(TAG, "connectToSignallingServer: This peer is the initiator of room");
                 isChannelReady = true;
             }).on("joined", args -> {
                 Log.d(TAG, "connectToSignallingServer: joined");
+                for (Object arg : args) {
+                    Log.d(TAG, "joined - " + arg);
+                }
                 isChannelReady = true;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -462,16 +488,38 @@ public class CompleteActivity extends AppCompatActivity {
                     }
                 });
 
+
+            }).on("ready", args -> {
+
+                for (Object arg : args) {
+                    Log.d(TAG, "ready - " + arg);
+                }
+                Log.d(TAG, "connectToSignallingServer: ready");
+                if (mIsInComingRequest) {
+                    //socket.emit("ready");
+                } else {
+                    isChannelReady = true;
+                    maybeStart();
+                    //
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CompleteActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
+                            binding.statusTv.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
             }).on("log", args -> {
                 for (Object arg : args) {
                     Log.d(TAG, "connectToSignallingServer: log" + String.valueOf(arg));
                 }
             }).on("message", args -> {
                 Log.d(TAG, "connectToSignallingServer: got a message");
-            }).on("message", args -> {
                 try {
                     if (args[0] instanceof String) {
                         String message = (String) args[0];
+                        Log.d(TAG, "connectToSignallingServer: got String message " + message);
                         if (message.equals("got user media")) {
                             maybeStart();
                         }
@@ -486,11 +534,35 @@ public class CompleteActivity extends AppCompatActivity {
                             peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(OFFER, message.getString("sdp")));
                             doAnswer();
                         } else if (message.getString("type").equals("answer") && isStarted) {
-                            peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(ANSWER, message.getString("sdp")));
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(ANSWER, message.getString("sdp")));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, 1000);
                         } else if (message.getString("type").equals("candidate") && isStarted) {
                             Log.d(TAG, "connectToSignallingServer: receiving candidates");
-                            IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
-                            peerConnection.addIceCandidate(candidate);
+                            //{"type":"candidate","candidate":{"candidate":"candidate:11 1 UDP 91953663 172.31.34.2 50457 typ relay raddr 172.31.34.2 rport 50457",
+                            // "sdpMid":"audio","sdpMLineIndex":0,"usernameFragment":"2353e29e"}}
+                            //IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        IceCandidate candidate = new IceCandidate(message.getJSONObject("candidate").getString("sdpMid"),
+                                                message.getJSONObject("candidate").getInt("sdpMLineIndex"),
+                                                message.getJSONObject("candidate").getString("candidate"));
+                                        peerConnection.addIceCandidate(candidate);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, 1000);
+
                         }
                         /*else if (message === 'bye' && isStarted) {
                         handleRemoteHangup();
@@ -518,6 +590,7 @@ public class CompleteActivity extends AppCompatActivity {
 
 
     private void doAnswer() {
+        Log.v(TAG, "doAnswer()");
         peerConnection.createAnswer(new SimpleSdpObserver() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -538,10 +611,9 @@ public class CompleteActivity extends AppCompatActivity {
         Log.d(TAG, "maybeStart: " + isStarted + " " + isChannelReady);
         if (!isStarted && isChannelReady) {
             isStarted = true;
-            Log.d(TAG, "isInitiator: " + isInitiator);
-//            if (isInitiator) {
+            // if (isInitiator) {
             doCall();
-//            }
+            //}
         }
     }
 
@@ -556,7 +628,7 @@ public class CompleteActivity extends AppCompatActivity {
         peerConnection.createOffer(new SimpleSdpObserver() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
-                Log.d(TAG, "onCreateSuccess: ");
+                Log.d(TAG, "createOffer onCreateSuccess:()");
                 peerConnection.setLocalDescription(new SimpleSdpObserver(), sessionDescription);
                 JSONObject message = new JSONObject();
                 try {
@@ -568,6 +640,7 @@ public class CompleteActivity extends AppCompatActivity {
                 }
             }
         }, sdpMediaConstraints);
+        startStreamingVideo();
     }
 
     private void sendMessage(Object message) {
@@ -636,7 +709,7 @@ public class CompleteActivity extends AppCompatActivity {
             peerConnection.removeStream(mediaStream);
             //mediaStream.dispose();
         }
-        mediaStream = factory.createLocalMediaStream("ARDAMS");
+        mediaStream = factory.createLocalMediaStream(VIDEO_TRACK_ID);
         mediaStream.addTrack(videoTrackFromCamera);
         mediaStream.addTrack(localAudioTrack);
         peerConnection.addStream(mediaStream);
@@ -678,18 +751,40 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onIceCandidate(IceCandidate iceCandidate) {
                 Log.d(TAG, "onIceCandidate: ");
-                JSONObject message = new JSONObject();
+                if (mIsInComingRequest) {
+                    JSONObject message = new JSONObject();
 
-                try {
-                    message.put("type", "candidate");
-                    message.put("label", iceCandidate.sdpMLineIndex);
-                    message.put("id", iceCandidate.sdpMid);
-                    message.put("candidate", iceCandidate.sdp);
+                    try {
+                        message.put("type", "candidate");
+                        message.put("label", iceCandidate.sdpMLineIndex);
+                        message.put("id", iceCandidate.sdpMid);
+                        message.put("candidate", iceCandidate.sdp);
 
-                    Log.d(TAG, "onIceCandidate: sending candidate " + message);
-                    sendMessage(message);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        Log.d(TAG, "onIceCandidate: sending candidate " + message);
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    JSONObject message = new JSONObject();
+                    JSONObject candidate = new JSONObject();
+
+                    try {
+                        candidate.put("type", "candidate");
+                        candidate.put("sdpMLineIndex", iceCandidate.sdpMLineIndex);
+                        candidate.put("sdpMid", iceCandidate.sdpMid);
+                        candidate.put("candidate", iceCandidate.sdp);
+                        //candidate.put("usernameFragment", "123");
+
+                        message.put("type", "candidate");
+                        message.put("candidate", candidate);
+
+                        Log.d(TAG, "onIceCandidate: sending candidate " + message);
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
