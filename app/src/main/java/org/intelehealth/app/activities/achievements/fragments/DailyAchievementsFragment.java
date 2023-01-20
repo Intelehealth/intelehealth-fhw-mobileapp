@@ -20,14 +20,14 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DailyAchievementsFragment extends Fragment {
     View view;
     public HomeScreenActivity_New activity1;
-    private TextView patientsCreatedToday;
+    private TextView tvPatientsCreatedToday;
+    private TextView tvVisitsEndedToday;
 
     private String todaysDate;
     private SessionManager sessionManager;
@@ -62,7 +62,8 @@ public class DailyAchievementsFragment extends Fragment {
         todaysDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy");
         tvTodaysDate.setText(todaysDate);
 
-        patientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
+        tvPatientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
+        tvVisitsEndedToday = view.findViewById(R.id.tv_visits_ended_today);
     }
 
     private void fetchAndSetUIData() {
@@ -80,12 +81,19 @@ public class DailyAchievementsFragment extends Fragment {
         final Cursor todayPatientsCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID(), todaysDate});
         todayPatientsCursor.moveToFirst();
         String todayPatientsCount = todayPatientsCursor.getString(todayPatientsCursor.getColumnIndex(todayPatientsCursor.getColumnName(0)));
-        requireActivity().runOnUiThread(() -> patientsCreatedToday.setText(todayPatientsCount));
+        requireActivity().runOnUiThread(() -> tvPatientsCreatedToday.setText(todayPatientsCount));
         todayPatientsCursor.close();
     }
 
     // get the number of visits that were ended by the current health worker today
     private void setVisitsEndedToday() {
-
+        String todaysDateInFormat = DateAndTimeUtils.getTodaysDateInRequiredFormat("yyyy-MM-dd");
+        String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter WHERE provider_uuid = ? AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\" AND modified_date LIKE '" + todaysDateInFormat + "%'";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        final Cursor todayVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{sessionManager.getProviderID()});
+        todayVisitsEndedCursor.moveToFirst();
+        String todayVisitsEndedCount = todayVisitsEndedCursor.getString(todayVisitsEndedCursor.getColumnIndex(todayVisitsEndedCursor.getColumnName(0)));
+        requireActivity().runOnUiThread(() -> tvVisitsEndedToday.setText(todayVisitsEndedCount));
+        todayVisitsEndedCursor.close();
     }
 }
