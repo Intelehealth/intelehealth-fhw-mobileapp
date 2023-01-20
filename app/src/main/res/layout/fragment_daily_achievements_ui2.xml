@@ -23,12 +23,13 @@
                 android:src="@drawable/ui2_ic_calendar" />
 
             <TextView
+                android:id="@+id/tv_todays_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/daily_tab_date_margin_start"
                 android:fontFamily="@font/lato_regular"
                 android:text="1 March, 2022"
-                android:layout_marginStart="@dimen/daily_tab_date_margin_start"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/date_frag_text_size"
                 android:textStyle="bold" />
@@ -68,6 +69,7 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_patients_created_today"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"

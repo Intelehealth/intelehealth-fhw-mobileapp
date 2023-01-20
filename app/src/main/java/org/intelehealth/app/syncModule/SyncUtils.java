@@ -139,6 +139,7 @@ public class SyncUtils {
 
     /**
      * Clicking on this btn will start Sync.
+     *
      * @param view Refresh button view.
      */
     public static boolean syncNow(Context context, View view, ObjectAnimator syncAnimator) {
@@ -148,6 +149,7 @@ public class SyncUtils {
         syncAnimator.setInterpolator(new LinearInterpolator());
 
         if (NetworkConnection.isOnline(context)) {
+            Toast.makeText(context, context.getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
             view.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
@@ -161,8 +163,7 @@ public class SyncUtils {
                         }
                     }, 1200);
 
-        }
-        else {
+        } else {
             isSynced = false;
             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
         }

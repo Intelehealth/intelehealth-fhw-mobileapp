@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
@@ -60,6 +62,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     RelativeLayout layoutParent;
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
+    ObjectAnimator syncAnimator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +98,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
 
         Button btnSave = findViewById(R.id.btn_save_change);
+
+        ivIsInternet.setOnClickListener(v -> {
+            SyncUtils.syncNow(ChangePasswordActivity_New.this, ivIsInternet, syncAnimator);
+        });
 
         btnSave.setOnClickListener(v -> {
             SnackbarUtils snackbarUtils = new SnackbarUtils();
@@ -329,6 +337,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
