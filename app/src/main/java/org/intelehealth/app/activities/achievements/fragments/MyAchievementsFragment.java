@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
@@ -22,14 +23,23 @@ import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPager
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Objects;
 
-public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface{
+public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAchievementsFragmentN";
     View view;
-    ImageView ivInternet;    NetworkUtils networkUtils;
+    ImageView ivInternet;
+    NetworkUtils networkUtils;
 
+    SessionManager sessionManager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(requireActivity());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +62,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         layoutToolbar.setVisibility(View.GONE);
         TextView tvTitle = view.findViewById(R.id.tv_achievements_title);
         tvTitle.setText(getResources().getString(R.string.my_achievements));
-         ivInternet = view.findViewById(R.id.iv_achievements_internet);
+        ivInternet = view.findViewById(R.id.iv_achievements_internet);
 
 
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
@@ -116,6 +126,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();

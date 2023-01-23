@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,8 +26,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DailyAchievementsFragment extends Fragment {
-    View view;
+    private View view;
     public HomeScreenActivity_New activity1;
+
     private TextView tvPatientsCreatedToday;
     private TextView tvVisitsEndedToday;
     private TextView tvAvgSatisfactionScore;
@@ -39,15 +41,20 @@ public class DailyAchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(requireActivity());
+        sessionManager = ((MyAchievementsFragment) requireParentFragment()).sessionManager;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_daily_achievements_ui2, container, false);
         initUI();
-        fetchAndSetUIData();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchAndSetUIData();
     }
 
     private void initUI() {
@@ -84,7 +91,7 @@ public class DailyAchievementsFragment extends Fragment {
 
     // get the number patients who were Created today as per their provider uuid
     private void setPatientsCreatedToday() {
-        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ? AND patientuuid IN (SELECT  patientuuid FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"ffc8ebee-f70c-4743-bc3c-2fe4ac843245\" AND value = ?)";
+        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ? AND patientuuid IN (SELECT patientuuid FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"ffc8ebee-f70c-4743-bc3c-2fe4ac843245\" AND value = ?)";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor todayPatientsCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID(), todaysDate});
         todayPatientsCursor.moveToFirst();
@@ -105,14 +112,13 @@ public class DailyAchievementsFragment extends Fragment {
         todayVisitsEndedCursor.close();
     }
 
-    // get the average patient satisfaction score for the health worker
+    // get today's average patient satisfaction score for the health worker
     private void setAveragePatientSatisfactionScore() {
-        double totalScore = 0.0;
+        double averageScore = 0.0, totalScore = 0.0;
+
         String todaysAverageSatisfactionScoreQuery = "SELECT value FROM tbl_obs WHERE conceptuuid = \"78284507-fb71-4354-9b34-046ab205e18f\" AND encounteruuid IN (SELECT uuid FROM tbl_encounter WHERE provider_uuid = ? AND modified_date LIKE '" + todaysDateInYYYYMMDD + "%')";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-
         final Cursor satisfactionScoreCursor = db.rawQuery(todaysAverageSatisfactionScoreQuery, new String[]{sessionManager.getProviderID()});
-        double averageScore = 0.0;
 
         if (satisfactionScoreCursor.moveToFirst()) {
             do {
