@@ -1,5 +1,7 @@
 package org.intelehealth.msfarogyabharat.activities.patientSurveyActivity;
 
+import static org.intelehealth.msfarogyabharat.database.dao.VisitsDAO.startTimeByVisitUuid;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -230,8 +232,9 @@ public class PatientSurveyActivity extends AppCompatActivity {
     }
 
     private void uploadSurvey() {
-//        ENCOUNTER_PATIENT_EXIT_SURVEY
+        String startDateTime = startTimeByVisitUuid(visitUuid);
 
+        //        ENCOUNTER_PATIENT_EXIT_SURVEY
         EncounterDTO encounterDTO = new EncounterDTO();
         String uuid = UUID.randomUUID().toString();
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -241,7 +244,17 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+            /**
+             * the solution of minus five seconds was not working fine in cases where there was no complusion of visit presc
+             * in such case visti was creating and ending within 1min as well. So this another workaround of
+             * adding +5 seconds to the startvisitTime of Visit itself in that way it makes sure that the time is always within start
+             * and end time as visit is impossible to end within 5secs. - Prajwal.
+             */
+            String time = plusFiveSecondsToVisitStartDateTime(startDateTime);
+            Log.v("VTime", "VTime: " + time);
+            encounterDTO.setEncounterTime(time);
+
+          //  encounterDTO.setEncounterTime(twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
 //            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -281,6 +294,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
 //      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
 
+    }
+
+    private String plusFiveSecondsToVisitStartDateTime(String startDateTime) throws ParseException {
+        long FIVE_SECONDS = 5 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(startDateTime).getTime();
+
+        return df.format(new Date(time + FIVE_SECONDS));
     }
 
     public void setLocale(String appLanguage) {

@@ -397,6 +397,23 @@ public class VisitsDAO {
 
         return patientUuidByViistUuid;
     }
+    public static String startTimeByVisitUuid(String visituuid) {
+        String startDateTime = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT startdate FROM tbl_visit where uuid = ?", new String[]{visituuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                startDateTime = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return startDateTime;
+    }
 
     public boolean isUpdatedDownloadColumn(String visitUuid, boolean isupdated) throws DAOException {
         boolean isUpdated = false;
