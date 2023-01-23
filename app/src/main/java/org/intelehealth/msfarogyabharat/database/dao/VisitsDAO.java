@@ -397,6 +397,12 @@ public class VisitsDAO {
 
         return patientUuidByViistUuid;
     }
+
+    /**
+     * This function will retrieve startvisittime based on visituuid provided.
+     * @param visituuid Visit UUID.
+     * @return startVisitTime of visit.
+     */
     public static String startTimeByVisitUuid(String visituuid) {
         String startDateTime = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
