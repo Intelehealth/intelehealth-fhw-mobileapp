@@ -112,15 +112,19 @@ public class DailyAchievementsFragment extends Fragment {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 
         final Cursor satisfactionScoreCursor = db.rawQuery(todaysAverageSatisfactionScoreQuery, new String[]{sessionManager.getProviderID()});
+        double averageScore = 0.0;
+
         if (satisfactionScoreCursor.moveToFirst()) {
             do {
                 double currentScore = Double.parseDouble(satisfactionScoreCursor.getString(satisfactionScoreCursor.getColumnIndexOrThrow("value")));
                 totalScore = totalScore + currentScore;
             } while (satisfactionScoreCursor.moveToNext());
+
+            averageScore = totalScore / satisfactionScoreCursor.getCount();
         }
 
-        final Double averageScore = totalScore / satisfactionScoreCursor.getCount();
-        requireActivity().runOnUiThread(() -> tvAvgSatisfactionScore.setText(StringUtils.formatDoubleValues(averageScore)));
+        double finalAverageScore = averageScore;
+        requireActivity().runOnUiThread(() -> tvAvgSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
         satisfactionScoreCursor.close();
     }
 }
