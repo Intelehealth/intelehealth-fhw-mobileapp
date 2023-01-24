@@ -17,9 +17,11 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.ObsImageModel.Encounter;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +35,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvEndDate;
     private TextView tvRangePatientsCreated;
     private TextView tvRangeVisitsEnded;
+    private TextView tvAveragePatientSatisfactionScore;
 
     private String startDate;
     private String endDate;
@@ -62,6 +65,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         tvEndDate = view.findViewById(R.id.tv_end_date);
         tvRangePatientsCreated = view.findViewById(R.id.tv_range_patients_created);
         tvRangeVisitsEnded = view.findViewById(R.id.tv_range_visits_ended);
+        tvAveragePatientSatisfactionScore = view.findViewById(R.id.tv_average_patient_satisfaction_score);
 
         tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
@@ -97,6 +101,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         executorService.execute(() -> {
             setPatientsCreatedInRange();
             setVisitsEndedInRange();
+            setAveragePatientSatisfactionScore();
         });
     }
 
@@ -156,7 +161,30 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setAveragePatientSatisfactionScore() {
+        List<ObsDTO> obsList = new ArrayList<>();
+        String query = "SELECT value, modified_date FROM tbl_obs WHERE conceptuuid = \"78284507-fb71-4354-9b34-046ab205e18f\" AND encounteruuid IN (SELECT uuid FROM tbl_encounter WHERE provider_uuid = ?)";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        final Cursor rangeAverageSatisfactionCursor = db.rawQuery(query, new String[]{sessionManager.getProviderID()});
 
+        if (rangeAverageSatisfactionCursor.moveToFirst()) {
+            do {
+                String value = rangeAverageSatisfactionCursor.getString(rangeAverageSatisfactionCursor.getColumnIndexOrThrow("value"));
+                String obsTime = rangeAverageSatisfactionCursor.getString(rangeAverageSatisfactionCursor.getColumnIndexOrThrow("modified_date"));
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setValue(value);
+                obsDTO.setObsServerModifiedDate(obsTime);
+                obsList.add(obsDTO);
+            } while (rangeAverageSatisfactionCursor.moveToNext());
+
+            double averageScore = 0.0;
+            if (!obsList.isEmpty()) {
+                averageScore = getAveragePatientSatisfactionScore(obsList);
+            }
+
+            double finalAverageScore = averageScore;
+            requireActivity().runOnUiThread(() -> tvAveragePatientSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+            rangeAverageSatisfactionCursor.close();
+        }
     }
 
     private int countPatientsCreatedBetweenRange(List<PatientAttributesDTO> patientAttributesDTOList) {
@@ -178,6 +206,20 @@ public class DateRangeAchievementsFragment extends Fragment {
             }
         }
         return numberOfVisitsEnded;
+    }
+
+    private double getAveragePatientSatisfactionScore(List<ObsDTO> obsDTOList) {
+        double totalScore = 0.0;
+        int numberOfObservations = 0;
+        for (ObsDTO dto : obsDTOList) {
+            String tempDate = DateAndTimeUtils.formatDateFromOnetoAnother(dto.getObsServerModifiedDate(), "yyyy-MM-dd'T'hh:mm:ss", "dd MMM, yyyy");
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, startDate, endDate, "dd MMM, yyyy")) {
+                totalScore += Double.parseDouble(dto.getValue());
+                numberOfObservations++;
+            }
+        }
+
+        return totalScore / numberOfObservations;
     }
 }
 
