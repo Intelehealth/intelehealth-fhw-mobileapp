@@ -156,13 +156,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_range_visits_ended"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="4"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />

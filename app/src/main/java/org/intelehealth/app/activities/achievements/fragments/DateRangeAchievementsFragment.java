@@ -15,30 +15,29 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.ObsImageModel.Encounter;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DateRangeAchievementsFragment extends Fragment {
-    private LinearLayout selectStartDate;
-    private LinearLayout selectEndDate;
-    private DatePickerDialog datePickerDialog;
     private TextView tvStartDate;
     private TextView tvEndDate;
     private TextView tvRangePatientsCreated;
+    private TextView tvRangeVisitsEnded;
 
     private String startDate;
     private String endDate;
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private SessionManager sessionManager;
 
@@ -56,12 +55,13 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        selectStartDate = view.findViewById(R.id.layout_start_date);
-        selectEndDate = view.findViewById(R.id.layout_end_date);
+        LinearLayout selectStartDate = view.findViewById(R.id.layout_start_date);
+        LinearLayout selectEndDate = view.findViewById(R.id.layout_end_date);
 
         tvStartDate = view.findViewById(R.id.tv_start_date);
         tvEndDate = view.findViewById(R.id.tv_end_date);
         tvRangePatientsCreated = view.findViewById(R.id.tv_range_patients_created);
+        tvRangeVisitsEnded = view.findViewById(R.id.tv_range_visits_ended);
 
         tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
@@ -76,7 +76,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         String date = textView.getText().toString();
         Calendar calendar = DateAndTimeUtils.convertStringToCalendarObject(date, "dd MMM, yyyy");
 
-        datePickerDialog = new DatePickerDialog(getActivity(), R.style.datepicker, (datePicker, year, month, day) -> {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.datepicker, (datePicker, year, month, day) -> {
             Calendar newDate = Calendar.getInstance();
             newDate.set(Calendar.YEAR, year);
             newDate.set(Calendar.MONTH, month);
@@ -129,6 +129,33 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setVisitsEndedInRange() {
+        List<EncounterDTO> encounterDTOList = new ArrayList<>();
+        String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        final Cursor rangePatientsCreatedCursor = db.rawQuery(visitEndedQuery, new String[]{sessionManager.getProviderID()});
+
+        if (rangePatientsCreatedCursor.moveToFirst()) {
+            do {
+                String visitUuid = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("visituuid"));
+                String encounterTime = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("modified_date"));
+                EncounterDTO encounterDTO = new EncounterDTO();
+                encounterDTO.setVisituuid(visitUuid);
+                encounterDTO.setEncounterTime(encounterTime);
+                encounterDTOList.add(encounterDTO);
+            } while (rangePatientsCreatedCursor.moveToNext());
+
+            int numberOfVisitsEnded = 0;
+            if (!encounterDTOList.isEmpty()) {
+                numberOfVisitsEnded = countVisitsEndedBetweenRange(encounterDTOList);
+            }
+
+            int finalCount = numberOfVisitsEnded;
+            requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+            rangePatientsCreatedCursor.close();
+        }
+    }
+
+    private void setAveragePatientSatisfactionScore() {
 
     }
 
@@ -140,6 +167,17 @@ public class DateRangeAchievementsFragment extends Fragment {
             }
         }
         return numberOfPatients;
+    }
+
+    private int countVisitsEndedBetweenRange(List<EncounterDTO> encounterDTOList) {
+        int numberOfVisitsEnded = 0;
+        for (EncounterDTO dto : encounterDTOList) {
+            String tempDate = DateAndTimeUtils.formatDateFromOnetoAnother(dto.getEncounterTime(), "yyyy-MM-dd'T'hh:mm:ss", "dd MMM, yyyy");
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, startDate, endDate, "dd MMM, yyyy")) {
+                numberOfVisitsEnded++;
+            }
+        }
+        return numberOfVisitsEnded;
     }
 }
 

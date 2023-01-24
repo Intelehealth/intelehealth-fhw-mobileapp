@@ -863,8 +863,8 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(date);
     }
 
-    public static boolean isGivenDateBetweenTwoDates(String createdDate, String startDate, String endDate, String format) {
-        Date createdDateObject = convertStringToDateObject(createdDate, format);
+    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format) {
+        Date createdDateObject = convertStringToDateObject(date, format);
         Date startDateObject = convertStringToDateObject(startDate, format);
         Date endDateObject = convertStringToDateObject(endDate, format);
         return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
