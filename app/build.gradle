@@ -8,9 +8,9 @@ android {
         applicationId "org.intelehealth.msfarogyabharat"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 34
+        versionCode 35
         buildToolsVersion('29.0.2')
-        versionName "1.7.15"
+        versionName "1.7.16"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
