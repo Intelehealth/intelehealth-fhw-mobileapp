@@ -615,7 +615,7 @@
     <string name="intelehealth_name">একল আরোগ্য</string>
     <string name="Ayu_name">আয়ু</string>
     <string name="close_button">বন্ধ</string>
-    <string name="active_tag_patientDetail">" সক্রিয়"</string>
+    <string name="active_tag_patientDetail">সক্রিয়</string>
     <string name="associated_symptoms_patientDetail">সংশ্লিষ্ট উপসর্গ</string>
     <string name="device_ID">ডিভাইস আইডি: </string>
     <string name="enter_valid_license_url">বৈধ লাইসেন্স ইউআরএল লিখুন</string>
@@ -1100,12 +1100,12 @@
     <string name="smoking_history_cannot_be_empty">ধূমপানের ইতিহাস খালি হতে পারে না</string>
     <string name="alcohol_consumption_history_cannot_be_empty">অ্যালকোহল সেবনের ইতিহাস খালি হতে পারে না</string>
     <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">জল জীবন যোজনা প্রকল্পের আওতায় কি গ্রাম জল পায়?</string>
-    <string name="nal_jal_yojana">Nal Jal Yojana</string>
-    <string name="how_much_cultivable_land_does_your_family_own">How much cultivable land does your family own?</string>
+    <string name="nal_jal_yojana">ট্যাপ ওয়াটার স্কিম</string>
+    <string name="how_much_cultivable_land_does_your_family_own">আপনার পরিবার কত চাষের জমির মালিক?</string>
     <string name="bp">BP*</string>
     <string name="less_than_5_cigarettes">Less than 5 bidis / cigarettes</string>
-    <string name="denied_to_answer">Denied To Answer</string>
-    <string name="survey_denied_to_answer">Denied To Answer</string>
+    <string name="denied_to_answer">উত্তর দিতে অস্বীকার</string>
+    <string name="survey_denied_to_answer">উত্তর দিতে অস্বীকার</string>
     <string name="frequency_of_consumption">Frequency of consumption</string>
     <string name="daily">Daily</string>
     <string name="once_a_week">Once a week</string>

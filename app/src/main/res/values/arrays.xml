@@ -35,6 +35,13 @@
         <item>तीसरी खुराक</item>
     </string-array>
 
+    <string-array name="vaccination_spinner_bn">
+        <item>নির্বাচন করুন</item>
+        <item>প্রথম ডোজ</item>
+        <item>দ্বিতীয় ডোজ</item>
+        <item>তৃতীয় ডোজ</item>
+    </string-array>
+
     <string-array name="vaccination_spinner_or">
         <item>ଚୟନ</item>
         <item>ପ୍ରଥମ ଡୋଜ୍</item>
@@ -115,6 +122,18 @@
     </string-array>
 
     <string-array name="education_hi">
+        <item>@string/select</item>
+        <item>@string/cannot_read_and_write</item>
+        <item>@string/can_read_and_write</item>
+        <item>@string/primary_education_till_class_five</item>
+        <item>@string/middle_school_sixth_eighth</item>
+        <item>@string/passed_secondary_school</item>
+        <item>@string/passed_senior_secondary_school</item>
+        <item>@string/graduate</item>
+        <item>@string/postgraduate</item>
+    </string-array>
+
+    <string-array name="education_bn">
         <item>@string/select</item>
         <item>@string/cannot_read_and_write</item>
         <item>@string/can_read_and_write</item>
@@ -245,10 +264,25 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_bn">
+        <item>নির্বাচন করুন</item>
+        <item>সাধারণ</item>
+        <item>ওবিসি</item>
+        <item>এসসি</item>
+        <item>স টি</item>
+        <item>অন্যান্য</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_bn">
+        <item>নির্বাচন করুন</item>
+        <item>এপিএল</item>
+        <item>বিপিএল</item>
     </string-array>
 
     <string-array name="economic_or">
@@ -579,6 +613,23 @@
         <item>@string/not_applicable</item>
     </string-array>
 
+    <string-array name="occupation_spinner_bn">
+        <item>@string/select</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/not_applicable</item>
+    </string-array>
+
     <!--    <string-array name="occupation_spinner_or">-->
     <!--        <item>ଚୟନ କରନ୍ତୁ</item>-->
     <!--        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>-->
@@ -679,6 +730,13 @@
         <item>Declined to answer</item>
     </string-array>
 
+    <string-array name="bank_account_spinner_bn">
+        <item>নির্বাচন করুন</item>
+        <item>হ্যাঁ</item>
+        <item>না</item>
+        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
+    </string-array>
+
     <string-array name="bank_account_spinner_hi">
         <item>चुनते हैं</item>
         <item>हाँ</item>
@@ -724,6 +782,15 @@
     <!--    </string-array>-->
 
     <string-array name="mobilephone_spinner_hi">
+        <item>@string/select</item>
+        <item>@string/none</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
+    </string-array>
+
+    <string-array name="mobilephone_spinner_bn">
         <item>@string/select</item>
         <item>@string/none</item>
         <item>@string/own_smartphone</item>
@@ -779,6 +846,13 @@
         <item>@string/generic_no</item>
     </string-array>
 
+    <string-array name="familymember_whatsapp_bn">
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/generic_no</item>
+    </string-array>
+
     <string-array name="familymember_whatsapp_hi">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
@@ -816,6 +890,17 @@
         <item>Rivers/ponds</item>
         <item>Tanker water</item>
         <item>Any other</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner_bn">
+        <item>নির্বাচন করুন</item>
+        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
+        <item>চাপাকল/হ্যান্ড পাম্প</item>
+        <item>ওয়েলস</item>
+        <item>বিরক্তিকর</item>
+        <item>নদী/পুকুর</item>
+        <item>ট্যাঙ্কারের জল</item>
+        <item>অন্য কেউ</item>
     </string-array>
 
     <string-array name="sourcewater_spinner_hi">
@@ -873,6 +958,19 @@
         <item>Use water filter(ceramic/sand/composite)etc</item>
         <item>Use electronic filter</item>
         <item>Other[Enter]</item>
+    </string-array>
+
+    <string-array name="howtomake_water_safe_bn">
+        <item>নির্বাচন করুন</item>
+        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
+        <item>কিছুই না</item>
+        <item>ফুটান</item>
+        <item>অ্যালুম</item>
+        <item>ব্লিচ/ক্লোরিন ট্যাবলেট যোগ করুন</item>
+        <item>কাপড় দিয়ে ছেঁকে নিন</item>
+        <item>জল ফিল্টার (সিরামিক/বালি/যৌগিক) ইত্যাদি ব্যবহার করুন</item>
+        <item>ইলেকট্রনিক ফিল্টার ব্যবহার করুন</item>
+        <item>অন্যান্য [এন্টার]</item>
     </string-array>
 
     <string-array name="howtomake_water_safe_hi">
@@ -935,6 +1033,14 @@
         <item>Declined to answer</item>
     </string-array>
 
+    <string-array name="water_availability_spinner_bn">
+        <item>নির্বাচন করুন</item>
+        <item>হ্যাঁ</item>
+        <item>না</item>
+        <item>জানি না</item>
+        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
+    </string-array>
+
     <string-array name="water_availability_spinner_hi">
         <item>चुनते हैं</item>
         <item>हाँ</item>
@@ -974,6 +1080,15 @@
         <item>Community toilet</item>
         <item>Shared toilet with other household</item>
         <item>Declined to answer</item>
+    </string-array>
+
+    <string-array name="toiletFacility_spinner_bn">
+        <item>নির্বাচন করুন</item>
+        <item>কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না</item>
+        <item>নিজস্ব টয়লেট</item>
+        <item>কমিউনিটি টয়লেট</item>
+        <item>অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট</item>
+        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_hi">
@@ -1017,6 +1132,13 @@
         <item>Kutcha House</item>
         <item>Pakka House</item>
         <item>Homeless</item>
+    </string-array>
+
+    <string-array name="structure_house_bn">
+        <item>নির্বাচন করুন</item>
+        <item>কাচ্ছা বাড়ি</item>
+        <item>পাক্কা বাড়ি</item>
+        <item>গৃহহীন</item>
     </string-array>
 
     <string-array name="structure_house_hi">
@@ -1083,6 +1205,18 @@
         <item>O-</item>
     </string-array>
 
+    <string-array name="blood_group_bn">
+        <item>অনুগ্রহ করে নির্বাচন করুন</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+
     <string-array name="blood_group_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>A+</item>
@@ -1120,6 +1254,19 @@
     </string-array>
 
     <string-array name="religion_en">
+        <item>@string/select</item>
+        <item>@string/hindu</item>
+        <item>@string/muslim</item>
+        <item>@string/christian</item>
+        <item>@string/sikh</item>
+        <item>@string/buddhist_neo_buddhist</item>
+        <item>@string/jain</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+        <item>@string/denied_to_answer</item>
+    </string-array>
+
+    <string-array name="religion_bn">
         <item>@string/select</item>
         <item>@string/hindu</item>
         <item>@string/muslim</item>
@@ -1188,6 +1335,14 @@
         <item>@string/survey_general</item>
     </string-array>
 
+    <string-array name="survey_caste_bn">
+        <item>@string/select</item>
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
+    </string-array>
+
     <string-array name="survey_caste_hi">
         <item>@string/select</item>
         <item>@string/schedule_caste</item>
@@ -1221,6 +1376,25 @@
     </string-array>
 
     <string-array name="hoh_relationship_en">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
+    <string-array name="hoh_relationship_bn">
         <item>@string/select</item>
         <item>@string/spouse</item>
         <item>@string/son_daughter</item>
@@ -1325,6 +1499,16 @@
         <item>@string/separated</item>
     </string-array>
 
+    <string-array name="marital_status_bn">
+        <item>@string/select</item>
+        <item>@string/currently_married</item>
+        <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
+        <item>@string/widowed</item>
+        <item>@string/divorced</item>
+        <item>@string/separated</item>
+    </string-array>
+
     <string-array name="marital_status_hi">
         <item>@string/select</item>
         <item>@string/currently_married</item>
@@ -1377,6 +1561,16 @@
         <item>@string/more_than_six_months</item>
     </string-array>
 
+    <string-array name="test_status_bn">
+        <item>@string/select</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
+        <item>@string/between_one_month_to_three_months_ago</item>
+        <item>@string/between_three_months_to_six_months_ago</item>
+        <item>@string/more_than_six_months</item>
+    </string-array>
+
     <string-array name="test_status_hi">
         <item>@string/select</item>
         <item>@string/never_checked</item>
@@ -1418,6 +1612,14 @@
     </string-array>
 
     <string-array name="land_units_en">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
+    </string-array>
+
+    <string-array name="land_units_bn">
         <item>@string/select</item>
         <item>@string/bigha</item>
         <item>@string/gunta</item>

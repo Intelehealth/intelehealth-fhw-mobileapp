@@ -615,7 +615,7 @@
     <string name="intelehealth_name">Ekal Arogya</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
-    <string name="active_tag_patientDetail">" Active"</string>
+    <string name="active_tag_patientDetail">Active</string>
     <string name="associated_symptoms_patientDetail">Associated symptoms</string>
     <string name="device_ID">Device Id: </string>
     <string name="enter_valid_license_url">Enter valid License Url</string>

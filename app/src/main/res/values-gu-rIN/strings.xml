@@ -602,7 +602,7 @@
     <string name="intelehealth_name">એકલ આરોગ્ય</string>
     <string name="Ayu_name">આયુ</string>
     <string name="close_button">બંધ</string>
-    <string name="active_tag_patientDetail">" સક્રિય"</string>
+    <string name="active_tag_patientDetail">સક્રિય</string>
     <string name="associated_symptoms_patientDetail">સંકળાયેલ લક્ષણો</string>
     <string name="device_ID"> ઉપકરણ આઈડી: </string>
     <string name="enter_valid_license_url">માન્ય લાઇસન્સ URL દાખલ કરો</string>
