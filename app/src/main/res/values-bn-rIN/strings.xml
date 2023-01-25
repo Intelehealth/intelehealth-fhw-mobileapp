@@ -73,7 +73,7 @@
     <string name="menu_option_settings" translatable="false">সেটিংস</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">প্রস্থান</string>
-    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
+    <string name="menu_option_hw_profile" translatable="false">ব্যবহারকারীর প্রোফাইল</string>
 
 
     //Identification Screen
@@ -551,328 +551,328 @@
     <string name="languages">ভাষা</string>
     <string name="current_language">বর্তমান ভাষা</string>
 
-    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
-    <string name="no_protocols_found">No protocols found</string>
-    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
-    <string name="last_synced">Last Refreshed - </string>
-    <string name="today_visits">Today\'s Visits</string>
-    <string name="active_visits">Active Visits</string>
-    <string name="day">day</string>
-    <string name="hour">hour</string>
-    <string name="minute">minute</string>
-    <string name="s">s</string>
-    <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="protocols_downloaded_successfully">প্রোটোকল সফলভাবে ডাউনলোড করা হয়েছে!</string>
+    <string name="no_protocols_found">কোন প্রোটোকল পাওয়া যায়নি</string>
+    <string name="unable_to_get_proper_response">প্রোটোকল ডাউনলোড করতে একটি সমস্যা হয়েছে, অনুগ্রহ করে সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন৷</string>
+    <string name="last_synced">সর্বশেষ রিফ্রেশ করা হয়েছে - </string>
+    <string name="today_visits">আজকের পরিদর্শন</string>
+    <string name="active_visits">সক্রিয় পরিদর্শন</string>
+    <string name="day">দিন</string>
+    <string name="hour">ঘন্টা</string>
+    <string name="minute">মিনিট</string>
+    <string name="s">সেকেন্ড </string>
+    <string name="ago">আগে</string>
+    <string name="successfully_synced">সফলভাবে রিফ্রেশ করা হয়েছে</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="upload_started">Uploading...</string>
-    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
-    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
-    <string name="visitID">Visit ID</string>
+    <string name="visit_not_uploaded">আপলোড করা হয়নি ভিজিট করুন</string>
+    <string name="upload_started">আপলোড হচ্ছে...</string>
+    <string name="visit_uploaded_successfully">আপলোড সফলভাবে দেখুন</string>
+    <string name="visit_uploaded_failed">ইন্টারনেট উপলব্ধ হলে আপলোড করা হবে</string>
+    <string name="visitID">আইডি দেখুন</string>
 
-    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
-    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
-    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
-    <string name="not_answered">Not answered</string>
-    <string name="new_update_available">New Update Available</string>
-    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="end_visit_msg">আপনি কি নিশ্চিত আপনি পরিদর্শন শেষ করতে চান?</string>
+    <string name="prescription_not_downloaded_check_internet">প্রেসক্রিপশন ডাউনলোড করা হয়নি, ইন্টারনেট সংযোগ পরীক্ষা করুন</string>
+    <string name="privacy_reject_toast">আপনি সম্মতি ছাড়া রোগীর নিবন্ধন করতে পারবেন না</string>
+    <string name="not_answered">উত্তরহীন</string>
+    <string name="new_update_available">নতুন আপডেট উপলব্ধ</string>
+    <string name="update_app_note">নতুন সংস্করণ নতুন বৈশিষ্ট্য সহ উপলব্ধ অ্যাপ আপডেট করুন</string>
     <string name="update">আপডেট</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"হ্যালো, Intelehealth ব্যবহার করার জন্য আপনাকে ধন্যবাদ। আপনার প্রেসক্রিপশন ডাউনলোড করতে এখানে ক্লিক করুন "</string>
+    <string name="and_enter_your_patient_id">" এবং আপনার রোগীর আইডি লিখুন - "</string>
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
-    <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
-    <string name="swipe_up">Swipe to Up for Next</string>
-    <string name="swipe_down">Swipe to Down for previous</string>
-    <string name="have_symptom">Do you have this Symptom?</string>
+    <string name="what_is_the_reason_for_your_visit">আপনার সফরের কারণ কি?</string>
+    <string name="swipe_down_to_return">আগের জন্য নিচে সোয়াইপ করুন / পরবর্তী জন্য উপরে</string>
+    <string name="swipe_up">পরবর্তী জন্য উপরে সোয়াইপ করুন</string>
+    <string name="swipe_down">আগের জন্য নিচের দিকে সোয়াইপ করুন</string>
+    <string name="have_symptom">আপনার কি এই লক্ষণ আছে?</string>
 
 
     <!--New UI changes 2.1-->
-    <string name="personal_information">Personal Information</string>
-    <string name="address_details">Address Details</string>
-    <string name="txt_others">Others</string>
-    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
-    <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help</string>
-    <string name="skip">skip</string>
-    <string name="start">Start</string>
-    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-    <string name="custom_setup">Setup</string>
-    <string name="demo_version">Demo version</string>
+    <string name="personal_information">ব্যক্তিগত তথ্য</string>
+    <string name="address_details">বিস্তারিত ঠিকানা</string>
+    <string name="txt_others">অন্যান্য</string>
+    <string name="do_you_need_help_please_contact_us">তোমার কি সাহায্য দরকার? আমাদের সাথে যোগাযোগ করুন!</string>
+    <string name="whatsapp_helpline">হোয়াটসঅ্যাপ হেল্পলাইন</string>
+    <string name="Whatsapp_Help_Cardview">সাহায্য</string>
+    <string name="skip">এড়িয়ে যান</string>
+    <string name="start">শুরু করুন</string>
+    <string name="who_is_this_napplication_for">কার জন্য এই আবেদন?</string>
+    <string name="custom_setup">সেটআপ</string>
+    <string name="demo_version">ডেমো সংস্করণ</string>
     <string name="sample_text">sample text</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
-    <string name="active_defaultTag">Active</string>
-    <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_my_name_is">"Hello, my name is "</string>
-    <string name="i_need_assistance">" and I need some assistance."</string>
-    <string name="economic_values_missing">Economic values are missing</string>
-    <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Ekal Arogya is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Ekal Arogya</string>
-    <string name="Ayu_name">Ayu</string>
-    <string name="close_button">Close</string>
-    <string name="active_tag_patientDetail">" Active"</string>
-    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
-    <string name="device_ID">Device Id: </string>
-    <string name="enter_valid_license_url">Enter valid License Url</string>
-    <string name="please_enter_url_and_key">Please enter URL and Key</string>
-    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
-    <string name="permission_denied">Permission Denied\n</string>
+    <string name="active_defaultTag">সক্রিয়</string>
+    <string name="since_when_have_you_had_this_symptom">কবে থেকে আপনার এই উপসর্গ ছিল?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">হ্যালো\n\n আমি আয়ু, একজন ডিজিটাল স্বাস্থ্য সহকারী। চল শুরু করি!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">হ্যালো\n\n আমি আয়ু, একজন ডিজিটাল স্বাস্থ্য সহকারী। চল শুরু করি!</string>
+    <string name="hello_my_name_is">"হ্যালো আমার নাম হচ্ছে  "</string>
+    <string name="i_need_assistance">" এবং আমার কিছু সহায়তা দরকার।"</string>
+    <string name="economic_values_missing">অর্থনৈতিক মূল্যবোধ অনুপস্থিত</string>
+    <string name="education_values_missing">শিক্ষার মূল্যবোধ হারিয়ে যাচ্ছে</string>
+    <string name="intelehealth_a_telemedicine_platform">একল আরোগ্য হল একটি টেলিমেডিসিন অ্যাপ্লিকেশন যা গ্রামীণ এবং প্রত্যন্ত অঞ্চলের স্বাস্থ্যকর্মীদের প্রত্যন্ত ডাক্তারদের সাথে সংযুক্ত করে যাতে তারা তাদের রোগীদের জন্য উচ্চমানের স্বাস্থ্য পরিষেবা প্রদান করতে পারে।</string>
+    <string name="intelehealth_name">একল আরোগ্য</string>
+    <string name="Ayu_name">আয়ু</string>
+    <string name="close_button">বন্ধ</string>
+    <string name="active_tag_patientDetail">" সক্রিয়"</string>
+    <string name="associated_symptoms_patientDetail">সংশ্লিষ্ট উপসর্গ</string>
+    <string name="device_ID">ডিভাইস আইডি: </string>
+    <string name="enter_valid_license_url">বৈধ লাইসেন্স ইউআরএল লিখুন</string>
+    <string name="please_enter_url_and_key">অনুগ্রহ করে উ র ল  এবং কী লিখুন</string>
+    <string name="please_enter_valid_license_key">অনুগ্রহ করে একটি বৈধ লাইসেন্স কী লিখুন</string>
+    <string name="permission_denied">অনুমতি অস্বীকৃত\n</string>
     <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
     <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-    <string name="temperature_C">"Temperature(C): "</string>
-    <string name="temperature_F">"Temperature(F): "</string>
-    <string name="no_history_family_found">No history of illness in family provided.</string>
-    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
-    <string name="dr_registration_no">Registration No: </string>
-    <string name="dr_phone_number">Phone Number: </string>
-    <string name="dr_email">Email: </string>
-    <string name="_visit_summary"> Visit Summary</string>
-    <string name="patient_id_">Patient Id: </string>
-    <string name="patient_name_title">Patient Name: </string>
-    <string name="patient_DOB">Patient DOB: </string>
-    <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
-    <string name="download_protocols">Downloading Protocols</string>
-    <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
-    <string name="days">days</string>
-    <string name="contact">Contact</string>
-    <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
-    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-    <string name="share">Share</string>
-    <string name="please_enter_mobile_number">Please enter a mobile number</string>
-    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
-    <string name="enter_10_digits">Enter 10 digits</string>
-    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
-    <string name="view_print">View/Print</string>
-    <string name="refresh">Refresh</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
-    <string name="document_">"Document - "</string>
-    <string name="gender">Gender</string>
+    <string name="temperature_C">"তাপমাত্রা(C): "</string>
+    <string name="temperature_F">"তাপমাত্রা(F): "</string>
+    <string name="no_history_family_found">পরিবারে অসুস্থতার কোনো ইতিহাস দেওয়া হয়নি।</string>
+    <string name="no_history_patient_illness_found">রোগীর অসুস্থতার কোনো ইতিহাস প্রদান করা হয়নি।</string>
+    <string name="dr_registration_no">নিবন্ধন নম্বর: </string>
+    <string name="dr_phone_number">ফোন নম্বর: </string>
+    <string name="dr_email">ইমেইল: </string>
+    <string name="_visit_summary"> সারাংশ দেখুন</string>
+    <string name="patient_id_">রোগীর আইডি: </string>
+    <string name="patient_name_title">রোগীর নাম: </string>
+    <string name="patient_DOB">রোগীর জন্ম তারিখ  </string>
+    <string name="error_non_decimal_no_added">ত্রুটি: অ-দশমিক সংখ্যা প্রবেশ করানো হয়েছে৷</string>
+    <string name="download_protocols">প্রোটোকল ডাউনলোড করা হচ্ছে</string>
+    <string name="mindmap_internect_connection">মাইন্ডম্যাপ ডাউনলোড করতে আপনার একটি ইন্টারনেট সংযোগ প্রয়োজন, অনুগ্রহ করে আপনার ইন্টারনেট চালু করুন</string>
+    <string name="days">দিন</string>
+    <string name="contact">যোগাযোগ</string>
+    <string name="has_a_new_prescription">একটি নতুন প্রেসক্রিপশন আছে</string>
+    <string name="whatsapp_presc_toast">ফাইল এক্সপ্লোরার থেকে প্রেসক্রিপশন PDF নির্বাচন করুন - অভ্যন্তরীণ স্টোরেজ/EkalArogya_PDF</string>
+    <string name="enter_mobile_number_to_share_prescription">যে মোবাইল নম্বরে আপনি প্রেসক্রিপশন শেয়ার করতে চান সেটি লিখুন।</string>
+    <string name="share">শেয়ার করুন</string>
+    <string name="please_enter_mobile_number">একটি মোবাইল নম্বর লিখুন</string>
+    <string name="download_prescription_first_before_sharing">শেয়ার করার আগে প্রেসক্রিপশন ডাউনলোড করুন</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (সেবিকা) নিশ্চিত করছি যে আমি গোপনীয়তা বিজ্ঞপ্তি পড়েছি এবং রোগীর সম্মতি দিয়েছি।</string>
+    <string name="enter_10_digits">10 টি সংখ্যা লিখুন</string>
+    <string name="please_read_out_privacy_consent_first">অনুগ্রহ করে প্রথমে গোপনীয়তা সম্মতি পড়ুন।</string>
+    <string name="view_print">দেখুন/মুদ্রণ করুন</string>
+    <string name="refresh">রিফ্রেশ</string>
+    <string name="family_member">পরিবারের সদস্য</string>
+    <string name="no_family_member_registered">কোন পরিবারের সদস্য নিবন্ধিত</string>
+    <string name="document_">"নথি - "</string>
+    <string name="gender">লিঙ্গ</string>
     <string name="are_you_head_of_the_family">আপনি কি পরিবারের প্রধান?*</string>
-    <string name="what_is_your_occupation">What is your occupation?*</string>
-    <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
-    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
+    <string name="what_is_your_occupation">আপনার পেশা কি?*</string>
+    <string name="do_you_have_a_bank_account">আপনার কি একটি ব্যাংক অ্যাকাউন্ট আছে?*</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">আপনি ব্যক্তিগতভাবে কোন ধরনের মোবাইল ফোনের মালিক?*</string>
     <string name="phone_ownership">ফোনের মালিক কে*</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি বা আপনার পরিবারের কেউ কি WhatsApp ব্যবহার করেন?*</string>
-    <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
-    <string name="enter_number">Enter Number</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now*</string>
-    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?*</string>
-    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?*</string>
-    <string name="declined">Declined to answer</string>
-    <string name="enter_time">Enter Time</string>
-    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?*</string>
-    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?*</string>
-    <string name="select_the_structure_of_house">Select the structure of house*</string>
-    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?*</string>
-    <string name="enter_answer">Enter Answer</string>
-    <string name="enter_occupation">Enter Occupation</string>
-    <string name="select">Select</string>
-    <string name="Minute">Minutes</string>
-    <string name="Hours">Hours</string>
-    <string name="Days">Days</string>
-    <string name="Weeks">Weeks</string>
-    <string name="Months">Months</string>
-    <string name="Years">Years</string>
-    <string name="image_saved">Image saved successfully!</string>
-    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
-    <string name="per_Hour">per Hour</string>
-    <string name="per_Day">per Day</string>
-    <string name="per_Week">Per Week</string>
-    <string name="per_Month">per Month</string>
-    <string name="per_Year">per Year</string>
+    <string name="total_number_of_members_in_the_household">পরিবারের মোট সদস্য সংখ্যা*</string>
+    <string name="enter_number">সংখ্যা প্রবেশ করান</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">আপনার পরিবারে সাধারণত কতজন সদস্য থাকেন বা এখন আপনার সাথে থাকেন*</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের প্রধান উৎস কি?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">পানীয় জল নিরাপদ করতে আপনি কি করবেন?*</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">সেখানে যেতে, পানি নিতে এবং এক ট্রিপে ফিরে আসতে কতক্ষণ লাগে?*</string>
+    <string name="declined">উত্তর দিতে অস্বীকৃতি জানায়</string>
+    <string name="enter_time">সময় লিখুন</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">গত দুই সপ্তাহে, এই উৎস থেকে পানি কি অন্তত এক পূর্ণ দিনের জন্য উপলব্ধ ছিল না?*</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">আপনার পরিবারের সদস্যরা সাধারণত কোন ধরনের টয়লেট সুবিধা ব্যবহার করেন?*</string>
+    <string name="select_the_structure_of_house">বাড়ির কাঠামো নির্বাচন করুন*</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">আপনার পরিবারের কত হেক্টর চাষযোগ্য জমি রয়েছে?*</string>
+    <string name="enter_answer">উত্তর লিখুন</string>
+    <string name="enter_occupation">পেশা লিখুন</string>
+    <string name="select">নির্বাচন করুন</string>
+    <string name="Minute">মিনিট</string>
+    <string name="Hours">ঘন্টার</string>
+    <string name="Days">দিন</string>
+    <string name="Weeks">সপ্তাহ</string>
+    <string name="Months">মাস</string>
+    <string name="Years">বছর</string>
+    <string name="image_saved">ছবি সফলভাবে সংরক্ষিত!</string>
+    <string name="emergency_confirmation">আপনি কি এই সফরটিকে জরুরী হিসাবে সেট করতে চান?</string>
+    <string name="per_Hour">প্রতি ঘন্টায়</string>
+    <string name="per_Day">প্রতিদিন</string>
+    <string name="per_Week">প্রতি সপ্তাহে</string>
+    <string name="per_Month">প্রতি মাসে</string>
+    <string name="per_Year">প্রতি বছরে</string>
 
     <!--@lincon-->
-    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
-    <string name="something_went_wrong">Something went wrong. Please contact support</string>
-    <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?*</string>
-    <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
-    <string name="warning_app_update">Please update the app to the latest version.</string>
+    <string name="failed_initial_synced">রিফ্রেশ করা যায়নি, আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন। অনুগ্রহ করে অ্যাপটি পুনরায় চালু করুন।</string>
+    <string name="something_went_wrong">কিছু ভুল হয়েছে. সমর্থন যোগাযোগ করুন</string>
+    <string name="have_you_taken_a_covid_vaccine">আপনি কি কোভিড ভ্যাকসিন নিয়েছেন?</string>
+    <string name="select_option_vaccination_dialog">টিকা দেওয়ার বিকল্প নির্বাচন করুন</string>
+    <string name="warning_app_update">অনুগ্রহ করে অ্যাপটিকে সর্বশেষ সংস্করণে আপডেট করুন।</string>
 
-    <string name="identification_screen_prompt_village">Village *</string>
+    <string name="identification_screen_prompt_village">গ্রাম*</string>
 
     //-------vital updated fields-------------
-    <string name="blood_grp">Blood Group: </string>
-    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
-    <string name="visit_summary_sugar" translatable="false">Sugar Level (Random)</string>
-    <string name="visit_summary_sugarfast" translatable="false">Sugar Level (Fasting/After Meal)</string>
-    <string name="visit_summary_blood" translatable="false">Blood Group</string>
-    <string name="hemoglobin_error" translatable="false">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="sugar_error" translatable="false">Sugar Level should be in between %1$s and %2$s</string>
-    <string name="blood_error" translatable="false">Please select blood group</string>
-    <string name="table_sugar_fasting" translatable="false">Sugar(Fasting)</string>
-    <string name="table_sugar_aftermeal" translatable="false">Sugar(AfterMeal)</string>
+    <string name="blood_grp">রক্তের গ্রুপ: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">এইচজিবি</string>
+    <string name="visit_summary_sugar" translatable="false">এইচজিবি</string>
+    <string name="visit_summary_sugarfast" translatable="false">চিনির মাত্রা (রোজা/খাবার পরে)</string>
+    <string name="visit_summary_blood" translatable="false">রক্তের গ্রুপ</string>
+    <string name="hemoglobin_error" translatable="false">হিমোগ্লোবিন %1$s এবং %2$s এর মধ্যে থাকা উচিত</string>
+    <string name="sugar_error" translatable="false">চিনির মাত্রা %1$s এবং %2$s-এর মধ্যে হওয়া উচিত</string>
+    <string name="blood_error" translatable="false">অনুগ্রহ করে রক্তের গ্রুপ নির্বাচন করুন</string>
+    <string name="table_sugar_fasting" translatable="false">চিনি (রোজা)</string>
+    <string name="table_sugar_aftermeal" translatable="false">চিনি (খাওয়ার পর)</string>
 
-    <string name="table_hemoglobin" translatable="false">Hemoglobin</string>
-    <string name="table_bld_grp" translatable="false">Blood Group</string>
-    <string name="table_sugar_level" translatable="false">Sugar Level -mg/dL(Random)</string>
+    <string name="table_hemoglobin" translatable="false">হিমোগ্লোবিন</string>
+    <string name="table_bld_grp" translatable="false">রক্তের গ্রুপ</string>
+    <string name="table_sugar_level" translatable="false">চিনির মাত্রা -mg/dL(এলোমেলো)</string>
 
     //----------hw profile strings--------------------
-    <string name="hw_totalpatient_str" translatable="false">VISIT\nCREATED</string>
-    <string name="hw_completeconsultation_str" translatable="false">COMPLETED\nCONSULTATIONS</string>
-    <string name="hw_visitprogress_str" translatable="false">VISIT IN\nPROGRESS</string>
-    <string name="hw_personal_info_str" translatable="false">Personal Information</string>
-    <string name="hw_state_str" translatable="false">State</string>
-    <string name="hw_mobile_str" translatable="false">Mobile</string>
-    <string name="hw_whatsapp_str" translatable="false">WhatsApp</string>
-    <string name="hw_email_str" translatable="false">Email</string>
+    <string name="hw_totalpatient_str" translatable="false">ভিজিট\nতৈরি হয়েছে</string>
+    <string name="hw_completeconsultation_str" translatable="false">সমাপ্ত\nপরামর্শ</string>
+    <string name="hw_visitprogress_str" translatable="false">ভিজিট করুন\nপ্রগতিশীল</string>
+    <string name="hw_personal_info_str" translatable="false">ব্যক্তিগত তথ্য</string>
+    <string name="hw_state_str" translatable="false">রাজ্য </string>
+    <string name="hw_mobile_str" translatable="false">মোবাইল </string>
+    <string name="hw_whatsapp_str" translatable="false">হোয়াটসঅ্যাপ</string>
+    <string name="hw_email_str" translatable="false">ইমেইল</string>
 
     //-----------start new visit confirmation dialog string-----------
-    <string name="start_newvisit_confirmation_msg">Are you sure you want to start a Doctor advice?</string>
-    <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
-    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="start_newvisit_confirmation_msg">আপনি কি ডাক্তারের পরামর্শ শুরু করার বিষয়ে নিশ্চিত?</string>
+    <string name="prescription_notprovided_msg">ডাক্তার প্রেসক্রিপশন দেননি। পরিদর্শন শেষ প্রেসক্রিপশন জন্য অপেক্ষা করুন.</string>
+    <string name="start_newadvice_confirmation_msg">আপনি কি সেবিকা পরামর্শ শুরু করার বিষয়ে নিশ্চিত?</string>
 
     //Language Screen
-    <string name="choose_lang_title">Choose your Language</string>
-    <string name="save_button">Save</string>
+    <string name="choose_lang_title">আপনার ভাষা নির্বাচন করুন</string>
+    <string name="save_button">সংরক্ষণ</string>
 
     //-------setup Location string-----
-    <string name="setup_select_state_str">Select State</string>
-    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
-    <string name="setup_select_district_str">Select District</string>
-    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
-    <string name="setup_select_sanch_str">Select Sanch</string>
-    <string name="setup_select_dropdown_sanch_msg">Select Sanch from dropdown</string>
-    <string name="setup_select_village_str">Select Village</string>
-    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="setup_select_state_str">রাজ্য নির্বাচন কর</string>
+    <string name="setup_select_dropdown_state_msg">ড্রপডাউন থেকে রাজ্য নির্বাচন করুন</string>
+    <string name="setup_select_district_str">জেলা নির্বাচন করুন</string>
+    <string name="setup_select_dropdown_district_msg">ড্রপডাউন থেকে জেলা নির্বাচন করুন</string>
+    <string name="setup_select_sanch_str">সঞ্চ  নির্বাচন করুন</string>
+    <string name="setup_select_dropdown_sanch_msg">ড্রপডাউন থেকে সঞ্চ  নির্বাচন করুন</string>
+    <string name="setup_select_village_str">গ্রাম নির্বাচন করুন</string>
+    <string name="setup_select_dropdown_village_msg">ড্রপডাউন থেকে গ্রাম নির্বাচন করুন</string>
 
-    <string name="visit_closed">Visit Closed</string>
+    <string name="visit_closed">পরিদর্শন বন্ধ</string>
     <string name="gender_male">পুরুষ</string>
     <string name="gender_female">মহিলা</string>
-    <string name="loading_more">Loading more...</string>
-    <string name="take_photo">Take Photo</string>
-    <string name="choose_from_gallery">Choose from Gallery</string>
-    <string name="hw_profile_image_picker_title">Health Worker Profile Image!</string>
+    <string name="loading_more">আরো লোড হচ্ছে...</string>
+    <string name="take_photo">ছবি তোল</string>
+    <string name="choose_from_gallery">গ্যালারি থেকে চয়ন করুন</string>
+    <string name="hw_profile_image_picker_title">স্বাস্থ্যকর্মীর প্রোফাইল ছবি!</string>
 
-    <string name="hw_qualification_hint">Qualification</string>
-    <string name="hw_aboutme_hint">About Me</string>
+    <string name="hw_qualification_hint">যোগ্যতা</string>
+    <string name="hw_aboutme_hint">আমার সম্পর্কে</string>
 
-    <string name="chat_fab">chat fab</string>
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="chat_fab">চ্যাট ফ্যাব</string>
+    <string name="notification_title">রিয়েলটাইম সিঙ্ক চালু আছে!</string>
 
     <!--APPOINTMENT Module strings START -->
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
-    <string name="speciality_str">Speciality</string>
+    <string name="book_appointment">বুক অ্যাপয়েন্টমেন্ট</string>
+    <string name="reschedule_appointment">পুনরায় তফসিল নিয়োগ</string>
+    <string name="appointment_booking_confirmation_txt">আপনি কি এই স্লট বুক করতে নিশ্চিত?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">আপনি কি অ্যাপয়েন্টমেন্ট বাতিল করতে নিশ্চিত?</string>
+    <string name="cancel_appointment">অ্যাপয়েন্টমেন্ট বাতিল করুন</string>
+    <string name="slot_empty_message">নির্বাচিত তারিখ এবং বিশেষত্বের জন্য অ্যাপয়েন্টমেন্ট স্লট উপলব্ধ নয়!</string>
+    <string name="appointment_empty_message">আপনার কোনো অ্যাপয়েন্টমেন্ট নেই!</string>
+    <string name="appointment_listing_title">অ্যাপয়েন্টমেন্ট তালিকা</string>
+    <string name="appointment_booking_title">অ্যাপয়েন্টমেন্ট বুকিং</string>
+    <string name="appointment_for">জন্য নিয়োগ</string>
+    <string name="please_select_appointment_slot">অ্যাপয়েন্টমেন্ট স্লট নির্বাচন করুন</string>
+    <string name="please_select_speciality">বিশেষত্ব নির্বাচন করুন!</string>
+    <string name="speciality_str">বিশেষত্ব</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
-    <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
-    <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
-    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
-    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
-    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
-    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="doctor_appointments">ডাক্তারের অ্যাপয়েন্টমেন্ট</string>
+    <string name="slot_info">স্লট তথ্য</string>
+    <string name="appointment_booked">অ্যাপয়েন্টমেন্ট বুক করা হয়েছে</string>
+    <string name="minutes_txt">মিনিট</string>
+    <string name="booked_txt">বুক করা</string>
+    <string name="cancelled_txt">বাতিল</string>
+    <string name="please_upload_visit">অ্যাপয়েন্টমেন্ট বুক করার আগে আগে ভিজিট আপলোড করুন.</string>
+    <string name="appointment_booked_successfully">অ্যাপয়েন্টমেন্ট সফলভাবে বুক করা হয়েছে!</string>
+    <string name="appointment_booked_failed">অ্যাপয়েন্টমেন্ট বুক করা ব্যর্থ!</string>
+    <string name="failed_to_cancel_appointment">অ্যাপয়েন্টমেন্ট বাতিল করতে ব্যর্থ!</string>
+    <string name="appointment_cancelled_success_txt">অ্যাপয়েন্টমেন্ট সফলভাবে বাতিল করা হয়েছে!</string>
+    <string name="please_select_your_reschedule_reason">আপনার পুনঃনির্ধারিত কারণ নির্বাচন করুন</string>
+    <string name="please_select_your_cancel_reason">আপনার বাতিল কারণ নির্বাচন করুন</string>
+    <string name="doctor_is_not_available">ডাক্তার পাওয়া যাচ্ছে না</string>
+    <string name="patient_is_not_available">রোগী পাওয়া যাচ্ছে না</string>
+    <string name="others">অন্যান্য</string>
+    <string name="please_enter_the_reason_details">কারণ বিবরণ লিখুন</string>
+    <string name="save_amp_proceed"><![CDATA[সংরক্ষণ করুন এবং এগিয়ে যান]]></string>
+    <string name="please_enter_reason_txt">কারণ লিখুন!</string>
     <!--END APPOINTMENT-->
 
     <!--    SURVEY STRINGS - START-->
 
     <string name="household_structure_type">পরিবারের কাঠামোর ধরন</string>
-    <string name="kucha">Kucha</string>
-    <string name="pucca">Pucca</string>
-    <string name="name_of_head_of_household">Name of head of household</string>
-    <string name="religion">Religion</string>
-    <string name="hindu">Hindu</string>
-    <string name="muslim">Muslim</string>
-    <string name="christian">Christian</string>
-    <string name="sikh">Sikh</string>
-    <string name="buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
-    <string name="jain">Jain</string>
-    <string name="jewish">Jewish</string>
-    <string name="parsi_zoroastrian">Parsi or Zoroastrian</string>
-    <string name="no_religion">No Religion</string>
+    <string name="kucha">কাচা </string>
+    <string name="pucca">পাকা</string>
+    <string name="name_of_head_of_household">পরিবারের প্রধানের নাম</string>
+    <string name="religion">ধর্ম</string>
+    <string name="hindu">হিন্দু</string>
+    <string name="muslim">মুসলিম</string>
+    <string name="christian">খ্রিস্টান</string>
+    <string name="sikh">শিখ</string>
+    <string name="buddhist_neo_buddhist">বৌদ্ধ বা নব্য-বৌদ্ধ</string>
+    <string name="jain">জৈন</string>
+    <string name="jewish">ইহুদি</string>
+    <string name="parsi_zoroastrian">পারসি বা জরথুস্ট্রিয়ান</string>
+    <string name="no_religion">ধর্মবিহীন</string>
 
-    <string name="schedule_caste">Schedule Caste</string>
-    <string name="schedule_tribe">Schedule Tribe</string>
-    <string name="survey_other_backward_caste">Other Backward Caste (OBC)</string>
-    <string name="survey_general">General</string>
-    <string name="number_of_smartphones_in_the_house">No. of smartphones in the house</string>
-    <string name="number_of_feature_phones_in_the_house">No. of feature phones in the house</string>
-    <string name="no_of_earning_members_in_the_household">No. of earning members in the household</string>
-    <string name="primary_source_of_income">The primary source of income</string>
-    <string name="sale_of_cereal_production">Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</string>
-    <string name="sale_of_animals_or_animal_products">Sale of animals or animal products</string>
-    <string name="agricultural_wage_labor_employed_for_farm_work">Agricultural wage labor (employed for farm work)</string>
-    <string name="salaried_worker_fixed_monthly_salary">Salaried worker (fixed monthly salary) - Government, private, etc.</string>
-    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture or petty business)</string>
-    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labour (unskilled work- Agricultural or non-Agricultural)</string>
-    <string name="nrega">NREGA</string>
-    <string name="seasonal_labor">Seasonal Labour</string>
-    <string name="no_paid_work">No paid work</string>
-    <string name="pension">Pension</string>
-    <string name="remittances_checkbox">Remittances</string>
-    <string name="other_source_of_income_please_specify">Other Source of income (please specify)</string>
+    <string name="schedule_caste">তফসিলি জাতি</string>
+    <string name="schedule_tribe">তফসিল উপজাতি</string>
+    <string name="survey_other_backward_caste">অন্যান্য অনগ্রসর জাতি (ওবিসি)</string>
+    <string name="survey_general">সাধারণ</string>
+    <string name="number_of_smartphones_in_the_house">ঘরে স্মার্টফোনের সংখ্যা</string>
+    <string name="number_of_feature_phones_in_the_house">ঘরে ফিচার ফোনের সংখ্যা</string>
+    <string name="no_of_earning_members_in_the_household">পরিবারের উপার্জনকারী সদস্যের সংখ্যা</string>
+    <string name="primary_source_of_income">আয়ের প্রাথমিক উৎস</string>
+    <string name="sale_of_cereal_production">খাদ্যশস্য উৎপাদন (গম, ভুট্টা, বার্লি), অর্থকরী ফসল (তুলা, আখ, পাট), বা শাকসবজি এবং ফল বিক্রি</string>
+    <string name="sale_of_animals_or_animal_products">পশু বা পশু পণ্য বিক্রয়</string>
+    <string name="agricultural_wage_labor_employed_for_farm_work">কৃষি মজুরি শ্রমিক (খামারের কাজের জন্য নিযুক্ত)</string>
+    <string name="salaried_worker_fixed_monthly_salary">বেতনভোগী কর্মী (নির্ধারিত মাসিক বেতন) - সরকারি, বেসরকারি, ইত্যাদি।</string>
+    <string name="self_employed_non_agricultural_petty_business">স্ব-নিযুক্ত (অকৃষি বা ক্ষুদ্র ব্যবসা)</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">দৈনিক শ্রম (অদক্ষ কাজ- কৃষি বা অকৃষি)</string>
+    <string name="nrega">এনআরইজিএ</string>
+    <string name="seasonal_labor">মৌসুমি শ্রম</string>
+    <string name="no_paid_work">কোনো বেতনের কাজ নেই</string>
+    <string name="pension">পেনশন</string>
+    <string name="remittances_checkbox">রেমিটেন্স</string>
+    <string name="other_source_of_income_please_specify">আয়ের অন্য উৎস (অনুগ্রহ করে উল্লেখ করুন)</string>
     <string name="survey_yes">হ্যাঁ</string>
-    <string name="survey_no">No</string>
-    <string name="does_the_house_have_electricity">Does the house have electricity?</string>
-    <string name="no_of_hours_per_day">No. of hours per day</string>
-    <string name="no_of_days_per_week">No. of days per week</string>
-    <string name="load_shedding">Load shedding</string>
-    <string name="is_there_a_toilet_in_the_house">Is there a toilet in the house?</string>
-    <string name="is_there_running_water_available_in_the_house">Is there running water available in the house?</string>
-    <string name="availability_of_water_supply">Availability of water supply</string>
-    <string name="does_the_household_have_a_bank_account">Does the household have a bank account?</string>
-    <string name="amount_of_cultivable_land_owned_by_the_household">Amount of cultivable land owned by the household</string>
+    <string name="survey_no">না</string>
+    <string name="does_the_house_have_electricity">বাড়িতে কি বিদ্যুৎ আছে?</string>
+    <string name="no_of_hours_per_day">প্রতিদিন ঘন্টার সংখ্যা</string>
+    <string name="no_of_days_per_week">প্রতি সপ্তাহে দিনের সংখ্যা</string>
+    <string name="load_shedding">বিদ্যুৎ বিভ্রাট</string>
+    <string name="is_there_a_toilet_in_the_house">বাড়িতে একটি টয়লেট আছে?</string>
+    <string name="is_there_running_water_available_in_the_house">বাড়িতে চলমান জল পাওয়া যায়?</string>
+    <string name="availability_of_water_supply">জল সরবরাহের প্রাপ্যতা</string>
+    <string name="does_the_household_have_a_bank_account">পরিবারের একটি ব্যাঙ্ক অ্যাকাউন্ট আছে?</string>
+    <string name="amount_of_cultivable_land_owned_by_the_household">পরিবারের মালিকানাধীন চাষযোগ্য জমির পরিমাণ</string>
     <string name="zero_one">0 – 1</string>
     <string name="one_two">1 – 2</string>
     <string name="two_five">2 – 5</string>
     <string name="five_ten">5 – 10</string>
-    <string name="more_than_10">More than 10</string>
-    <string name="units">Units</string>
-    <string name="bigha">Bigha</string>
-    <string name="acre">Acre</string>
-    <string name="gunta">Gunta</string>
-    <string name="hectare">Hectare</string>
+    <string name="more_than_10">10 এর বেশি</string>
+    <string name="units">ইউনিট</string>
+    <string name="bigha">বিঘা</string>
+    <string name="acre">একর</string>
+    <string name="gunta">গুন্তা</string>
+    <string name="hectare">হেক্টর</string>
     <string name="average_annual_household_income">গড় বার্ষিক পারিবারিক আয় (INR)</string>
     <string name="zero_thirty_thousand">0 – 30,000</string>
     <string name="thirty_fifty_thousand">30,000 – 50,000</string>
     <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
     <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
     <string name="more_than_two_lakh_fifty_thousand">2,50,000 এর বেশি</string>
-    <string name="average_expenditure_on_health">Average expenditure on health</string>
+    <string name="average_expenditure_on_health">স্বাস্থ্যের জন্য গড় ব্যয়</string>
     <string name="zero_three_thousand">0 – 3,000</string>
     <string name="one_three_thousand">1 – 3,000</string>
     <string name="three_five_thousand">3,000 – 5,000</string>
     <string name="five_ten_thousand">5,000 – 10,000</string>
     <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
-    <string name="more_than_twenty_five_thousand">More than 25,000</string>
-    <string name="average_expenditure_on_education">Annual expenditure on education</string>
-    <string name="prev">Prev</string>
+    <string name="more_than_twenty_five_thousand">25,000 এর বেশি</string>
+    <string name="average_expenditure_on_education">শিক্ষার বার্ষিক ব্যয়</string>
+    <string name="prev">পূর্ববর্তী</string>
 
     <string name="distance_to_sub_centre_in_walking_time">উপ-কেন্দ্রের দূরত্ব (হাঁটার সময়)*</string>
-    <string name="within_5_minutes">Within 5 minutes</string>
-    <string name="five_fifteen_minutes">5 – 15 minutes</string>
-    <string name="fifteen_thirty_minutes">15 – 30 minutes</string>
-    <string name="more_than_thirty_minutes">More than 30 minutes</string>
+    <string name="within_5_minutes">5 মিনিটের মধ্যে</string>
+    <string name="five_fifteen_minutes">5 - 15 মিনিট</string>
+    <string name="fifteen_thirty_minutes">15 – 30 মিনিট</string>
+    <string name="more_than_thirty_minutes">30 মিনিটের বেশি</string>
     <string name="within_1_km">1 কিলোমিটারের মধ্যে</string>
     <string name="one_three_km">1-3 কিমি</string>
     <string name="three_five_km">3-5 কিমি</string>
@@ -893,212 +893,212 @@
     <string name="distance_to_the_nearest_pathological_lab">নিকটতম প্যাথলজিক্যাল ল্যাব থেকে দূরত্ব</string>
     <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">নিকটতম প্রাইভেট ক্লিনিকের দূরত্ব (একজন এমবিবিএস ডাক্তারের সাথে)</string>
     <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">নিকটতম প্রাইভেট ক্লিনিকের দূরত্ব (বিকল্প চিকিত্সকদের সাথে - BAMS, BHMS, আয়ুর্বেদ ইত্যাদি)</string>
-    <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">Does any member of this household have a bank account or post-office account?</string>
-    <string name="do_not_know">Do Not Know</string>
-    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card/coupon?</string>
-    <string name="yes_card_seen">Yes, Card Seen</string>
-    <string name="yes_card_not_seen">Yes, Card Not Seen</string>
-    <string name="no_card">No Card</string>
-    <string name="does_this_household_have_an_antodaya_card_coupon">Does this household have an Antodaya card/coupon?</string>
-    <string name="does_this_household_have_a_rsby_card_coupon">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">Does this household have an MGNREGA card?*</string>
-    <string name="submit">Submit</string>
+    <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">এই পরিবারের কোন সদস্যের কি ব্যাঙ্ক অ্যাকাউন্ট বা পোস্ট অফিস অ্যাকাউন্ট আছে?</string>
+    <string name="do_not_know">জানি না</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">এই পরিবারের কি বিপিএল কার্ড/কুপন আছে?</string>
+    <string name="yes_card_seen">হ্যাঁ, কার্ড দেখা গেছে</string>
+    <string name="yes_card_not_seen">হ্যাঁ, কার্ড দেখা যায়নি</string>
+    <string name="no_card">কার্ড  নেই</string>
+    <string name="does_this_household_have_an_antodaya_card_coupon">এই পরিবারের কি অন্তোদয় কার্ড/কুপন আছে?</string>
+    <string name="does_this_household_have_a_rsby_card_coupon">এই পরিবারের কি একটি রাষ্ট্রীয় স্বাস্থ্য বিমা যোজনা (RSBY) কার্ড আছে?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">এই পরিবারের কি MGNREGA কার্ড আছে?</string>
+    <string name="submit">জমা দিন</string>
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">আপনার পরিবার প্রধানত রান্নার জন্য কোন ধরনের জ্বালানী ব্যবহার করে?</string>
-    <string name="electricity">Electricity</string>
-    <string name="lpg_natural_gas">LPG or Natural Gas</string>
-    <string name="biogas_checkbox">Biogas</string>
-    <string name="kerosene">Kerosene</string>
-    <string name="coal_lignite">Coal or Lignite</string>
-    <string name="wood">Wood</string>
-    <string name="charcoal">Charcoal</string>
-    <string name="straw_shrubs_grass">Straw or Shrubs or Grass</string>
-    <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
-    <string name="dung_cakes">Dung Cakes</string>
-    <string name="other_specify">Other (Specify)</string>
+    <string name="electricity">বিদ্যুৎ</string>
+    <string name="lpg_natural_gas">এলপিজি বা প্রাকৃতিক গ্যাস</string>
+    <string name="biogas_checkbox">বায়োগ্যাস</string>
+    <string name="kerosene">কেরোসিন</string>
+    <string name="coal_lignite">কয়লা বা লিগনাইট</string>
+    <string name="wood">কাঠ</string>
+    <string name="charcoal">কাঠকয়লা</string>
+    <string name="straw_shrubs_grass">খড় বা গুল্ম বা ঘাস</string>
+    <string name="agricultural_crop_waste">কৃষি ফসলের বর্জ্য</string>
+    <string name="dung_cakes">গোবর কেক</string>
+    <string name="other_specify">নির্দিষ্ট অন্যান্য)</string>
     <string name="what_is_the_main_source_of_lighting_in_this_household">এই পরিবারের আলোর প্রধান উৎস কি?</string>
-    <string name="lantern">Lantern</string>
-    <string name="kerosene_lamp">Kerosene Lamp</string>
-    <string name="candle">Candle</string>
-    <string name="electric">Electric</string>
-    <string name="lpg">LPG</string>
-    <string name="solar_energy">Solar Energy</string>
-    <string name="none">None</string>
-    <string name="piped_into_dwelling">Piped Into Dwelling</string>
-    <string name="piped_into_yard_plot">Piped Into Yard or Plot</string>
-    <string name="public_tap_standpipe">Public Tap or Standpipe</string>
-    <string name="tube_well_borehole">Tube Well or Borehole</string>
-    <string name="protected_well_checkbox">Protected Well</string>
-    <string name="unprotected_well">Unprotected Well</string>
-    <string name="protected_spring">Protected Spring</string>
-    <string name="unprotected_spring">Unprotected Spring</string>
-    <string name="rainwater">Rainwater</string>
-    <string name="tanker_truck">Tanker Truck</string>
-    <string name="cart_with_small_tank">Cart With Small Truck</string>
-    <string name="surface_water">Surface Water</string>
-    <string name="common_hand_pump">Common Hand Pump</string>
-    <string name="hand_pump_at_home">Hand Pump At Home</string>
-    <string name="survey_what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
-    <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">How much time does it take to walk till the water source from your home?</string>
-    <string name="number_of_minutes">Number of minutes</string>
-    <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">Do you treat your water in any way to make it safer to drink?</string>
-    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
-    <string name="boil">Boil</string>
-    <string name="use_alum">Use Alum</string>
-    <string name="add_bleach_chlorine_tablets_drops">Add Bleach or Chlorine Tablets or Drops</string>
-    <string name="strain_through_a_cloth">Strain Through A Cloth</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">Use Water Filter (Ceramic or Sand or Composite, etc.)</string>
-    <string name="use_electronic_purifier">Use Electronic Purifier</string>
-    <string name="let_it_stand_and_settle">Let It Stand And Settle</string>
-    <string name="flush_to_piped_sewer_system">Flush to Piped Sewer System</string>
-    <string name="flush_to_septic_tank">Flush To Septic Tank</string>
-    <string name="flush_to_pit_latrine">Flush To Pit Latrine</string>
-    <string name="flush_to_somewhere_else">Flush To Somewhere Else</string>
-    <string name="flush_dont_know_where">Flush, Don\'t Know Where</string>
-    <string name="ventilated_improved_pit_biogas_latrine">Ventilated Improved Pit (VIP) or Biogas Latrine</string>
-    <string name="pit_latrine_with_slab">Pit Latrine With Slab</string>
-    <string name="pit_latrine_without_slab_open_pit">Pit Latrine Without Slab or Open Pit</string>
-    <string name="twin_pit_composting_toilet">Twin Pit or Composting Toilet</string>
-    <string name="dry_toilet">Dry Toilet</string>
-    <string name="no_facility_uses_open_space_or_field">No Facility or Uses Open Space or Field</string>
-    <string name="in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason">In the past week has anyone in your household (including children) had to defecate in the open due to any reason?</string>
-    <string name="what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open">What was the main reason due to which you had to relieve yourself in the open?</string>
-    <string name="no_water_available_in_the_toilet">No Water Available In The Toilet</string>
-    <string name="no_electricity_available_in_the_toilet">No Electricity Available In The Toilet</string>
-    <string name="toilet_is_often_occupied_by_other_members">Toilet Is Often Occupied By Other Members</string>
-    <string name="problem_in_toilet_plumbing">Problem In Toilet Plumbing</string>
-    <string name="other_reasons_specify">Other Reasons (Specify)</string>
-    <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">On what occasions did you wash your hands with soap since this time yesterday?</string>
-    <string name="no_soap_available_in_the_household">No Soap Available In The Household</string>
-    <string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">Soap Available In The Household But Did Not Use It To Wash Hands</string>
-    <string name="before_cooking">Before Cooking</string>
-    <string name="after_handling_food">After Handling Food</string>
-    <string name="before_eating">Before Eating</string>
-    <string name="after_using_toilet">After Using Toilet</string>
-    <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">What kind of food items were cooked/prepared in the last 24hr in your household?</string>
-    <string name="starch_staple_food">Starch Staple Food (Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
-    <string name="beans_and_peas">Beans and peas (Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
-    <string name="nuts_and_cheese">Nuts and Cheese, Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds)</string>
-    <string name="dairy">Dairy (Milk – cow or goat or buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
-    <string name="eggs">Eggs</string>
-    <string name="flesh_food">Flesh Food (Meat, chicken, fish etc.)</string>
-    <string name="any_vegetables">Any Vegetables</string>
-    <string name="surveyDialogTitle">Saved</string>
-    <string name="surveyDialogMessage">Survey added successfully</string>
-    <string name="start_household_survey">Start Household Survey</string>
-    <string name="what_is_your_relationship_with_the_head_of_household">What is your relationship with the head of household?*</string>
+    <string name="lantern">লণ্ঠন</string>
+    <string name="kerosene_lamp">কেরোসিন বাতি</string>
+    <string name="candle">মোমবাতি</string>
+    <string name="electric">বৈদ্যুতিক</string>
+    <string name="lpg">এলপিজি</string>
+    <string name="solar_energy">সৌরশক্তি</string>
+    <string name="none">কোনোটিই নয়</string>
+    <string name="piped_into_dwelling">বাসস্থান মধ্যে পাইপ</string>
+    <string name="piped_into_yard_plot">ইয়ার্ড বা প্লট মধ্যে পাইপ</string>
+    <string name="public_tap_standpipe">পাবলিক ট্যাপ বা স্ট্যান্ডপাইপ</string>
+    <string name="tube_well_borehole">নলকূপ বা বোরয়েল </string>
+    <string name="protected_well_checkbox">সুরক্ষিত ওয়েল</string>
+    <string name="unprotected_well">অরক্ষিত কূপ</string>
+    <string name="protected_spring">সুরক্ষিত বসন্ত</string>
+    <string name="unprotected_spring">অরক্ষিত বসন্ত</string>
+    <string name="rainwater">বৃষ্টির জল</string>
+    <string name="tanker_truck">ট্যাঙ্কার ট্রাক</string>
+    <string name="cart_with_small_tank">ছোট ট্রাক সঙ্গে কার্ট</string>
+    <string name="surface_water">ভূগর্ভস্থ পানি</string>
+    <string name="common_hand_pump">কমন হ্যান্ড পাম্প</string>
+    <string name="hand_pump_at_home">বাড়িতে হ্যান্ড পাম্প</string>
+    <string name="survey_what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের প্রধান উৎস কি?</string>
+    <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">আপনার বাড়ি থেকে পানির উৎস পর্যন্ত হাঁটতে কত সময় লাগে?</string>
+    <string name="number_of_minutes">মিনিটের সংখ্যা</string>
+    <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">আপনি কি আপনার জলকে নিরাপদে পান করার জন্য কোন উপায়ে চিকিত্সা করেন?</string>
+    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">পানি পান করা নিরাপদ করতে আপনি সাধারণত কী করেন?</string>
+    <string name="boil">ফুটান</string>
+    <string name="use_alum">অ্যালুম ব্যবহার করুন</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ বা ক্লোরিন ট্যাবলেট বা ড্রপ যোগ করুন</string>
+    <string name="strain_through_a_cloth">একটি কাপড় মাধ্যমে স্ট্রেন</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার ব্যবহার করুন (সিরামিক বা বালি বা যৌগিক, ইত্যাদি)</string>
+    <string name="use_electronic_purifier">ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন</string>
+    <string name="let_it_stand_and_settle">লেট ইট স্ট্যান্ড অ্যান্ড সেটেল</string>
+    <string name="flush_to_piped_sewer_system">পাইপড নর্দমা সিস্টেম ফ্লাশ</string>
+    <string name="flush_to_septic_tank">সেপটিক ট্যাঙ্কে ফ্লাশ করুন</string>
+    <string name="flush_to_pit_latrine">ফ্লাশ টু পিট ল্যাট্রিন</string>
+    <string name="flush_to_somewhere_else">অন্য কোথাও ফ্লাশ করুন</string>
+    <string name="flush_dont_know_where">ফ্লাশ, কোথায় জানি না</string>
+    <string name="ventilated_improved_pit_biogas_latrine">ভেন্টিলেটেড ইম্প্রুভড পিট (ভিআইপি) বা বায়োগ্যাস ল্যাট্রিন</string>
+    <string name="pit_latrine_with_slab">স্ল্যাব সহ পিট ল্যাট্রিন</string>
+    <string name="pit_latrine_without_slab_open_pit">স্ল্যাব বা খোলা পিট ছাড়া পিট ল্যাট্রিন</string>
+    <string name="twin_pit_composting_toilet">টুইন পিট বা কম্পোস্টিং টয়লেট</string>
+    <string name="dry_toilet">শুকনো টয়লেট</string>
+    <string name="no_facility_uses_open_space_or_field">কোন সুবিধা নেই বা খোলা স্থান বা মাঠ ব্যবহার করে না</string>
+    <string name="in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason">গত সপ্তাহে আপনার পরিবারের (শিশু সহ) কাউকে কি কোনো কারণে খোলা জায়গায় মলত্যাগ করতে হয়েছে?</string>
+    <string name="what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open">কি প্রধান কারণ ছিল যার কারণে আপনাকে খোলামেলা মুক্ত হতে হয়েছিল?</string>
+    <string name="no_water_available_in_the_toilet">টয়লেটে পানি নেই</string>
+    <string name="no_electricity_available_in_the_toilet">টয়লেটে বিদ্যুৎ নেই</string>
+    <string name="toilet_is_often_occupied_by_other_members">টয়লেট প্রায়ই অন্য সদস্যদের দ্বারা দখল করা হয়</string>
+    <string name="problem_in_toilet_plumbing">টয়লেট প্লাম্বিং এ সমস্যা</string>
+    <string name="other_reasons_specify">অন্যান্য কারণ (নির্দিষ্ট করুন)</string>
+    <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">গতকাল থেকে এই সময় থেকে আপনি কোন উপলক্ষে সাবান দিয়ে হাত ধুয়েছেন?</string>
+    <string name="no_soap_available_in_the_household">বাড়িতে সাবান পাওয়া যায় না</string>
+    <string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">বাড়িতে সাবান পাওয়া যায় কিন্তু হাত ধোয়ার জন্য ব্যবহার করেননি</string>
+    <string name="before_cooking">রান্নার আগে</string>
+    <string name="after_handling_food">খাবার হ্যান্ডলিং করার পর</string>
+    <string name="before_eating">খাবার আগে</string>
+    <string name="after_using_toilet">টয়লেট ব্যবহারের পর</string>
+    <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">আপনার পরিবারে গত 24 ঘন্টায় কোন ধরনের খাবার রান্না/প্রস্তুত করা হয়েছে?</string>
+    <string name="starch_staple_food">স্টার্চ প্রধান খাদ্য (ভাত, রোটি, রুটি, চাপা ভাত, মুড়ি, আলু, মিষ্টি আলু, আরবি, কাসাভা, কলা, অন্য কোন শিকড় এবং কন্দ, নুডুলস, পাস্তা)</string>
+    <string name="beans_and_peas">মটরশুটি এবং মটরশুটি (মটরশুটি, মটর, মুগ ডাল, ছানার ডাল, অড়হর ডাল, উরাদের ডাল, রাজমা, ম্যাটার ডাল, অন্যান্য ডাল এবং সয়াবিন, সীম, সরিষা)</string>
+    <string name="nuts_and_cheese">বাদাম এবং পনির, চীনাবাদাম, এপ্রিকর্ট, বাদাম, পিস্তা, নারকেল, সীসাম বীজ, পদ্মের বীজ, কাঁঠালের বীজ, কাজুবাদাম, আখরোট, সরিষার বীজ, সূর্যমুখী বীজ, কুমড়ার বীজ)</string>
+    <string name="dairy">দুগ্ধজাত (দুধ – গরু বা ছাগল বা মহিষ, গুঁড়া দুধ, তরল প্যাকেট দুধ, দই, পনির, সেওয়াই, ক্ষীর, মিষ্টি, মাখন, ঘি)</string>
+    <string name="eggs">ডিম</string>
+    <string name="flesh_food">মাংসের খাবার (মাংস, মুরগি, মাছ ইত্যাদি)</string>
+    <string name="any_vegetables">যে কোন সবজি</string>
+    <string name="surveyDialogTitle">সংরক্ষিত</string>
+    <string name="surveyDialogMessage">সমীক্ষা সফলভাবে যোগ করা হয়েছে৷</string>
+    <string name="start_household_survey">পারিবারিক জরিপ শুরু করুন</string>
+    <string name="what_is_your_relationship_with_the_head_of_household">পরিবারের প্রধানের সাথে আপনার সম্পর্ক কি?</string>
 
-    <string name="spouse">Spouse</string>
-    <string name="son_daughter">Son or Daughter</string>
-    <string name="son_daughter_in_law">Son or Daughter-In-Law</string>
-    <string name="grandchild">Grandchild</string>
-    <string name="father_mother">Father or mother</string>
-    <string name="father_mother_in_law">Father or Mother-In-Law</string>
-    <string name="brother_sister">Brother or Sister</string>
-    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
-    <string name="niece_nephew">Niece or Nephew</string>
-    <string name="grandparent_grandparent_in_law">Grandparent or Grandparent-In-Law</string>
-    <string name="other_relative">Other Relative</string>
-    <string name="adopted_foster_stepchild">Adopted or Foster or Stepchild</string>
-    <string name="domestic_servant">Domestic Servant</string>
-    <string name="other_not_related">Other Not Related</string>
-    <string name="not_stated">Not Stated</string>
+    <string name="spouse">পত্নী</string>
+    <string name="son_daughter">ছেলে বা মেয়ে</string>
+    <string name="son_daughter_in_law">জামাই বা পুত্রবধূ</string>
+    <string name="grandchild">নাতি</string>
+    <string name="father_mother">বাবা বা মা</string>
+    <string name="father_mother_in_law">বাবা বা শাশুড়ি</string>
+    <string name="brother_sister">ভাই বা বোন</string>
+    <string name="brother_sister_in_law">ভাই বা ভগ্নিপতি</string>
+    <string name="niece_nephew">ভাতিজি বা ভাগ্নে</string>
+    <string name="grandparent_grandparent_in_law">দাদা-দাদি বা দাদা-দাদি-শ্বশুর</string>
+    <string name="other_relative">অন্যান্য আত্মীয়</string>
+    <string name="adopted_foster_stepchild">দত্তক বা পালক বা সৎ সন্তান</string>
+    <string name="domestic_servant">গার্হস্থ্য দাস</string>
+    <string name="other_not_related">অন্যান্য সম্পর্কিত নয়</string>
+    <string name="not_stated">বলা হয়নি</string>
 
-    <string name="what_is_your_marital_status">What is your marital status?*</string>
-    <string name="currently_married">Currently Married</string>
-    <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
-    <string name="widowed">Widowed</string>
-    <string name="divorced">Divorced</string>
-    <string name="separated">Separated</string>
-    <string name="deserted">Deserted</string>
-    <string name="never_married">Never Married</string>
+    <string name="what_is_your_marital_status">আপনার বৈবাহিক অবস্থা কি?*</string>
+    <string name="currently_married">বর্তমানে বিবাহিত</string>
+    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>
+    <string name="widowed">বিধবা</string>
+    <string name="divorced">তালাকপ্রাপ্ত</string>
+    <string name="separated">বিচ্ছিন্ন</string>
+    <string name="deserted">অমানব</string>
+    <string name="never_married">চিরকুমার</string>
 
-    <string name="cannot_read_and_write">Cannot read or write</string>
-    <string name="can_read_and_write">Can read and write</string>
-    <string name="primary_education_till_class_five">Primary education (Till Class 5)</string>
-    <string name="middle_school_sixth_eighth">Middle school (6th - 8th)</string>
-    <string name="passed_secondary_school">Passed secondary school (Class 10th boards)</string>
-    <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
-    <string name="graduate">Graduate</string>
-    <string name="postgraduate">Postgraduate</string>
+    <string name="cannot_read_and_write">পড়তে বা লিখতে পারে না</string>
+    <string name="can_read_and_write">পড়তে ও লিখতে পারে</string>
+    <string name="primary_education_till_class_five">প্রাথমিক শিক্ষা (5 শ্রেণী পর্যন্ত)</string>
+    <string name="middle_school_sixth_eighth">মাধ্যমিক বিদ্যালয় (৬ষ্ঠ - ৮ম)</string>
+    <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয়ে উত্তীর্ণ (দশম শ্রেণী বোর্ড)</string>
+    <string name="passed_senior_secondary_school">সিনিয়র সেকেন্ডারি স্কুল পাশ (দ্বাদশ বোর্ড)</string>
+    <string name="graduate">স্নাতক</string>
+    <string name="postgraduate">স্নাতকোত্তর</string>
 
-    <string name="salaried_government_job">Salaried Government Job</string>
-    <string name="salaried_private_job">Salaried Private Job</string>
-    <string name="petty_business_shop_owner">Petty Business or Shop Owner</string>
-    <string name="technician_craftsman_other_skilled_work">Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</string>
-    <string name="agricultural_farmer">Agricultural Farmer</string>
-    <string name="tenant_farmer_agricultural_daily_wage_worker">Tenant Farmer or Agricultural Daily Wage Worker</string>
-    <string name="daily_wage_worker_unskilled_workers">Daily Wage Worker (Unskilled Worker)</string>
-    <string name="household_work">Household Work</string>
-    <string name="student">Student</string>
-    <string name="unemployed">Unemployed</string>
-    <string name="retired_with_pension">Retired (With Pension)</string>
-    <string name="retired_without_pension">Retired (Without Pension)</string>
-    <string name="not_applicable">Not Applicable</string>
+    <string name="salaried_government_job">বেতনভুক্ত সরকারি চাকরি</string>
+    <string name="salaried_private_job">বেতনভোগী বেসরকারি চাকরি</string>
+    <string name="petty_business_shop_owner">ক্ষুদ্র ব্যবসা বা দোকানের মালিক</string>
+    <string name="technician_craftsman_other_skilled_work">টেকনিশিয়ান বা কারিগর বা অন্যান্য দক্ষ কাজ (ড্রাইভার, রাজমিস্ত্রি, ইত্যাদি)</string>
+    <string name="agricultural_farmer">কৃষি কৃষক</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ভাড়াটিয়া কৃষক বা কৃষি দৈনিক মজুরি কর্মী</string>
+    <string name="daily_wage_worker_unskilled_workers">দৈনিক মজুরি কর্মী (অদক্ষ শ্রমিক)</string>
+    <string name="household_work">গৃহ কর্ম</string>
+    <string name="student">ছাত্র</string>
+    <string name="unemployed">বেকার</string>
+    <string name="retired_with_pension">অবসরপ্রাপ্ত (পেনশন সহ)</string>
+    <string name="retired_without_pension">অবসরপ্রাপ্ত (পেনশন ছাড়া)</string>
+    <string name="not_applicable">প্রযোজ্য নয়</string>
 
-    <string name="shared">Shared</string>
-    <string name="owns_smartphone">Owns Smartphone</string>
-    <string name="owns_feature_phone">Owns Feature Phone</string>
+    <string name="shared">শেয়ার করা হয়েছে</string>
+    <string name="owns_smartphone">স্মার্টফোনের মালিক</string>
+    <string name="owns_feature_phone">ফিচার ফোনের মালিক</string>
 
-    <string name="own_smartphone">Own Smartphone</string>
-    <string name="own_feature_phone">Own Feature Phone</string>
+    <string name="own_smartphone">স্মার্টফোনের মালিক</string>
+    <string name="own_feature_phone">ফিচার ফোনের মালিক</string>
     <string name="shared_smartphone">Shared Smartphone</string>
     <string name="shared_feature_phone">Shared Feature Phone</string>
 
     <string name="yes_family_member">Yes (Family Member)</string>
     <string name="yes_personal">Yes (Personal)</string>
 
-    <string name="when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
-    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?*</string>
-    <string name="when_was_the_last_time_you_got_your_hb_level_checked">When was the last time you got your HB level checked?*</string>
-    <string name="when_was_the_last_time_your_bmi_was_checked">When was the last time your BMI (Height and weight) was checked?*</string>
+    <string name="when_was_the_last_time_you_got_your_bp_checked">শেষবার কখন আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?*</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">শেষবার কখন আপনি আপনার চিনির মাত্রা পরীক্ষা করেছিলেন?*</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">শেষবার কখন আপনি আপনার HB স্তর পরীক্ষা করেছিলেন?*</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">শেষবার কখন আপনার BMI (উচ্চতা এবং ওজন) পরীক্ষা করা হয়েছিল?*</string>
 
-    <string name="never_checked">Never Checked</string>
-    <string name="in_past_one_week">In past one week</string>
-    <string name="within_last_month">Within last month</string>
-    <string name="between_one_month_to_three_months_ago">Between 1 month to 3 months ago</string>
-    <string name="between_three_months_to_six_months_ago">Between 3 months to 6 months ago</string>
-    <string name="more_than_six_months">More than 6 months</string>
+    <string name="never_checked">কখনই চেক করা হয়নি</string>
+    <string name="in_past_one_week">গত এক সপ্তাহে</string>
+    <string name="within_last_month">গত মাসের মধ্যে</string>
+    <string name="between_one_month_to_three_months_ago">এক মাস থেকে তিন মাস আগে</string>
+    <string name="between_three_months_to_six_months_ago">3 মাস-6 মাস আগে</string>
+    <string name="more_than_six_months">৬ মাসের বেশি</string>
 
-    <string name="identification_screen_checkbox_other">Other</string>
-    <string name="medical_history">Medical History*</string>
-    <string name="hypertension">Hypertension</string>
-    <string name="diabetes">Diabetes*</string>
-    <string name="arthritis">Arthritis*</string>
-    <string name="anaemia">Anaemia*</string>
-    <string name="any_surgeries">Any Surgeries?*</string>
-    <string name="reason_for_surgery_specify_the_reason">Reason for surgery (specify the reason)*</string>
+    <string name="identification_screen_checkbox_other">অন্যান্য</string>
+    <string name="medical_history">চিকিৎসা ইতিহাস*</string>
+    <string name="hypertension">উচ্চ রক্তচাপ</string>
+    <string name="diabetes">ডায়াবেটিস*</string>
+    <string name="arthritis">বাত*</string>
+    <string name="anaemia">রক্তশূন্যতা*</string>
+    <string name="any_surgeries">কোন সার্জারি?*</string>
+    <string name="reason_for_surgery_specify_the_reason">অস্ত্রোপচারের কারণ (কারণ উল্লেখ করুন)*</string>
 
-    <string name="smoking_status">Smoking Status*</string>
-    <string name="does_the_person_smoke">Does the person smoke?</string>
-    <string name="smoker">Smoker</string>
-    <string name="non_smoker">Non-Smoker</string>
-    <string name="five_ten_bids_cigarette">5 – 10 bidis / cigarette</string>
-    <string name="more_than_ten_bids_cigarette">More than 10 bidis / cigarette</string>
-    <string name="rate_of_smoking">Rate of smoking</string>
-    <string name="how_long_have_you_been_smoking">How long have you been smoking</string>
-    <string name="less_than_a_year">Less than a year</string>
-    <string name="from_one_year_to_five_year">From 1 year to 5 years</string>
-    <string name="from_five_years_to_ten_years">From 5 to 10 years</string>
-    <string name="more_than_ten_years">More than 10 years</string>
+    <string name="smoking_status">পরিবারের মধ্যে ধূমপানের অবস্থা*</string>
+    <string name="does_the_person_smoke">ব্যক্তি কি ধূমপান করে?</string>
+    <string name="smoker">ধূমপায়ী</string>
+    <string name="non_smoker">অ ধূমপায়ী</string>
+    <string name="five_ten_bids_cigarette">5 - 10 বিড়ি / সিগারেট</string>
+    <string name="more_than_ten_bids_cigarette">10 টিরও বেশি বিড়ি/সিগারেট</string>
+    <string name="rate_of_smoking">ধূমপানের হার</string>
+    <string name="how_long_have_you_been_smoking">আপনি কতদিন ধরে ধূমপান করছেন</string>
+    <string name="less_than_a_year">এক বছরেরও কম</string>
+    <string name="from_one_year_to_five_year">1 বছর থেকে 5 বছর পর্যন্ত</string>
+    <string name="from_five_years_to_ten_years">5 থেকে 10 বছর পর্যন্ত</string>
+    <string name="more_than_ten_years">10 বছরেরও বেশি</string>
 
-    <string name="history_of_alcohol_consumption">History Of Alcohol Consumption*</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption?</string>
-    <string name="no_denied">No or Denied</string>
-    <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
-    <string name="zero_five_times">0 – 5 times</string>
-    <string name="five_ten_times">5 – 10 times</string>
-    <string name="more_than_10_times">More than 10 times</string>
-    <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
-    <string name="edit_dialog_button">Edit</string>
-    <string name="delete_dialog_button">Delete</string>
+    <string name="history_of_alcohol_consumption">পরিবারের অ্যালকোহল সেবনের ইতিহাস*</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">বাড়িতে অ্যালকোহল সেবনের ইতিহাস আছে কি?</string>
+    <string name="no_denied">না বা অস্বীকার</string>
+    <string name="rate_of_alcohol_consumption">অ্যালকোহল সেবনের হার</string>
+    <string name="zero_five_times">0 - 5 বার</string>
+    <string name="five_ten_times">5 - 10 বার</string>
+    <string name="more_than_10_times">10 বারের বেশি</string>
+    <string name="how_long_have_you_been_consuming_alcohol">আপনি কতদিন ধরে অ্যালকোহল পান করছেন?</string>
+    <string name="edit_dialog_button">সম্পাদনা করুন</string>
+    <string name="delete_dialog_button">মুছে ফেলা</string>
 
     <!--    SURVEY STRINGS - END-->
 
-    <string name="all_fields_are_mandatory">All Fields Are Mandatory</string>
-    <string name="please_fill_up_all_required_fields">Please Fill Up All Required Fields</string>
-    <string name="medical_history_cannot_be_empty">Medical History Cannot Be Empty</string>
-    <string name="smoking_history_cannot_be_empty">Smoking History Cannot Be Empty</string>
-    <string name="alcohol_consumption_history_cannot_be_empty">Alcohol Consumption History Cannot Be Empty</string>
+    <string name="all_fields_are_mandatory">সব মাঠ আবশ্যক</string>
+    <string name="please_fill_up_all_required_fields">সব প্রয়োজনীয় ক্ষেত্রগুলি পূরণ করুন</string>
+    <string name="medical_history_cannot_be_empty">মেডিকেল ইতিহাস খালি হতে পারে না</string>
+    <string name="smoking_history_cannot_be_empty">ধূমপানের ইতিহাস খালি হতে পারে না</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">অ্যালকোহল সেবনের ইতিহাস খালি হতে পারে না</string>
     <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">জল জীবন যোজনা প্রকল্পের আওতায় কি গ্রাম জল পায়?</string>
     <string name="nal_jal_yojana">Nal Jal Yojana</string>
     <string name="how_much_cultivable_land_does_your_family_own">How much cultivable land does your family own?</string>
@@ -1123,7 +1123,7 @@
     <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
     <string name="does_this_household_have_ration_card">Does this household have a Ration Card?*</string>
 
-    <string name="third_dose">Third Dose</string>
+    <string name="third_dose">তৃতীয় ডোজ</string>
     <string name="zero_fifty_ml">0 – 50 ml</string>
     <string name="fifty_hundred_ml">50 – 100 ml</string>
     <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
@@ -1131,7 +1131,7 @@
     <string name="more_than_five_hundred_ml">More than 500 ml</string>
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
-    <string name="dr_specility_generalphysician">General Physician</string>
+    <string name="dr_specility_generalphysician">জেনারেল ফিজিশিয়ান</string>
     <string name="update_hw_profile">Updated Succussfully</string>
     <string name="enter_valid_email">Enter valid email address</string>
     <string name="enter_valid_gender">Enter gender male or female</string>
