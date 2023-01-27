@@ -31,7 +31,6 @@ public class ApiClient {
                     .baseUrl(apiBaseUrl)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
-
     public static void changeApiBaseUrl(String newApiBaseUrl) {
         apiBaseUrl = newApiBaseUrl;
         builder = new Retrofit.Builder()
@@ -43,19 +42,7 @@ public class ApiClient {
 
     public static <S> S createService(Class<S> serviceClass) {
         getUnsafeOkHttpClient();
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
-        client.addInterceptor(loggingInterceptor);
-        client.connectTimeout(120, TimeUnit.SECONDS);
-        client.readTimeout(120, TimeUnit.SECONDS);
-        client.writeTimeout(120, TimeUnit.SECONDS);
-        retrofit = builder.client(client.build()).build();
-        return retrofit.create(serviceClass);
-    }
 
-/*
-    public static <S> S createService_SetupScreen(Class<S> serviceClass) {
-        getUnsafeOkHttpClient();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
@@ -65,7 +52,6 @@ public class ApiClient {
         retrofit = builder.client(client.build()).build();
         return retrofit.create(serviceClass);
     }
-*/
 
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
