@@ -413,6 +413,14 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         obsDTO.setConceptuuid(UuidDictionary.BILL_VISIT_TYPE);
         obsDTO.setEncounteruuid(encounter_uuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
+
+        /* The change below, of appending the price with the visit type is done under ticket NAS-159.
+        This is requested by Priya Joshi as for the visit type she was not getting the prices earlier but only the visit type value.
+
+        Also, the above uuid is same as the uuid of the concept with the name "Billing Visit Type Consultation" in the backend thus the values
+        on the server is accessed under this concept name "Billing Visit Type Consultation".
+         */
+
         if (visitType.equalsIgnoreCase("Consultation"))
             obsDTO.setValue(visitType + " - 15");
         else
