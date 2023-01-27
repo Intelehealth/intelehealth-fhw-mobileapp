@@ -28,22 +28,21 @@ public class UuidDictionary {
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
+
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
-
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";
     public static final String JSV_MEDICATIONS = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
+
     //    public static final String MEDICAL_ADVICE = "0308000d-77a2-46e0-a6fa-a8c1dcbc3141"; //old uuid medical advice
     public static final String MEDICAL_ADVICE = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-
     public static final String COMPLEX_IMAGE_AD = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba";
-
     public static final String COMPLEX_IMAGE_PE = "200b7a45-77bc-4986-b879-cc727f5f7d5b";
-
     public static final String SON_WIFE_DAUGHTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
     public static final String OCCUPATION = "5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc";
+
     //Encounter Types
     public static final String ENCOUNTER_ADULTINITIAL = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f";
     public static final String ENCOUNTER_VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584";
@@ -69,7 +68,6 @@ public class UuidDictionary {
     public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
     public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
 
-
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
 
@@ -90,6 +88,5 @@ public class UuidDictionary {
     public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325720";
     public static final String BILL_PRICE_BP_ID = "dd51ab03-12ef-43cb-9aef-2ec93a989816";
     public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
-
 
 }

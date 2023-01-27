@@ -108,5 +108,6 @@
     <string name="contact_no">"Contact Number: "</string>
     <string name="client_village_name">"Client Village Name: "</string>
     <string name="date">"Date: "</string>
+    <string name="view_bill">View Bill</string>
     <string name="unpaid">Unpaid</string>
 </resources>

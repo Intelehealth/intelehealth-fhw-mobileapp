@@ -1488,5 +1488,5 @@
     <string name="client_village_name">"ग्राहक गावाचे नाव: "</string>
     <string name="date">"दी.: "</string>
     <string name="unpaid">न.दिले</string>
-
+    <string name="view_bill">बिल पहा</string>
 </resources>

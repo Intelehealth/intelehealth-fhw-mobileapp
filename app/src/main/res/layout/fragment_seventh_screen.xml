@@ -553,11 +553,39 @@
 
             </RadioGroup>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/previous_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distance_to_nearest_tertiary_care_facility_radio_group"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/prev_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/prev"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/poppins_medium" />
+
+                <ImageButton
+                    android:id="@+id/prev_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_image_button_background"
+                    app:srcCompat="@drawable/ic_back_arrow" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <Button
                 android:id="@+id/submit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/distance_to_nearest_tertiary_care_facility_radio_group"
+                android:layout_below="@id/previous_button_layout"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="10dp"

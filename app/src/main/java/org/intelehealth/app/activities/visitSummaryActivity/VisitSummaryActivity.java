@@ -942,6 +942,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
 
+        String billEncounterUuid = checkForOldBill();
+        if (!billEncounterUuid.equals("")) {
+            editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
+            generateBillBtn.setText(getResources().getString(R.string.view_bill));
+        }
+
+
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
 

@@ -121,6 +121,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_household_income_0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -129,6 +130,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_household_income_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -137,6 +139,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_household_income_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -145,6 +148,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_household_income_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -153,6 +157,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_household_income_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -183,6 +188,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/monthly_food_expense0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,6 +197,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/monthly_food_expense1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -199,6 +206,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/monthly_food_expense2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -207,6 +215,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/monthly_food_expense3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -215,6 +224,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/monthly_food_expense4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -245,6 +255,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/health_expense0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -253,6 +264,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/health_expense1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -261,6 +273,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/health_expense2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -269,6 +282,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/health_expense3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -330,6 +344,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -338,6 +353,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -346,6 +362,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -354,6 +371,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -362,6 +380,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -370,6 +389,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annual_education_expense5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -400,6 +420,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annualClothing_expense0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -408,6 +429,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annualClothing_expense1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -416,6 +438,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annualClothing_expense2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -424,6 +447,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annualClothing_expense3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -432,6 +456,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/annualClothing_expense4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -462,6 +487,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/intoxic_expense0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -470,6 +496,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/intoxic_expense1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -478,6 +505,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/intoxic_expense2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -486,6 +514,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/intoxic_expense3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -494,6 +523,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/intoxic_expense4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

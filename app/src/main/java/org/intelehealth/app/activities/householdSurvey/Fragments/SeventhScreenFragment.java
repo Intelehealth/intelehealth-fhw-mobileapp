@@ -98,7 +98,9 @@ public class SeventhScreenFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSeventhScreenBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
-
+        binding.prevButton.setOnClickListener(view -> {
+            getActivity().onBackPressed();
+        });
         binding.submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
