@@ -99,6 +99,10 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             if (speciality.equalsIgnoreCase("General Physician")) {
                 return "सामान्य चिकित्सक";
             }
+        } else if (new SessionManager(mContext).getAppLanguage().equals("bn")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                return "জেনারেল ফিজিশিয়ান";
+            }
         } else {
             return speciality;
         }

@@ -758,6 +758,23 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "દર વર્ષે વખત");
             currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট -")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
+                    .replace("Minutes", "মিনিট")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিন")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "প্রতি ঘন্টায় বার")
+                    .replace("time per day", "প্রতিদিন সময়")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
             currentNodeVal = currentNodeVal

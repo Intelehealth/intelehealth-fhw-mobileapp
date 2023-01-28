@@ -476,6 +476,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
                             patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
                             ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
+                            patientHistoryAssamese = patientHistoryMap.generateLanguage("bn");
+                            ConfirmationDialog(patientHistory, patientHistoryAssamese);
                         } else {
                             ConfirmationDialog(patientHistory, patientHistory);
                         }
@@ -513,6 +516,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         ConfirmationDialog(patientHistory, patientHistoryGujrati);
                     } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
                         patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
+                        ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
+                        patientHistoryAssamese = patientHistoryMap.generateLanguage("bn");
                         ConfirmationDialog(patientHistory, patientHistoryAssamese);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
