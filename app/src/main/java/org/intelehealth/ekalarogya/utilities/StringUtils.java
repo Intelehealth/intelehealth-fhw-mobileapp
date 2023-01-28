@@ -3740,6 +3740,21 @@ public final class StringUtils {
             }
 
         }
+        if (locale.equalsIgnoreCase("bn")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "বুক করা";
+                    break;
+                case "cancelled":
+                    val = "বাতিল";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
         if (locale.equalsIgnoreCase("gu")) {
 
             switch (val.toLowerCase()) {

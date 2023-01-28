@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name" translatable="false">Ekal Arogya</string>
+    <string name="app_name" translatable="false">একল আরোগ্য</string>
 
     //Generic
-    <string name="generic_the_flipping_word_next" translatable="false">Next</string>
+    <string name="generic_the_flipping_word_next" translatable="false">পরবর্তী</string>
     <string name="hint_required" translatable="false">প্রয়োজন</string>
     <string name="hint_optional" translatable="false">ঐচ্ছিক</string>
     <string name="tag_optional" translatable="false">ঐচ্ছিক</string>
@@ -52,16 +52,16 @@
     <string name="error_incorrect_password" translatable="false">প্রবেশ করানো ব্যবহারকারীর নাম এবং পাসওয়ার্ড চেক করুন</string>
     <string name="error_field_required" translatable="false">ঘরটি অবশ্যই পূরণ করতে হবে</string>
     <string name="error_network" translatable="false">Network Error</string>
-    <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
+    <string name="error_location_not_selected" translatable="false">অবস্থান ড্রপডাউন ফর্ম একটি মান নির্বাচন করুন</string>
     <string name="error_location_not_fetched" translatable="false">অবস্থানগুলি আনতে অক্ষম৷</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>
     <string name="device_id" translatable="false">ডিভাইস আইডি:</string>
 
 
-    <string name="cant_login_user" translatable="false">Can\'t log in?</string>
-    <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
-    <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
+    <string name="cant_login_user" translatable="false">লগ ইন করতে পারবেন না?</string>
+    <string name="email_link" translatable="false">আপনার পাসওয়ার্ড রিসেট করতে অনুগ্রহ করে আপনার সিস্টেম অ্যাডমিনিস্ট্রেটরের সাথে যোগাযোগ করুন অথবা support@intelehealth.io-এ একটি ইমেল পাঠান</string>
+    <string name="contact_whatsapp">আপনার পাসওয়ার্ড পুনরায় সেট করতে আপনার সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন</string>
 
     //Home Screen (after login)
     <string name="title_home_screen" translatable="false">বাড়ি</string>
@@ -103,7 +103,7 @@
     <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age" translatable="false">অনুগ্রহ করে বছরগুলিতে বয়স লিখুন৷</string>
-    <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
+    <string name="identification_screen_dialog_error_dob" translatable="false">জন্ম তারিখ নির্ধারণ করা হয়েছে আজকের পরের তারিখ</string>
     <string name="identification_screen_dialog_error_gender" translatable="false">লিঙ্গ নির্বাচন করা হয় না</string>
     <string name="identification_screen_required_fields" translatable="false">অনুগ্রহ করে প্রয়োজনীয় ক্ষেত্র লিখুন</string>
     <string name="identification_screen_error_dob" translatable="false">একটি বৈধ জন্ম তারিখ  লিখুন</string>
@@ -439,7 +439,7 @@
     <string name="image_downloading_service_message" translatable="false">Downloading Image Data</string>
     <string name="image_downloading_service_complete_title" translatable="false">Image Data Download Complete</string>
     <string name="image_downloading_service_complete_message" translatable="false">All image files have been downloaded</string>
-    <string name="image_downloading_service_process_message" translatable="false">Downloaded</string>
+    <string name="image_downloading_service_process_message" translatable="false">ডাউনলোড করা হয়েছে</string>
     <string name="error_img_unavailable" translatable="false">Image not available</string>
     <string name="error_img_download_failed" translatable="false">Image Download failed</string>
 
@@ -472,7 +472,7 @@
 
     <string name="associated_symptoms">সংশ্লিষ্ট উপসর্গ</string>
     <string name="enter_server_url">সার্ভার উ র ল  লিখুন</string>
-    <string name="enter_license_key"><b>Enter license key</b></string>
+    <string name="enter_license_key"><b>লাইসেন্স কী লিখুন</b></string>
     <string name="invalid_url">Iঅবৈধ উ র ল </string>
     <string name="years">বছর</string>
     <string name="months">মাস</string>
@@ -545,7 +545,7 @@
     <string name="visit_data_failed">ডেটা পরিদর্শন ব্যর্থ হয়েছে৷</string>
     <string name="patient_data_failed">রোগীর ডেটা ব্যর্থ হয়েছে৷</string>
     <string name="privacy_notice_title">গোপনীয়তা বিজ্ঞপ্তি</string>
-    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="no_data_active_patients">এই স্বাস্থ্যকর্মীর কোনো রোগীর রেকর্ড পাওয়া যায়নি।</string>
     <string name="syncing_visitDialog">রিফ্রেশিং</string>
     <string name="successfully_synced_notif">সফলভাবে রিফ্রেশ করা হয়েছে৷</string>
     <string name="languages">ভাষা</string>
@@ -1041,11 +1041,11 @@
 
     <string name="own_smartphone">স্মার্টফোনের মালিক</string>
     <string name="own_feature_phone">ফিচার ফোনের মালিক</string>
-    <string name="shared_smartphone">Shared Smartphone</string>
-    <string name="shared_feature_phone">Shared Feature Phone</string>
+    <string name="shared_smartphone">শেয়ার করা স্মার্টফোন</string>
+    <string name="shared_feature_phone">শেয়ার করা ফিচার ফোন</string>
 
-    <string name="yes_family_member">Yes (Family Member)</string>
-    <string name="yes_personal">Yes (Personal)</string>
+    <string name="yes_family_member">হ্যাঁ (পরিবারের সদস্য)</string>
+    <string name="yes_personal">হ্যাঁ (ব্যক্তিগত)</string>
 
     <string name="when_was_the_last_time_you_got_your_bp_checked">শেষবার কখন আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?*</string>
     <string name="when_was_the_last_time_you_got_your_sugar_level_checked">শেষবার কখন আপনি আপনার চিনির মাত্রা পরীক্ষা করেছিলেন?*</string>
@@ -1103,36 +1103,36 @@
     <string name="nal_jal_yojana">ট্যাপ ওয়াটার স্কিম</string>
     <string name="how_much_cultivable_land_does_your_family_own">আপনার পরিবার কত চাষের জমির মালিক?</string>
     <string name="bp">BP*</string>
-    <string name="less_than_5_cigarettes">Less than 5 bidis / cigarettes</string>
+    <string name="less_than_5_cigarettes">5 টির কম বিড়ি/সিগারেট</string>
     <string name="denied_to_answer">উত্তর দিতে অস্বীকার</string>
     <string name="survey_denied_to_answer">উত্তর দিতে অস্বীকার</string>
-    <string name="frequency_of_consumption">Frequency of consumption</string>
-    <string name="daily">Daily</string>
-    <string name="once_a_week">Once a week</string>
-    <string name="twice_a_week">Twice a week</string>
-    <string name="occasionally_once_a_month_or_less">Occasionally (Once a month or less)</string>
+    <string name="frequency_of_consumption">খরচের ফ্রিকোয়েন্সি</string>
+    <string name="daily">দৈনিক</string>
+    <string name="once_a_week">সপ্তাহে একবার</string>
+    <string name="twice_a_week">সপ্তাহে দুই বার</string>
+    <string name="occasionally_once_a_month_or_less">মাঝে মাঝে (মাসে একবার বা তার কম)</string>
 
-    <string name="please_state_if_you_are_the_head_of_the_family">Please state if you\'re the head of the family</string>
-    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">Number of members living cannot be greater than Total number of members in the household</string>
-    <string name="please_select_the_main_source_of_drinking_water">Please select the main source of drinking water</string>
-    <string name="please_select_the_methods_of_purifying_water">Please select the methods for purifying water</string>
-    <string name="please_state_if_you_have_running_water_in_the_household">Please state if you have running water in the household</string>
-    <string name="select_hours">Select Hours</string>
-    <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
-    <string name="no_expense">No expense</string>
-    <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
-    <string name="does_this_household_have_ration_card">Does this household have a Ration Card?*</string>
+    <string name="please_state_if_you_are_the_head_of_the_family">আপনি যদি পরিবারের প্রধান হন তাহলে দয়া করে জানান</string>
+    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">বসবাসকারী সদস্যদের সংখ্যা পরিবারের মোট সদস্য সংখ্যার চেয়ে বেশি হতে পারে না</string>
+    <string name="please_select_the_main_source_of_drinking_water">পানীয় জলের প্রধান উৎস নির্বাচন করুন</string>
+    <string name="please_select_the_methods_of_purifying_water">জল বিশুদ্ধ করার পদ্ধতি নির্বাচন করুন</string>
+    <string name="please_state_if_you_have_running_water_in_the_household">আপনার বাড়িতে প্রবাহিত জল আছে কি না দয়া করে বলুন</string>
+    <string name="select_hours">ঘন্টা নির্বাচন করুন</string>
+    <string name="please_state_if_you_have_electricity_in_the_household">আপনার বাড়িতে বিদ্যুৎ আছে কিনা দয়া করে বলুন</string>
+    <string name="no_expense">কোনো খরচ নেই</string>
+    <string name="does_this_household_have_an_ayushman_card">এই পরিবারের কি আয়ুষ্মান কার্ড আছে?*</string>
+    <string name="does_this_household_have_ration_card">এই পরিবারের কি রেশন কার্ড আছে?*</string>
 
     <string name="third_dose">তৃতীয় ডোজ</string>
-    <string name="zero_fifty_ml">0 – 50 ml</string>
-    <string name="fifty_hundred_ml">50 – 100 ml</string>
-    <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
-    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ml</string>
-    <string name="more_than_five_hundred_ml">More than 500 ml</string>
-    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
+    <string name="zero_fifty_ml">0 - 50 মিলি</string>
+    <string name="fifty_hundred_ml">50 – 100 মিলি</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 মিলি</string>
+    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 মিলি</string>
+    <string name="more_than_five_hundred_ml">500 মিলি এর বেশি</string>
+    <string name="answer_following_questions">নিম্নলিখিত বাধ্যতামূলক প্রশ্ন, অনুগ্রহ করে উত্তর দিন।</string>
 
     <string name="dr_specility_generalphysician">জেনারেল ফিজিশিয়ান</string>
-    <string name="update_hw_profile">Updated Succussfully</string>
-    <string name="enter_valid_email">Enter valid email address</string>
-    <string name="enter_valid_gender">Enter gender male or female</string>
+    <string name="update_hw_profile">সফলভাবে আপডেট করা হয়েছে</string>
+    <string name="enter_valid_email">বৈধ ইমেল ঠিকানা লিখুন</string>
+    <string name="enter_valid_gender">লিঙ্গ পুরুষ বা মহিলা লিখুন</string>
 </resources>
