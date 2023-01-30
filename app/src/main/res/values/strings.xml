@@ -73,6 +73,7 @@
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="menu_option_app_lock">App Lock</string>
 
 
     //Identification Screen

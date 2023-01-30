@@ -126,6 +126,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
 
+    //fingerprint lock
+    implementation 'androidx.biometric:biometric:1.1.0'
+
     api 'com.google.android.material:material:1.1.0'
 
     // Import the BoM for the Firebase platform

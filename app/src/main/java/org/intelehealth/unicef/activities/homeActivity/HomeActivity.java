@@ -529,6 +529,9 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        boolean isChecked = sessionManager.isEnableAppLock();
+        MenuItem item = menu.findItem(R.id.fingerprintLock);
+        item.setChecked(isChecked);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -753,8 +756,17 @@ public class HomeActivity extends AppCompatActivity {
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
                 return true;
+
+            case R.id.fingerprintLock:
+                if(item.isChecked()) {
+                    sessionManager.setEnableAppLock(false);
+                    item.setChecked(false);
+                }
+                else {
+                    sessionManager.setEnableAppLock(true);
+                    item.setChecked(true);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

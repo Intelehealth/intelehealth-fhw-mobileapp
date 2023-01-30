@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,12 +39,17 @@ import org.intelehealth.unicef.utilities.SessionManager;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
+    String LOG_TAG = "SplashActivity";
     //    ProgressDialog TempDialog;
     int i = 5;
+
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +175,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void nextActivity() {
         boolean setup = sessionManager.isSetupComplete();
-        String LOG_TAG = "SplashActivity";
+//        String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
 
         if (sessionManager.isFirstTimeLaunch()) {
@@ -177,7 +185,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
         } else {
             if (setup) {
-                if (sessionManager.isLogout()) {
+                /*if (sessionManager.isLogout()) {
                     Logger.logD(LOG_TAG, "Starting login");
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
@@ -187,7 +195,11 @@ public class SplashActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
                     finish();
-                }
+                }*/
+                if(sessionManager.isEnableAppLock())
+                    fingerPrintAuthenticate();
+                else
+                    navigateToNextActivity();
 
             } else {
                 Logger.logD(LOG_TAG, "Starting setup");
@@ -195,6 +207,67 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        }
+    }
+
+    private void fingerPrintAuthenticate() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+        switch(biometricManager.canAuthenticate())
+        {
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                Toast.makeText(getApplicationContext(), "Device doesn't have fingerprint sensor.", Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                Toast.makeText(getApplicationContext(), "Device fingerprint sensor is not working.", Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                Toast.makeText(getApplicationContext(), "Device fingerprint sensor has no fingerprint assigned.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(SplashActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), "Log in failed, please try again later.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                navigateToNextActivity();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Log in failed, please try again later.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Intelehealth Login")
+                .setSubtitle("Touch fingerprint sensor to login")
+                .setDeviceCredentialAllowed(true)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
+    }
+
+    private void navigateToNextActivity() {
+        if (sessionManager.isLogout()) {
+            Logger.logD(LOG_TAG, "Starting login");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Logger.logD(LOG_TAG, "Starting home");
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
