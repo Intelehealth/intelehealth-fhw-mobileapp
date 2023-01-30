@@ -525,7 +525,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         int[] yearArray = {2018, 2019, 2020, 2021, 2022, 2023, 2024};
         CalendarviewYearModel model1 = null;
         int startYear = 1950;
-        for (int i = 0; i < 100; i++) {
+        int totalNumberOfYears = currentYear - startYear;
+
+        for (int i = 0; i < totalNumberOfYears + 1; i++) {
             if (startYear == currentYear) {
                 model1 = new CalendarviewYearModel(startYear, true);
 
