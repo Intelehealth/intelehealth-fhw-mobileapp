@@ -267,7 +267,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             if (intent.getStringExtra("font-family") != null)
                 font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
 
-            if (intent.getStringExtra("drSign_text") != null)
+            if (intent.getStringExtra("drSign-text") != null)
                 drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
         }
         Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
