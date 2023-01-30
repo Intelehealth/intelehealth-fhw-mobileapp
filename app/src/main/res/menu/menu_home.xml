@@ -50,7 +50,7 @@
         <item
             android:id="@+id/fingerprintLock"
             android:orderInCategory="200"
-            android:title="App Lock" />
+            android:title="@string/menu_option_app_lock" />
 
     </group>
 </menu>
