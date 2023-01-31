@@ -74,6 +74,7 @@
     <string name="menu_option_settings" translatable="false">Настройки</string>
     <string name="menu_option_end_of_day" translatable="false">Конец дня</string>
     <string name="menu_option_logout" translatable="false">Выход из системы</string>
+    <string name="menu_option_app_lock">Блокировка приложения</string>
 
 
     //Identification Screen
