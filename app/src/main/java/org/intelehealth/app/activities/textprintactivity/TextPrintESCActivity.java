@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -259,7 +260,15 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if (intent != null) {
-            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+         //   prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+            prescData = intent.getStringExtra("sms_prescripton");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                pres_textview.setText(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                pres_textview.setText(Html.fromHtml(prescData));
+            }
+
            /* prescData = "    - Not Provided\n" +
                     "    ";*/
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
@@ -303,7 +312,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         mBitmap = drSign_textview.getDrawingCache(); // converting Textview to Bitmap Image.
 
-        pres_textview.setText(prescData);
+      //  pres_textview.setText(prescData);
         drDetails_textview.setText(doctorDetails);
         Log.e("pres:", "prescFinal:" + pres_textview.getText().toString() + drSign_textview.getText().toString() +
                 drDetails_textview.getText().toString());
@@ -381,7 +390,13 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                     // commonSetting.setEscLineSpacing(getInputLineSpacing());
                     escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
                     try {
-                        escCmd.append(escCmd.getTextCmd(textSetting, prescData));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            escCmd.append(escCmd.getTextCmd(textSetting, String.valueOf(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT))));
+                        } else {
+                            pres_textview.setText(Html.fromHtml(prescData));
+                            escCmd.append(escCmd.getTextCmd(textSetting, String.valueOf(Html.fromHtml(prescData))));
+                        }
+
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

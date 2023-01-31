@@ -4857,10 +4857,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @return htmlDocument: HTML formated string for displaying prescription...
      */
     private String sms_prescription() {
-        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + ((!TextUtils.isEmpty(patient.getLast_name())) ? patient.getLast_name() : "");
+        String mPatientName = patient.getFirst_name() + " " +
+                ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " +
+                ((!TextUtils.isEmpty(patient.getLast_name())) ? patient.getLast_name() : "");
+
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
-        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") + ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
+        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
+                ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
         String mCityState = patient.getCity_village();
         String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
         String mState = patient.getState_province();
@@ -4878,7 +4882,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection,
+                visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
@@ -4899,7 +4904,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, VisitSummaryActivity.this), String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity.this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME,
+                        VisitSummaryActivity.this), String.valueOf
+                        (FileUtils.encodeJSON(VisitSummaryActivity.this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity.this, mFileName)));
             }//Load the config file
@@ -5090,33 +5097,33 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 //        if (isRespiratory) {
 
-        String htmlDocument = String.format("<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" + "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" + "<br><br>" + "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" + "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" + "<br><br>", heading, heading2, mPatientName, age, mGender);
+        String htmlDocument = String.format("<b id=\"heading_1\">%s</b><br>" + "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" + " ----------------------------------------------- " + "<br><br>" + "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" + "<id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s" + "<br><br>", heading, heading2, mPatientName, age, mGender);
 
-        htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnostics_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Diagnostics</b><br>" + "<b id=\"diagnostics\" style=\"font-size:12pt;margin:0px; padding: 0px;\">-Glucose (Random): %s <br> -Glucose (Fasting): %s <br> -Glucose (Post-Prandial): %s <br> -HGB: %s <br> -Uric Acid: %s <br> -Total Cholesterol: %s </b><br><br>", bldglucose_random.getValue(), bldglucose_fasting.getValue(), bldglucose_post_prandial.getValue(), hemoGlobin.getValue(), uricAcid.getValue(), totalCholesterol.getValue()));
+        htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnostics_heading\">* Diagnostics</b><br>" + "<id=\"diagnostics\" style=\"font-size:12pt;margin:0px; padding: 0px;\">-Glucose (Random): %s <br> -Glucose (Fasting): %s <br> -Glucose (Post-Prandial): %s <br> -HGB: %s <br> -Uric Acid: %s <br> -Total Cholesterol: %s <br><br>", bldglucose_random.getValue(), bldglucose_fasting.getValue(), bldglucose_post_prandial.getValue(), hemoGlobin.getValue(), uricAcid.getValue(), totalCholesterol.getValue()));
 
         // If the Diagnosis is not empty, only then the details will be displayed in the Prescription
         if (!diagnosis_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" + "%s </b><br>", diagnosis_web));
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" >* Diagnosis </b><br>" + "%s <br>", diagnosis_web));
         }
 
         // If the Medication Plan provided is not empty, only then will the details be displayed in the Prescription
         if (!rx_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" + "%s </b><br>", rx_web));
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" >* Medication(s) plan </b><br>" + "%s <br>", rx_web));
         }
 
         // If the Tests provided is not empty, only then will the details be displayed in the Prescription
         if (!tests_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" + "%s " + "</b><br>", tests_web));
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>" + "%s " + "<br>", tests_web));
         }
 
         // If the Advice provided is not empty, only then will the details be displayed in the Prescription
         if (!advice_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" + "%s" + "</b><br>", advice_web));
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" >* Advice </b><br>" + "%s" + "<br>", advice_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
         if (!followUp_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" + "%s" + "</b><br>", followUp_web));
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" >* Follow Up Date </b><br>" + "%s" + "<br>", followUp_web));
         }
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
@@ -5193,8 +5200,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String formatted = "";
         if (input != null && !input.isEmpty()) {
 
-            String para_open = "<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
-            String para_close = "</b><br>";
+            String para_open = "<style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "<br>";
             formatted = para_open + "- " + input.replaceAll("\n", para_close + para_open + "- ") + para_close;
         }
         return formatted;
