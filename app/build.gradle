@@ -3,14 +3,14 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "org.intelehealth.unicef"
         minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 29
+        targetSdkVersion 31
+        versionCode 31
         buildToolsVersion('29.0.2')
-        versionName "1.8.19"
+        versionName "4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
