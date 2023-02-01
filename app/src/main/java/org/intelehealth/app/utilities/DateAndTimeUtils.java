@@ -858,6 +858,16 @@ public class DateAndTimeUtils {
         return calendar;
     }
 
+    public static long getTodaysDateInMilliseconds() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        return cal.getTimeInMillis();
+    }
+
     public static String convertDateObjectToString(Date date, String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(date);

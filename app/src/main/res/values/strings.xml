@@ -1760,6 +1760,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
+    <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
+    <string name="permissions_required">Permissions Required</string>
 
 
     <!--END-->

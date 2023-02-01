@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,11 +21,16 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class DailyAchievementsFragment extends Fragment {
     private View view;
@@ -32,11 +39,13 @@ public class DailyAchievementsFragment extends Fragment {
     private TextView tvPatientsCreatedToday;
     private TextView tvVisitsEndedToday;
     private TextView tvAvgSatisfactionScore;
+    private TextView tvDailyTimeSpent;
 
     private String todaysDate;
     private String todaysDateInYYYYMMDD;
 
     private SessionManager sessionManager;
+    private UsageStats overallUsageStats;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +87,7 @@ public class DailyAchievementsFragment extends Fragment {
         tvPatientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
         tvVisitsEndedToday = view.findViewById(R.id.tv_visits_ended_today);
         tvAvgSatisfactionScore = view.findViewById(R.id.tv_avg_satisfaction_score);
+        tvDailyTimeSpent = view.findViewById(R.id.tv_daily_time_spent);
     }
 
     private void fetchAndSetUIData() {
@@ -86,6 +96,7 @@ public class DailyAchievementsFragment extends Fragment {
             setPatientsCreatedToday();
             setVisitsEndedToday();
             setAveragePatientSatisfactionScore();
+            setTotalTimeSpent();
         });
     }
 
@@ -132,5 +143,22 @@ public class DailyAchievementsFragment extends Fragment {
         double finalAverageScore = averageScore;
         requireActivity().runOnUiThread(() -> tvAvgSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
         satisfactionScoreCursor.close();
+    }
+
+    private void setTotalTimeSpent() {
+        long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
+        UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(todaysDateInMilliseconds, System.currentTimeMillis());
+        overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
+
+        requireActivity().runOnUiThread(() -> {
+            String totalTimeSpent = "";
+            if (overallUsageStats != null) {
+                totalTimeSpent = String.format(Locale.ENGLISH, "%dh %dm", TimeUnit.MILLISECONDS.toHours(overallUsageStats.getTotalTimeInForeground()), TimeUnit.MILLISECONDS.toMinutes(overallUsageStats.getTotalTimeInForeground()));
+            } else {
+                totalTimeSpent = "0h 0m";
+            }
+            tvDailyTimeSpent.setText(totalTimeSpent);
+        });
     }
 }

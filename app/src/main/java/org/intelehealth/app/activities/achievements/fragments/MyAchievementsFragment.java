@@ -1,16 +1,25 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
-import android.app.FragmentManager;
+import android.app.AppOpsManager;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -20,12 +29,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
-import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
-
-import java.util.Objects;
 
 public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAchievementsFragmentN";
@@ -33,20 +38,21 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     ImageView ivInternet;
     NetworkUtils networkUtils;
 
-    SessionManager sessionManager;
+    protected SessionManager sessionManager;
+    public UsageStatsManager usageStatsManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(requireActivity());
+        usageStatsManager = (UsageStatsManager) (requireActivity().getSystemService(Context.USAGE_STATS_SERVICE));
+        checkAndAskForUsagePermissions();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
-
         return view;
     }
 
@@ -80,15 +86,13 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         tabLayout.addTab(tabLayout.newTab().setText("Date range"));
 
         ViewPager viewPager = view.findViewById(R.id.pager_achievements);
-        PagerAdapter adapter = new MyAchievementsPagerAdapter
-                (getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
+        PagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
         viewPager.setAdapter(adapter);
         int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 
         viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -135,6 +139,54 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkAndAskForUsagePermissions() {
+        try {
+            PackageManager packageManager = requireActivity().getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(requireActivity().getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) requireActivity().getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+
+            if (mode != AppOpsManager.MODE_ALLOWED) {
+                CustomDialog customDialog = new CustomDialog(requireActivity());
+                customDialog.showDialog1();
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // Control shouldn't reach at this point of the code
+            //
+        }
+    }
+
+    static class CustomDialog extends DialogFragment {
+        Context context;
+
+        public CustomDialog(Context context) {
+            this.context = context;
+        }
+
+        public void showDialog1() {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(context);
+            builder.setCancelable(false);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialog.show();
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+
+            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
+            btnOkay.setOnClickListener(v -> {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                context.startActivity(intent);
+            });
         }
     }
 }
