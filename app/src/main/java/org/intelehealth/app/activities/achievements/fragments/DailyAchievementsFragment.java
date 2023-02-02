@@ -96,7 +96,7 @@ public class DailyAchievementsFragment extends Fragment {
             setPatientsCreatedToday();
             setVisitsEndedToday();
             setAveragePatientSatisfactionScore();
-            setTotalTimeSpent();
+            setDailyTimeSpent();
         });
     }
 
@@ -145,10 +145,19 @@ public class DailyAchievementsFragment extends Fragment {
         satisfactionScoreCursor.close();
     }
 
-    private void setTotalTimeSpent() {
+    private void setDailyTimeSpent() {
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
+        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime());
+        long startDate, endDate = System.currentTimeMillis();
+
+        if (todaysDateInMilliseconds <= firstProviderDateInMilliseconds && firstProviderDateInMilliseconds < endDate) {
+            startDate = firstProviderDateInMilliseconds;
+        } else {
+            startDate = todaysDateInMilliseconds;
+        }
+
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
-        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(todaysDateInMilliseconds, System.currentTimeMillis());
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startDate, endDate);
         overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
 
         requireActivity().runOnUiThread(() -> {

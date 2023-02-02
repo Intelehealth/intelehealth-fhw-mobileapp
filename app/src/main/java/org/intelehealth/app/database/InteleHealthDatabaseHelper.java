@@ -222,6 +222,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
+    //provider attributes table - created primarily for storing the time spent by HW on the app.
+    public static final String CREATE_PROVIDER_ATTRIBUTES =
+            "CREATE TABLE IF NOT EXISTS tbl_provider_attribute (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "provider_uuid TEXT," +
+                    "value TEXT," +
+                    "provider_attribute_type_uuid TEXT," +
+                    "voided TEXT," +
+                    "sync TEXT)";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -288,6 +297,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
         db.execSQL(CREATE_NOTIFICATIONS);
+        db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         uuidInsert(db);
         database = db;
 

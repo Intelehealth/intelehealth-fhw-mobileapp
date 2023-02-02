@@ -868,6 +868,11 @@ public class DateAndTimeUtils {
         return cal.getTimeInMillis();
     }
 
+    public static long convertStringDateToMilliseconds(String date) {
+        Calendar calendarObject = convertStringToCalendarObject(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        return calendarObject.getTimeInMillis();
+    }
+
     public static String convertDateObjectToString(Date date, String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(date);
