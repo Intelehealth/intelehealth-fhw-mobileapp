@@ -860,6 +860,7 @@ public class DateAndTimeUtils {
         return calendar;
     }
 
+    // method returns the 12 A.M. time of the current day in milliseconds
     public static long getTodaysDateInMilliseconds() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);

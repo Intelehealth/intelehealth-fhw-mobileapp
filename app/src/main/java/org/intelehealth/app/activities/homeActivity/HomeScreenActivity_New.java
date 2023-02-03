@@ -1309,12 +1309,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void insertTimeSpentByUserIntoDb() {
-        long startTimeInMilliseconds;
-        long endTimeInMilliseconds = System.currentTimeMillis();
         long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
-
-        startTimeInMilliseconds = Math.max(todaysDateInMilliseconds, firstLoginTimeInMilliseconds);
+        long startTimeInMilliseconds = Math.max(todaysDateInMilliseconds, firstLoginTimeInMilliseconds);
+        long endTimeInMilliseconds = System.currentTimeMillis();
 
         UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
         Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTimeInMilliseconds, endTimeInMilliseconds);

@@ -197,11 +197,14 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setTimeSpentInRange() {
+        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long startTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(startDate, "dd MMM, yyyy");
-        long endTimeInMilliseconds = DateAndTimeUtils.getEndDateInMilliseconds(endDate, "dd MMM, yyyy");
+
+        long finalEndTimeInMs = DateAndTimeUtils.getEndDateInMilliseconds(endDate, "dd MMM, yyyy");
+        long finalStartTimeInMs = Math.max(firstLoginTimeInMilliseconds, startTimeInMilliseconds);
 
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
-        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTimeInMilliseconds, endTimeInMilliseconds);
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(finalStartTimeInMs, finalEndTimeInMs);
         overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
 
         requireActivity().runOnUiThread(() -> {
