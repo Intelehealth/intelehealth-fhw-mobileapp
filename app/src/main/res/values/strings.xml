@@ -588,7 +588,7 @@
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
     <string name="Whatsapp_Help_Cardview">Help</string>
-    <string name="skip">skip</string>
+    <string name="skip">Skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
     <string name="custom_setup">Setup</string>
@@ -948,4 +948,5 @@
     <string name="abdominal_girth_vitals">Abdominal Girth (inches)</string>
     <string name="make_payment">Make Payment</string>
     <string name="successfully_pdf_created">PDF Successfully Created!!</string>
+    <string name="confirm_skip_complaint">Are you sure you want to skip complaint registration? \n\nNote:- This action cannot be undone.</string>
 </resources>
