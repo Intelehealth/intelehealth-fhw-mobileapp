@@ -147,7 +147,7 @@ public class DailyAchievementsFragment extends Fragment {
 
     private void setDailyTimeSpent() {
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
-        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime());
+        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long startDate, endDate = System.currentTimeMillis();
 
         if (todaysDateInMilliseconds <= firstProviderDateInMilliseconds && firstProviderDateInMilliseconds < endDate) {

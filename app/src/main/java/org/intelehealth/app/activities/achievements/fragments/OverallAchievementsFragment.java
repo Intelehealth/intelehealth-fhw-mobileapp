@@ -118,7 +118,7 @@ public class OverallAchievementsFragment extends Fragment {
     }
 
     private void setOverallTimeSpent() {
-        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime());
+        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long endDate = System.currentTimeMillis();
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
         Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(firstProviderDateInMilliseconds, endDate);

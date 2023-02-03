@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,12 +25,16 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvStartDate;
@@ -36,6 +42,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvRangePatientsCreated;
     private TextView tvRangeVisitsEnded;
     private TextView tvAveragePatientSatisfactionScore;
+    private TextView tvTotalTimeSpentInRange;
 
     private String startDate;
     private String endDate;
@@ -43,6 +50,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private SessionManager sessionManager;
+    private UsageStats overallUsageStats;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +74,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         tvRangePatientsCreated = view.findViewById(R.id.tv_range_patients_created);
         tvRangeVisitsEnded = view.findViewById(R.id.tv_range_visits_ended);
         tvAveragePatientSatisfactionScore = view.findViewById(R.id.tv_average_patient_satisfaction_score);
+        tvTotalTimeSpentInRange = view.findViewById(R.id.tv_time_spent_in_range);
 
         tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
@@ -74,7 +83,6 @@ public class DateRangeAchievementsFragment extends Fragment {
         selectEndDate.setOnClickListener(v -> selectDate(tvEndDate));
         fetchAndSetUIData();
     }
-
 
     private void selectDate(TextView textView) {
         String date = textView.getText().toString();
@@ -102,6 +110,7 @@ public class DateRangeAchievementsFragment extends Fragment {
             setPatientsCreatedInRange();
             setVisitsEndedInRange();
             setAveragePatientSatisfactionScore();
+            setTimeSpentInRange();
         });
     }
 
@@ -187,6 +196,25 @@ public class DateRangeAchievementsFragment extends Fragment {
         }
     }
 
+    private void setTimeSpentInRange() {
+        long startTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(startDate, "dd MMM, yyyy");
+        long endTimeInMilliseconds = DateAndTimeUtils.getEndDateInMilliseconds(endDate, "dd MMM, yyyy");
+
+        UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTimeInMilliseconds, endTimeInMilliseconds);
+        overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
+
+        requireActivity().runOnUiThread(() -> {
+            String totalTimeSpent = "";
+            if (overallUsageStats != null) {
+                totalTimeSpent = String.format(Locale.ENGLISH, "%dh %dm", TimeUnit.MILLISECONDS.toHours(overallUsageStats.getTotalTimeInForeground()), TimeUnit.MILLISECONDS.toMinutes(overallUsageStats.getTotalTimeInForeground()));
+            } else {
+                totalTimeSpent = "0h 0m";
+            }
+            tvTotalTimeSpentInRange.setText(totalTimeSpent);
+        });
+    }
+
     private int countPatientsCreatedBetweenRange(List<PatientAttributesDTO> patientAttributesDTOList) {
         int numberOfPatients = 0;
         for (PatientAttributesDTO dto : patientAttributesDTOList) {
@@ -219,7 +247,10 @@ public class DateRangeAchievementsFragment extends Fragment {
             }
         }
 
-        return totalScore / numberOfObservations;
+        if (totalScore == 0.0 || numberOfObservations == 0)
+            return 0;
+        else
+            return totalScore / numberOfObservations;
     }
 }
 

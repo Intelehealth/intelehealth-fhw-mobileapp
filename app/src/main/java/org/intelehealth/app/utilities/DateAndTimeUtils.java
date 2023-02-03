@@ -868,8 +868,24 @@ public class DateAndTimeUtils {
         return cal.getTimeInMillis();
     }
 
-    public static long convertStringDateToMilliseconds(String date) {
-        Calendar calendarObject = convertStringToCalendarObject(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    public static long getEndDateInMilliseconds(String date, String format) {
+        Calendar calendar = Calendar.getInstance();
+        Date parsedDate = convertStringToDateObject(date, format);
+
+        if (parsedDate != null) {
+            calendar.setTime(parsedDate);
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DATE);
+            calendar.clear();
+            calendar.set(year, month, day, 23, 59, 59);
+        }
+
+        return calendar.getTimeInMillis();
+    }
+
+    public static long convertStringDateToMilliseconds(String date, String format) {
+        Calendar calendarObject = convertStringToCalendarObject(date, format);
         return calendarObject.getTimeInMillis();
     }
 
