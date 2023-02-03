@@ -19,6 +19,8 @@ import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -85,13 +87,16 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ProviderAttributeDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
+import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -115,7 +120,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -254,6 +261,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void resetApp() {
+        // to insert time spent by user into the db
+        insertTimeSpentByUserIntoDb();
+
         if ((isNetworkConnected())) {
             showSimpleDialog(getString(R.string.app_sync), getString(R.string.please_wait_sync_progress));
             boolean isSynced = syncUtils.syncForeground("home");
@@ -1066,6 +1076,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     public void logout() {
+        // to insert time spent by user into the db
+        insertTimeSpentByUserIntoDb();
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
@@ -1295,5 +1307,33 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         loadFragment(fragment);
 
     }
-}
 
+    private void insertTimeSpentByUserIntoDb() {
+        long startTimeInMilliseconds;
+        long endTimeInMilliseconds = System.currentTimeMillis();
+        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
+
+        startTimeInMilliseconds = Math.max(todaysDateInMilliseconds, firstLoginTimeInMilliseconds);
+
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTimeInMilliseconds, endTimeInMilliseconds);
+        UsageStats overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
+
+        if (overallUsageStats != null) {
+            long totalTimeSpent = overallUsageStats.getTotalTimeInForeground();
+            ProviderAttributeDTO providerAttributeDTO = new ProviderAttributeDTO();
+            providerAttributeDTO.setUuid(UUID.randomUUID().toString());
+            providerAttributeDTO.setProvider_uuid(sessionManager.getProviderID());
+            providerAttributeDTO.setValue(String.valueOf(totalTimeSpent));
+            providerAttributeDTO.setProvider_attribute_type_uuid("");
+
+            ProviderAttributeDAO providerAttributeDAO = new ProviderAttributeDAO();
+            try {
+                providerAttributeDAO.createProviderAttribute(providerAttributeDTO);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
