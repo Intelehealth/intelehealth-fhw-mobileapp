@@ -23,9 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -101,7 +99,10 @@ public class CallListenerBackgroundService extends Service {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
+        String endURL = AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL";
+        Log.d(TAG, "endURL is: " + endURL);
+        DatabaseReference myRef = database.getReference(endURL);
+        Log.d(TAG, "endURL is: " + myRef.toString());
         if (myRef != null)
             //myRef.setValue("Hello, World!");
             // Read from the database
@@ -123,7 +124,16 @@ public class CallListenerBackgroundService extends Service {
                 }*/
                     if (value == null) return;
                     String device_token = String.valueOf(value.get("device_token"));
+                    String callID = String.valueOf(value.get("id"));
+                    if (callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
+                        return;
+                    } else {
+                        IntelehealthApplication.getInstance().webrtcTempCallId = callID;
+                    }
+                    Log.d(TAG, "refreshedFCMTokenID is: " + refreshedFCMTokenID);
+                    Log.d(TAG, "device_token is: " + device_token);
                     if (!device_token.equals(refreshedFCMTokenID)) return;
+                    Log.d(TAG, "refreshedFCMTokenID token verified! ");
                     Bundle bundle = new Bundle();
                     bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
                     bundle.putString("nurseId", String.valueOf(value.get("nurseId")));

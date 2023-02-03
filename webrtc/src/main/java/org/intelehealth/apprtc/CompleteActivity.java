@@ -6,36 +6,64 @@ import static io.socket.client.Socket.EVENT_CONNECT;
 import static io.socket.client.Socket.EVENT_DISCONNECT;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.intelehealth.apprtc.adapter.ChatListingAdapter;
 import org.intelehealth.apprtc.data.Constants;
 import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
+import org.intelehealth.apprtc.utils.BitmapUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.AudioSource;
@@ -58,8 +86,15 @@ import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.UUID;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -125,6 +160,36 @@ public class CompleteActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     boolean mMicrophonePluggedIn = false;
     private JSONObject mRoomJsonObject = new JSONObject();
+    private static final int WAIT_TIMER = 6 * 60 * 60 * 1000; // expecting max 6 hour call
+    private TextView mTimerTextView;
+
+    private boolean mIsChatWindowOpened = false;
+
+
+    private CountDownTimer mCountDownTimer = new CountDownTimer(WAIT_TIMER, 1000) {
+
+        public void onTick(long millisUntilFinished) {
+            long timerMilli = WAIT_TIMER - millisUntilFinished;
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+
+            long elapsedHours = timerMilli / hoursInMilli;
+            timerMilli = timerMilli % hoursInMilli;
+
+            long elapsedMinutes = timerMilli / minutesInMilli;
+            timerMilli = timerMilli % minutesInMilli;
+
+            long elapsedSeconds = timerMilli / secondsInMilli;
+
+            String displayTimeString = String.format("%02d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
+            binding.tvTimer.setText(displayTimeString);
+        }
+
+        public void onFinish() {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,12 +204,31 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorUUID"))
             mDoctorUUID = getIntent().getStringExtra("doctorUUID");
 
+        mFromUUId = mNurseId;
+        mToUUId = mDoctorUUID;
+        mPatientUUid = mRoomId;
         try {
             mRoomJsonObject.put("room", mRoomId);
             mRoomJsonObject.put("connectToDrId", mDoctorUUID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRequestQueue = Volley.newRequestQueue(this);
+        // Instantiate the cache
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP app.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        mLayoutManager = new LinearLayoutManager(CompleteActivity.this, LinearLayoutManager.VERTICAL, true);
+        binding.chatsRcv.setLayoutManager(mLayoutManager);
+
         binding.callerNameTv.setText(mDoctorName);
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,11 +277,13 @@ public class CompleteActivity extends AppCompatActivity {
                 if (localAudioTrack != null) {
                     localAudioTrack.setEnabled(!localAudioTrack.enabled());
                     if (localAudioTrack.enabled()) {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_24);
+                        binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
+                        binding.audioImv.setAlpha(1.0f);
                     } else {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_off_24);
+                        binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
+                        binding.audioImv.setAlpha(0.2f);
                     }
                 }
             }
@@ -207,7 +293,7 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (socket != null)
                     socket.emit("bye");
-                //disconnectAll();
+                disconnectAll();
 
             }
         });
@@ -217,13 +303,55 @@ public class CompleteActivity extends AppCompatActivity {
                 if (videoTrackFromCamera != null) {
                     videoTrackFromCamera.setEnabled(!videoTrackFromCamera.enabled());
                     if (videoTrackFromCamera.enabled()) {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(1.0f);
                     } else {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_off_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_off_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(0.2f);
                     }
                 }
+            }
+        });
+        binding.chatImv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)
+                        binding.videoContainerLl.getLayoutParams();
+                RelativeLayout.LayoutParams incomingLayoutParams = (RelativeLayout.LayoutParams) binding.incomingSurfaceViewFrame.getLayoutParams();
+                RelativeLayout.LayoutParams selfLayoutParams = (RelativeLayout.LayoutParams) binding.selfSurfaceViewFrame.getLayoutParams();
+
+                if (mIsChatWindowOpened) {
+                    binding.chatImv.setImageResource(R.drawable.vc_new_chat_icon);
+                    binding.chatImv.setAlpha(1.0f);
+                    mIsChatWindowOpened = false;
+                    params.weight = 2.0f;
+                    binding.centerLl.setVisibility(View.VISIBLE);
+                    binding.centerVerticalLl.setVisibility(View.GONE);
+                    binding.chatContainerLl.setVisibility(View.GONE);
+                    incomingLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    selfLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                } else {
+                    binding.chatImv.setImageResource(R.drawable.vc_new_chat_icon);
+                    binding.chatImv.setAlpha(0.2f);
+                    mIsChatWindowOpened = true;
+                    params.weight = 1.0f;
+                    binding.centerLl.setVisibility(View.GONE);
+                    binding.centerVerticalLl.setVisibility(View.VISIBLE);
+                    binding.chatContainerLl.setVisibility(View.VISIBLE);
+
+                    incomingLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    selfLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+
+                    incomingLayoutParams.addRule(RelativeLayout.START_OF, R.id.center_vertical_ll);
+                    selfLayoutParams.addRule(RelativeLayout.END_OF, R.id.center_vertical_ll);
+
+                    selfLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+                }
+                binding.videoContainerLl.setLayoutParams(params);
+                binding.incomingSurfaceViewFrame.setLayoutParams(incomingLayoutParams);
+                binding.selfSurfaceViewFrame.setLayoutParams(selfLayoutParams);
             }
         });
         binding.flipImv.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +403,8 @@ public class CompleteActivity extends AppCompatActivity {
             binding.callingLayout.setVisibility(View.GONE);
 
         }
+
+        mCountDownTimer.start();
     }
 
     private void stopRinging() {
@@ -316,26 +446,6 @@ public class CompleteActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RC_CALL) {
-            boolean allGranted = grantResults.length != 0;
-            for (int grantResult : grantResults) {
-                if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                    allGranted = false;
-                    break;
-                }
-            }
-            if (allGranted) {
-                start();
-            } else {
-                Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -355,6 +465,12 @@ public class CompleteActivity extends AppCompatActivity {
         if (socket != null) {
             socket.disconnect();
             socket = null;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         if (peerConnection != null) {
@@ -373,12 +489,7 @@ public class CompleteActivity extends AppCompatActivity {
             surfaceTextureHelper.dispose();
             surfaceTextureHelper = null;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
-            }
-        });
+
         stopRinging();
         try {
             unregisterReceiver(broadcastReceiver);
@@ -440,6 +551,41 @@ public class CompleteActivity extends AppCompatActivity {
             // do same what you are doing on start call button(emitting - 'create or join' etc)
             // otherwise after 15 secs emit on "no answer"
             //
+            // CHAT *************************************
+            socket.on("isread", args -> {
+                Log.d(TAG, "isread event emit from web: ");
+                getAllMessages(false);
+            });
+            socket.on("updateMessage", args -> {
+                try {
+                    for (Object arg : args) {
+                        Log.d(TAG, "updateMessage: " + String.valueOf(arg));
+                    }
+
+                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+
+                    mFromUUId = jsonObject.getString("toUser");
+                    mToUUId = jsonObject.getString("fromUser");
+                    mPatientUUid = jsonObject.getString("patientId");
+                    mVisitUUID = jsonObject.getString("visitId");
+
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getAllMessages(false);
+
+
+                        }
+                    });
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
@@ -453,6 +599,7 @@ public class CompleteActivity extends AppCompatActivity {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");
             }).on("bye", args -> {
                 Log.d(TAG, "connectToSignallingServer: bye");
+                socket.emit("bye");
                 disconnectAll();
 
             }).on("call", args -> {
@@ -461,6 +608,7 @@ public class CompleteActivity extends AppCompatActivity {
                 socket.emit("create_or_join_hw", mRoomJsonObject);
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
+                socket.emit("bye");
                 disconnectAll();
             }).on("created", args -> {
                 Log.d(TAG, "connectToSignallingServer: created");
@@ -897,4 +1045,381 @@ public class CompleteActivity extends AppCompatActivity {
             }
         }
     };
+
+    /*CHAT*/
+
+    public void sendMessageNow(View view) {
+        hideSoftKeyboard();
+        if (mToUUId.isEmpty()) {
+            Toast.makeText(this, getString(R.string.please_wait_for_doctor), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String message = binding.textEtv.getText().toString().trim();
+        if (!message.isEmpty()) {
+            postMessages(mFromUUId, mToUUId, mPatientUUid, message);
+        } else {
+            Toast.makeText(this, getString(R.string.empty_message_txt), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void loadAttachment(View view) {
+        validatePermissionAndIntent();
+    }
+
+    private String mLastSelectedImageName = "";
+
+
+    private void cameraStart() {
+        /*File file = new File(AppConstants.IMAGE_PATH);
+        final String imagePath = file.getAbsolutePath();
+        final String imageName = UUID.randomUUID().toString();
+        mLastSelectedImageName = imageName;
+        Intent cameraIntent = new Intent(VisitCreationActivity.this, CameraActivity.class);
+        File filePath = new File(imagePath);
+        if (!filePath.exists()) {
+            boolean res = filePath.mkdirs();
+        }
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
+        //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
+        mStartForCameraResult.launch(cameraIntent);*/
+    }
+
+    private void galleryStart() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mStartForGalleryResult.launch(intent);
+    }
+
+    private static final int MY_CAMERA_REQUEST_CODE = 1001;
+    private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), getString(R.string.cancel_lbl)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(CompleteActivity.this);
+        builder.setTitle("Add Image by");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    cameraStart();
+
+                } else if (item == 1) {
+                    galleryStart();
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+
+    private void validatePermissionAndIntent() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+        } else {
+            //cameraStart();
+            selectImage();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_CALL) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                start();
+            } else {
+                Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        } else if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                cameraStart();
+                selectImage();
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPhotoPath = "";
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            String[] filePath = {MediaStore.Images.Media.DATA};
+                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                            c.moveToFirst();
+                            int columnIndex = c.getColumnIndex(filePath[0]);
+                            String picturePath = c.getString(columnIndex);
+                            c.close();
+                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                            Log.v("path", picturePath + "");
+
+                            // copy & rename the file
+                            String finalImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = mImagePath + finalImageName + ".jpg";
+                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+
+                            // Handle the Intent
+
+
+                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                            Log.i(TAG, currentPhotoPath);
+
+                            try {
+                                JSONObject inputJsonObject = new JSONObject();
+                                inputJsonObject.put("fromUser", mFromUUId);
+                                inputJsonObject.put("toUser", mToUUId);
+                                inputJsonObject.put("patientId", mPatientUUid);
+                                inputJsonObject.put("message", "New Image Sent!");
+                                inputJsonObject.put("ContentType", "IMAGE");
+                                inputJsonObject.put("filePath", currentPhotoPath);
+
+                                addNewMessage(inputJsonObject);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Toast.makeText(CompleteActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
+    public String mImagePath = "";
+
+    public void hideSoftKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getAllMessages(boolean isAlreadySetReadStatus) {
+        if (mFromUUId.isEmpty() || mToUUId.isEmpty() || mPatientUUid.isEmpty()) {
+            return;
+        }
+        binding.emptyTv.setText(getString(R.string.loading));
+        String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
+        Log.v(TAG, url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.v(TAG, "getAllMessages -response - " + response.toString());
+                binding.emptyTv.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
+                showChat(response, isAlreadySetReadStatus);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
+                binding.emptyTv.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
+            }
+        });
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    private void showChat(JSONObject response, boolean isAlreadySetReadStatus) {
+        try {
+            mChatList.clear();
+            if (response.getBoolean("success")) {
+                JSONArray jsonArray = response.getJSONArray("data");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject chatJsonObject = jsonArray.getJSONObject(i);
+                    //Log.v(TAG, "showChat - " + chatJsonObject);
+                    if (chatJsonObject.getString("fromUser").equals(mFromUUId)) {
+                        chatJsonObject.put("type", Constants.RIGHT_ITEM_HW); // HW
+                    } else {
+                        chatJsonObject.put("type", Constants.LEFT_ITEM_DOCT); // DOCTOR
+                    }
+                    mChatList.add(chatJsonObject);
+                }
+                if (mChatList.isEmpty()) {
+                    binding.emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    binding.emptyView.setVisibility(View.GONE);
+                }
+
+                sortList();
+
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                binding.chatsRcv.setAdapter(mChatListingAdapter);
+
+                if (!mChatList.isEmpty()) {
+                    JSONObject jsonObject = mChatList.get(0);
+                    mVisitUUID = jsonObject.getString("visitId");
+                    mPatientName = jsonObject.getString("patientName");
+                    mPatientUUid = jsonObject.getString("patientId");
+
+
+                    // save in db
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", mFromUUId);
+                    connectionInfoObject.put("toUUID", mToUUId);
+                    connectionInfoObject.put("patientUUID", mPatientUUid);
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", mVisitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+
+                    getApplicationContext().sendBroadcast(intent);
+
+
+                }
+                if (!isAlreadySetReadStatus)
+                    for (int i = 0; i < mChatList.size(); i++) {
+                        //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
+                        if (mChatList.get(i).getInt("type") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
+                            setReadStatus(mChatList.get(i).getString("id"));
+                            break;
+                        }
+                    }
+
+            } /*else {
+                Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+                finish();
+            }*/
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sortList() {
+        Collections.sort(mChatList, new Comparator<JSONObject>() {
+            public int compare(JSONObject o1, JSONObject o2) {
+                try {
+                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
+                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    return b.compareTo(a);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+
+    }
+
+    private void postMessages(String fromUUId, String toUUId, String patientUUId, String message) {
+        try {
+
+            JSONObject inputJsonObject = new JSONObject();
+            inputJsonObject.put("fromUser", fromUUId);
+            inputJsonObject.put("toUser", toUUId);
+            inputJsonObject.put("patientId", patientUUId);
+            inputJsonObject.put("message", message);
+            inputJsonObject.put("patientName", mPatientName);
+            inputJsonObject.put("hwName", "");
+            inputJsonObject.put("patientPic", "");
+            inputJsonObject.put("hwPic", "");
+            inputJsonObject.put("visitId", mVisitUUID);
+            inputJsonObject.put("isRead", false);
+            binding.loadingLayout.setVisibility(View.VISIBLE);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.v(TAG, "postMessages - response - " + response.toString());
+                    binding.textEtv.setText("");
+                    getAllMessages(false);
+                    binding.loadingLayout.setVisibility(View.GONE);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.v(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                    binding.loadingLayout.setVisibility(View.GONE);
+                }
+            });
+            mRequestQueue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setReadStatus(String messageID) {
+        String url = Constants.SET_READ_STATUS_OF_MESSAGE_URL + messageID;
+        Log.v(TAG, "setReadStatus - url - " + url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.v(TAG, "setReadStatus - response - " + response.toString());
+                getAllMessages(true);
+                if (socket != null) socket.emit("isread");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage());
+
+            }
+        });
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    private void addNewMessage(JSONObject jsonObject) {
+        try {
+            if (jsonObject.getString("fromUser").equals(mFromUUId)) {
+                jsonObject.put("type", Constants.RIGHT_ITEM_HW);
+            } else {
+                jsonObject.put("type", Constants.LEFT_ITEM_DOCT);
+            }
+            if (!jsonObject.has("createdAt")) {
+                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
+            }
+            mChatList.add(jsonObject);
+
+            binding.emptyView.setVisibility(View.GONE);
+            sortList();
+
+            if (mChatListingAdapter == null) {
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                binding.chatsRcv.setAdapter(mChatListingAdapter);
+            } else {
+                mChatListingAdapter.refresh(mChatList);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+    private List<JSONObject> mChatList = new ArrayList<JSONObject>();
+    private LinearLayoutManager mLayoutManager;
+    private ChatListingAdapter mChatListingAdapter;
+
+
+    private String mFromUUId = "";
+    private String mToUUId = "";
+    private String mPatientUUid = "";
+    private String mVisitUUID = "";
+    private String mPatientName = "";
+    private RequestQueue mRequestQueue;
+
+    /*88888888888888888888888888888888888888888888888888888888888*/
 }

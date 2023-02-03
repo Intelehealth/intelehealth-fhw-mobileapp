@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -148,7 +149,7 @@ public class ChatActivity extends AppCompatActivity {
         //Doctor id - a4ac4fee-538f-11e6-9cfe-86f436325720
         connectTOSocket();
 
-        getAllMessages();
+        getAllMessages(false);
         //postMessages(FROM_UUID, TO_UUID, PATIENT_UUID, "hell.. mobile test - " + System.currentTimeMillis());
         mMessageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -177,7 +178,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void getAllMessages() {
+    private void getAllMessages(boolean isAlreadySetReadStatus) {
         if (mFromUUId.isEmpty() || mToUUId.isEmpty() || mPatientUUid.isEmpty()) {
             return;
         }
@@ -189,7 +190,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
-                showChat(response);
+                showChat(response, isAlreadySetReadStatus);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -201,17 +202,18 @@ public class ChatActivity extends AppCompatActivity {
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    private void showChat(JSONObject response) {
+    private void showChat(JSONObject response, boolean isAlreadySetReadStatus) {
         try {
             mChatList.clear();
             if (response.getBoolean("success")) {
                 JSONArray jsonArray = response.getJSONArray("data");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject chatJsonObject = jsonArray.getJSONObject(i);
+                    //Log.v(TAG, "showChat - " + chatJsonObject);
                     if (chatJsonObject.getString("fromUser").equals(mFromUUId)) {
-                        chatJsonObject.put("type", Constants.RIGHT_ITEM);
+                        chatJsonObject.put("type", Constants.RIGHT_ITEM_HW); // HW
                     } else {
-                        chatJsonObject.put("type", Constants.LEFT_ITEM);
+                        chatJsonObject.put("type", Constants.LEFT_ITEM_DOCT); // DOCTOR
                     }
                     mChatList.add(chatJsonObject);
                 }
@@ -222,8 +224,19 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 sortList();
+
                 mChatListingAdapter = new ChatListingAdapter(this, mChatList);
                 mRecyclerView.setAdapter(mChatListingAdapter);
+
+                if (!isAlreadySetReadStatus)
+                    for (int i = 0; i < mChatList.size(); i++) {
+                        //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
+                        if (mChatList.get(i).getInt("type") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
+                            setReadStatus(mChatList.get(i).getString("id"));
+                            break;
+                        }
+                    }
+
             } /*else {
                 Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
                 finish();
@@ -259,13 +272,19 @@ public class ChatActivity extends AppCompatActivity {
             inputJsonObject.put("toUser", toUUId);
             inputJsonObject.put("patientId", patientUUId);
             inputJsonObject.put("message", message);
+            inputJsonObject.put("patientName", mPatientName);
+            inputJsonObject.put("hwName", "");
+            inputJsonObject.put("patientPic", "");
+            inputJsonObject.put("hwPic", "");
+            inputJsonObject.put("visitId", mVisitUUID);
+            inputJsonObject.put("isRead", false);
             mLoadingLinearLayout.setVisibility(View.VISIBLE);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.v(TAG, "postMessages - response - " + response.toString());
                     mMessageEditText.setText("");
-                    getAllMessages();
+                    getAllMessages(false);
                     mLoadingLinearLayout.setVisibility(View.GONE);
                 }
             }, new Response.ErrorListener() {
@@ -281,9 +300,31 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    public void setReadStatus(String messageID) {
+        String url = Constants.SET_READ_STATUS_OF_MESSAGE_URL + messageID;
+        Log.v(TAG, "setReadStatus - url - " + url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.v(TAG, "setReadStatus - response - " + response.toString());
+                getAllMessages(true);
+                if(mSocket!=null) mSocket.emit("isread");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage());
+
+            }
+        });
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
     private void connectTOSocket() {
         try {
-            mSocket = IO.socket(Constants.BASE_URL + "?userId=" + mFromUUId + "&name=" + mFromUUId);
+            String url = Constants.BASE_URL + "?userId=" + mFromUUId + "&name=" + mFromUUId;
+            Log.v(TAG, "connectTOSocket - " + url);
+            mSocket = IO.socket(url);
             mSocket.on("connect", args -> {
                 for (Object arg : args) {
                     Log.d(TAG, "connect: " + String.valueOf(arg));
@@ -293,6 +334,10 @@ public class ChatActivity extends AppCompatActivity {
                 for (Object arg : args) {
                     Log.d(TAG, "disconnect: " + String.valueOf(arg));
                 }
+            });
+            mSocket.on("isread", args -> {
+                Log.d(TAG, "isread event emit from web: ");
+                getAllMessages(false);
             });
             mSocket.on("call", args -> {
                 Log.d(TAG, "calling...: ");
@@ -362,20 +407,21 @@ public class ChatActivity extends AppCompatActivity {
                                     intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
 
                                     getApplicationContext().sendBroadcast(intent);
-                                    getAllMessages();
+                                    getAllMessages(false);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                             } else {
-                                if (jsonObject.has("dataValues")) {
+                                getAllMessages(false);
+                                /*if (jsonObject.has("dataValues")) {
                                     try {
                                         addNewMessage(jsonObject.getJSONObject("dataValues"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 } else
-                                    addNewMessage(jsonObject);
+                                    addNewMessage(jsonObject);*/
                             }
 
 
@@ -405,7 +451,7 @@ public class ChatActivity extends AppCompatActivity {
                     String uuid = innerJsonObject.getString("uuid");
                     if (!mFromUUId.equals(uuid) && !mPatientUUid.equals(uuid)) {
                         mToUUId = uuid;
-                        getAllMessages();
+                        getAllMessages(false);
                         break;
                     }
 
@@ -419,9 +465,9 @@ public class ChatActivity extends AppCompatActivity {
     private void addNewMessage(JSONObject jsonObject) {
         try {
             if (jsonObject.getString("fromUser").equals(mFromUUId)) {
-                jsonObject.put("type", Constants.RIGHT_ITEM);
+                jsonObject.put("type", Constants.RIGHT_ITEM_HW);
             } else {
-                jsonObject.put("type", Constants.LEFT_ITEM);
+                jsonObject.put("type", Constants.LEFT_ITEM_DOCT);
             }
             if (!jsonObject.has("createdAt")) {
                 SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");

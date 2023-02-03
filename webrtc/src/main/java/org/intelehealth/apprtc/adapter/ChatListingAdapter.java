@@ -43,7 +43,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == Constants.LEFT_ITEM) {
+        if (viewType == Constants.LEFT_ITEM_DOCT) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.left_chat_layout, parent, false);
 
@@ -92,6 +92,8 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     leftViewHolder.imageView.setVisibility(View.GONE);
                     leftViewHolder.messageTextView.setVisibility(View.VISIBLE);
                 }
+
+
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
@@ -120,6 +122,16 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     rightViewHolder.imageView.setVisibility(View.GONE);
                     rightViewHolder.messageTextView.setVisibility(View.VISIBLE);
                 }
+
+                if (rightViewHolder.jsonObject.has("isRead") && rightViewHolder.jsonObject.getInt("isRead") ==1) {
+                    rightViewHolder.statusTextView.setText("Read");
+                    rightViewHolder.statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0,0,0);
+                } else {
+                    rightViewHolder.statusTextView.setText("Sent");
+                    rightViewHolder.statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0,0,0);
+                }
+
+
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
@@ -166,7 +178,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class RightViewHolder extends RecyclerView.ViewHolder {
-        TextView messageTextView, timeTextView;
+        TextView messageTextView, timeTextView, statusTextView;
         ImageView imageView;
         JSONObject jsonObject;
 
@@ -175,6 +187,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             imageView = itemView.findViewById(R.id.image_iv);
             messageTextView = itemView.findViewById(R.id.text_tv);
             timeTextView = itemView.findViewById(R.id.time_tv);
+            statusTextView = itemView.findViewById(R.id.status_tv);
         }
     }
 
