@@ -118,16 +118,17 @@ public class OverallAchievementsFragment extends Fragment {
     }
 
     private void setOverallTimeSpent() {
-        long firstProviderDateInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long startTime = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long endDate = System.currentTimeMillis();
+
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
-        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(firstProviderDateInMilliseconds, endDate);
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTime, endDate);
         overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
 
         requireActivity().runOnUiThread(() -> {
             String totalTimeSpent = "";
             if (overallUsageStats != null) {
-                totalTimeSpent = String.format(Locale.ENGLISH, "%dh %dm", TimeUnit.MILLISECONDS.toHours(overallUsageStats.getTotalTimeInForeground()), TimeUnit.MILLISECONDS.toMinutes(overallUsageStats.getTotalTimeInForeground()));
+                totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
             } else {
                 totalTimeSpent = "0h 0m";
             }

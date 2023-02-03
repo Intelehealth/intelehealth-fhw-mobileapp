@@ -11,12 +11,14 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.app.R;
 
@@ -899,5 +901,11 @@ public class DateAndTimeUtils {
         Date startDateObject = convertStringToDateObject(startDate, format);
         Date endDateObject = convertStringToDateObject(endDate, format);
         return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
+    }
+
+    public static String convertMillisecondsToHoursAndMinutes(long timeInMilliseconds) {
+        int minutes = (int) ((timeInMilliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((timeInMilliseconds / (1000 * 60 * 60)) % 24);
+        return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
     }
 }
