@@ -174,6 +174,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         String query = "SELECT value, modified_date FROM tbl_obs WHERE conceptuuid = \"78284507-fb71-4354-9b34-046ab205e18f\" AND encounteruuid IN (SELECT uuid FROM tbl_encounter WHERE provider_uuid = ?)";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangeAverageSatisfactionCursor = db.rawQuery(query, new String[]{sessionManager.getProviderID()});
+        double averageScore = 0.0;
 
         if (rangeAverageSatisfactionCursor.moveToFirst()) {
             do {
@@ -185,15 +186,14 @@ public class DateRangeAchievementsFragment extends Fragment {
                 obsList.add(obsDTO);
             } while (rangeAverageSatisfactionCursor.moveToNext());
 
-            double averageScore = 0.0;
             if (!obsList.isEmpty()) {
                 averageScore = getAveragePatientSatisfactionScore(obsList);
             }
-
-            double finalAverageScore = averageScore;
-            requireActivity().runOnUiThread(() -> tvAveragePatientSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
-            rangeAverageSatisfactionCursor.close();
         }
+
+        double finalAverageScore = averageScore;
+        requireActivity().runOnUiThread(() -> tvAveragePatientSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+        rangeAverageSatisfactionCursor.close();
     }
 
     private void setTimeSpentInRange() {
