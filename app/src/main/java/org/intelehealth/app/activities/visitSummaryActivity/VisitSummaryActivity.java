@@ -4987,7 +4987,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String rx_web = stringToWeb_sms(rxReturned).replace("<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">- </b>", "");
+        String rx_web = stringToWeb_sms(rxReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
         String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
