@@ -1,5 +1,6 @@
 package org.intelehealth.app.appointment.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -55,6 +56,29 @@ public class BookAppointmentRequest implements Serializable {
     @SerializedName("reason")
     private String reason;
 
+    @Expose
+    @SerializedName("patientAge")
+    private String patientAge;
+
+    @Expose
+    @SerializedName("patientGender")
+    private String patientGender;
+
+    @Expose
+    @SerializedName("patientPic")
+    private String patientPic;
+
+    @Expose
+    @SerializedName("hwName")
+    private String hwName;
+
+    @Expose
+    @SerializedName("hwAge")
+    private String hwAge;
+
+    @Expose
+    @SerializedName("hwGender")
+    private String hwGender;
 
     public String getSlotDay() {
         return slotDay;
@@ -183,5 +207,53 @@ public class BookAppointmentRequest implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getPatientAge() {
+        return patientAge;
+    }
+
+    public void setPatientAge(String patientAge) {
+        this.patientAge = patientAge;
+    }
+
+    public String getPatientGender() {
+        return patientGender;
+    }
+
+    public void setPatientGender(String patientGender) {
+        this.patientGender = patientGender;
+    }
+
+    public String getPatientPic() {
+        return patientPic;
+    }
+
+    public void setPatientPic(String patientPic) {
+        this.patientPic = patientPic;
+    }
+
+    public String getHwName() {
+        return hwName;
+    }
+
+    public void setHwName(String hwName) {
+        this.hwName = hwName;
+    }
+
+    public String getHwAge() {
+        return hwAge;
+    }
+
+    public void setHwAge(String hwAge) {
+        this.hwAge = hwAge;
+    }
+
+    public String getHwGender() {
+        return hwGender;
+    }
+
+    public void setHwGender(String hwGender) {
+        this.hwGender = hwGender;
     }
 }
