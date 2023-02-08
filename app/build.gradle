@@ -106,11 +106,11 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only)
-    implementation 'androidx.work:work-runtime:2.0.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.0.1'
+    implementation 'androidx.work:work-rxjava2:2.7.1'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.0.1'
+    androidTestImplementation 'androidx.work:work-testing:2.7.1'
 
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'

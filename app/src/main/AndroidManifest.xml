@@ -254,7 +254,7 @@
         <!-- android:stopWithTask="false" /> -->
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -266,7 +266,7 @@
         <service
             android:name=".services.RunAfterBootService"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:permission="" />
 
         <receiver
@@ -283,12 +283,11 @@
             android:authorities="org.intelehealth.unicef.activities.searchPatientActivity.SearchSuggestionProvider"
             android:exported="false" />
 
-        <service android:name=".services.DownloadService" />
-        <service android:name=".services.MyIntentService" />
-        <service android:name=".services.LastSyncIntentService" />
-        <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name=".services.firebase_services.MyFirebaseMessagingService"
-            android:exported="false">
+        <service android:name=".services.DownloadService" android:exported="true"/>
+        <service android:name=".services.MyIntentService" android:exported="true"/>
+        <service android:name=".services.LastSyncIntentService" android:exported="true"/>
+        <service android:name=".services.UpdateDownloadPrescriptionService" android:exported="true"/> <!-- Firebase Services -->
+        <service android:name=".services.firebase_services.MyFirebaseMessagingService" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -333,7 +332,7 @@
             android:name=".services.firebase_services.NotificationService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
@@ -365,7 +364,7 @@
         <service
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
     </application>
 
 </manifest>
