@@ -44,11 +44,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "patient_name TEXT," +
             "open_mrs_id TEXT," +
             "status TEXT," +
+            "location_uuid TEXT," +
+            "hw_uuid TEXT," +
+            "reason TEXT," +
             "created_at TEXT," +
             "updated_at TEXT, " +
             "prev_slot_day TEXT, " +
             "prev_slot_date TEXT, " +
-            "prev_slot_time TEXT)";
+            "prev_slot_time TEXT," +
+            "voided TEXT, " +
+            "sync TEXT)";
     //newly added prev_slot_day, prev_slot_date,prev_slot_time
 
     /**

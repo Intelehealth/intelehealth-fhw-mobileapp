@@ -1,11 +1,9 @@
-package org.intelehealth.app.appointment.model;
+package org.intelehealth.app.models.pushResponseApiCall;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class BookAppointmentRequest implements Serializable {
+public class AppointmentList {
 
     @SerializedName("uuid")
     private String uuid;
@@ -87,7 +85,7 @@ public class BookAppointmentRequest implements Serializable {
     private String voided;
 
     @Expose
-    @SerializedName("sync")
+    @SerializedName("syncd")
     private String sync;
 
     public String getUuid() {
@@ -96,6 +94,14 @@ public class BookAppointmentRequest implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public String getSlotDay() {
@@ -194,7 +200,6 @@ public class BookAppointmentRequest implements Serializable {
         this.patientId = patientId;
     }
 
-
     public String getLocationUuid() {
         return locationUuid;
     }
@@ -209,14 +214,6 @@ public class BookAppointmentRequest implements Serializable {
 
     public void setHwUUID(String hwUUID) {
         this.hwUUID = hwUUID;
-    }
-
-    public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
     }
 
     public String getReason() {
