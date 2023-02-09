@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
+import android.animation.ObjectAnimator;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -29,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -37,6 +39,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     View view;
     ImageView ivInternet;
     NetworkUtils networkUtils;
+    private ObjectAnimator syncAnimator;
 
     protected SessionManager sessionManager;
     public UsageStatsManager usageStatsManager;
@@ -70,7 +73,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         tvTitle.setText(getResources().getString(R.string.my_achievements));
         ivInternet = view.findViewById(R.id.iv_achievements_internet);
 
-
+        ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
