@@ -34,6 +34,9 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if (date == null) return 0;
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
@@ -124,6 +127,9 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if (date == null) return "";    // crash fix: AEAT-440
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
@@ -170,6 +176,9 @@ public class DateAndTimeUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (date == null) return "";    // crash fix: AEAT-440
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
@@ -235,6 +244,8 @@ public class DateAndTimeUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (date == null) return "";
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         return formattedDate;
