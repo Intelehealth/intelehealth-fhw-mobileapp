@@ -973,13 +973,13 @@ public class HomeActivity extends AppCompatActivity {
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
-                  //  boolean isCallEnded = remoteMessage.getBoolean("callEnded");
+                    boolean isCallEnded = remoteMessage.getBoolean("callEnded");
 
                     in.putExtra("roomId", roomId);
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
-                //    in.putExtra("callEnded", isCallEnded);
+                    in.putExtra("callEnded", isCallEnded);
                     startActivity(in);
                 }
             } catch (JSONException e) {

@@ -210,8 +210,10 @@ public class CompleteActivity extends AppCompatActivity {
         binding.callEndImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket != null) socket.emit("bye");
-                disconnectAll();
+                if (socket != null) {
+                    socket.emit("bye");
+                    disconnectAll();
+                }
             }
         });
         binding.videoImv.setOnClickListener(new View.OnClickListener() {
@@ -360,7 +362,7 @@ public class CompleteActivity extends AppCompatActivity {
             surfaceTextureHelper.dispose();
             surfaceTextureHelper = null;
         }
-        runOnUiThread(() -> Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show());
+     //   runOnUiThread(() -> Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show());
         stopRinging();
         try {
             unregisterReceiver(broadcastReceiver);
@@ -800,7 +802,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             Bundle callEndBundle = getIntent().getExtras();
             if (callEndBundle.containsKey("callEnded") && callEndBundle.getBoolean("callEnded")) {
-             //  disconnectAll();
+               disconnectAll();
             }
         }
     }
