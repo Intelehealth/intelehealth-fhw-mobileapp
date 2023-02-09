@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -99,6 +100,8 @@ public class DateRangeAchievementsFragment extends Fragment {
             fetchAndSetUIData();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        datePicker.setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
