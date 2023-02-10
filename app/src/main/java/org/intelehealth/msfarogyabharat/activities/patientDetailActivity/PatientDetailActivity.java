@@ -786,7 +786,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         profilePicDownloaded();
                     }
                 }
-                Glide.with(PatientDetailActivity.this).load(patient_new.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
+                Glide.with(getApplicationContext()).load(patient_new.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
 
                 if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
                     idView.setText(patient_new.getOpenmrs_id());
