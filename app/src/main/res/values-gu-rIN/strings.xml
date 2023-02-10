@@ -820,5 +820,7 @@
     <string name="sync_strated">"Sync started! "</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
+    <string name="sync_completed">Sync done!</string>
+    <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
 
 </resources>

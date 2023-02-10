@@ -130,6 +130,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     // Family History
 
+    private boolean mIsEditMode = false;
+    private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,12 +161,16 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             patientName = intent.getStringExtra("name");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
+            mEditFor = intent.getIntExtra("edit_for", STEP_1_VITAL);
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
             Log.v(TAG, "Intent Tag: " + intentTag);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
+            if (intentTag.equalsIgnoreCase("edit")) {
+                mIsEditMode = true;
+            }
 
         }
 
@@ -244,6 +251,12 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
             case STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT:
                 mSummaryFrameLayout.setVisibility(View.GONE);
+                if (object != null) {
+                    int caseNo = (int) object;
+                    if (caseNo == STEP_4_PAST_MEDICAL_HISTORY) {
+                        showPastMedicalHistoryFragment();
+                    }
+                }
                 break;
             case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
                 if (isSavedVisitReason()) {
@@ -275,22 +288,20 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
-                mStep4ProgressBar.setProgress(10);
-                setTitle("4/4. Medical history: Patient history");
-                mSummaryFrameLayout.setVisibility(View.GONE);
-                mPastMedicalHistoryNode = loadPastMedicalHistory();
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, PastMedicalHistoryFragment.newInstance(getIntent(), mPastMedicalHistoryNode), PAST_MEDICAL_HISTORY_FRAGMENT).
-                        commit();
+                showPastMedicalHistoryFragment();
                 break;
 
             case STEP_5_FAMILY_HISTORY:
                 mStep4ProgressBar.setProgress(50);
                 setTitle("4/4. Medical history: Family history");
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                mFamilyHistoryNode = loadFamilyHistory();
+                boolean isEditMode = true;
+                if (mFamilyHistoryNode == null) {
+                    mFamilyHistoryNode = loadFamilyHistory();
+                    isEditMode = false;
+                }
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(getIntent(), mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
+                        replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(getIntent(), mFamilyHistoryNode, isEditMode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                         commit();
                 break;
 
@@ -320,6 +331,20 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 finish();
                 break;
         }
+    }
+
+    private void showPastMedicalHistoryFragment() {
+        mStep4ProgressBar.setProgress(10);
+        setTitle("4/4. Medical history: Patient history");
+        mSummaryFrameLayout.setVisibility(View.GONE);
+        boolean isEditMode = true;
+        if (mPastMedicalHistoryNode == null) {
+            mPastMedicalHistoryNode = loadPastMedicalHistory();
+            isEditMode = false;
+        }
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fl_steps_body, PastMedicalHistoryFragment.newInstance(getIntent(), mPastMedicalHistoryNode, isEditMode), PAST_MEDICAL_HISTORY_FRAGMENT).
+                commit();
     }
 
     private boolean isSavedPastHistory() {
@@ -860,7 +885,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
-                        if(data!=null){
+                        if (data != null) {
                             Uri selectedImage = data.getData();
                             String[] filePath = {MediaStore.Images.Media.DATA};
                             Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -887,7 +912,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                             Log.i(TAG, currentPhotoPath);
                             //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
                             updateImageDatabase(mLastSelectedImageName);
-                        }else {
+                        } else {
                             Toast.makeText(VisitCreationActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
                         }
 

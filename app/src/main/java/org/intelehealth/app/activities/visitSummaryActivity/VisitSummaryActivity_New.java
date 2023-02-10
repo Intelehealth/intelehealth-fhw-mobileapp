@@ -82,17 +82,13 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
-import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -492,11 +488,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     }
 
+    private int mOpenCount = 0;
+
     private void expandableCardVisibilityHandling() {
         openall_btn.setOnClickListener(v -> {
 
             Drawable drawable = openall_btn.getDrawable();
-            if (drawable.getConstantState().equals(getResources().getDrawable(R.drawable.open_all_btn).getConstantState())) {
+            if (mOpenCount == 0) {
                 openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
@@ -504,6 +502,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                mOpenCount = 6;
             } else {
                 openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 vs_vitals_header_expandview.setVisibility(View.GONE);
@@ -512,6 +511,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
+                mOpenCount = 0;
             }
 
         });
@@ -532,10 +532,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         vitals_header_relative.setOnClickListener(v -> {
-            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
+            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_vitals_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
 
 /*
@@ -547,10 +554,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         chiefcomplaint_header_relative.setOnClickListener(v -> {
-            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
+            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
 
 /*
@@ -562,10 +576,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         physExam_header_relative.setOnClickListener(v -> {
-            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
+            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
 
 /*
@@ -577,10 +598,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         pathistory_header_relative.setOnClickListener(v -> {
-            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
+            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_medhist_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
 
 /*
@@ -592,10 +620,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         special_vd_header_relative.setOnClickListener(v -> {
-            if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
+            if (vd_special_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_special_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
 
 /*
@@ -607,10 +642,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 */
         addnotes_vd_header_relative.setOnClickListener(v -> {
-            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
+            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
-            else
+                mOpenCount--;
+                if(mOpenCount==0){
+                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                }
+            } else {
+                mOpenCount++;
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+            }
         });
     }
 
@@ -975,15 +1017,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VitalsActivity.class);
+                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
                 startActivity(intent1);
             }
         });
@@ -1086,7 +1128,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             }
                         }
 
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, ComplaintNodeActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1226,7 +1268,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 FirebaseCrashlytics.getInstance().recordException(e1);
                             }
                         }
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PhysicalExamActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1359,7 +1401,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PastMedicalHistoryActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
@@ -1509,7 +1551,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, FamilyHistoryActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -2527,6 +2569,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public void deleteAddDoc_Item(List<DocumentObject> documentList, int position) {
         documentList.remove(position);
         add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+    }
+
+    public void openAll(View view) {
     }
 
 
@@ -4330,8 +4375,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -4380,6 +4427,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
         } else if (contentHeight == 0) {
+
             //in case of webview bug of 0 contents...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -4390,13 +4438,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
+
             File dir = new File(path);
+            Log.v(TAG, "dir.exists() : " + dir.exists());
             if (!dir.exists())
                 dir.mkdirs();
 
-            File directory = new File(dir, fileName);
 
             //To display the preview window to user...
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -4450,8 +4499,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -4511,8 +4562,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();

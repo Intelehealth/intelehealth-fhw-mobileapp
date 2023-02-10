@@ -109,11 +109,15 @@ public class CallListenerBackgroundService extends Service {
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     HashMap value = (HashMap) dataSnapshot.getValue();
                     //{doctorName=Demo doctor1, nurseId=8d61869b-14d7-4c16-9c7a-a6f1aaaa3c0d, roomId=df412e7e-9020-49ed-9712-1937ad46af9b, timestamp=1628564570611}
                     Log.d(TAG, "Value is: " + value);
+                    if(new SessionManager(getApplicationContext()).isLogout()){
+                        return;
+                    }
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 500 milliseconds
                /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -123,13 +127,19 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
-                    String device_token = String.valueOf(value.get("device_token"));
-                    String callID = String.valueOf(value.get("id"));
-                    if (callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
+                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+                        return;
+                    }
+                    String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";
+                    Log.d(TAG, "callID is: " + callID);
+                    Log.d(TAG, "webrtcTempCallId is: " + IntelehealthApplication.getInstance().webrtcTempCallId);
+                    if (!callID.isEmpty() && callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
                         return;
                     } else {
                         IntelehealthApplication.getInstance().webrtcTempCallId = callID;
                     }
+                    String device_token = String.valueOf(value.get("device_token"));
+
                     Log.d(TAG, "refreshedFCMTokenID is: " + refreshedFCMTokenID);
                     Log.d(TAG, "device_token is: " + device_token);
                     if (!device_token.equals(refreshedFCMTokenID)) return;
@@ -139,6 +149,8 @@ public class CallListenerBackgroundService extends Service {
                     bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
                     bundle.putString("roomId", String.valueOf(value.get("roomId")));
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
+                    bundle.putString("visitId", String.valueOf(value.get("visitId")));
+                    bundle.putString("doctorId", String.valueOf(value.get("doctorId")));
                     bundle.putString("actionType", "VIDEO_CALL");
 
                     boolean isOldNotification = false;

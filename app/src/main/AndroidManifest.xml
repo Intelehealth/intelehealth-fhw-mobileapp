@@ -276,7 +276,7 @@
             android:windowSoftInputMode="adjustNothing|adjustPan" />
 
         <receiver
-            android:name=".utilities.RTCMessageReceiver"
+            android:name=".services.firebase_services.RTCMessageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

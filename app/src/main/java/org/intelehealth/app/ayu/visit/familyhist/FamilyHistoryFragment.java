@@ -34,16 +34,17 @@ public class FamilyHistoryFragment extends Fragment {
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private Node mCurrentNode;
     private VisitCreationActionListener mActionListener;
-
+    private boolean mIsEditMode = false;
     public FamilyHistoryFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static FamilyHistoryFragment newInstance(Intent intent, Node node) {
+    public static FamilyHistoryFragment newInstance(Intent intent, Node node, boolean isEditMode) {
         FamilyHistoryFragment fragment = new FamilyHistoryFragment();
         fragment.mCurrentNode = node;
+        fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
@@ -115,7 +116,13 @@ public class FamilyHistoryFragment extends Fragment {
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+        if(mIsEditMode){
+            mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
+            mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size()-1;
+        }else{
+            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+
+        }
         return view;
     }
 }

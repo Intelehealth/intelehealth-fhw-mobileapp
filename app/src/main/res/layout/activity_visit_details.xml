@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -62,9 +61,9 @@
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
                     android:text="@string/visit_summary_patient_details"
+                    android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
-                    android:textAppearance="@style/label"
                     android:translationY="-0.28sp" />
 
             </LinearLayout>
@@ -90,754 +89,753 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginRight="@dimen/fu_card_margin_sides"
-        android:elevation="16dp"
-        app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="@dimen/corner_radius_8dp">
-
-        <!-- Frame 100340 -->
-        <LinearLayout
-            android:id="@+id/frame_10034"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fu_margin_start"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <!--1st-->
-            <RelativeLayout
-                android:layout_width="0dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_head"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:layout_marginRight="@dimen/fu_card_margin_sides"
+                android:elevation="16dp"
+                app:cardCornerRadius="@dimen/margin_5"
+                app:cardElevation="@dimen/corner_radius_8dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/profile"
-                    android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                    android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                    android:layout_centerVertical="true"
-                    android:elevation="0dp"
-                    android:layout_marginStart="@dimen/margin_2dp"
-                    app:cardCornerRadius="@dimen/cardcornerradius_imagev">
-
-                    <ImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                        android:src="@drawable/avatar1" />
-                </androidx.cardview.widget.CardView>
-
+                <!-- Frame 100340 -->
                 <LinearLayout
+                    android:id="@+id/frame_10034"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/profile"
-                    android:orientation="vertical">
+                    android:layout_margin="@dimen/fu_margin_start"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
+                    <!--1st-->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/profile"
+                            android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                            android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/margin_2dp"
+                            android:elevation="0dp"
+                            app:cardCornerRadius="@dimen/cardcornerradius_imagev">
+
+                            <ImageView
+                                android:id="@+id/profile_image"
+                                android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                                android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                                android:src="@drawable/avatar1" />
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_toEndOf="@+id/profile"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/frame_10033"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/patname_txt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:lineSpacingExtra="-3sp"
+                                    android:maxLines="1"
+                                    android:text="@string/fu_visit_name"
+                                    android:textAppearance="@style/label_16sp"
+                                    android:textColor="@null"
+                                    android:textSize="@dimen/fu_name_txt_size" />
+
+                                <TextView
+                                    android:id="@+id/gender_age_txt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/fu_male_margin_start"
+                                    android:layout_toEndOf="@+id/patname_txt"
+                                    android:text="@string/misc_txt"
+                                    android:textAppearance="@style/label_misc_txt_14sp"
+                                    android:textColor="@null"
+                                    android:textSize="@dimen/fu_name_txt_size" />
+
+                                <ImageButton
+                                    android:id="@+id/icons8_edit"
+                                    android:layout_width="@dimen/fu_pencil_width"
+                                    android:layout_height="@dimen/fu_pencil_height"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/fu_male_margin_start"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_toEndOf="@id/gender_age_txt"
+                                    android:background="@drawable/ic_icno8_edit"
+                                    android:visibility="gone"
+                                    tools:visibility="visible" />
+
+                            </LinearLayout>
+
+                            <!-- Caption -->
+                            <TextView
+                                android:id="@+id/openmrsID_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="@dimen/margin_4"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@string/fu_openmrsID"
+                                android:textAppearance="@style/caption_fu_openmrsId"
+                                android:textColor="@null"
+                                android:textSize="@dimen/fu_male_textsize" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <!--2nd-->
                     <LinearLayout
-                        android:id="@+id/frame_10033"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/patname_txt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:lineSpacingExtra="-3sp"
-                            android:maxLines="1"
-                            android:text="@string/fu_visit_name"
-                            android:textAppearance="@style/label_16sp"
-                            android:textColor="@null"
-                            android:textSize="@dimen/fu_name_txt_size" />
+                        <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/pat_call_btn"
+                            android:layout_width="@dimen/fu_icon_width"
+                            android:layout_height="@dimen/fu_icon_height"
+                            android:background="@null"
+                            android:src="@drawable/ic_icon8_phone" />
+
+                        <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/pat_whatsapp_btn"
+                            android:layout_width="@dimen/fu_icon_width"
+                            android:layout_height="@dimen/fu_icon_height"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:background="@null"
+                            android:src="@drawable/ic_icon8_whatsapp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardview_head"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_vs_margin_top"
+                android:layout_marginRight="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides"
+                android:elevation="16dp"
+                app:cardCornerRadius="@dimen/margin_5"
+                app:cardElevation="@dimen/margin_5">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/frame_10004"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/fu_card_margin_updown">
+
+                    <ImageView
+                        android:id="@+id/priority_tag"
+                        android:layout_width="@dimen/btn_prioirty_w_60dp"
+                        android:layout_height="@dimen/btn_prioirty_h_20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:src="@drawable/ui2_frame_priority" />
+
+                    <TextView
+                        android:id="@+id/chief_complaint_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="Test Fever"
+                        android:textAppearance="@style/details_head1"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_name_txt_size" />
+
+                    <TextView
+                        android:id="@+id/visitID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/chief_complaint_txt"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/visitID"
+                        android:textAppearance="@style/details_head2"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_male_textsize" />
+
+                    <ImageButton
+                        android:id="@+id/fu_progress_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/visitID"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/fu_card_margin_updown"
+                        android:background="@null"
+                        android:src="@drawable/details_progressindic" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fu_progress_indicator"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/fu_card_margin_updown"
+                        android:layout_marginEnd="@dimen/margin_40dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/fu_details_calendar"
+                            android:layout_width="@dimen/cal_size"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/followup_item_calendar" />
 
                         <TextView
-                            android:id="@+id/gender_age_txt"
+                            android:id="@+id/visit_startDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/margin_6"
+                            android:layout_toEndOf="@+id/fu_details_calendar"
+                            android:gravity="center_vertical"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@string/fu_detiails_date"
+                            android:textAppearance="@style/fu_detiails_date"
+                            android:textColor="@null"
+                            android:textSize="@dimen/fu_male_textsize" />
+                        />
+
+                    </LinearLayout>
+
+                    <!--Timer-->
+                    <LinearLayout
+                        android:id="@+id/ll_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fu_progress_indicator"
+                        android:layout_marginTop="@dimen/fu_card_margin_updown"
+                        android:layout_toEndOf="@+id/ll_1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/fu_details_calendar"
+                            android:layout_width="@dimen/cal_size"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ui2_ic_time"
+                            android:tint="@color/textview_color" />
+
+                        <TextView
+                            android:id="@+id/visit_startTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/margin_6"
+                            android:layout_toEndOf="@+id/fu_details_calendar"
+                            android:gravity="center_vertical"
+                            android:lineSpacingExtra="3sp"
+                            android:text="00:00 am"
+                            android:textAppearance="@style/fu_detiails_date"
+                            android:textColor="@null"
+                            android:textSize="@dimen/fu_male_textsize" />
+                        />
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/ll_1"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/fu_card_margin_updown"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                        android:background="@color/notifi_divider_color" />
+
+                    <!--general physician-->
+                    <LinearLayout
+                        android:id="@+id/ll_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divider"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!--1st-->
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
+
+                            <ImageView
+                                android:id="@+id/profile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ic_grp_general_phys" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_toEndOf="@+id/profile"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/visit_speciality"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingExtra="-3sp"
+                                    android:textAppearance="@style/details_head1"
+                                    android:textColor="@null"
+                                    android:textSize="@dimen/fu_name_txt_size"
+                                    tools:text="@string/gp_txt" />
+
+
+                                <!-- Caption -->
+                                <TextView
+                                    android:id="@+id/dr_speciality"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/fu_male_margin_start"
+                                    android:gravity="center_vertical"
+                                    android:lineSpacingExtra="0sp"
+                                    android:text="@string/dr_speciality"
+                                    android:textAppearance="@style/details_head2"
+                                    android:textColor="@null"
+                                    android:textSize="@dimen/fu_male_textsize" />
+
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <!--2nd-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/dr_call_btn"
+                                android:layout_width="48dip"
+                                android:layout_height="48dip"
+                                android:layout_gravity="center"
+                                android:background="@drawable/ic_baseline_lens_24_light"
+                                android:onClick="startVideoChat"
+                                android:padding="12dip"
+                                android:src="@drawable/ic_baseline_videocam_24" />
+
+                            <ImageView
+                                android:id="@+id/dr_whatsapp_btn"
+                                android:layout_width="48dip"
+                                android:layout_height="48dip"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:background="@drawable/ic_baseline_lens_24_light"
+                                android:onClick="startTextChat"
+                                android:padding="12dip"
+                                android:src="@drawable/ic_baseline_chat_24" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/ll_2"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/fu_card_margin_updown"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                        android:background="@color/notifi_divider_color" />
+
+                    <!-- Frame 2608662 -->
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/vs_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/notifi_header_icon"
+                        android:layout_below="@+id/divider_2"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_card_margin_updown">
+
+                        <ImageView
+                            android:id="@+id/icon_visit_details"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/fu_male_margin_start"
-                            android:layout_toEndOf="@+id/patname_txt"
-                            android:text="@string/misc_txt"
-                            android:textAppearance="@style/label_misc_txt_14sp"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:src="@drawable/ic_visit_details_icon8" />
+
+                        <!-- label-text -->
+                        <TextView
+                            android:id="@+id/visitDetails_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_toEndOf="@+id/icon_visit_details"
+                            android:gravity="center_vertical"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@string/visitDetails_text"
+                            android:textAppearance="@style/visitDetails_text"
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
 
                         <ImageButton
-                            android:id="@+id/icons8_edit"
-                            android:layout_width="@dimen/fu_pencil_width"
-                            android:layout_height="@dimen/fu_pencil_height"
-                            android:layout_marginStart="@dimen/fu_male_margin_start"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="2dp"
+                            android:id="@+id/vs_arrowRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:paddingHorizontal="10dp"
+                            android:src="@drawable/arrow_right_icon8" />
+                    </RelativeLayout>
+
+
+                    <!--View based on visibility and condition - start-->
+                    <!--Presc block - Start-->
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/prescription_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vs_card"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/margin_16dp"
+                        android:visibility="visible"
+                        tools:visibility="visible">
+
+                        <View
+                            android:id="@+id/divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                            android:background="@color/notifi_divider_color" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/presc_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/divider_3">
+
+                            <ImageView
+                                android:id="@+id/icon_presc_details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/prescription_icon" />
+
+                            <!-- label-text -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_toEndOf="@+id/icon_presc_details"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/visitDetails_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="center_vertical"
+                                    android:lineSpacingExtra="3sp"
+                                    android:text="Prescription"
+                                    android:textAppearance="@style/visitDetails_text"
+                                    android:textColor="@null"
+                                    android:textSize="@dimen/fu_name_txt_size" />
+
+                                <TextView
+                                    android:id="@+id/presc_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/visitDetails_text"
+                                    android:layout_marginTop="@dimen/fu_male_margin_start"
+                                    android:gravity="center_vertical"
+                                    android:lineSpacingExtra="0sp"
+                                    android:text="Test: Received 2 hours ago"
+                                    android:textAppearance="@style/details_head2"
+                                    android:textColor="@color/green_button_bg"
+                                    android:textSize="@dimen/fu_male_textsize" />
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/presc_arrowRight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="10dp"
+                                android:src="@drawable/arrow_right_icon8" />
+                        </RelativeLayout>
+                        <!--Presc block - End -->
+
+
+                        <!--Remind button - start -->
+                        <RelativeLayout
+                            android:id="@+id/presc_remind_block"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/presc_relative"
                             android:visibility="gone"
-                            tools:visibility="visible"
-                            android:layout_toEndOf="@id/gender_age_txt"
-                            android:background="@drawable/ic_icno8_edit" />
+                            tools:visibility="visible">
 
-                    </LinearLayout>
+                            <View
+                                android:id="@+id/divider_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:background="@color/notifi_divider_color" />
 
-                    <!-- Caption -->
-                    <TextView
-                        android:id="@+id/openmrsID_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@string/fu_openmrsID"
-                        android:textAppearance="@style/caption_fu_openmrsId"
-                        android:textColor="@null"
-                        android:textSize="@dimen/fu_male_textsize" />
+                            <LinearLayout
+                                android:id="@+id/btn_bottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider_4"
+                                android:orientation="horizontal"
+                                android:paddingTop="@dimen/margin_16dp"
+                                android:weightSum="2">
 
-                </LinearLayout>
-            </RelativeLayout>
+                                <Button
+                                    android:id="@+id/btn_vs_appointment"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/small_btn_h_48dp"
+                                    android:layout_marginEnd="@dimen/margin_8"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/ui2_common_primary_bg"
+                                    android:backgroundTint="@color/light_red"
+                                    android:lineHeight="@dimen/button_line_height"
+                                    android:padding="@dimen/fu_margin_start"
+                                    android:text="Cancel"
+                                    android:textColor="@color/red"
+                                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                                    android:textStyle="bold" />
 
-            <!--2nd-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal">
+                                <Button
+                                    android:id="@+id/btn_vs_sendvisit"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/small_btn_h_48dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="@dimen/common_edittext_margin_top"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/ui2_common_primary_bg"
+                                    android:backgroundTint="@color/grey_button_bg"
+                                    android:lineHeight="@dimen/button_line_height"
+                                    android:padding="@dimen/hamburger_margin_top"
+                                    android:text="Remind doctor"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                                    android:textStyle="bold" />
 
-                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/pat_call_btn"
-                    android:layout_width="@dimen/fu_icon_width"
-                    android:layout_height="@dimen/fu_icon_height"
-                    android:background="@null"
-                    android:src="@drawable/ic_icon8_phone" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                        <!--Remind button - end -->
 
-                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/pat_whatsapp_btn"
-                    android:layout_width="@dimen/fu_icon_width"
-                    android:layout_height="@dimen/fu_icon_height"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:background="@null"
-                    android:src="@drawable/ic_icon8_whatsapp" />
+                    </RelativeLayout>
 
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cardview_head"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_vs_margin_top"
-        android:layout_marginRight="@dimen/fu_card_margin_sides"
-        android:layout_marginBottom="@dimen/fu_card_margin_sides"
-        android:elevation="16dp"
-        app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="@dimen/margin_5">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10004"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/fu_card_margin_updown">
-
-            <ImageView
-                android:id="@+id/priority_tag"
-                android:layout_width="@dimen/btn_prioirty_w_60dp"
-                android:layout_height="@dimen/btn_prioirty_h_20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:src="@drawable/ui2_frame_priority" />
-
-            <TextView
-                android:id="@+id/chief_complaint_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="3sp"
-                android:text="Test Fever"
-                android:textAppearance="@style/details_head1"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_name_txt_size" />
-
-            <TextView
-                android:id="@+id/visitID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/chief_complaint_txt"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/visitID"
-                android:textAppearance="@style/details_head2"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
-
-            <ImageButton
-                android:id="@+id/fu_progress_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/visitID"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:background="@null"
-                android:src="@drawable/details_progressindic" />
-
-            <LinearLayout
-                android:id="@+id/ll_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fu_progress_indicator"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/margin_40dp"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/fu_details_calendar"
-                    android:layout_width="@dimen/cal_size"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/followup_item_calendar" />
-
-                <TextView
-                    android:id="@+id/visit_startDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_6"
-                    android:layout_toEndOf="@+id/fu_details_calendar"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/fu_detiails_date"
-                    android:textAppearance="@style/fu_detiails_date"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_male_textsize" />
-                />
-
-            </LinearLayout>
-
-            <!--Timer-->
-            <LinearLayout
-                android:id="@+id/ll_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/ll_1"
-                android:layout_below="@+id/fu_progress_indicator"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/fu_details_calendar"
-                    android:layout_width="@dimen/cal_size"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ui2_ic_time"
-                    android:tint="@color/textview_color"/>
-
-                <TextView
-                    android:id="@+id/visit_startTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_6"
-                    android:layout_toEndOf="@+id/fu_details_calendar"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="3sp"
-                    android:text="00:00 am"
-                    android:textAppearance="@style/fu_detiails_date"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_male_textsize" />
-                />
-
-            </LinearLayout>
-
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/ll_1"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
-
-            <!--general physician-->
-            <LinearLayout
-                android:id="@+id/ll_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divider"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!--1st-->
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <ImageView
-                        android:id="@+id/profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:background="@null"
-                        android:src="@drawable/ic_grp_general_phys" />
-
-                    <LinearLayout
+                    <!--Followup Section - start-->
+                    <RelativeLayout
+                        android:id="@+id/followup_relative_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/prescription_block"
                         android:layout_marginStart="@dimen/fu_margin_start"
-                        android:layout_toEndOf="@+id/profile"
-                        android:orientation="vertical">
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <View
+                            android:id="@+id/divider_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                            android:background="@color/notifi_divider_color" />
+
 
                         <TextView
-                            android:id="@+id/visit_speciality"
+                            android:id="@+id/followup_date_txtv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:lineSpacingExtra="-3sp"
-                            tools:text="@string/gp_txt"
-                            android:textAppearance="@style/details_head1"
-                            android:textColor="@null"
-                            android:textSize="@dimen/fu_name_txt_size" />
-
-
-                        <!-- Caption -->
-                        <TextView
-                            android:id="@+id/dr_speciality"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/fu_male_margin_start"
+                            android:layout_below="@+id/divider_5"
                             android:gravity="center_vertical"
-                            android:lineSpacingExtra="0sp"
-                            android:text="@string/dr_speciality"
-                            android:textAppearance="@style/details_head2"
+                            android:lineSpacingExtra="4sp"
+                            android:text="@string/followup_date_txtv"
+                            android:textAppearance="@style/followup_date_txtv"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_male_textsize" />
-
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <!--2nd-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/dr_call_btn"
-                        android:layout_width="@dimen/fu_icon_width"
-                        android:layout_height="@dimen/fu_icon_height"
-                        android:layout_gravity="center"
-                        android:background="@null" android:onClick="startVideoChat"
-                        android:src="@drawable/ic_icon8_phone" />
-
-                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/dr_whatsapp_btn"
-                        android:layout_width="@dimen/fu_icon_width"
-                        android:layout_height="@dimen/fu_icon_height"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/fu_margin_start"
-                        android:background="@null" android:onClick="startTextChat"
-                        android:src="@drawable/ic_icon8_whatsapp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider_2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/ll_2"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
-
-            <!-- Frame 2608662 -->
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/vs_card"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/notifi_header_icon"
-                android:layout_below="@+id/divider_2"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start">
-
-                <ImageView
-                    android:id="@+id/icon_visit_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@null"
-                    android:src="@drawable/ic_visit_details_icon8" />
-
-                <!-- label-text -->
-                <TextView
-                    android:id="@+id/visitDetails_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/visitDetails_text"
-                    android:textAppearance="@style/visitDetails_text"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_name_txt_size" />
-
-                <ImageButton
-                    android:id="@+id/vs_arrowRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingHorizontal="10dp"
-                    android:background="@null"
-                    android:src="@drawable/arrow_right_icon8" />
-            </RelativeLayout>
-
-
-            <!--View based on visibility and condition - start-->
-            <!--Presc block - Start-->
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/prescription_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/vs_card"
-                android:visibility="visible"
-                tools:visibility="visible"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginBottom="@dimen/margin_16dp"
-                android:layout_marginEnd="@dimen/fu_margin_start">
-
-                <View
-                    android:id="@+id/divider_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                    android:background="@color/notifi_divider_color" />
-
-
-                <RelativeLayout
-                    android:id="@+id/presc_relative"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider_3">
-
-                <ImageView
-                    android:id="@+id/icon_presc_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@null"
-                    android:src="@drawable/prescription_icon" />
-
-                <!-- label-text -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/icon_presc_details"
-                    android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/visitDetails_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="3sp"
-                    android:text="Prescription"
-                    android:textAppearance="@style/visitDetails_text"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_name_txt_size" />
-
-                <TextView
-                    android:id="@+id/presc_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/fu_male_margin_start"
-                    android:layout_below="@+id/visitDetails_text"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="0sp"
-                    android:text="Test: Received 2 hours ago"
-                    android:textAppearance="@style/details_head2"
-                    android:textColor="@color/green_button_bg"
-                    android:textSize="@dimen/fu_male_textsize" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/presc_arrowRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="10dp"
-                    android:background="@null"
-                    android:src="@drawable/arrow_right_icon8" />
-            </RelativeLayout>
-                <!--Presc block - End -->
-
-
-                <!--Remind button - start -->
-                <RelativeLayout
-                    android:id="@+id/presc_remind_block"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/presc_relative"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                <View
-                    android:id="@+id/divider_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_marginEnd="@dimen/fu_margin_start"
-                    android:layout_marginTop="@dimen/fu_card_margin_updown"
-                    android:background="@color/notifi_divider_color" />
-
-                <LinearLayout
-                    android:id="@+id/btn_bottom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/margin_16dp"
-                    android:layout_below="@+id/divider_4"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <Button
-                        android:id="@+id/btn_vs_appointment"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/small_btn_h_48dp"
-                        android:layout_marginEnd="@dimen/margin_8"
-                        android:layout_weight="1"
-                        android:background="@drawable/ui2_common_primary_bg"
-                        android:backgroundTint="@color/light_red"
-                        android:lineHeight="@dimen/button_line_height"
-                        android:padding="@dimen/fu_margin_start"
-                        android:text="Cancel"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/txtsize_patdetail_14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btn_vs_sendvisit"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/small_btn_h_48dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="@dimen/common_edittext_margin_top"
-                        android:layout_weight="1"
-                        android:background="@drawable/ui2_common_primary_bg"
-                        android:backgroundTint="@color/grey_button_bg"
-                        android:textColor="@color/colorPrimary"
-                        android:lineHeight="@dimen/button_line_height"
-                        android:padding="@dimen/hamburger_margin_top"
-                        android:textStyle="bold"
-                        android:text="Remind doctor"
-                        android:textSize="@dimen/txtsize_patdetail_14sp" />
-
-                </LinearLayout>
-            </RelativeLayout>
-                <!--Remind button - end -->
-
-            </RelativeLayout>
-
-            <!--Followup Section - start-->
-            <RelativeLayout
-                android:id="@+id/followup_relative_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/prescription_block"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:visibility="gone"
-                tools:visibility="visible"
-                >
-
-                <View
-                    android:id="@+id/divider_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                    android:background="@color/notifi_divider_color" />
-
-
-                <TextView
-                android:id="@+id/followup_date_txtv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                    android:layout_below="@+id/divider_5"
-                android:lineSpacingExtra="4sp"
-                android:text="@string/followup_date_txtv"
-                android:textAppearance="@style/followup_date_txtv"
-                android:textColor="@null"
-                    android:textStyle="bold"
-                android:textSize="@dimen/txtsize_patdetail_14sp" />
-
-                <!--Start Follow up - Start-->
-                <RelativeLayout
-                    android:id="@+id/followup_start_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="gone"
-                    android:layout_below="@+id/followup_date_txtv" >
-
-            <TextView
-                android:id="@+id/followup_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fu_male_margin_start"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/followup_info"
-                android:textAppearance="@style/followup_info"
-                android:textColor="@null" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/followup_info"
-                android:layout_marginTop="@dimen/fu_margin_start"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@drawable/icon_followup_enabled" />
-
-                </RelativeLayout>
-                <!--Start Follow up - Start-->
-
-
-                <!--Do you want to Accept this Follow up - start-->
-                <RelativeLayout
-                    android:id="@+id/yes_no_followup_relative"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_below="@+id/followup_date_txtv" >
-
-                    <TextView
-                        android:id="@+id/followup_accept_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/fu_male_margin_start"
-                        android:gravity="center_vertical"
-                        android:lineSpacingExtra="3sp"
-                        android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"
-                        android:textSize="@dimen/txtsize_patdetail_14sp"
-                        android:textColor="@color/hint_text_color" />
-
-                    <!--Button - start -->
-                    <LinearLayout
-                        android:id="@+id/btn_bottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/fu_margin_start"
-                        android:layout_below="@+id/followup_accept_text"
-                        android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <Button
-                            android:id="@+id/btn_vs_appointment"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin_5"
-                            android:layout_marginEnd="@dimen/margin_8"
-                            android:layout_weight="1"
-                            android:background="@drawable/button_white_border"
-                            android:lineHeight="@dimen/button_line_height"
-                            android:padding="@dimen/fu_margin_start"
-                            android:text="No"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/common_button_text_size"
+                            android:textSize="@dimen/txtsize_patdetail_14sp"
                             android:textStyle="bold" />
 
-                        <Button
-                            android:id="@+id/yes_followup_btn"
-                            android:layout_width="0dp"
+                        <!--Start Follow up - Start-->
+                        <RelativeLayout
+                            android:id="@+id/followup_start_card"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/followup_date_txtv"
+                            android:visibility="gone"
+                            tools:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/followup_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/fu_male_margin_start"
+                                android:gravity="center_vertical"
+                                android:lineSpacingExtra="3sp"
+                                android:text="@string/followup_info"
+                                android:textAppearance="@style/followup_info"
+                                android:textColor="@null" />
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/followup_info"
+                                android:layout_marginTop="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                                android:background="@drawable/icon_followup_enabled" />
+
+                        </RelativeLayout>
+                        <!--Start Follow up - Start-->
+
+
+                        <!--Do you want to Accept this Follow up - start-->
+                        <RelativeLayout
+                            android:id="@+id/yes_no_followup_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/followup_date_txtv"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:id="@+id/followup_accept_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/fu_male_margin_start"
+                                android:gravity="center_vertical"
+                                android:lineSpacingExtra="3sp"
+                                android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/txtsize_patdetail_14sp" />
+
+                            <!--Button - start -->
+                            <LinearLayout
+                                android:id="@+id/btn_bottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/followup_accept_text"
+                                android:layout_marginBottom="@dimen/fu_margin_start"
+                                android:orientation="horizontal"
+                                android:paddingTop="@dimen/fu_margin_start"
+                                android:weightSum="2">
+
+                                <Button
+                                    android:id="@+id/btn_vs_appointment"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/margin_8"
+                                    android:layout_marginBottom="@dimen/margin_5"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_white_border"
+                                    android:lineHeight="@dimen/button_line_height"
+                                    android:padding="@dimen/fu_margin_start"
+                                    android:text="No"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/common_button_text_size"
+                                    android:textStyle="bold" />
+
+                                <Button
+                                    android:id="@+id/yes_followup_btn"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/common_edittext_margin_top"
+                                    android:layout_marginBottom="@dimen/margin_5"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/ui2_common_primary_bg"
+                                    android:padding="@dimen/fu_margin_start"
+                                    android:text="Yes"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/common_button_text_size"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <!--Button - end -->
+                        </RelativeLayout>
+                        <!--Do you want to Accept this Follow up - End -->
+
+                    </RelativeLayout>
+                    <!--Followup Section - END -->
+
+
+                    <!-- End Visit Button - Start -->
+                    <RelativeLayout
+                        android:id="@+id/endvisit_relative_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/followup_relative_block"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/margin_16dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <View
+                            android:id="@+id/divider_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                            android:background="@color/notifi_divider_color" />
+
+                        <Button
+                            android:id="@+id/btn_end_visit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/divider_5"
                             android:layout_marginBottom="@dimen/margin_5"
-                            android:layout_marginStart="@dimen/common_edittext_margin_top"
                             android:layout_weight="1"
-                            android:textColor="@color/white"
                             android:background="@drawable/ui2_common_primary_bg"
                             android:padding="@dimen/fu_margin_start"
-                            android:textStyle="bold"
-                            android:text="Yes"
-                            android:textSize="@dimen/common_button_text_size" />
+                            android:text="End visit"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/txtsize_patdetail_14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                    <!-- End Visit Button - End -->
 
-                    </LinearLayout>
+                    <!--View based on visibility and condition - end-->
 
-                    <!--Button - end -->
+
                 </RelativeLayout>
-                <!--Do you want to Accept this Follow up - End -->
-
-            </RelativeLayout>
-            <!--Followup Section - END -->
-
-
-
-            <!-- End Visit Button - Start -->
-        <RelativeLayout
-            android:id="@+id/endvisit_relative_block"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/followup_relative_block"
-            android:layout_marginStart="@dimen/fu_margin_start"
-            android:layout_marginEnd="@dimen/fu_margin_start"
-            android:layout_marginBottom="@dimen/margin_16dp"
-            android:visibility="gone"
-            tools:visibility="visible"
-            >
-
-            <View
-                android:id="@+id/divider_5"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
-
-            <Button
-                android:id="@+id/btn_end_visit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_below="@+id/divider_5"
-                android:layout_weight="1"
-                android:textColor="@color/white"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:padding="@dimen/fu_margin_start"
-                android:textStyle="bold"
-                android:text="End visit"
-                android:textSize="@dimen/txtsize_patdetail_14sp" />
-        </RelativeLayout>
-            <!-- End Visit Button - End -->
-
-            <!--View based on visibility and condition - end-->
-
-
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
+            </androidx.cardview.widget.CardView>
 
 
         </RelativeLayout>

@@ -18,7 +18,7 @@
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/followup_toolbar"
@@ -32,7 +32,7 @@
             android:weightSum="3">
 
             <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

@@ -43,6 +43,7 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -71,7 +72,9 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
-            pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
+            pat_call_btn, pat_whatsapp_btn;
+    private ImageView dr_call_btn, dr_whatsapp_btn;
+    ;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
     private ClsDoctorDetails clsDoctorDetails;
@@ -486,6 +489,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     }
 
     public void startTextChat(View view) {
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
@@ -499,15 +506,21 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         if (rtcConnectionDTO != null) {
             try {
                 JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                } else {
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    startActivity(chatIntent);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         } else {
-            chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
         }
-        startActivity(chatIntent);
+
     }
 
     public void startVideoChat(View view) {

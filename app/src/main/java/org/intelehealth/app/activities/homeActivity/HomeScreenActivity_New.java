@@ -203,6 +203,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
+                    String visitId = remoteMessage.getString("visitId");
+                    String doctorId = remoteMessage.getString("doctorId");
                     boolean isOldNotification = false;
                     if (remoteMessage.containsKey("timestamp")) {
                         String timestamp = remoteMessage.getString("timestamp");
@@ -236,6 +238,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
+                    in.putExtra("visitId", visitId);
+                    in.putExtra("doctorId", doctorId);
 
                     int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
                     if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {

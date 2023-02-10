@@ -49,14 +49,16 @@
             android:layout_marginEnd="16dip"
             android:layout_marginBottom="16dip"
             android:onClick="vCallNow"
+            android:visibility="gone"
             app:srcCompat="@drawable/call_icon_new" />
 
         <ImageView
             android:id="@+id/sync_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/call_iv"
+            android:layout_marginEnd="16dip"
             app:srcCompat="@drawable/sync_icon_new" />
     </RelativeLayout>
 

@@ -43,6 +43,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <RelativeLayout android:visibility="gone"
+                    android:id="@+id/remote_video_off_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/default_doct_icon" />
+                </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -77,10 +90,14 @@
                         android:visibility="visible" />
 
                     <ImageView
+                        android:id="@+id/remote_voice_status_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="16dip"
+                        android:layout_marginStart="16dip"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginEnd="16dip"
+                        android:layout_marginBottom="16dip"
                         android:src="@drawable/call_status_11" />
                 </RelativeLayout>
             </FrameLayout>
@@ -100,6 +117,20 @@
                     android:layout_height="match_parent" />
 
                 <RelativeLayout
+                    android:id="@+id/self_video_off_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/default_nurse_icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -113,10 +144,14 @@
                         android:visibility="gone" />
 
                     <ImageView
+                        android:id="@+id/self_voice_status_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="16dip"
+                        android:layout_marginStart="16dip"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginEnd="16dip"
+                        android:layout_marginBottom="16dip"
                         android:src="@drawable/call_status_11" />
                 </RelativeLayout>
 

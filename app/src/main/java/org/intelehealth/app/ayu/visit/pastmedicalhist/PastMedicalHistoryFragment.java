@@ -32,6 +32,7 @@ public class PastMedicalHistoryFragment extends Fragment {
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private Node mCurrentNode;
+    private boolean mIsEditMode = false;
     private VisitCreationActionListener mActionListener;
 
     public PastMedicalHistoryFragment() {
@@ -40,9 +41,10 @@ public class PastMedicalHistoryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static PastMedicalHistoryFragment newInstance(Intent intent, Node node) {
+    public static PastMedicalHistoryFragment newInstance(Intent intent, Node node, boolean isEditMode) {
         PastMedicalHistoryFragment fragment = new PastMedicalHistoryFragment();
         fragment.mCurrentNode = node;
+        fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
@@ -116,7 +118,13 @@ public class PastMedicalHistoryFragment extends Fragment {
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+        if(mIsEditMode){
+            mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
+            mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size()-1;
+        }else{
+            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+
+        }
         return view;
     }
 }

@@ -56,6 +56,8 @@ this.attributes = printAttributes;
     }
 
     private ParcelFileDescriptor getOutputFile(File path, String filename) {
+        Log.v(TAG, "path = "+path);
+        Log.v(TAG, "filename = "+filename);
         if (!path.exists()) {
             path.mkdirs();
         }

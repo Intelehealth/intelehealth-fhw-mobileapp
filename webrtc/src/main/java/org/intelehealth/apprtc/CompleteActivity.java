@@ -102,10 +102,31 @@ import io.socket.client.Socket;
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
     private static final int RC_CALL = 111;
+
     public static final String VIDEO_TRACK_ID = "ARDAMSv0";
-    public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 2;
-    public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 2;
-    public static final int FPS = 30;
+    public static final String AUDIO_TRACK_ID = "ARDAMSa0";
+    public static final String VIDEO_TRACK_TYPE = "video";
+    private static final String VIDEO_CODEC_VP8 = "VP8";
+    private static final String VIDEO_CODEC_VP9 = "VP9";
+    private static final String VIDEO_CODEC_H264 = "H264";
+    private static final String AUDIO_CODEC_OPUS = "opus";
+    private static final String AUDIO_CODEC_ISAC = "ISAC";
+    private static final String VIDEO_CODEC_PARAM_START_BITRATE = "x-google-start-bitrate";
+    private static final String VIDEO_FLEXFEC_FIELDTRIAL = "WebRTC-FlexFEC-03/Enabled/";
+    private static final String AUDIO_CODEC_PARAM_BITRATE = "maxaveragebitrate";
+    private static final String AUDIO_ECHO_CANCELLATION_CONSTRAINT = "googEchoCancellation";
+    private static final String AUDIO_AUTO_GAIN_CONTROL_CONSTRAINT = "googAutoGainControl";
+    private static final String AUDIO_HIGH_PASS_FILTER_CONSTRAINT = "googHighpassFilter";
+    private static final String AUDIO_NOISE_SUPPRESSION_CONSTRAINT = "googNoiseSuppression";
+    private static final String AUDIO_LEVEL_CONTROL_CONSTRAINT = "levelControl";
+    private static final String DTLS_SRTP_KEY_AGREEMENT_CONSTRAINT = "DtlsSrtpKeyAgreement";
+    private static final int HD_VIDEO_WIDTH = 1280;
+    private static final int HD_VIDEO_HEIGHT = 720;
+    private static final int BPS_IN_KBPS = 1000;
+
+    public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 3;
+    public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 3;
+    public static final int FPS = 24;
 
     private Socket socket;
     private boolean isInitiator;
@@ -204,6 +225,12 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorUUID"))
             mDoctorUUID = getIntent().getStringExtra("doctorUUID");
 
+        if (getIntent().hasExtra("visitId"))
+            mVisitUUID = getIntent().getStringExtra("visitId");
+
+        if (getIntent().hasExtra("doctorId"))
+            mDoctorUUID = getIntent().getStringExtra("doctorId");
+
         mFromUUId = mNurseId;
         mToUUId = mDoctorUUID;
         mPatientUUid = mRoomId;
@@ -280,10 +307,22 @@ public class CompleteActivity extends AppCompatActivity {
                         binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
                         binding.audioImv.setAlpha(1.0f);
+                        binding.selfVoiceStatusIv.setImageResource(R.drawable.call_status_11);
+
                     } else {
                         binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
                         binding.audioImv.setAlpha(0.2f);
+                        binding.selfVoiceStatusIv.setImageResource(R.drawable.audio_stream_off);
+
+                    }
+                }
+
+                if (socket != null) {
+                    try {
+                        socket.emit(localAudioTrack.enabled() ? "audioOn" : "audioOff", new JSONObject().put("fromWebapp", false));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -292,7 +331,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (socket != null)
-                    socket.emit("bye");
+                    socket.emit("bye", "app");
                 disconnectAll();
 
             }
@@ -306,10 +345,20 @@ public class CompleteActivity extends AppCompatActivity {
                         binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
                         binding.videoImv.setAlpha(1.0f);
+                        binding.selfVideoOffLl.setVisibility(View.GONE);
                     } else {
                         binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_off_lbl), Toast.LENGTH_SHORT).show();
                         binding.videoImv.setAlpha(0.2f);
+                        binding.selfVideoOffLl.setVisibility(View.VISIBLE);
+                    }
+
+                    if (socket != null) {
+                        try {
+                            socket.emit(videoTrackFromCamera.enabled() ? "videoOn" : "videoOff", new JSONObject().put("fromWebapp", false));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -405,6 +454,7 @@ public class CompleteActivity extends AppCompatActivity {
         }
 
         mCountDownTimer.start();
+        getAllMessages(false);
     }
 
     private void stopRinging() {
@@ -424,7 +474,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (socket != null)
-                    socket.emit("bye");
+                    socket.emit("bye", "app");
                 else
                     finish();
             }
@@ -551,6 +601,84 @@ public class CompleteActivity extends AppCompatActivity {
             // do same what you are doing on start call button(emitting - 'create or join' etc)
             // otherwise after 15 secs emit on "no answer"
             //
+            // Video & Audio ON/OF emit listener
+            socket.on("videoOn", args -> {
+                Log.d(TAG, "videoOn event emit from web: ");
+                for (Object arg : args) {
+                    Log.d(TAG, "updateMessage: videoOn" + String.valueOf(arg));
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+                    if (jsonObject.getBoolean("fromWebapp"))
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.remoteVideoOffLl.setVisibility(View.GONE);
+                            }
+                        });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+            socket.on("videoOff", args -> {
+                Log.d(TAG, "videoOff event emit from web: ");
+                for (Object arg : args) {
+                    Log.d(TAG, "updateMessage: videoOff" + String.valueOf(arg));
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+                    if (jsonObject.getBoolean("fromWebapp"))
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.remoteVideoOffLl.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+            socket.on("audioOn", args -> {
+                Log.d(TAG, "audioOn event emit from web: ");
+                for (Object arg : args) {
+                    Log.d(TAG, "updateMessage: audioOn" + String.valueOf(arg));
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+                    if (jsonObject.getBoolean("fromWebapp"))
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.remoteVoiceStatusIv.setImageResource(R.drawable.call_status_11);
+                            }
+                        });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+            socket.on("audioOff", args -> {
+                Log.d(TAG, "audioOff event emit from web: ");
+                for (Object arg : args) {
+                    Log.d(TAG, "updateMessage: audioOff" + String.valueOf(arg));
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+                    if (jsonObject.getBoolean("fromWebapp"))
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.remoteVoiceStatusIv.setImageResource(R.drawable.audio_stream_off);
+                            }
+                        });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            });
             // CHAT *************************************
             socket.on("isread", args -> {
                 Log.d(TAG, "isread event emit from web: ");
@@ -857,7 +985,7 @@ public class CompleteActivity extends AppCompatActivity {
             peerConnection.removeStream(mediaStream);
             //mediaStream.dispose();
         }
-        mediaStream = factory.createLocalMediaStream(VIDEO_TRACK_ID);
+        mediaStream = factory.createLocalMediaStream("ARDAMS");
         mediaStream.addTrack(videoTrackFromCamera);
         mediaStream.addTrack(localAudioTrack);
         peerConnection.addStream(mediaStream);
