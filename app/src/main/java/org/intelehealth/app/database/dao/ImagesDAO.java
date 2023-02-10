@@ -12,6 +12,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
@@ -144,17 +145,19 @@ public class ImagesDAO {
 
     }
 
-    public boolean insertPatientProfileImages(String imagepath, String patientUuid) throws DAOException {
+    public boolean insertPatientProfileImages(String imagepath, String imageType, String patientUuid) throws DAOException {
         boolean isInserted = false;
+        if(imagepath == null)
+            return true;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
         try {
-            contentValues.put("uuid", patientUuid);
+            contentValues.put("uuid", UUID.randomUUID().toString());
             contentValues.put("patientuuid", patientUuid);
             contentValues.put("visituuid", "");
             contentValues.put("image_path", imagepath);
-            contentValues.put("image_type", "PP");
+            contentValues.put("image_type", imageType);
             contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
             contentValues.put("sync", "false");
             localdb.insertWithOnConflict("tbl_image_records", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -194,7 +197,7 @@ public class ImagesDAO {
 
         }
         if (isupdate == 0)
-            isUpdated = insertPatientProfileImages(imagepath, patientuuid);
+            isUpdated = insertPatientProfileImages(imagepath, "PP", patientuuid);
         return isUpdated;
     }
 
@@ -204,7 +207,7 @@ public class ImagesDAO {
         Base64Utils base64Utils = new Base64Utils();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? COLLATE NOCASE", new String[]{"0", "false", "PP"});
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? OR image_type = ? COLLATE NOCASE", new String[]{"0", "false", "PP", "ADP"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     PatientProfile patientProfile = new PatientProfile();
@@ -283,11 +286,11 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
-        String whereclause = "patientuuid = ? AND image_type = ?";
+        String whereclause = "patientuuid = ? AND image_type = ? OR image_type = ?";
         try {
             contentValues.put("patientuuid", patientuuid);
             contentValues.put("sync", "true");
-            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, type});
+            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, type, "ADP"});
             if (isupdate != 0)
                 isUpdated = true;
             localdb.setTransactionSuccessful();

@@ -258,11 +258,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('dd51ab03-12ef-43cb-9aef-2ec93a989816','BP Test', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('cb07c951-2cb5-41ca-b816-8cb104c9ae8b','Aadhar details', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('4a49bacc-3510-4700-9099-2b7aa788688e','Abdominal Girth', null, 0)");
-
-
-
-
-
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('243dd7eb-e216-40bf-83fb-439723b22d8b','Patient Additional Documents', null, 0)");
         }
     }
 

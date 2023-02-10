@@ -50,14 +50,17 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -187,6 +190,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    RecyclerView additionalDocRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,7 +221,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-
+        additionalDocRV = findViewById(R.id.recy_additional_documents);
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -528,6 +532,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Aadhar details")) {
                     patient_new.setAadhar_details(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Patient Additional Documents")) {
+                    patient_new.setAdditionalDocPath(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
@@ -615,6 +622,20 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
             patientLName = patient_new.getLast_name();
             patientFName = patient_new.getFirst_name();
+        }
+
+        if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
+            String additionalDocPathVal = patient_new.getAdditionalDocPath();
+            ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
+            ArrayList<File> files = new ArrayList<>();
+            if (additionalDocPaths.size()>0) {
+                for(int i = 0; i<additionalDocPaths.size();i++)
+                    files.add(new File(additionalDocPaths.get(i).trim()));
+            }
+            additionalDocRV.setHasFixedSize(true);
+            additionalDocRV.setLayoutManager(new LinearLayoutManager(PatientDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(files, this);
+            additionalDocRV.setAdapter(horizontalAdapter);
         }
 
 //        setTitle(patientName);
@@ -1214,7 +1235,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
                         try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }

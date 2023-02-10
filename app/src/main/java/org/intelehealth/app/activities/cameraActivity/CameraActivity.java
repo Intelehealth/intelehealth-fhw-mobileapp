@@ -51,6 +51,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class CameraActivity extends AppCompatActivity {
 
     public static final int TAKE_IMAGE = 205;
+    public static final int TAKE_IMAGE_AD = 206;
     /**
      * Bundle key used for the {@link String} setting custom Image Name
      * for the file generated
