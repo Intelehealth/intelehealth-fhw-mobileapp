@@ -4,14 +4,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.RescheduledAppointmentsModel;
+import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -66,9 +70,54 @@ public class AppointmentDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-
         }
+    }
 
+    public void updateAppointmentSync(String uuid, String synced) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereClause = "visit_uuid=?";
+        String[] whereArgs = {uuid};
+
+        try {
+            values.put("sync", synced);
+            db.update("tbl_appointments", values, whereClause, whereArgs);
+        } catch (SQLException exception) {
+            throw new DAOException(exception.getMessage());
+        }
+    }
+
+    public void insertAppointmentToDb(BookAppointmentRequest bookAppointmentRequest) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put("uuid", bookAppointmentRequest.getUuid());
+            values.put("appointment_id", bookAppointmentRequest.getAppointmentId());
+            values.put("slot_day", bookAppointmentRequest.getSlotDay());
+            values.put("slot_date", bookAppointmentRequest.getSlotDate());
+            values.put("slot_duration", bookAppointmentRequest.getSlotDuration());
+            values.put("slot_duration_unit", bookAppointmentRequest.getSlotDurationUnit());
+            values.put("slot_time", bookAppointmentRequest.getSlotTime());
+            values.put("speciality", bookAppointmentRequest.getSpeciality());
+            values.put("user_uuid", bookAppointmentRequest.getUserUuid());
+            values.put("dr_name", bookAppointmentRequest.getDrName());
+            values.put("visit_uuid", bookAppointmentRequest.getVisitUuid());
+            values.put("patient_id", bookAppointmentRequest.getPatientId());
+            values.put("patient_name", bookAppointmentRequest.getPatientName());
+            values.put("open_mrs_id", bookAppointmentRequest.getOpenMrsId());
+            values.put("location_uuid", bookAppointmentRequest.getLocationUuid());
+            values.put("hw_uuid", bookAppointmentRequest.getHwUUID());
+            values.put("reason", bookAppointmentRequest.getReason());
+            values.put("created_at", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", 0);
+            values.put("sync", false);
+
+            createdRecordsCount = db.insertWithOnConflict("tbl_appointments", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            throw new DAOException(exception.getMessage(), exception);
+        }
     }
 
     public AppointmentInfo getAppointmentByVisitId(String visitUUID) {
@@ -217,8 +266,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getAppointmentsWithFilters(String fromDate,
-                                                            String toDate, String searchPatientText) {
+    public List<AppointmentInfo> getAppointmentsWithFilters(String fromDate, String toDate, String searchPatientText) {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -230,9 +278,7 @@ public class AppointmentDAO {
 
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !searchPatientText.isEmpty()) {
 
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," +
-                    " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," +
-                    " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%'  and a.slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'";
+            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%'  and a.slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'";
 
 
             Log.d(TAG, "getAppointmentsWithFilters: 1selectQuery : " + selectQuery);
@@ -302,9 +348,7 @@ public class AppointmentDAO {
 
 
         if (!searchPatientText.isEmpty()) {
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," +
-                    " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," +
-                    " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
+            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
 
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {
@@ -354,9 +398,7 @@ public class AppointmentDAO {
     }
 
 
-    public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid,
-                                                    String prev_slot_day, String prev_slot_date,
-                                                    String prev_slot_time) throws DAOException {
+    public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid, String prev_slot_day, String prev_slot_date, String prev_slot_time) throws DAOException {
 
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
@@ -421,8 +463,7 @@ public class AppointmentDAO {
         return appointmentInfo;
     }
 
-    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate,
-                                                                     String toDate, String searchPatientText) {
+    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, String searchPatientText) {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -432,9 +473,7 @@ public class AppointmentDAO {
 
 
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !searchPatientText.isEmpty()) {
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," +
-                    " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," +
-                    " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and status = 'cancelled' and patient_name_new LIKE " + "'%" + search + "%'  and a.slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'";
+            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and status = 'cancelled' and patient_name_new LIKE " + "'%" + search + "%'  and a.slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'";
             Log.d(TAG, "getAppointmentsWithFilters: 1selectQuery : " + selectQuery);
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
@@ -502,11 +541,7 @@ public class AppointmentDAO {
 
         if (!searchPatientText.isEmpty()) {
 
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," +
-                    "a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," +
-                    "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id " +
-                    "and a.status = 'cancelled' and patient_name_new LIKE " + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
-
+            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + "a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id " + "and a.status = 'cancelled' and patient_name_new LIKE " + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
 
 
             idCursor = db.rawQuery(selectQuery, new String[]{});
@@ -556,5 +591,90 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
+    public List<BookAppointmentRequest> getUnsyncedAppointments() throws DAOException {
+        List<BookAppointmentRequest> requestList = new ArrayList<>();
+        BookAppointmentRequest bookAppointmentRequest = new BookAppointmentRequest();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        try {
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    bookAppointmentRequest = new BookAppointmentRequest();
+                    bookAppointmentRequest.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    bookAppointmentRequest.setAppointmentId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                    bookAppointmentRequest.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                    bookAppointmentRequest.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                    bookAppointmentRequest.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                    bookAppointmentRequest.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                    bookAppointmentRequest.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                    bookAppointmentRequest.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                    bookAppointmentRequest.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                    bookAppointmentRequest.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                    bookAppointmentRequest.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                    bookAppointmentRequest.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                    bookAppointmentRequest.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name")));
+                    bookAppointmentRequest.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                    bookAppointmentRequest.setLocationUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("location_uuid")));
+                    bookAppointmentRequest.setHwUUID(idCursor.getString(idCursor.getColumnIndexOrThrow("hw_uuid")));
+                    bookAppointmentRequest.setReason(idCursor.getString(idCursor.getColumnIndexOrThrow("reason")));
+                    bookAppointmentRequest.setSync(idCursor.getString(idCursor.getColumnIndexOrThrow("sync")));
+                }
 
+                String patientSelection = "uuid = ?";
+                String[] patientArgs = {bookAppointmentRequest.getPatientId()};
+                String table = "tbl_patient";
+                String patientAge = "", patientGender = "", patientPic = "";
+
+                String[] columnsToReturn = {"date_of_birth", "gender", "patient_photo"};
+                final Cursor patientCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+                if (patientCursor.moveToFirst()) {
+                    do {
+                        patientAge = DateAndTimeUtils.getAgeInYears(patientCursor.getString(patientCursor.getColumnIndex("date_of_birth")), IntelehealthApplication.getAppContext());
+                        patientGender = patientCursor.getString(patientCursor.getColumnIndex("gender"));
+                        patientPic = patientCursor.getString(patientCursor.getColumnIndex("patient_photo"));
+                    } while (patientCursor.moveToNext());
+                }
+
+                bookAppointmentRequest.setPatientAge(patientAge);
+                bookAppointmentRequest.setPatientGender(patientGender);
+                bookAppointmentRequest.setPatientPic(new Base64Utils().getBase64FromFileWithConversion(patientPic));
+
+                patientCursor.close();
+
+                String hwSelection = "uuid = ?";
+                String[] hwArgs = {bookAppointmentRequest.getHwUUID()};
+                String hwTable = "tbl_provider";
+                String hwAge = "", hwGender = "", hwName = "";
+
+                String[] hwColumnsToReturn = {"dateofbirth", "gender", "given_name", "middle_name", "family_name"};
+                final Cursor providerCursor = db.query(hwTable, hwColumnsToReturn, hwSelection, hwArgs, null, null, null);
+                if (providerCursor.moveToFirst()) {
+                    do {
+                        hwAge = DateAndTimeUtils.getAgeInYearMonth(providerCursor.getString(providerCursor.getColumnIndex("dateofbirth")));
+                        hwGender = providerCursor.getString(providerCursor.getColumnIndex("gender"));
+
+                        String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
+                        String middleName = providerCursor.getString(providerCursor.getColumnIndex("middle_name"));
+                        String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
+                        hwName = firstName + " " + ((!TextUtils.isEmpty(middleName)) ? middleName : "") + " " + lastName;
+                    } while (providerCursor.moveToNext());
+                }
+
+                bookAppointmentRequest.setHwAge(hwAge);
+                bookAppointmentRequest.setHwGender(hwGender);
+                bookAppointmentRequest.setHwName(hwName);
+
+                providerCursor.close();
+
+                requestList.add(bookAppointmentRequest);
+            }
+            idCursor.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            throw new DAOException(exception.getMessage(), exception);
+        }
+
+        return requestList;
+    }
 }

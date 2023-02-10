@@ -3,9 +3,15 @@ package org.intelehealth.app.models.pushRequestApiCall;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.app.appointment.model.BookAppointmentRequest;
+
 import java.util.List;
 
 public class PushRequestApiCall {
+
+    @SerializedName("appointments")
+    @Expose
+    private List<BookAppointmentRequest> appointments = null;
 
     @SerializedName("persons")
     @Expose
@@ -32,6 +38,13 @@ public class PushRequestApiCall {
     @Expose
     private List<Provider> providers = null;
 
+    public List<BookAppointmentRequest> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<BookAppointmentRequest> appointments) {
+        this.appointments = appointments;
+    }
 
     public List<Person> getPersons() {
         return persons;

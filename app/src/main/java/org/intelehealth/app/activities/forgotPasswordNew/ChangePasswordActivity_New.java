@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
@@ -37,6 +38,7 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -63,6 +65,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
     ObjectAnimator syncAnimator;
+    private final SyncUtils syncUtils = new SyncUtils();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,20 +145,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             @Override
             public void onNext(ResponseBody test) {
                 SnackbarUtils snackbarUtils = new SnackbarUtils();
-                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.password_changed_successfully),
-                        layoutParent);
+                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.password_changed_successfully), layoutParent);
 
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, HomeScreenActivity_New.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, 2000);
-
+                handler.postDelayed(() -> performLogout(), 2000);
                 cpd.dismiss();
             }
 
@@ -358,5 +352,17 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+    }
+
+    private void performLogout() {
+        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+        Intent intent = new Intent(ChangePasswordActivity_New.this, LoginActivityNew.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+        syncUtils.syncBackground();
+        sessionManager.setReturningUser(false);
+        sessionManager.setLogout(true);
     }
 }

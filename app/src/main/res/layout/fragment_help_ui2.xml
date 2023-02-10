@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,19 +127,22 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="100dp" />
+
         </LinearLayout>
 
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat_help"
-        android:layout_width="wrap_content"
+        android:layout_width="375dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_gravity="end"
         android:layout_marginStart="@dimen/fab_help_chat_margin_start"
         android:layout_marginTop="@dimen/fab_help_chat_margin_top"
         android:layout_marginEnd="@dimen/fab_help_chat_margin_end"
+        android:layout_marginBottom="60dp"
         android:background="@color/colorPrimary1"
         android:backgroundTint="@color/colorPrimary1"
         android:contentDescription="@string/app_name"

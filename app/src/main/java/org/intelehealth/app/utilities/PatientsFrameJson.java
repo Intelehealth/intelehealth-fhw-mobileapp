@@ -14,6 +14,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -51,10 +53,12 @@ public class PatientsFrameJson {
         session = new SessionManager(IntelehealthApplication.getAppContext());
 
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
+        List<BookAppointmentRequest> appointmentRequestList = new ArrayList<>();
 
         List<PatientDTO> patientDTOList = null;
         try {
             patientDTOList = patientsDAO.unsyncedPatients();
+            appointmentRequestList = new AppointmentDAO().getUnsyncedAppointments();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -220,6 +224,7 @@ public class PatientsFrameJson {
         }
 
 
+        pushRequestApiCall.setAppointments(appointmentRequestList);
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);

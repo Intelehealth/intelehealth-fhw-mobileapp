@@ -83,12 +83,10 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener {
         TextView tvMoreVideos = view.findViewById(R.id.tv_more_videos);
         TextView tvMoreFaq = view.findViewById(R.id.tv_faq_more);
         FloatingActionButton fabHelp = view.findViewById(R.id.fab_chat_help);
-        fabHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatSupportHelpActivity_New.class);
-                startActivity(intent);
-            }
+
+        fabHelp.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChatSupportHelpActivity_New.class);
+            startActivity(intent);
         });
 
         tvMoreVideos.setOnClickListener(new View.OnClickListener() {

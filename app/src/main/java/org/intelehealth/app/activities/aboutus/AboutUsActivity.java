@@ -5,12 +5,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +33,7 @@ public class AboutUsActivity extends AppCompatActivity {
     private TextView globe_link, info_link;
     private ImageView ivRefresh;
     private ObjectAnimator syncAnimator;
+    private Button gotoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,18 @@ public class AboutUsActivity extends AppCompatActivity {
 //        MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity());
 //        rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-
+        gotoButton = findViewById(R.id.goto_btn);
+        gotoButton.setOnClickListener(v -> {
+            String url = "https://intelehealth.org/";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException ex) {
+                intent.setPackage(null);
+                startActivity(intent);
+            }
+        });
     }
 
     public void backPress(View view) {

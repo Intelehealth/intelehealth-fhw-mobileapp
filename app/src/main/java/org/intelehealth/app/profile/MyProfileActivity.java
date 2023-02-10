@@ -25,6 +25,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -57,6 +58,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.MyProfilePOJO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
@@ -83,7 +85,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface,NetworkUtils.InternetCheckUpdateInterface {
+public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge;
@@ -110,6 +112,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     ImageView ivIsInternet, refresh;
     private ObjectAnimator syncAnimator;
     private boolean isSynced = false;
+    private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +166,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
             if (isSynced)
                 fetchUserDetailsIfAdded();
-          //  Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
         });
 
         //initialize all input fields
@@ -203,6 +206,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             boolean isChecked = checkedRadioButton.isChecked();
             if (isChecked) {
                 String selectedGenderText = checkedRadioButton.getText().toString();
+                myProfilePOJO.setNewGender(String.valueOf(selectedGenderText.charAt(0)));
+                shouldActivateSaveButton();
 
                 switch (selectedGenderText) {
                     case "Male":
@@ -236,56 +241,65 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
 
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    updateProfileDetailsToLocalDb();
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-
+        btnSave.setOnClickListener(v -> {
+            try {
+                updateProfileDetailsToLocalDb();
+                myProfilePOJO.updateProfileDetails();
+                btnSave.setEnabled(false);
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
         });
 
-        tvDob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
-                }
+        tvDob.setOnClickListener(v -> {
+            CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
             }
         });
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 
         // fetch user details if added
         fetchUserDetailsIfAdded();
-        manageErrorFields();
+        manageListeners();
     }
 
     private void fetchUserDetailsIfAdded() {
         try {
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+
             etUsername.setText(sessionManager.getChwname());
+
             etFirstName.setText(providerDTO.getGivenName());
+            myProfilePOJO.setFirstName(providerDTO.getGivenName());
+
             etLastName.setText(providerDTO.getFamilyName());
+            myProfilePOJO.setLastName(providerDTO.getFamilyName());
+
             etEmail.setText(providerDTO.getEmailId());
+            myProfilePOJO.setEmail(providerDTO.getEmailId());
+
             etMiddleName.setText(providerDTO.getMiddle_name());
+            myProfilePOJO.setMiddleName(providerDTO.getMiddle_name());
 
             tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(providerDTO.getDateofbirth()));
+            myProfilePOJO.setDateOfBirth(DateAndTimeUtils.getDisplayDateForApp(providerDTO.getDateofbirth()));
+
             //for updating in db
             dobToDb = providerDTO.getDateofbirth();
 
             String age = DateAndTimeUtils.getAge_FollowUp(providerDTO.getDateofbirth(), this);
             tvAge.setText(age);
+
             String phoneWithCountryCode = providerDTO.getCountryCode() + providerDTO.getTelephoneNumber();
-
             countryCodePicker.setFullNumber(phoneWithCountryCode); // automatically assigns cc to spinner and number to edittext field.
-
+            myProfilePOJO.setPhoneNumber(providerDTO.getTelephoneNumber());
+            myProfilePOJO.setCountryCode(providerDTO.getCountryCode());
 
             String gender = providerDTO.getGender();
+            myProfilePOJO.setGender(providerDTO.getGender());
+
             if (gender != null && !gender.isEmpty()) {
 
                 if (gender.equalsIgnoreCase("m")) {
@@ -388,8 +402,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                           // Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
-                          //  startActivity(intent);
+                            // Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
+                            //  startActivity(intent);
                         }
                     }, 2000);
 
@@ -490,8 +504,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         .skipMemoryCache(true)
                         .into(ivProfileImage);
 
-                saveImage(mCurrentPhotoPath);
-            }
+                saveImage(mCurrentPhotoPath);            }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (data != null) {
                 try {
@@ -529,7 +542,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
                     BitmapUtils.copyFile(picturePath, finalFilePath);
                     compressImageAndSave(finalFilePath);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -687,6 +699,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             if (age != null && !age.isEmpty() && Integer.parseInt(age) > 10) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
+                myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
+                shouldActivateSaveButton();
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
             } else {
                 tvAge.setText("");
@@ -700,7 +714,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         }
     }
 
-    private void manageErrorFields() {
+    private void manageListeners() {
         Context context = MyProfileActivity.this;
         etFirstName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -727,7 +741,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                myProfilePOJO.setNewFirstName(s.toString());
+                shouldActivateSaveButton();
             }
         });
 
@@ -744,6 +759,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             @Override
             public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewLastName(s.toString());
+                shouldActivateSaveButton();
                 if (TextUtils.isEmpty(etLastName.getText().toString())) {
                     tvErrorLastName.setVisibility(View.VISIBLE);
                     etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
@@ -771,6 +788,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             @Override
             public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewPhoneNumber(s.toString());
+                shouldActivateSaveButton();
                 if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
                     tvErrorMobileNo.setVisibility(View.VISIBLE);
                     etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
@@ -779,12 +798,68 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 } else {
                     tvErrorMobileNo.setVisibility(View.GONE);
                     etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-
                 }
             }
         });
 
+        etMiddleName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewMiddleName(s.toString());
+                shouldActivateSaveButton();
+            }
+        });
+
+        countryCodePicker.setOnCountryChangeListener(() -> {
+            myProfilePOJO.setNewCountryCode(countryCodePicker.getSelectedCountryCodeWithPlus());
+            shouldActivateSaveButton();
+        });
+
+        etMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewPhoneNumber(s.toString());
+                shouldActivateSaveButton();
+            }
+        });
+
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewEmail(s.toString());
+                shouldActivateSaveButton();
+            }
+        });
     }
 
     private boolean areInputFieldsValid() {
@@ -818,6 +893,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
         return result;
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -825,6 +901,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -845,5 +922,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+    }
+
+    private void shouldActivateSaveButton() {
+        boolean hasDataChanged = myProfilePOJO.hasDataChanged();
+        btnSave.setEnabled(hasDataChanged);
     }
 }

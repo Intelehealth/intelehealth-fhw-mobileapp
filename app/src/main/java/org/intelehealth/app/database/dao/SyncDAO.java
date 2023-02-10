@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.models.ActivePatientModel;
 import org.intelehealth.app.models.dto.ResponseDTO;
@@ -371,7 +372,7 @@ public class SyncDAO {
         VisitsDAO visitsDAO = new VisitsDAO();
         EncounterDAO encounterDAO = new EncounterDAO();
         ProviderDAO providerDAO = new ProviderDAO();
-
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
 
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
@@ -387,7 +388,7 @@ public class SyncDAO {
         Logger.logD(TAG, "push request encoded - " + encoded);
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
-        if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty() || !pushRequestApiCall.getProviders().isEmpty()) {
+        if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty() || !pushRequestApiCall.getProviders().isEmpty() || !pushRequestApiCall.getAppointments().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
             pushResponseApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -420,6 +421,16 @@ public class SyncDAO {
                                         Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getAppointmentList().size(); i++) {
+                                    try {
+                                        String sync = pushResponseApiCall.getData().getAppointmentList().get(i).getSync();
+                                        String visitUuid = pushResponseApiCall.getData().getAppointmentList().get(i).getUuid();
+                                        appointmentDAO.updateAppointmentSync(visitUuid, sync);
+                                    } catch (DAOException exception) {
+                                        FirebaseCrashlytics.getInstance().recordException(exception);
                                     }
                                 }
 

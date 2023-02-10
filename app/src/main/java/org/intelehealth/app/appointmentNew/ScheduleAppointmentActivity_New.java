@@ -4,10 +4,14 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +31,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
@@ -36,11 +44,15 @@ import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.ParseException;
@@ -88,12 +100,16 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
 
+    private SessionManager sessionManager;
+    String patientAge, patientGender, patientPic;
+    String hwName, hwAge, hwGender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_appointment_new);
         networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
-
+        sessionManager = new SessionManager(this);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -148,7 +164,50 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         } else {
             Toast.makeText(this, "Speciality must not be null", Toast.LENGTH_SHORT).show();
         }
+
+//        fetchDataFromDB();
     }
+
+//    private void fetchDataFromDB() {
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//
+//        String patientSelection = "uuid = ?";
+//        String[] patientArgs = {patientUuid};
+//        String table = "tbl_patient";
+//
+//        String[] columnsToReturn = {"date_of_birth", "gender", "patient_photo"};
+//        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+//
+//        if (idCursor.moveToFirst()) {
+//            do {
+//                patientAge = DateAndTimeUtils.getAgeInYearMonth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")), this);
+//                patientGender = idCursor.getString(idCursor.getColumnIndex("gender"));
+//                patientPic = idCursor.getString(idCursor.getColumnIndex("patient_photo"));
+//            } while (idCursor.moveToNext());
+//        }
+//
+//        idCursor.close();
+//
+//        String hwSelection = "uuid = ?";
+//        String[] hwArgs = {sessionManager.getProviderID()};
+//        String hwTable = "tbl_provider";
+//
+//        String[] hwColumnsToReturn = {"dateofbirth", "gender", "given_name", "middle_name", "family_name"};
+//        final Cursor providerCursor = db.query(hwTable, hwColumnsToReturn, hwSelection, hwArgs, null, null, null);
+//        if (providerCursor.moveToFirst()) {
+//            do {
+//                hwAge = DateAndTimeUtils.getAgeInYearMonth(providerCursor.getString(providerCursor.getColumnIndex("dateofbirth")), this);
+//                hwGender = providerCursor.getString(providerCursor.getColumnIndex("gender"));
+//
+//                String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
+//                String middleName = providerCursor.getString(providerCursor.getColumnIndex("middle_name"));
+//                String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
+//                hwName = firstName + " " + ((!TextUtils.isEmpty(middleName)) ? middleName : "") + " " + lastName;
+//            } while (providerCursor.moveToNext());
+//        }
+//
+//        providerCursor.close();
+//    }
 
     private void initUI() {
 
@@ -224,75 +283,71 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         //api for get appointment slots for selected date and doctor speciality
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
-                .enqueue(new Callback<SlotInfoResponse>() {
-                    @Override
-                    public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
-                        SlotInfoResponse slotInfoResponse = response.body();
-                        List<SlotInfo> slotInfoList = new ArrayList<>();
-                        slotInfoMorningList = new ArrayList<>();
-                        slotInfoAfternoonList = new ArrayList<>();
-                        slotInfoEveningList = new ArrayList<>();
+        ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
+            @Override
+            public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
+                SlotInfoResponse slotInfoResponse = response.body();
+                List<SlotInfo> slotInfoList = new ArrayList<>();
+                slotInfoMorningList = new ArrayList<>();
+                slotInfoAfternoonList = new ArrayList<>();
+                slotInfoEveningList = new ArrayList<>();
 
-                        slotInfoList.addAll(slotInfoResponse.getDates());
+                slotInfoList.addAll(slotInfoResponse.getDates());
 
-                        for (int i = 0; i < slotInfoList.size(); i++) {
-                            SlotInfo slotInfo = slotInfoList.get(i);
-                            if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
-                                String[] splitedTime = slotInfo.getSlotTime().split(" ");
-                                if (splitedTime[1].trim().equals("AM")) {
+                for (int i = 0; i < slotInfoList.size(); i++) {
+                    SlotInfo slotInfo = slotInfoList.get(i);
+                    if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
+                        String[] splitedTime = slotInfo.getSlotTime().split(" ");
+                        if (splitedTime[1].trim().equals("AM")) {
 
-                                    slotInfoMorningList.add(slotInfo);
-                                }
-
-                            }
+                            slotInfoMorningList.add(slotInfo);
                         }
 
-                        for (int i = 0; i < slotInfoList.size(); i++) {
-                            SlotInfo slotInfo = slotInfoList.get(i);
-                            if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
-                                String[] splitedTime = slotInfo.getSlotTime().split(" ");
-                                double appointmentTime;
-                                if (splitedTime[1].trim().equals("PM")) {
-                                    if (splitedTime[0].contains(":")) {
-                                        String time = splitedTime[0].replace(":", ".");
-                                        appointmentTime = Double.parseDouble(time);
+                    }
+                }
 
-                                    } else {
-                                        appointmentTime = Double.parseDouble(splitedTime[0]);
-                                    }
-                                    if ((appointmentTime >= 1 && appointmentTime <= 6) || appointmentTime >= 12) {
-                                        slotInfoAfternoonList.add(slotInfo);
+                for (int i = 0; i < slotInfoList.size(); i++) {
+                    SlotInfo slotInfo = slotInfoList.get(i);
+                    if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
+                        String[] splitedTime = slotInfo.getSlotTime().split(" ");
+                        double appointmentTime;
+                        if (splitedTime[1].trim().equals("PM")) {
+                            if (splitedTime[0].contains(":")) {
+                                String time = splitedTime[0].replace(":", ".");
+                                appointmentTime = Double.parseDouble(time);
 
-                                    } else {
-                                        slotInfoEveningList.add(slotInfo);
+                            } else {
+                                appointmentTime = Double.parseDouble(splitedTime[0]);
+                            }
+                            if ((appointmentTime >= 1 && appointmentTime <= 6) || appointmentTime >= 12) {
+                                slotInfoAfternoonList.add(slotInfo);
 
-                                    }
-
-                                }
+                            } else {
+                                slotInfoEveningList.add(slotInfo);
 
                             }
 
                         }
-                        setDataForMorningAppointments(slotInfoMorningList);
-                        setDataForAfternoonAppointments(slotInfoAfternoonList);
-                        setDataForEveningAppointments(slotInfoEveningList);
 
                     }
 
-                    @Override
-                    public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
+                }
+                setDataForMorningAppointments(slotInfoMorningList);
+                setDataForAfternoonAppointments(slotInfoAfternoonList);
+                setDataForEveningAppointments(slotInfoEveningList);
+
+            }
+
+            @Override
+            public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
+                Log.v("onFailure", t.getMessage());
+            }
+        });
 
     }
 
     private void setDataForAfternoonAppointments(List<SlotInfo> slotInfoList) {
-        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(
-                ScheduleAppointmentActivity_New.this,
-                slotInfoList, "afternoon", new PickUpTimeSlotsAdapter.OnItemSelection() {
+        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(ScheduleAppointmentActivity_New.this, slotInfoList, "afternoon", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
@@ -309,9 +364,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
     private void setDataForEveningAppointments(List<SlotInfo> slotInfoList) {
-        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(
-                ScheduleAppointmentActivity_New.this,
-                slotInfoList, "evening", new PickUpTimeSlotsAdapter.OnItemSelection() {
+        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(ScheduleAppointmentActivity_New.this, slotInfoList, "evening", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
@@ -329,9 +382,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
     private void setDataForMorningAppointments(List<SlotInfo> slotInfoList) {
-        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(
-                ScheduleAppointmentActivity_New.this,
-                slotInfoList, "morning", new PickUpTimeSlotsAdapter.OnItemSelection() {
+        PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(ScheduleAppointmentActivity_New.this, slotInfoList, "morning", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 slotInfoForBookApp = slotInfo;
@@ -349,9 +400,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     }
 
-    private void getAllDatesOfSelectedMonth(Calendar calendar,
-                                            boolean isCurrentMonth,
-                                            String selectedMonth, String selectedYear, String selectedMonthForDays) {
+    private void getAllDatesOfSelectedMonth(Calendar calendar, boolean isCurrentMonth, String selectedMonth, String selectedYear, String selectedMonthForDays) {
 
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDay;
@@ -516,8 +565,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         yesButton.setOnClickListener(v -> {
-
             bookAppointment();
+            alertDialog.dismiss();
         });
 
         noButton.setOnClickListener(v -> {
@@ -529,13 +578,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private void bookAppointment() {
         //reason - as per old flow
+
+
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
             request.setReason("reason");
         }
 
-
+        request.setUuid(new UuidGenerator().UuidGenerator());
         request.setSlotDay(slotInfoForBookApp.getSlotDay());
         request.setSlotDate(slotInfoForBookApp.getSlotDate());
         request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
@@ -552,57 +603,79 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
+
         Gson gson = new Gson();
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
 
+        try {
+            appointmentDAO.insertAppointmentToDb(request);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .bookAppointment(url, request)
-                .enqueue(new Callback<AppointmentDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
-                        AppointmentDetailsResponse appointmentDetailsResponse = response.body();
+        if (NetworkConnection.isOnline(getApplication())) {
 
-                        if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
-                            if (alertDialog != null) {
-                                alertDialog.dismiss();
-                            }
-                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
-                            getSlots();
-                        } else {
-                            if (!actionTag.isEmpty() && appointmentId != 0) {
-                                //reschedule appointment - update local db with prev appointment details
-                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                try {
-                                    appointmentDAO.updatePreviousAppointmentDetails(String.valueOf(appointmentId),
-                                            visitUuid, app_start_day, app_start_date, app_start_time);
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
-                                /*setResult(RESULT_OK);
-                                finish();*/
-                            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+            final Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                SyncUtils syncUtils = new SyncUtils();
+                boolean isSynced = syncUtils.syncForeground("scheduleAppointment");
 
-                            Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                if (isSynced) {
+                    Toast.makeText(this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, MyAppointmentActivity.class);
+                    finish();
+                    startActivity(intent);
+                }
+            }, 4000);
+        } else {
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                        Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-
+        }
     }
+
+
+//        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+//        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
+//        ApiClientAppointment.getInstance(baseurl).getApi().bookAppointment(url, request).enqueue(new Callback<AppointmentDetailsResponse>() {
+//            @Override
+//            public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+//                AppointmentDetailsResponse appointmentDetailsResponse = response.body();
+//
+//                if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
+//                    if (alertDialog != null) {
+//                        alertDialog.dismiss();
+//                    }
+//                    Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
+//                    getSlots();
+//                } else {
+//                    if (!actionTag.isEmpty() && appointmentId != 0) {
+//                        //reschedule appointment - update local db with prev appointment details
+//                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                        try {
+//                            appointmentDAO.updatePreviousAppointmentDetails(String.valueOf(appointmentId), visitUuid, app_start_day, app_start_date, app_start_time);
+//                        } catch (DAOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+//                                /*setResult(RESULT_OK);
+//                                finish();*/
+//                    AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+//
+//                    Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+//                Log.v("onFailure", t.getMessage());
+//                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
 
     String getDayOfMonthSuffix(String date) {
         String result = "";
@@ -653,6 +726,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
 
     }
+
 
     @Override
     protected void onStart() {

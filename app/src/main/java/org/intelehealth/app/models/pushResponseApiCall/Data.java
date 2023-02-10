@@ -11,15 +11,22 @@ public class Data {
     @SerializedName("personList")
     @Expose
     private List<PersonList> personList = null;
+
     @SerializedName("patientlist")
     @Expose
     private List<Patientlist> patientlist = null;
+
     @SerializedName("visitlist")
     @Expose
     private List<Visitlist> visitlist = null;
+
     @SerializedName("encounterlist")
     @Expose
     private List<Encounterlist> encounterlist = null;
+
+    @SerializedName("AppointmentList")
+    @Expose
+    private List<AppointmentList> appointmentList = null;
 
     public List<ProviderList> getProviderlist() {
         return providerlist;
@@ -65,4 +72,11 @@ public class Data {
         this.encounterlist = encounterlist;
     }
 
+    public List<AppointmentList> getAppointmentList() {
+        return appointmentList;
+    }
+
+    public void setAppointmentList(List<AppointmentList> appointmentList) {
+        this.appointmentList = appointmentList;
+    }
 }
