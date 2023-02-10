@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -51,7 +50,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
-                    android:padding="@dimen/margin_5" android:onClick="backPress"
+                    android:onClick="backPress"
+                    android:padding="@dimen/margin_5"
                     android:src="@drawable/ic_arrow_right" />
 
                 <!-- Label -->
@@ -62,10 +62,10 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
-                    android:text="About us"
+                    android:text="@string/about_us"
+                    android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
-                    android:textAppearance="@style/label"
                     android:translationY="-0.28sp" />
 
             </LinearLayout>
@@ -97,34 +97,34 @@
                 android:id="@+id/images_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:itemCount="1"
-                android:scrollbars="none"
-                android:scrollIndicators="none"
-                tools:listitem="@layout/aboutus_listitem"
                 android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_24" />
+                android:scrollIndicators="none"
+                android:scrollbars="none"
+                tools:itemCount="1"
+                tools:listitem="@layout/aboutus_listitem" />
 
             <TextView
                 android:id="@+id/description_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_24"
-                android:textSize="@dimen/txtsize_patdetail_14sp"
-                android:textColor="@color/textview_color"
                 android:layout_below="@+id/images_recyclerview"
-                android:text="@string/aboutus_text" />
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:text="@string/aboutus_text"
+                android:textColor="@color/textview_color"
+                android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             <RelativeLayout
                 android:id="@+id/globe_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/edittext_height_44dp"
+                android:layout_below="@+id/description_txt"
                 android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_below="@+id/description_txt">
+                android:layout_marginTop="@dimen/edittext_height_44dp"
+                android:layout_marginEnd="@dimen/margin_24">
 
                 <ImageView
                     android:id="@+id/globe_img"
@@ -136,12 +136,12 @@
                     android:id="@+id/globe_link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_toEndOf="@+id/globe_img"
                     android:autoLink="web"
-                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:text="@string/visit_intelehealth_for_more"
                     android:textColorLink="@color/blue_1"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:text="@string/visit_intelehealth_for_more"/>
+                    android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             </RelativeLayout>
 
@@ -150,11 +150,10 @@
                 android:id="@+id/relative_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fu_margin_start"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
                 android:layout_below="@+id/globe_relative"
-                >
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/margin_24">
 
                 <ImageView
                     android:id="@+id/info_img"
@@ -166,11 +165,11 @@
                     android:id="@+id/info_link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/info_img"
-                    android:textSize="@dimen/txtsize_patdetail_14sp"
-                    android:textColorLink="@color/blue_1"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:text="@string/aboutus_termscondition"/>
+                    android:layout_toEndOf="@+id/info_img"
+                    android:text="@string/aboutus_termscondition"
+                    android:textColorLink="@color/blue_1"
+                    android:textSize="@dimen/txtsize_patdetail_14sp" />
             </RelativeLayout>
             <!--Info - End-->
 
@@ -178,8 +177,8 @@
                 android:id="@+id/frame_gotobtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_68dp"
-                android:layout_below="@+id/relative_info">
+                android:layout_below="@+id/relative_info"
+                android:layout_marginTop="@dimen/margin_68dp">
 
                 <RelativeLayout
                     android:id="@+id/relative_goto_btn"
@@ -192,9 +191,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/fu_btn_size"
                         android:layout_marginStart="@dimen/margin_24"
+                        android:layout_marginTop="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_24"
-                        android:layout_marginTop="@dimen/fu_margin_start"
                         android:background="@drawable/aboutus_btn" />
 
                 </RelativeLayout>

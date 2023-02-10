@@ -50,7 +50,7 @@
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="Add a picture"
+                android:text="@string/add_a_picture"
                 android:textAppearance="@style/blur_txtview"
                 android:textColor="@null"
                 android:textSize="@null"
@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="First Name*"
+                    android:text="@string/first_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -96,7 +96,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
@@ -119,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Middle Name"
+                    android:text="@string/middle_name_registration"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -145,7 +145,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
@@ -169,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Last Name*"
+                    android:text="@string/last_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
 
                     android:textSize="@null" />
@@ -197,7 +197,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
@@ -222,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:lineSpacingExtra="3sp"
-                    android:text="Gender*"
+                    android:text="@string/gender_mandatory"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -240,7 +240,7 @@
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:drawableEnd="@drawable/gender_male_svg"
-                        android:text="Male"
+                        android:text="@string/male"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
@@ -252,7 +252,7 @@
                         android:layout_marginEnd="@dimen/gender_margin"
                         android:layout_weight="1"
                         android:drawableEnd="@drawable/gender_female_svg"
-                        android:text="Female"
+                        android:text="@string/female"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
@@ -263,7 +263,7 @@
                         android:layout_gravity="end"
                         android:layout_weight="1"
                         android:drawableEnd="@drawable/gender_other_svg"
-                        android:text="Other"
+                        android:text="@string/other"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
@@ -276,7 +276,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
@@ -299,7 +299,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Date of Birth*"
+                    android:text="@string/date_of_birth_mandatory"
                     android:textAppearance="@style/blur_txtview"
 
                     android:textSize="@null" />
@@ -331,7 +331,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
@@ -355,7 +355,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Age*"
+                    android:text="@string/age_mandatory"
                     android:textAppearance="@style/blur_txtview"
 
                     android:textSize="@null" />
@@ -410,9 +410,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Phone Number*"
+                    android:text="@string/phone_number_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <LinearLayout
@@ -439,10 +438,10 @@
                         android:layout_marginStart="@dimen/fu_card_margin_updown"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:maxLength="15"
                         android:background="@drawable/edittext_border"
                         android:hint="Phone Number"
                         android:inputType="phone"
+                        android:maxLength="15"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"

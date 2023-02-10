@@ -1760,7 +1760,26 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
-
+    <string name="this_weeks_visits">This week\'s visits</string>
+    <string name="this_months_visits">This month\'s visits</string>
+    <string name="language">Language</string>
+    <string name="protocols">Protocols</string>
+    <string name="app_language">App language</string>
+    <string name="update_app_protocols">Update app protocols</string>
+    <string name="reset_to_english">Reset to English</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="appointments">Appointments</string>
+    <string name="follow_up_visits">Follow-up visits</string>
+    <string name="first_name_mandatory">First Name*</string>
+    <string name="middle_name_registration">Middle Name</string>
+    <string name="last_name_mandatory">Last Name*</string>
+    <string name="gender_mandatory">Gender*</string>
+    <string name="date_of_birth_mandatory">Date of Birth*</string>
+    <string name="age_mandatory">Age*</string>
+    <string name="phone_number_mandatory">Phone Number*</string>
+    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="add_a_picture">Add a picture</string>
 
     <!--END-->
 

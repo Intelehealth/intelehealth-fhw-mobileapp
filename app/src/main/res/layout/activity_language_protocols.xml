@@ -50,7 +50,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
-                    android:padding="@dimen/margin_5" android:onClick="backPress"
+                    android:onClick="backPress"
+                    android:padding="@dimen/margin_5"
                     android:src="@drawable/ic_arrow_right" />
 
                 <!-- Label -->
@@ -61,10 +62,10 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
-                    android:text="Change language &amp; protocol"
+                    android:text="@string/change_lang"
+                    android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
-                    android:textAppearance="@style/label"
                     android:translationY="-0.28sp" />
 
             </LinearLayout>
@@ -87,12 +88,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_relative"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_10"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/corner_radius_8dp"
-        android:layout_marginTop="@dimen/margin_32dp"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginEnd="@dimen/toolbar_margin_left"
         app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
@@ -122,8 +123,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_toEndOf="@+id/vs_icon"
-                    android:textStyle="bold"
-                    android:text="Language" />
+                    android:text="@string/language"
+                    android:textStyle="bold" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/btn_up_special_vd_header"
@@ -132,8 +133,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:visibility="gone"
-                    android:src="@drawable/ui2_ic_chevron_down" />
+                    android:src="@drawable/ui2_ic_chevron_down"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <!--Expanded Vitals-->
@@ -159,30 +160,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider"
-                    android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="App language"
-                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/hint_text_color"/>
+                        android:text="@string/app_language"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <Spinner
                         android:id="@+id/lang_spinner"
                         style="@style/SmallSpinnerTheme"
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_alignParentEnd="true"
+                        android:entries="@array/language_names"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
-                        android:paddingBottom="@dimen/margin_10"
-                        android:layout_alignParentEnd="true"
-                        android:entries="@array/language_names"
-                        />
+                        android:paddingBottom="@dimen/margin_10" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -198,18 +198,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reset to English"
-                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/hint_text_color"/>
+                        android:text="@string/reset_to_english"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <ImageButton
                         android:id="@+id/reset_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/reset_lang_icon"
-                        android:background="@null" />
+                        android:background="@null"
+                        android:src="@drawable/reset_lang_icon" />
                 </RelativeLayout>
                 <!--Language Relative - End-->
 
@@ -224,12 +224,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lang_card"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_10"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/corner_radius_8dp"
-        android:layout_marginTop="@dimen/margin_32dp"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginEnd="@dimen/toolbar_margin_left"
         app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
@@ -259,8 +259,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_toEndOf="@+id/vs_icon"
-                    android:textStyle="bold"
-                    android:text="Protocols" />
+                    android:text="@string/protocols"
+                    android:textStyle="bold" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/btn_up_special_vd_header"
@@ -269,8 +269,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:visibility="gone"
-                    android:src="@drawable/ui2_ic_chevron_down" />
+                    android:src="@drawable/ui2_ic_chevron_down"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <!--Expanded Vitals-->
@@ -296,26 +296,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider"
-                    android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/margin_16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update app protocols"
-                        android:textSize="@dimen/txtsize_patdetail_14sp"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/hint_text_color"/>
+                        android:text="@string/update_app_protocols"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <ImageButton
                         android:id="@+id/update_protocols_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/update_protocols_icon"
-                        android:background="@null" />
+                        android:background="@null"
+                        android:src="@drawable/update_protocols_icon" />
                 </RelativeLayout>
                 <!--Protocols Relative - End-->
 
@@ -330,8 +330,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_24"
         android:layout_marginStart="@dimen/margin_24"
-        android:layout_marginEnd="@dimen/margin_24" />
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_marginBottom="@dimen/margin_24" />
 
 </RelativeLayout>

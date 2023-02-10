@@ -7,7 +7,7 @@
     android:background="@drawable/frame_10021"
     tools:context=".activities.visit.EndVisitActivity">
 
-<!--    Toolbar - start -->
+    <!--    Toolbar - start -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
@@ -62,9 +62,9 @@
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
                     android:text="@string/close_visits"
+                    android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
-                    android:textAppearance="@style/label"
                     android:translationY="-0.28sp" />
 
             </LinearLayout>
@@ -87,35 +87,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_relative"
-        android:scrollbars="none"
-        android:scrollIndicators="none"
-        android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/fu_margin_start"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
 
         <!-- Frame 2608676 -->
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_26086"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true">
 
             <!-- You can add all acco -->
             <TextView
                 android:id="@+id/you_can_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
                 android:layout_below="@+id/visit_card_header"
+                android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="Today's visits"
-                android:textStyle="bold"
+                android:text="@string/today_visits"
                 android:textAppearance="@style/you_can_add"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:textStyle="bold" />
 
             <!-- Frame 100314 -->
             <TextView
@@ -125,11 +124,11 @@
                 android:layout_below="@+id/you_can_add"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:text="No data found"
-                android:visibility="gone"
+                android:text="@string/no_data_found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_today"
@@ -137,10 +136,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/you_can_add"
                 android:layout_marginTop="@dimen/text_margin"
+                android:nestedScrollingEnabled="false"
                 android:padding="@dimen/card_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
-                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
             <!--            This week-->
@@ -151,10 +150,10 @@
                 android:layout_below="@+id/recycler_today"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="This week's visits"
-                android:textStyle="bold"
+                android:text="@string/this_weeks_visits"
                 android:textAppearance="@style/you_can_add"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/week_nodata"
@@ -163,11 +162,11 @@
                 android:layout_below="@+id/this_week"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:visibility="gone"
-                android:text="No data found"
+                android:text="@string/no_data_found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_week"
@@ -175,10 +174,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/this_week"
                 android:layout_marginTop="@dimen/text_margin"
+                android:nestedScrollingEnabled="false"
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
-                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
             <!-- This month -->
@@ -190,10 +189,10 @@
                 android:layout_marginTop="@dimen/text_margin"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="This month's visit"
-                android:textStyle="bold"
+                android:text="@string/this_months_visits"
                 android:textAppearance="@style/you_can_add"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/month_nodata"
@@ -202,11 +201,11 @@
                 android:layout_below="@+id/this_month"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
-                android:visibility="gone"
-                android:text="No data found"
+                android:text="@string/no_data_found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_male_textsize"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_month"
@@ -214,10 +213,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/this_month"
                 android:layout_marginTop="@dimen/text_margin"
+                android:nestedScrollingEnabled="false"
                 android:padding="@dimen/margin_5"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
-                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/followup_list_item" />
 
         </RelativeLayout>
