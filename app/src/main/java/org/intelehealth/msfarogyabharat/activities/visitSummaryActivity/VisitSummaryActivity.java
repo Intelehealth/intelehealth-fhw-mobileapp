@@ -3396,33 +3396,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.v("gson", "gson value: " + value);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                PrescribedMedication medication = gson.fromJson(value, PrescribedMedication.class);
-                prescribedMedicationArrayList.add(medication);
 
-                finalString = new StringBuilder();
+                try {
+                    PrescribedMedication medication = gson.fromJson(value, PrescribedMedication.class);
+                    prescribedMedicationArrayList.add(medication);
 
-                for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
-                    String engMealTime = prescribedMedicationArrayList.get(i).getEn().getMealType();
-                    List<Datum> engDatumList = prescribedMedicationArrayList.get(i).getEn().getData();
-                    for (Datum datum : engDatumList) {
-                        englishString = datum.getValue();
-                    }
-                    int serial = i + 1;
-                    finalString = finalString.append(serial).append(". ").append(engMealTime).append("\n-").append(englishString).append("\n\n");
-                }
+                    finalString = new StringBuilder();
 
-                finalString = finalString.append("\n");
-
-                for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
-                    String hindiMealTime = prescribedMedicationArrayList.get(i).getHi().getMealType();
-                    List<Datum> hiDatumList = prescribedMedicationArrayList.get(i).getHi().getData();
-                    for (Datum datum : hiDatumList) {
-                        hindiString = datum.getValue();
+                    for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
+                        String engMealTime = prescribedMedicationArrayList.get(i).getEn().getMealType();
+                        List<Datum> engDatumList = prescribedMedicationArrayList.get(i).getEn().getData();
+                        for (Datum datum : engDatumList) {
+                            englishString = datum.getValue();
+                        }
+                        int serial = i + 1;
+                        finalString = finalString.append(serial).append(". ").append(engMealTime).append("\n-").append(englishString).append("\n\n");
                     }
 
-                    int serial = i + 1;
-                    finalString = finalString.append(serial).append(". ").append(hindiMealTime).append("\n-").append(hindiString).append("\n\n");
-                }
+                    finalString = finalString.append("\n");
+
+                    for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
+                        String hindiMealTime = prescribedMedicationArrayList.get(i).getHi().getMealType();
+                        List<Datum> hiDatumList = prescribedMedicationArrayList.get(i).getHi().getData();
+                        for (Datum datum : hiDatumList) {
+                            hindiString = datum.getValue();
+                        }
+
+                        int serial = i + 1;
+                        finalString = finalString.append(serial).append(". ").append(hindiMealTime).append("\n-").append(hindiString).append("\n\n");
+                    }
 
 //                if (!rxReturned.trim().isEmpty()) {
 //                    rxReturned = rxReturned + "\n" + value;
@@ -3430,11 +3432,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                    rxReturned = value;
 //                }
 //                Log.i(TAG, "parseData: rxfin" + rxReturned);
-                if (prescriptionCard.getVisibility() != View.VISIBLE) {
-                    prescriptionCard.setVisibility(View.VISIBLE);
+                    if (prescriptionCard.getVisibility() != View.VISIBLE) {
+                        prescriptionCard.setVisibility(View.VISIBLE);
+                    }
+                    prescriptionTextView.setText(sortMedications(prescribedMedicationArrayList));
+                    //checkForDoctor();
                 }
-                prescriptionTextView.setText(sortMedications(prescribedMedicationArrayList));
-                //checkForDoctor();
+                catch (Exception e) {
+                    if (prescriptionCard.getVisibility() != View.VISIBLE) {
+                        prescriptionCard.setVisibility(View.VISIBLE);
+                    }
+                    prescriptionTextView.setText(value);
+                }
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
