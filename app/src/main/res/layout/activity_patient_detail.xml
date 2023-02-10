@@ -639,6 +639,35 @@
 
                         </TableRow>
 
+<!--                        Below row is added in a table to display the additional document images added by HW on previous (identification) screen.-->
+                        <TableRow
+                            android:id="@+id/tableRow_AdditionalDoc"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:text="@string/title_activity_additional_documents"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content" />
+
+                        </TableRow>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recy_additional_documents"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textView_additional_document_images"
+                            android:padding="@dimen/padding_card"></androidx.recyclerview.widget.RecyclerView>
+
                     </TableLayout>
 
 

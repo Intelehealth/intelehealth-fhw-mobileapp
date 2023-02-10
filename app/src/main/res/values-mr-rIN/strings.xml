@@ -942,6 +942,7 @@
     <string name="make_payment">पेमेंट करा</string>
     <string name="successfully_pdf_created">PDF यशस्वीरित्या तयार केली!!</string>
     <string name="hba1c">HbA1c (%)</string>
+    <string name="confirm_skip_complaint">तुम्हाला खात्री आहे की तुम्ही आरोग्य समस्या नोंदवू इच्छित नाही? \n\nटीप: तुम्ही पुढे जाऊन यात बदल करू शकणार नाही.</string>
 
 
 </resources>

@@ -313,6 +313,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+    CardView complaintCV, physExamCV, patHistCV, famHistCV;
 
     //generate bill feature
     String patientOpenMRSID = "";
@@ -321,7 +322,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientVillage = "";
     String visitType = "Consultation";
     Button generateBillBtn;
-    String receiptNum,receiptDate, patientFName, patientLName;
+    String receiptNum, receiptDate, patientFName, patientLName;
     String receiptPaymentStatus = "NA";
 
 
@@ -610,7 +611,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
-
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
@@ -621,15 +621,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
-
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
-
-//        card_print.setVisibility(View.GONE);
-//        card_share.setVisibility(View.GONE);
         generateBillBtn.setVisibility(View.GONE);
-
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+        complaintCV = findViewById(R.id.cardView_complaint);
+        physExamCV = findViewById(R.id.cardView_physexam);
+        patHistCV = findViewById(R.id.cardView_pathist);
+        famHistCV = findViewById(R.id.cardView_famhist);
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -755,6 +754,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             generateBillBtn.setVisibility(View.VISIBLE);
         }
 
+        if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
+            complaintCV.setVisibility(View.GONE);
+            physExamCV.setVisibility(View.GONE);
+            patHistCV.setVisibility(View.GONE);
+            famHistCV.setVisibility(View.GONE);
+        }
+
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
@@ -775,8 +781,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
-            /*speciality_spinner.setSelection(9);
-            speciality_spinner.setEnabled(false);*/
+            if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
+                speciality_spinner.setSelection(9);
+                speciality_spinner.setEnabled(false);
+            }
 
         } else {
             stringArrayAdapter =
@@ -886,9 +894,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
-            card_share.setVisibility(View.VISIBLE);
-            card_print.setVisibility(View.VISIBLE);
-            generateBillBtn.setVisibility(View.VISIBLE);
+            generateBillBtn.setVisibility(View.GONE);
+            if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                card_share.setVisibility(View.VISIBLE);
+                card_print.setVisibility(View.VISIBLE);
+            }
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -941,10 +951,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
-                        downloadButton.setVisibility(View.VISIBLE);
-                        generateBillBtn.setVisibility(View.VISIBLE);
+                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                            downloadButton.setVisibility(View.VISIBLE);
+                            generateBillBtn.setVisibility(View.VISIBLE);
+                        }
                     }
-
 
 
                     if (flag.isChecked()) {
@@ -1029,11 +1040,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
-                                        downloadButton.setVisibility(View.VISIBLE);
-                                        generateBillBtn.setVisibility(View.VISIBLE);
+                                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                                            downloadButton.setVisibility(View.VISIBLE);
+                                            generateBillBtn.setVisibility(View.VISIBLE);
+                                        }
                                     }
+
+                                    if(intentTag!=null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
+                                        endVisit();
 
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +
@@ -1294,8 +1311,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-        if (bldglucose.getValue() != null  && !bldglucose.getValue().equalsIgnoreCase("0"))
-            glucose.setText(bldglucose.getValue() );
+        if (bldglucose.getValue() != null && !bldglucose.getValue().equalsIgnoreCase("0"))
+            glucose.setText(bldglucose.getValue());
         if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
             glucoseRandom.setText(bldglucose_random.getValue());
         if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
@@ -1485,7 +1502,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
-                                    if(complaintView.getText().toString().contains("Follow up visit"))
+                                    if (complaintView.getText().toString().contains("Follow up visit"))
                                         visitType = "Follow-Up";
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
@@ -1814,104 +1831,84 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
-        getAppointmentDetails(visitUuid);
+        if(!intentTag.equalsIgnoreCase("skipComplaint"))
+            getAppointmentDetails(visitUuid);
     }
 
     private void translateSpecialities(List<String> items) {
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-        {
-            if(items.contains("General Physician"))
-            {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (items.contains("General Physician")) {
                 int i = items.indexOf("General Physician");
-                items.set(i,"सामान्य चिकित्सक");
+                items.set(i, "सामान्य चिकित्सक");
             }
-            if(items.contains("Neurologist"))
-            {
+            if (items.contains("Neurologist")) {
                 int i = items.indexOf("Neurologist");
-                items.set(i,"स्नायु विशेषज्ञ");
+                items.set(i, "स्नायु विशेषज्ञ");
             }
-            if(items.contains("Neonatologist"))
-            {
+            if (items.contains("Neonatologist")) {
                 int i = items.indexOf("Neonatologist");
-                items.set(i,"नवजात शिशु रोग विशेषज्ञ");
+                items.set(i, "नवजात शिशु रोग विशेषज्ञ");
             }
-            if(items.contains("Infectionist"))
-            {
+            if (items.contains("Infectionist")) {
                 int i = items.indexOf("Infectionist");
-                items.set(i,"संक्रामक रोग विशेषज्ञ");
+                items.set(i, "संक्रामक रोग विशेषज्ञ");
             }
-            if(items.contains("Pediatrician"))
-            {
+            if (items.contains("Pediatrician")) {
                 int i = items.indexOf("Pediatrician");
-                items.set(i,"बाल रोग विशेषज्ञ");
+                items.set(i, "बाल रोग विशेषज्ञ");
             }
-            if(items.contains("Physiotherapist"))
-            {
+            if (items.contains("Physiotherapist")) {
                 int i = items.indexOf("Physiotherapist");
-                items.set(i,"फिजियोथेरेपिस्ट");
+                items.set(i, "फिजियोथेरेपिस्ट");
             }
-            if(items.contains("Cardiologist"))
-            {
+            if (items.contains("Cardiologist")) {
                 int i = items.indexOf("Cardiologist");
-                items.set(i,"हृदय रोग विशेषज्ञ");
+                items.set(i, "हृदय रोग विशेषज्ञ");
             }
-            if(items.contains("Gynecologist"))
-            {
+            if (items.contains("Gynecologist")) {
                 int i = items.indexOf("Gynecologist");
-                items.set(i,"स्त्री रोग विशेषज्ञ");
+                items.set(i, "स्त्री रोग विशेषज्ञ");
             }
-            if(items.contains("Dermatologist"))
-            {
+            if (items.contains("Dermatologist")) {
                 int i = items.indexOf("Dermatologist");
-                items.set(i,"त्वचा रोग विशेषज्ञ");
+                items.set(i, "त्वचा रोग विशेषज्ञ");
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-        {
-            if(items.contains("General Physician"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (items.contains("General Physician")) {
                 int i = items.indexOf("General Physician");
-                items.set(i,"जनरल फिजिशियन");
+                items.set(i, "जनरल फिजिशियन");
             }
-            if(items.contains("Neurologist"))
-            {
+            if (items.contains("Neurologist")) {
                 int i = items.indexOf("Neurologist");
-                items.set(i,"न्यूरोलॉजिस्ट");
+                items.set(i, "न्यूरोलॉजिस्ट");
             }
-            if(items.contains("Neonatologist"))
-            {
+            if (items.contains("Neonatologist")) {
                 int i = items.indexOf("Neonatologist");
-                items.set(i,"नवजात रोग विशेषज्ञ");
+                items.set(i, "नवजात रोग विशेषज्ञ");
             }
-            if(items.contains("Infectionist"))
-            {
+            if (items.contains("Infectionist")) {
                 int i = items.indexOf("Infectionist");
-                items.set(i,"इन्फेक्शनिस्ट");
+                items.set(i, "इन्फेक्शनिस्ट");
             }
-            if(items.contains("Pediatrician"))
-            {
+            if (items.contains("Pediatrician")) {
                 int i = items.indexOf("Pediatrician");
-                items.set(i,"बालरोगतज्ञ");
+                items.set(i, "बालरोगतज्ञ");
             }
-            if(items.contains("Physiotherapist"))
-            {
+            if (items.contains("Physiotherapist")) {
                 int i = items.indexOf("Physiotherapist");
-                items.set(i,"फिजियोथेरेपिस्ट");
+                items.set(i, "फिजियोथेरेपिस्ट");
             }
-            if(items.contains("Cardiologist"))
-            {
+            if (items.contains("Cardiologist")) {
                 int i = items.indexOf("Cardiologist");
-                items.set(i,"हृदयरोगतज्ज्ञ");
+                items.set(i, "हृदयरोगतज्ज्ञ");
             }
-            if(items.contains("Gynecologist"))
-            {
+            if (items.contains("Gynecologist")) {
                 int i = items.indexOf("Gynecologist");
-                items.set(i,"स्त्रीरोगतज्ज्ञ");
+                items.set(i, "स्त्रीरोगतज्ज्ञ");
             }
-            if(items.contains("Dermatologist"))
-            {
+            if (items.contains("Dermatologist")) {
                 int i = items.indexOf("Dermatologist");
-                items.set(i,"त्वचारोगतज्ज्ञ");
+                items.set(i, "त्वचारोगतज्ज्ञ");
             }
         }
     }
@@ -3808,10 +3805,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        try
-        { objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class); }
-        catch (Exception e)
-        { FirebaseCrashlytics.getInstance().recordException(e); }
+        try {
+            objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
 
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
@@ -4304,8 +4302,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
                     card_print.setVisibility(View.VISIBLE);
                     card_share.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     card_print.setVisibility(View.GONE);
                     card_share.setVisibility(View.GONE);
                 }
@@ -4320,8 +4317,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 downloadDoctorDetails();
 
-                if(visitnote!=null && !visitnote.equalsIgnoreCase(""))
-                {
+                if (visitnote != null && !visitnote.equalsIgnoreCase("")) {
                     editVitals.setVisibility(View.GONE);
                     editDiagnostics.setVisibility(View.GONE);
                     editComplaint.setVisibility(View.GONE);
@@ -4330,9 +4326,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     editMedHist.setVisibility(View.GONE);
                     editAddDocs.setVisibility(View.GONE);
                     uploadButton.setVisibility(View.GONE);
-                    card_print.setVisibility(View.VISIBLE);
-                    card_share.setVisibility(View.VISIBLE);
-                    generateBillBtn.setVisibility(View.VISIBLE);
+                    generateBillBtn.setVisibility(View.GONE );
+                    if (!intentTag.equalsIgnoreCase("skipComplaint")) {
+                        card_print.setVisibility(View.VISIBLE);
+                        card_share.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -4380,8 +4378,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
             card_print.setVisibility(View.VISIBLE);
             card_share.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             card_print.setVisibility(View.GONE);
             card_share.setVisibility(View.GONE);
         }
@@ -4477,7 +4474,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     default:
                 }
                 obsCursor.close();
-                addDownloadButton();
+                if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                    addDownloadButton();
+
                 //if any obs  found then end the visit
                 //endVisit();
 
@@ -4712,7 +4711,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //}
 
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                            if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                                getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+
                         } else {
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
 
@@ -4776,7 +4777,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SCHEDULE_LISTING_INTENT) {
+        if (requestCode == SCHEDULE_LISTING_INTENT && !intentTag.equalsIgnoreCase("skipComplaint")) {
             getAppointmentDetails(visitUuid);
         }
     }
@@ -5217,11 +5218,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void generateBill(View view) {
         String billEncounterUuid = checkForOldBill();
-        if(!billEncounterUuid.equals(""))
-        {
+        if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
-        }
-        else {
+        } else {
             boolean[] selected_tests = new boolean[8];
             if (!glucose.getText().toString().isEmpty())
                 selected_tests[1] = true;
@@ -5243,7 +5242,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
         ArrayList selectedTests = new ArrayList<>();
-        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid),getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid), getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
 //        selectedTests.clear();
 
         final Dialog dialog = new Dialog(VisitSummaryActivity.this);
@@ -5262,25 +5261,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
         TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
 
-        if(checkedTests[1])
+        if (checkedTests[1])
             glucose_non_fast.setChecked(true);
-        if(checkedTests[2])
+        if (checkedTests[2])
             glucose_fast.setChecked(true);
-        if(checkedTests[3])
+        if (checkedTests[3])
             glucose_ppn.setChecked(true);
-        if(checkedTests[4])
+        if (checkedTests[4])
             glucose_rand.setChecked(true);
-        if(checkedTests[5])
+        if (checkedTests[5])
             uric_acid.setChecked(true);
-        if(checkedTests[6])
+        if (checkedTests[6])
             cholesterol.setChecked(true);
-        if(checkedTests[7])
+        if (checkedTests[7])
             haemoglobin.setChecked(true);
 
         bp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(((CompoundButton) view).isChecked()){
+                if (((CompoundButton) view).isChecked()) {
                     checkedTests[0] = true;
                 } else {
                     checkedTests[0] = false;
@@ -5291,9 +5290,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ok_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(int j=0;j<checkedTests.length;j++)
-                {
-                    if(checkedTests[j])
+                for (int j = 0; j < checkedTests.length; j++) {
+                    if (checkedTests[j])
                         selectedTests.add(test_names[j]);
                 }
                 receiptNum = generateReceiptNum();
@@ -5338,8 +5336,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private String fetchSystemDateForBill()
-    {
+    private String fetchSystemDateForBill() {
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
@@ -5377,7 +5374,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                if(dbValue!=null && !dbValue.equals("0"))
+                if (dbValue != null && !dbValue.equals("0"))
                     parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -5388,23 +5385,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void parseBillData(ArrayList<String> selectedTests, String concept_id, String value) {
 
         switch (concept_id) {
-            case UuidDictionary.BILL_NUM:
-            {
+            case UuidDictionary.BILL_NUM: {
                 receiptNum = value;
                 break;
             }
-            case UuidDictionary.BILL_DATE:
-            {
+            case UuidDictionary.BILL_DATE: {
                 receiptDate = value;
                 break;
             }
-            case UuidDictionary.BILL_PAYMENT_STATUS:
-            {
+            case UuidDictionary.BILL_PAYMENT_STATUS: {
                 receiptPaymentStatus = value;
                 break;
             }
-            case UuidDictionary.BILL_PRICE_BP_ID:
-            {
+            case UuidDictionary.BILL_PRICE_BP_ID: {
                 selectedTests.add(getString(R.string.visit_summary_bp));
                 break;
             }

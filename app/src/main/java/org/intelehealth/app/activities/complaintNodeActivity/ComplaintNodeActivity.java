@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,6 +80,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     RecyclerView list_recyclerView;
     private float float_ageYear_Month;
     String mgender;
+    Button skipBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,27 +146,33 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         list_recyclerView.setLayoutManager(linearLayoutManager);
         list_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        skipBtn = findViewById(R.id.btn_skip);
 
+        if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("edit"))
+            skipBtn.setVisibility(View.GONE);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 confirmComplaints();
             }
         });
 
+        skipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmSkipDialog();
+            }
+        });
 
         ListView complaintList = findViewById(R.id.complaint_list_view);
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             complaintList.setClickable(true);
         }
-
         complaints = new ArrayList<>();
-
 
         boolean hasLicense = false;
 //        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -291,31 +299,47 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         });*/
 
-        listAdapter
-                = new ComplaintNodeListAdapter(this, complaints);
+        listAdapter = new ComplaintNodeListAdapter(this, complaints);
         list_recyclerView.setAdapter(listAdapter);
-
         img_question.setVisibility(View.VISIBLE);
         tv_selectComplaint.setVisibility(View.VISIBLE);
         list_recyclerView.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
+    }
 
-//        animateView(img_question);
-////        animateView(tv_selectComplaint);
-////        final Handler handler = new Handler();
-////        handler.postDelayed(new Runnable() {
-////            @Override
-////            public void run() {
-////                bottomUpAnimation(list_recyclerView);
-////            }
-////        }, 1000);
-////        handler.postDelayed(new Runnable() {
-////            @Override
-////            public void run() {
-////                animateView(fab);
-////            }
-////        }, 1000);
-
+    private void confirmSkipDialog() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(ComplaintNodeActivity.this);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.confirm_button));
+        alertDialogBuilder.setMessage(getResources().getString(R.string.confirm_skip_complaint));
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.skip), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(ComplaintNodeActivity.this, VisitSummaryActivity.class);
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("visitUuid", visitUuid);
+                intent.putExtra("encounterUuidVitals", encounterVitals);
+                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                intent.putExtra("state", state);
+                intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName", patientFName);
+                intent.putExtra("patientLastName", patientLName);
+                intent.putExtra("gender", patientGender);
+                intent.putExtra("tag", "skipComplaint");
+                intent.putExtra("hasPrescription", "false");
+                startActivity(intent);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     /**
@@ -365,8 +389,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Intent intent = new Intent(
-                                ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                        Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -374,7 +397,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
-                        intent.putExtra("patientFirstName",patientFName);
+                        intent.putExtra("patientFirstName", patientFName);
                         intent.putExtra("patientLastName", patientLName);
                         intent.putExtra("gender", patientGender);
                         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
