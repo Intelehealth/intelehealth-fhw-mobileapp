@@ -1780,6 +1780,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="phone_number_mandatory">Phone Number*</string>
     <string name="this_field_is_mandatory">This field is mandatory</string>
     <string name="add_a_picture">Add a picture</string>
+    <string name="sync_completed">Sync done!</string>
+    <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
 
     <!--END-->
 

@@ -2,16 +2,7 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
-import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
-import static org.intelehealth.app.utilities.DateAndTimeUtils.date_formatter;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -39,17 +30,11 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-import android.text.Html;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -65,6 +50,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -73,12 +64,9 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -123,7 +111,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative,
             advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview,
-            vs_diagnosis_header_expandview, vs_medication_header_expandview,vs_adviceheader_expandview, vs_testheader_expandview,
+            vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview,
             vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi,
@@ -287,7 +275,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : "+age);
+            Log.d("TAG", "getAge_FollowUp: s : " + age);
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             vitalsUUID = intent.getStringExtra("encounterUuidVitals");
@@ -310,7 +298,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // json based presc header - start
         jsonBasedPrescTitle();
         // json based presc header - end
-        
+
         //get from encountertbl from the encounter
         visitnoteencounteruuid = getStartVisitNoteEncounterByVisitUUID(visitID);
         // settind data - end
@@ -325,8 +313,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(profile_image);
-        }
-        else {
+        } else {
             profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
         // end
@@ -378,8 +365,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (followUpDate.equalsIgnoreCase("")) {
             no_followup_txt.setVisibility(View.VISIBLE);
             followup_date_block.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             no_followup_txt.setVisibility(View.GONE);
             followup_date_block.setVisibility(View.VISIBLE);
         }
@@ -548,8 +534,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -608,8 +596,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -668,8 +658,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -729,8 +721,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";
+            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -788,7 +782,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (visitID != null && !visitID.isEmpty()) {
             hideVisitUUID = visitID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-          //  visitView.setText("XXXX" + hideVisitUUID);
+            //  visitView.setText("XXXX" + hideVisitUUID);
             hideVisitUUID = "XXXX" + hideVisitUUID;
         }
         return hideVisitUUID;
@@ -1170,7 +1164,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     // presc pdf downlaod - end
 
     private void followupScheduledSuccess(Context context, Drawable drawable, String title, String subTitle,
-                                        String neutral) {
+                                          String neutral) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -1264,11 +1258,20 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
     // parse dr details - start
     ClsDoctorDetails details;
+
     private void parseDoctorDetails(String dbValue) {
+        if(dbValue==null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")){
+            Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Log.e("TAG", "parseDoctorDetails : " + dbValue);
         Gson gson = new Gson();
         details = gson.fromJson(dbValue, ClsDoctorDetails.class);
-        Log.e("TAG", "TEST VISIT: " + details.toString());
 
+        if (details == null) {
+            return;
+        }
+        Log.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         dr_age_gender.setText(details.getEmailId());
         qualification.setText(details.getQualification());
@@ -1277,6 +1280,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     // parse dr details - end
 
     // parse presc value - start
+
     /**
      * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
      *
@@ -1503,7 +1507,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         downloaded = true;
     }
     // query data - end
-    
+
     // handle - start
     private void handleMessage(Intent msg) {
         Log.i("TAG", "handleMessage: Entered");
@@ -1773,35 +1777,35 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     } while (encounterCursor.moveToNext());
 
                 }
-             //   if (encounterCursor != null) {
-                    encounterCursor.close();
-             //   }
+                //   if (encounterCursor != null) {
+                encounterCursor.close();
+                //   }
 
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";
                     diagnosis_txt.setText("");
-                 //   diagnosisCard.setVisibility(View.GONE);
+                    //   diagnosisCard.setVisibility(View.GONE);
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
                     medication_txt.setText("");
-                  //  prescriptionCard.setVisibility(View.GONE);
+                    //  prescriptionCard.setVisibility(View.GONE);
 
                 }
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
                     advice_txt.setText("");
-                  //  medicalAdviceCard.setVisibility(View.GONE);
+                    //  medicalAdviceCard.setVisibility(View.GONE);
                 }
                 if (!referredSpeciality.isEmpty()) {
                     referredSpeciality = "";
                     referred_speciality_txt.setText("");
-                  //  medicalAdviceCard.setVisibility(View.GONE);
+                    //  medicalAdviceCard.setVisibility(View.GONE);
                 }
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
                     test_txt.setText("");
-                  //  requestedTestsCard.setVisibility(View.GONE);
+                    //  requestedTestsCard.setVisibility(View.GONE);
                 }
 //                if (!additionalReturned.isEmpty()) {
 //                    additionalReturned = "";
@@ -1812,7 +1816,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";
                     followup_date_txt.setText("");
-                  //  followUpDateCard.setVisibility(View.GONE);
+                    //  followUpDateCard.setVisibility(View.GONE);
                 }
 
                 String[] columns = {"value", " conceptuuid"};
@@ -1832,15 +1836,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitID, true);
-                            Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
                 downloadDoctorDetails();
                 syncAnimator.end();
-            }
-            else {
+            } else {
                 syncAnimator.end();
                 Toast.makeText(PrescriptionActivity.this, "Prescription is up to date.", Toast.LENGTH_SHORT).show();
             }
@@ -1850,7 +1853,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         }
     }
     // downlaod presc - end
-    
+
     // presc share - start
     private void sharePresc() {
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -2092,7 +2095,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
-        
+
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -2143,8 +2146,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-               mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
-             //   mComplaint = "Test Complaint";
+                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+                //   mComplaint = "Test Complaint";
             }
         } else {
 
@@ -2185,7 +2188,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String referredSpeciality_web = stringToWeb(referredSpeciality);
 
         String advice_web = stringToWeb(adviceReturned);
-      //  String advice_web = "";
+        //  String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
    /*     String advice_doctor__ = medication_txt.getText().toString()
@@ -2209,7 +2212,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String diagnosis_web = stringToWeb(diagnosisReturned);
 
 //        String comments_web = stringToWeb(additionalReturned);
-        
+
         String followUpDateStr = "";
         if (followUpDate != null && followUpDate.contains(",")) {
             String[] spiltFollowDate = followUpDate.split(",");
@@ -2234,7 +2237,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String heading2 = prescription2;
         String heading3 = "<br/>";
 
-      //  String bp = mBP;
+        //  String bp = mBP;
         String bp = "";
         if (bp.equals("/") || bp.equals("null/null")) bp = "";
 
@@ -2266,7 +2269,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
-        
+
         String font_face = "<style>" +
                 "                @font-face {" +
                 "                    font-family: \"MyFont\";" +
@@ -2287,7 +2290,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
                     getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
-            
+
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + details.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
@@ -2330,7 +2333,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                  //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
@@ -2675,8 +2678,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }

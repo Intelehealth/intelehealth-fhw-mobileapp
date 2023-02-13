@@ -1,24 +1,31 @@
 package org.intelehealth.app.activities.visit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
 
@@ -28,12 +35,14 @@ import org.intelehealth.app.utilities.VisitCountInterface;
  */
 public class VisitActivity extends FragmentActivity implements
         NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
+    private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;
     private NetworkUtils networkUtils;
     TabLayout tabLayout;
     ViewPager2 viewPager;
 
-
+    private BroadcastReceiver mBroadcastReceiver;
+    private ObjectAnimator syncAnimator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +64,30 @@ public class VisitActivity extends FragmentActivity implements
 
         configureTabLayout();
 
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Sync Done!");
+                refresh.clearAnimation();
+                syncAnimator.cancel();
+                recreate();
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        registerReceiver(mBroadcastReceiver, filterSend);
 
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1000);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 
     public void configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments);
@@ -106,8 +136,7 @@ public class VisitActivity extends FragmentActivity implements
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -118,6 +147,7 @@ public class VisitActivity extends FragmentActivity implements
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -138,5 +168,14 @@ public class VisitActivity extends FragmentActivity implements
     @Override
     public void pendingCount(int count) {
         tabLayout.getTabAt(1).setText("Pending (" + count + ")");
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            refresh.clearAnimation();
+            syncAnimator.start();
+        }
     }
 }

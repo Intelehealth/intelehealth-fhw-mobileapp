@@ -88,6 +88,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList.add(node);
         notifyItemInserted(mItemList.size() - 1);
     }
+    public void addItemAll(List<Node> nodes) {
+        mItemList = nodes;
+        notifyDataSetChanged();
+    }
 
     public List<Node> geItems() {
         return mItemList;

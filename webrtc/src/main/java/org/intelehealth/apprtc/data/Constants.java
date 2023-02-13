@@ -20,10 +20,11 @@ public class Constants {
     public static final String SEND_MESSAGE_URL = BASE_URL + "/api/messages/sendMessage";
     //@GET('https://testing.intelehealth.org:3004/messages/${fromUser}/${toUser}/${patientId}')
     public static final String GET_ALL_MESSAGE_URL = BASE_URL + "/api/messages/";
+    public static final String SET_READ_STATUS_OF_MESSAGE_URL = BASE_URL + "/api/messages/read/"; //  https://uiux.intelehealth.org:3004/api/messages/read/881
     public static final String SAVE_FCM_TOKEN_URL = BASE_URL + "/api/mindmap/user_settings";
 
-    public static final int LEFT_ITEM = 1;
-    public static final int RIGHT_ITEM = 2;
+    public static final int LEFT_ITEM_DOCT = 1;
+    public static final int RIGHT_ITEM_HW = 2;
 
 
 }

@@ -1,9 +1,14 @@
 package org.intelehealth.app.utilities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+
+import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 

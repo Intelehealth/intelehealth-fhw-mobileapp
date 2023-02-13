@@ -127,6 +127,9 @@ public class SyncDAO {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
+                        Intent broadcast = new Intent();
+                        broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
 
@@ -222,6 +225,9 @@ public class SyncDAO {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
+                        Intent broadcast = new Intent();
+                        broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -450,6 +456,9 @@ public class SyncDAO {
 
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
+                                Intent broadcast = new Intent();
+                                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                                IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

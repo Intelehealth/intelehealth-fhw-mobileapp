@@ -23,9 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
@@ -80,7 +79,7 @@ public class CallListenerBackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.v(TAG, "onStartCommand");
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        Intent notificationIntent = new Intent(this, HomeScreenActivity_New.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
@@ -95,23 +94,30 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-//        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
         //do heavy work on a background thread
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
+        String endURL = AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL";
+        Log.d(TAG, "endURL is: " + endURL);
+        DatabaseReference myRef = database.getReference(endURL);
+        Log.d(TAG, "endURL is: " + myRef.toString());
         if (myRef != null)
             //myRef.setValue("Hello, World!");
             // Read from the database
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     HashMap value = (HashMap) dataSnapshot.getValue();
                     //{doctorName=Demo doctor1, nurseId=8d61869b-14d7-4c16-9c7a-a6f1aaaa3c0d, roomId=df412e7e-9020-49ed-9712-1937ad46af9b, timestamp=1628564570611}
                     Log.d(TAG, "Value is: " + value);
+                    if(new SessionManager(getApplicationContext()).isLogout()){
+                        return;
+                    }
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 500 milliseconds
                /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -121,13 +127,30 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
+                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+                        return;
+                    }
+                    String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";
+                    Log.d(TAG, "callID is: " + callID);
+                    Log.d(TAG, "webrtcTempCallId is: " + IntelehealthApplication.getInstance().webrtcTempCallId);
+                    if (!callID.isEmpty() && callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
+                        return;
+                    } else {
+                        IntelehealthApplication.getInstance().webrtcTempCallId = callID;
+                    }
                     String device_token = String.valueOf(value.get("device_token"));
+
+                    Log.d(TAG, "refreshedFCMTokenID is: " + refreshedFCMTokenID);
+                    Log.d(TAG, "device_token is: " + device_token);
                     if (!device_token.equals(refreshedFCMTokenID)) return;
+                    Log.d(TAG, "refreshedFCMTokenID token verified! ");
                     Bundle bundle = new Bundle();
                     bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
                     bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
                     bundle.putString("roomId", String.valueOf(value.get("roomId")));
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
+                    bundle.putString("visitId", String.valueOf(value.get("visitId")));
+                    bundle.putString("doctorId", String.valueOf(value.get("doctorId")));
                     bundle.putString("actionType", "VIDEO_CALL");
 
                     boolean isOldNotification = false;
@@ -149,7 +172,7 @@ public class CallListenerBackgroundService extends Service {
                                 Log.v(TAG, "Current time - " + new Date());
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
+                                if (seconds >= 30) {
                                     isOldNotification = true;
                                 }
                             } catch (ParseException e) {

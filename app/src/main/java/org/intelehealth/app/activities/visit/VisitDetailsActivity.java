@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.visit;
 
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterModifiedDateForPrescGiven;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
@@ -10,17 +9,15 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
-import static org.intelehealth.app.utilities.DateAndTimeUtils.getDateInDDMMMMYYYYFormat;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,25 +29,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Prajwal Waingankar on 16/09/2022.
@@ -60,17 +62,19 @@ import java.util.List;
 
 public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID,
-    visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
+            visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
-    visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
+            visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView priorityTag, profile_image, icon_presc_details;
     public static final String TAG = "FollowUp_visitDetails";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
-            pat_call_btn, pat_whatsapp_btn, dr_call_btn, dr_whatsapp_btn;
+            pat_call_btn, pat_whatsapp_btn;
+    private ImageView dr_call_btn, dr_whatsapp_btn;
+    ;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
     private ClsDoctorDetails clsDoctorDetails;
@@ -95,7 +99,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : "+age);
+            Log.d("TAG", "getAge_FollowUp: s : " + age);
 
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
@@ -152,13 +156,13 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             whatsapp_feature(pat_phoneno);
         });
 
-        dr_call_btn.setOnClickListener(v -> {
+        /*dr_call_btn.setOnClickListener(v -> {
             calling_feature(dr_MobileNo);
         });
 
         dr_whatsapp_btn.setOnClickListener(v -> {
             whatsapp_feature(dr_WhatsappNo);
-        });
+        });*/
         // calling and whatsapp - end
 
         backArrow.setOnClickListener(v -> {
@@ -175,8 +179,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(profile_image);
-        }
-        else {
+        } else {
             profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
 
@@ -227,7 +230,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             presc_relative.setClickable(true);
             presc_remind_block.setVisibility(View.GONE);
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
-              //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+                //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
                 presc_time.setText("Received " + modifiedDate);
@@ -268,19 +271,17 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 in.putExtra("openmrsID", openmrsID);
                 startActivity(in);
             });
-        }
-        else {
+        } else {
             // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
             presc_arrowRight.setVisibility(View.GONE);
             presc_relative.setClickable(false);
-         //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+            //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
 
             String modifiedDate = "";
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
                 modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
-            }
-            else {
+            } else {
                 modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
                 modifiedDate = timeAgoFormat(modifiedDate);
             }
@@ -322,8 +323,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             chief_complaint_value = chief_complaint_value.substring(first, last + 4);
             Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-        }
-        else {  // ie. here user is coming from Prescription screen and not Follow up screen.
+        } else {  // ie. here user is coming from Prescription screen and not Follow up screen.
             chief_complaint_value = getChiefComplaint(visitID);
             Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
             int first = chief_complaint_value.indexOf("<b>");
@@ -396,8 +396,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followup_accept_text.setText("The doctor suggested a follow-up visit on " +
                     followUpDate_format + ". Does the patient want to take a follow-up visit?");
             Log.v("vd", "vd: " + followup_info);
-        }
-        else {
+        } else {
             followup_relative_block.setVisibility(View.GONE);
             yes_no_followup_relative.setVisibility(View.GONE);
 
@@ -417,8 +416,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate,
                         vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
             });
-        }
-        else {
+        } else {
             endvisit_relative_block.setVisibility(View.GONE);
         }
         // end visit - end
@@ -426,6 +424,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
     /**
      * This will open Whatsapp with a pre-defined message to be sent to the user.
+     *
      * @param phoneno
      */
     // TODO: check with Sagar for this message to be passed...
@@ -435,14 +434,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                     Uri.parse(
                             String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                     phoneno, "Hello this is nurse1 from Telemedicine project. I am connecting with you regarding your recent visit."))));
-        }
-        else {
+        } else {
             Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * This will open up Dialer with the phone number passed for user to initiate call.
+     *
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
@@ -450,8 +449,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);
-        }
-        else {
+        } else {
             Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
         }
     }
@@ -467,8 +465,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -479,6 +476,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -488,5 +486,65 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    public void startTextChat(View view) {
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+        Intent chatIntent = new Intent(VisitDetailsActivity.this, ChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitID);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        if (rtcConnectionDTO != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                } else {
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    startActivity(chatIntent);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void startVideoChat(View view) {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+        Intent in = new Intent(VisitDetailsActivity.this, CompleteActivity.class);
+        String roomId = patientUuid;
+        String doctorName = "";
+        String nurseId = encounterDTO.getProvideruuid();
+        in.putExtra("roomId", roomId);
+        in.putExtra("isInComingRequest", false);
+        in.putExtra("doctorname", doctorName);
+        in.putExtra("nurseId", nurseId);
+        in.putExtra("startNewCall", true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+            startActivity(in);
+        }
+
     }
 }

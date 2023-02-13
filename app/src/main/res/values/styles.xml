@@ -28,6 +28,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <!-- UI 2.0 -->
@@ -44,7 +45,7 @@
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:editTextColor">@color/primary_text</item>
         <item name="android:background">@color/white</item>

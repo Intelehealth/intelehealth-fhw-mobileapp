@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -14,7 +15,7 @@
         android:maxLines="4"
         android:padding="8dip"
         android:text="DOCTOR 1"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/gray_7"
         android:textSize="13sp"
         android:textStyle="bold"
         android:visibility="gone" />
@@ -31,8 +32,17 @@
         android:minHeight="36dip"
         android:padding="16dip"
         android:text="@string/dummy_text"
-        android:textColor="@color/white"
+        android:textColor="@color/gray_7"
         android:textSize="13sp" />
+
+    <ImageView
+        android:id="@+id/image_iv"
+        android:layout_width="124dip"
+        android:layout_height="124dip"
+        android:background="@drawable/chat_left_bg"
+        android:padding="8dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/doctor_ioc" />
 
     <TextView
         android:id="@+id/time_tv"

@@ -351,7 +351,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:background="@null"
+            android:background="@null" android:onClick="openAll"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
             android:src="@drawable/open_all_btn" />
 

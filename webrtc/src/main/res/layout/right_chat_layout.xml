@@ -16,7 +16,7 @@
         android:paddingTop="8dip"
         android:paddingBottom="8dip"
         android:text="You"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/gray_7"
         android:textSize="13sp"
         android:textStyle="bold"
         android:visibility="gone" />
@@ -33,19 +33,50 @@
         android:minHeight="36dip"
         android:padding="16dip"
         android:text="@string/dummy_text_1"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/gray_7"
         android:textSize="13sp" />
+    <ImageView
+        android:id="@+id/image_iv"
+        android:layout_width="124dip"
+        android:layout_height="124dip"
+        android:background="@drawable/chat_right_bg"
+        android:padding="8dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/doctor_ioc" />
 
-    <TextView
-        android:id="@+id/time_tv"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:maxLines="4"
-        android:paddingTop="8dip"
-        android:paddingBottom="8dip"
-        android:text="4.31 PM"
-        android:textColor="@color/gray_3"
-        android:textSize="10sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
+            android:text="4.31 PM"
+            android:textColor="@color/gray_3"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dip"
+            android:layout_marginEnd="0dip"
+            android:drawableStart="@drawable/read_status_icon"
+            android:drawablePadding="8dip"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
+            android:text="Sent"
+            android:textColor="@color/gray_3"
+            android:textSize="10sp" />
+    </LinearLayout>
+
 
 </LinearLayout>
