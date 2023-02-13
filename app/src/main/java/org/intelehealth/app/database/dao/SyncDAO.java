@@ -433,7 +433,7 @@ public class SyncDAO {
                                 for (int i = 0; i < pushResponseApiCall.getData().getAppointmentList().size(); i++) {
                                     try {
                                         String sync = pushResponseApiCall.getData().getAppointmentList().get(i).getSync();
-                                        String visitUuid = pushResponseApiCall.getData().getAppointmentList().get(i).getUuid();
+                                        String visitUuid = pushResponseApiCall.getData().getAppointmentList().get(i).getVisitUuid();
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
