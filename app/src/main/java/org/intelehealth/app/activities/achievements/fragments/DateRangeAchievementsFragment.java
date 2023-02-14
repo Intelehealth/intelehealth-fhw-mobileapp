@@ -146,6 +146,8 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setVisitsEndedInRange() {
+        int numberOfVisitsEnded = 0;
+
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
@@ -161,15 +163,14 @@ public class DateRangeAchievementsFragment extends Fragment {
                 encounterDTOList.add(encounterDTO);
             } while (rangePatientsCreatedCursor.moveToNext());
 
-            int numberOfVisitsEnded = 0;
             if (!encounterDTOList.isEmpty()) {
                 numberOfVisitsEnded = countVisitsEndedBetweenRange(encounterDTOList);
             }
-
-            int finalCount = numberOfVisitsEnded;
-            requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
-            rangePatientsCreatedCursor.close();
         }
+
+        int finalCount = numberOfVisitsEnded;
+        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+        rangePatientsCreatedCursor.close();
     }
 
     private void setAveragePatientSatisfactionScore() {
