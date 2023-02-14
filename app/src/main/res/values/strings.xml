@@ -542,8 +542,8 @@
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
     <string name="location_setup">Setup Location - </string>
-    <string name="today_visits">Today\'s Visits\n (Coming soon..)</string>
-    <string name="active_visits">Active Visits\n (Coming soon..)</string>
+    <string name="today_visits">Today\'s Visits</string>
+    <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -581,7 +581,7 @@
     <string name="txt_others">Others</string>
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help\n (Coming soon..)</string>
+    <string name="Whatsapp_Help_Cardview">Help</string>
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
@@ -686,7 +686,7 @@
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="due_on">Due Date:</string>
-    <string name="title_follow_up">Follow Up Visits \n (Coming soon..)</string>
+    <string name="title_follow_up">Follow Up Visits</string>
     <string name="location">Location</string>
 
     //----------reset app strings-------------
@@ -765,7 +765,7 @@
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
-    <string name="doctor_appointments">Doctor Appointments\n (Coming soon..)</string>
+    <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
     <string name="appointment_booked">Appointment Booked</string>
     <string name="minutes_txt">minutes</string>
@@ -829,7 +829,7 @@
     <string name="select">Select</string>
 
     <string name="name_of_investigator">Name of Investigator*</string>
-    <string name="village">Village*</string>
+    <string name="village">Village/Neighborhood*</string>
     <string name="block">Block*</string>
     <string name="district">District*</string>
     <string name="district_nashik">Nashik</string>
@@ -1417,9 +1417,9 @@
     <string name="fifty_to_seventy_km">50–70km</string>
     <string name="more_than_seventy_km">More than 70km</string>
     <string name="not_treated">Not Treated</string>
-    <string name="select_village">Select Village</string>
+    <string name="select_village">Select Village/Neighborhood</string>
     <string name="enter_block_name_other">Enter Block Name</string>
-    <string name="enter_village_name_other">Enter Village Name</string>
+    <string name="enter_village_name_other">Enter Village/Neighborhood Name</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
     <string name="no_of_times_pasttwoyrs_limit_toast">Max limit reached</string>
     <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">Was this birth pre-term? (earlier than the due date for delivery?)</string>
@@ -1560,8 +1560,8 @@
     <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
     <string name="setup_select_district_str">Select District</string>
     <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
-    <string name="setup_select_village_str">Select Village</string>
-    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="setup_select_village_str">Select Village/Neighborhood</string>
+    <string name="setup_select_dropdown_village_msg">Select Village/Neighborhood from dropdown</string>
     <string name="triage_survey">Triage Survey</string>
     <string name="empty_survey">Please enter/select the data for survey!</string>
     <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
@@ -1580,5 +1580,6 @@
     <string name="no_phone_no">No phone number</string>
     <string name="incomplete_survey_dialog">The survey is incomplete, do you want to save it as a draft?</string>
     <string name="medical_emergency_need_assessment">Medical Emergency Need Assessment</string>
-    <string name="survey_acute_homecare_utilizers">Survey of acute homecare utilizers</string>
+    <string name="survey_acute_homecare_utilizers"> Survey of acute homecare utilizers</string>
+    <string name="comm_general_need_survey">Community General Need Survey</string>
 </resources>

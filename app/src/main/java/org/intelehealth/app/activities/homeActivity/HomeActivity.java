@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -272,7 +273,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         sessionManager = new SessionManager(this);
-        setLocale(sessionManager.getAppLanguage());
+//        setLocale(sessionManager.getAppLanguage());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -326,9 +327,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                 These are to be enabled later-on - currently disabled as per instructions from the Programs Team - Added by Arpan Sircar
-//                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
-//                startActivity(intent);
-                displayComingSoonToast();
+                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
+                startActivity(intent);
+//                displayComingSoonToast();
             }
         });
         ((TextView) findViewById(R.id.tvLocation)).setText(String.format("%s: %s", getText(R.string.location), sessionManager.getLocationName()));
@@ -371,18 +372,18 @@ public class HomeActivity extends AppCompatActivity {
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayComingSoonToast();
+//                displayComingSoonToast();
 //                 These are to be enabled later-on - currently disabled as per instructions from the Programs Team - Added by Arpan Sircar
 
-//                String phoneNumberWithCountryCode = "+919503692181";
-//                String message =
-//                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-//                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
-//
-//                startActivity(new Intent(Intent.ACTION_VIEW,
-//                        Uri.parse(
-//                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                        phoneNumberWithCountryCode, message))));
+                String phoneNumberWithCountryCode = "+919503692181";
+                String message =
+                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneNumberWithCountryCode, message))));
             }
         });
 
@@ -414,18 +415,18 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                 These are to be enabled later-on - currently disabled as per instructions from the Programs Team - Added by Arpan Sircar
-//                Intent intent = new Intent(HomeActivity.this, TodayPatientActivity.class);
-//                startActivity(intent);
-                displayComingSoonToast();
+                Intent intent = new Intent(HomeActivity.this, TodayPatientActivity.class);
+                startActivity(intent);
+//                displayComingSoonToast();
             }
         });
         c4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                These are to be enabled later-on - currently disabled as per instructions from the Programs Team - Added by Arpan Sircar
-//                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
-//                startActivity(intent);
-                displayComingSoonToast();
+                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
+                startActivity(intent);
+//                displayComingSoonToast();
             }
         });
         c5.setOnClickListener(new View.OnClickListener() {
@@ -439,9 +440,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                These are to be enabled later-on - currently disabled as per instructions from the Programs Team - Added by Arpan Sircar
-//                Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
-//                startActivity(intent);
-                displayComingSoonToast();
+                Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+                startActivity(intent);
+//                displayComingSoonToast();
             }
         });
 
@@ -1592,10 +1593,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }*/
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
 
     private void displayComingSoonToast() {
         //do nothing

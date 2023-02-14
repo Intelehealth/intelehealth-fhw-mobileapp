@@ -82,7 +82,7 @@
     <string name="title_activity_identification">انشاء سجل جديد</string>
     <string name="identification_screen_prompt_first_name">الاسم الاول *</string>
     <string name="identification_screen_prompt_middle_name">اسم الأب</string>
-    <string name="identification_screen_prompt_last_name">الكنية</string>
+    <string name="identification_screen_prompt_last_name">الكنية*</string>
     <string name="identification_screen_prompt_address">العنوان السطر 1</string>
     <string name="identification_screen_prompt_address2">العنوان السطر 2</string>
     <string name="identification_screen_prompt_phone_number">رقم الهاتف *</string>
@@ -93,7 +93,7 @@
     <string name="identification_screen_prompt_birthday">تاريخ الولادة*</string>
     <string name="identification_screen_prompt_age">السن:</string>
     <string name="identification_screen_prompt_city">القرية/المدينة/المدينة *</string>
-    <string name="identification_screen_prompt_state">السويداء</string>
+    <string name="identification_screen_prompt_state">السويداء*</string>
     <string name="identification_screen_prompt_caste">الطبقة</string>
     <string name="identification_screen_prompt_economic_status">الحالة الاقتصادية</string>
     <string name="identification_screen_prompt_education">مستوى التعليم</string>
@@ -538,8 +538,8 @@
     <string name="unable_to_get_proper_response">كانت هناك مشكلة في تنزيل بروتوكولات ، يرجى الاتصال بمسؤول النظام</string>
     <string name="last_synced">آخر تحديث -</string>
     <string name="location_setup">موقع الإعداد -</string>
-    <string name="today_visits">زيارات اليوم (قريباً...)</string>
-    <string name="active_visits">زيارات نشطة (قريباً...)</string>
+    <string name="today_visits">زيارات اليوم</string>
+    <string name="active_visits">زيارات نشطة</string>
     <string name="day">يوم</string>
     <string name="hour">ساعة</string>
     <string name="minute">اللحظة</string>
@@ -577,7 +577,7 @@
     <string name="txt_others">آخرون</string>
     <string name="do_you_need_help_please_contact_us">هل تحتاج مساعدة؟ الرجاء التواصل معنا!</string>
     <string name="whatsapp_helpline">خط المساعدة Whatsapp</string>
-    <string name="Whatsapp_Help_Cardview">مساعدة (قريباً...)</string>
+    <string name="Whatsapp_Help_Cardview">مساعدة</string>
     <string name="skip">تجاوز</string>
     <string name="start">ابدأ </string>
     <string name="who_is_this_napplication_for">لمن هذا التطبيق ؟</string>
@@ -682,7 +682,7 @@
     <string name="loading_more">تحميل المزيد ...</string>
     <string name="warning_app_update">يرجى تحديث التطبيق إلى أحدث إصدار.</string>
     <string name="due_on">تاريخ الاستحقاق:</string>
-    <string name="title_follow_up">متابعة الزيارات (قريباً...)</string>
+    <string name="title_follow_up">متابعة الزيارات</string>
     <string name="location">موقع</string>
 
     //----------reset app strings-------------
@@ -757,7 +757,7 @@
     <string name="please_select_appointment_slot">الرجاء تحديد فتحة الموعد</string>
     <string name="please_select_speciality">الرجاء تحديد التخصص!</string>
 
-    <string name="doctor_appointments">مواعيد الطبيب (قريباً...)</string>
+    <string name="doctor_appointments">مواعيد الطبيب</string>
     <string name="slot_info">معلومات الفتحة</string>
     <string name="appointment_booked">تم حجز الموعد</string>
     <string name="minutes_txt">الدقائق</string>
@@ -814,7 +814,7 @@
     <string name="visit_summary_prescription_already_given">الوصفة الموصوفة بالفعل. الرجاء تنزيل الوصفة الطبية.</string>
 
     <string name="yes">نعم</string>
-    <string name="no">رقم</string>
+    <string name="no">لا</string>
     <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
@@ -828,7 +828,7 @@
     <string name="state_Maharastra">ماهاراسترا</string>
     <string name="date_of_visit">موعد زيارة</string>
     <string name="name_of_primary_respondent">اسم المستفتى الأساسي*</string>
-    <string name="household_number">الأسرة رقم*</string>
+    <string name="household_number">الأسرة لا.*</string>
     <string name="household_structure_type">نوع هيكل الأسرة*</string>
     <string name="kucha">كوتشا</string>
     <string name="pucca">بوكا</string>
@@ -905,7 +905,7 @@
     <string name="acre">فدان</string>
     <string name="bigha">بيغا</string>
     <string name="gunta">جونتا</string>
-    <string name="enter_the_no">أدخل الرقم</string>
+    <string name="enter_the_no">أدخل لا.</string>
     <string name="average_annual_household_income">متوسط ​​دخل الأسرة السنوي (INR)</string>
     <string name="zero_thirty_thousand">0 - 30،000</string>
     <string name="thirty_fifty_thousand">30000 - 50000</string>
@@ -1404,9 +1404,9 @@
     <string name="fifty_to_seventy_km">50-70 كم</string>
     <string name="more_than_seventy_km">أكثر من 70 كم</string>
     <string name="not_treated">لم يعالج</string>
-    <string name="select_village">حدد قرية</string>
+    <string name="select_village">اختر حي المدينة/القرية</string>
     <string name="enter_block_name_other">أدخل اسم الكتلة</string>
-    <string name="enter_village_name_other">أدخل اسم القرية</string>
+    <string name="enter_village_name_other">أدخل اسم المدينة/القرية</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">عدد نتائج الحمل في العامين الماضيين</string>
     <string name="no_of_times_pasttwoyrs_limit_toast">وصل الحد الأقصى</string>
     <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">هل كانت هذه الولادة قبل الولادة؟ (قبل تاريخ الاستحقاق للتسليم؟)</string>
@@ -1470,7 +1470,7 @@
     <string name="first_name">الاسم الاول</string>
     <string name="last_name">الكنية</string>
     <string name="phone_number">رقم الهاتف</string>
-    <string name="household_no">رقم الأسرة</string>
+    <string name="household_no">المنزلية لا.</string>
     <string name="open_mrs_id">معرف OpenMRS</string>
 
     <!-- Thermal Printers -->
@@ -1554,8 +1554,8 @@
     <string name="setup_select_dropdown_state_msg">حدد الولاية من القائمة المنسدلة</string>
     <string name="setup_select_district_str">حدد المنطقة</string>
     <string name="setup_select_dropdown_district_msg">حدد المنطقة من القائمة المنسدلة</string>
-    <string name="setup_select_village_str">اختر القرية</string>
-    <string name="setup_select_dropdown_village_msg">حدد القرية من القائمة المنسدلة</string>
+    <string name="setup_select_village_str">اختر المدينة/القرية</string>
+    <string name="setup_select_dropdown_village_msg">حدد القرية من المدينة/القرية المنسدلة</string>
     <string name="triage_survey">تقييم امكانية الاستطباب عن بعد</string>
     <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
     <string name="new_patient_fab_label">*أنشئ سجل جديد في حال لم تجد سجل سابق</string>
@@ -1575,5 +1575,5 @@
     <string name="incomplete_survey_dialog">الاستبيان غير مكتمل. هل ترغب في حفظه كمسودة</string>
     <string name="medical_emergency_need_assessment">تقييم انساني لحالة طبية اسعافية</string>
     <string name="survey_acute_homecare_utilizers">استبيان مستخدمي الخدمات الطبية المنزلية</string>
-
+    <string name="comm_general_need_survey">استبيان الحاجات المحلية</string>
 </resources>

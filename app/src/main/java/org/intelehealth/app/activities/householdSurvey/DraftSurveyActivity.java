@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DraftSurveyActivity extends AppCompatActivity {
+public class  DraftSurveyActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchPatientAdapter draftSurveyAdapter;
     private Context context = DraftSurveyActivity.this;
