@@ -442,7 +442,7 @@
                                 android:layout_gravity="center"
                                 android:background="@drawable/ic_baseline_lens_24_light"
                                 android:onClick="startVideoChat"
-                                android:padding="12dip"
+                                android:padding="12dip" android:visibility="invisible"
                                 android:src="@drawable/ic_baseline_videocam_24" />
 
                             <ImageView

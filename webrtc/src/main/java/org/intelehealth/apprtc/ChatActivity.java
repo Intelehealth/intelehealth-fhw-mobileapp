@@ -184,7 +184,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         mEmptyTextView.setText(getString(R.string.loading));
         String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
-        Log.v(TAG, url);
+        Log.v(TAG, "getAllMessages - "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

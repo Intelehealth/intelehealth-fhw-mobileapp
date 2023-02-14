@@ -127,6 +127,7 @@ public class CompleteActivity extends AppCompatActivity {
     public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 3;
     public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 3;
     public static final int FPS = 24;
+    public static final String CALL_END_FROM_WEB_INTENT_ACTION = "org.intelehealth.app.CALL_END_FROM_WEB_INTENT_ACTION";
 
     private Socket socket;
     private boolean isInitiator;
@@ -185,7 +186,7 @@ public class CompleteActivity extends AppCompatActivity {
     private TextView mTimerTextView;
 
     private boolean mIsChatWindowOpened = false;
-
+    private BroadcastReceiver mBroadcastReceiver;
 
     private CountDownTimer mCountDownTimer = new CountDownTimer(WAIT_TIMER, 1000) {
 
@@ -240,6 +241,22 @@ public class CompleteActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
+        registerReceiver(mBroadcastReceiver, filterSend);
+
         mRequestQueue = Volley.newRequestQueue(this);
         // Instantiate the cache
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
