@@ -386,10 +386,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         followup_accept_text = findViewById(R.id.followup_accept_text);
 
         if (followupDate != null) {
-            followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM,yyyy");
+            followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM,yyyy");
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
-            followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+            followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
             followupDate_txt.setText("Follow up on " + followupDate);
             followup_info.setText("Please take " + patientName + "'s follow-up visit.");
 

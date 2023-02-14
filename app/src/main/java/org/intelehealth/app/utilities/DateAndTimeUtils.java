@@ -445,6 +445,23 @@ public class DateAndTimeUtils {
         }
         return str;
     }
+    public static String parse_DateToddMMyyyy_new(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 
 
     public static String getDisplayDateForApp(String date) {

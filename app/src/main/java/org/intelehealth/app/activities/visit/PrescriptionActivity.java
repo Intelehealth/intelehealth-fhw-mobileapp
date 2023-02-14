@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -1457,8 +1458,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (no_followup_txt.getVisibility() == View.VISIBLE) {
                     no_followup_txt.setVisibility(View.GONE);
                 }
-
-                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "dd-MM-yyyy", "dd MMMM,yyyy");
+                Log.i("TAG", "followUpDate: " + followUpDate);
+                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
                 followup_date_txt.setText(followUpDate_format);
                 followup_subtext.setText("The doctor suggested a follow-up visit on " +
                         followUpDate_format + ". Does the patient want to take a follow-up visit?");
@@ -2221,7 +2222,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = parse_DateToddMMyyyy_new(spiltFollowDate[0]) + ", " + remainingStr;
             } else {
                 followUpDateStr = followUpDate;
             }
