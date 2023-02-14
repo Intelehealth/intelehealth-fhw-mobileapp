@@ -234,7 +234,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
-                    android:text="@string/your_time_spent_today"
+                    android:text="@string/total_time_spent"
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
