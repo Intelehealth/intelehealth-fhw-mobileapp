@@ -151,8 +151,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter,
-            linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
+    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter, linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -177,13 +176,12 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     Intent i_privacy;
     int dob_indexValue = 15;
     String mAddress1Value = "", mAddress2Value = "", mPostalValue = "", stateValue = "", countryValue = "", villageValue = "", mRelationshipValue = "";
-    Spinner HOH_relation_spinner, marital_status_spinner, husband_status_spinner, residence_nature_spinner, link_nature_spinner, independent_resid_spinner,
-            whyHOH_spinner, mainTendency_spinner, changeConditionReason_spinner, percentage_income_spinner;
+    Spinner HOH_relation_spinner, marital_status_spinner, husband_status_spinner, residence_nature_spinner, link_nature_spinner, independent_resid_spinner, whyHOH_spinner, mainTendency_spinner, changeConditionReason_spinner, percentage_income_spinner;
     private ActivityIdentificationBinding binding;
     MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
     ArrayList<String> selectedAid_en, selectedAid_ar;
     ScrollView scrollView;
-    private MaterialCheckBox phone_checkbox;
+    private MaterialCheckBox phone_checkbox, earthquakeRehabCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,8 +195,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
         binding = ActivityIdentificationBinding.inflate(getLayoutInflater());
@@ -270,8 +267,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             //TODO: Support for state and country
 
-            if (!mPostalValue.equalsIgnoreCase("-"))
-                mPostal.setText(mPostalValue);
+            if (!mPostalValue.equalsIgnoreCase("-")) mPostal.setText(mPostalValue);
 
             // block
           /*  try {
@@ -393,8 +389,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mPhoneNum.setText(patient1.getPhone_number());
                 mPhoneNum.setEnabled(true);
                 phone_checkbox.setChecked(false);
-            }
-            else {
+            } else {
                 mPhoneNum.setEnabled(false);
                 phone_checkbox.setChecked(true);
                 mPhoneNum.setText("");
@@ -402,24 +397,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
-                if (mGenderF.isChecked())
-                    mGenderF.setChecked(false);
-                if (mGenderO.isChecked())
-                    mGenderO.setChecked(false);
+                if (mGenderF.isChecked()) mGenderF.setChecked(false);
+                if (mGenderO.isChecked()) mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else if (patient1.getGender().equals("F")) {
                 mGenderF.setChecked(true);
-                if (mGenderM.isChecked())
-                    mGenderM.setChecked(false);
-                if (mGenderO.isChecked())
-                    mGenderO.setChecked(false);
+                if (mGenderM.isChecked()) mGenderM.setChecked(false);
+                if (mGenderO.isChecked()) mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else if (patient1.getGender().equals("O")) {
                 mGenderO.setChecked(true);
-                if (mGenderM.isChecked())
-                    mGenderM.setChecked(false);
-                if (mGenderF.isChecked())
-                    mGenderF.setChecked(false);
+                if (mGenderM.isChecked()) mGenderM.setChecked(false);
+                if (mGenderF.isChecked()) mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
                 // do nothing...
@@ -433,10 +422,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         // Phone checkbox
-        if (phone_checkbox.isChecked())
-            mPhoneNum.setEnabled(false);
-        else
-            mPhoneNum.setEnabled(true);
+        if (phone_checkbox.isChecked()) mPhoneNum.setEnabled(false);
+        else mPhoneNum.setEnabled(true);
 
         phone_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -446,9 +433,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (checked) {
                     mPhoneNum.setEnabled(false);
                     mPhoneNum.setText("");
-                }
-                else
-                    mPhoneNum.setEnabled(true);
+                } else mPhoneNum.setEnabled(true);
             }
         });
         // Phone checkbox - End
@@ -491,8 +476,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 String headOfHousehold = patient1.getHeadOfHousehold();
                 if (headOfHousehold.equalsIgnoreCase(getString(R.string.yes)))
                     yesHOH.setChecked(true);
-                else
-                    noHOH.setChecked(true);
+                else noHOH.setChecked(true);
 
             }
             if (patient1 != null && patient1.getEducation_level() != null && patient1.getEducation_level().equalsIgnoreCase(getString(R.string.not_provided)))
@@ -641,19 +625,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (patient1 != null && patient1.getSinceChangeHappened() != null)
                 sinceChangeHappenedET.setText(patient1.getSinceChangeHappened());
-            else
-                sinceChangeHappenedET.setText("");
+            else sinceChangeHappenedET.setText("");
 
             if (patient1 != null && patient1.getSinceWhenMainResponsible() != null)
                 sinceSupportingFamilyET.setText(patient1.getSinceWhenMainResponsible());
-            else
-                sinceSupportingFamilyET.setText("");
+            else sinceSupportingFamilyET.setText("");
 
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
-         //   mState.setSelection(stateAdapter.getPosition(state));
+            //   mState.setSelection(stateAdapter.getPosition(state));
             // setting state - start
-          //  String state = String.valueOf(patient1.getState_province());
+            //  String state = String.valueOf(patient1.getState_province());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
@@ -722,52 +704,48 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
 
         //DOB is set using an AlertDialog
-        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        //Set the DOB calendar to the date selected by the user
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        mDOB.setError(null);
-                        mAge.setError(null);
-                        //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                        //Formatted so that it can be read the way the user sets
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        dob_indexValue = monthOfYear; //fetching the inex value of month selected...
+        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                //Set the DOB calendar to the date selected by the user
+                dob.set(year, monthOfYear, dayOfMonth);
+                mDOB.setError(null);
+                mAge.setError(null);
+                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                //Formatted so that it can be read the way the user sets
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                dob.set(year, monthOfYear, dayOfMonth);
+                String dobString = simpleDateFormat.format(dob.getTime());
+                dob_indexValue = monthOfYear; //fetching the inex value of month selected...
 
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            //TODO: Change hindi language to arabic
-                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                            mDOB.setText(dob_text);
-                        } else {
-                            mDOB.setText(dobString);
-                        }
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    //TODO: Change hindi language to arabic
+                    String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                    mDOB.setText(dob_text);
+                } else {
+                    mDOB.setText(dobString);
+                }
 
-                        mDOBYear = year;
-                        mDOBMonth = monthOfYear;
-                        mDOBDay = dayOfMonth;
+                mDOBYear = year;
+                mDOBMonth = monthOfYear;
+                mDOBDay = dayOfMonth;
 
-                        String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
-                                today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
-                        //get years months days
-                        String[] frtData = age.split("-");
+                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                //get years months days
+                String[] frtData = age.split("-");
 
-                        String[] yearData = frtData[0].split(" ");
-                        String[] monthData = frtData[1].split(" ");
-                        String[] daysData = frtData[2].split(" ");
+                String[] yearData = frtData[0].split(" ");
+                String[] monthData = frtData[1].split(" ");
+                String[] daysData = frtData[2].split(" ");
 
-                        mAgeYears = Integer.valueOf(yearData[0]);
-                        mAgeMonths = Integer.valueOf(monthData[1]);
-                        mAgeDays = Integer.valueOf(daysData[1]);
-                        String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                                mAgeDays + getResources().getString(R.string.days);
-                        mAge.setText(ageS);
-                    }
-                }, mDOBYear, mDOBMonth, mDOBDay);
+                mAgeYears = Integer.valueOf(yearData[0]);
+                mAgeMonths = Integer.valueOf(monthData[1]);
+                mAgeDays = Integer.valueOf(daysData[1]);
+                String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
+                mAge.setText(ageS);
+            }
+        }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -793,9 +771,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mAgeYears = Integer.valueOf(ymdData[0]);
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                    mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                    mAgeDays + getResources().getString(R.string.days);
+            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
             mAge.setText(age);
         }
 
@@ -865,9 +841,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     }
                 }, dayText);
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
-                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                            mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                            mAgeDays + getString(R.string.days);
+                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
 
                     Calendar calendar = Calendar.getInstance();
@@ -886,8 +860,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     } else {
                         mDOBDay = birthDay;
                     }
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
-                            Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -914,8 +887,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v ->
-        {
+        fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
@@ -931,8 +903,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String countriesLanguage = "countries";
             int countries = res.getIdentifier(countriesLanguage, "array", getApplicationContext().getPackageName());
             if (countries != 0) {
-                countryAdapter = ArrayAdapter.createFromResource(this,
-                        countries, R.layout.custom_spinner);
+                countryAdapter = ArrayAdapter.createFromResource(this, countries, R.layout.custom_spinner);
 
             }
             mCountry.setAdapter(countryAdapter);
@@ -944,7 +915,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         try {
-         //   Toast.makeText(context, "lang: " + sessionManager.getAppLanguage(), Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(context, "lang: " + sessionManager.getAppLanguage(), Toast.LENGTH_SHORT).show();
             String stateLanguage = "states_syriana_en";
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
@@ -953,8 +924,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             int states = res.getIdentifier(stateLanguage, "array", getApplicationContext().getPackageName());
             if (states != 0) {
-                stateAdapter = ArrayAdapter.createFromResource(this,
-                        states, R.layout.custom_spinner);
+                stateAdapter = ArrayAdapter.createFromResource(this, states, R.layout.custom_spinner);
 
             }
             mState.setAdapter(stateAdapter);
@@ -969,8 +939,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String relationLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
             int relations = res.getIdentifier(relationLanguage, "array", getApplicationContext().getPackageName());
             if (relations != 0) {
-                relationAdapter = ArrayAdapter.createFromResource(this,
-                        relations, R.layout.custom_spinner);
+                relationAdapter = ArrayAdapter.createFromResource(this, relations, R.layout.custom_spinner);
             }
             HOH_relation_spinner.setAdapter(relationAdapter);
         } catch (Exception e) {
@@ -982,8 +951,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String maritalLanguage = "marital_" + sessionManager.getAppLanguage();
             int maritalStatus = res.getIdentifier(maritalLanguage, "array", getApplicationContext().getPackageName());
             if (maritalStatus != 0) {
-                maritalStatusAdapter = ArrayAdapter.createFromResource(this,
-                        maritalStatus, R.layout.custom_spinner);
+                maritalStatusAdapter = ArrayAdapter.createFromResource(this, maritalStatus, R.layout.custom_spinner);
             }
             marital_status_spinner.setAdapter(maritalStatusAdapter);
         } catch (Exception e) {
@@ -994,8 +962,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String residNatureLanguage = "nature_residential_complex_" + sessionManager.getAppLanguage();
             int residNature = res.getIdentifier(residNatureLanguage, "array", getApplicationContext().getPackageName());
             if (residNature != 0) {
-                residenceNatureAdapter = ArrayAdapter.createFromResource(this,
-                        residNature, R.layout.custom_spinner);
+                residenceNatureAdapter = ArrayAdapter.createFromResource(this, residNature, R.layout.custom_spinner);
             }
             residence_nature_spinner.setAdapter(residenceNatureAdapter);
         } catch (Exception e) {
@@ -1007,8 +974,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String indepResidLanguage = "independent_residence_" + sessionManager.getAppLanguage();
             int residIndep = res.getIdentifier(indepResidLanguage, "array", getApplicationContext().getPackageName());
             if (residIndep != 0) {
-                independentResidenceAdapter = ArrayAdapter.createFromResource(this,
-                        residIndep, R.layout.custom_spinner);
+                independentResidenceAdapter = ArrayAdapter.createFromResource(this, residIndep, R.layout.custom_spinner);
             }
             independent_resid_spinner.setAdapter(independentResidenceAdapter);
             mainTendency_spinner.setAdapter(independentResidenceAdapter);
@@ -1021,8 +987,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String linkNatureLanguage = "nature_of_link_to_residence_" + sessionManager.getAppLanguage();
             int linkNatureStatus = res.getIdentifier(linkNatureLanguage, "array", getApplicationContext().getPackageName());
             if (linkNatureStatus != 0) {
-                linkNatureAdapter = ArrayAdapter.createFromResource(this,
-                        linkNatureStatus, R.layout.custom_spinner);
+                linkNatureAdapter = ArrayAdapter.createFromResource(this, linkNatureStatus, R.layout.custom_spinner);
             }
             link_nature_spinner.setAdapter(linkNatureAdapter);
         } catch (Exception e) {
@@ -1034,8 +999,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String husbandStatusLanguage = "husband_status_" + sessionManager.getAppLanguage();
             int husbandStatus = res.getIdentifier(husbandStatusLanguage, "array", getApplicationContext().getPackageName());
             if (husbandStatus != 0) {
-                husbandStatusAdapter = ArrayAdapter.createFromResource(this,
-                        husbandStatus, R.layout.custom_spinner);
+                husbandStatusAdapter = ArrayAdapter.createFromResource(this, husbandStatus, R.layout.custom_spinner);
             }
             husband_status_spinner.setAdapter(husbandStatusAdapter);
         } catch (Exception e) {
@@ -1047,8 +1011,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String educationLanguage = "education_" + sessionManager.getAppLanguage();
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
             if (educations != 0) {
-                educationAdapter = ArrayAdapter.createFromResource(this,
-                        educations, R.layout.custom_spinner);
+                educationAdapter = ArrayAdapter.createFromResource(this, educations, R.layout.custom_spinner);
             }
             mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
@@ -1142,15 +1105,12 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     }
 
     private void configureViewsFromConfig() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -1307,27 +1267,22 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
             case R.id.identification_gender_male:
-                if (checked)
-                    mGender = "M";
+                if (checked) mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_female:
-                if (checked)
-                    mGender = "F";
+                if (checked) mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_others:
-                if (checked)
-                    mGender = "O";
+                if (checked) mGender = "O";
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.hoh_yes:
-                if (checked)
-                    headOfHousehold = "Yes";
+                if (checked) headOfHousehold = "Yes";
                 break;
             case R.id.hoh_no:
-                if (checked)
-                    headOfHousehold = "No";
+                if (checked) headOfHousehold = "No";
                 break;
         }
 
@@ -1364,10 +1319,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {str};
-        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
-                "economic_status", "education_status", "caste"};
+        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo", "economic_status", "education_status", "caste"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1394,8 +1346,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {str};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
-        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1,
-                null, null, null);
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         String name = "";
         if (idCursor1.moveToFirst()) {
             do {
@@ -1461,6 +1412,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 }
                 if (name.equalsIgnoreCase("change happened years")) {
                     patient1.setSinceChangeHappened(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("CREATED_BY")) {
+                    patient1.setHealthWorkerID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
+                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    earthquakeRehabCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase(getString(R.string.yes).toLowerCase()));
                 }
                 /*if (name.equalsIgnoreCase("FirstLocation")) {
                     patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -1610,12 +1568,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
 
-                Glide.with(this)
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(mImageView);
+                Glide.with(this).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(mImageView);
             }
         }
     }
@@ -1701,11 +1654,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                !mPhoneNum.getText().toString().equals("") &&
-                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked())
-                && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1733,8 +1682,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
                 focusView = mPhoneNum;
                 mPhoneNum.setError(getString(R.string.error_field_required));
-            }
-            else {
+            } else {
                 mPhoneNum.setError(null);
             }
 
@@ -2141,16 +2089,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_bn_en_noEdit
-                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
+                String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             } else {
                 String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob_value)));
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             }
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
@@ -2164,8 +2109,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 
             String stateName = mState.getSelectedItem().toString();
-            if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء"))
-                stateName = "As-Sweida";
+            if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء")) stateName = "As-Sweida";
             patientdto.setStateprovince(stateName);
             Log.v("state", "state name: create: " + stateName);
 
@@ -2326,6 +2270,25 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
+            patientAttributesDTO.setValue(sessionManager.getProviderID());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
+
+            if (earthquakeRehabCheckbox.isChecked()) {
+                patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
+            } else {
+                patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
+            }
+
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
@@ -2334,8 +2297,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("Household ID Number"));
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             } else {
@@ -2343,8 +2305,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("Household ID Number"));
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
             }
             //House Hold Registration - End
@@ -3134,11 +3095,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 */
 
-            if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                    && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                    !mPhoneNum.getText().toString().equals("") &&
-                    !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() ||
-                    generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+            if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
                 aidSelectionImplementation();
                 Log.v(TAG, "Result");
             } else {
@@ -3165,8 +3122,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
                     focusView = mPhoneNum;
                     mPhoneNum.setError(getString(R.string.error_field_required));
-                }
-                else {
+                } else {
                     mPhoneNum.setError(null);
                 }
 
@@ -3399,8 +3355,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                });
                 Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
             } else {
-                if (mCurrentPhotoPath == null)
-                    mCurrentPhotoPath = patientdto.getPatient_photo();
+                if (mCurrentPhotoPath == null) mCurrentPhotoPath = patientdto.getPatient_photo();
 
                 patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
                 patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -3415,18 +3370,15 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 //get month index and return English value for month.
                 if (dob_indexValue == 15) {
-                    String dob = StringUtils.hi_or_bn_en_noEdit
-                            (mDOB.getText().toString(), sessionManager.getAppLanguage());
-                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
-                            (StringUtils.getValue(dob)));
+                    String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
+                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
                 } else {
                     String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
                     String dob_month_split = dob_array[1];
                     dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                     String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
 
-                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
-                            (StringUtils.getValue(dob_value)));
+                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
                 }
 
                 patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
@@ -3440,11 +3392,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setPatient_photo(mCurrentPhotoPath);
 
                 String stateName = mState.getSelectedItem().toString();
-                if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء"))
-                    stateName = "As-Sweida";
+                if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء")) stateName = "As-Sweida";
                 patientdto.setState_province(stateName);
                 Log.v("state", "state name: " + stateName);
-              //  patientdto.setState_province(mState.getSelectedItem().toString());
+                //  patientdto.setState_province(mState.getSelectedItem().toString());
 
               /*  patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3602,6 +3553,26 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
+                patientAttributesDTO.setValue(patient1.getHealthWorkerID());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
+
+                if (earthquakeRehabCheckbox.isChecked()) {
+                    patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
+                } else {
+                    patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
+                }
+
+                patientAttributesDTOList.add(patientAttributesDTO);
+
                 //House Hold Registration
                 if (sessionManager.getHouseholdUuid().equals("")) {
                     String HouseHold_UUID = UUID.randomUUID().toString();
@@ -3609,16 +3580,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid
-                            (patientsDAO.getUuidForAttribute("Household ID Number"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
                 } else {
                     String HouseHold_UUID = sessionManager.getHouseholdUuid();
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid
-                            (patientsDAO.getUuidForAttribute("Household ID Number"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
                 }
 
@@ -3671,6 +3640,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         phone_checkbox = findViewById(R.id.phone_checkbox);
+        earthquakeRehabCheckbox = findViewById(R.id.earthquake_rehab_checkbox);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
@@ -3760,22 +3730,16 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 selectedAid_ar.add("تقييم الاحتياجات الطارئة");
         }
         if (generalCB.isChecked()) {
-            if (!selectedAid_en.contains("General Aid"))
-                selectedAid_en.add("General Aid");
-            if (!selectedAid_ar.contains("المساعدة العامة"))
-                selectedAid_ar.add("المساعدة العامة");
+            if (!selectedAid_en.contains("General Aid")) selectedAid_en.add("General Aid");
+            if (!selectedAid_ar.contains("المساعدة العامة")) selectedAid_ar.add("المساعدة العامة");
         }
         if (studentCB.isChecked()) {
-            if (!selectedAid_en.contains("Student Aid"))
-                selectedAid_en.add("Student Aid");
-            if (!selectedAid_ar.contains("مساعدة الطلاب"))
-                selectedAid_ar.add("مساعدة الطلاب");
+            if (!selectedAid_en.contains("Student Aid")) selectedAid_en.add("Student Aid");
+            if (!selectedAid_ar.contains("مساعدة الطلاب")) selectedAid_ar.add("مساعدة الطلاب");
         }
         if (fhhSurveyCB.isChecked()) {
-            if (!selectedAid_en.contains("FHH Survey"))
-                selectedAid_en.add("FHH Survey");
-            if (!selectedAid_ar.contains("مسح FHH"))
-                selectedAid_ar.add("مسح FHH");
+            if (!selectedAid_en.contains("FHH Survey")) selectedAid_en.add("FHH Survey");
+            if (!selectedAid_ar.contains("مسح FHH")) selectedAid_ar.add("مسح FHH");
         }
 
         emergencyCB.setOnClickListener(new View.OnClickListener() {
@@ -3800,8 +3764,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (generalCB.isChecked()) {
-                    if (!selectedAid_en.contains("General Aid"))
-                        selectedAid_en.add("General Aid");
+                    if (!selectedAid_en.contains("General Aid")) selectedAid_en.add("General Aid");
                     if (!selectedAid_ar.contains("المساعدة العامة"))
                         selectedAid_ar.add("المساعدة العامة");
 //                    showSpinnersBasedOnAid();
@@ -3821,8 +3784,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (studentCB.isChecked()) {
-                    if (!selectedAid_en.contains("Student Aid"))
-                        selectedAid_en.add("Student Aid");
+                    if (!selectedAid_en.contains("Student Aid")) selectedAid_en.add("Student Aid");
                     if (!selectedAid_ar.contains("مساعدة الطلاب"))
                         selectedAid_ar.add("مساعدة الطلاب");
                 } else if (!studentCB.isChecked()) {
@@ -3838,17 +3800,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (fhhSurveyCB.isChecked()) {
-                    if (!selectedAid_en.contains("FHH Survey"))
-                        selectedAid_en.add("FHH Survey");
-                    if (!selectedAid_ar.contains("مسح FHH"))
-                        selectedAid_ar.add("مسح FHH");
+                    if (!selectedAid_en.contains("FHH Survey")) selectedAid_en.add("FHH Survey");
+                    if (!selectedAid_ar.contains("مسح FHH")) selectedAid_ar.add("مسح FHH");
 //                    showSpinnersBasedOnAid();
                 } else if (!fhhSurveyCB.isChecked()) {
-                    if (selectedAid_en.contains("FHH Survey"))
-                        selectedAid_en.remove("FHH Survey");
+                    if (selectedAid_en.contains("FHH Survey")) selectedAid_en.remove("FHH Survey");
 
-                    if (selectedAid_ar.contains("مسح FHH"))
-                        selectedAid_ar.remove("مسح FHH");
+                    if (selectedAid_ar.contains("مسح FHH")) selectedAid_ar.remove("مسح FHH");
 
 //                    if (!selectedAid_en.contains("General Aid") && !selectedAid_ar.contains("المساعدة العامة"))
 //                        hideSpinnersBasedOnAid();

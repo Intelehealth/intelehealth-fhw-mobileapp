@@ -112,8 +112,7 @@ public class PatientsDAO {
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
-            if (patientAttributesList != null)
-                insertPatientAttributes(patientAttributesList, db);
+            if (patientAttributesList != null) insertPatientAttributes(patientAttributesList, db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();
@@ -282,8 +281,7 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE",
-                    new String[]{patientuuid, "22b8bf9f-f142-4247-85d2-6e1dcd56b238"});
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "22b8bf9f-f142-4247-85d2-6e1dcd56b238"});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -308,8 +306,7 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND (sync='0' OR sync='TRUE') COLLATE NOCASE",
-                    new String[]{houseHoldValue});
+            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND (sync='0' OR sync='TRUE') COLLATE NOCASE", new String[]{houseHoldValue});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
@@ -600,14 +597,12 @@ public class PatientsDAO {
         String gender = "";
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
-                new String[]{patientUuid}, null, null, null);
+        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?", new String[]{patientUuid}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -637,4 +632,15 @@ public class PatientsDAO {
         return value;
     }
 
+    public String fetchHealthWorkerUuid(String patientID) {
+        String query = "SELECT value FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid='7f984b13-4c5a-49ea-a30e-bd4764f4825c'";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor healthWorkerIDCursor = db.rawQuery(query, new String[]{patientID});
+        String healthWorkerUuid = "";
+        if (healthWorkerIDCursor.moveToFirst()) {
+            healthWorkerUuid = healthWorkerIDCursor.getString(healthWorkerIDCursor.getColumnIndexOrThrow("value"));
+            healthWorkerIDCursor.close();
+        }
+        return healthWorkerUuid;
+    }
 }

@@ -1582,4 +1582,6 @@
     <string name="medical_emergency_need_assessment">Medical Emergency Need Assessment</string>
     <string name="survey_acute_homecare_utilizers"> Survey of acute homecare utilizers</string>
     <string name="comm_general_need_survey">Community General Need Survey</string>
+    <string name="incorrect_healthworker_disclaimer">You are restricted to open this record as you are not the creator of the record</string>
+    <string name="earthquake_rehab">Earthquake Rehab</string>
 </resources>

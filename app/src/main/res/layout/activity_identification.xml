@@ -244,8 +244,8 @@
                                 android:maxLines="1"
                                 android:text="@string/other"
                                 android:textSize="@dimen/card_content_sub_text_size"
-                                tools:visibility="visible"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
                         </RadioGroup>
 
@@ -342,8 +342,8 @@
                             android:id="@+id/phone_checkbox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/no_phone_no"
-                            android:paddingStart="5dp"/>
+                            android:paddingStart="5dp"
+                            android:text="@string/no_phone_no" />
                         <!--Checkbox - mobile - End -->
 
                     </LinearLayout>
@@ -410,8 +410,8 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
-                                tools:visibility="visible"
-                                android:visibility="gone">
+                                android:visibility="gone"
+                                tools:visibility="visible">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
@@ -594,8 +594,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:visibility="visible"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <EditText
                                 android:id="@+id/identification_address2"
@@ -622,8 +622,8 @@
                             android:id="@+id/postal_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:visibility="visible"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <EditText
                                 android:id="@+id/identification_postal_code"
@@ -656,9 +656,9 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:orientation="horizontal">
+                    tools:visibility="visible">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -685,11 +685,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    tools:visibility="visible">
 
 
                     <LinearLayout
@@ -708,11 +708,13 @@
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
+
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cbEmergency"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/emergency_survey" />
+
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cbGeneralAid"
                             android:layout_width="wrap_content"
@@ -724,6 +726,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/student_aid_survey" />
+
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cbFHHSurvey"
                             android:layout_width="wrap_content"
@@ -741,8 +744,8 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
-                    tools:visibility="visible"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -769,76 +772,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    app:cardPreventCornerOverlap="false">
-                <LinearLayout android:padding="8dip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="5dp"
-                        android:text="@string/are_you_head_of_the_family"
-                        android:textSize="@dimen/card_content_sub_text_size" />
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="10dp" />
-
-
-                    <RadioGroup
-                        android:id="@+id/hoh_radio_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/hoh_yes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
-                            android:text="@string/yes"
-                            android:textSize="14sp" />
-
-                        <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/hoh_no"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
-                            android:text="@string/no"
-                            android:textSize="14sp" />
-
-                    </RadioGroup>
-
-                </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    app:cardCornerRadius="10sp"
-                    app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
-
+                    app:cardPreventCornerOverlap="false"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="8dip">
 
-                       <!-- <TextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
@@ -876,7 +822,68 @@
                                 android:textSize="14sp" />
 
                         </RadioGroup>
--->
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false"
+                    tools:visibility="visible">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <!-- <TextView
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:paddingStart="5dp"
+                             android:text="@string/are_you_head_of_the_family"
+                             android:textSize="@dimen/card_content_sub_text_size" />
+
+                         <Space
+                             android:layout_width="10dp"
+                             android:layout_height="10dp" />
+
+
+                         <RadioGroup
+                             android:id="@+id/hoh_radio_group"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal"
+                             android:weightSum="2">
+
+                             <com.google.android.material.radiobutton.MaterialRadioButton
+                                 android:id="@+id/hoh_yes"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1"
+                                 android:fontFamily="@font/lato_regular"
+                                 android:text="@string/yes"
+                                 android:textSize="14sp" />
+
+                             <com.google.android.material.radiobutton.MaterialRadioButton
+                                 android:id="@+id/hoh_no"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1"
+                                 android:fontFamily="@font/lato_regular"
+                                 android:text="@string/no"
+                                 android:textSize="14sp" />
+
+                         </RadioGroup>
+ -->
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
@@ -1290,8 +1297,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    tools:visibility="visible"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <!--Title-->
                     <LinearLayout
@@ -1329,10 +1336,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:visibility="gone"
-                        tools:visibility="visible"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
-                        app:cardPreventCornerOverlap="false">
+                        app:cardPreventCornerOverlap="false"
+                        tools:visibility="visible">
 
 
                         <LinearLayout
@@ -1457,14 +1464,14 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:visibility="gone"
-                    tools:visibility="visible"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true"
-
                     app:layout_constraintEnd_toEndOf="parent"
+
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/app_bar_view">
+                    app:layout_constraintTop_toBottomOf="@id/app_bar_view"
+                    tools:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -1496,8 +1503,8 @@
                                 android:layout_marginEnd="10dp"
                                 android:background="@android:color/transparent"
                                 android:src="@drawable/ic_baseline_edit_24"
-                                tools:visibility="visible"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
                             <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/add_health_issue_button"
@@ -1526,6 +1533,35 @@
 
                 </androidx.cardview.widget.CardView>
                 <!--                health end-->
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_earthquake_rehab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/app_bar_view">
+
+                    <!--Checkbox - mobile - Start -->
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/earthquake_rehab_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:text="@string/earthquake_rehab"
+                        android:textSize="17sp" />
+                    <!--Checkbox - mobile - End -->
+
+                </androidx.cardview.widget.CardView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
