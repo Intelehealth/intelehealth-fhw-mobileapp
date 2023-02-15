@@ -19,7 +19,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:padding="5dp"
-        android:src="@drawable/logo_syriana" />
+        android:src="@drawable/new_syriana_logo" />
 
     <LinearLayout
         android:id="@+id/ll_center"
@@ -64,8 +64,8 @@
                     android:hint="@string/prompt_email"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
-                    android:textAlignment="viewStart"
                     android:maxLength="100"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/white"
                     android:textColorHint="@color/font_black_5"
                     android:textSize="16sp"
@@ -110,9 +110,9 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLength="50"
-                    android:textAlignment="viewStart"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/white"
                     android:textColorHint="@color/font_black_5"
                     android:textSize="16sp" />

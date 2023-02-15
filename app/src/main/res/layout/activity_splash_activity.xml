@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:padding="5dp"
-            android:src="@drawable/logo_syriana" />
+            android:src="@drawable/new_syriana_logo" />
 
         <TextView
             android:layout_width="wrap_content"
