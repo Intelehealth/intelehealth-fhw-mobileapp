@@ -160,6 +160,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView idView;
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
+    TableRow trEarthquakeVictim;
 
     String privacy_value_selected;
 
@@ -207,6 +208,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
+        trEarthquakeVictim = findViewById(R.id.tr_earthquake_victim);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -414,8 +416,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String[] cols = {"value"};
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                null, null, null);
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB}, null, null, null);
 
         if (cursor.moveToFirst()) {
             // rows present
@@ -423,8 +424,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // so that null data is not appended
                 phistory = phistory + cursor.getString(0);
 
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             returning = true;
             sessionManager.setReturning(returning);
         }
@@ -553,10 +553,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -626,6 +623,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("RelationshipStatusHOH")) {
                     patient_new.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
+                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (isDisasterVictim.equalsIgnoreCase("yes"))
+                        trEarthquakeVictim.setVisibility(View.VISIBLE);
+                    else trEarthquakeVictim.setVisibility(View.GONE);
+                }
 
             } while (idCursor1.moveToNext());
         }
@@ -669,9 +672,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -725,13 +726,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
-        Glide.with(PatientDetailActivity.this)
-                .load(patient_new.getPatient_photo())
-                .thumbnail(0.3f)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(photoView);
+        Glide.with(PatientDetailActivity.this).load(patient_new.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             idView.setText(patient_new.getOpenmrs_id());
@@ -776,7 +771,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
-            }  else {
+            } else {
                 genderView.setText(patient_new.getGender());
             }
 
@@ -802,82 +797,58 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getPostal_code() != null && !patient_new.getPostal_code().equalsIgnoreCase("-")) {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        getValueForStateCity_edit(city_village),
-                        getValueForStateCity_edit(patient_new.getState_province()),
-                        patient_new.getPostal_code(),
-                        patient_new.getCountry());
+                addrFinalLine = String.format("%s, %s, %s, %s", getValueForStateCity_edit(city_village), getValueForStateCity_edit(patient_new.getState_province()), patient_new.getPostal_code(), patient_new.getCountry());
             } else {
-                addrFinalLine = String.format("%s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getCountry());
+                addrFinalLine = String.format("%s, %s, %s", city_village, patient_new.getState_province(), patient_new.getCountry());
             }
             addrFinalView.setText(addrFinalLine);
         } else {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 String village = switch_en_to_ar_village_edit(city_village);
 
-                 String addrFinalLine = String.format("%s, %s, %s",
-                        village,
-                         "ٱلسُّوَيْدَاء",   // State
+                String addrFinalLine = String.format("%s, %s, %s", village, "ٱلسُّوَيْدَاء",   // State
                         "سوريا");      // country
                 addrFinalView.setText(addrFinalLine);
 
                /* String addrFinalLine = String.format("%s, %s, %s",
                         village, patient_new.getState_province(),
                         patient_new.getCountry());*/
-            }
-            else {
-                String addrFinalLine = String.format("%s, %s, %s",
-                        city_village,
-                        patient_new.getState_province(),
-                        patient_new.getCountry());
+            } else {
+                String addrFinalLine = String.format("%s, %s, %s", city_village, patient_new.getState_province(), patient_new.getCountry());
                 addrFinalView.setText(addrFinalLine);
             }
 
         }
 
 
-        if (patient_new.getPhone_number() != null)
-            phoneView.setText(patient_new.getPhone_number());
+        if (patient_new.getPhone_number() != null) phoneView.setText(patient_new.getPhone_number());
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
 
         if (patient_new.getEducation_level() != null) {
-            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 education_statusView.setText("नहीं दिया गया");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 education_statusView.setText("પૂરી પાડવામાં આવેલ નથી");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 education_statusView.setText("సమకూర్చబడలేదు");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 education_statusView.setText("झाले नाही");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 education_statusView.setText("প্ৰদান কৰা হোৱা নাই");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 education_statusView.setText("നൽകിയിട്ടില്ല");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 education_statusView.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 education_statusView.setText("Не предоставлен");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 education_statusView.setText("সরবরাহ করা হয়নি");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 education_statusView.setText("வழங்கப்படவில்லை");
             } else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1100,8 +1071,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 //
 
         if (patient_new.getOccupation() != null) {
-            if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            if (patient_new.getOccupation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 education_statusView.setText("غير مزود");
             } else {
                 String occupation = patient_new.getOccupation();
@@ -1110,12 +1080,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if (patient_new.getPatientAidType() != null) {
-            if (patient_new.getPatientAidType().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            if (patient_new.getPatientAidType().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 aidTypeView.setText("غير مزود");
             } else {
                 String rawAidType = patient_new.getPatientAidType();
-                aidTypeView.setText(rawAidType.substring(1,rawAidType.length()-1));
+                aidTypeView.setText(rawAidType.substring(1, rawAidType.length() - 1));
             }
         }
 
@@ -1176,10 +1145,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //                        + getString(R.string.and_i_be_assisting_you);
 
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumberWithCountryCode, message))));
             }
         });
 
@@ -1199,53 +1165,45 @@ public class PatientDetailActivity extends AppCompatActivity {
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientUuid);
-                        Logger.logD(TAG, file.toString());
-                    }
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, patientUuid);
+                Logger.logD(TAG, file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientUuid, AppConstants.IMAGE_PATH + patientUuid + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(PatientDetailActivity.this)
-                                    .load(AppConstants.IMAGE_PATH + patientUuid + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(photoView);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(patientUuid, AppConstants.IMAGE_PATH + patientUuid + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(PatientDetailActivity.this).load(AppConstants.IMAGE_PATH + patientUuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                        if (isImageDownloaded)
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 //                        else
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
-                    }
-                });
+            }
+        });
     }
 
     /**
@@ -1260,7 +1218,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             visitString = org.intelehealth.app.utilities.StringUtils.en_ar_dob(visitString);
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
@@ -1307,8 +1265,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 newVisit.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    newVisit.setBackgroundColor
-                            (getColor(R.color.divider));
+                    newVisit.setBackgroundColor(getColor(R.color.divider));
                     newVisit.setTextColor(getColor(R.color.white));
                 } else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
@@ -1350,8 +1307,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         textView.setTextSize(16);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 10, 0, 0);
         // textView.setLayoutParams(llp);
         textView.setTag(visit_id);
@@ -1422,8 +1378,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void familyHistory(TextView famHistView, String patientuuid,
-                              String EncounterAdultInitials_LatestVisit) {
+    public void familyHistory(TextView famHistView, String patientuuid, String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
@@ -1495,8 +1450,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public void pastMedicalHistory(TextView medHistView, String patientuuid,
-                                   String EncounterAdultInitials_LatestVisit) {
+    public void pastMedicalHistory(TextView medHistView, String patientuuid, String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};

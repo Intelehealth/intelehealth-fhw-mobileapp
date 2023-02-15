@@ -1407,7 +1407,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 }
                 if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
                     String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    earthquakeVictimCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase(getString(R.string.yes).toLowerCase()));
+                    earthquakeVictimCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase("yes"));
                 }
                 /*if (name.equalsIgnoreCase("FirstLocation")) {
                     patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2272,9 +2272,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
             if (earthquakeVictimCheckbox.isChecked()) {
-                patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
+                patientAttributesDTO.setValue("Yes");
             } else {
-                patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
+                patientAttributesDTO.setValue("No");
             }
 
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -3555,9 +3555,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
                 if (earthquakeVictimCheckbox.isChecked()) {
-                    patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
+                    patientAttributesDTO.setValue("Yes");
                 } else {
-                    patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
+                    patientAttributesDTO.setValue("No");
                 }
 
                 patientAttributesDTOList.add(patientAttributesDTO);

@@ -346,6 +346,15 @@
                             android:text="@string/no_phone_no" />
                         <!--Checkbox - mobile - End -->
 
+                        <!--Checkbox - mobile - Start -->
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/earthquake_victim_checkbox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/earthquake_victim" />
+                        <!--Checkbox - mobile - End -->
+
                     </LinearLayout>
 
 
@@ -1550,16 +1559,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/app_bar_view">
-
-                    <!--Checkbox - mobile - Start -->
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/earthquake_victim_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="5dp"
-                        android:text="@string/earthquake_victim"
-                        android:textSize="17sp" />
-                    <!--Checkbox - mobile - End -->
 
                 </androidx.cardview.widget.CardView>
 

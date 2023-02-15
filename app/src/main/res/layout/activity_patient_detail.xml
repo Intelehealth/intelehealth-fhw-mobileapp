@@ -140,8 +140,8 @@
 
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -154,10 +154,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:textAlignment="viewStart"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -174,9 +174,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_patient_id"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -186,11 +186,11 @@
                                 android:id="@+id/textView_ID"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:textAlignment="viewStart"
-                                android:layout_weight="2"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -207,9 +207,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_gender"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -219,11 +219,11 @@
                                 android:id="@+id/textView_Gender"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -240,9 +240,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_dob"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -256,8 +256,8 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
-                                android:textAlignment="viewStart"
                                 android:paddingBottom="4dp"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -274,9 +274,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_age"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -286,9 +286,9 @@
                                 android:id="@+id/textView_age"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -308,9 +308,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_address"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -337,15 +337,15 @@
                         <TableRow
                             android:id="@+id/tableRow_addr2"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -357,8 +357,8 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -376,9 +376,9 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -390,8 +390,8 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -408,10 +408,10 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
-                                android:layout_weight="1.5"
                                 android:text="@string/row_phone_number"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -419,12 +419,12 @@
                             <TextView
                                 android:id="@+id/textView_phone"
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="viewStart"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -435,36 +435,54 @@
                                 android:id="@+id/whatsapp_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_icons8_whatsapp"
-                                android:padding="5dp"/>
+                                android:padding="5dp"
+                                app:srcCompat="@drawable/ic_icons8_whatsapp" />
 
                             <ImageView
                                 android:id="@+id/calling"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_baseline_call_24"
-                                android:padding="5dp"
                                 android:layout_marginStart="5dp"
+                                android:padding="5dp"
+                                app:srcCompat="@drawable/ic_baseline_call_24"
                                 app:tint="@android:color/black" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tr_earthquake_victim"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:text="@string/earthquake_victim"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
 
                         </TableRow>
 
                         <TableRow
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
-                                android:textAlignment="viewStart"
                                 android:paddingRight="5dp"
                                 android:text="@string/identification_screen_prompt_relationship"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -489,15 +507,15 @@
                         <TableRow
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/identification_screen_prompt_occupation"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -510,8 +528,8 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -524,15 +542,15 @@
                         <TableRow
                             android:id="@+id/tableRow_Economic_Status"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/economic_status"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -541,11 +559,11 @@
                                 android:id="@+id/textView_economic_status"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -557,15 +575,15 @@
                         <TableRow
                             android:id="@+id/tableRow_Education_Status"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/education_level"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -575,11 +593,11 @@
                                 android:id="@+id/textView_education_status"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -591,16 +609,16 @@
 
                         <TableRow
                             android:id="@+id/tableRow_aid_type"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/aid_type"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -610,11 +628,11 @@
                                 android:id="@+id/textView_aid_type"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
-                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -628,15 +646,15 @@
                         <TableRow
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
-                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/caste"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -646,9 +664,9 @@
                                 android:id="@+id/textView_caste"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
-                                android:layout_weight="2"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -736,9 +754,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_familymember"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_height="wrap_content"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -750,9 +768,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/padding_card"
+                android:visibility="gone"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
-                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -886,19 +904,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/acute_homecare_utilizers_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/colorYellow"
-                    android:text="@string/comm_general_need_survey" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/comm_general_need_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -906,22 +924,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/cha_button"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/orange3"
-                    android:text="@string/survey_acute_homecare_utilizers" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/survey_acute_homecare_utilizers"
+                    tools:foreground="?android:attr/selectableItemBackground" />
 
             </androidx.cardview.widget.CardView>
-
 
 
             <androidx.cardview.widget.CardView
@@ -929,19 +946,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/emergencyaid_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/red"
-                    android:text="@string/medical_emergency_need_assessment" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/medical_emergency_need_assessment"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -949,19 +966,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/studentaid_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/blue_1"
-                    android:text="@string/student_aid_survey" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/student_aid_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
 
             </androidx.cardview.widget.CardView>
 
@@ -970,21 +987,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/generalaid_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/green"
-                    android:text="@string/general_aid_survey" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/general_aid_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
-
 
 
             <!--Add buttons here for Aid - End -->
@@ -994,20 +1010,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp"
                 android:visibility="gone"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/button_householdSurvey"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/orange3"
-                    android:text="@string/livelihood_needs_assessment" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/livelihood_needs_assessment"
+                    tools:foreground="?android:attr/selectableItemBackground" />
 
             </androidx.cardview.widget.CardView>
 
@@ -1016,20 +1032,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp"
                 android:visibility="gone"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/button_triageSurvey"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/green"
-                    android:text="@string/triage_survey" />
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/triage_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -1037,10 +1053,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
 
                 <Button
                     android:id="@+id/button_new_visit"
@@ -1049,8 +1065,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:foreground="?android:attr/selectableItemBackground"
-                    tools:background="@color/colorPrimary"
-                    android:text="@string/button_new_visit" />
+                    android:text="@string/button_new_visit"
+                    tools:background="@color/colorPrimary" />
 
             </androidx.cardview.widget.CardView>
 
@@ -1092,8 +1108,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:visibility="invisible"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
 
                             <ImageButton
                                 style="@style/SelectableItemBackground"
@@ -1124,14 +1140,13 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:includeFontPadding="false"
-                            android:visibility="gone"
-                            android:textSize="@dimen/card_title_text_size" />
+                            android:textSize="@dimen/card_title_text_size"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>
