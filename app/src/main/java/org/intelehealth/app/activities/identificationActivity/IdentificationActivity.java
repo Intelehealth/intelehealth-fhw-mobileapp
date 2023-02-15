@@ -4,7 +4,6 @@ import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -15,15 +14,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -51,21 +47,16 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
-import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
-import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
-import org.intelehealth.app.database.dao.NewLocationDao;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.ActivityIdentificationBinding;
@@ -91,10 +82,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -181,7 +170,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
     ArrayList<String> selectedAid_en, selectedAid_ar;
     ScrollView scrollView;
-    private MaterialCheckBox phone_checkbox, earthquakeRehabCheckbox;
+    private MaterialCheckBox phone_checkbox, earthquakeVictimCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1418,7 +1407,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 }
                 if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
                     String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    earthquakeRehabCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase(getString(R.string.yes).toLowerCase()));
+                    earthquakeVictimCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase(getString(R.string.yes).toLowerCase()));
                 }
                 /*if (name.equalsIgnoreCase("FirstLocation")) {
                     patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2282,7 +2271,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-            if (earthquakeRehabCheckbox.isChecked()) {
+            if (earthquakeVictimCheckbox.isChecked()) {
                 patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
             } else {
                 patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
@@ -3565,7 +3554,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-                if (earthquakeRehabCheckbox.isChecked()) {
+                if (earthquakeVictimCheckbox.isChecked()) {
                     patientAttributesDTO.setValue(getString(R.string.yes).toLowerCase());
                 } else {
                     patientAttributesDTO.setValue(getString(R.string.no).toLowerCase());
@@ -3640,7 +3629,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         phone_checkbox = findViewById(R.id.phone_checkbox);
-        earthquakeRehabCheckbox = findViewById(R.id.earthquake_rehab_checkbox);
+        earthquakeVictimCheckbox = findViewById(R.id.earthquake_victim_checkbox);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50

@@ -1536,7 +1536,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_view_earthquake_rehab"
+                    android:id="@+id/card_view_earthquake_victim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -1553,11 +1553,11 @@
 
                     <!--Checkbox - mobile - Start -->
                     <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/earthquake_rehab_checkbox"
+                        android:id="@+id/earthquake_victim_checkbox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="5dp"
-                        android:text="@string/earthquake_rehab"
+                        android:text="@string/earthquake_victim"
                         android:textSize="17sp" />
                     <!--Checkbox - mobile - End -->
 
