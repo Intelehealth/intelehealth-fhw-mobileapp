@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -13,13 +14,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.List;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.utilities.SessionManager;
 
 public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdapter.Myholder> {
     List<PatientDTO> patients;
@@ -50,27 +55,12 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
             if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + ", " + patinet.getOpenmrsId());
-            else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname() + ", " + patinet.getOpenmrsId());
+            else holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
         }
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("search adapter", "patientuuid" + patinet.getUuid());
-                String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
-                intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "search");
-                intent.putExtra("hasPrescription", "false");
-                context.startActivity(intent);
-            }
-        });
+        holder.linearLayout.setOnClickListener(v -> fetchCreatorIDOfPatient(patinet));
     }
 
     @Override
@@ -82,17 +72,49 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
-      //  private TextView indicator;
+        //  private TextView indicator;
 
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
-           // indicator = itemView.findViewById(R.id.indicator);
+            // indicator = itemView.findViewById(R.id.indicator);
 
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
 
+    private void fetchCreatorIDOfPatient(PatientDTO patientDTO) {
+        SessionManager sessionManager = new SessionManager(context);
+        PatientsDAO patientsDAO = new PatientsDAO();
+        String creatorHealthWorkerUuid = patientsDAO.fetchHealthWorkerUuid(patientDTO.getUuid());
+        if (sessionManager.getProviderID().equalsIgnoreCase(creatorHealthWorkerUuid)) {
+            navigateToPatientDetailActivity(patientDTO);
+        } else {
+            displayDisclaimerDialog(patientDTO);
+        }
+    }
+
+    private void displayDisclaimerDialog(PatientDTO patientDTO) {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        materialAlertDialogBuilder.setTitle(context.getString(R.string.generic_warning));
+        materialAlertDialogBuilder.setMessage(context.getString(R.string.incorrect_healthworker_disclaimer));
+        materialAlertDialogBuilder.setPositiveButton(context.getText(R.string.yes), (dialog, which) -> navigateToPatientDetailActivity(patientDTO));
+        materialAlertDialogBuilder.setNegativeButton(context.getText(R.string.no), ((dialog, which) -> dialog.dismiss()));
+        AlertDialog alertDialog = materialAlertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void navigateToPatientDetailActivity(PatientDTO patinet) {
+        Log.d("search adapter", "patientuuid" + patinet.getUuid());
+        String patientStatus = "returning";
+        Intent intent = new Intent(context, PatientDetailActivity.class);
+        intent.putExtra("patientUuid", patinet.getUuid());
+        intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
+        intent.putExtra("status", patientStatus);
+        intent.putExtra("tag", "search");
+        intent.putExtra("hasPrescription", "false");
+        context.startActivity(intent);
+    }
 }

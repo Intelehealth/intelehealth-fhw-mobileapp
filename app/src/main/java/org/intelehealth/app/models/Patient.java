@@ -78,6 +78,8 @@ public class Patient {
     private String percentageOfIncome;
     private String sinceWhenMainResponsible;
 
+    // healthworker details
+    private String healthWorkerID;
 
     public String getUuid() {
         return uuid;
@@ -130,6 +132,7 @@ public class Patient {
     public String getPhone_number() {
         return phone_number;
     }
+
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
@@ -624,4 +627,11 @@ public class Patient {
         this.sinceWhenMainResponsible = sinceWhenMainResponsible;
     }
 
+    public String getHealthWorkerID() {
+        return healthWorkerID;
+    }
+
+    public void setHealthWorkerID(String healthWorkerID) {
+        this.healthWorkerID = healthWorkerID;
+    }
 }
