@@ -372,7 +372,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
                         android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="12 Pending"
+                        android:text="0 Pending"
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

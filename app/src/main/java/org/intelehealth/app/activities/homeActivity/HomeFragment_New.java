@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +20,22 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
-import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeFragment_New";
@@ -43,6 +45,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     TextView textlayout_find_patient;
     NetworkUtils networkUtils;
     ImageView ivInternet;
+    private TextView mUpcomingAppointmentCountTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +86,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         } else {
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
+        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
@@ -127,7 +131,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
 
-
+        getUpcomingAppointments();
     }
 
     @Override
@@ -197,6 +201,47 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+    }
+
+    private void getUpcomingAppointments() {
+        //recyclerview for upcoming appointments
+        int totalUpcomingApps = 0;
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat1.format(new Date());
+
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday("", currentDate);
+        List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+
+        try {
+            if (appointmentInfoList.size() > 0) {
+                for (int i = 0; i < appointmentInfoList.size(); i++) {
+                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime = dateFormat.format(new Date());
+                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+
+                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+
+                    long second = diff / 1000;
+                    long minutes = second / 60;
+                    if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                        upcomingAppointmentsList.add(appointmentInfo);
+                    }
+                }
+                totalUpcomingApps = upcomingAppointmentsList.size();
+
+
+            } else {
+                totalUpcomingApps = 0;
+            }
+            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " upcoming");
+
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
 
