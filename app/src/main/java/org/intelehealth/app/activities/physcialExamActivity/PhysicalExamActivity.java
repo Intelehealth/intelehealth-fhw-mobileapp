@@ -177,8 +177,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
-            if (selectedExams != null)
-                selectedExamsList.addAll(selectedExams);
+            if (selectedExams != null) selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
@@ -196,8 +195,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
-            if (!sessionManager.getLicenseKey().isEmpty())
-                hasLicense = true;
+            if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
             if (hasLicense) {
                 try {
@@ -318,7 +316,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void fabClickedAtEnd() {
-        triggerConfirmation();
+
+        if (!physicalExamMap.areRequiredAnswered()) {
+            fabClicked();
+        } else {
+            triggerConfirmation();
+        }
     }
 
     private void fabClicked() {
@@ -331,20 +334,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             physicalString = physicalExamMap.generateFindings();
             String physicalStringArabic = physicalExamMap.generateFindings("ar");
             if (physicalStringArabic != null && !physicalStringArabic.isEmpty()) {
-                physicalStringArabic = physicalStringArabic
-                        .replace("Eyes: Pallor", "العيون: شحوب")
-                        .replace("Arm", "ذراع")
-                        .replace("Head", "رأس")
-                        .replace("Mouth", "فم")
-                        .replace("Abdomen", "البطن")
-                        .replace("Joint", "مشترك")
-                        .replace("Any Location", "اي موقع")
-                        .replace("Arm", "ذراع")
-                        .replace("Nail abnormality", "آفات الأظافر")
-                        .replace("Nail anemia", "فقر دم الأظافر")
-                        .replace("Ankle", "كاحل")
-                        .replace("Skin Rash", "الطفح الجلدي")
-                        .replace("Eyes: Jaundice", "العيون: اليرقان");
+                physicalStringArabic = physicalStringArabic.replace("Eyes: Pallor", "العيون: شحوب").replace("Arm", "ذراع").replace("Head", "رأس").replace("Mouth", "فم").replace("Abdomen", "البطن").replace("Joint", "مشترك").replace("Any Location", "اي موقع").replace("Arm", "ذراع").replace("Nail abnormality", "آفات الأظافر").replace("Nail anemia", "فقر دم الأظافر").replace("Ankle", "كاحل").replace("Skin Rash", "الطفح الجلدي").replace("Eyes: Jaundice", "العيون: اليرقان");
             }
             Map<String, String> physicalStringMap = new HashMap<>();
             physicalStringMap.put("en", physicalString);
@@ -406,13 +396,13 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
-        Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
+        Node question = physicalExamMap.getExamNode(physExamPos).getOption(childPos);
         //Log.d("Clicked", question.language());
         question.toggleSelected();
-        if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
-            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
+        if (physicalExamMap.getExamNode(physExamPos).anySubSelected()) {
+            physicalExamMap.getExamNode(physExamPos).setSelected(true);
         } else {
-            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
+            physicalExamMap.getExamNode(physExamPos).setUnselected();
         }
         adapter.notifyDataSetChanged();
 
@@ -571,8 +561,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
             final ImageView imageView = rootView.findViewById(R.id.physical_exam_image_view);
@@ -688,8 +677,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         if (v != null) {
             v.setVisibility(View.VISIBLE);
-            Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
+            Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
             v.startAnimation(bottomUp);
         }
 
@@ -700,20 +688,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String arabicPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("ar")));
             if (arabicPhysicalExam != null && !arabicPhysicalExam.isEmpty()) {
-                arabicPhysicalExam = arabicPhysicalExam
-                        .replace("Eyes: Pallor", "العيون: شحوب")
-                        .replace("Arm", "ذراع")
-                        .replace("Head", "رأس")
-                        .replace("Mouth", "فم")
-                        .replace("Abdomen", "البطن")
-                        .replace("Joint", "مشترك")
-                        .replace("Any Location", "اي موقع")
-                        .replace("Arm", "ذراع")
-                        .replace("Nail abnormality", "آفات الأظافر")
-                        .replace("Nail anemia", "فقر دم الأظافر")
-                        .replace("Ankle", "كاحل")
-                        .replace("Skin Rash", "الطفح الجلدي")
-                        .replace("Eyes: Jaundice", "العيون: اليرقان");
+                arabicPhysicalExam = arabicPhysicalExam.replace("Eyes: Pallor", "العيون: شحوب").replace("Arm", "ذراع").replace("Head", "رأس").replace("Mouth", "فم").replace("Abdomen", "البطن").replace("Joint", "مشترك").replace("Any Location", "اي موقع").replace("Arm", "ذراع").replace("Nail abnormality", "آفات الأظافر").replace("Nail anemia", "فقر دم الأظافر").replace("Ankle", "كاحل").replace("Skin Rash", "الطفح الجلدي").replace("Eyes: Jaundice", "العيون: اليرقان");
             }
             alertDialogBuilder.setMessage(arabicPhysicalExam);
         } else {

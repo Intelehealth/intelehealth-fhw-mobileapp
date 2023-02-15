@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -346,7 +347,7 @@ public class Node implements Serializable {
             } */
 
             // this.hasPopUp = !pop_up.isEmpty();
-            if (!pop_up.isEmpty() || !pop_up_ar.isEmpty() /*!pop_up_hi.isEmpty() || !pop_up_or.isEmpty()*/ ) {
+            if (!pop_up.isEmpty() || !pop_up_ar.isEmpty() /*!pop_up_hi.isEmpty() || !pop_up_or.isEmpty()*/) {
                 this.hasPopUp = true;
             }
 
@@ -532,11 +533,11 @@ public class Node implements Serializable {
 
             }
             default: {
-                    if (display != null && display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
             }
         }
     }
@@ -701,19 +702,23 @@ public class Node implements Serializable {
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setSingleLine(false);
+        dialogEditText.setWidth(200);
+        dialogEditText.setHeight(500);
+        dialogEditText.setPadding(10, 50, 10, 10);
+        dialogEditText.setGravity(Gravity.TOP | Gravity.START);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_",  dialogEditText.getText().toString()));
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -729,15 +734,14 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -979,8 +983,7 @@ public class Node implements Serializable {
                 if (node_opt.isSelected() && node_opt.hasPopUp) {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                         messages.add(node_opt.pop_up_ar);
-                    }
-                    else {
+                    } else {
                         messages.add(node_opt.pop_up);
                     }
 
@@ -1818,29 +1821,26 @@ public class Node implements Serializable {
                             stringsList.add(test.substring(1));
                         } else {
                             // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
 
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     if (language.equalsIgnoreCase("ar"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     else
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     if (language.equalsIgnoreCase("ar") && !mOptions.get(i).getDisplay_arabic().startsWith("["))
                                         stringsList.add(mOptions.get(i).getDisplay_arabic());
                                     else
                                         stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).findDisplay(language));
                                 }
 
@@ -1887,7 +1887,7 @@ public class Node implements Serializable {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
         return mLanguage;
     }
@@ -2422,7 +2422,6 @@ public class Node implements Serializable {
     }
 
 
-
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -2833,26 +2832,23 @@ public class Node implements Serializable {
                             stringsList.add(test.substring(1));
                         } else {
                             // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
                                     if (language.equalsIgnoreCase("hi"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     else
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
+                                } else {
                                     // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
                                     if (language.equalsIgnoreCase("ar"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
@@ -2903,7 +2899,7 @@ public class Node implements Serializable {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
         return mLanguage;
     }
@@ -2922,22 +2918,19 @@ public class Node implements Serializable {
                             stringsList.add(test.substring(1));
                         } else {
                             // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
                                 }
 
@@ -2984,7 +2977,7 @@ public class Node implements Serializable {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
         return mLanguage;
     }

@@ -115,7 +115,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
         Node _mNode;
         if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-            _mNode = physicalExam.getExamNode(position).getOption(0);
+            _mNode = physicalExam.getExamNode(position);
             final String parent_name = physicalExam.getExamParentNodeName(position);
             String nodeText = parent_name + " : " + _mNode.findDisplay();
 
@@ -241,7 +241,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             Node groupNode;
             List<Node> chipList = new ArrayList<>();
             if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                groupNode = physicalExam.getExamNode(pos).getOption(0);
+                groupNode = physicalExam.getExamNode(pos);
                 for (int i = 0; i < groupNode.getOptionsList().size(); i++) {
                     chipList.add(groupNode.getOptionsList().get(i));
                 }
