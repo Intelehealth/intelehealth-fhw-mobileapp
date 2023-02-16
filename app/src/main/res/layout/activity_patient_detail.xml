@@ -452,7 +452,8 @@
                         <TableRow
                             android:id="@+id/tr_earthquake_victim"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -915,9 +916,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorYellow"
                     android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
-                    android:background="@color/colorYellow"
-                    android:text="@string/comm_general_need_survey" />
+                    android:text="@string/comm_general_need_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -936,12 +936,10 @@
                     android:layout_height="wrap_content"
                     android:background="@color/orange3"
                     android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
-                    android:background="@color/orange3"
-                    android:text="@string/survey_acute_homecare_utilizers" />
+                    android:text="@string/survey_acute_homecare_utilizers"
+                    tools:foreground="?android:attr/selectableItemBackground" />
 
             </androidx.cardview.widget.CardView>
-
 
 
             <androidx.cardview.widget.CardView
@@ -980,9 +978,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/blue_1"
                     android:fontFamily="@font/lato_bold"
-                    tools:foreground="?android:attr/selectableItemBackground"
-                    android:background="@color/blue_1"
-                    android:text="@string/student_aid_survey" />
+                    android:text="@string/student_aid_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
 
             </androidx.cardview.widget.CardView>
 
@@ -992,8 +989,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="10dp">
 
                 <Button
                     android:id="@+id/generalaid_btn"
@@ -1059,9 +1055,7 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="10dp">
 
                 <Button
                     android:id="@+id/button_new_visit"
