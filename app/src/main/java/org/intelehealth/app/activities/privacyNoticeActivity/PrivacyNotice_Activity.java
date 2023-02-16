@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.privacyNoticeActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
+        /*String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -51,7 +53,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());*/
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_2);
@@ -246,5 +248,10 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 }

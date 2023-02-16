@@ -149,7 +149,7 @@ public class SetupActivity extends AppCompatActivity {
     Map.Entry<String, String> village_name;
     int state_count = 0, district_count = 0, /*sanch_count = 0,*/
             village_count = 0;
-    private String selectedState = "", selectedDistrict = "", /*selectedSanch = "",*/
+    private String selectedState = "As-Sweida", selectedDistrict = "", /*selectedSanch = "",*/
             selectedVillage = "";
     NewLocationDao newLocationDao = null;
 
@@ -892,6 +892,19 @@ public class SetupActivity extends AppCompatActivity {
                                         spinner_state.setEnabled(true);
                                         spinner_state.setAlpha(1);
                                         spinner_state.setAdapter(locationArrayAdapter);
+                                        if(state_locations.contains("As-Sweida")) {
+                                            spinner_state.setSelection(state_locations.indexOf("As-Sweida"));
+                                            List<String> district_locations = newLocationDao.getDistrictList("As-Sweida", context);
+                                            if (district_locations.size() > 1) {
+                                                LocationArrayAdapter locationArrayAdapter1 =
+                                                        new LocationArrayAdapter(SetupActivity.this, district_locations);
+
+                                                spinner_district.setEnabled(true);
+                                                spinner_district.setAlpha(1);
+                                                spinner_district.setAdapter(locationArrayAdapter1);
+                                                isLocationFetched = true;
+                                            }
+                                        }
                                         isLocationFetched = true;
                                     } else {
                                         empty_spinner("state");
@@ -1674,9 +1687,9 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(LocaleHelper.setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
 }

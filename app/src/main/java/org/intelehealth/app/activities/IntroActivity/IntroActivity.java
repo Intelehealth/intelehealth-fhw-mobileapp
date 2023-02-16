@@ -252,8 +252,8 @@ public class IntroActivity extends AppCompatActivity {
             tvIntroOne.setText(Html.fromHtml(newString));
 
             if (position == 1) {
-                String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
-                String textHighlight = getString(R.string.Ayu_name);
+                String two = getString(R.string.sila_intro_text);
+                String textHighlight = getString(R.string.app_name);
                 String newhighlight = two.replaceAll(textHighlight,
                                 "<font color='blue'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");

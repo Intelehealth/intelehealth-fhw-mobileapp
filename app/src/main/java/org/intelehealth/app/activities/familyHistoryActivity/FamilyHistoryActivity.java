@@ -118,7 +118,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         sessionManager = new SessionManager(this);
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
-        String language = sessionManager.getAppLanguage();
+        /*String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -127,7 +127,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());*/
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);

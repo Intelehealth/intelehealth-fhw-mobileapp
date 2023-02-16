@@ -59,7 +59,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_patient);
+        setContentView(R.layout.activity_follow_up_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -89,8 +89,6 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
             firstQuery();
         }
-
-        findViewById(R.id.new_patient).setVisibility(View.GONE);
     }
 
     @Override

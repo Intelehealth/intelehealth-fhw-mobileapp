@@ -133,10 +133,10 @@ public class AppointmentListingActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(setLocale(newBase));
-//    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
 
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);

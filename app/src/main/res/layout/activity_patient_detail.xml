@@ -915,8 +915,9 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorYellow"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/comm_general_need_survey"
-                    tools:foreground="?android:attr/selectableItemBackground" />
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/colorYellow"
+                    android:text="@string/comm_general_need_survey" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -935,10 +936,12 @@
                     android:layout_height="wrap_content"
                     android:background="@color/orange3"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_acute_homecare_utilizers"
-                    tools:foreground="?android:attr/selectableItemBackground" />
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/orange3"
+                    android:text="@string/survey_acute_homecare_utilizers" />
 
             </androidx.cardview.widget.CardView>
+
 
 
             <androidx.cardview.widget.CardView
@@ -977,8 +980,9 @@
                     android:layout_height="wrap_content"
                     android:background="@color/blue_1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/student_aid_survey"
-                    tools:foreground="?android:attr/selectableItemBackground" />
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/blue_1"
+                    android:text="@string/student_aid_survey" />
 
             </androidx.cardview.widget.CardView>
 
@@ -989,7 +993,7 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
+                android:layout_marginTop="16dp">
 
                 <Button
                     android:id="@+id/generalaid_btn"
@@ -1056,7 +1060,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp">
 
                 <Button
                     android:id="@+id/button_new_visit"
