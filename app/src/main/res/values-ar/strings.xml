@@ -1578,4 +1578,6 @@
     <string name="comm_general_need_survey">استبيان الحاجات المحلية</string>
     <string name="earthquake_victim">ضحية زلزال</string>
     <string name="incorrect_healthworker_disclaimer">هذه المعلومات شخصية و لا يمكن الوصول إليها من اذن صاحب  العلاقة. الرجاء ادخال الرقم الشخصي المزود لصاحب العلاقة للمتابعة</string>
+    <string name="request_patient_pin_string">هذه معلومات شخصية  الرجاء إدخال رقم الحالة للمتابعة</string>
+
 </resources>

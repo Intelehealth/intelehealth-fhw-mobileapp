@@ -14,7 +14,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -38,6 +37,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -45,6 +45,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -883,7 +884,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
-                onPatientCreateClicked();
+                displayPinDialog();
             }
         });
 
@@ -1646,11 +1647,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                !mPhoneNum.getText().toString().equals("") &&
-                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked())
-                && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3090,11 +3087,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }*/
 
 
-            if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                    && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                    !mPhoneNum.getText().toString().equals("") &&
-                    !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() ||
-                    generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+            if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
                 aidSelectionImplementation();
                 Log.v(TAG, "Result");
             } else {
@@ -5307,5 +5300,43 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
+    private void displayPinDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View view = inflater.inflate(R.layout.layout_dialog_patient_pin, null);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setView(view);
+        AlertDialog alertDialog = builder.create();
+
+        AppCompatTextView disclaimerTextView = view.findViewById(R.id.tv_title);
+        Button saveButton = view.findViewById(R.id.button_save);
+        TextInputEditText pinEditText = view.findViewById(R.id.et_pin);
+
+        disclaimerTextView.setText(getString(R.string.request_patient_pin_string));
+        saveButton.setOnClickListener(v -> {
+            if (isPinFieldValid(pinEditText)) {
+                onPatientCreateClicked();
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private boolean isPinFieldValid(TextInputEditText pinEditText) {
+        String enteredPin = pinEditText.getText().toString();
+
+        if (enteredPin.isEmpty()) {
+            pinEditText.setError(getString(R.string.empty_pin_error));
+            return false;
+        }
+
+        if (enteredPin.length() < 4) {
+            pinEditText.setError(getString(R.string.please_enter_four_digit_pin));
+            return false;
+        }
+
+        return false;
     }
 }

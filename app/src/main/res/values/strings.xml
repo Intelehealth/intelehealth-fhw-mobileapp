@@ -1582,6 +1582,10 @@
     <string name="medical_emergency_need_assessment">Medical Emergency Need Assessment</string>
     <string name="survey_acute_homecare_utilizers"> Survey of acute homecare utilizers</string>
     <string name="comm_general_need_survey">Community General Need Survey</string>
-    <string name="incorrect_healthworker_disclaimer">You are restricted to open this record as you are not the creator of the record</string>
+    <string name="incorrect_healthworker_disclaimer">This is personal information, please enter the PIN to continue</string>
     <string name="earthquake_victim">Earthquake Victim</string>
+    <string name="enter_4_digit_pin">Enter your 4 digit pin</string>
+    <string name="request_patient_pin_string">This is personal information, please enter the PIN number for follow-up.</string>
+    <string name="empty_pin_error">Pin cannot be blank</string>
+    <string name="please_enter_four_digit_pin">Please enter a 4-digit pin</string>
 </resources>
