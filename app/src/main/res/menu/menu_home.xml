@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/bluetoothOption"
+        app:showAsAction="always"
+        android:icon="@drawable/bluetooth_white"
+        android:title="Bluetooth" />
 
     <group android:id="@+id/main_menu_group">
 

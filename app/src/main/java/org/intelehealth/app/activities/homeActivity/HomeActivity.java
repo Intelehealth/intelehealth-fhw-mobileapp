@@ -584,6 +584,11 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.settingsOption:
 //                settings();
 //                return true;
+
+            case R.id.bluetoothOption: {
+                return true;
+            }
+
             case R.id.languageOptions:
                 Intent intent = new Intent(this, ChooseLanguageActivity.class);
                 intent.putExtra("intentType", "home");

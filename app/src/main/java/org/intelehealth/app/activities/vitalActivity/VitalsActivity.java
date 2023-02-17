@@ -1,6 +1,9 @@
 package org.intelehealth.app.activities.vitalActivity;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -12,16 +15,29 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.linktop.DeviceType;
+import com.linktop.MonitorDataTransmissionManager;
+import com.linktop.constant.BluetoothState;
+import com.linktop.constant.DeviceInfo;
+import com.linktop.infs.OnBatteryListener;
+import com.linktop.infs.OnBleConnectListener;
+import com.linktop.infs.OnDeviceInfoListener;
+import com.linktop.infs.OnDeviceVersionListener;
+import com.linktop.whealthService.BleDevManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.IBinder;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -29,7 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,8 +73,12 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity {
+public class VitalsActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
+        ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener {
     private static final String TAG = VitalsActivity.class.getSimpleName();
+    private static final int REQUEST_OPEN_BT = 0x23;
+    public HcService mHcService;
+
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
@@ -222,6 +244,7 @@ public class VitalsActivity extends AppCompatActivity {
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
         }
+
 
         mHeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1830,5 +1853,158 @@ public class VitalsActivity extends AppCompatActivity {
             conf.locale = locale;
         }
         res.updateConfiguration(conf, dm);
+    }
+
+    @Override
+    public void onServiceBind() {
+        if (!IntelehealthApplication.isUseCustomBleDevService) {
+            onBleState(MonitorDataTransmissionManager.getInstance().getBleState());
+        }
+
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            BleDevManager bleDevManager = mHcService.getBleDevManager();
+            mHcService.setOnDeviceVersionListener(this);
+            bleDevManager.getBatteryTask().setBatteryStateListener(this);
+            bleDevManager.getDeviceTask().setOnDeviceInfoListener(this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnBleConnectListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnBatteryListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDevIdAndKeyListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDeviceVersionListener(this);
+        }
+    }
+
+    @Override
+    public void onServiceUnbind() {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bluetoothOption: {
+                // Init Remos
+                initRemosDevice();
+                return true;
+            }
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void initRemosDevice() {
+        //Bind service about Bluetooth connection.
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            Intent serviceIntent = new Intent(this, HcService.class);
+            bindService(serviceIntent, this, BIND_AUTO_CREATE);
+        } else {
+            //绑定服务，
+            // 类型是 HealthMonitor（HealthMonitor健康检测仪），
+            MonitorDataTransmissionManager.getInstance().bind(DeviceType.HealthMonitor, this, this);
+        }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+
+    }
+
+    @Override
+    public void onBindingDied(ComponentName name) {
+        ServiceConnection.super.onBindingDied(name);
+    }
+
+    @Override
+    public void onBatteryCharging() {
+
+    }
+
+    @Override
+    public void onBatteryQuery(int i) {
+
+    }
+
+    @Override
+    public void onBatteryFull() {
+
+    }
+
+    @Override
+    public void onBLENoSupported() {
+
+    }
+
+    @Override
+    public void onOpenBLE() {
+        startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
+            //蓝牙启动结果
+            Toast.makeText(VitalsActivity.this, resultCode == Activity.RESULT_OK ? "蓝牙已打开" : "蓝牙打开失败", Toast.LENGTH_SHORT).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBleState(int bleState) {
+        switch (bleState) {
+            case BluetoothState.BLE_CLOSED:
+              //  btnText.set(getString(R.string.turn_on_bluetooth));
+              //  reset();
+                break;
+            case BluetoothState.BLE_OPENED_AND_DISCONNECT:
+                try {
+                 //   btnText.set(getString(R.string.connect));
+                  //  reset();
+                } catch (Exception ignored) {
+                }
+                break;
+            case BluetoothState.BLE_CONNECTING_DEVICE:
+                try {
+                  //  btnText.set(getString(R.string.connecting));
+                } catch (Exception ignored) {
+                }
+                break;
+            case BluetoothState.BLE_CONNECTED_DEVICE:
+              //  btnText.set(getString(R.string.disconnect));
+                break;
+        }
+    }
+
+    @Override
+    public void onUpdateDialogBleList() {
+
+    }
+
+    @Override
+    public void onDeviceInfo(DeviceInfo deviceInfo) {
+
+    }
+
+    @Override
+    public void onReadDeviceInfoFailed() {
+
+    }
+
+    @Override
+    public void onDeviceVersion(int i, String s) {
+
     }
 }

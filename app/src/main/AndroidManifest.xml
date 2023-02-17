@@ -367,6 +367,9 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
+
+        <service android:name=".services.HcService" />
+
     </application>
 
 </manifest>
