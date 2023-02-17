@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.vitalActivity;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
@@ -23,8 +24,12 @@ import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnBleConnectListener;
 import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
+import com.linktop.infs.OnSpO2ResultListener;
 import com.linktop.whealthService.BleDevManager;
+import com.linktop.whealthService.MeasureType;
+import com.linktop.whealthService.task.OxTask;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -41,14 +46,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.models.remos.SpO2;
 import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.PermissionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,10 +82,15 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VitalsActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
-        ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener {
+        ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener,
+        OnSpO2ResultListener {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final int REQUEST_OPEN_BT = 0x23;
     public HcService mHcService;
+    private OxTask mOxTask;
+    private SpO2 spO2_model = new SpO2();
+
+    private ImageButton spo2_Btn;
 
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -150,6 +163,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
+        spo2_Btn = findViewById(R.id.spo2_Btn);
 
         //rhemos device fields added: By Nishita
         bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
@@ -355,6 +369,8 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                 }
             }
         });
+
+        spo2_Btn.setOnClickListener(v -> { clickMeasure("SPO2"); });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1958,6 +1974,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
             //蓝牙启动结果
             Toast.makeText(VitalsActivity.this, resultCode == Activity.RESULT_OK ? "蓝牙已打开" : "蓝牙打开失败", Toast.LENGTH_SHORT).show();
+            clickConnect();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -2006,5 +2023,227 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
     @Override
     public void onDeviceVersion(int i, String s) {
 
+    }
+
+    public void clickConnect() {
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                    , PermissionManager.requestCode_location)) {
+                return;
+            } else {
+                if (!PermissionManager.canScanBluetoothDevice(VitalsActivity.this)) {
+                    new AlertDialog.Builder(VitalsActivity.this)
+                            .setTitle("提示")
+                            .setMessage("Android 6.0及以上系统需要打开位置开关才能扫描蓝牙设备。")
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setPositiveButton("打开位置开关"
+                                    , (dialog, which) -> PermissionManager.openGPS(VitalsActivity.this)).create().show();
+                    return;
+                }
+            }
+            if (mHcService.isConnected) {
+                mHcService.disConnect();
+            } else {
+                final int bluetoothEnable = mHcService.isBluetoothEnable();
+                if (bluetoothEnable == -1) {
+                    onBLENoSupported();
+                } else if (bluetoothEnable == 0) {
+                    onOpenBLE();
+                } else {
+                    mHcService.quicklyConnect();
+                }
+            }
+        } else {
+            final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
+            Log.e("clickConnect", "bleState:" + bleState);
+            switch (bleState) {
+                case BluetoothState.BLE_CLOSED:
+                    MonitorDataTransmissionManager.getInstance().bleCheckOpen();
+                    break;
+                case BluetoothState.BLE_OPENED_AND_DISCONNECT:
+                    if (MonitorDataTransmissionManager.getInstance().isScanning()) {
+                        new AlertDialog.Builder(VitalsActivity.this)
+                                .setTitle("提示")
+                                .setMessage("正在扫描设备，请稍后...")
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton("停止扫描"
+                                        , (dialogInterface, i) ->
+                                                MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
+                    } else {
+                        if (PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                                , PermissionManager.requestCode_location)) {
+                            if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
+                              //  connectByDeviceList();
+                                MonitorDataTransmissionManager.getInstance().scan(true);
+                               /* if (showScanList) {   // todo: handle later
+                                    connectByDeviceList();
+                                } else {
+                                    MonitorDataTransmissionManager.getInstance().scan(true);
+                                }*/
+                            } else {
+                                new AlertDialog.Builder(VitalsActivity.this)
+                                        .setTitle("提示")
+                                        .setMessage("Android 6.0及以上系统需要打开位置开关才能扫描蓝牙设备。")
+                                        .setNegativeButton(android.R.string.cancel, null)
+                                        .setPositiveButton("turn on location", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                PermissionManager.openGPS(VitalsActivity.this);
+                                                clickConnect();
+                                            }
+                                        }).create().show();
+
+                            }
+                        }
+                    }
+                    break;
+                case BluetoothState.BLE_CONNECTING_DEVICE:
+//                    Toast.makeText(mActivity, "蓝牙连接中...", Toast.LENGTH_SHORT).show();
+                    MonitorDataTransmissionManager.getInstance().disConnectBle();
+                    break;
+                case BluetoothState.BLE_CONNECTED_DEVICE:
+                case BluetoothState.BLE_NOTIFICATION_DISABLED:
+                case BluetoothState.BLE_NOTIFICATION_ENABLED:
+                    MonitorDataTransmissionManager.getInstance().disConnectBle();
+                    break;
+            }
+        }
+
+    }
+
+/*
+    private void connectByDeviceList() {
+        mBleDeviceListDialogFragment = new BleDeviceListDialogFragment();
+        mBleDeviceListDialogFragment.show(VitalsActivity.this.getSupportFragmentManager(), "");
+    }
+*/
+
+    public void clickMeasure(String testType) {
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            if (!mHcService.isConnected) {
+              //  toast(R.string.device_disconnect);
+                return;
+            }
+            //判断设备是否在充电，充电时不可测量
+            if (mHcService.getBleDevManager().getBatteryTask().isCharging()) {
+              //  toast(R.string.charging);
+                return;
+            }
+            if (mHcService.getBleDevManager().isMeasuring()) {
+                stopMeasure(testType);
+                //设置ViewPager可滑动
+             //   btnMeasure.setText(R.string.start_measuring);
+            } else {
+               // reset();
+                if (startMeasure(testType)) {
+                    /*
+                     * 请注意了：为了代码逻辑不会混乱，每一单项在测量过程中请确保用户无法通过任何途径
+                     * (当然，如果用户强制关闭页面就不管了)切换至其他测量单项的界面，直到本项一次测量结束。
+                     */
+                    //设置ViewPager不可滑动
+                  //  btnMeasure.setText(R.string.measuring);
+                }
+            }
+        } else {
+            final MonitorDataTransmissionManager manager = MonitorDataTransmissionManager.getInstance();
+
+            //判断手机是否和设备实现连接
+            if (!manager.isConnected()) {
+              //  toast(R.string.device_disconnect);
+                return;
+            }
+            //判断设备是否在充电，充电时不可测量
+            if (manager.isCharging()) {
+              //  toast(R.string.charging);
+                return;
+            }
+            //判断是否测量中...
+            if (manager.isMeasuring()) {
+//            if (mPosition != 2) {//体温没有停止方法，当点击停止的是非体温时才执行停止
+                //停止测量
+                stopMeasure(testType);
+                //设置ViewPager可滑动
+              //  btnMeasure.setText(getString(R.string.start_measuring));
+//            }
+            } else {
+             //   reset();
+                //开始测量
+                if (startMeasure(testType)) {
+                    /*
+                     * 请注意了：为了代码逻辑不会混乱，每一单项在测量过程中请确保用户无法通过任何途径
+                     * (当然，如果用户强制关闭页面就不管了)切换至其他测量单项的界面，直到本项一次测量结束。
+                     */
+                    //设置ViewPager不可滑动
+                  //  btnMeasure.setText(R.string.measuring);
+                }
+            }
+
+        }
+    }
+
+    public void stopMeasure(String testType) {
+        if (mOxTask != null) {
+            mOxTask.stop();
+        } else {
+            MonitorDataTransmissionManager.getInstance().stopMeasure();
+        }
+    }
+
+    public boolean startMeasure(String testType) {
+        switch (testType) {
+            case "SPO2":
+                // remos
+                if (mHcService != null) {
+                    mOxTask = mHcService.getBleDevManager().getOxTask();
+                    mOxTask.setOnSpO2ResultListener(this);
+                } else {
+                    MonitorDataTransmissionManager.getInstance().setOnSpO2ResultListener(this);
+                }
+                if (mOxTask != null) {
+                    mOxTask.start();
+                } else {
+                    MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.SPO2);
+                }
+                return true;
+
+            case "BP":
+
+            default:
+                return true;
+
+        }
+    }
+
+
+    @Override
+    public void onSpO2Result(int spo2, int heart_rate) {
+        spO2_model.setValue(spo2);
+        spO2_model.setHr(heart_rate);
+    }
+
+    @Override
+    public void onSpO2Wave(int i) {
+
+    }
+
+    @Override
+    public void onSpO2End() {
+        Log.e("SPO2", "SPO2: " + spO2_model.getValue() + " : " + spO2_model.getHr());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mSpo2.setText(String.valueOf(spO2_model.getValue()));
+                mPulse.setText(String.valueOf(spO2_model.getHr()));
+            }
+        });
+
+    }
+
+    @Override
+    public void onFingerDetection(int state) {
+        if (state == FINGER_NO_TOUCH) {
+            stopMeasure("SPO2");
+            Toast.makeText(VitalsActivity.this, "No finger was detected on the SpO₂ sensor.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
