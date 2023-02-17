@@ -1866,7 +1866,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String rx_web = stringToWeb_sms(rxReturned);
+      //  String rx_web = stringToWeb_sms(sortMedications(prescribedMedicationArrayList).trim().replace("\n\n", "\n").replace(Node.bullet, ""));
+        String medicationPlan = sortMedications(prescribedMedicationArrayList).replace("\n\n", "\n");
+        String rx_web = stringToWeb(medicationPlan.trim()).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●", "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">").replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\"></p>", "</p>");
 
         String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
@@ -2004,7 +2006,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
                 /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"), !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"), !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"), !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"), !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"), !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
+                !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
+                !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
+                !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
+                !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
+                !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
+                !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
