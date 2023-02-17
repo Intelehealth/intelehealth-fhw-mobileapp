@@ -1,4 +1,4 @@
-package org.intelehealth.app.models.remos;
+package org.intelehealth.app.models.rhemos_device;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;

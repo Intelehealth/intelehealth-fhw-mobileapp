@@ -943,6 +943,8 @@
     <string name="successfully_pdf_created">PDF यशस्वीरित्या तयार केली!!</string>
     <string name="hba1c">HbA1c (%)</string>
     <string name="confirm_skip_complaint">तुम्हाला खात्री आहे की तुम्ही आरोग्य समस्या नोंदवू इच्छित नाही? \n\nटीप: तुम्ही पुढे जाऊन यात बदल करू शकणार नाही.</string>
+    <string name="leak_and_check">There is a leak. Please check the gas path.</string>
+    <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
 
 
 </resources>

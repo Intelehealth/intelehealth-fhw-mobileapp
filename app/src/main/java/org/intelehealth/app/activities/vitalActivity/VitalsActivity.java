@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.linktop.DeviceType;
@@ -22,11 +21,13 @@ import com.linktop.constant.BluetoothState;
 import com.linktop.constant.DeviceInfo;
 import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnBleConnectListener;
+import com.linktop.infs.OnBpResultListener;
 import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.infs.OnSpO2ResultListener;
 import com.linktop.whealthService.BleDevManager;
 import com.linktop.whealthService.MeasureType;
+import com.linktop.whealthService.task.BpTask;
 import com.linktop.whealthService.task.OxTask;
 
 import androidx.appcompat.app.AlertDialog;
@@ -53,7 +54,8 @@ import android.widget.Toast;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
-import org.intelehealth.app.models.remos.SpO2;
+import org.intelehealth.app.models.rhemos_device.Bp;
+import org.intelehealth.app.models.rhemos_device.SpO2;
 import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.PermissionManager;
@@ -81,16 +83,21 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 public class VitalsActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
         ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener,
-        OnSpO2ResultListener {
+        OnSpO2ResultListener, OnBpResultListener {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final int REQUEST_OPEN_BT = 0x23;
     public HcService mHcService;
     private OxTask mOxTask;
+    private BpTask mBpTask;
     private SpO2 spO2_model = new SpO2();
+    private Bp bp_model = new Bp();
 
-    private ImageButton spo2_Btn;
+    private ImageButton spo2_Btn, bp_Btn;
 
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -163,7 +170,9 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
+
         spo2_Btn = findViewById(R.id.spo2_Btn);
+        bp_Btn = findViewById(R.id.bp_Btn);
 
         //rhemos device fields added: By Nishita
         bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
@@ -371,6 +380,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         });
 
         spo2_Btn.setOnClickListener(v -> { clickMeasure("SPO2"); });
+        bp_Btn.setOnClickListener(v -> { clickMeasure("BP"); });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2187,33 +2197,70 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         } else {
             MonitorDataTransmissionManager.getInstance().stopMeasure();
         }
+
+        if (mBpTask != null) {
+            mBpTask.stop();
+        } else {
+            MonitorDataTransmissionManager.getInstance().stopMeasure();
+        }
     }
 
     public boolean startMeasure(String testType) {
         switch (testType) {
             case "SPO2":
-                // remos
-                if (mHcService != null) {
-                    mOxTask = mHcService.getBleDevManager().getOxTask();
-                    mOxTask.setOnSpO2ResultListener(this);
-                } else {
-                    MonitorDataTransmissionManager.getInstance().setOnSpO2ResultListener(this);
-                }
-                if (mOxTask != null) {
-                    mOxTask.start();
-                } else {
-                    MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.SPO2);
-                }
+                // spo2
+                spo2_test();
                 return true;
 
             case "BP":
+                bp_test();
+                return true;
 
             default:
                 return true;
-
         }
     }
 
+    private boolean spo2_test() {
+        if (mHcService != null) {
+            mOxTask = mHcService.getBleDevManager().getOxTask();
+            mOxTask.setOnSpO2ResultListener(this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnSpO2ResultListener(this);
+        }
+
+        if (mOxTask != null) {
+            mOxTask.start();
+        } else {
+            MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.SPO2);
+        }
+        return true;
+    }
+
+    private boolean bp_test() {
+        if (mHcService != null) {
+            mBpTask = mHcService.getBleDevManager().getBpTask();
+            mBpTask.setOnBpResultListener(this);
+        } else {
+            //设置血压测量回调接口
+            MonitorDataTransmissionManager.getInstance().setOnBpResultListener(this);
+        }
+
+        if (mBpTask != null) {
+            if (mHcService.getBleDevManager().getBatteryTask().getPower() < 20) {
+                Toast.makeText(VitalsActivity.this, "设备电量过低，请充电\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            mBpTask.start();
+        } else {
+            if (MonitorDataTransmissionManager.getInstance().getBatteryValue() < 20) {
+                Toast.makeText(VitalsActivity.this, "设备电量过低，请充电\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BP);
+        }
+        return true;
+    }
 
     @Override
     public void onSpO2Result(int spo2, int heart_rate) {
@@ -2245,5 +2292,49 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
             stopMeasure("SPO2");
             Toast.makeText(VitalsActivity.this, "No finger was detected on the SpO₂ sensor.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBpResult(final int systolicPressure, final int diastolicPressure, final int heartRate) {
+        bp_model.setTs(System.currentTimeMillis() / 1000L);
+        bp_model.setSbp(systolicPressure);
+        bp_model.setDbp(diastolicPressure);
+        bp_model.setHr(heartRate);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mBpSys.setText(String.valueOf(bp_model.getSbp()));
+                mBpDia.setText(String.valueOf(bp_model.getDbp()));
+            }
+        });
+     //   resetState();
+    }
+
+    @Override
+    public void onBpResultError() {
+        Toast.makeText(VitalsActivity.this, "Blood result error. Try again!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLeakError(int errorType) {
+       // resetState();
+        Observable.just(errorType)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(error -> {
+                    int textId = 0;
+                    switch (error) {
+                        case 0:
+                            textId = R.string.leak_and_check;
+                            break;
+                        case 1:
+                            textId = R.string.measurement_void;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (textId != 0)
+                        Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_SHORT).show();
+                });
     }
 }
