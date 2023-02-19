@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -144,7 +145,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter, linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
+    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter,
+            residenceNatureAdapter, linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter,
+            specialNeedsAdapter, lossDueToEarthquakeAdapter, lossOfAnalgesicAdapter, lossOfBreadwinnerAdapter, strongSocialTiesAdapter, placesOfPreferenceAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -1081,6 +1084,84 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
         // Village - End
 
+        // Victim Special Needs Adapter - Start
+        try {
+            String special_needs_Language = "victim_special_needs_" + sessionManager.getAppLanguage();
+            int specialNeeds = res.getIdentifier(special_needs_Language, "array", getApplicationContext().getPackageName());
+            if (specialNeeds != 0) {
+                specialNeedsAdapter = ArrayAdapter.createFromResource(this, specialNeeds, R.layout.custom_spinner);
+            }
+            binding.spinnerNatureSpecialNeeds.setAdapter(specialNeedsAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Special Needs Adapter - End
+
+        // Victim Loss Due To Earthquake Adapter - Start
+        try {
+            String loss_due_to_earthquake_Language = "victim_loss_due_to_earthquake_" + sessionManager.getAppLanguage();
+            int earthquakeLoss = res.getIdentifier(loss_due_to_earthquake_Language, "array", getApplicationContext().getPackageName());
+            if (earthquakeLoss != 0) {
+                lossDueToEarthquakeAdapter = ArrayAdapter.createFromResource(this, earthquakeLoss, R.layout.custom_spinner);
+            }
+            binding.spinnerLossAsAResultOfTheEarthquake.setAdapter(lossDueToEarthquakeAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Loss Due To Earthquake Adapter - End
+
+        // Victim Loss Of Analgesic Due To Earthquake Adapter - Start
+        try {
+            String loss_of_analgesic_due_to_earthquake_Language = "victim_loss_of_analgesic_" + sessionManager.getAppLanguage();
+            int analgesicLoss = res.getIdentifier(loss_of_analgesic_due_to_earthquake_Language, "array", getApplicationContext().getPackageName());
+            if (analgesicLoss != 0) {
+                lossOfAnalgesicAdapter = ArrayAdapter.createFromResource(this, analgesicLoss, R.layout.custom_spinner);
+            }
+            binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.setAdapter(lossOfAnalgesicAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Loss Of Analgesic Due To Earthquake Adapter - Start
+
+        // Victim Loss Of Breadwinner Due To Earthquake Adapter - Start
+        try {
+            String loss_of_breadwinner_due_to_earthquake_Language = "victim_loss_of_breadwinner_" + sessionManager.getAppLanguage();
+            int breadwinnerLoss = res.getIdentifier(loss_of_breadwinner_due_to_earthquake_Language, "array", getApplicationContext().getPackageName());
+            if (breadwinnerLoss != 0) {
+                lossOfBreadwinnerAdapter = ArrayAdapter.createFromResource(this, breadwinnerLoss, R.layout.custom_spinner);
+            }
+            binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.setAdapter(lossOfBreadwinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Loss Of Breadwinner Due To Earthquake Adapter - Start
+
+        // Victim Strong Social Ties Adapter - Start
+        try {
+            String strong_social_ties_Language = "victim_strong_social_ties_" + sessionManager.getAppLanguage();
+            int strongSocialTies = res.getIdentifier(strong_social_ties_Language, "array", getApplicationContext().getPackageName());
+            if (strongSocialTies != 0) {
+                strongSocialTiesAdapter = ArrayAdapter.createFromResource(this, strongSocialTies, R.layout.custom_spinner);
+            }
+            binding.spinnerStrongSocialTies.setAdapter(strongSocialTiesAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Strong Social Ties Adapter - Start
+
+        // Victim Strong Social Ties Adapter - Start
+        try {
+            String places_of_preference_Language = "victim_place_of_preference_" + sessionManager.getAppLanguage();
+            int placesOfPreference = res.getIdentifier(places_of_preference_Language, "array", getApplicationContext().getPackageName());
+            if (placesOfPreference != 0) {
+                placesOfPreferenceAdapter = ArrayAdapter.createFromResource(this, placesOfPreference, R.layout.custom_spinner);
+            }
+            binding.spinnerPlacesOfPreference.setAdapter(placesOfPreferenceAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Victim Strong Social Ties Adapter - Start
+
       /*  NewLocationDao newLocationDao = new NewLocationDao();
         List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName(), context);
         if (villageList.size() > 1) {
@@ -1758,6 +1839,78 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             return;
         } else {
             mAddress1.setError(null);
+        }
+
+        // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
+        if (earthquakeVictimCheckbox.isChecked()) {
+
+            // Validation for Special Needs Spinner
+            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerNatureSpecialNeeds;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Loss As a Result Of Earthquake Spinner
+            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Loss of Analgesic Spinner
+            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Loss of Breadwinner
+            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Strong Social Ties Spinner
+            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerStrongSocialTies;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Places Of Relatives EditText
+            if (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase("")) {
+                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
+                focusView = binding.etPlacesOfRelatives;
+                cancel = true;
+                return;
+            }
+
+            // Validation for Place Of Preference Spinner
+            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerPlacesOfPreference;
+                cancel = true;
+                return;
+            }
         }
 
         /*if (sinceSupportingFamilyET.getVisibility() == View.VISIBLE && (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase(""))) {
@@ -3223,6 +3376,78 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mAddress1.setError(null);
             }
 
+            // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
+            if (earthquakeVictimCheckbox.isChecked()) {
+
+                // Validation for Special Needs Spinner
+                if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerNatureSpecialNeeds;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Loss As a Result Of Earthquake Spinner
+                if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Loss of Analgesic Spinner
+                if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Loss of Breadwinner
+                if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Strong Social Ties Spinner
+                if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerStrongSocialTies;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Places Of Relatives EditText
+                if (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase("")) {
+                    binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
+                    focusView = binding.etPlacesOfRelatives;
+                    cancel = true;
+                    return;
+                }
+
+                // Validation for Place Of Preference Spinner
+                if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+                    TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                    focusView = binding.spinnerPlacesOfPreference;
+                    cancel = true;
+                    return;
+                }
+            }
+
             /*if (HOH_relation_spinner.getVisibility() == View.VISIBLE && (HOH_relation_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) HOH_relation_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -3686,6 +3911,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //        hideSpinnersBasedOnAid();
         aidSelectionImplementation();
         roasterCommentedCode();
+        initializeEarthquakeVictimCheckbox();
+    }
+
+    private void initializeEarthquakeVictimCheckbox() {
+        // We will show the earthquake victim questions only if the Earthquake Victim checkbox is checked - Added by Arpan Sircar for Syriana Emergency Release
+        earthquakeVictimCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                binding.llEarthquakeVictimQuestions.setVisibility(View.VISIBLE);
+            else
+                binding.llEarthquakeVictimQuestions.setVisibility(View.GONE);
+
+        });
     }
 
     private void hideSpinnersBasedOnAid() {

@@ -2070,4 +2070,46 @@
         <item> ولغا</item>
     </string-array>
 
+    <string-array name="victim_special_needs_en">
+        <item>Select</item>
+        <item>Advanced age > 65</item>
+        <item>Disability</item>
+        <item>Chronic Diseases</item>
+        <item>Infant</item>
+    </string-array>
+
+    <string-array name="victim_loss_due_to_earthquake_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>Somewhat</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="victim_loss_of_analgesic_en">
+        <item>Select</item>
+        <item>Complete loss</item>
+        <item>Partial</item>
+    </string-array>
+
+    <string-array name="victim_loss_of_breadwinner_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="victim_strong_social_ties_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>Somewhat</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="victim_place_of_preference_en">
+        <item>Select</item>
+        <item>As-Suwayda</item>
+        <item>Homs</item>
+        <item>Tartous</item>
+        <item>Damascus Countryside</item>
+    </string-array>
+
 </resources>

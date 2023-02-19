@@ -346,15 +346,6 @@
                             android:text="@string/no_phone_no" />
                         <!--Checkbox - mobile - End -->
 
-                        <!--Checkbox - mobile - Start -->
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/earthquake_victim_checkbox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/earthquake_victim" />
-                        <!--Checkbox - mobile - End -->
-
                     </LinearLayout>
 
 
@@ -1121,7 +1112,6 @@
                             android:inputType="number"
                             android:textAlignment="viewStart" />
 
-
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
@@ -1560,6 +1550,225 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/app_bar_view">
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!--Checkbox - earthquake victim - Start -->
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/earthquake_victim_checkbox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/earthquake_victim"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                        <!--Checkbox - earthquake victim - End -->
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/ll_earthquake_victim_questions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/nature_of_special_needs"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_nature_special_needs"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/loss_as_a_result_of_the_earthquake"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_loss_as_a_result_of_the_earthquake"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/loss_of_analgesic_as_a_result_of_the_earthquake"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_loss_of_analgesic_as_a_result_of_the_earthquake"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/loss_of_breadwinner_as_a_result_of_the_earthquake"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_loss_of_breadwinner_as_a_result_of_the_earthquake"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/strong_social_ties"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_strong_social_ties"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/places_of_relatives"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <EditText
+                                android:id="@+id/et_places_of_relatives"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_places"
+                                android:textAlignment="viewStart" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="@string/places_of_preference"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_places_of_preference"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.cardview.widget.CardView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -1570,6 +1779,7 @@
                     android:layout_margin="@dimen/fab_margin"
                     app:srcCompat="@drawable/ic_done_24dp" />
             </LinearLayout>
+
         </ScrollView>
 
 

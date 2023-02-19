@@ -1591,4 +1591,16 @@
     <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
     <string name="reset_pin">Reset Pin</string>
     <string name="enter_new_pin">Enter your new 4-digit pin</string>
+
+    // earthquake victim questions
+    <string name="nature_of_special_needs">The nature of special needs</string>
+    <string name="loss_as_a_result_of_the_earthquake">Loss as a result of the earthquake</string>
+    <string name="loss_of_analgesic_as_a_result_of_the_earthquake">Loss of analgesic as a result of the earthquake</string>
+    <string name="loss_of_breadwinner_as_a_result_of_the_earthquake">The loss of the breadwinner as a result of the earthquake</string>
+    <string name="strong_social_ties">Do you have strong social ties in your residence area at the time of the earthquake?</string>
+    <string name="places_of_relatives">Places of relatives in other parts of Syria?</string>
+    <string name="enter_places">Enter places</string>
+    <string name="places_of_preference">If we can host you for a year with basic costs of living, which of the following places do you prefer?</string>
+    <string name="places_of_relatives_cannot_be_empty">"Places of relatives cannot be empty. "</string>
+
 </resources>
