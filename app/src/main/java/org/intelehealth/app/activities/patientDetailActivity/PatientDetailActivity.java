@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
@@ -43,14 +44,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1644,6 +1649,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         // Inflate the options menu from XML
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
+        MenuItem menuItem = menu.findItem(R.id.detail_reset_pin);
+        showHideResetOption(menuItem);
         return true;
     }
 
@@ -1657,6 +1664,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.detail_reset_pin:
+                displayResetPinMaterialDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -1667,4 +1676,69 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
+    private void showHideResetOption(MenuItem menuItem) {
+        String originalHealthWorkerUuid = patientsDAO.fetchHealthWorkerUuid(patientUuid);
+        menuItem.setVisible(originalHealthWorkerUuid.equals(sessionManager.getProviderID()));
+    }
+
+    private void displayResetPinMaterialDialog() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.layout_dialog_patient_pin, null);
+        materialAlertDialogBuilder.setView(view);
+
+        AppCompatTextView disclaimerTextView = view.findViewById(R.id.tv_title);
+        Button saveButton = view.findViewById(R.id.button_save);
+        TextInputEditText pinEditText = view.findViewById(R.id.et_pin);
+        AlertDialog alertDialog = materialAlertDialogBuilder.create();
+
+        disclaimerTextView.setText(context.getString(R.string.enter_new_pin));
+        saveButton.setOnClickListener(v -> {
+            if (isPinFieldValid(pinEditText)) {
+                storeNewPin(pinEditText.getText().toString());
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void storeNewPin(String newPin) {
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid("30faac87-ec37-416b-9103-6ac157b73b81");
+        patientAttributesDTO.setValue(newPin);
+
+        patientAttributesDTOList.add(patientAttributesDTO);
+        try {
+            patientsDAO.updatePatientPin(patientUuid, patientAttributesDTOList);
+            if (NetworkConnection.isOnline(this)) {
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                syncDAO.pushDataApi();
+                imagesPushDAO.patientProfileImagesPush();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+    private boolean isPinFieldValid(TextInputEditText pinEditText) {
+        String enteredPin = pinEditText.getText().toString();
+
+        if (enteredPin.isEmpty()) {
+            pinEditText.setError(context.getString(R.string.empty_pin_error));
+            return false;
+        }
+
+        if (enteredPin.length() < 4) {
+            pinEditText.setError(context.getString(R.string.please_enter_four_digit_pin));
+            return false;
+        }
+
+        return true;
+    }
 }

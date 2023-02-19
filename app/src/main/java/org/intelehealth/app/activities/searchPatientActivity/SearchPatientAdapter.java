@@ -5,18 +5,23 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -98,12 +103,52 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
     private void displayDisclaimerDialog(PatientDTO patientDTO) {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
-        materialAlertDialogBuilder.setTitle(context.getString(R.string.generic_warning));
-        materialAlertDialogBuilder.setMessage(context.getString(R.string.incorrect_healthworker_disclaimer));
-        materialAlertDialogBuilder.setPositiveButton(context.getText(R.string.yes), (dialog, which) -> navigateToPatientDetailActivity(patientDTO));
-        materialAlertDialogBuilder.setNegativeButton(context.getText(R.string.no), ((dialog, which) -> dialog.dismiss()));
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.layout_dialog_patient_pin, null);
+        materialAlertDialogBuilder.setView(view);
+
+        AppCompatTextView disclaimerTextView = view.findViewById(R.id.tv_title);
+        Button saveButton = view.findViewById(R.id.button_save);
+        TextInputEditText pinEditText = view.findViewById(R.id.et_pin);
         AlertDialog alertDialog = materialAlertDialogBuilder.create();
+
+        disclaimerTextView.setText(context.getString(R.string.incorrect_healthworker_disclaimer));
+        saveButton.setOnClickListener(v -> {
+            if (isPinFieldValid(pinEditText) && isPinCorrect(pinEditText, patientDTO)) {
+                navigateToPatientDetailActivity(patientDTO);
+                alertDialog.dismiss();
+            }
+        });
+
         alertDialog.show();
+    }
+
+    private boolean isPinFieldValid(TextInputEditText pinEditText) {
+        String enteredPin = pinEditText.getText().toString();
+
+        if (enteredPin.isEmpty()) {
+            pinEditText.setError(context.getString(R.string.empty_pin_error));
+            return false;
+        }
+
+        if (enteredPin.length() < 4) {
+            pinEditText.setError(context.getString(R.string.please_enter_four_digit_pin));
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isPinCorrect(TextInputEditText editText, PatientDTO patientDTO) {
+        String enteredPin = Objects.requireNonNull(editText.getText()).toString();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        String patientPin = patientsDAO.fetchPatientPin(patientDTO.getUuid());
+        if (patientPin.equals(enteredPin)) {
+            return true;
+        } else {
+            Toast.makeText(context, context.getString(R.string.incorrect_pin_entered), Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 
     private void navigateToPatientDetailActivity(PatientDTO patinet) {

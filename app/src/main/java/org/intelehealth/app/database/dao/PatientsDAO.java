@@ -639,8 +639,41 @@ public class PatientsDAO {
         String healthWorkerUuid = "";
         if (healthWorkerIDCursor.moveToFirst()) {
             healthWorkerUuid = healthWorkerIDCursor.getString(healthWorkerIDCursor.getColumnIndexOrThrow("value"));
-            healthWorkerIDCursor.close();
         }
+        healthWorkerIDCursor.close();
         return healthWorkerUuid;
+    }
+
+    public String fetchPatientPin(String patientID) {
+        String query = "SELECT value FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid='30faac87-ec37-416b-9103-6ac157b73b81'";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor pinCursor = db.rawQuery(query, new String[]{patientID});
+        String patientPin = "";
+        if (pinCursor.moveToFirst()) {
+            patientPin = pinCursor.getString(pinCursor.getColumnIndexOrThrow("value"));
+        }
+        pinCursor.close();
+        return patientPin;
+    }
+
+    public void updatePatientPin(String patientID, List<PatientAttributesDTO> patientAttributesDTOList) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        db.beginTransaction();
+
+        try {
+            values.put("uuid", patientID);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("dead", false);
+            values.put("sync", false);
+            insertPatientAttributes(patientAttributesDTOList, db);
+            db.update("tbl_patient", values, whereclause, new String[]{patientID});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
     }
 }

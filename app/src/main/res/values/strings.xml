@@ -1588,4 +1588,7 @@
     <string name="request_patient_pin_string">This is personal information, please enter the PIN number for follow-up.</string>
     <string name="empty_pin_error">Pin cannot be blank</string>
     <string name="please_enter_four_digit_pin">Please enter a 4-digit pin</string>
+    <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
+    <string name="reset_pin">Reset Pin</string>
+    <string name="enter_new_pin">Enter your new 4-digit pin</string>
 </resources>

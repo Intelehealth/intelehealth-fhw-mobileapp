@@ -9,4 +9,10 @@
         android:title="@string/action_home"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/detail_reset_pin"
+        android:orderInCategory="100"
+        android:title="@string/reset_pin"
+        app:showAsAction="never" />
+
 </menu>

@@ -1566,7 +1566,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
     }
 
-    public void onPatientCreateClicked() {
+    public void onPatientCreateClicked(String patientPin) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -2134,19 +2134,21 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setValue(whyHOHInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("change happened years"));
-            patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
-            patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("change happened years"));
+//            patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
+//            patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2261,6 +2263,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PATIENT_PIN"));
+            patientAttributesDTO.setValue(patientPin);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3415,19 +3424,21 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue(whyHOHInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("change happened years"));
-                patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+                // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
-                patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("change happened years"));
+//                patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
+//                patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
+//                patientAttributesDTOList.add(patientAttributesDTO);
 
 
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -5316,7 +5327,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         disclaimerTextView.setText(getString(R.string.request_patient_pin_string));
         saveButton.setOnClickListener(v -> {
             if (isPinFieldValid(pinEditText)) {
-                onPatientCreateClicked();
+                String pin = Objects.requireNonNull(pinEditText.getText()).toString();
+                onPatientCreateClicked(pin);
                 alertDialog.dismiss();
             }
         });
@@ -5337,6 +5349,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             return false;
         }
 
-        return false;
+        return true;
     }
 }
