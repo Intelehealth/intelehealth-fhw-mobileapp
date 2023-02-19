@@ -30,6 +30,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -45,7 +46,7 @@ import java.util.Map;
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
-    private static Gson gson = new Gson();
+    private static Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -4287,13 +4288,13 @@ public final class StringUtils {
 
     public static String getTranslatedSlot(String val, String locale) {
         if (locale.equalsIgnoreCase("ar")) {
-            if(val.contains("AM"))
-                val = val.replaceAll("AM","ص");
-            if(val.contains("PM"))
-                val = val.replaceAll("PM"," م");
-            }
-        return val;
+            if (val.contains("AM"))
+                val = val.replaceAll("AM", "ص");
+            if (val.contains("PM"))
+                val = val.replaceAll("PM", " م");
         }
+        return val;
+    }
 
     public static String getAppointmentBookStatus(String val, String locale) {
         if (locale.equalsIgnoreCase("ar")) {
@@ -7680,8 +7681,7 @@ public final class StringUtils {
             } else {
                 resultMap.put("en", value);
             }
-        }
-        else {
+        } else {
 
 //        resultMap.put(appLanguage,value);
             resultMap.put("en", value);
