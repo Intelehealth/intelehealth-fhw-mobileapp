@@ -2078,11 +2078,26 @@
         <item>Infant</item>
     </string-array>
 
+    <string-array name="victim_special_needs_ar">
+        <item>عربي</item>
+        <item>سن متقدم >65</item>
+        <item>إعاقة</item>
+        <item>أمراض مزمنة</item>
+        <item>رضع</item>
+    </string-array>
+
     <string-array name="victim_loss_due_to_earthquake_en">
         <item>Select</item>
         <item>Yes</item>
         <item>Somewhat</item>
         <item>No</item>
+    </string-array>
+
+    <string-array name="victim_loss_due_to_earthquake_ar">
+        <item>عربي</item>
+        <item>نعم</item>
+        <item>نوعا ما </item>
+        <item>لا</item>
     </string-array>
 
     <string-array name="victim_loss_of_analgesic_en">
@@ -2091,10 +2106,22 @@
         <item>Partial</item>
     </string-array>
 
+    <string-array name="victim_loss_of_analgesic_ar">
+        <item>عربي</item>
+        <item>فقدان تام</item>
+        <item>فقدان جزئي</item>
+    </string-array>
+
     <string-array name="victim_loss_of_breadwinner_en">
         <item>Select</item>
         <item>Yes</item>
         <item>No</item>
+    </string-array>
+
+    <string-array name="victim_loss_of_breadwinner_ar">
+        <item>عربي</item>
+        <item>نعم</item>
+        <item>لا</item>
     </string-array>
 
     <string-array name="victim_strong_social_ties_en">
@@ -2104,12 +2131,27 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="victim_strong_social_ties_ar">
+        <item>عربي</item>
+        <item>نعم</item>
+        <item>نوعا ما </item>
+        <item>لا</item>
+    </string-array>
+
     <string-array name="victim_place_of_preference_en">
         <item>Select</item>
         <item>As-Suwayda</item>
         <item>Homs</item>
         <item>Tartous</item>
         <item>Damascus Countryside</item>
+    </string-array>
+
+    <string-array name="victim_place_of_preference_ar">
+        <item>عربي</item>
+        <item>السويداء</item>
+        <item>حمص</item>
+        <item>طرطوس</item>
+        <item>ريف دمشق</item>
     </string-array>
 
 </resources>

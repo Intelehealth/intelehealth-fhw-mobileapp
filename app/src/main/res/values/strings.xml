@@ -1601,6 +1601,6 @@
     <string name="places_of_relatives">Places of relatives in other parts of Syria?</string>
     <string name="enter_places">Enter places</string>
     <string name="places_of_preference">If we can host you for a year with basic costs of living, which of the following places do you prefer?</string>
-    <string name="places_of_relatives_cannot_be_empty">"Places of relatives cannot be empty. "</string>
+    <string name="places_of_relatives_cannot_be_empty">Places of relatives cannot be empty.</string>
 
 </resources>
