@@ -22,12 +22,14 @@ import com.linktop.constant.DeviceInfo;
 import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnBleConnectListener;
 import com.linktop.infs.OnBpResultListener;
+import com.linktop.infs.OnBtResultListener;
 import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.infs.OnSpO2ResultListener;
 import com.linktop.whealthService.BleDevManager;
 import com.linktop.whealthService.MeasureType;
 import com.linktop.whealthService.task.BpTask;
+import com.linktop.whealthService.task.BtTask;
 import com.linktop.whealthService.task.OxTask;
 
 import androidx.appcompat.app.AlertDialog;
@@ -55,6 +57,7 @@ import android.widget.Toast;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.intelehealth.app.models.rhemos_device.Bp;
+import org.intelehealth.app.models.rhemos_device.Bt;
 import org.intelehealth.app.models.rhemos_device.SpO2;
 import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -88,16 +91,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class VitalsActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
         ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener,
-        OnSpO2ResultListener, OnBpResultListener {
+        OnSpO2ResultListener, OnBpResultListener, OnBtResultListener {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final int REQUEST_OPEN_BT = 0x23;
     public HcService mHcService;
     private OxTask mOxTask;
     private BpTask mBpTask;
+    private BtTask mBtTask;
     private SpO2 spO2_model = new SpO2();
     private Bp bp_model = new Bp();
+    private Bt bt_model = new Bt();
 
-    private ImageButton spo2_Btn, bp_Btn;
+    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn;
+    private boolean tempc_clicked = false, tempf_clicked = false;
 
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -169,6 +175,9 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         mBpSys = findViewById(R.id.table_bpsys);
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
+        tempF_Btn = findViewById(R.id.tempf_Btn);
+        tempC_Btn = findViewById(R.id.tempc_Btn);
+
         mSpo2 = findViewById(R.id.table_spo2);
 
         spo2_Btn = findViewById(R.id.spo2_Btn);
@@ -234,11 +243,13 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 
                     mTemperature = findViewById(R.id.table_temp);
                     findViewById(R.id.tinput_f).setVisibility(View.GONE);
+                    tempF_Btn.setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
                     mTemperature = findViewById(R.id.table_temp_faren);
                     findViewById(R.id.tinput_c).setVisibility(View.GONE);
+                    tempC_Btn.setVisibility(View.GONE);
                 }
             } else {
                 mTemperature.setVisibility(View.GONE);
@@ -381,6 +392,15 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 
         spo2_Btn.setOnClickListener(v -> { clickMeasure("SPO2"); });
         bp_Btn.setOnClickListener(v -> { clickMeasure("BP"); });
+        tempC_Btn.setOnClickListener(v -> {
+            clickMeasure("Temp");
+            tempc_clicked = true;
+            tempf_clicked = false;
+        });
+        tempF_Btn.setOnClickListener(v -> {
+            clickMeasure("Temp");
+            tempc_clicked = false;
+            tempf_clicked = true;});
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2203,6 +2223,9 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         } else {
             MonitorDataTransmissionManager.getInstance().stopMeasure();
         }
+
+        //BT module is not have method stop().Because it will return result in 2~4 seconds when you click to start measure.
+
     }
 
     public boolean startMeasure(String testType) {
@@ -2216,8 +2239,27 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                 bp_test();
                 return true;
 
+            case "Temp":
+                temp_test();    // both methods same as remos allows only celsius for Fah convert it mathematically.
+                return true;
+
             default:
                 return true;
+        }
+    }
+
+    private void temp_test() {
+        if (mHcService != null) {
+            mBtTask = mHcService.getBleDevManager().getBtTask();
+            mBtTask.setOnBtResultListener(this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnBtResultListener(this);
+        }
+
+        if (mBtTask != null) {
+            mBtTask.start();
+        } else {
+            MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BT);
         }
     }
 
@@ -2336,5 +2378,33 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                     if (textId != 0)
                         Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    @Override
+    public void onBtResult(double tempValue) {
+        /*Remos Doc: The body temperature measurement only callbacks the temperature value of Celsius (℃).
+        For the temperature value of Fahrenheit (℉), please convert according to the conversion formula.
+         It is not provided in the SDK. Please refer to Demo for details.*/
+
+        bt_model.setTs(System.currentTimeMillis() / 1000L);
+        bt_model.setTemp(tempValue);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String value = String.valueOf(tempValue);
+                if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
+                    //Converting Celsius to Fahrenheit
+                    if (value != null && !value.isEmpty()) {
+                        mTemperature.setText(convertCtoF(value));
+                    }
+                } else {
+                    mTemperature.setText(value);
+                }
+            }
+        });
+
+
+      //  resetState();
     }
 }
