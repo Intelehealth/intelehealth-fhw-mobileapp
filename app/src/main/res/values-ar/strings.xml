@@ -1581,8 +1581,10 @@
     <string name="request_patient_pin_string">هذه معلومات شخصية  الرجاء إدخال رقم الحالة للمتابعة</string>
     <string name="empty_pin_error">يجب ملء هذا الحقل</string>
     <string name="please_enter_four_digit_pin">من فضلك، . ادخل رقمك الشخصي من اربع خانات</string>
-    <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
+    <string name="incorrect_pin_entered">الرمز الشخصي غير صحيح</string>
     <string name="enter_4_digit_pin">ادخل رقمك الشخصي من اربع خانات</string>
+    <string name="reset_pin">أعد تعيين الرمز الشخصي</string>
+    <string name="pin_successfully_reset"> تم اعادة تعيين الرمز الشخصي بنجاح</string>
 
     // earthquake victim questions
     <string name="nature_of_special_needs">طبيعة الاحتياجات الخاصة</string>
@@ -1593,6 +1595,6 @@
     <string name="places_of_relatives">أماكن تواجد الأقارب في أجزاء أخرى من سوريا ؟</string>
     <string name="enter_places">Enter places</string>
     <string name="places_of_preference">إذا أمكننا استضافتك لسنة مع تكاليف أساسية للمعيشة, أي من الأماكن التالية تفضل؟</string>
-    <string name="places_of_relatives_cannot_be_empty">Places of relatives cannot be empty.</string>
+    <string name="places_of_relatives_cannot_be_empty"> الرجاء ملء حقل مكان تواجد الأقارب</string>
 
 </resources>

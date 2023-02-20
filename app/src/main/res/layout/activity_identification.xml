@@ -1724,7 +1724,6 @@
                                 android:id="@+id/et_places_of_relatives"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_places"
                                 android:textAlignment="viewStart" />
 
                             <View

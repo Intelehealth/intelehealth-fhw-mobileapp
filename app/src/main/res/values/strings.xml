@@ -1591,6 +1591,7 @@
     <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
     <string name="reset_pin">Reset Pin</string>
     <string name="enter_new_pin">Enter your new 4-digit pin</string>
+    <string name="pin_successfully_reset">Pin Successfully Reset</string>
 
     // earthquake victim questions
     <string name="nature_of_special_needs">The nature of special needs</string>
