@@ -56,6 +56,7 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -575,6 +576,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setState_province(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patient_new.setPostal_code(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient_new.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patient_new.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
@@ -1705,6 +1707,22 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private void storeNewPin(String newPin) {
+        Patient patient = new Patient();
+        patient.setFirst_name(patient_new.getFirst_name());
+        patient.setMiddle_name(patient_new.getMiddle_name());
+        patient.setLast_name(patient_new.getLast_name());
+
+        patient.setGender(patient_new.getGender());
+        patient.setDate_of_birth(patient_new.getDate_of_birth());
+        patient.setAddress1(patient_new.getAddress1());
+        patient.setAddress2(patient_new.getAddress2());
+        patient.setCity_village(patient_new.getCity_village());
+        patient.setState_province(patient_new.getState_province());
+
+        patient.setPostal_code(patient_new.getPostal_code());
+        patient.setCountry("Syria");
+        patient.setPatient_photo(patient_new.getPatient_photo());
+
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -1714,13 +1732,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         patientAttributesDTO.setValue(newPin);
 
         patientAttributesDTOList.add(patientAttributesDTO);
+
         try {
-            patientsDAO.updatePatientPin(patientUuid, patientAttributesDTOList);
+
+            // We are calling this method just to update the patient pin attribute. nothing else is updated - Added by Arpan Sircar
+            patientsDAO.updatePatientToDB(patient, patientUuid, patientAttributesDTOList);
+
             if (NetworkConnection.isOnline(this)) {
                 SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 syncDAO.pushDataApi();
-                imagesPushDAO.patientProfileImagesPush();
+
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
