@@ -142,7 +142,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String profileImage1 = "";
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
-    TextView phoneView;
+    TextView phoneView, textViewPhoneTitle;
 
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -658,6 +658,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
         phoneView = findViewById(R.id.textView_phone);
+        textViewPhoneTitle = findViewById(R.id.textview_phone_title);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -829,8 +830,18 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         }
 
-
-        if (patient_new.getPhone_number() != null) phoneView.setText(patient_new.getPhone_number());
+        // Added by Arpan Sircar - if we don't have a phone number, the text is shown as a '-'. However we shouldn't show a '-', instead we should show not provided.
+        if (patient_new.getPhone_number() != null) {
+            if (patient_new.getPhone_number().equalsIgnoreCase("-")) {
+                phoneView.setText(context.getString(R.string.not_provided));
+                whatsapp_no.setVisibility(View.INVISIBLE);
+                calling.setVisibility(View.INVISIBLE);
+            } else {
+                phoneView.setText(patient_new.getPhone_number());
+                whatsapp_no.setVisibility(View.VISIBLE);
+                calling.setVisibility(View.VISIBLE);
+            }
+        }
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());

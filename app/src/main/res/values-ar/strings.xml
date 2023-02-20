@@ -1579,6 +1579,10 @@
     <string name="earthquake_victim">ضحية زلزال</string>
     <string name="incorrect_healthworker_disclaimer">هذه المعلومات شخصية و لا يمكن الوصول إليها من اذن صاحب  العلاقة. الرجاء ادخال الرقم الشخصي المزود لصاحب العلاقة للمتابعة</string>
     <string name="request_patient_pin_string">هذه معلومات شخصية  الرجاء إدخال رقم الحالة للمتابعة</string>
+    <string name="empty_pin_error">يجب ملء هذا الحقل</string>
+    <string name="please_enter_four_digit_pin">من فضلك، . ادخل رقمك الشخصي من اربع خانات</string>
+    <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
+    <string name="enter_4_digit_pin">ادخل رقمك الشخصي من اربع خانات</string>
 
     // earthquake victim questions
     <string name="nature_of_special_needs">طبيعة الاحتياجات الخاصة</string>
