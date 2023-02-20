@@ -452,8 +452,7 @@
                         <TableRow
                             android:id="@+id/tr_earthquake_victim"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:visibility="gone">
+                            android:layout_height="match_parent">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -465,6 +464,16 @@
                                 android:text="@string/earthquake_victim"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
+                            <TextView
+                                android:id="@+id/textView_earthquake_victim"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </TableRow>
 

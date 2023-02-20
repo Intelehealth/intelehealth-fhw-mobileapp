@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_4_digit_pin"
-            android:inputType="numberPassword"
+            android:inputType="number"
             android:maxLength="4"
             android:padding="10dp"
             android:textAlignment="center"

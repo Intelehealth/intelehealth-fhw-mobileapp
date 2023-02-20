@@ -163,10 +163,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     Myreceiver reMyreceive;
     ImageView photoView;
     ImagesDAO imagesDAO = new ImagesDAO();
-    TextView idView;
+    TextView idView, tvEarthquakeVictim;
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
-    TableRow trEarthquakeVictim;
 
     String privacy_value_selected;
 
@@ -214,7 +213,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-        trEarthquakeVictim = findViewById(R.id.tr_earthquake_victim);
+        tvEarthquakeVictim = findViewById(R.id.textView_earthquake_victim);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -631,9 +630,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
                     String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (isDisasterVictim.equalsIgnoreCase("yes"))
-                        trEarthquakeVictim.setVisibility(View.VISIBLE);
-                    else trEarthquakeVictim.setVisibility(View.GONE);
+                    if (isDisasterVictim.equalsIgnoreCase("yes")) {
+                        tvEarthquakeVictim.setText(getText(R.string.yes));
+                    } else {
+                        tvEarthquakeVictim.setText(getText(R.string.no));
+                    }
                 }
 
             } while (idCursor1.moveToNext());
