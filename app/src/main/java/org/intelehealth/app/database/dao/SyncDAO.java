@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -371,7 +372,8 @@ public class SyncDAO {
         pushRequestApiCall = patientsFrameJson.frameJson();
         final boolean[] isSucess = {true};
         String encoded = sessionManager.getEncoded();
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        String pushJson = gson.toJson(pushRequestApiCall);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
