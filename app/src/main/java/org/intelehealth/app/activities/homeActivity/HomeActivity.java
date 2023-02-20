@@ -15,6 +15,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -25,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -37,6 +39,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -66,6 +71,18 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.linktop.DeviceType;
+import com.linktop.MonitorDataTransmissionManager;
+import com.linktop.constant.BluetoothState;
+import com.linktop.constant.DeviceInfo;
+import com.linktop.infs.OnBatteryListener;
+import com.linktop.infs.OnBleConnectListener;
+import com.linktop.infs.OnBpResultListener;
+import com.linktop.infs.OnBtResultListener;
+import com.linktop.infs.OnDeviceInfoListener;
+import com.linktop.infs.OnDeviceVersionListener;
+import com.linktop.infs.OnSpO2ResultListener;
+import com.linktop.whealthService.BleDevManager;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -78,6 +95,7 @@ import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activ
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.AppointmentListingActivity;
@@ -85,6 +103,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -95,6 +114,7 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.PermissionManager;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.apprtc.ChatActivity;
@@ -127,9 +147,14 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
+        ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    public HcService mHcService;
+    private static final int REQUEST_OPEN_BT = 0x23;
+    MenuItem bluetooth_icon;
+
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
@@ -343,6 +368,8 @@ public class HomeActivity extends AppCompatActivity {
 
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+
+        initRemosDevice();
 
         // manualSyncButton.setText(R.string.sync_now);
 //        manualSyncButton.setText(R.string.refresh);
@@ -571,6 +598,8 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        bluetooth_icon = menu.findItem(R.id.bluetoothOption);
+
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -586,6 +615,8 @@ public class HomeActivity extends AppCompatActivity {
 //                return true;
 
             case R.id.bluetoothOption: {
+                // Init Remos
+                clickConnect();
                 return true;
             }
 
@@ -910,7 +941,6 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
-
 
         super.onResume();
     }
@@ -1385,4 +1415,256 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void initRemosDevice() {
+        //Bind service about Bluetooth connection.
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            Intent serviceIntent = new Intent(this, HcService.class);
+            bindService(serviceIntent, this, BIND_AUTO_CREATE);
+        } else {
+            //绑定服务，
+            // 类型是 HealthMonitor（HealthMonitor健康检测仪），
+            MonitorDataTransmissionManager.getInstance().bind(DeviceType.HealthMonitor, getApplicationContext(), this);
+        }
+    }
+
+    public void clickConnect() {
+
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                    , PermissionManager.requestCode_location)) {
+                return;
+            } else {
+                if (!PermissionManager.canScanBluetoothDevice(HomeActivity.this)) {
+                    new AlertDialog.Builder(HomeActivity.this)
+                            .setTitle("hint")
+                            .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setPositiveButton("open position switch"
+                                    , (dialog, which) -> PermissionManager.openGPS(HomeActivity.this)).create().show();
+                    return;
+                }
+            }
+            if (mHcService.isConnected) {
+                //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                mHcService.disConnect();
+            } else {
+                //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                final int bluetoothEnable = mHcService.isBluetoothEnable();
+                if (bluetoothEnable == -1) {
+                    onBLENoSupported();
+                } else if (bluetoothEnable == 0) {
+                    onOpenBLE();
+                } else {
+                    mHcService.quicklyConnect();
+                }
+            }
+        } else {
+            final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
+            Log.e("clickConnect", "bleState:" + bleState);
+            switch (bleState) {
+                case BluetoothState.BLE_CLOSED:
+                    MonitorDataTransmissionManager.getInstance().bleCheckOpen();
+                    break;
+                case BluetoothState.BLE_OPENED_AND_DISCONNECT:
+                    if (MonitorDataTransmissionManager.getInstance().isScanning()) {
+                        new AlertDialog.Builder(HomeActivity.this)
+                                .setTitle("hint")
+                                .setMessage("Scanning devices, please wait...")
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton("stop scanning"
+                                        , (dialogInterface, i) ->
+                                                MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
+                    } else {
+                        if (PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                                , PermissionManager.requestCode_location)) {
+                            if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
+                                //  connectByDeviceList();
+                                MonitorDataTransmissionManager.getInstance().scan(true);    // direct connect.
+                               /* if (showScanList) {   // todo: handle later
+                                    connectByDeviceList();
+                                } else {
+                                    MonitorDataTransmissionManager.getInstance().scan(true);
+                                }*/
+                            } else {
+                                new AlertDialog.Builder(HomeActivity.this)
+                                        .setTitle("hint")
+                                        .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                                        .setNegativeButton(android.R.string.cancel, null)
+                                        .setPositiveButton("Turn on location", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                PermissionManager.openGPS(HomeActivity.this);
+                                                //  clickConnect();
+                                            }
+                                        }).create().show();
+
+                            }
+                        }
+                    }
+                    break;
+                case BluetoothState.BLE_CONNECTING_DEVICE:
+//                    Toast.makeText(mActivity, "蓝牙连接中...", Toast.LENGTH_SHORT).show();
+                    MonitorDataTransmissionManager.getInstance().disConnectBle();
+                    break;
+                case BluetoothState.BLE_CONNECTED_DEVICE:
+
+                case BluetoothState.BLE_NOTIFICATION_DISABLED:
+                case BluetoothState.BLE_NOTIFICATION_ENABLED:
+                    MonitorDataTransmissionManager.getInstance().disConnectBle();
+                    break;
+            }
+        }
+
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder service) {
+        mHcService = ((HcService.LocalBinder) service).getService();
+        mHcService.setHandler(mHandler);
+        mHcService.initBluetooth();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        mHcService = null;
+
+    }
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == HcService.BLE_STATE) {
+                final int state = (int) msg.obj;
+                Log.e("Message", "receive state:" + state);
+                if (state == BluetoothState.BLE_NOTIFICATION_ENABLED) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_SOFTWARE_VER);
+                } else {
+                    onBleState(state);
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onServiceBind() {
+        if (!IntelehealthApplication.isUseCustomBleDevService) {
+            onBleState(MonitorDataTransmissionManager.getInstance().getBleState());
+        }
+
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            BleDevManager bleDevManager = mHcService.getBleDevManager();
+            mHcService.setOnDeviceVersionListener(this);
+            bleDevManager.getBatteryTask().setBatteryStateListener(this);
+            bleDevManager.getDeviceTask().setOnDeviceInfoListener(this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnBleConnectListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnBatteryListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDevIdAndKeyListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDeviceVersionListener(this);
+        }
+    }
+
+    @Override
+    public void onServiceUnbind() {
+
+    }
+
+    @Override
+    public void onBatteryCharging() {
+
+    }
+
+    @Override
+    public void onBatteryQuery(int i) {
+
+    }
+
+    @Override
+    public void onBatteryFull() {
+
+    }
+
+    @Override
+    public void onBLENoSupported() {
+
+    }
+
+    @Override
+    public void onOpenBLE() {
+        startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
+            //蓝牙启动结果
+            Toast.makeText(HomeActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
+            clickConnect();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBleState(int bleState) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (bleState) {
+                    case BluetoothState.BLE_CLOSED: // Rhemos Device is OFF
+                        //  btnText.set(getString(R.string.turn_on_bluetooth));
+                        //  Toast.makeText(VitalsActivity.this, "Please turn on device", Toast.LENGTH_SHORT).show();
+                        //  reset();
+                        break;
+                    case BluetoothState.BLE_OPENED_AND_DISCONNECT:  // Rhemos device is ON but not Connected via Bluetooth
+                        try {
+                            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                            //  Toast.makeText(VitalsActivity.this, "Please connect to device", Toast.LENGTH_SHORT).show();
+                            //   btnText.set(getString(R.string.connect));
+                            //  reset();
+                        } catch (Exception ignored) {
+                            Toast.makeText(HomeActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTING_DEVICE:  // Rhemos device is connecting...
+                        try {
+                            //  btnText.set(getString(R.string.connecting));
+                            Toast.makeText(HomeActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
+                        } catch (Exception ignored) {
+                            Toast.makeText(HomeActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTED_DEVICE:   // Rhemos device is connected.
+                        bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                        Toast.makeText(HomeActivity.this, "Device Connected", Toast.LENGTH_SHORT).show();
+
+                        //  btnText.set(getString(R.string.disconnect));
+                        break;
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onUpdateDialogBleList() {
+
+    }
+
+    @Override
+    public void onDeviceInfo(DeviceInfo deviceInfo) {
+
+    }
+
+    @Override
+    public void onReadDeviceInfoFailed() {
+
+    }
+
+    @Override
+    public void onDeviceVersion(int i, String s) {
+
+    }
 }
