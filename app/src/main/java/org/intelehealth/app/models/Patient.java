@@ -81,6 +81,15 @@ public class Patient {
     // healthworker details
     private String healthWorkerID;
 
+    // emergency release questions
+    private String natureOfSpecialNeeds;
+    private String lossAsAResultOfTheEarthquake;
+    private String lossOfAnalgesicAsAResultOfTheEarthquake;
+    private String lossOfBreadwinnerAsAResultOfTheEarthquake;
+    private String strongSocialTiesInYourResidenceArea;
+    private String placesOfRelativesInOtherPartsOfSyria;
+    private String placesOfPreferenceForHosting;
+
     public String getUuid() {
         return uuid;
     }
@@ -633,5 +642,61 @@ public class Patient {
 
     public void setHealthWorkerID(String healthWorkerID) {
         this.healthWorkerID = healthWorkerID;
+    }
+
+    public String getNatureOfSpecialNeeds() {
+        return natureOfSpecialNeeds;
+    }
+
+    public void setNatureOfSpecialNeeds(String natureOfSpecialNeeds) {
+        this.natureOfSpecialNeeds = natureOfSpecialNeeds;
+    }
+
+    public String getLossAsAResultOfTheEarthquake() {
+        return lossAsAResultOfTheEarthquake;
+    }
+
+    public void setLossAsAResultOfTheEarthquake(String lossAsAResultOfTheEarthquake) {
+        this.lossAsAResultOfTheEarthquake = lossAsAResultOfTheEarthquake;
+    }
+
+    public String getLossOfAnalgesicAsAResultOfTheEarthquake() {
+        return lossOfAnalgesicAsAResultOfTheEarthquake;
+    }
+
+    public void setLossOfAnalgesicAsAResultOfTheEarthquake(String lossOfAnalgesicAsAResultOfTheEarthquake) {
+        this.lossOfAnalgesicAsAResultOfTheEarthquake = lossOfAnalgesicAsAResultOfTheEarthquake;
+    }
+
+    public String getLossOfBreadwinnerAsAResultOfTheEarthquake() {
+        return lossOfBreadwinnerAsAResultOfTheEarthquake;
+    }
+
+    public void setLossOfBreadwinnerAsAResultOfTheEarthquake(String lossOfBreadwinnerAsAResultOfTheEarthquake) {
+        this.lossOfBreadwinnerAsAResultOfTheEarthquake = lossOfBreadwinnerAsAResultOfTheEarthquake;
+    }
+
+    public String getStrongSocialTiesInYourResidenceArea() {
+        return strongSocialTiesInYourResidenceArea;
+    }
+
+    public void setStrongSocialTiesInYourResidenceArea(String strongSocialTiesInYourResidenceArea) {
+        this.strongSocialTiesInYourResidenceArea = strongSocialTiesInYourResidenceArea;
+    }
+
+    public String getPlacesOfRelativesInOtherPartsOfSyria() {
+        return placesOfRelativesInOtherPartsOfSyria;
+    }
+
+    public void setPlacesOfRelativesInOtherPartsOfSyria(String placesOfRelativesInOtherPartsOfSyria) {
+        this.placesOfRelativesInOtherPartsOfSyria = placesOfRelativesInOtherPartsOfSyria;
+    }
+
+    public String getPlacesOfPreferenceForHosting() {
+        return placesOfPreferenceForHosting;
+    }
+
+    public void setPlacesOfPreferenceForHosting(String placesOfPreferenceForHosting) {
+        this.placesOfPreferenceForHosting = placesOfPreferenceForHosting;
     }
 }
