@@ -222,14 +222,12 @@
                                                     android:nextFocusForward="@+id/spinner_district"
                                                     android:entries="@array/location_state"
                                                     android:alpha="0.4"
-                                                    android:visibility="gone"
                                                     android:textAlignment="viewStart"
                                                     android:focusable="true"
                                                     />
 
                                                 <android.widget.Space
                                                     android:layout_width="match_parent"
-                                                    android:visibility="gone"
                                                     android:layout_height="10dp"/>
 
                                                 <Spinner

@@ -892,19 +892,23 @@ public class SetupActivity extends AppCompatActivity {
                                         spinner_state.setEnabled(true);
                                         spinner_state.setAlpha(1);
                                         spinner_state.setAdapter(locationArrayAdapter);
-                                        if(state_locations.contains("As-Sweida")) {
-                                            spinner_state.setSelection(state_locations.indexOf("As-Sweida"));
-                                            List<String> district_locations = newLocationDao.getDistrictList("As-Sweida", context);
-                                            if (district_locations.size() > 1) {
-                                                LocationArrayAdapter locationArrayAdapter1 =
-                                                        new LocationArrayAdapter(SetupActivity.this, district_locations);
 
-                                                spinner_district.setEnabled(true);
-                                                spinner_district.setAlpha(1);
-                                                spinner_district.setAdapter(locationArrayAdapter1);
-                                                isLocationFetched = true;
-                                            }
-                                        }
+                                        // Commented by Arpan Sircar - As new states have been added, this section was commented out and the district list will
+                                        // be populated only after the state is selected by the user
+
+//                                        if(state_locations.contains("As-Sweida")) {
+//                                            spinner_state.setSelection(state_locations.indexOf("As-Sweida"));
+//                                            List<String> district_locations = newLocationDao.getDistrictList("As-Sweida", context);
+//                                            if (district_locations.size() > 1) {
+//                                                LocationArrayAdapter locationArrayAdapter1 =
+//                                                        new LocationArrayAdapter(SetupActivity.this, district_locations);
+//
+//                                                spinner_district.setEnabled(true);
+//                                                spinner_district.setAlpha(1);
+//                                                spinner_district.setAdapter(locationArrayAdapter1);
+//                                                isLocationFetched = true;
+//                                            }
+//                                        }
                                         isLocationFetched = true;
                                     } else {
                                         empty_spinner("state");
