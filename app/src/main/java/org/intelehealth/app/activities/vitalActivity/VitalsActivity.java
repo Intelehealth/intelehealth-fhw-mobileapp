@@ -36,8 +36,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.LocaleList;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -103,7 +106,8 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
     private Bt bt_model = new Bt();
 
     private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn;
-    private boolean tempc_clicked = false, tempf_clicked = false;
+  //  private boolean tempc_clicked = false, tempf_clicked = false;
+    MenuItem bluetooth_icon;
 
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -182,6 +186,8 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 
         spo2_Btn = findViewById(R.id.spo2_Btn);
         bp_Btn = findViewById(R.id.bp_Btn);
+
+        initRemosDevice();
 
         //rhemos device fields added: By Nishita
         bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
@@ -394,13 +400,14 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         bp_Btn.setOnClickListener(v -> { clickMeasure("BP"); });
         tempC_Btn.setOnClickListener(v -> {
             clickMeasure("Temp");
-            tempc_clicked = true;
-            tempf_clicked = false;
+           // tempc_clicked = true;
+          //  tempf_clicked = false;
         });
         tempF_Btn.setOnClickListener(v -> {
             clickMeasure("Temp");
-            tempc_clicked = false;
-            tempf_clicked = true;});
+          //  tempc_clicked = false;
+           // tempf_clicked = true;
+        });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1929,6 +1936,10 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        bluetooth_icon = menu.findItem(R.id.bluetoothOption);
+        menu.setGroupVisible(R.id.main_menu_group, false);
+
+      //  other_icon.setVisible(false);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -1938,7 +1949,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         switch (item.getItemId()) {
             case R.id.bluetoothOption: {
                 // Init Remos
-                initRemosDevice();
+                clickConnect();
                 return true;
             }
 
@@ -1959,14 +1970,31 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
         }
     }
 
-    @Override
-    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == HcService.BLE_STATE) {
+                final int state = (int) msg.obj;
+                Log.e("Message", "receive state:" + state);
+                if (state == BluetoothState.BLE_NOTIFICATION_ENABLED) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_SOFTWARE_VER);
+                } else {
+                    onBleState(state);
+                }
+            }
+        }
+    };
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mHcService = ((HcService.LocalBinder) service).getService();
+        mHcService.setHandler(mHandler);
+        mHcService.initBluetooth();
     }
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
-
+        mHcService = null;
     }
 
     @Override
@@ -2003,7 +2031,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
             //蓝牙启动结果
-            Toast.makeText(VitalsActivity.this, resultCode == Activity.RESULT_OK ? "蓝牙已打开" : "蓝牙打开失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VitalsActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
             clickConnect();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -2011,28 +2039,45 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 
     @Override
     public void onBleState(int bleState) {
-        switch (bleState) {
-            case BluetoothState.BLE_CLOSED:
-              //  btnText.set(getString(R.string.turn_on_bluetooth));
-              //  reset();
-                break;
-            case BluetoothState.BLE_OPENED_AND_DISCONNECT:
-                try {
-                 //   btnText.set(getString(R.string.connect));
-                  //  reset();
-                } catch (Exception ignored) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (bleState) {
+                    case BluetoothState.BLE_CLOSED: // Rhemos Device is OFF
+                        //  btnText.set(getString(R.string.turn_on_bluetooth));
+                      //  Toast.makeText(VitalsActivity.this, "Please turn on device", Toast.LENGTH_SHORT).show();
+                        //  reset();
+                        break;
+                    case BluetoothState.BLE_OPENED_AND_DISCONNECT:  // Rhemos device is ON but not Connected via Bluetooth
+                        try {
+                            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                          //  Toast.makeText(VitalsActivity.this, "Please connect to device", Toast.LENGTH_SHORT).show();
+                            //   btnText.set(getString(R.string.connect));
+                            //  reset();
+                        } catch (Exception ignored) {
+                            Toast.makeText(VitalsActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTING_DEVICE:  // Rhemos device is connecting...
+                        try {
+                            //  btnText.set(getString(R.string.connecting));
+                            Toast.makeText(VitalsActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
+                        } catch (Exception ignored) {
+                            Toast.makeText(VitalsActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTED_DEVICE:   // Rhemos device is connected.
+                        bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                        Toast.makeText(VitalsActivity.this, "Device Connected", Toast.LENGTH_SHORT).show();
+
+                        //  btnText.set(getString(R.string.disconnect));
+                        break;
                 }
-                break;
-            case BluetoothState.BLE_CONNECTING_DEVICE:
-                try {
-                  //  btnText.set(getString(R.string.connecting));
-                } catch (Exception ignored) {
-                }
-                break;
-            case BluetoothState.BLE_CONNECTED_DEVICE:
-              //  btnText.set(getString(R.string.disconnect));
-                break;
-        }
+
+            }
+        });
     }
 
     @Override
@@ -2056,6 +2101,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
     }
 
     public void clickConnect() {
+
         if (IntelehealthApplication.isUseCustomBleDevService) {
             if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
                     , PermissionManager.requestCode_location)) {
@@ -2063,17 +2109,19 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
             } else {
                 if (!PermissionManager.canScanBluetoothDevice(VitalsActivity.this)) {
                     new AlertDialog.Builder(VitalsActivity.this)
-                            .setTitle("提示")
-                            .setMessage("Android 6.0及以上系统需要打开位置开关才能扫描蓝牙设备。")
+                            .setTitle("hint")
+                            .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
                             .setNegativeButton(android.R.string.cancel, null)
-                            .setPositiveButton("打开位置开关"
+                            .setPositiveButton("open position switch"
                                     , (dialog, which) -> PermissionManager.openGPS(VitalsActivity.this)).create().show();
                     return;
                 }
             }
             if (mHcService.isConnected) {
+              //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
                 mHcService.disConnect();
             } else {
+              //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
                 final int bluetoothEnable = mHcService.isBluetoothEnable();
                 if (bluetoothEnable == -1) {
                     onBLENoSupported();
@@ -2093,10 +2141,10 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                 case BluetoothState.BLE_OPENED_AND_DISCONNECT:
                     if (MonitorDataTransmissionManager.getInstance().isScanning()) {
                         new AlertDialog.Builder(VitalsActivity.this)
-                                .setTitle("提示")
-                                .setMessage("正在扫描设备，请稍后...")
+                                .setTitle("hint")
+                                .setMessage("Scanning devices, please wait...")
                                 .setNegativeButton(android.R.string.cancel, null)
-                                .setPositiveButton("停止扫描"
+                                .setPositiveButton("stop scanning"
                                         , (dialogInterface, i) ->
                                                 MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
                     } else {
@@ -2104,7 +2152,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                                 , PermissionManager.requestCode_location)) {
                             if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
                               //  connectByDeviceList();
-                                MonitorDataTransmissionManager.getInstance().scan(true);
+                                MonitorDataTransmissionManager.getInstance().scan(true);    // direct connect.
                                /* if (showScanList) {   // todo: handle later
                                     connectByDeviceList();
                                 } else {
@@ -2112,14 +2160,14 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                                 }*/
                             } else {
                                 new AlertDialog.Builder(VitalsActivity.this)
-                                        .setTitle("提示")
-                                        .setMessage("Android 6.0及以上系统需要打开位置开关才能扫描蓝牙设备。")
+                                        .setTitle("hint")
+                                        .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
                                         .setNegativeButton(android.R.string.cancel, null)
-                                        .setPositiveButton("turn on location", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Turn on location", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 PermissionManager.openGPS(VitalsActivity.this);
-                                                clickConnect();
+                                              //  clickConnect();
                                             }
                                         }).create().show();
 
@@ -2132,6 +2180,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                     MonitorDataTransmissionManager.getInstance().disConnectBle();
                     break;
                 case BluetoothState.BLE_CONNECTED_DEVICE:
+
                 case BluetoothState.BLE_NOTIFICATION_DISABLED:
                 case BluetoothState.BLE_NOTIFICATION_ENABLED:
                     MonitorDataTransmissionManager.getInstance().disConnectBle();
@@ -2179,12 +2228,14 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 
             //判断手机是否和设备实现连接
             if (!manager.isConnected()) {
+                Toast.makeText(VitalsActivity.this, "Please connect to device", Toast.LENGTH_SHORT).show();
               //  toast(R.string.device_disconnect);
                 return;
             }
             //判断设备是否在充电，充电时不可测量
             if (manager.isCharging()) {
               //  toast(R.string.charging);
+                Toast.makeText(VitalsActivity.this, "Is Charging. Please wait!", Toast.LENGTH_SHORT).show();
                 return;
             }
             //判断是否测量中...
@@ -2192,6 +2243,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
 //            if (mPosition != 2) {//体温没有停止方法，当点击停止的是非体温时才执行停止
                 //停止测量
                 stopMeasure(testType);
+                Toast.makeText(VitalsActivity.this, "Start measuring", Toast.LENGTH_SHORT).show();
                 //设置ViewPager可滑动
               //  btnMeasure.setText(getString(R.string.start_measuring));
 //            }
@@ -2205,6 +2257,7 @@ public class VitalsActivity extends AppCompatActivity implements MonitorDataTran
                      */
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
+                      Toast.makeText(VitalsActivity.this, "Measuring...", Toast.LENGTH_SHORT).show();
                 }
             }
 
