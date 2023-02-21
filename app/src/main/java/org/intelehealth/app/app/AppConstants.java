@@ -137,5 +137,11 @@ public class AppConstants {
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
 
+    /*AWS S3 Bucket*/
+    public static final String S3_ACCESS_ID = "AKIAQRYG2ZFM3FPZWEDN";
+    public static final String S3_SECRET_KEY = "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";
+    public static final String S3_BUCKET_NAME = "ih-addl-docs";
+
+
 }
 

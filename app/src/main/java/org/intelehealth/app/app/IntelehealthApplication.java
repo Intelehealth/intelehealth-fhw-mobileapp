@@ -22,7 +22,6 @@ import com.parse.Parse;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.apprtc.data.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;

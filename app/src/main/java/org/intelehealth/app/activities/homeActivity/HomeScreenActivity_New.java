@@ -32,6 +32,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -61,6 +62,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -97,6 +103,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -106,12 +113,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -252,6 +263,44 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
+    private void awsAuth() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                String PICTURE_NAME = "2022.jpg";//new UuidGenerator().UuidGenerator() + "jpg";
+                BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(AppConstants.S3_ACCESS_ID, AppConstants.S3_SECRET_KEY);
+                AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials);
+
+                PutObjectRequest por = new PutObjectRequest(AppConstants.S3_BUCKET_NAME, PICTURE_NAME,
+                        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));
+                amazonS3Client.putObject(por);
+                //Log.v("AmazonS3", amazonS3Client.getBucketLocation(AppConstants.S3_BUCKET_NAME));
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                        ResponseHeaderOverrides override = new ResponseHeaderOverrides();
+                        override.setContentType("image/jpeg");
+                        GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(AppConstants.S3_BUCKET_NAME, PICTURE_NAME);// Added an hour's worth of milliseconds to the current time.
+                        urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
+                        urlRequest.setResponseHeaders(override);
+                        URL url = amazonS3Client.generatePresignedUrl( urlRequest );
+                        try {
+                            startActivity(    new Intent( Intent.ACTION_VIEW, Uri.parse( url.toURI().toString() ) ));
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -276,7 +325,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         initUI();
         //}
         clickListeners();
-
+        awsAuth();
 
     }
 

@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 59
         buildToolsVersion('29.0.2')
@@ -154,6 +154,27 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    /*AWS S3*/
+    /*implementation 'com.amazonaws:aws-android-sdk-core:2.6.0'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.2.0'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.0'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.0'
+    implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.2.0'*/
+    // BEGIN AWS DEPENDENCIES
+    /*implementation "com.amazonaws:aws-android-sdk-s3:2.63.0"
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.63.0") { transitive = true }
+    //For the drop-in UI also:
+    implementation 'com.amazonaws:aws-android-sdk-auth-userpools:2.63.0'
+    implementation 'com.amazonaws:aws-android-sdk-auth-ui:2.63.0'
+
+//For hosted UI also:
+    implementation 'com.amazonaws:aws-android-sdk-cognitoauth:2.63.0'
+    // END AWS DEPENDENCIES*/
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.17.1'
+
+    /*implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation platform('software.amazon.awssdk:s3-transfer-manage:2.15.0')
+    implementation platform('software.amazon.awssdk.crt:aws-crt:2.15.0')*/
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
