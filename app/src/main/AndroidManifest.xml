@@ -50,26 +50,26 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.homeActivity.devicesActivity.DevicesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.billConfirmation.billConfirmationActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
-            android:label="@string/view_print"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-
+            android:label="@string/view_print"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
@@ -300,13 +300,13 @@
             android:permission="" />
 
         <provider
-            android:authorities="com.smartcaredoc.app.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.smartcaredoc.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"/>
+                android:resource="@xml/file_path" />
         </provider>
 
         <receiver
@@ -367,9 +367,7 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
-
         <service android:name=".services.HcService" />
-
     </application>
 
 </manifest>

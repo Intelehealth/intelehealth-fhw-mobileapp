@@ -951,4 +951,5 @@
     <string name="confirm_skip_complaint">Are you sure you want to skip complaint registration? \n\nNote:- This action cannot be undone.</string>
     <string name="leak_and_check">There is a leak. Please check the gas path.</string>
     <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
+    <string name="devices">Devices</string>
 </resources>

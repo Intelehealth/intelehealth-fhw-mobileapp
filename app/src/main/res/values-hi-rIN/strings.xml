@@ -979,6 +979,7 @@
     <string name="confirm_skip_complaint">क्या आप सुनिश्चित हैं कि आप शिकायत पंजीकरण छोड़ना चाहते हैं? \n\nनोट:- यह क्रिया पूर्ववत नहीं की जा सकती है।</string>
     <string name="leak_and_check">There is a leak. Please check the gas path.</string>
     <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
+    <string name="devices">Devices</string>
 
 
 </resources>
