@@ -1706,10 +1706,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextInputEditText pinEditText = view.findViewById(R.id.et_pin);
         AlertDialog alertDialog = materialAlertDialogBuilder.create();
 
-        disclaimerTextView.setText(context.getString(R.string.enter_new_pin));
+        disclaimerTextView.setText(context.getString(R.string.enter_4_digit_pin));
         saveButton.setOnClickListener(v -> {
             if (isPinFieldValid(pinEditText)) {
                 storeNewPin(pinEditText.getText().toString());
+                Toast.makeText(context, getString(R.string.pin_successfully_reset), Toast.LENGTH_LONG).show();
                 alertDialog.dismiss();
             }
         });
