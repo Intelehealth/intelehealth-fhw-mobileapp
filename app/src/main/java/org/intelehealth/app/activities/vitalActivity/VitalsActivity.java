@@ -1932,38 +1932,38 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
     }
 */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
-        bluetooth_icon = menu.findItem(R.id.bluetoothOption);
-        menu.setGroupVisible(R.id.main_menu_group, false);
-
-        final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
-        if (bleState == 104) {
-            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
-        }
-        else
-            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
-
-      //  Toast.makeText(VitalsActivity.this, String.valueOf(bleState), Toast.LENGTH_SHORT).show();
-        return super.onCreateOptionsMenu(menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bluetoothOption: {
-                // Init Remos
-              //  clickConnect();
-                return true;
-            }
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_home, menu);
+//        bluetooth_icon = menu.findItem(R.id.bluetoothOption);
+//        menu.setGroupVisible(R.id.main_menu_group, false);
+//
+//      /*  final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
+//        if (bleState == 104) {
+//            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+//        }
+//        else
+//            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+//*/
+//      //  Toast.makeText(VitalsActivity.this, String.valueOf(bleState), Toast.LENGTH_SHORT).show();
+//        return super.onCreateOptionsMenu(menu);
+//
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.bluetoothOption: {
+//                // Init Remos
+//              //  clickConnect();
+//                return true;
+//            }
+//
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 /*
     private void initRemosDevice() {

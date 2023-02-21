@@ -600,6 +600,13 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
         inflater.inflate(R.menu.menu_home, menu);
         bluetooth_icon = menu.findItem(R.id.bluetoothOption);
 
+//        if (MonitorDataTransmissionManager.getInstance().getBleState() == 104) {
+//            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+//        }
+//        else
+//            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+//        Toast.makeText(HomeActivity.this, String.valueOf(MonitorDataTransmissionManager.getInstance().getBleState()), Toast.LENGTH_SHORT).show();
+
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -616,7 +623,15 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
             case R.id.bluetoothOption: {
                 // Init Remos
+//                if (MonitorDataTransmissionManager.getInstance().getBleState() == 104) {
+//                    bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+//                }
+//                else
+//                    bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+//                Toast.makeText(HomeActivity.this, String.valueOf(MonitorDataTransmissionManager.getInstance().getBleState()), Toast.LENGTH_SHORT).show();
+
                 clickConnect();
+
                 return true;
             }
 
@@ -1428,93 +1443,8 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     }
 
     public void clickConnect() {
-
-        if (IntelehealthApplication.isUseCustomBleDevService) {
-            if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
-                    , PermissionManager.requestCode_location)) {
-                return;
-            } else {
-                if (!PermissionManager.canScanBluetoothDevice(HomeActivity.this)) {
-                    new AlertDialog.Builder(HomeActivity.this)
-                            .setTitle("hint")
-                            .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .setPositiveButton("open position switch"
-                                    , (dialog, which) -> PermissionManager.openGPS(HomeActivity.this)).create().show();
-                    return;
-                }
-            }
-            if (mHcService.isConnected) {
-                //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
-                mHcService.disConnect();
-            } else {
-                //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
-                final int bluetoothEnable = mHcService.isBluetoothEnable();
-                if (bluetoothEnable == -1) {
-                    onBLENoSupported();
-                } else if (bluetoothEnable == 0) {
-                    onOpenBLE();
-                } else {
-                    mHcService.quicklyConnect();
-                }
-            }
-        } else {
-            final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
-            Log.e("clickConnect", "bleState:" + bleState);
-            switch (bleState) {
-                case BluetoothState.BLE_CLOSED:
-                    MonitorDataTransmissionManager.getInstance().bleCheckOpen();
-                    break;
-                case BluetoothState.BLE_OPENED_AND_DISCONNECT:
-                    if (MonitorDataTransmissionManager.getInstance().isScanning()) {
-                        new AlertDialog.Builder(HomeActivity.this)
-                                .setTitle("hint")
-                                .setMessage("Scanning devices, please wait...")
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .setPositiveButton("stop scanning"
-                                        , (dialogInterface, i) ->
-                                                MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
-                    } else {
-                        if (PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
-                                , PermissionManager.requestCode_location)) {
-                            if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
-                                //  connectByDeviceList();
-                                MonitorDataTransmissionManager.getInstance().scan(true);    // direct connect.
-                               /* if (showScanList) {   // todo: handle later
-                                    connectByDeviceList();
-                                } else {
-                                    MonitorDataTransmissionManager.getInstance().scan(true);
-                                }*/
-                            } else {
-                                new AlertDialog.Builder(HomeActivity.this)
-                                        .setTitle("hint")
-                                        .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
-                                        .setNegativeButton(android.R.string.cancel, null)
-                                        .setPositiveButton("Turn on location", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                PermissionManager.openGPS(HomeActivity.this);
-                                                //  clickConnect();
-                                            }
-                                        }).create().show();
-
-                            }
-                        }
-                    }
-                    break;
-                case BluetoothState.BLE_CONNECTING_DEVICE:
-//                    Toast.makeText(mActivity, "蓝牙连接中...", Toast.LENGTH_SHORT).show();
-                    MonitorDataTransmissionManager.getInstance().disConnectBle();
-                    break;
-                case BluetoothState.BLE_CONNECTED_DEVICE:
-
-                case BluetoothState.BLE_NOTIFICATION_DISABLED:
-                case BluetoothState.BLE_NOTIFICATION_ENABLED:
-                    MonitorDataTransmissionManager.getInstance().disConnectBle();
-                    break;
-            }
-        }
-
+      //  if (mHcService.isBluetoothEnable())
+            startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
     }
 
     @Override
@@ -1591,15 +1521,99 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
     @Override
     public void onOpenBLE() {
-        startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
             //蓝牙启动结果
-            Toast.makeText(HomeActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
-            clickConnect();
+          //  Toast.makeText(HomeActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
+
+            if (IntelehealthApplication.isUseCustomBleDevService) {
+                if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                        , PermissionManager.requestCode_location)) {
+                    return;
+                } else {
+                    if (!PermissionManager.canScanBluetoothDevice(HomeActivity.this)) {
+                        new AlertDialog.Builder(HomeActivity.this)
+                                .setTitle("hint")
+                                .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton("open position switch"
+                                        , (dialog, which) -> PermissionManager.openGPS(HomeActivity.this)).create().show();
+                        return;
+                    }
+                }
+                if (mHcService.isConnected) {
+                    //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                    mHcService.disConnect();
+                } else {
+                    //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                    final int bluetoothEnable = mHcService.isBluetoothEnable();
+                    if (bluetoothEnable == -1) {
+                        onBLENoSupported();
+                    } else if (bluetoothEnable == 0) {
+                        onOpenBLE();
+                    } else {
+                        mHcService.quicklyConnect();
+                    }
+                }
+            } else {
+                final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
+                Log.e("clickConnect", "bleState:" + bleState);
+                switch (bleState) {
+                    case BluetoothState.BLE_CLOSED:
+                        MonitorDataTransmissionManager.getInstance().bleCheckOpen();
+                        break;
+                    case BluetoothState.BLE_OPENED_AND_DISCONNECT:
+                        if (MonitorDataTransmissionManager.getInstance().isScanning()) {
+                            new AlertDialog.Builder(HomeActivity.this)
+                                    .setTitle("hint")
+                                    .setMessage("Scanning devices, please wait...")
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .setPositiveButton("stop scanning"
+                                            , (dialogInterface, i) ->
+                                                    MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
+                        } else {
+                            if (PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                                    , PermissionManager.requestCode_location)) {
+                                if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
+                                    //  connectByDeviceList();
+                                    MonitorDataTransmissionManager.getInstance().scan(true);    // direct connect.
+                               /* if (showScanList) {   // todo: handle later
+                                    connectByDeviceList();
+                                } else {
+                                    MonitorDataTransmissionManager.getInstance().scan(true);
+                                }*/
+                                } else {
+                                    new AlertDialog.Builder(HomeActivity.this)
+                                            .setTitle("hint")
+                                            .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                                            .setNegativeButton(android.R.string.cancel, null)
+                                            .setPositiveButton("Turn on location", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    PermissionManager.openGPS(HomeActivity.this);
+                                                    //  clickConnect();
+                                                }
+                                            }).create().show();
+
+                                }
+                            }
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTING_DEVICE:
+//                    Toast.makeText(mActivity, "蓝牙连接中...", Toast.LENGTH_SHORT).show();
+                        MonitorDataTransmissionManager.getInstance().disConnectBle();
+                        break;
+                    case BluetoothState.BLE_CONNECTED_DEVICE:
+
+                    case BluetoothState.BLE_NOTIFICATION_DISABLED:
+                    case BluetoothState.BLE_NOTIFICATION_ENABLED:
+                        MonitorDataTransmissionManager.getInstance().disConnectBle();
+                        break;
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
