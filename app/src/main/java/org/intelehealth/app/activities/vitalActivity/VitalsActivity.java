@@ -19,6 +19,7 @@ import com.linktop.DeviceType;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.constant.BluetoothState;
 import com.linktop.constant.DeviceInfo;
+import com.linktop.constant.TestPaper;
 import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnBleConnectListener;
 import com.linktop.infs.OnBpResultListener;
@@ -26,15 +27,18 @@ import com.linktop.infs.OnBtResultListener;
 import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.infs.OnSpO2ResultListener;
+import com.linktop.infs.OnTestPaperResultListener;
 import com.linktop.whealthService.BleDevManager;
 import com.linktop.whealthService.MeasureType;
 import com.linktop.whealthService.task.BpTask;
 import com.linktop.whealthService.task.BtTask;
 import com.linktop.whealthService.task.OxTask;
+import com.linktop.whealthService.task.TestPaperTask;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.ObservableField;
 
 import android.os.Handler;
 import android.os.IBinder;
@@ -60,6 +64,7 @@ import android.widget.Toast;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.models.rhemos_device.Bg;
 import org.intelehealth.app.models.rhemos_device.Bp;
 import org.intelehealth.app.models.rhemos_device.Bt;
 import org.intelehealth.app.models.rhemos_device.SpO2;
@@ -95,7 +100,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTransmissionManager.OnServiceBindListener,
         ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener,*/
-        OnSpO2ResultListener, OnBpResultListener, OnBtResultListener {
+        OnSpO2ResultListener, OnBpResultListener, OnBtResultListener, OnTestPaperResultListener {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final int REQUEST_OPEN_BT = 0x23;
     public HcService mHcService;
@@ -105,8 +110,12 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     private SpO2 spO2_model = new SpO2();
     private Bp bp_model = new Bp();
     private Bt bt_model = new Bt();
+    private Bg bg_model = new Bg();
+    protected TestPaperTask mTestPaperTask;
+   // protected final ObservableField<String> event = new ObservableField<>("");
 
-    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn;
+
+    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn, bloodGlucose_Btn;
   //  private boolean tempc_clicked = false, tempf_clicked = false;
     MenuItem bluetooth_icon;
 
@@ -187,6 +196,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         spo2_Btn = findViewById(R.id.spo2_Btn);
         bp_Btn = findViewById(R.id.bp_Btn);
+        bloodGlucose_Btn = findViewById(R.id.bloodGlucoseRandom_Btn);
 
      //   initRemosDevice();
 
@@ -408,6 +418,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
           //  tempc_clicked = false;
            // tempf_clicked = true;
         });
+
+        bloodGlucose_Btn.setOnClickListener(v -> { clickMeasure("Blood Glucose"); });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2291,6 +2303,13 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         //BT module is not have method stop().Because it will return result in 2~4 seconds when you click to start measure.
 
+        // blood glucose
+        if (mTestPaperTask != null) {
+            mTestPaperTask.stop();
+        } else {
+            MonitorDataTransmissionManager.getInstance().stopMeasure();
+        }
+     //   event.set("");
     }
 
     public boolean startMeasure(String testType) {
@@ -2307,9 +2326,44 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             case "Temp":
                 temp_test();    // both methods same as remos allows only celsius for Fah convert it mathematically.
                 return true;
+                
+            case "Blood Glucose":
+                bloodGlucose_test();
+                return true;
 
             default:
                 return true;
+        }
+    }
+
+    protected int getTestPaperMeasureType() {
+        return MeasureType.BG;
+    }
+
+    private void bloodGlucose_test() {
+        MonitorDataTransmissionManager.getInstance().setTestPaper(
+                getTestPaperMeasureType(), TestPaper.create(
+                        TestPaper.Manufacturer.YI_CHENG, TestPaper.Code.C21));
+
+        if (mHcService != null) {
+            mTestPaperTask = mHcService.getBleDevManager().getTestPaperTask();
+            mTestPaperTask.setTestPaperResultListener(getTestPaperMeasureType(), this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnTestPaperResultListener(getTestPaperMeasureType(), this);
+        }
+
+        if (mTestPaperTask != null) {
+            if (mTestPaperTask.isModuleExist()) {
+                mTestPaperTask.start(getTestPaperMeasureType());
+            } else {
+                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (MonitorDataTransmissionManager.getInstance().isTestPaperModuleExist()) {
+                MonitorDataTransmissionManager.getInstance().startMeasure(getTestPaperMeasureType());
+            } else {
+                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -2471,5 +2525,54 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
 
       //  resetState();
+    }
+
+    @Override
+    public void onTestPaperEvent(int eventId, Object obj) {
+        switch (eventId) {
+            case TestPaperTask.EVENT_PAPER_IN:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_inserted, Toast.LENGTH_SHORT).show();
+                break;
+            case TestPaperTask.EVENT_PAPER_READ:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_ready, Toast.LENGTH_SHORT).show();
+                break;
+            case TestPaperTask.EVENT_BLOOD_SAMPLE_DETECTING:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_value_calculating, Toast.LENGTH_SHORT).show();
+                break;
+            case TestPaperTask.EVENT_TEST_RESULT:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_result, Toast.LENGTH_SHORT).show();
+                bg_model.setValue((double) obj);
+             //   resetState();
+                break;
+            default:
+                Log.e("onTestPaperEvent", "eventId:" + eventId + ", obj:" + obj);
+                break;
+        }
+    }
+
+    @Override
+    public void onTestPaperException(int exception) {
+        switch (exception) {
+            case TestPaperTask.EXCEPTION_PAPER_OUT:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_not_inserted, Toast.LENGTH_SHORT).show();
+                break;
+            case TestPaperTask.EXCEPTION_PAPER_USED:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_used, Toast.LENGTH_SHORT).show();
+                break;
+            case TestPaperTask.EXCEPTION_TESTING_PAPER_OUT:
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_out, Toast.LENGTH_SHORT).show();
+                break;
+//            case BgTask.EXCEPTION_TIMEOUT_FOR_CHECK_BLOOD_SAMPLE:
+//                toast(R.string.collecting_sample_timeout);
+//                break;
+            case TestPaperTask.EXCEPTION_TIMEOUT_FOR_DETECT_BLOOD_SAMPLE:
+                Toast.makeText(VitalsActivity.this, R.string.calculate_bg_value_timeout, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Log.e("onTestPaperException", "exception:" + exception);
+                break;
+        }
+      //  event.set("");
+       // resetState();
     }
 }

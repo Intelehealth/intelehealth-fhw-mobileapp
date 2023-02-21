@@ -952,4 +952,12 @@
     <string name="leak_and_check">There is a leak. Please check the gas path.</string>
     <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
     <string name="devices">Devices</string>
+    <string name="test_paper_inserted">Test strip inserted.</string>
+    <string name="test_paper_ready">" Please drop the blood sample into the test paper."</string>
+    <string name="test_paper_value_calculating">A blood sample has been collected and the value is being calculated. Please wait.</string>
+    <string name="test_paper_result">Result :</string>
+    <string name="test_paper_is_not_inserted">The test paper is not inserted.</string>
+    <string name="test_paper_is_used">The test paper has been used, please replace it with a new one.</string>
+    <string name="test_paper_out">" The test paper was pulled out during the test."</string>
+    <string name="calculate_bg_value_timeout">" Calculate sample value timeout"</string>
 </resources>
