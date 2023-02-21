@@ -645,7 +645,7 @@ public class PatientsDAO {
     }
 
     public String fetchPatientPin(String patientID) {
-        String query = "SELECT value FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid='30faac87-ec37-416b-9103-6ac157b73b81' ORDER BY modified_date";
+        String query = "SELECT value FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid='30faac87-ec37-416b-9103-6ac157b73b81' ORDER BY modified_date DESC LIMIT 1";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor pinCursor = db.rawQuery(query, new String[]{patientID});
         String patientPin = "";
