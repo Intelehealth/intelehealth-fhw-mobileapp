@@ -2682,7 +2682,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         // show dialog
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         View layoutInflater = LayoutInflater.from(VitalsActivity.this)
-                .inflate(R.layout.welcome_slide1, null);
+                .inflate(R.layout.device_test_dialog, null);
         imageView = layoutInflater.findViewById(R.id.instructionImage);
         imageView.setImageDrawable(getResources().getDrawable(drawable));
         textView = layoutInflater.findViewById(R.id.tv_intro_one);
