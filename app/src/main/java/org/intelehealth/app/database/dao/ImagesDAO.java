@@ -103,7 +103,7 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            localdb.delete("tbl_obs", "encounteruuid=? AND conceptuuid=? AND voided=?", new String[]{encounterUuid, conceptUuid});
+            localdb.delete("tbl_obs", "encounteruuid=? AND conceptuuid=?", new String[]{encounterUuid, conceptUuid});
             localdb.setTransactionSuccessful();
         } catch (SQLException sql) {
             FirebaseCrashlytics.getInstance().recordException(sql);
