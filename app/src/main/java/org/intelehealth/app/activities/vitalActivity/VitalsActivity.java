@@ -115,8 +115,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
    // protected final ObservableField<String> event = new ObservableField<>("");
 
 
-    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn, bloodGlucose_Btn;
-  //  private boolean tempc_clicked = false, tempf_clicked = false;
+    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn, bloodGlucose_Btn, bg_nonfasting_btn, bg_fasting_btn;
+    private boolean bg_fasting_clicked = false, bg_nonfasting_clicked = false;
     MenuItem bluetooth_icon;
 
     SessionManager sessionManager;
@@ -197,6 +197,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         spo2_Btn = findViewById(R.id.spo2_Btn);
         bp_Btn = findViewById(R.id.bp_Btn);
         bloodGlucose_Btn = findViewById(R.id.bloodGlucoseRandom_Btn);
+        bg_nonfasting_btn = findViewById(R.id.bloodGlucose_Btn);
+        bg_fasting_btn = findViewById(R.id.bloodGlucose_Btn_fasting);
 
      //   initRemosDevice();
 
@@ -420,6 +422,16 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         });
 
         bloodGlucose_Btn.setOnClickListener(v -> { clickMeasure("Blood Glucose"); });
+        bg_nonfasting_btn.setOnClickListener(v -> {
+            bg_nonfasting_clicked = true;
+            bg_fasting_clicked = false;
+            clickMeasure("Blood Glucose");
+
+        });
+        bg_fasting_btn.setOnClickListener(v -> { clickMeasure("Blood Glucose");
+            bg_nonfasting_clicked = false;
+            bg_fasting_clicked = true;
+        });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2542,6 +2554,12 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             case TestPaperTask.EVENT_TEST_RESULT:
                 Toast.makeText(VitalsActivity.this, R.string.test_paper_result, Toast.LENGTH_SHORT).show();
                 bg_model.setValue((double) obj);
+
+                if (bg_fasting_clicked)
+                    bloodGlucose_editText_fasting.setText(String.valueOf(bg_model.getValue()));
+                else if (bg_nonfasting_clicked)
+                    bloodGlucose_editText.setText(String.valueOf(bg_model.getValue()));
+                
              //   resetState();
                 break;
             default:

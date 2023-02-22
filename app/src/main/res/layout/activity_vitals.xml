@@ -631,7 +631,7 @@
                             android:layout_marginVertical="5dp"
                             android:orientation="horizontal"
                             tools:visibility="visible"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/bloodGlucose"
@@ -664,7 +664,6 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
-                                android:visibility="gone"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
@@ -706,7 +705,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -794,7 +793,7 @@
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 tools:visibility="visible"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
