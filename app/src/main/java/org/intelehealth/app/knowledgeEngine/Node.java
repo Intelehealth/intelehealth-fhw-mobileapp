@@ -1831,7 +1831,10 @@ public class Node implements Serializable {
                                     else
                                         stringsList.add(mOptions.get(i).findDisplay());
                                 } else {
-                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    if (language.equalsIgnoreCase("ar"))
+                                        stringsList.add(mOptions.get(i).findDisplay("ar"));
+                                    else
+                                        stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
                             } else {
