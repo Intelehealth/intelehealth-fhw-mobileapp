@@ -5,15 +5,16 @@
 
         <item
             android:id="@+id/bluetooth"
+            android:icon="@drawable/bluetooth"
             android:title="Bluetooth"
             android:visible="false"
-            android:icon="@drawable/bluetooth"
-            app:showAsAction="always"/>
+            app:showAsAction="always" />
 
         <item
             android:id="@+id/draftSurvey"
             android:orderInCategory="100"
-            android:title="@string/draft_survey_title" />
+            android:title="@string/draft_survey_title"
+            android:visible="false" />
 
         <item
             android:id="@+id/updateProtocolsOption"
