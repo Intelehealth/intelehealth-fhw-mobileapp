@@ -50,6 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -57,6 +58,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -150,6 +152,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     NetworkUtils networkUtils;
     String currentFragment;
     private AlertDialog resetDialog;
+
+    private static final String TAG_HOME = "TAG_HOME";
+    private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
+    private static final String TAG_HELP = "TAG_HELP";
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
@@ -262,7 +268,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         catchFCMMessageData();
 
 
-        loadFragment(new HomeFragment_New());
+        loadFragment(new HomeFragment_New(), TAG_HOME);
         // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         // tx.replace(R.id.fragment_container, new HomeFragment_New());
         // tx.commit();
@@ -608,16 +614,36 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         //MyAchievementsFragmentNew
 
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        if (backStackEntryCount == 1) {
+        Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
+        String topFragmentTag = getTopFragmentTag();
+        if (topFragmentTag.equalsIgnoreCase(TAG_HOME)) {
             // finish();
             wantToExitApp(this, "Exit App", getResources().getString(R.string.sure_to_exit),
                     getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
         } else {
-            super.onBackPressed();
-
-
+            //super.onBackPressed();
+            getSupportFragmentManager().popBackStackImmediate(topFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            loadLastSelectedFragment();
         }
+    }
+
+    private Fragment getTopFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return getSupportFragmentManager().findFragmentByTag(fragmentTag);
+    }
+
+    private String getTopFragmentTag() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return "";
+        }
+        String topFragment = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        Log.v(TAG, topFragment);
+        return topFragment;
+
     }
 
     public void wantToExitApp(Context context, String title, String subTitle,
@@ -714,29 +740,36 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
-    private void loadFragment(Fragment fragment) {
+    private String mLastTag = "";
+
+    private void loadFragment(Fragment fragment, String tag) {
+
         if (fragment != null) {
-            String tag = fragment.getClass().getSimpleName();
+            if (mLastTag.equalsIgnoreCase(tag)) {
+                getSupportFragmentManager().popBackStackImmediate(tag, 0);
+            }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment, tag);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack(tag);
             transaction.commit();
+            mLastTag = tag;
+
         }
     }
 
-    private void loadFragmentForBottomNav(Fragment fragment) {
+    /*private void loadFragmentForBottomNav(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
-        // transaction.addToBackStack(null);
-        // transaction.commit();
-        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(tag, 0);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        *//*boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(tag, 0);
 
         if (!fragmentPopped) {
-            transaction.addToBackStack(tag);
+            transaction.addToBackStack(null);
             transaction.commit();
-        }
-    }
+        }*//*
+    }*/
 
     public void showLoggingInDialog() {
 
@@ -776,11 +809,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
-
+        String tag = "";
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                 fragment = new MyAchievementsFragment();
+                tag = TAG_ACHIEVEMENT;
                 break;
             case R.id.menu_video_lib:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
@@ -809,18 +843,21 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            loadFragment(fragment);
+            loadFragment(fragment, tag);
             menuItem.setChecked(true);
-            setTitle(menuItem.getTitle());
+            // setTitle(menuItem.getTitle());
         }
 
     }
 
     @Override
     protected void onResume() {
+        if (mIsFirstTimeSyncDone && mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+        }
         Log.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
-        toolbarHome.setVisibility(View.VISIBLE);
+        //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
         tvAppLastSync.setText(lastSync);
 
@@ -925,7 +962,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
-
+    private boolean mIsFirstTimeSyncDone = false;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -980,6 +1017,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     };
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        mIsFirstTimeSyncDone = true;
         saveToken();
         requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
@@ -1070,6 +1108,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
+                if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+                    mSyncProgressDialog.dismiss();
+                }
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + this.getPackageName()));
                 startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
@@ -1097,19 +1138,19 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                             Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                             fragment = new HomeFragment_New();
-                            loadFragment(fragment);
+                            loadFragment(fragment, TAG_HOME);
                             return true;
                         case R.id.bottom_nav_achievements:
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                             fragment = new MyAchievementsFragment();
-                            loadFragmentForBottomNav(fragment);
-
+                            //loadFragmentForBottomNav(fragment);
+                            loadFragment(fragment, TAG_ACHIEVEMENT);
                             return true;
                         case R.id.bottom_nav_help:
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
                             fragment = new HelpFragment_New();
-                            loadFragmentForBottomNav(fragment);
-
+                            //loadFragmentForBottomNav(fragment);
+                            loadFragment(fragment, TAG_HELP);
                             return true;
                         case R.id.bottom_nav_add_patient:
 
@@ -1308,22 +1349,41 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     private void loadLastSelectedFragment() {
         Fragment fragment = null;
-        if (currentFragment != null && !currentFragment.isEmpty()) {
-            if (currentFragment.contains("home")) {
-                fragment = new HomeFragment_New();
-                bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
-            } else if (currentFragment.contains("help")) {
-                fragment = new HelpFragment_New();
-                bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
-
-            } else if (currentFragment.contains("achievements")) {
-                fragment = new MyAchievementsFragment();
-                bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
-            }
+        String tag = getTopFragmentTag();
+        //if (currentFragment != null && !currentFragment.isEmpty()) {
+        if (tag.equalsIgnoreCase(TAG_HOME)) {
+            fragment = new HomeFragment_New();
+            bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        } else if (tag.equalsIgnoreCase(TAG_HELP)) {
+            fragment = new HelpFragment_New();
+            bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+            tvTitleHomeScreenCommon.setText(getString(R.string.help));
+        } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
+            fragment = new MyAchievementsFragment();
+            bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
+            tag = TAG_ACHIEVEMENT;
         }
-        loadFragment(fragment);
+        // }
+        loadFragment(fragment, tag);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+                mSyncProgressDialog.dismiss();
+            }
+            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setProgress(i);
+            mSyncProgressDialog.show();
+
+            syncUtils.initialSync("home");
+        }
     }
 }
 

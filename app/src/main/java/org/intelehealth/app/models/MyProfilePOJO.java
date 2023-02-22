@@ -160,7 +160,7 @@ public class MyProfilePOJO {
         final boolean result = false;
         if (!firstName.equalsIgnoreCase(newFirstName)) return true;
         if (!lastName.equalsIgnoreCase(newLastName)) return true;
-        if (!middleName.equalsIgnoreCase(newMiddleName)) return true;
+        if (middleName==null || !middleName.equalsIgnoreCase(newMiddleName)) return true;
         if (!gender.equalsIgnoreCase(newGender)) return true;
         if (!dateOfBirth.equalsIgnoreCase(newDateOfBirth)) return true;
         if (!countryCode.equalsIgnoreCase(newCountryCode)) return true;

@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/achievements_badge_margin_start"
         android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
-        android:layout_marginEnd="@dimen/achievements_badge_margin_start">
+        android:layout_marginEnd="@dimen/achievements_badge_margin_start"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_achievements_title"

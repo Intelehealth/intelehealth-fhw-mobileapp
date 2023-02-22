@@ -1,8 +1,5 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,28 +9,23 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
@@ -46,12 +38,9 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class ForgotPasswordActivity_New extends AppCompatActivity {
-    private static final String TAG = ActivePatientActivity.class.getSimpleName();
+    private static final String TAG = ForgotPasswordActivity_New.class.getSimpleName();
     TextInputEditText etUsername, etMobileNo;
     CustomProgressDialog cpd;
     SessionManager sessionManager = null;
@@ -80,9 +69,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
     }
 
+    private Button buttonContinue;
+
     private void clickListeners() {
         Button buttonUsername = findViewById(R.id.button_username);
-        Button buttonContinue = findViewById(R.id.button_continue);
+        buttonContinue = findViewById(R.id.button_continue);
         Button buttonMobileNumber = findViewById(R.id.button_mobile_number);
         RelativeLayout layoutMobileNo = findViewById(R.id.layout_parent_mobile_no);
         LinearLayout layoutUsername = findViewById(R.id.layout_parent_username);
@@ -124,7 +115,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         });
 
         buttonContinue.setOnClickListener(v -> {
-            if (areInputFieldsValid(etUsername.getText().toString().trim(), etMobileNo.getText().toString())) {
+
+            if (areInputFieldsValid(etUsername.getText().toString().trim(), etMobileNo.getText().toString().trim())) {
                 apiCallForRequestOTP(ForgotPasswordActivity_New.this, etUsername.getText().toString().trim(),
                         etMobileNo.getText().toString().trim());
             }
@@ -147,6 +139,33 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
 
 
+        etUsername.addTextChangedListener(new MyWatcher(etUsername));
+        etMobileNo.addTextChangedListener(new MyWatcher(etMobileNo));
+    }
+
+    private class MyWatcher implements TextWatcher {
+        EditText editText;
+
+        MyWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            buttonContinue.setEnabled(val.length() >= 5);
+
+        }
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
@@ -293,9 +312,19 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             return result;
 
         } else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {
+            String code = countryCodePicker.getSelectedCountryCode();
+            mobile = mobile.replace(" ","");
+            Log.v(TAG, code);
+            Log.v(TAG, mobile);
             if (TextUtils.isEmpty(mobile)) {
                 result = false;
                 tvMobileError.setVisibility(View.VISIBLE);
+                etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+            } else if (code.equalsIgnoreCase("91") && mobile.trim().length() != 10) {
+                result = false;
+                tvMobileError.setVisibility(View.VISIBLE);
+                tvMobileError.setText("Please 10 digits mobile number!");
                 etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
             } else {

@@ -48,8 +48,8 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     }
 
     private void initUI() {
-        View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
-        layoutToolbar.setVisibility(View.GONE);
+        //View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        //layoutToolbar.setVisibility(View.GONE);
         TextView tvTitle = view.findViewById(R.id.tv_achievements_title);
         tvTitle.setText(getResources().getString(R.string.my_achievements));
          ivInternet = view.findViewById(R.id.iv_achievements_internet);

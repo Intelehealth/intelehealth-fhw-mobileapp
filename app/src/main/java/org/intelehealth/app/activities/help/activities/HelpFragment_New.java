@@ -49,28 +49,28 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener {
     }
 
     private void initUI() {
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
-        TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
-        ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
-        ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
-        ivBackArrow.setOnClickListener(new View.OnClickListener() {
+        //View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
+        //TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
+        //TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
+        //ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
+        //ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+       // ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
+        /*ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
                 startActivity(intent);
-            /*    FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();*/
+            *//*    FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
+                fm.popBackStack();*//*
             }
-        });
-        tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        tvLastSyncApp.setVisibility(View.GONE);
-        ivNotification.setVisibility(View.GONE);
+        });*/
+        //tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        //tvLastSyncApp.setVisibility(View.GONE);
+       // ivNotification.setVisibility(View.GONE);
       /*  RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         ivIsInternet.setLayoutParams(params);*/
-        tvLocation.setText(getResources().getString(R.string.help));
+       // tvLocation.setText(getResources().getString(R.string.help));
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
         bottomNav.setVisibility(View.VISIBLE);
