@@ -97,6 +97,24 @@ public class ImagesDAO {
 
     }
 
+    public boolean deleteImagesFromLocal(String encounterUuid, String conceptUuid) throws DAOException {
+        boolean isDeleted = false;
+        Logger.logD(TAG, "Deleted image uuid from local" + encounterUuid);
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            localdb.delete("tbl_obs", "encounteruuid=? AND conceptuuid=? AND voided=?", new String[]{encounterUuid, conceptUuid});
+            localdb.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            localdb.endTransaction();
+        }
+        return isDeleted;
+
+    }
+
     public boolean deleteImageFromDatabase(String obsUuid) throws DAOException {
         boolean isDeleted = false;
         int updateDeltedRows = 0;
@@ -404,7 +422,6 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
-
 
 
 }

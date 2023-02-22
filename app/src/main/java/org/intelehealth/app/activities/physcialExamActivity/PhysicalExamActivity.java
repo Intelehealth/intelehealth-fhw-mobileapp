@@ -394,6 +394,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
+    private void checkAndDeletePreviousImages() {
+    }
+
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
         Node question = physicalExamMap.getExamNode(physExamPos).getOption(childPos);
@@ -404,6 +407,27 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         } else {
             physicalExamMap.getExamNode(physExamPos).setUnselected();
         }
+
+        // Changes added by Arpan Sircar - these changes are only for this emergency release keeping in mind the new physical exam mindmap - please remove them if it is not needed in the future
+        // If the user selects no, then all other options should be unselected. If the user selects any of the other options, then the no button should be unselected.
+        if (childPos == 0) {
+            Node nodeOne = physicalExamMap.getExamNode(physExamPos).getOption(1);
+            Node nodeTwo = physicalExamMap.getExamNode(physExamPos).getOption(2);
+            Node nodeThree = physicalExamMap.getExamNode(physExamPos).getOption(3);
+
+            if (nodeOne.isSelected()) nodeOne.setSelected(false);
+            if (nodeTwo.isSelected()) nodeTwo.setSelected(false);
+            if (nodeThree.isSelected()) nodeThree.setSelected(false);
+
+            deletePreviouslyClickedImages();
+        }
+
+        if (childPos == 1 || childPos == 2 || childPos == 3) {
+            Node nodeZero = physicalExamMap.getExamNode(physExamPos).getOption(0);
+            if (nodeZero.isSelected()) nodeZero.setSelected(false);
+        }
+
+
         adapter.notifyDataSetChanged();
 
 
@@ -428,6 +452,25 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
+    private void deletePreviouslyClickedImages() {
+        File obsImgDir = new File(AppConstants.IMAGE_PATH);
+        if (obsImgDir.exists()) {
+            ImagesDAO imagesDAO = new ImagesDAO();
+            try {
+                List<String> imageList = imagesDAO.getImages(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+                for (String obsImageUuid : imageList) {
+                    String imageName = obsImageUuid + ".jpg";
+                    new File(obsImgDir, imageName).deleteOnExit();
+                    imagesDAO.deleteImagesFromLocal(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+                }
+            } catch (DAOException e1) {
+                FirebaseCrashlytics.getInstance().recordException(e1);
+            }
+        }
+
+        physicalExamMap.setImagePathList(new ArrayList<>());
+        physicalExamMap.setImagePath("");
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
