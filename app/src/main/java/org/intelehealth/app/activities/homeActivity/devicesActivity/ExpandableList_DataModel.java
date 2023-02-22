@@ -16,9 +16,9 @@ public class ExpandableList_DataModel {
         HashMap<String, List<String>> hashMap = new HashMap<String, List<String>>();
 
         List<String> healthcubeDevice = new ArrayList<String>();
-        healthcubeDevice.add("Rhemos Device Info");
-        healthcubeDevice.add("Blood Glucose Calibration");
-        hashMap.put("Rhemos", healthcubeDevice);
+        healthcubeDevice.add(context.getString(R.string.rhemos_device_info));
+        healthcubeDevice.add(context.getString(R.string.rhemos_bloog_glucose_calibration));
+        hashMap.put(context.getString(R.string.rhemos_device), healthcubeDevice);
 
 //        List<String> thermalPrinterDevice = new ArrayList<String>();
 //        thermalPrinterDevice.add(context.getString(R.string.thermalprinter_device_info));

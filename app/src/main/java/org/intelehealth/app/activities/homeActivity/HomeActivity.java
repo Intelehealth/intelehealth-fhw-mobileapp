@@ -75,6 +75,7 @@ import com.linktop.DeviceType;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.constant.BluetoothState;
 import com.linktop.constant.DeviceInfo;
+import com.linktop.constant.WareType;
 import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnBleConnectListener;
 import com.linktop.infs.OnDeviceInfoListener;
@@ -100,6 +101,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
+import org.intelehealth.app.models.rhemos_device.DeviceInfoModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.HcService;
@@ -157,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     private MaterialAlertDialogBuilder dialog;
     private AlertDialog alertDialog;
     private DataBindingAdapter adapter;
-
+    private DeviceInfoModel infoModel = new DeviceInfoModel();
 
 
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -618,12 +620,18 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
             case R.id.bluetoothOption: {
                 clickConnect();
-
                 return true;
             }
 
             case R.id.devicesOption: {
                 Intent intent = new Intent(this, DevicesActivity.class);
+                intent.putExtra("device_info", infoModel);
+               /* intent.putExtra("power_level", infoModel.getPower_level());
+                intent.putExtra("device_id", infoModel.getDevice_id());
+                intent.putExtra("device_key", infoModel.getDevice_key());
+                intent.putExtra("software_version", infoModel.getSoftware_version());
+                intent.putExtra("hardware_version", infoModel.getHardware_version());
+                intent.putExtra("firmware_version", infoModel.getFirmware_version());*/
                 startActivity(intent);
                 return true;
             }
@@ -1495,17 +1503,17 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
     @Override
     public void onBatteryCharging() {
-
+        infoModel.setPower_level("Charging...");
     }
 
     @Override
-    public void onBatteryQuery(int i) {
-
+    public void onBatteryQuery(int batteryValue) {
+        infoModel.setPower_level(batteryValue + "%");
     }
 
     @Override
     public void onBatteryFull() {
-
+        infoModel.setPower_level("100%");
     }
 
     @Override
@@ -1728,17 +1736,53 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     }
 
     @Override
-    public void onDeviceInfo(DeviceInfo deviceInfo) {
+    public void onDeviceInfo(DeviceInfo device) {
+        Log.e("onDeviceInfo", device.toString());
+        String deviceId = device.getDeviceId();
+        String deviceKey = device.getDeviceKey();
 
+        deviceId = deviceId.toLowerCase();
+        deviceKey = deviceKey.toLowerCase();
+
+        infoModel.setDevice_id(deviceId);
+        infoModel.setDevice_key(deviceKey);
+
+        if (mHcService != null) {
+            mHcService.dataQuery(HcService.DATA_QUERY_BATTERY_INFO);
+        }
     }
 
     @Override
     public void onReadDeviceInfoFailed() {
-
+        infoModel.setDevice_id("Unable to read the device ID.");
+        infoModel.setDevice_key("Unable to read the device key.");
+        if (mHcService != null) {
+            mHcService.dataQuery(HcService.DATA_QUERY_BATTERY_INFO);
+        }
     }
 
     @Override
-    public void onDeviceVersion(int i, String s) {
+    public void onDeviceVersion(@WareType int wareType, String version) {
+        switch (wareType) {
+            case WareType.VER_SOFTWARE:
+                infoModel.setSoftware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_HARDWARE_VER);
+                }
+                break;
+            case WareType.VER_HARDWARE:
+                infoModel.setHardware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_FIRMWARE_VER);
+                }
+                break;
+            case WareType.VER_FIRMWARE:
+                infoModel.setFirmware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_CONFIRM_ECG_MODULE_EXIST);
+                }
+                break;
+        }
 
     }
 

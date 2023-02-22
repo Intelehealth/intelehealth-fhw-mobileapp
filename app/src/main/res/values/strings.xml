@@ -960,4 +960,7 @@
     <string name="test_paper_is_used">The test paper has been used, please replace it with a new one.</string>
     <string name="test_paper_out">" The test paper was pulled out during the test."</string>
     <string name="calculate_bg_value_timeout">" Calculate sample value timeout"</string>
+    <string name="rhemos_device">Rhemos</string>
+    <string name="rhemos_device_info">Rhemos Device Info</string>
+    <string name="rhemos_bloog_glucose_calibration">Blood Glucose Calibration</string>
 </resources>

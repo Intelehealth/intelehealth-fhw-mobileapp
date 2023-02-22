@@ -2559,7 +2559,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     bloodGlucose_editText_fasting.setText(String.valueOf(bg_model.getValue()));
                 else if (bg_nonfasting_clicked)
                     bloodGlucose_editText.setText(String.valueOf(bg_model.getValue()));
-                
+
              //   resetState();
                 break;
             default:
