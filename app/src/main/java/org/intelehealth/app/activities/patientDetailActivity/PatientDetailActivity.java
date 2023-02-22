@@ -114,6 +114,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getValueForStateCity_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_state;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
@@ -815,8 +816,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 String village = switch_en_to_ar_village_edit(city_village);
+                String state = switch_en_to_ar_state(patient_new.getState_province());
 
-                String addrFinalLine = String.format("%s, %s, %s", village, "ٱلسُّوَيْدَاء",   // State
+                String addrFinalLine = String.format("%s, %s, %s", village, state,   // State
                         "سوريا");      // country
                 addrFinalView.setText(addrFinalLine);
 

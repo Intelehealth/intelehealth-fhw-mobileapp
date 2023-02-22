@@ -3566,14 +3566,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 countryText.setError(null);
             }
 
-            if (mState.getSelectedItemPosition() == 0) {
-                stateText.setError(getString(R.string.error_field_required));
-                focusView = stateText;
-                cancel = true;
-                return;
-            } else {
-                stateText.setError(null);
-            }
+//            if (mState.getSelectedItemPosition() == 0) {
+//                stateText.setError(getString(R.string.error_field_required));
+//                focusView = stateText;
+//                cancel = true;
+//                return;
+//            } else {
+//                stateText.setError(null);
+//            }
 
             if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
                 mAddress1.setError(getString(R.string.error_field_required));
