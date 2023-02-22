@@ -991,6 +991,12 @@
     <string name="rhemos_device">Rhemos</string>
     <string name="rhemos_device_info">Rhemos Device Info</string>
     <string name="rhemos_bloog_glucose_calibration">Blood Glucose Calibration</string>
+    <string name="test_paper_measurement_steps_dsc">Please follow the steps below to make a measurement!</string>
+    <string name="blood_glucose_measurement_step1">Step1. Please select the manufacturer of the test paper.</string>
+    <string name="blood_glucose_measurement_step2">" Step2. Please select the check code of the test paper."</string>
+    <string name="manufacturer_iquego">Iquego</string>
+    <string name="manufacturer_bene_check">Bene Check</string>
+    <string name="manufacturer_yi_cheng">Yi Cheng</string>
 
 
 </resources>

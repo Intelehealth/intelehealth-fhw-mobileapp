@@ -2353,9 +2353,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     }
 
     private void bloodGlucose_test() {
+        Log.v("BG_Calibrate", "BG_Calibrate: " + "Vitals: " + sessionManager.getTestManufacturer() + " : " + sessionManager.getTestPaperCode());
         MonitorDataTransmissionManager.getInstance().setTestPaper(
                 getTestPaperMeasureType(), TestPaper.create(
-                        TestPaper.Manufacturer.YI_CHENG, TestPaper.Code.C21));
+                        sessionManager.getTestManufacturer(), sessionManager.getTestPaperCode()));
 
         if (mHcService != null) {
             mTestPaperTask = mHcService.getBleDevManager().getTestPaperTask();
