@@ -963,6 +963,12 @@
     <string name="manufacturer_iquego">Iquego</string>
     <string name="manufacturer_bene_check">Bene Check</string>
     <string name="manufacturer_yi_cheng">Yi Cheng</string>
+    <string name="STOP">STOP</string>
+    <string name="test_stopped">"Test Stopped "</string>
+    <string name="test_started">Test Started...</string>
+    <string name="no_finger_detected">No finger was detected on the SpO₂ sensor.</string>
+    <string name="blood_result_error">Blood result error. Try again!</string>
+    <string name="test_successful">Test Successful</string>
 
 
 </resources>

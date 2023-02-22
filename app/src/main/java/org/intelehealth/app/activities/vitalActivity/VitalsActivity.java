@@ -10,9 +10,11 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.linktop.DeviceType;
@@ -37,6 +39,7 @@ import com.linktop.whealthService.task.TestPaperTask;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ObservableField;
 
@@ -50,13 +53,16 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,6 +118,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     private Bt bt_model = new Bt();
     private Bg bg_model = new Bg();
     protected TestPaperTask mTestPaperTask;
+    ImageView imageView;
+    TextView textView;
+    private AlertDialog alertDialog;
    // protected final ObservableField<String> event = new ObservableField<>("");
 
 
@@ -408,27 +417,46 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             }
         });
 
-        spo2_Btn.setOnClickListener(v -> { clickMeasure("SPO2"); });
-        bp_Btn.setOnClickListener(v -> { clickMeasure("BP"); });
+        spo2_Btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.pulse_oximeter);
+            clickMeasure("SPO2");
+        });
+
+        bp_Btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
+            clickMeasure("BP");
+        });
+
         tempC_Btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
             clickMeasure("Temp");
            // tempc_clicked = true;
           //  tempf_clicked = false;
         });
+
         tempF_Btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
             clickMeasure("Temp");
           //  tempc_clicked = false;
            // tempf_clicked = true;
         });
 
-        bloodGlucose_Btn.setOnClickListener(v -> { clickMeasure("Blood Glucose"); });
+        bloodGlucose_Btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
+            clickMeasure("Blood Glucose");
+        });
+
         bg_nonfasting_btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
             bg_nonfasting_clicked = true;
             bg_fasting_clicked = false;
             clickMeasure("Blood Glucose");
 
         });
-        bg_fasting_btn.setOnClickListener(v -> { clickMeasure("Blood Glucose");
+
+        bg_fasting_btn.setOnClickListener(v -> {
+            showTestDialog(R.drawable.blood_pressure);
+            clickMeasure("Blood Glucose");
             bg_nonfasting_clicked = false;
             bg_fasting_clicked = true;
         });
@@ -2245,7 +2273,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 return;
             }
             if (mHcService.getBleDevManager().isMeasuring()) {
-                stopMeasure(testType);
+              //  stopMeasure(testType);
+                stopMeasure();
                 //设置ViewPager可滑动
              //   btnMeasure.setText(R.string.start_measuring);
             } else {
@@ -2278,7 +2307,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             if (manager.isMeasuring()) {
 //            if (mPosition != 2) {//体温没有停止方法，当点击停止的是非体温时才执行停止
                 //停止测量
-                stopMeasure(testType);
+              //  stopMeasure(testType);
+                stopMeasure();
                 Toast.makeText(VitalsActivity.this, "Start measuring", Toast.LENGTH_SHORT).show();
                 //设置ViewPager可滑动
               //  btnMeasure.setText(getString(R.string.start_measuring));
@@ -2293,14 +2323,17 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                      */
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
-                      Toast.makeText(VitalsActivity.this, "Measuring...", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(VitalsActivity.this, "Test Started...", Toast.LENGTH_SHORT).show();
+                    if (alertDialog != null) {
+                        textView.setText(R.string.test_started);
+                    }
                 }
             }
 
         }
     }
 
-    public void stopMeasure(String testType) {
+    public void stopMeasure() {
         if (mOxTask != null) {
             mOxTask.stop();
         } else {
@@ -2455,7 +2488,12 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             public void run() {
                 mSpo2.setText(String.valueOf(spO2_model.getValue()));
                 mPulse.setText(String.valueOf(spO2_model.getHr()));
+
+                if (alertDialog != null) {
+                    alertDialog.cancel();
+                }
             }
+
         });
 
     }
@@ -2463,8 +2501,12 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     @Override
     public void onFingerDetection(int state) {
         if (state == FINGER_NO_TOUCH) {
-            stopMeasure("SPO2");
+         //   stopMeasure("SPO2");
+            stopMeasure();
             Toast.makeText(VitalsActivity.this, "No finger was detected on the SpO₂ sensor.", Toast.LENGTH_SHORT).show();
+            if (alertDialog != null) {
+                textView.setText(R.string.no_finger_detected);
+            }
         }
     }
 
@@ -2488,6 +2530,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     @Override
     public void onBpResultError() {
         Toast.makeText(VitalsActivity.this, "Blood result error. Try again!", Toast.LENGTH_SHORT).show();
+        if (alertDialog != null) {
+            textView.setText(R.string.blood_result_error);
+        }
     }
 
     @Override
@@ -2507,8 +2552,13 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                         default:
                             break;
                     }
-                    if (textId != 0)
+                    if (textId != 0) {
                         Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_SHORT).show();
+                        if (alertDialog != null) {
+                            textView.setText(getString(textId));
+                        }
+                    }
+
                 });
     }
 
@@ -2533,6 +2583,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 } else {
                     mTemperature.setText(value);
                 }
+
+                if (alertDialog != null) {
+                    alertDialog.cancel();
+                }
             }
         });
 
@@ -2545,21 +2599,34 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         switch (eventId) {
             case TestPaperTask.EVENT_PAPER_IN:
                 Toast.makeText(VitalsActivity.this, R.string.test_paper_inserted, Toast.LENGTH_SHORT).show();
+                if (alertDialog != null) {
+                    textView.setText(getString(R.string.test_paper_inserted));
+                }
                 break;
             case TestPaperTask.EVENT_PAPER_READ:
                 Toast.makeText(VitalsActivity.this, R.string.test_paper_ready, Toast.LENGTH_SHORT).show();
+                if (alertDialog != null) {
+                    textView.setText(getString(R.string.test_paper_ready));
+                }
                 break;
             case TestPaperTask.EVENT_BLOOD_SAMPLE_DETECTING:
                 Toast.makeText(VitalsActivity.this, R.string.test_paper_value_calculating, Toast.LENGTH_SHORT).show();
+                if (alertDialog != null) {
+                    textView.setText(getString(R.string.test_paper_value_calculating));
+                }
                 break;
             case TestPaperTask.EVENT_TEST_RESULT:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.test_successful, Toast.LENGTH_SHORT).show();
                 bg_model.setValue((double) obj);
 
                 if (bg_fasting_clicked)
                     bloodGlucose_editText_fasting.setText(String.valueOf(bg_model.getValue()));
                 else if (bg_nonfasting_clicked)
                     bloodGlucose_editText.setText(String.valueOf(bg_model.getValue()));
+
+                if (alertDialog != null) {
+                    alertDialog.cancel();
+                }
 
              //   resetState();
                 break;
@@ -2591,7 +2658,46 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 Log.e("onTestPaperException", "exception:" + exception);
                 break;
         }
+
+        if (alertDialog != null) {
+            alertDialog.cancel();
+        }
+
       //  event.set("");
        // resetState();
     }
+
+    private void showTestDialog(int drawable) {
+        // show dialog
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        View layoutInflater = LayoutInflater.from(VitalsActivity.this)
+                .inflate(R.layout.welcome_slide1, null);
+        imageView = layoutInflater.findViewById(R.id.instructionImage);
+        imageView.setImageDrawable(getResources().getDrawable(drawable));
+        textView = layoutInflater.findViewById(R.id.tv_intro_one);
+        textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        dialog.setView(layoutInflater);
+
+        dialog.setNegativeButton(R.string.STOP, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+              //  EzdxBT.stopCurrentTest(); // stopping the test is necessary...    // todo: handle later.
+                stopMeasure();
+                Toast.makeText(VitalsActivity.this, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog = dialog.create();
+        alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
 }
