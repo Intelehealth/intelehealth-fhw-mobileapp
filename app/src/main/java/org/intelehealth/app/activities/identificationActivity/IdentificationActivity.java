@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_state;
 import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 
@@ -22,6 +23,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -446,7 +448,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                mState.setSelection(stateAdapter.getPosition("ٱلسُّوَيْدَاء"));
+                mState.setSelection(stateAdapter.getPosition(StringUtils.switch_en_to_ar_state(state)));
             // setting state - end
 
             if (patient1 != null && patient1.getPatientAidType() != null) {
@@ -1035,11 +1037,39 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
             mState.setAdapter(stateAdapter);
             mState.setSelection(stateAdapter.getPosition(sessionManager.getStateName()));
-            mState.setEnabled(false);
+            mState.setEnabled(true);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+
+        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        setVillageSpinnerAdapter("as_sweida_villages_");
+                        break;
+
+                    case 1:
+                        setVillageSpinnerAdapter("homms_villages_");
+                        break;
+
+                    case 2:
+                        setVillageSpinnerAdapter("tartous_villages_");
+                        break;
+
+                    case 3:
+                        setVillageSpinnerAdapter("rural_damascus_villages_");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         try {
             String relationLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
@@ -1168,31 +1198,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         } catch (Exception e) {
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
-
-        // Village - Start
-        try {
-            String as_sweida_villages_Language = "as_sweida_villages_" + sessionManager.getAppLanguage();
-            int village = res.getIdentifier(as_sweida_villages_Language, "array", getApplicationContext().getPackageName());
-            if (village != 0) {
-                villageAdapter = ArrayAdapter.createFromResource(this, village, R.layout.custom_spinner);
-            }
-            mVillage.setAdapter(villageAdapter);
-            if (patientID_edit != null) {
-                String value = patient1.getCity_village();
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                    value = switch_en_to_ar_village_edit(value);
-                mVillage.setSelection(villageAdapter.getPosition(value));
-            } else {
-                String value = sessionManager.getVillageName();
-                Log.v("value", "village_value: " + value);
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                    value = switch_en_to_ar_village_edit(value);
-                mVillage.setSelection(villageAdapter.getPosition(value));
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
-        }
-        // Village - End
 
         // Victim Special Needs Adapter - Start
         try {
@@ -2387,9 +2392,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 
             String stateName = mState.getSelectedItem().toString();
-            if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء")) stateName = "As-Sweida";
-            patientdto.setStateprovince(stateName);
-            Log.v("state", "state name: create: " + stateName);
+            patientdto.setStateprovince(switch_ar_to_en_state(stateName));
 
             //  patientdto.setStateprovince(mState.getSelectedItem().toString());
 
@@ -3823,8 +3826,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setPatient_photo(mCurrentPhotoPath);
 
                 String stateName = mState.getSelectedItem().toString();
-                if (stateName.equalsIgnoreCase("ٱلسُّوَيْدَاء")) stateName = "As-Sweida";
-                patientdto.setState_province(stateName);
+                patientdto.setState_province(switch_ar_to_en_state(stateName));
                 Log.v("state", "state name: " + stateName);
                 //  patientdto.setState_province(mState.getSelectedItem().toString());
 
@@ -5870,5 +5872,35 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
+    }
+
+    private void setVillageSpinnerAdapter(String arrayName) {
+        // Village - Start
+        try {
+            String villages_Language = arrayName + sessionManager.getAppLanguage();
+            int village = getResources().getIdentifier(villages_Language, "array", getApplicationContext().getPackageName());
+            if (village != 0) {
+                villageAdapter = ArrayAdapter.createFromResource(this, village, R.layout.custom_spinner);
+            }
+
+            mVillage.setAdapter(villageAdapter);
+
+            String value = "";
+            if (patientID_edit != null) {
+                value = patient1.getCity_village();
+            } else {
+                value = sessionManager.getVillageName();
+            }
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                value = switch_en_to_ar_village_edit(value);
+            }
+
+            mVillage.setSelection(villageAdapter.getPosition(value));
+
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        // Village - End
     }
 }

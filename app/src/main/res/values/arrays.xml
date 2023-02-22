@@ -73,15 +73,19 @@
 
 
     <string-array name="states_syriana_en">
-        <item>Select</item>
         <item>As-Sweida</item>
-        <item>Deir-ez-Zor</item>
+<!--        <item>Deir-ez-Zor</item>-->
+        <item>Homms</item>
+        <item>Tartous</item>
+        <item>Rural Damascus</item>
     </string-array>
 
     <string-array name="states_syriana_ar">
-        <item>Select</item>
         <item>ٱلسُّوَيْدَاء</item>
-        <item>Deir-ez-Zor</item>
+<!--        <item>Deir-ez-Zor</item>-->
+        <item>حمص</item>
+        <item>طرطوس</item>
+        <item>ريف دمشق</item>
     </string-array>
 
 
@@ -2068,6 +2072,34 @@
         <item> هويا</item>
         <item> وقم</item>
         <item> ولغا</item>
+    </string-array>
+
+    <string-array name="homms_villages_en">
+        <item>Homs</item>
+        <item>Wadi</item>
+    </string-array>
+
+    <string-array name="homms_villages_ar">
+        <item>حمص</item>
+        <item>الوادي</item>
+    </string-array>
+
+    <string-array name="tartous_villages_en">
+        <item>Tartous</item>
+    </string-array>
+
+    <string-array name="tartous_villages_ar">
+        <item>طرطوس</item>
+    </string-array>
+
+    <string-array name="rural_damascus_villages_en">
+        <item>Jaraman</item>
+        <item>Sihnaya</item>
+    </string-array>
+
+    <string-array name="rural_damascus_villages_ar">
+        <item>جرمانا</item>
+        <item>صحنايا</item>
     </string-array>
 
     <string-array name="victim_special_needs_en">

@@ -769,10 +769,79 @@ public final class StringUtils {
             case "ام الرمان":
                 val = "Um Elrumman (Thibeen)";
                 break;
+            case "حمص":
+                val = "Homs";
+                break;
+            case "الوادي":
+                val = "Wadi";
+                break;
+            case "طرطوس":
+                val = "Tartous";
+                break;
+            case "جرمانا":
+                val = "Jaraman";
+                break;
+            case "صحنايا":
+                val = "Sihnaya";
+                break;
             default:
                 return val;
         }
         return val;
+    }
+
+    public static String switch_en_to_ar_state(String val) {
+        String newVal = "";
+        switch (val) {
+            case "As-Sweida":
+                newVal = "ٱلسُّوَيْدَاء";
+                break;
+
+            case "Homms":
+                newVal = "حمص";
+                break;
+
+            case "Tartous":
+                newVal = "طرطوس";
+                break;
+
+            case "Rural Damascus":
+                newVal = "ريف دمشق";
+                break;
+
+            default:
+                newVal = val;
+                break;
+        }
+
+        return newVal;
+    }
+
+    public static String switch_ar_to_en_state(String val) {
+        String newVal = "";
+        switch (val) {
+            case "ٱلسُّوَيْدَاء":
+                newVal = "As-Sweida";
+                break;
+
+            case "حمص":
+                newVal = "Homms";
+                break;
+
+            case "طرطوس":
+                newVal = "Tartous";
+                break;
+
+            case "ريف دمشق":
+                newVal = "Rural Damascus";
+                break;
+
+            default:
+                newVal = val;
+                break;
+        }
+
+        return newVal;
     }
 
     public static String switch_en_to_ar_village_edit(String val) {
@@ -1229,6 +1298,21 @@ public final class StringUtils {
                 break;
             case "Um Elrumman (Thibeen)":
                 val = "ام الرمان";
+                break;
+            case "Homs":
+                val = "حمص";
+                break;
+            case "Wadi":
+                val = "الوادي";
+                break;
+            case "Tartous":
+                val = "طرطوس";
+                break;
+            case "Jaraman":
+                val = "جرمانا";
+                break;
+            case "Sihnaya":
+                val = "صحنايا";
                 break;
             default:
                 return val;
