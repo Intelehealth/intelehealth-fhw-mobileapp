@@ -423,31 +423,31 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         });
 
         bp_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.blood_pressure_new);  // attrition: <a href="https://www.flaticon.com/free-icons/medical-checkup" title="medical checkup icons">Medical checkup icons created by shmai - Flaticon</a>
             clickMeasure("BP");
         });
 
         tempC_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.body_temperature_icon);   // attrition: <a href="https://www.flaticon.com/free-icons/temperature" title="temperature icons">Temperature icons created by QudaDesign - Flaticon</a>
             clickMeasure("Temp");
            // tempc_clicked = true;
           //  tempf_clicked = false;
         });
 
         tempF_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.body_temperature_icon);   // attrition: <a href="https://www.flaticon.com/free-icons/temperature" title="temperature icons">Temperature icons created by QudaDesign - Flaticon</a>
             clickMeasure("Temp");
           //  tempc_clicked = false;
            // tempf_clicked = true;
         });
 
         bloodGlucose_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.glucose_meter);
             clickMeasure("Blood Glucose");
         });
 
         bg_nonfasting_btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.glucose_meter);
             bg_nonfasting_clicked = true;
             bg_fasting_clicked = false;
             clickMeasure("Blood Glucose");
@@ -455,7 +455,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         });
 
         bg_fasting_btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure);
+            showTestDialog(R.drawable.glucose_meter);
             clickMeasure("Blood Glucose");
             bg_nonfasting_clicked = false;
             bg_fasting_clicked = true;
@@ -2323,9 +2323,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                      */
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
-                      Toast.makeText(VitalsActivity.this, "Test Started...", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(VitalsActivity.this, "Measuring...", Toast.LENGTH_SHORT).show();
                     if (alertDialog != null) {
-                        textView.setText(R.string.test_started);
+                        textView.setText(R.string.measuring);
                     }
                 }
             }
@@ -2455,13 +2455,13 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         if (mBpTask != null) {
             if (mHcService.getBleDevManager().getBatteryTask().getPower() < 20) {
-                Toast.makeText(VitalsActivity.this, "设备电量过低，请充电\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, "The power of the device is too low, please charge it\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
                 return false;
             }
             mBpTask.start();
         } else {
             if (MonitorDataTransmissionManager.getInstance().getBatteryValue() < 20) {
-                Toast.makeText(VitalsActivity.this, "设备电量过低，请充电\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, "The power of the device is too low, please charge it\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
                 return false;
             }
             MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BP);
@@ -2492,6 +2492,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (alertDialog != null) {
                     alertDialog.cancel();
                 }
+
+                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -2522,6 +2524,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             public void run() {
                 mBpSys.setText(String.valueOf(bp_model.getSbp()));
                 mBpDia.setText(String.valueOf(bp_model.getDbp()));
+
+                if (alertDialog != null)
+                    alertDialog.dismiss();
+                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
             }
         });
      //   resetState();
@@ -2556,6 +2562,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                         Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_SHORT).show();
                         if (alertDialog != null) {
                             textView.setText(getString(textId));
+                            alertDialog.dismiss();
+                            stopMeasure();
                         }
                     }
 
@@ -2581,12 +2589,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                         mTemperature.setText(convertCtoF(value));
                     }
                 } else {
-                    mTemperature.setText(value);
+                    if (value != null && !value.isEmpty()) {
+                        mTemperature.setText(value);
+                    }
                 }
 
                 if (alertDialog != null) {
                     alertDialog.cancel();
                 }
+                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
             }
         });
 

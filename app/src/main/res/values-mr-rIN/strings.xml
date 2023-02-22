@@ -969,6 +969,7 @@
     <string name="no_finger_detected">No finger was detected on the SpO₂ sensor.</string>
     <string name="blood_result_error">Blood result error. Try again!</string>
     <string name="test_successful">Test Successful</string>
+    <string name="measuring">Measuring...</string>
 
 
 </resources>
