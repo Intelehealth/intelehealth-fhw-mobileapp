@@ -700,7 +700,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         }
                     };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-                    if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
                         partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrlArabic();
                     String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
@@ -725,7 +725,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+963" + editText.getText().toString();
                                         String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                +"\t"+ whatsapp_url +"\t"+ getString(R.string.and_enter_your_patient_id) +"\t"+ idView.getText().toString();
+                                                + "\t" + whatsapp_url + "\t" + getString(R.string.and_enter_your_patient_id) + "\t" + idView.getText().toString();
 
                                         // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
@@ -939,8 +939,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 Log.d("visitUUID", "upload_click: " + visitUUID);
 
                 // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
-                if(complaint.getValue()==null || complaintView.getText().equals("") || complaintView.getText().equals(" "))
-                {
+                if (complaint.getValue() == null || complaintView.getText().equals("") || complaintView.getText().equals(" ")) {
                     Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_failed_for_no_complaint), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -1123,7 +1122,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
-                if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
+                if (temperature.getValue() != null && !temperature.getValue().isEmpty() && !temperature.getValue().equalsIgnoreCase("0")) {
                     tempView.setText(convertCtoF(temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
@@ -1150,20 +1149,35 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (height.getValue() != null) {
             if (height.getValue().trim().equals("0")) {
-                heightView.setText("-");
+                heightView.setText("");
             } else {
                 heightView.setText(height.getValue());
             }
         }
 
-        weightView.setText(weight.getValue());
-        pulseView.setText(pulse.getValue());
+        if (weight.getValue() != null) {
+            if (weight.getValue().trim().equals("0")) {
+                weightView.setText("");
+            } else {
+                weightView.setText(weight.getValue());
+            }
+        }
+
+        if (pulse.getValue() != null) {
+            if (pulse.getValue().trim().equals("0")) {
+                pulseView.setText("");
+            } else {
+                pulseView.setText(pulse.getValue());
+            }
+        }
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
         if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
             bpView.setText("");
         } else if (bpText.equalsIgnoreCase("null/null")) {
             //when we setup app and get data from other users, we get null/null from server...
+            bpView.setText("");
+        } else if (bpSys.getValue().equalsIgnoreCase("0") || bpDias.getValue().equalsIgnoreCase("0")) {
             bpView.setText("");
         } else {
             bpView.setText(bpText);
@@ -1172,7 +1186,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.d(TAG, "onCreate: " + weight.getValue());
         String mWeight = weight.getValue();
         String mHeight = height.getValue();
-        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty() && (!mHeight.equalsIgnoreCase("0") && !mWeight.equalsIgnoreCase("0"))) {
             double numerator = Double.parseDouble(mWeight) * 10000;
             double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
             double bmi_value = numerator / denominator;
@@ -1185,8 +1199,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         bmiView.setText(mBMI);
 
         //    Respiratory added by mahiti dev team
-        respiratory.setText(resp.getValue());
-        spO2View.setText(spO2.getValue());
+        if (resp.getValue() != null) {
+            if (resp.getValue().trim().equals("0")) {
+                respiratory.setText("");
+            } else {
+                respiratory.setText(resp.getValue());
+            }
+        }
+
+        if (spO2.getValue() != null) {
+            if (spO2.getValue().trim().equals("0")) {
+                spO2View.setText("");
+            } else {
+                spO2View.setText(spO2.getValue());
+            }
+        }
+
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
         if (famHistory.getValue() != null)
@@ -1359,7 +1387,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (complaint.getValue(sessionManager.getAppLanguage()) != null && !complaint.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")){
+                        if (complaint.getValue(sessionManager.getAppLanguage()) != null && !complaint.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")) {
                             dialogEditText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                         } else {
                             dialogEditText.setText("");
@@ -2175,7 +2203,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
-                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3): "";            }
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3) : "";
+            }
         } else {
 
         }
@@ -2184,7 +2213,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
-                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3) : "";            }
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3) : "";
+            }
         } else {
 
         }
