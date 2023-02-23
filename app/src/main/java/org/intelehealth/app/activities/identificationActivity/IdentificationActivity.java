@@ -641,7 +641,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                mState.setSelection(stateAdapter.getPosition("ٱلسُّوَيْدَاء"));
+                mState.setSelection(stateAdapter.getPosition(StringUtils.switch_en_to_ar_village_edit(state)));
             // setting state - end
         }
 
@@ -1021,55 +1021,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
-        try {
-            //   Toast.makeText(context, "lang: " + sessionManager.getAppLanguage(), Toast.LENGTH_SHORT).show();
-            String stateLanguage = "states_syriana_en";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
-
-            int states = res.getIdentifier(stateLanguage, "array", getApplicationContext().getPackageName());
-            if (states != 0) {
-                stateAdapter = ArrayAdapter.createFromResource(this, states, R.layout.custom_spinner);
-
-            }
-            mState.setAdapter(stateAdapter);
-            mState.setSelection(stateAdapter.getPosition(sessionManager.getStateName()));
-            mState.setEnabled(true);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-
-        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        setVillageSpinnerAdapter("as_sweida_villages_");
-                        break;
-
-                    case 1:
-                        setVillageSpinnerAdapter("homms_villages_");
-                        break;
-
-                    case 2:
-                        setVillageSpinnerAdapter("tartous_villages_");
-                        break;
-
-                    case 3:
-                        setVillageSpinnerAdapter("rural_damascus_villages_");
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         try {
             String relationLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
@@ -4192,6 +4143,56 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         aidSelectionImplementation();
         roasterCommentedCode();
         initializeEarthquakeVictimCheckbox();
+        initializeStateAndVillageSpinner();
+    }
+
+    private void initializeStateAndVillageSpinner() {
+        try {
+            String stateLanguage = "states_syriana_en";
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
+
+            int states = getResources().getIdentifier(stateLanguage, "array", getApplicationContext().getPackageName());
+            if (states != 0) {
+                stateAdapter = ArrayAdapter.createFromResource(this, states, R.layout.custom_spinner);
+
+            }
+            mState.setAdapter(stateAdapter);
+            mState.setSelection(stateAdapter.getPosition(sessionManager.getStateName()));
+            mState.setEnabled(true);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+        }
+
+        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        setVillageSpinnerAdapter("as_sweida_villages_");
+                        break;
+
+                    case 1:
+                        setVillageSpinnerAdapter("homms_villages_");
+                        break;
+
+                    case 2:
+                        setVillageSpinnerAdapter("tartous_villages_");
+                        break;
+
+                    case 3:
+                        setVillageSpinnerAdapter("rural_damascus_villages_");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initializeEarthquakeVictimCheckbox() {
@@ -5875,32 +5876,25 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     }
 
     private void setVillageSpinnerAdapter(String arrayName) {
-        // Village - Start
         try {
             String villages_Language = arrayName + sessionManager.getAppLanguage();
             int village = getResources().getIdentifier(villages_Language, "array", getApplicationContext().getPackageName());
             if (village != 0) {
                 villageAdapter = ArrayAdapter.createFromResource(this, village, R.layout.custom_spinner);
             }
-
             mVillage.setAdapter(villageAdapter);
 
-            String value = "";
-            if (patientID_edit != null) {
-                value = patient1.getCity_village();
-            } else {
-                value = sessionManager.getVillageName();
+            if (patient1 != null && patient1.getCity_village() != null) {
+                String villageName = patient1.getCity_village();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    villageName = StringUtils.switch_en_to_ar_village_edit(villageName);
+                }
+                int position = villageAdapter.getPosition(villageName);
+                if (position != -1)
+                    mVillage.setSelection(position);
             }
-
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                value = switch_en_to_ar_village_edit(value);
-            }
-
-            mVillage.setSelection(villageAdapter.getPosition(value));
-
         } catch (Exception e) {
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
-        // Village - End
     }
 }
