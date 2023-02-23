@@ -640,8 +640,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             String state = String.valueOf(sessionManager.getStateName());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
-            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                mState.setSelection(stateAdapter.getPosition(StringUtils.switch_en_to_ar_village_edit(state)));
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                int position = stateAdapter.getPosition(StringUtils.switch_en_to_ar_state(state));
+                mState.setSelection(position);
+            }
             // setting state - end
         }
 
