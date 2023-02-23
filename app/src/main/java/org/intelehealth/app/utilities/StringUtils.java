@@ -805,7 +805,7 @@ public final class StringUtils {
                 newVal = "طرطوس";
                 break;
 
-            case "Rural Damascus":
+            case "Rural Damscus":
                 newVal = "ريف دمشق";
                 break;
 
@@ -833,7 +833,7 @@ public final class StringUtils {
                 break;
 
             case "ريف دمشق":
-                newVal = "Rural Damascus";
+                newVal = "Rural Damscus";
                 break;
 
             default:

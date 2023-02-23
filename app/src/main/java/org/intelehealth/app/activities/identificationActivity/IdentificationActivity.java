@@ -637,7 +637,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mCountry.setSelection(countryAdapter.getPosition(country1));
             //   mState.setSelection(stateAdapter.getPosition(state));
             // setting state - start
-            //  String state = String.valueOf(patient1.getState_province());
+            String state = String.valueOf(sessionManager.getStateName());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
@@ -5892,9 +5892,25 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 int position = villageAdapter.getPosition(villageName);
                 if (position != -1)
                     mVillage.setSelection(position);
+            } else {
+                String villageName = checkAndRemoveEndDash(sessionManager.getVillageName());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    villageName = StringUtils.switch_en_to_ar_village_edit(villageName);
+                }
+                int position = villageAdapter.getPosition(villageName);
+                if (position != -1)
+                    mVillage.setSelection(position);
             }
         } catch (Exception e) {
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String checkAndRemoveEndDash(String villageString) {
+        String lastCharacter = String.valueOf(villageString.charAt(villageString.length() - 1));
+        if (lastCharacter.equalsIgnoreCase("-")) {
+            villageString = villageString.substring(0, villageString.length() - 1);
+        }
+        return villageString;
     }
 }
