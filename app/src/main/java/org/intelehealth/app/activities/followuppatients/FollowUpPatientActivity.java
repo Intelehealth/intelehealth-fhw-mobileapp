@@ -79,6 +79,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        setTitle(getString(R.string.title_follow_up));
+
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
