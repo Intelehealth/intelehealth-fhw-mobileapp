@@ -26,5 +26,10 @@ public class Constants {
     public static final int LEFT_ITEM_DOCT = 1;
     public static final int RIGHT_ITEM_HW = 2;
 
+    /*AWS S3 Bucket*/
+    public static final String S3_ACCESS_ID = "AKIAQRYG2ZFM3FPZWEDN";
+    public static final String S3_SECRET_KEY = "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";
+    public static final String S3_BUCKET_NAME = "ih-addl-docs";
+    public static final String S3_BUCKET_PREFIX_URL = "https://"+S3_BUCKET_NAME+".s3.ap-south-1.amazonaws.com/";
 
 }

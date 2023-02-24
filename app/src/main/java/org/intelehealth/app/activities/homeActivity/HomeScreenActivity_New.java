@@ -103,7 +103,6 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -263,43 +262,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
-    private void awsAuth() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                String PICTURE_NAME = "2022.jpg";//new UuidGenerator().UuidGenerator() + "jpg";
-                BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(AppConstants.S3_ACCESS_ID, AppConstants.S3_SECRET_KEY);
-                AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials);
-
-                PutObjectRequest por = new PutObjectRequest(AppConstants.S3_BUCKET_NAME, PICTURE_NAME,
-                        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));
-                amazonS3Client.putObject(por);
-                //Log.v("AmazonS3", amazonS3Client.getBucketLocation(AppConstants.S3_BUCKET_NAME));
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //UI Thread work here
-                        ResponseHeaderOverrides override = new ResponseHeaderOverrides();
-                        override.setContentType("image/jpeg");
-                        GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(AppConstants.S3_BUCKET_NAME, PICTURE_NAME);// Added an hour's worth of milliseconds to the current time.
-                        urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
-                        urlRequest.setResponseHeaders(override);
-                        URL url = amazonS3Client.generatePresignedUrl( urlRequest );
-                        try {
-                            startActivity(    new Intent( Intent.ACTION_VIEW, Uri.parse( url.toURI().toString() ) ));
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -325,7 +287,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         initUI();
         //}
         clickListeners();
-        awsAuth();
+//        awsAuth();
 
     }
 
