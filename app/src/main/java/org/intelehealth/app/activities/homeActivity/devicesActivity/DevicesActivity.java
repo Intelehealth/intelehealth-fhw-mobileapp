@@ -7,10 +7,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -110,11 +114,14 @@ public class DevicesActivity extends AppCompatActivity {
 
     private void showCalibrationDialog() {
         // show dialog
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        Dialog dialog = new Dialog(context);
         View layoutInflater = LayoutInflater.from(context).inflate(R.layout.bg_calibration_layout, null);
         spin_test_paper_manufacturer = layoutInflater.findViewById(R.id.spin_test_paper_manufacturer);
         spin_test_paper_code = layoutInflater.findViewById(R.id.spin_test_paper_code);
-        dialog.setView(layoutInflater);
+        TextView cancel_txt = layoutInflater.findViewById(R.id.cancel_txt);
+        TextView submit_txt = layoutInflater.findViewById(R.id.submit_txt);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(layoutInflater);
 
         String[] manufacturers = TestPaper.Manufacturer.values();
         ArrayAdapter<String> adapterManufacturer = new ArrayAdapter<>(context
@@ -158,41 +165,59 @@ public class DevicesActivity extends AppCompatActivity {
             }
         });
 
-        dialog.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                /** On clicking submit, store these spinner values in SessionManager to be fetched in Vitals screen.
-                 * In case of no value selection at inital app setup than in Vitals add that logic if empty than set default
-                 * strip value which you have.
-                 */
-                sessionManager.setTestManufacturer(mManufacturer);
-                sessionManager.setTestPaperCode(mPaperCode);
-                Log.v("BG_Calibrate", "BG_Calibrate: " + sessionManager.getTestManufacturer() + " : " + sessionManager.getTestPaperCode());
-            }
-        });
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//        dialog.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                /** On clicking submit, store these spinner values in SessionManager to be fetched in Vitals screen.
+//                 * In case of no value selection at inital app setup than in Vitals add that logic if empty than set default
+//                 * strip value which you have.
+//                 */
+//                sessionManager.setTestManufacturer(mManufacturer);
+//                sessionManager.setTestPaperCode(mPaperCode);
+//                Log.v("BG_Calibrate", "BG_Calibrate: " + sessionManager.getTestManufacturer() + " : " + sessionManager.getTestPaperCode());
+//            }
+//        });
+
+      /*  dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
 //                EzdxBT.stopCurrentTest(); // stopping the test is necessary...
 //                Toast.makeText(context, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
+        });*/
+
+
+      //  alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show();
+
+        cancel_txt.setOnClickListener(v -> {
+            dialog.dismiss();
         });
 
-        AlertDialog alertDialog = dialog.create();
-        alertDialog.show();
+        submit_txt.setOnClickListener(v -> {
+            /** On clicking submit, store these spinner values in SessionManager to be fetched in Vitals screen.
+             * In case of no value selection at inital app setup than in Vitals add that logic if empty than set default
+             * strip value which you have.
+             */
+            sessionManager.setTestManufacturer(mManufacturer);
+            sessionManager.setTestPaperCode(mPaperCode);
+            Log.v("BG_Calibrate", "BG_Calibrate: " + sessionManager.getTestManufacturer() + " : " + sessionManager.getTestPaperCode());
+            dialog.dismiss();
+            Toast.makeText(context, "Blood Glucose calibration successful!", Toast.LENGTH_SHORT).show();
+        });
 
-        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+     /*   Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
         pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);*/
 
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+      //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private List<String> getManufacturerList(String[] array) {
