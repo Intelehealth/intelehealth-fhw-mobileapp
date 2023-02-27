@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
@@ -74,6 +75,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
+    private ArrayList<String> complaintArrayList;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
@@ -103,6 +105,7 @@ public class VitalsActivity extends AppCompatActivity {
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            complaintArrayList = intent.getStringArrayListExtra("complaints");
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
@@ -1044,7 +1047,7 @@ public class VitalsActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
-            Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, QuestionNodeActivity.class);
 
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
@@ -1056,6 +1059,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("complaints", complaintArrayList);
             startActivity(intent);
         }
     }

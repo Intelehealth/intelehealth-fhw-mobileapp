@@ -34,6 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -374,7 +375,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         Intent intent = new Intent(
-                                ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                                ComplaintNodeActivity.this, VitalsActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
