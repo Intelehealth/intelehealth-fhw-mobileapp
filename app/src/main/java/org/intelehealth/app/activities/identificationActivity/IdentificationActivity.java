@@ -149,9 +149,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter,
-            residenceNatureAdapter, linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter,
-            specialNeedsAdapter, lossDueToEarthquakeAdapter, lossOfAnalgesicAdapter, lossOfBreadwinnerAdapter, strongSocialTiesAdapter, placesOfPreferenceAdapter;
+    private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, villageAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter, linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter, specialNeedsAdapter, lossDueToEarthquakeAdapter, lossOfAnalgesicAdapter, lossOfBreadwinnerAdapter, strongSocialTiesAdapter, placesOfPreferenceAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -895,7 +893,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
-                displayPinDialog();
+                onPatientCreateClicked();
             }
         });
 
@@ -1737,14 +1735,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
     }
 
-    public void onPatientCreateClicked(String patientPin) {
-        PatientsDAO patientsDAO = new PatientsDAO();
-        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+    public void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
-
         patientdto.setUuid(uuid);
-        Gson gson = new Gson();
 
         boolean cancel = false;
         View focusView = null;
@@ -2311,43 +2304,52 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             focusView.requestFocus();
             Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
         } else {
+            displayPinDialog();
+        }
+    }
 
-            patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
-            patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+    private void insertPatient(String patientPin) {
+        Gson gson = new Gson();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
-            String[] dob_array = mDOB.getText().toString().split(" ");
-            Log.d("dob_array", "0: " + dob_array[0]);
-            Log.d("dob_array", "0: " + dob_array[1]);
-            Log.d("dob_array", "0: " + dob_array[2]);
+        patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+        patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+        patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+        patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientdto.setGender(StringUtils.getValue(mGender));
 
-            //get month index and return English value for month.
-            if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
-            } else {
-                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-                dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
-            }
+        String[] dob_array = mDOB.getText().toString().split(" ");
+        Log.d("dob_array", "0: " + dob_array[0]);
+        Log.d("dob_array", "0: " + dob_array[1]);
+        Log.d("dob_array", "0: " + dob_array[2]);
 
-            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+        //get month index and return English value for month.
+        if (dob_indexValue == 15) {
+            String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
+        } else {
+            String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
+            dob_array[1] = dob_array[1].replace(dob_array[1], dob);
+            String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+        }
 
-            String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
-            patientdto.setCityvillage(value);
+        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
 
-            patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
-            patientdto.setPatientPhoto(mCurrentPhotoPath);
+        String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
+        patientdto.setCityvillage(value);
 
-            String stateName = mState.getSelectedItem().toString();
-            patientdto.setStateprovince(switch_ar_to_en_state(stateName));
+        patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+        patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
+        patientdto.setPatientPhoto(mCurrentPhotoPath);
 
-            //  patientdto.setStateprovince(mState.getSelectedItem().toString());
+        String stateName = mState.getSelectedItem().toString();
+        patientdto.setStateprovince(switch_ar_to_en_state(stateName));
+
+        //  patientdto.setStateprovince(mState.getSelectedItem().toString());
 
           /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2357,25 +2359,25 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setValue(aidTypeInJson);
             patientAttributesDTOList.add(patientAttributesDTO);*/
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
-            String hohInfoValue = headOfHousehold;
-            String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-            patientAttributesDTO.setValue(hohInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
+        String hohInfoValue = headOfHousehold;
+        String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+        patientAttributesDTO.setValue(hohInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
-            String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
-            String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
-            patientAttributesDTO.setValue(whyHOHInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
+        String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
+        String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
+        patientAttributesDTO.setValue(whyHOHInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
+        // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2391,248 +2393,247 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //            patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
-            String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
-            String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-            patientAttributesDTO.setValue(mainTendInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
+        String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
+        String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+        patientAttributesDTO.setValue(mainTendInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
-            String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
-            String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
-            patientAttributesDTO.setValue(conditionSupportInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
+        String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
+        String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
+        patientAttributesDTO.setValue(conditionSupportInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
-            String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
-            String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
-            patientAttributesDTO.setValue(percIncomeInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
+        String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
+        String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
+        patientAttributesDTO.setValue(percIncomeInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
-            String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
-            String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
-            patientAttributesDTO.setValue(husbandStatusInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
+        String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
+        String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
+        patientAttributesDTO.setValue(husbandStatusInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
-            String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
-            String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-            patientAttributesDTO.setValue(indepResidInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
+        String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
+        String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+        patientAttributesDTO.setValue(indepResidInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
-            String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
-            String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
-            patientAttributesDTO.setValue(residenceNatureInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
+        String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
+        String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
+        patientAttributesDTO.setValue(residenceNatureInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
-            String occupationInfoValue = StringUtils.getProvided(mOccupation);
-            String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
-            patientAttributesDTO.setValue(occupationInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
+        String occupationInfoValue = StringUtils.getProvided(mOccupation);
+        String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
+        patientAttributesDTO.setValue(occupationInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
-            String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
-            String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
-            patientAttributesDTO.setValue(linkNatureInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
+        String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
+        String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
+        patientAttributesDTO.setValue(linkNatureInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // relationsip hoh
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
-            String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
-            String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
-            patientAttributesDTO.setValue(relationHOHInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // relationsip hoh
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
+        String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
+        String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
+        patientAttributesDTO.setValue(relationHOHInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            // marital
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
-            String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
-            String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
-            patientAttributesDTO.setValue(maritalStatusInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        // marital
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
+        String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
+        String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
+        patientAttributesDTO.setValue(maritalStatusInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            String educationInfoValue = StringUtils.getProvided(mEducation);
-            String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
-            patientAttributesDTO.setValue(educationInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        String educationInfoValue = StringUtils.getProvided(mEducation);
+        String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
+        patientAttributesDTO.setValue(educationInfoJson);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PATIENT_PIN"));
-            patientAttributesDTO.setValue(patientPin);
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PATIENT_PIN"));
+        patientAttributesDTO.setValue(patientPin);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
-            patientAttributesDTO.setValue(sessionManager.getProviderID());
-            patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
+        patientAttributesDTO.setValue(sessionManager.getProviderID());
+        patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-            if (earthquakeVictimCheckbox.isChecked()) {
-                patientAttributesDTO.setValue("Yes");
-            } else {
-                patientAttributesDTO.setValue("No");
-            }
-
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
-                String HouseHold_UUID = UUID.randomUUID().toString();
-                sessionManager.setHouseholdUuid(HouseHold_UUID);
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
-
-            } else {
-                String HouseHold_UUID = sessionManager.getHouseholdUuid();
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
-            }
-            //House Hold Registration - End
-
-            // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
-            if (earthquakeVictimCheckbox.isChecked()) {
-
-                // Nature of special needs spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
-                String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
-                String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
-                patientAttributesDTO.setValue(specialNeedsInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
-                String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
-                patientAttributesDTO.setValue(lossInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss of analgesic as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
-                String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
-                patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss of breadwinner as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
-                String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
-                String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
-                patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Strong social ties spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
-                String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
-                String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
-                patientAttributesDTO.setValue(strongSocialTiesInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Place of relatives
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
-                String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
-                patientAttributesDTO.setValue(placesOfRelativesInfoValue);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Place of hosting spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
-                String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
-                String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
-                patientAttributesDTO.setValue(placeOfHostingInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-            }
-
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientdto.setSyncd(false);
-            Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+        if (earthquakeVictimCheckbox.isChecked()) {
+            patientAttributesDTO.setValue("Yes");
+        } else {
+            patientAttributesDTO.setValue("No");
         }
+
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //House Hold Registration
+        if (sessionManager.getHouseholdUuid().equals("")) {
+            String HouseHold_UUID = UUID.randomUUID().toString();
+            sessionManager.setHouseholdUuid(HouseHold_UUID);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
+            patientAttributesDTO.setValue(HouseHold_UUID);
+
+        } else {
+            String HouseHold_UUID = sessionManager.getHouseholdUuid();
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
+            patientAttributesDTO.setValue(HouseHold_UUID);
+        }
+        //House Hold Registration - End
+
+        // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
+        if (earthquakeVictimCheckbox.isChecked()) {
+
+            // Nature of special needs spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
+            String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
+            String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
+            patientAttributesDTO.setValue(specialNeedsInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Loss as a result of the earthquake
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+            String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
+            String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
+            patientAttributesDTO.setValue(lossInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Loss of analgesic as a result of the earthquake
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+            String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
+            String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
+            patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Loss of breadwinner as a result of the earthquake
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
+            String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
+            String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
+            patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Strong social ties spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
+            String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
+            String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
+            patientAttributesDTO.setValue(strongSocialTiesInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Place of relatives
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
+            String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
+            patientAttributesDTO.setValue(placesOfRelativesInfoValue);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Place of hosting spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
+            String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
+            String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
+            patientAttributesDTO.setValue(placeOfHostingInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+        patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+        patientdto.setSyncd(false);
+        Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
 
         try {
             Logger.logD(TAG, "insertpatinet ");
@@ -2662,7 +2663,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
     }
 
     /*private String getAidTypeInJson() {
@@ -4200,10 +4200,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private void initializeEarthquakeVictimCheckbox() {
         // We will show the earthquake victim questions only if the Earthquake Victim checkbox is checked - Added by Arpan Sircar for Syriana Emergency Release
         earthquakeVictimCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                binding.llEarthquakeVictimQuestions.setVisibility(View.VISIBLE);
-            else
-                binding.llEarthquakeVictimQuestions.setVisibility(View.GONE);
+            if (isChecked) binding.llEarthquakeVictimQuestions.setVisibility(View.VISIBLE);
+            else binding.llEarthquakeVictimQuestions.setVisibility(View.GONE);
 
         });
     }
@@ -5848,7 +5846,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         saveButton.setOnClickListener(v -> {
             if (isPinFieldValid(pinEditText)) {
                 String pin = Objects.requireNonNull(pinEditText.getText()).toString();
-                onPatientCreateClicked(pin);
+                insertPatient(pin);
                 alertDialog.dismiss();
             }
         });
@@ -5892,16 +5890,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     villageName = StringUtils.switch_en_to_ar_village_edit(villageName);
                 }
                 int position = villageAdapter.getPosition(villageName);
-                if (position != -1)
-                    mVillage.setSelection(position);
+                if (position != -1) mVillage.setSelection(position);
             } else {
                 String villageName = checkAndRemoveEndDash(sessionManager.getVillageName());
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                     villageName = StringUtils.switch_en_to_ar_village_edit(villageName);
                 }
                 int position = villageAdapter.getPosition(villageName);
-                if (position != -1)
-                    mVillage.setSelection(position);
+                if (position != -1) mVillage.setSelection(position);
             }
         } catch (Exception e) {
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
