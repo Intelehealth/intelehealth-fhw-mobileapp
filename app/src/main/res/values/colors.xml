@@ -76,4 +76,6 @@
     <color name="tag_green_bg">#40d189</color>
     <color name="tag_blue_light_bg">#33befa</color>
 
+    <color name="colorECGLargeGrid">#11172a</color>
+    <color name="colorECGSmallGrid">#545767</color>
 </resources>

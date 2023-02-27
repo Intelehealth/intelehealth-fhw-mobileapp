@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,11 +56,14 @@ public class DataBindingAdapter extends RecyclerView.Adapter<DataBindingAdapter.
 
     public class BindingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView text_tv;
+        private ImageView status_imv;
 
         public BindingViewHolder(View itemView) {
             super(itemView);
             //  this.binding = binding;
             text_tv = itemView.findViewById(R.id.text_tv);
+            status_imv = itemView.findViewById(R.id.status_imv);
+            status_imv.setImageDrawable(context.getResources().getDrawable(R.drawable.user_online_green_indicator));
             itemView.setOnClickListener(this);
         }
 

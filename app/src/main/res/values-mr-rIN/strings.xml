@@ -970,6 +970,18 @@
     <string name="blood_result_error">Blood result error. Try again!</string>
     <string name="test_successful">Test Successful</string>
     <string name="measuring">Measuring...</string>
+    <string name="spo2_test_successful">SPO2 Test Successful</string>
+    <string name="bp_test_successful">BP Test Successful</string>
+    <string name="body_temp_test_successful">Body Temperature Test Successful</string>
+    <string name="blood_glucose_test_successful">Blood Glucose Test Successful</string>
+    <string name="please_connect_to_device">Please connect to device</string>
+    <string name="is_charging_please_wait">Is Charging. Please wait!</string>
+    <string name="start_measuring">Start measuring</string>
+    <string name="mood_value">Mood: %1$s</string>
+    <string name="stress_level">Stress level: %s</string>
+    <string name="robust_heart_rate">Robust heart rate: %s</string>
+    <string name="heart_beat">Heart beat: %s</string>
+    <string name="heart_age">Heart age: %s</string>
 
 
 </resources>

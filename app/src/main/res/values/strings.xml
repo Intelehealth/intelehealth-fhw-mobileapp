@@ -949,6 +949,8 @@
     <string name="make_payment">Make Payment</string>
     <string name="successfully_pdf_created">PDF Successfully Created!!</string>
     <string name="confirm_skip_complaint">Are you sure you want to skip complaint registration? \n\nNote:- This action cannot be undone.</string>
+
+     <!--Remos Device-->
     <string name="leak_and_check">There is a leak. Please check the gas path.</string>
     <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
     <string name="devices">Devices</string>
@@ -976,4 +978,39 @@
     <string name="blood_result_error">Blood result error. Try again!</string>
     <string name="test_successful">Test Successful</string>
     <string name="measuring">Measuring...</string>
+    <string name="spo2_test_successful">SPO2 Test Successful</string>
+    <string name="bp_test_successful">BP Test Successful</string>
+    <string name="body_temp_test_successful">Body Temperature Test Successful</string>
+    <string name="blood_glucose_test_successful">Blood Glucose Test Successful</string>
+    <string name="please_connect_to_device">Please connect to device</string>
+    <string name="is_charging_please_wait">Is Charging. Please wait!</string>
+    <string name="start_measuring">Start measuring</string>
+
+    <string name="mood_value">Mood: %1$s</string>
+    <string name="click_here_to_see_the_full_ecg">Click here to see the full ECG.</string>
+    <string name="ecg_settings">ECG Settings</string>
+    <string name="paper_speed_value">Paper Speed: %1$s</string>
+    <string name="gain_value">Gain: %1$s</string>
+    <string name="finger_detection">Finger detection: %s</string>
+    <string name="ecg_sq">Signal quality: %s</string>
+    <string name="rr_interval_value">R-R interval: %1$s ms</string>
+    <string name="rr_max_value">R-R max: %1$s ms</string>
+    <string name="rr_min_value">R-R min: %1$s ms</string>
+    <string name="hrv_value">HRV: %1$s ms</string>
+    <string name="hr_value">Heart rate: %1$s BPM</string>
+    <string name="rr_value">Respiratory rate: %1$s</string>
+    <string name="finger_detection_ok">Fingers detected by ECG sensor</string>
+    <string name="finger_detection_fail">Make sure your fingers are on the sensor</string>
+    <string name="paper_speed">Paper Speed</string>
+    <string name="gain">Gain</string>
+    <string name="stress_level">Stress level: %s</string>
+    <string name="robust_heart_rate">Robust heart rate: %s</string>
+    <string name="heart_beat">Heart beat: %s</string>
+    <string name="heart_age">Heart age: %s</string>
+
+    <string name="mood_desc_calm">Calm</string>
+    <string name="mood_desc_relaxed">Relaxed</string>
+    <string name="mood_desc_balanced">Balanced</string>
+    <string name="mood_desc_motivated">Motivated</string>
+    <string name="mood_desc_agitated">Agitated/Anxiety/Excited</string>
 </resources>

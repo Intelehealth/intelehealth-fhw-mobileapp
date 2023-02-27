@@ -127,7 +127,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
    // protected final ObservableField<String> event = new ObservableField<>("");
 
 
-    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn, bloodGlucose_Btn, bg_nonfasting_btn, bg_fasting_btn;
+    private ImageButton spo2_Btn, bp_Btn, tempC_Btn, tempF_Btn, bloodGlucose_Btn, bg_nonfasting_btn, bg_fasting_btn, ecg_button;
     private boolean bg_fasting_clicked = false, bg_nonfasting_clicked = false;
     MenuItem bluetooth_icon;
 
@@ -153,6 +153,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
     ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
 
+    private long totalSecs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +212,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         bloodGlucose_Btn = findViewById(R.id.bloodGlucoseRandom_Btn);
         bg_nonfasting_btn = findViewById(R.id.bloodGlucose_Btn);
         bg_fasting_btn = findViewById(R.id.bloodGlucose_Btn_fasting);
+        ecg_button = findViewById(R.id.ecg_button);
 
      //   initRemosDevice();
 
@@ -444,12 +446,14 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
            // tempf_clicked = true;
         });
 
-        bloodGlucose_Btn.setOnClickListener(v -> {
+        bloodGlucose_Btn.setOnClickListener(v -> {  // Fasting
             showTestDialog(R.drawable.glucose_meter);
             clickMeasure("Blood Glucose");
+            bg_nonfasting_clicked = false;
+            bg_fasting_clicked = true;
         });
 
-        bg_nonfasting_btn.setOnClickListener(v -> {
+        bg_nonfasting_btn.setOnClickListener(v -> { // Non-Fasting
             showTestDialog(R.drawable.glucose_meter);
             bg_nonfasting_clicked = true;
             bg_fasting_clicked = false;
@@ -462,6 +466,11 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             clickMeasure("Blood Glucose");
             bg_nonfasting_clicked = false;
             bg_fasting_clicked = true;
+        });
+
+        ecg_button.setOnClickListener(v -> {
+            Intent i = new Intent(VitalsActivity.this, ECGReadingsActivity.class);
+            startActivity(i);
         });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
@@ -2296,14 +2305,14 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
             //判断手机是否和设备实现连接
             if (!manager.isConnected()) {
-                Toast.makeText(VitalsActivity.this, "Please connect to device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.please_connect_to_device), Toast.LENGTH_SHORT).show();
               //  toast(R.string.device_disconnect);
                 return;
             }
             //判断设备是否在充电，充电时不可测量
             if (manager.isCharging()) {
               //  toast(R.string.charging);
-                Toast.makeText(VitalsActivity.this, "Is Charging. Please wait!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.is_charging_please_wait), Toast.LENGTH_SHORT).show();
                 return;
             }
             //判断是否测量中...
@@ -2312,7 +2321,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 //停止测量
               //  stopMeasure(testType);
                 stopMeasure();
-                Toast.makeText(VitalsActivity.this, "Start measuring", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.start_measuring), Toast.LENGTH_SHORT).show();
                 //设置ViewPager可滑动
               //  btnMeasure.setText(getString(R.string.start_measuring));
 //            }
@@ -2326,7 +2335,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                      */
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
-                      Toast.makeText(VitalsActivity.this, "Measuring...", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(VitalsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
                     if (test_dialog != null) {
                         textView.setText(R.string.measuring);
                     }
@@ -2496,7 +2505,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     test_dialog.cancel();
                 }
 
-                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.spo2_test_successful, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -2508,7 +2517,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         if (state == FINGER_NO_TOUCH) {
          //   stopMeasure("SPO2");
             stopMeasure();
-            Toast.makeText(VitalsActivity.this, "No finger was detected on the SpO₂ sensor.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VitalsActivity.this, R.string.no_finger_detected, Toast.LENGTH_SHORT).show();
             if (test_dialog != null) {
                 textView.setText(R.string.no_finger_detected);
             }
@@ -2530,7 +2539,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
                 if (test_dialog != null)
                     test_dialog.dismiss();
-                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.bp_test_successful), Toast.LENGTH_SHORT).show();
             }
         });
      //   resetState();
@@ -2538,7 +2547,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
     @Override
     public void onBpResultError() {
-        Toast.makeText(VitalsActivity.this, "Blood result error. Try again!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(VitalsActivity.this, R.string.blood_result_error, Toast.LENGTH_SHORT).show();
         if (test_dialog != null) {
             textView.setText(R.string.blood_result_error);
         }
@@ -2600,7 +2609,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (test_dialog != null) {
                     test_dialog.cancel();
                 }
-                Toast.makeText(VitalsActivity.this, getString(R.string.test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.body_temp_test_successful), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -2630,11 +2639,11 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 }
                 break;
             case TestPaperTask.EVENT_TEST_RESULT:
-                Toast.makeText(VitalsActivity.this, R.string.test_successful, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.blood_glucose_test_successful), Toast.LENGTH_SHORT).show();
                 bg_model.setValue((double) obj);
 
                 if (bg_fasting_clicked)
-                    bloodGlucose_editText_fasting.setText(String.valueOf(bg_model.getValue()));
+                    bloodGlucoseRandom_editText.setText(String.valueOf(bg_model.getValue()));
                 else if (bg_nonfasting_clicked)
                     bloodGlucose_editText.setText(String.valueOf(bg_model.getValue()));
 

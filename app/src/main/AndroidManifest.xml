@@ -50,6 +50,9 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.vitalActivity.ECGReadingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.homeActivity.devicesActivity.DevicesActivity"
             android:exported="false" />
         <activity
