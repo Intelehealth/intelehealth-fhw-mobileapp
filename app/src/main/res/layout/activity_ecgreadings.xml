@@ -189,7 +189,6 @@
             android:id="@+id/btn_measure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{content::clickMeasure}"
             android:text="@string/start_measuring"
             android:textAllCaps="false"
             android:textSize="12sp" />
@@ -200,6 +199,8 @@
             android:layout_height="wrap_content"
             android:text="@string/submit"
             android:textAllCaps="false"
+            android:visibility="visible"
+            tools:visibility="visible"
             android:textSize="12sp" />
 
 

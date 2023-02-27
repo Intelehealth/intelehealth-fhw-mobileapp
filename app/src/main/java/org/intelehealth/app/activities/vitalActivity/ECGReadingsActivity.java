@@ -25,6 +25,7 @@ import com.linktop.whealthService.task.EcgTask;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.rhemos_device.ECG;
+import org.intelehealth.app.models.rhemos_device.ECG_JsonModel;
 import org.intelehealth.app.models.rhemos_device.UserProfile;
 import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.CountDownTextView;
@@ -45,6 +46,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
     private TextView finger_detection_txt, signal_quality_txt, r_r_interval_txt, heart_rate_txt, hrv_txt, respiratory_rate_txt,
             mood_txt, heart_age_txt, heart_beat_txt, robust_heart_rate_txt, stress_level_txt;
     private Button btn_measure, paper_speed_btn, gain_btn, btn_submit;
+    private static final long timeout = 30L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +59,16 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         ecgDrawWave = new ECGDrawWave();
         ecgDrawWave.setPaperSpeed(ECGDrawWave.PaperSpeed.VAL_25MM_PER_SEC);
         ecgDrawWave.setGain(ECGDrawWave.Gain.VAL_10MM_PER_MV);
+        paper_speed_btn.setText(ecgDrawWave.getPaperSpeed().getDesc());
+        gain_btn.setText(ecgDrawWave.getGain().getDesc());
 
         wave_view.setDrawWave(ecgDrawWave);
+        wave_view.pause();
 
         countDown_txt.setOnCountDownFinishCallback(() -> {
             toggleCountDown.set(false);
-            onEcgDuration(30L);
+            onEcgDuration(timeout);
         });
-
-        wave_view.pause();
 
         btn_measure.setOnClickListener(v -> {
           //  showTestDialog(R.drawable.pulse_oximeter);
@@ -79,7 +82,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
 
     }
 
-    public static void toggleCountDown(@NonNull CountDownTextView textView, boolean toggleCountDown) {
+    public static void toggleCountDown_(@NonNull CountDownTextView textView, boolean toggleCountDown) {
         if (toggleCountDown) {
             textView.start();
         } else {
@@ -87,8 +90,19 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         }
     }
     private void captureAllValues() {
+        ECG_JsonModel jsonModel = new ECG_JsonModel(
+                String.valueOf(model.getR2r()),
+                String.valueOf(model.getHr()),
+                String.valueOf(model.getHrv()),
+                String.valueOf(model.getRr()),
+                fetchMood(model.getMood()),
+                String.valueOf(model.getHa()),
+                String.valueOf(model.getHb()),
+                String.valueOf(model.getRhr()),
+                fetchStressLevel(model.getStress()));
+
         Gson gson = new Gson();
-        String json = gson.toJson(model, ECG.class);
+        String json = gson.toJson(jsonModel, ECG_JsonModel.class);
         Log.v("ECG", "ECG: " + json.toString());
     }
 
@@ -111,6 +125,10 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         btn_measure = findViewById(R.id.btn_measure);
         btn_submit = findViewById(R.id.btn_submit);
 
+        resetting_values();
+    }
+
+    private void resetting_values() {
         r_r_interval_txt.setText(getString(R.string.rr_interval_value, String.valueOf(0)));
         heart_rate_txt.setText(getString(R.string.hr_value, String.valueOf(0)));
         hrv_txt.setText(getString(R.string.hrv_value, String.valueOf(0)));
@@ -135,7 +153,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
       //  resetState();
     }
 
-    private void clickMeasure() {
+    public void clickMeasure() {
         final MonitorDataTransmissionManager manager = MonitorDataTransmissionManager.getInstance();
 
         //判断手机是否和设备实现连接
@@ -179,8 +197,10 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
      //   event.put(EVENT_FINGER_DETECT, "");
       //  event.put(EVENT_SQ, "");
 
-        countDown_txt.setCountDownParams(30);
-        toggleCountDown(countDown_txt, toggleCountDown.get());
+        btn_measure.setText("Measuring...");
+
+        countDown_txt.setCountDownParams(timeout);
+        toggleCountDown_(countDown_txt, true);
 
         IUserProfile userProfileDefault = new UserProfile("ccl", UserProfile.MALE
                 , 633715200, 170, 60);  // todo: pass actual user values here...
@@ -235,6 +255,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         } else {
             MonitorDataTransmissionManager.getInstance().stopMeasure();
         }
+        btn_measure.setText("Start Measuring");
     }
 
     @Override
@@ -338,6 +359,9 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
             toggleCountDown.set(true);
         } else {
             toggleCountDown.set(false);
+            stopMeasure();
+            countDown_txt.cancel();
+            resetting_values();
         }
     }
 
@@ -420,6 +444,24 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         }
         view.setText(res.getString(R.string.mood_value, moodDesc));
     }
+    public String fetchMood(int mood) {
+        String moodDesc;
+        if (mood > 0 && mood <= 20) {
+            moodDesc = getString(R.string.mood_desc_calm);
+        } else if (mood > 20 && mood <= 40) {
+            moodDesc = getString(R.string.mood_desc_relaxed);
+        } else if (mood > 40 && mood <= 60) {
+            moodDesc = getString(R.string.mood_desc_balanced);
+        } else if (mood > 60 && mood <= 80) {
+            moodDesc = getString(R.string.mood_desc_motivated);
+        } else if (mood > 80 && mood <= 100) {
+            moodDesc = getString(R.string.mood_desc_agitated);
+        } else {
+            moodDesc = "-";
+        }
+
+        return moodDesc;
+    }
 
     public static void formatStressLevel(@NonNull TextView textView, @Constants.ECGStressLevel int level) {
         String stress;
@@ -448,4 +490,33 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         }
         textView.setText(String.format(Locale.getDefault(), "Stress level: %s", stress));
     }
+
+    public String fetchStressLevel(@Constants.ECGStressLevel int level) {
+        String stress;
+        switch (level) {
+            case Constants.ECG_STRESS_LEVEL_INVALID:
+                stress = "Invalid";
+                break;
+            case Constants.ECG_STRESS_LEVEL_NO:
+                stress = "No";
+                break;
+            case Constants.ECG_STRESS_LEVEL_LOW:
+                stress = "Low";
+                break;
+            case Constants.ECG_STRESS_LEVEL_MEDIUM:
+                stress = "Medium";
+                break;
+            case Constants.ECG_STRESS_LEVEL_HIGH:
+                stress = "High";
+                break;
+            case Constants.ECG_STRESS_LEVEL_VERY_HIGH:
+                stress = "Very high";
+                break;
+            default:
+                stress = "-";
+                break;
+        }
+        return stress;
+    }
+
 }

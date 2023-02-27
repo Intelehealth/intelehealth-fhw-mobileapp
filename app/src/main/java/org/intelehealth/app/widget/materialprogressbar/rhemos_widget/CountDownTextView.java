@@ -3,6 +3,8 @@ package org.intelehealth.app.widget.materialprogressbar.rhemos_widget;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +35,7 @@ public class CountDownTextView extends AppCompatTextView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        setVisibility(INVISIBLE);
+      //  setVisibility(INVISIBLE);
     }
 
     public void setCountDownParams(long totalSecs) {
@@ -52,7 +54,7 @@ public class CountDownTextView extends AppCompatTextView {
 
     public void start() {
         if (!isRunning) {
-            setVisibility(VISIBLE);
+          //  view.setVisibility(VISIBLE);
             mCountDownTimer = new CountDownTimer(totalSecs * 1000L
                     , interval * 1000L) {
                 @Override
@@ -80,7 +82,8 @@ public class CountDownTextView extends AppCompatTextView {
                 mCountDownTimer = null;
                 isRunning = false;
             }
-            setVisibility(INVISIBLE);
+          //  view.setVisibility(INVISIBLE);
+            formatText(0L);
         }
     }
 
