@@ -1860,7 +1860,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                return;
             }
 
 /*
@@ -1910,7 +1909,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (focusView != null) {
                 focusView.requestFocus();
                 Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-                return;
             }
         }
 
@@ -1919,7 +1917,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mAddress1.setError(getString(R.string.error_field_required));
             focusView = mAddress1;
             cancel = true;
-            return;
         } else {
             mAddress1.setError(null);
         }
@@ -1928,71 +1925,64 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (earthquakeVictimCheckbox.isChecked()) {
 
             // Validation for Special Needs Spinner
-            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerNatureSpecialNeeds;
                 cancel = true;
-                return;
             }
 
             // Validation for Loss As a Result Of Earthquake Spinner
-            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerLossAsAResultOfTheEarthquake;
                 cancel = true;
-                return;
             }
 
             // Validation for Loss of Analgesic Spinner
-            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
                 cancel = true;
-                return;
             }
 
             // Validation for Loss of Breadwinner
-            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
                 cancel = true;
-                return;
             }
 
             // Validation for Strong Social Ties Spinner
-            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerStrongSocialTies;
                 cancel = true;
-                return;
             }
 
             // Validation for Places Of Relatives EditText
-            if (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase("")) {
+            if (!cancel && (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
                 binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
                 focusView = binding.etPlacesOfRelatives;
                 cancel = true;
-                return;
             }
 
             // Validation for Place Of Preference Spinner
-            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+            if (!cancel && binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = binding.spinnerPlacesOfPreference;
                 cancel = true;
-                return;
             }
         }
 
@@ -2301,7 +2291,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         // Roster Insert Validations - End
 
         if (cancel) {
-            focusView.requestFocus();
+            focusView.getParent().requestChildFocus(focusView, focusView);
             Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
         } else {
             displayPinDialog();
@@ -3331,51 +3321,50 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //}
 
     public void onPatientUpdateClicked(Patient patientdto) {
-        {
-            PatientsDAO patientsDAO = new PatientsDAO();
-            PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-            List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
-            uuid = patientdto.getUuid();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        uuid = patientdto.getUuid();
 
-            patientdto.setUuid(uuid);
-            Gson gson = new Gson();
+        patientdto.setUuid(uuid);
+        Gson gson = new Gson();
 
-            boolean cancel = false;
-            View focusView = null;
+        boolean cancel = false;
+        View focusView = null;
 
 
-            if (dob.equals("") || dob.toString().equals("")) {
-                if (dob.after(today)) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                    alertDialogBuilder.setTitle(R.string.error);
-                    alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-                    //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
+        if (dob.equals("") || dob.toString().equals("")) {
+            if (dob.after(today)) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
+                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
 
-                    mDOBPicker.show();
-                    alertDialog.show();
+                mDOBPicker.show();
+                alertDialog.show();
 
-                    Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                    return;
-                }
+                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
             }
+        }
 
-            if (mPhoneNum.getText().toString().trim().length() > 0) {
-                if (mPhoneNum.getText().toString().trim().length() < 9) {
-                    mPhoneNum.requestFocus();
-                    mPhoneNum.setError(getResources().getString(R.string.enter_9_digits));
-                    return;
-                }
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
+            if (mPhoneNum.getText().toString().trim().length() < 9) {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getResources().getString(R.string.enter_9_digits));
+                return;
             }
+        }
 
        /* ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -3410,55 +3399,55 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }*/
 
 
-            if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
-                aidSelectionImplementation();
-                Log.v(TAG, "Result");
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+            aidSelectionImplementation();
+            Log.v(TAG, "Result");
+        } else {
+            if (mFirstName.getText().toString().equals("")) {
+                focusView = mFirstName;
+                mFirstName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mLastName.getText().toString().equals("")) {
+                focusView = mLastName;
+                mLastName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mDOB.getText().toString().equals("")) {
+                focusView = mDOB;
+                mDOB.setError(getString(R.string.error_field_required));
+            }
+
+            if (mAge.getText().toString().equals("")) {
+                focusView = mAge;
+                mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
+                focusView = mPhoneNum;
+                mPhoneNum.setError(getString(R.string.error_field_required));
             } else {
-                if (mFirstName.getText().toString().equals("")) {
-                    focusView = mFirstName;
-                    mFirstName.setError(getString(R.string.error_field_required));
-                }
+                mPhoneNum.setError(null);
+            }
 
-                if (mLastName.getText().toString().equals("")) {
-                    focusView = mLastName;
-                    mLastName.setError(getString(R.string.error_field_required));
-                }
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
 
-                if (mDOB.getText().toString().equals("")) {
-                    focusView = mDOB;
-                    mDOB.setError(getString(R.string.error_field_required));
-                }
-
-                if (mAge.getText().toString().equals("")) {
-                    focusView = mAge;
-                    mAge.setError(getString(R.string.error_field_required));
-                }
-
-                if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
-                    focusView = mPhoneNum;
-                    mPhoneNum.setError(getString(R.string.error_field_required));
-                } else {
-                    mPhoneNum.setError(null);
-                }
-
-                if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                    alertDialogBuilder.setTitle(R.string.error);
-                    alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                    return;
-                }
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
+            }
 
 /*
                 if (!yesHOH.isChecked() && !noHOH.isChecked()) {
@@ -3503,21 +3492,21 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 }
 */
 
-                if (focusView != null) {
-                    focusView.requestFocus();
-                    Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-                    return;
-                }
-            }
-
-            if (mCountry.getSelectedItemPosition() == 0) {
-                countryText.setError(getString(R.string.error_field_required));
-                focusView = countryText;
-                cancel = true;
+            if (focusView != null) {
+                focusView.requestFocus();
+                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
                 return;
-            } else {
-                countryText.setError(null);
             }
+        }
+
+        if (mCountry.getSelectedItemPosition() == 0) {
+            countryText.setError(getString(R.string.error_field_required));
+            focusView = countryText;
+            cancel = true;
+            return;
+        } else {
+            countryText.setError(null);
+        }
 
 //            if (mState.getSelectedItemPosition() == 0) {
 //                stateText.setError(getString(R.string.error_field_required));
@@ -3528,86 +3517,78 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                stateText.setError(null);
 //            }
 
-            if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
-                mAddress1.setError(getString(R.string.error_field_required));
-                focusView = mAddress1;
+        if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
+            mAddress1.setError(getString(R.string.error_field_required));
+            focusView = mAddress1;
+            cancel = true;
+        } else {
+            mAddress1.setError(null);
+        }
+
+        // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
+        if (earthquakeVictimCheckbox.isChecked()) {
+
+            // Validation for Special Needs Spinner
+            if (!cancel && binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerNatureSpecialNeeds;
                 cancel = true;
-                return;
-            } else {
-                mAddress1.setError(null);
             }
 
-            // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
-            if (earthquakeVictimCheckbox.isChecked()) {
-
-                // Validation for Special Needs Spinner
-                if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerNatureSpecialNeeds;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Loss As a Result Of Earthquake Spinner
-                if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerLossAsAResultOfTheEarthquake;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Loss of Analgesic Spinner
-                if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Loss of Breadwinner
-                if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Strong Social Ties Spinner
-                if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerStrongSocialTies;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Places Of Relatives EditText
-                if (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase("")) {
-                    binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
-                    focusView = binding.etPlacesOfRelatives;
-                    cancel = true;
-                    return;
-                }
-
-                // Validation for Place Of Preference Spinner
-                if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
-                    TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
-                    t.setError(getString(R.string.select));
-                    t.setTextColor(Color.RED);
-                    focusView = binding.spinnerPlacesOfPreference;
-                    cancel = true;
-                    return;
-                }
+            // Validation for Loss As a Result Of Earthquake Spinner
+            if (!cancel && binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+                cancel = true;
             }
+
+            // Validation for Loss of Analgesic Spinner
+            if (!cancel && binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+                cancel = true;
+            }
+
+            // Validation for Loss of Breadwinner
+            if (!cancel && binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+                cancel = true;
+            }
+
+            // Validation for Strong Social Ties Spinner
+            if (!cancel && binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerStrongSocialTies;
+                cancel = true;
+            }
+
+            // Validation for Places Of Relatives EditText
+            if (!cancel && (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
+                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
+                focusView = binding.etPlacesOfRelatives;
+                cancel = true;
+            }
+
+            // Validation for Place Of Preference Spinner
+            if (!cancel && binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.spinnerPlacesOfPreference;
+                cancel = true;
+            }
+        }
 
             /*if (HOH_relation_spinner.getVisibility() == View.VISIBLE && (HOH_relation_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) HOH_relation_spinner.getSelectedView();
@@ -3727,9 +3708,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             } */
 
 
-            if (cancel) {
-                focusView.requestFocus();
-                // the below changes are done for the requirement raised in ticket SYR-160
+        if (cancel) {
+            focusView.getParent().requestChildFocus(focusView, focusView);
+            // the below changes are done for the requirement raised in ticket SYR-160
 //                View finalFocusView = focusView;
 //                new Handler().post(new Runnable() {
 //                    @Override
@@ -3740,48 +3721,49 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                        scrollView.smoothScrollTo(((vLeft + vRight - sWidth) / 4), 1);
 //                    }
 //                });
-                Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            if (mCurrentPhotoPath == null) mCurrentPhotoPath = patientdto.getPatient_photo();
+
+            patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
+            patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
+            patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientdto.setGender(StringUtils.getValue(mGender));
+
+            String[] dob_array = mDOB.getText().toString().split(" ");
+            Log.d("dob_array", "0: " + dob_array[0]);
+            Log.d("dob_array", "0: " + dob_array[1]);
+            Log.d("dob_array", "0: " + dob_array[2]);
+
+            //get month index and return English value for month.
+            if (dob_indexValue == 15) {
+                String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             } else {
-                if (mCurrentPhotoPath == null) mCurrentPhotoPath = patientdto.getPatient_photo();
+                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
+                String dob_month_split = dob_array[1];
+                dob_array[1] = dob_month_split.replace(dob_month_split, dob);
+                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
 
-                patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
-                patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-                patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
-                patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
-                patientdto.setGender(StringUtils.getValue(mGender));
+                patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+            }
 
-                String[] dob_array = mDOB.getText().toString().split(" ");
-                Log.d("dob_array", "0: " + dob_array[0]);
-                Log.d("dob_array", "0: " + dob_array[1]);
-                Log.d("dob_array", "0: " + dob_array[2]);
+            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
 
-                //get month index and return English value for month.
-                if (dob_indexValue == 15) {
-                    String dob = StringUtils.hi_or_bn_en_noEdit(mDOB.getText().toString(), sessionManager.getAppLanguage());
-                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
-                } else {
-                    String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-                    String dob_month_split = dob_array[1];
-                    dob_array[1] = dob_month_split.replace(dob_month_split, dob);
-                    String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+            String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
+            patientdto.setCity_village(value);
 
-                    patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
-                }
+            patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
+            patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
+            patientdto.setPatient_photo(mCurrentPhotoPath);
 
-                patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-                patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-
-                String value = switch_ar_to_en_village(mVillage.getSelectedItem().toString());
-                patientdto.setCity_village(value);
-
-                patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-                patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
-                patientdto.setPatient_photo(mCurrentPhotoPath);
-
-                String stateName = mState.getSelectedItem().toString();
-                patientdto.setState_province(switch_ar_to_en_state(stateName));
-                Log.v("state", "state name: " + stateName);
-                //  patientdto.setState_province(mState.getSelectedItem().toString());
+            String stateName = mState.getSelectedItem().toString();
+            patientdto.setState_province(switch_ar_to_en_state(stateName));
+            Log.v("state", "state name: " + stateName);
+            //  patientdto.setState_province(mState.getSelectedItem().toString());
 
               /*  patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3791,25 +3773,25 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue(aidTypeInJson);
                 patientAttributesDTOList.add(patientAttributesDTO);*/
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
-                String hohInfoValue = headOfHousehold;
-                String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-                patientAttributesDTO.setValue(hohInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
+            String hohInfoValue = headOfHousehold;
+            String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(hohInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
-                String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
-                String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
-                patientAttributesDTO.setValue(whyHOHInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
+            String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
+            String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
+            patientAttributesDTO.setValue(whyHOHInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
+            // Commented by Arpan Sircar - these two fields are not visible in the activity - keeping them here is preventing sync from happening as empty values are being passed.
 
 //                patientAttributesDTO = new PatientAttributesDTO();
 //                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3826,268 +3808,267 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                patientAttributesDTOList.add(patientAttributesDTO);
 
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
-                String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
-                String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-                patientAttributesDTO.setValue(mainTendInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
+            String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
+            String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(mainTendInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
-                String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
-                String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
-                patientAttributesDTO.setValue(conditionSupportInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
+            String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
+            String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
+            patientAttributesDTO.setValue(conditionSupportInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
-                String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
-                String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
-                patientAttributesDTO.setValue(percIncomeInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
+            String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
+            String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
+            patientAttributesDTO.setValue(percIncomeInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
-                String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
-                String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
-                patientAttributesDTO.setValue(husbandStatusInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
+            String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
+            String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
+            patientAttributesDTO.setValue(husbandStatusInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
-                String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
-                String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
-                patientAttributesDTO.setValue(indepResidInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
+            String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
+            String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(indepResidInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number"));
-                patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
-                String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
-                String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
-                patientAttributesDTO.setValue(residenceNatureInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
+            String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
+            String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
+            patientAttributesDTO.setValue(residenceNatureInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
-                String occupationInfoValue = StringUtils.getProvided(mOccupation);
-                String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
-                patientAttributesDTO.setValue(occupationInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
+            String occupationInfoValue = StringUtils.getProvided(mOccupation);
+            String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
+            patientAttributesDTO.setValue(occupationInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
-                String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
-                String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
-                patientAttributesDTO.setValue(linkNatureInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
+            String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
+            String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
+            patientAttributesDTO.setValue(linkNatureInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                // relationsip hoh
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
-                String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
-                String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
-                patientAttributesDTO.setValue(relationHOHInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            // relationsip hoh
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("The family relationship"));
+            String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
+            String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
+            patientAttributesDTO.setValue(relationHOHInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                // marital
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
-                String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
-                String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
-                patientAttributesDTO.setValue(maritalStatusInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            // marital
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
+            String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
+            String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
+            patientAttributesDTO.setValue(maritalStatusInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-                String educationInfoValue = StringUtils.getProvided(mEducation);
-                String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
-                patientAttributesDTO.setValue(educationInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            String educationInfoValue = StringUtils.getProvided(mEducation);
+            String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
+            patientAttributesDTO.setValue(educationInfoJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-                patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
-                patientAttributesDTO.setValue(patient1.getHealthWorkerID());
-                patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CREATED_BY"));
+            patientAttributesDTO.setValue(patient1.getHealthWorkerID());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-                if (earthquakeVictimCheckbox.isChecked()) {
-                    patientAttributesDTO.setValue("Yes");
-                } else {
-                    patientAttributesDTO.setValue("No");
-                }
-
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                //House Hold Registration
-                if (sessionManager.getHouseholdUuid().equals("")) {
-                    String HouseHold_UUID = UUID.randomUUID().toString();
-                    sessionManager.setHouseholdUuid(HouseHold_UUID);
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
-                    patientAttributesDTO.setValue(HouseHold_UUID);
-                } else {
-                    String HouseHold_UUID = sessionManager.getHouseholdUuid();
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
-                    patientAttributesDTO.setValue(HouseHold_UUID);
-                }
-
-                // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
-                if (earthquakeVictimCheckbox.isChecked()) {
-
-                    // Nature of special needs spinner
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
-                    String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
-                    String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
-                    patientAttributesDTO.setValue(specialNeedsInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Loss as a result of the earthquake
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                    String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
-                    String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
-                    patientAttributesDTO.setValue(lossInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Loss of analgesic as a result of the earthquake
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                    String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
-                    String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
-                    patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Loss of breadwinner as a result of the earthquake
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
-                    String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
-                    String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
-                    patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Strong social ties spinner
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
-                    String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
-                    String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
-                    patientAttributesDTO.setValue(strongSocialTiesInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Place of relatives
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
-                    String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
-                    patientAttributesDTO.setValue(placesOfRelativesInfoValue);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                    // Place of hosting spinner
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
-                    String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
-                    String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
-                    patientAttributesDTO.setValue(placeOfHostingInfoJson);
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                }
-
-                //House Hold Registration - End
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-                Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.toString());
-                Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
-
+            if (earthquakeVictimCheckbox.isChecked()) {
+                patientAttributesDTO.setValue("Yes");
+            } else {
+                patientAttributesDTO.setValue("No");
             }
 
-            try {
-                Logger.logD(TAG, "update ");
-                boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
-                boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                if (NetworkConnection.isOnline(getApplication())) {
-                    SyncDAO syncDAO = new SyncDAO();
-                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                    boolean ispush = syncDAO.pushDataApi();
-                    boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
-                }
-
-                if (isPatientUpdated && isPatientImageUpdated) {
-                    Logger.logD(TAG, "updated");
-                    Intent i = new Intent(getApplication(), PatientDetailActivity.class);
-                    i.putExtra("patientUuid", uuid);
-                    i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
-                    i.putExtra("tag", "newPatient");
-                    i.putExtra("hasPrescription", "false");
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    getApplication().startActivity(i);
-                }
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+            //House Hold Registration
+            if (sessionManager.getHouseholdUuid().equals("")) {
+                String HouseHold_UUID = UUID.randomUUID().toString();
+                sessionManager.setHouseholdUuid(HouseHold_UUID);
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+            } else {
+                String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Household ID Number"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
             }
-            commentedRoasterValidations();
+
+            // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
+            if (earthquakeVictimCheckbox.isChecked()) {
+
+                // Nature of special needs spinner
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
+                String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
+                String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
+                patientAttributesDTO.setValue(specialNeedsInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Loss as a result of the earthquake
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+                String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
+                String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
+                patientAttributesDTO.setValue(lossInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Loss of analgesic as a result of the earthquake
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+                String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
+                String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
+                patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Loss of breadwinner as a result of the earthquake
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
+                String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
+                String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
+                patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Strong social ties spinner
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
+                String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
+                String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
+                patientAttributesDTO.setValue(strongSocialTiesInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Place of relatives
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
+                String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
+                patientAttributesDTO.setValue(placesOfRelativesInfoValue);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Place of hosting spinner
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
+                String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
+                String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
+                patientAttributesDTO.setValue(placeOfHostingInfoJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            //House Hold Registration - End
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+            Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.toString());
+            Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
+
         }
+
+        try {
+            Logger.logD(TAG, "update ");
+            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
+
+            if (NetworkConnection.isOnline(getApplication())) {
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean ispush = syncDAO.pushDataApi();
+                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+            }
+
+            if (isPatientUpdated && isPatientImageUpdated) {
+                Logger.logD(TAG, "updated");
+                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                i.putExtra("patientUuid", uuid);
+                i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+                i.putExtra("tag", "newPatient");
+                i.putExtra("hasPrescription", "false");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getApplication().startActivity(i);
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        commentedRoasterValidations();
     }
 
     private void initUI() {
