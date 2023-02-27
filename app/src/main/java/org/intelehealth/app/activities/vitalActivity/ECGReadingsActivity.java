@@ -6,7 +6,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ObservableBoolean;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -90,6 +93,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         }
     }
     private void captureAllValues() {
+        @SuppressLint("WrongConstant")
         ECG_JsonModel jsonModel = new ECG_JsonModel(
                 String.valueOf(model.getR2r()),
                 String.valueOf(model.getHr()),
@@ -104,6 +108,11 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         Gson gson = new Gson();
         String json = gson.toJson(jsonModel, ECG_JsonModel.class);
         Log.v("ECG", "ECG: " + json.toString());
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",json);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
 
     private void initUI() {
@@ -202,8 +211,13 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         countDown_txt.setCountDownParams(timeout);
         toggleCountDown_(countDown_txt, true);
 
-        IUserProfile userProfileDefault = new UserProfile("ccl", UserProfile.MALE
-                , 633715200, 170, 60);  // todo: pass actual user values here...
+     //   IUserProfile userProfileDefault = new UserProfile("ccl", UserProfile.MALE, 633715200, 170, 60);  // todo: pass actual user values here...
+        IUserProfile userProfileDefault = new UserProfile();
+        ((UserProfile) userProfileDefault).setBirthday(1998, 7, 1);
+        ((UserProfile) userProfileDefault).setUsername("ccl");
+        ((UserProfile) userProfileDefault).setGender(UserProfile.MALE);
+        ((UserProfile) userProfileDefault).setHeight(162);
+        ((UserProfile) userProfileDefault).setWeight(56);
 
         // ECG init...
         if (mHcService != null) {

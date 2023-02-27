@@ -124,6 +124,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     TextView textView;
   //  private AlertDialog alertDialog;
     private Dialog test_dialog;
+    private final int ECG_LAUNCHER_INTENT = 111;
    // protected final ObservableField<String> event = new ObservableField<>("");
 
 
@@ -143,6 +144,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
+    String ecgValue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
     String appLanguage;
     VitalsObject results = new VitalsObject();
@@ -470,7 +472,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         ecg_button.setOnClickListener(v -> {
             Intent i = new Intent(VitalsActivity.this, ECGReadingsActivity.class);
-            startActivity(i);
+            startActivityForResult(i, ECG_LAUNCHER_INTENT);
         });
 
         mTemperature.addTextChangedListener(new TextWatcher() {
@@ -1446,6 +1448,12 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
                 } else
                     results.setTotlaCholesterol("0");
+                if (ecgValue != null && !ecgValue.equals("")) {
+                    results.setEcg(ecgValue);
+                }
+                else {
+                    results.setEcg("0");
+                }
 
 
             } catch (NumberFormatException e) {
@@ -1525,7 +1533,6 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getResp());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-
                 obsDAO.updateObs(obsDTO);
 
                 obsDTO = new ObsDTO();
@@ -1534,7 +1541,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
+                obsDAO.updateObs(obsDTO);
 
+                // ECG
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.ECG_READINGS);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getEcg());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ECG_READINGS));
                 obsDAO.updateObs(obsDTO);
 
                 // Glucose
@@ -1769,6 +1784,18 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // ECG
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.ECG_READINGS);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getEcg());
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -2103,15 +2130,24 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
     }*/
 
-  /*  @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
+        /*if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
             //蓝牙启动结果
             Toast.makeText(VitalsActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
             clickConnect();
-        }
+        }*/
         super.onActivityResult(requestCode, resultCode, data);
-    }*/
+        if (requestCode == ECG_LAUNCHER_INTENT) {
+            if(resultCode == Activity.RESULT_OK){
+                ecgValue = data.getStringExtra("result");
+                Log.v("ECG", "ECG vitals: " + ecgValue);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // Write your code if there's no result
+            }
+        }
+    }
 
   /*  @Override
     public void onBleState(int bleState) {
