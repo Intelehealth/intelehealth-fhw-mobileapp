@@ -50,6 +50,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
             mood_txt, heart_age_txt, heart_beat_txt, robust_heart_rate_txt, stress_level_txt;
     private Button btn_measure, paper_speed_btn, gain_btn, btn_submit;
     private static final long timeout = 30L;
+    private String patientName, patientBirthday, patientGender, patientHeight, patientWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         setContentView(R.layout.activity_ecgreadings);
 
         initUI();
+        fetchIntent();
 
         model = new ECG();
         ecgDrawWave = new ECGDrawWave();
@@ -83,6 +85,15 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
             captureAllValues();
         });
 
+    }
+
+    private void fetchIntent() {
+        Intent intent = getIntent();
+        patientName = intent.getStringExtra("patientName");
+        patientBirthday = intent.getStringExtra("patientBirthday");
+        patientGender = intent.getStringExtra("patientGender");
+        patientHeight = intent.getStringExtra("patientHeight");
+        patientWeight = intent.getStringExtra("patientWeight");
     }
 
     public static void toggleCountDown_(@NonNull CountDownTextView textView, boolean toggleCountDown) {
@@ -211,13 +222,28 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         countDown_txt.setCountDownParams(timeout);
         toggleCountDown_(countDown_txt, true);
 
-     //   IUserProfile userProfileDefault = new UserProfile("ccl", UserProfile.MALE, 633715200, 170, 60);  // todo: pass actual user values here...
+        String[] dob_array = patientBirthday.split("-");
+        int year = Integer.parseInt(dob_array[0]);
+        int month = Integer.parseInt(dob_array[1]);
+        int day = Integer.parseInt(dob_array[2]);
+        Log.v("ECG_Dob", "ECG_DOB: " + year + " " + month + " " + day);
+
+        int gender;
+        if (patientGender.equalsIgnoreCase("M"))
+            gender = UserProfile.MALE;
+        else if (patientGender.equalsIgnoreCase("F"))
+            gender = UserProfile.FEMALE;
+        else
+            gender = UserProfile.MALE;
+
+        //   IUserProfile userProfileDefault = new UserProfile("ccl", UserProfile.MALE, 633715200, 170, 60);  // todo: pass actual user values here...
         IUserProfile userProfileDefault = new UserProfile();
-        ((UserProfile) userProfileDefault).setBirthday(1998, 7, 1);
-        ((UserProfile) userProfileDefault).setUsername("ccl");
-        ((UserProfile) userProfileDefault).setGender(UserProfile.MALE);
-        ((UserProfile) userProfileDefault).setHeight(162);
-        ((UserProfile) userProfileDefault).setWeight(56);
+        ((UserProfile) userProfileDefault).setBirthday(year, month, day);
+        ((UserProfile) userProfileDefault).setUsername(patientName);
+        ((UserProfile) userProfileDefault).setGender(gender);
+        ((UserProfile) userProfileDefault).setHeight(Integer.parseInt(patientHeight));
+        ((UserProfile) userProfileDefault).setWeight(Integer.parseInt(patientWeight));
+        Log.v("ECG", "ECG User: " + userProfileDefault.toString());
 
         // ECG init...
         if (mHcService != null) {

@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.vitalActivity;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.fetch_dob;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -125,6 +127,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
   //  private AlertDialog alertDialog;
     private Dialog test_dialog;
     private final int ECG_LAUNCHER_INTENT = 111;
+    private String dob = "";
    // protected final ObservableField<String> event = new ObservableField<>("");
 
 
@@ -470,8 +473,14 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             bg_fasting_clicked = true;
         });
 
+        dob = fetch_dob(patientUuid);
         ecg_button.setOnClickListener(v -> {
             Intent i = new Intent(VitalsActivity.this, ECGReadingsActivity.class);
+            i.putExtra("patientName", patientName);
+            i.putExtra("patientBirthday", dob);
+            i.putExtra("patientGender", patientGender);
+            i.putExtra("patientHeight", mHeight.getText().toString());
+            i.putExtra("patientWeight", mWeight.getText().toString());
             startActivityForResult(i, ECG_LAUNCHER_INTENT);
         });
 
