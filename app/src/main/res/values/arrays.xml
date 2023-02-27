@@ -2111,7 +2111,7 @@
     </string-array>
 
     <string-array name="victim_special_needs_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>سن متقدم >65</item>
         <item>إعاقة</item>
         <item>أمراض مزمنة</item>
@@ -2126,7 +2126,7 @@
     </string-array>
 
     <string-array name="victim_loss_due_to_earthquake_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>نعم</item>
         <item>نوعا ما </item>
         <item>لا</item>
@@ -2139,7 +2139,7 @@
     </string-array>
 
     <string-array name="victim_loss_of_analgesic_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>فقدان تام</item>
         <item>فقدان جزئي</item>
     </string-array>
@@ -2151,7 +2151,7 @@
     </string-array>
 
     <string-array name="victim_loss_of_breadwinner_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>نعم</item>
         <item>لا</item>
     </string-array>
@@ -2164,7 +2164,7 @@
     </string-array>
 
     <string-array name="victim_strong_social_ties_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>نعم</item>
         <item>نوعا ما </item>
         <item>لا</item>
@@ -2179,7 +2179,7 @@
     </string-array>
 
     <string-array name="victim_place_of_preference_ar">
-        <item>عربي</item>
+        <item>اختر إجابة</item>
         <item>السويداء</item>
         <item>حمص</item>
         <item>طرطوس</item>
