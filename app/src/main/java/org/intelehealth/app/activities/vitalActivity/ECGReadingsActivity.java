@@ -94,6 +94,12 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         patientGender = intent.getStringExtra("patientGender");
         patientHeight = intent.getStringExtra("patientHeight");
         patientWeight = intent.getStringExtra("patientWeight");
+
+        if (patientHeight.equalsIgnoreCase(""))
+            patientHeight = "0";
+
+        if (patientWeight.equalsIgnoreCase(""))
+            patientWeight = "0";
     }
 
     public static void toggleCountDown_(@NonNull CountDownTextView textView, boolean toggleCountDown) {
