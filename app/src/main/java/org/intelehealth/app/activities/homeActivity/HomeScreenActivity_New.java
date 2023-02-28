@@ -258,6 +258,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,7 +283,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         initUI();
         //}
         clickListeners();
-
+//        awsAuth();
 
     }
 

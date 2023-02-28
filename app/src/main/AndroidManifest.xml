@@ -284,6 +284,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".services.CameraOpenRequestReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"

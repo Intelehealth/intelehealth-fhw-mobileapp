@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 59
         buildToolsVersion('29.0.2')
@@ -154,6 +154,7 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

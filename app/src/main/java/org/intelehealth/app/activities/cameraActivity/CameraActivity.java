@@ -66,6 +66,7 @@ public class CameraActivity extends AppCompatActivity {
      * message before starting the camera.
      */
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
+    public static final String SEND_BROADCAST_AFTER_CAPTURE = "SEND_BROADCAST_AFTER_CAPTURE";
     private static final int[] FLASH_OPTIONS = {
             CameraView.FLASH_AUTO,
             CameraView.FLASH_OFF,

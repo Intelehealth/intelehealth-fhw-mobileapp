@@ -21,6 +21,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,12 +59,16 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.apprtc.adapter.ChatListingAdapter;
 import org.intelehealth.apprtc.data.Constants;
 import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
+import org.intelehealth.apprtc.utils.AwsS3Utils;
 import org.intelehealth.apprtc.utils.BitmapUtils;
+import org.intelehealth.apprtc.utils.RealPathUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +91,11 @@ import org.webrtc.VideoRenderer;
 import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -180,6 +191,7 @@ public class CompleteActivity extends AppCompatActivity {
     private Ringtone mRingtone;
 
     BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver mImageCaptureReceiver;
     boolean mMicrophonePluggedIn = false;
     private JSONObject mRoomJsonObject = new JSONObject();
     private static final int WAIT_TIMER = 6 * 60 * 60 * 1000; // expecting max 6 hour call
@@ -452,6 +464,33 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(broadcastReceiver, receiverFilter);
+
+        mImageCaptureReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String currentPhotoPath = intent.getStringExtra("");
+                Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                    Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    JSONObject inputJsonObject = new JSONObject();
+                    inputJsonObject.put("fromUser", mFromUUId);
+                    inputJsonObject.put("toUser", mToUUId);
+                    inputJsonObject.put("patientId", mPatientUUid);
+                    inputJsonObject.put("message", ".jpg");
+                    inputJsonObject.put("type", "attachment");
+                    inputJsonObject.put("isLoading", true);
+
+                    addNewMessage(inputJsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
+            }
+        };
+        registerReceiver(mImageCaptureReceiver, new IntentFilter(Constants.IMAGE_CAPTURE_DONE_INTENT_ACTION));
 
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
@@ -1201,7 +1240,7 @@ public class CompleteActivity extends AppCompatActivity {
         }
         String message = binding.textEtv.getText().toString().trim();
         if (!message.isEmpty()) {
-            postMessages(mFromUUId, mToUUId, mPatientUUid, message);
+            postMessages(mFromUUId, mToUUId, mPatientUUid, message, "text");
         } else {
             Toast.makeText(this, getString(R.string.empty_message_txt), Toast.LENGTH_SHORT).show();
         }
@@ -1228,6 +1267,9 @@ public class CompleteActivity extends AppCompatActivity {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForCameraResult.launch(cameraIntent);*/
+        Intent broadcast = new Intent();
+        broadcast.setAction(Constants.IMAGE_CAPTURE_REQUEST_INTENT_ACTION);
+        sendBroadcast(broadcast);
     }
 
     private void galleryStart() {
@@ -1235,21 +1277,43 @@ public class CompleteActivity extends AppCompatActivity {
         mStartForGalleryResult.launch(intent);
     }
 
+    private void browseStartForPdf() {
+        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+        chooseFile.setType("application/pdf");
+        mStartForPDFResult.launch(chooseFile);
+    }
+
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), getString(R.string.cancel_lbl)};
+        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), "Choose Documents", getString(R.string.cancel_lbl)};
         AlertDialog.Builder builder = new AlertDialog.Builder(CompleteActivity.this);
-        builder.setTitle("Add Image by");
+        builder.setTitle("Select");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
+                    if (mImageCount >= 5) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     cameraStart();
 
                 } else if (item == 1) {
+                    if (mImageCount >= 5) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     galleryStart();
+
+                } else if (item == 2) {
+                    if (mPDFCount >= 2) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 2 documents you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    browseStartForPdf();
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -1326,24 +1390,81 @@ public class CompleteActivity extends AppCompatActivity {
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
-
+                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                                Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             try {
                                 JSONObject inputJsonObject = new JSONObject();
                                 inputJsonObject.put("fromUser", mFromUUId);
                                 inputJsonObject.put("toUser", mToUUId);
                                 inputJsonObject.put("patientId", mPatientUUid);
-                                inputJsonObject.put("message", "New Image Sent!");
-                                inputJsonObject.put("ContentType", "IMAGE");
-                                inputJsonObject.put("filePath", currentPhotoPath);
+                                inputJsonObject.put("message", ".jpg");
+                                inputJsonObject.put("type", "attachment");
+                                inputJsonObject.put("isLoading", true);
 
                                 addNewMessage(inputJsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
+                            AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
                         } else {
                             Toast.makeText(CompleteActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
                         }
+
+                    }
+                }
+            });
+    ActivityResultLauncher<Intent> mStartForPDFResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPDFPath = "";
+                        try {
+                            Uri uri = data.getData();
+                            FileInputStream fileInputStream = (FileInputStream) getContentResolver().openInputStream(uri);
+                            if (fileInputStream != null) {
+                                byte[] fileBytesArray = new byte[fileInputStream.available()];
+                                fileInputStream.read(fileBytesArray);
+                                fileInputStream.close();
+
+                                //TODO: Remove below code
+                                //Below code is to test the above fileBytesArray is correct or not.
+                                //Below we are creating a MainTest file in your internal storage (For that You need write Storage permission) and checking the content same as original file
+                                //In-case of file type change .pdf to .txt or whatever type of file you are choosing
+                                File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" +
+                                        UUID.randomUUID().toString() + ".pdf");
+                                OutputStream fileOutputStream = new FileOutputStream(mFile);
+                                fileOutputStream.write(fileBytesArray);
+                                fileOutputStream.close();
+                                //End
+                                currentPDFPath = mFile.getPath();
+                                if (!RealPathUtil.isFileLessThan1MB(mFile)) {
+                                    Toast.makeText(CompleteActivity.this, "Max doc size is 1MB", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                Log.v(TAG, "currentPDFPath" + currentPDFPath);
+                                try {
+                                    JSONObject inputJsonObject = new JSONObject();
+                                    inputJsonObject.put("fromUser", mFromUUId);
+                                    inputJsonObject.put("toUser", mToUUId);
+                                    inputJsonObject.put("patientId", mPatientUUid);
+                                    inputJsonObject.put("message", ".pdf");
+                                    inputJsonObject.put("LayoutType", "attachment");
+                                    inputJsonObject.put("isLoading", true);
+
+                                    addNewMessage(inputJsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPDFPath);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 }
@@ -1383,18 +1504,30 @@ public class CompleteActivity extends AppCompatActivity {
         mRequestQueue.add(jsonObjectRequest);
     }
 
+    private int mPDFCount = 0;
+    private int mImageCount = 0;
+
     private void showChat(JSONObject response, boolean isAlreadySetReadStatus) {
         try {
             mChatList.clear();
+            mPDFCount = 0;
+            mImageCount = 0;
             if (response.getBoolean("success")) {
                 JSONArray jsonArray = response.getJSONArray("data");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject chatJsonObject = jsonArray.getJSONObject(i);
                     //Log.v(TAG, "showChat - " + chatJsonObject);
                     if (chatJsonObject.getString("fromUser").equals(mFromUUId)) {
-                        chatJsonObject.put("type", Constants.RIGHT_ITEM_HW); // HW
+                        chatJsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW); // HW
+                        if (chatJsonObject.getString("type").equalsIgnoreCase("attachment")) {
+                            if (chatJsonObject.getString("message").endsWith(".pdf")) {
+                                mPDFCount += 1;
+                            } else {
+                                mImageCount += 1;
+                            }
+                        }
                     } else {
-                        chatJsonObject.put("type", Constants.LEFT_ITEM_DOCT); // DOCTOR
+                        chatJsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT); // DOCTOR
                     }
                     mChatList.add(chatJsonObject);
                 }
@@ -1406,7 +1539,12 @@ public class CompleteActivity extends AppCompatActivity {
 
                 sortList();
 
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
+                    @Override
+                    public void onClick(String url) {
+                        showImageOrPdf(url);
+                    }
+                });
                 binding.chatsRcv.setAdapter(mChatListingAdapter);
 
                 if (!mChatList.isEmpty()) {
@@ -1434,7 +1572,7 @@ public class CompleteActivity extends AppCompatActivity {
                 if (!isAlreadySetReadStatus)
                     for (int i = 0; i < mChatList.size(); i++) {
                         //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
-                        if (mChatList.get(i).getInt("type") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
+                        if (mChatList.get(i).getInt("LayoutType") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
                             setReadStatus(mChatList.get(i).getString("id"));
                             break;
                         }
@@ -1467,7 +1605,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     }
 
-    private void postMessages(String fromUUId, String toUUId, String patientUUId, String message) {
+    private void postMessages(String fromUUId, String toUUId, String patientUUId, String message, String type) {
         try {
 
             JSONObject inputJsonObject = new JSONObject();
@@ -1481,7 +1619,9 @@ public class CompleteActivity extends AppCompatActivity {
             inputJsonObject.put("hwPic", "");
             inputJsonObject.put("visitId", mVisitUUID);
             inputJsonObject.put("isRead", false);
+            inputJsonObject.put("type", type);
             binding.loadingLayout.setVisibility(View.VISIBLE);
+            Log.v(TAG, "postMessages - inputJsonObject - " + inputJsonObject.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -1526,9 +1666,9 @@ public class CompleteActivity extends AppCompatActivity {
     private void addNewMessage(JSONObject jsonObject) {
         try {
             if (jsonObject.getString("fromUser").equals(mFromUUId)) {
-                jsonObject.put("type", Constants.RIGHT_ITEM_HW);
+                jsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW);
             } else {
-                jsonObject.put("type", Constants.LEFT_ITEM_DOCT);
+                jsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT);
             }
             if (!jsonObject.has("createdAt")) {
                 SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
@@ -1541,7 +1681,12 @@ public class CompleteActivity extends AppCompatActivity {
             sortList();
 
             if (mChatListingAdapter == null) {
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
+                    @Override
+                    public void onClick(String url) {
+                        showImageOrPdf(url);
+                    }
+                });
                 binding.chatsRcv.setAdapter(mChatListingAdapter);
             } else {
                 mChatListingAdapter.refresh(mChatList);
@@ -1567,4 +1712,22 @@ public class CompleteActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
 
     /*88888888888888888888888888888888888888888888888888888888888*/
+
+    private void showImageOrPdf(String url) {
+        if (url.endsWith(".pdf")) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } else {
+            Glide.with(this)
+                    .load(url)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .thumbnail(0.1f)
+                    .into((ImageView) findViewById(R.id.preview_img));
+            findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void closePreview(View view) {
+        findViewById(R.id.image_preview_ll).setVisibility(View.GONE);
+    }
 }

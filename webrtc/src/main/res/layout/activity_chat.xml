@@ -185,4 +185,34 @@
             android:textSize="12sp" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/image_preview_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c1_transaprent_1"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dip"
+            android:onClick="closePreview"
+            android:src="@drawable/ic_baseline_cancel_24" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/white" />
+
+        <ImageView
+            android:id="@+id/preview_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 </RelativeLayout>
