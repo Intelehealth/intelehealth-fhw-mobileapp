@@ -868,9 +868,11 @@
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -909,7 +911,7 @@
                         android:padding="10dp">
 
                         <TextView
-                            android:id="@+id/textview_vitals"
+                            android:id="@+id/textview_social_visit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -919,7 +921,7 @@
                             android:tag="@string/tag_optional"
                             android:text="@string/clinical_social_visits_information"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </LinearLayout>
 
