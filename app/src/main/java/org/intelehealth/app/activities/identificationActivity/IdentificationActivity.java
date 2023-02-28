@@ -1908,7 +1908,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (focusView != null) {
                 focusView.requestFocus();
-                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+                Toast.makeText(IdentificationActivity.this, R.string.identification_fill_required_fields, Toast.LENGTH_LONG).show();
             }
         }
 
@@ -2292,7 +2292,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         if (cancel) {
             focusView.getParent().requestChildFocus(focusView, focusView);
-            Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.identification_fill_required_fields), Toast.LENGTH_SHORT).show();
         } else {
             displayPinDialog();
         }
@@ -3494,7 +3494,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (focusView != null) {
                 focusView.requestFocus();
-                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+                Toast.makeText(IdentificationActivity.this, R.string.identification_fill_required_fields, Toast.LENGTH_LONG).show();
                 return;
             }
         }
@@ -3721,7 +3721,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                        scrollView.smoothScrollTo(((vLeft + vRight - sWidth) / 4), 1);
 //                    }
 //                });
-            Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.identification_fill_required_fields), Toast.LENGTH_SHORT).show();
             return;
         } else {
             if (mCurrentPhotoPath == null) mCurrentPhotoPath = patientdto.getPatient_photo();

@@ -1605,6 +1605,7 @@
     <string name="places_of_relatives_cannot_be_empty">Places of relatives cannot be empty.</string>
     <string name="clinical_social_visits_information">The following sections are for clinical visits, for social visits, submit/ swipe right until the end of the sections to reach the note page</string>
     <string name="swipe_to_move_forward">Swipe to the right to move forward</string>
+    <string name="identification_fill_required_fields">Fill required fields</string>
 
 
 </resources>

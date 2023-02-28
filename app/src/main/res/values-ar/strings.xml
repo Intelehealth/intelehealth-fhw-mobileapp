@@ -1598,5 +1598,6 @@
     <string name="places_of_relatives_cannot_be_empty"> الرجاء ملء حقل مكان تواجد الأقارب</string>
     <string name="clinical_social_visits_information">المعلومات التالية مخصصة للزيارات الطبية, في حال كانت الزيارة لتقييم حالة اجتماعية يمكن تجاوز ادخال المعلومات غير المتعلقة بالحالة بسحب الشاشة نحو اليمين</string>
     <string name="swipe_to_move_forward">اسحب الشاشة إلى اليمين للتقدم</string>
+    <string name="identification_fill_required_fields">املأ الخانات الاجبارية</string>
 
 </resources>
