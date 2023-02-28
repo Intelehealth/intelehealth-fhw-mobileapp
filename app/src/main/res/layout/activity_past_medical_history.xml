@@ -25,70 +25,94 @@
 
     <org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator
         android:id="@+id/recyclerViewIndicator"
-        android:layout_below="@+id/app_bar_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar_view"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        app:spi_visibleDotCount="21"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         app:spi_dotSelectedColor="@color/colorPrimary"
-
-        android:layout_centerHorizontal="true"
-
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+        app:spi_visibleDotCount="21">
 
     </org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_scroll_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerViewIndicator"
+        android:layout_marginTop="7dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_intuitive_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_arrow_forward" />
+
+        <TextView
+            android:id="@+id/tv_intuitive_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerViewIndicator"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center_horizontal"
+            android:text="@string/swipe_to_move_forward"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/recyclerViewIndicator"
+        android:layout_below="@+id/ll_scroll_information"
         android:orientation="vertical"
         android:weightSum="1">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-
-        android:id="@+id/recycleFrame"
-
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pastMedical_recyclerView"
+        <FrameLayout
+            android:id="@+id/recycleFrame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
 
-            android:scrollbars="vertical"
-            android:visibility="visible"
-            android:fadeScrollbars="false"
-            android:scrollbarThumbVertical="@color/colorAccent"
-            android:layout_above="@+id/fab"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pastMedical_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_above="@+id/fab"
+                android:fadeScrollbars="false"
+                android:scrollbarThumbVertical="@color/colorAccent"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
 
 
+        </FrameLayout>
 
-
-</FrameLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight=".2"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/recycleFrame"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_below="@+id/recycleFrame"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_weight=".2"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_done_24dp" />
 
     </LinearLayout>
-    <include layout="@layout/content_past_medical_history"
+
+    <include
+        layout="@layout/content_past_medical_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
+        android:visibility="gone" />
 
 
 </RelativeLayout>

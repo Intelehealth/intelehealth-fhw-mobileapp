@@ -1597,5 +1597,6 @@
     <string name="places_of_preference">إذا أمكننا استضافتك لسنة مع تكاليف أساسية للمعيشة, أي من الأماكن التالية تفضل؟</string>
     <string name="places_of_relatives_cannot_be_empty"> الرجاء ملء حقل مكان تواجد الأقارب</string>
     <string name="clinical_social_visits_information">المعلومات التالية مخصصة للزيارات الطبية, في حال كانت الزيارة لتقييم حالة اجتماعية يمكن تجاوز ادخال المعلومات غير المتعلقة بالحالة بسحب الشاشة نحو اليمين</string>
+    <string name="swipe_to_move_forward">اسحب الشاشة إلى اليمين للتقدم</string>
 
 </resources>

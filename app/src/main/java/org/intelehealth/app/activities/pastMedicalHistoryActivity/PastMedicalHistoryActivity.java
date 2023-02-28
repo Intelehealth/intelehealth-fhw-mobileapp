@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -39,6 +40,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -88,6 +90,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     JSONObject jsonObject = new JSONObject();
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
+    ImageView ivIntuitiveScroll;
 
     String mFileName = "patHist.json";
     String image_Prefix = "MH";
@@ -265,6 +268,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
+        ivIntuitiveScroll = findViewById(R.id.iv_intuitive_scroll);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null));
+        } else {
+            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_forward, null));
+        }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -317,7 +328,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         pastMedical_recyclerView.setAdapter(adapter);
 
         recyclerViewIndicator.attachToRecyclerView(pastMedical_recyclerView);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             recyclerViewIndicator.setScaleX(-1);
 
 
@@ -397,8 +408,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash
-            if(message!=null && !message.isEmpty())
-            {
+            if (message != null && !message.isEmpty()) {
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("since", "حيث")
@@ -462,7 +472,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
 
                 //changes done to handle null pointer exception crash
-                if(patientHistoryArabic!=null && !patientHistoryArabic.isEmpty()) {
+                if (patientHistoryArabic != null && !patientHistoryArabic.isEmpty()) {
                     patientHistoryArabic = patientHistoryArabic
                             .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                             .replace("since", "حيث")
@@ -512,14 +522,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
-        }
-        else {
+        } else {
             //  if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
             String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
 
             //changes done to handle null pointer exception crash
-            if(patientHistoryArabic!=null && !patientHistoryArabic.isEmpty()) {
+            if (patientHistoryArabic != null && !patientHistoryArabic.isEmpty()) {
                 patientHistoryArabic = patientHistoryArabic
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("since", "حيث")
