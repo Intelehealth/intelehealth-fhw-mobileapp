@@ -950,7 +950,7 @@
     <string name="successfully_pdf_created">PDF Successfully Created!!</string>
     <string name="confirm_skip_complaint">Are you sure you want to skip complaint registration? \n\nNote:- This action cannot be undone.</string>
 
-     <!--Remos Device-->
+    <!--Remos Device-->
     <string name="leak_and_check">There is a leak. Please check the gas path.</string>
     <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
     <string name="devices">Devices</string>
@@ -1013,4 +1013,5 @@
     <string name="mood_desc_balanced">Balanced</string>
     <string name="mood_desc_motivated">Motivated</string>
     <string name="mood_desc_agitated">Agitated/Anxiety/Excited</string>
+    <string name="ecg">ECG</string>
 </resources>

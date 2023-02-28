@@ -78,4 +78,5 @@
 
     <color name="colorECGLargeGrid">#11172a</color>
     <color name="colorECGSmallGrid">#545767</color>
+    <color name="colorBackground">#eeeeee</color>
 </resources>

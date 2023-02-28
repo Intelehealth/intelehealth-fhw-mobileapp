@@ -47,7 +47,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
     private EcgTask mEcgTask;
     public HcService mHcService;
     private TextView finger_detection_txt, signal_quality_txt, r_r_interval_txt, heart_rate_txt, hrv_txt, respiratory_rate_txt,
-            mood_txt, heart_age_txt, heart_beat_txt, robust_heart_rate_txt, stress_level_txt;
+            mood_txt, heart_age_txt, heart_beat_txt, robust_heart_rate_txt, stress_level_txt, click_to_see;
     private Button btn_measure, paper_speed_btn, gain_btn, btn_submit;
     private static final long timeout = 30L;
     private String patientName, patientBirthday, patientGender, patientHeight, patientWeight;
@@ -70,6 +70,8 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         wave_view.setDrawWave(ecgDrawWave);
         wave_view.pause();
 
+
+        click_to_see.setOnClickListener(v -> { openECGLarge();});
         countDown_txt.setOnCountDownFinishCallback(() -> {
             toggleCountDown.set(false);
             onEcgDuration(timeout);
@@ -134,6 +136,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
 
     private void initUI() {
         wave_view = findViewById(R.id.wave_view);
+        click_to_see = findViewById(R.id.click_to_see);
         countDown_txt = findViewById(R.id.countDown_txt);
         paper_speed_btn = findViewById(R.id.paper_speed_btn);
         gain_btn = findViewById(R.id.gain_btn);
@@ -302,6 +305,14 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
             MonitorDataTransmissionManager.getInstance().stopMeasure();
         }
         btn_measure.setText("Start Measuring");
+    }
+
+    public void openECGLarge() {
+        Intent intent = new Intent(ECGReadingsActivity.this, ECGLargeActivity.class);
+        intent.putExtra("paperSpeed", ecgDrawWave.getPaperSpeed());
+        intent.putExtra("gain", ecgDrawWave.getGain());
+        intent.putExtra("model", model);
+        startActivity(intent);
     }
 
     @Override
