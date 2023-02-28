@@ -1457,13 +1457,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
                 } else
                     results.setTotlaCholesterol("0");
-                if (ecgValue != null && !ecgValue.equals("")) {
+                if (ecgValue != null) {
                     results.setEcg(ecgValue);
                 }
-                else {
-                    results.setEcg("0");
-                }
-
 
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
