@@ -1909,6 +1909,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             if (focusView != null) {
                 focusView.requestFocus();
                 Toast.makeText(IdentificationActivity.this, R.string.identification_fill_required_fields, Toast.LENGTH_LONG).show();
+                return;
             }
         }
 
