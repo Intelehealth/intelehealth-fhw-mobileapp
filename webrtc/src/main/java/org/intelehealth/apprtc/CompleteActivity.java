@@ -191,6 +191,7 @@ public class CompleteActivity extends AppCompatActivity {
     private Ringtone mRingtone;
 
     BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver mImageCaptureReceiver;
     boolean mMicrophonePluggedIn = false;
     private JSONObject mRoomJsonObject = new JSONObject();
     private static final int WAIT_TIMER = 6 * 60 * 60 * 1000; // expecting max 6 hour call
@@ -463,6 +464,33 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(broadcastReceiver, receiverFilter);
+
+        mImageCaptureReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String currentPhotoPath = intent.getStringExtra("");
+                Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                    Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    JSONObject inputJsonObject = new JSONObject();
+                    inputJsonObject.put("fromUser", mFromUUId);
+                    inputJsonObject.put("toUser", mToUUId);
+                    inputJsonObject.put("patientId", mPatientUUid);
+                    inputJsonObject.put("message", ".jpg");
+                    inputJsonObject.put("type", "attachment");
+                    inputJsonObject.put("isLoading", true);
+
+                    addNewMessage(inputJsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
+            }
+        };
+        registerReceiver(mImageCaptureReceiver, new IntentFilter(Constants.IMAGE_CAPTURE_DONE_INTENT_ACTION));
 
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
@@ -1239,6 +1267,9 @@ public class CompleteActivity extends AppCompatActivity {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForCameraResult.launch(cameraIntent);*/
+        Intent broadcast = new Intent();
+        broadcast.setAction(Constants.IMAGE_CAPTURE_REQUEST_INTENT_ACTION);
+        sendBroadcast(broadcast);
     }
 
     private void galleryStart() {
@@ -1359,7 +1390,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
-                            if(!RealPathUtil.isFileLessThan1MB(new File(currentPhotoPath))){
+                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
                                 Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
                                 return;
                             }

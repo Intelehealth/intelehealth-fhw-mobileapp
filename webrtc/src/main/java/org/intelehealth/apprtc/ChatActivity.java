@@ -189,9 +189,37 @@ public class ChatActivity extends AppCompatActivity {
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
         registerReceiver(mBroadcastReceiver, filterSend);
+
+        mImageCaptureReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String currentPhotoPath = intent.getStringExtra("");
+                Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                    Toast.makeText(ChatActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    JSONObject inputJsonObject = new JSONObject();
+                    inputJsonObject.put("fromUser", mFromUUId);
+                    inputJsonObject.put("toUser", mToUUId);
+                    inputJsonObject.put("patientId", mPatientUUid);
+                    inputJsonObject.put("message", ".jpg");
+                    inputJsonObject.put("type", "attachment");
+                    inputJsonObject.put("isLoading", true);
+
+                    addNewMessage(inputJsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+            }
+        };
+        registerReceiver(mImageCaptureReceiver, new IntentFilter(Constants.IMAGE_CAPTURE_DONE_INTENT_ACTION));
     }
 
     private BroadcastReceiver mBroadcastReceiver;
+    BroadcastReceiver mImageCaptureReceiver;
 
     public void hideSoftKeyboard() {
         try {
@@ -596,6 +624,9 @@ public class ChatActivity extends AppCompatActivity {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForCameraResult.launch(cameraIntent);*/
+        Intent broadcast = new Intent();
+        broadcast.setAction(Constants.IMAGE_CAPTURE_REQUEST_INTENT_ACTION);
+        sendBroadcast(broadcast);
     }
 
     private void galleryStart() {
@@ -701,7 +732,7 @@ public class ChatActivity extends AppCompatActivity {
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
-                            if (!RealPathUtil.isFileLessThan1MB(new File(currentPhotoPath))) {
+                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
                                 Toast.makeText(ChatActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
                                 return;
                             }

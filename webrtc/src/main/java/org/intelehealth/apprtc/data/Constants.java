@@ -32,4 +32,8 @@ public class Constants {
     public static final String S3_BUCKET_NAME = "ih-addl-docs";
     public static final String S3_BUCKET_PREFIX_URL = "https://"+S3_BUCKET_NAME+".s3.ap-south-1.amazonaws.com/";
 
+    public static final String IMAGE_CAPTURE_DONE_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_DONE_INTENT_ACTION";
+    public static final String IMAGE_CAPTURE_REQUEST_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION";
+
+
 }
