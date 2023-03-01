@@ -9,6 +9,7 @@
     <ImageView
         android:layout_height="match_parent"
         android:layout_width="100dp"
+        android:src="@drawable/ic_prescription_gray"
         android:id="@+id/imageView_medical"
         android:contentDescription="TODO"
         android:scaleType="centerCrop">

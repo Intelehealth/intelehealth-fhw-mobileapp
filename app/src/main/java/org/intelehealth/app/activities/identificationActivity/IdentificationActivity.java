@@ -204,6 +204,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     int dob_indexValue = 15;
+    private HorizontalAdapter horizontalAdapter;
 
 
     @Override
@@ -226,6 +227,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+                fetchAdditionalDocImages(patient1.getUuid());
             }
         }
 
@@ -859,7 +861,9 @@ public class IdentificationActivity extends AppCompatActivity {
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
         addDoc_IB = findViewById(R.id.imagebutton_edit_additional_document);
+
         additionalDocPath = new ArrayList<>();
+
         fileList = new ArrayList<File>();
         adpFilesList = new ArrayList<File>();
         addDocRV = findViewById(R.id.recy_additional_documents);
@@ -1044,7 +1048,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (isFileExists) {
                 addDocRV.setHasFixedSize(true);
                 addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
+                horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
                 addDocRV.setAdapter(horizontalAdapter);
             }
             else {
@@ -1352,8 +1356,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                     addDocRV.setHasFixedSize(true);
                     addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                    HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+                    horizontalAdapter = new HorizontalAdapter(fileList, this);
                     addDocRV.setAdapter(horizontalAdapter);
+                    horizontalAdapter.notifyDataSetChanged();
                 }
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
@@ -1404,8 +1409,9 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             addDocRV.setHasFixedSize(true);
             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            horizontalAdapter = new HorizontalAdapter(fileList, this);
             addDocRV.setAdapter(horizontalAdapter);
+            horizontalAdapter.notifyDataSetChanged();
         }
         File photo = new File(picturePath);
         if (photo.exists()) {
@@ -1884,15 +1890,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mCurrentPhotoPath == null) // If profile image path empty than get from local db.
                 mCurrentPhotoPath = patientdto.getPatient_photo();
 
-            if (additionalDocPath.size() == 0) {
-                try {
-                    String[] adp_array = patientsDAO.getAttributeValue(patientdto.getUuid(),
-                                    "243dd7eb-e216-40bf-83fb-439723b22d8b").split(",");
-                    Collections.addAll(additionalDocPath, adp_array);
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+         //   fetchAdditionalDocImages(patientdto.getUuid());
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -2050,6 +2048,25 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchAdditionalDocImages(String patientUUID) {
+        if (additionalDocPath.size() == 0) {
+            try {
+                String[] adp_array = patientsDAO.getAttributeValue(patientUUID, "243dd7eb-e216-40bf-83fb-439723b22d8b")
+                        .replace(" ", "").split(",");
+                Collections.addAll(additionalDocPath, adp_array);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        for (int i = 0; i < additionalDocPath.size(); i++) {
+            if (new File(additionalDocPath.get(i)).exists()) {
+                fileList.add(new File(additionalDocPath.get(i)));
+            }
+        }
+
+    }
+
     /**
      * Get api to download the patient adp images
      */
@@ -2070,7 +2087,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
                             addDocRV.setHasFixedSize(true);
                             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+                            horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
                             addDocRV.setAdapter(horizontalAdapter);
                         }
 
