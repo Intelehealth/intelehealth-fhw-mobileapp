@@ -2068,7 +2068,12 @@ public class IdentificationActivity extends AppCompatActivity {
                         DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                         for (int i = 0; i < response.getPersonimages().size(); i++) {
                             adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
+                            addDocRV.setHasFixedSize(true);
+                            addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+                            addDocRV.setAdapter(horizontalAdapter);
                         }
+
                     }
 
                     @Override
@@ -2078,10 +2083,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        addDocRV.setHasFixedSize(true);
-                        addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
-                        addDocRV.setAdapter(horizontalAdapter);
+
                     }
                 });
     }
