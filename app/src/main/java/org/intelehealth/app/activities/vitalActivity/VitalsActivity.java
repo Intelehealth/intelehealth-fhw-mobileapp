@@ -1059,7 +1059,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
-            intent.putExtra("complaints", complaintArrayList);
+            intent.putStringArrayListExtra("complaints", complaintArrayList);
             startActivity(intent);
         }
     }

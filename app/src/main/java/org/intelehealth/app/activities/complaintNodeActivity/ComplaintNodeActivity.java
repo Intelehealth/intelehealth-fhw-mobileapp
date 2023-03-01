@@ -171,8 +171,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         boolean hasLicense = false;
 //        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
         JSONObject currentFile = null;
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
@@ -194,21 +193,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             mgender = fetch_gender(patientUuid);
 
             for (int i = 0; i < complaints.size(); i++) {
-                if (mgender.equalsIgnoreCase("M") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                if (mgender.equalsIgnoreCase("M") && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                     complaints.get(i).remove(complaints, i);
                     i--;
-                } else if (mgender.equalsIgnoreCase("F") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                } else if (mgender.equalsIgnoreCase("F") && complaints.get(i).getGender().equalsIgnoreCase("1")) {
                     complaints.get(i).remove(complaints, i);
                     i--;
                 }
             }
 
             for (int i = 0; i < complaints.size(); i++) {
-                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                        !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
 
                     if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                         complaints.get(i).remove(complaints, i);
@@ -244,21 +240,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 mgender = fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (mgender.equalsIgnoreCase("M") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                    if (mgender.equalsIgnoreCase("M") && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                         complaints.get(i).remove(complaints, i);
                         i--;
-                    } else if (mgender.equalsIgnoreCase("F") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    } else if (mgender.equalsIgnoreCase("F") && complaints.get(i).getGender().equalsIgnoreCase("1")) {
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
                 }
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
 
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
@@ -294,8 +287,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         });*/
 
-        listAdapter
-                = new ComplaintNodeListAdapter(this, complaints);
+        listAdapter = new ComplaintNodeListAdapter(this, complaints);
         list_recyclerView.setAdapter(listAdapter);
 
         img_question.setVisibility(View.VISIBLE);
@@ -374,8 +366,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Intent intent = new Intent(
-                                ComplaintNodeActivity.this, VitalsActivity.class);
+
+                        Intent intent;
+                        if (intentTag.equalsIgnoreCase("edit")) {
+                            intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                        } else {
+                            intent = new Intent(ComplaintNodeActivity.this, VitalsActivity.class);
+                        }
+
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -385,11 +383,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("name", patientName);
                         intent.putExtra("gender", patientGender);
                         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        if (intentTag != null) {
-                            intent.putExtra("tag", intentTag);
-                        }
+                        if (intentTag != null) intent.putExtra("tag", intentTag);
                         intent.putStringArrayListExtra("complaints", selection);
-
                         startActivity(intent);
                     }
                 });
@@ -462,8 +457,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private void bottomUpAnimation(View v) {
 
         v.setVisibility(View.VISIBLE);
-        Animation bottomUp = AnimationUtils.loadAnimation(this,
-                R.anim.bottom_up);
+        Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
         v.startAnimation(bottomUp);
 
     }

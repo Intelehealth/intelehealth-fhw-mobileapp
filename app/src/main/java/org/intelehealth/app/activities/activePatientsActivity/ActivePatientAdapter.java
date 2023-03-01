@@ -105,7 +105,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
 
         holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
-        if(isArabicText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name())))
+        if (isArabicText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name())))
             holder.getHeadTextView().setGravity(Gravity.END);
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
         holder.tvAgeGender.setText(body);
@@ -131,14 +131,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String end_date = "", dob = "", mGender = "", patientName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
                         mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
                         patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        dob = idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
                 idCursor.close();
@@ -146,8 +146,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 String visitSelection = "patientuuid = ?";
                 String[] visitArgs = {patientUuid};
                 String[] visitColumns = {"uuid, startdate", "enddate"};
-                String visitOrderBy = "startdate";
-                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+                String visitOrderBy = "startdate DESC"; // Limit and DESC added by Arpan Sircar - Upon clicking the visit, we were shown the previous visits instead of current visit
+                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy, "1");
 
                 if (visitCursor.getCount() >= 1) {
                     if (visitCursor.moveToLast() && visitCursor != null) {
@@ -186,7 +186,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                     past_visit = true;
                 }
 
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+                float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dob);
 
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
