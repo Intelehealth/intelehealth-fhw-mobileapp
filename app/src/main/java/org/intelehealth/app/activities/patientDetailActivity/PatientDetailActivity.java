@@ -53,6 +53,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -261,7 +262,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String houseHoldValue = "";
                 try {
-                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+                    houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -406,7 +407,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String houseHoldValue = "";
         try {
-            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+            houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

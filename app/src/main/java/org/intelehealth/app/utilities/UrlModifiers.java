@@ -28,6 +28,14 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
+    public String getADPImageUrl(String patientUuid) {
+        // https://development.mysmartcaredoc.com/personimages/f9badd80-ab76-11e2-9e96-0800200c9a66
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String provider = "personimages/" + patientUuid;
+
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
+        return BASE_URL + provider;
+    }
 
     public String setPatientProfileImageUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());

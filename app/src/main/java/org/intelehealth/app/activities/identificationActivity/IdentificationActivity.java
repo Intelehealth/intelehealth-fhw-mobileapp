@@ -57,7 +57,10 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -69,6 +72,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -151,6 +155,11 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
@@ -188,7 +197,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private static final int PICK_IMAGE_FROM_GALLERY = 2002;
     ArrayList<String> additionalDocPath;
-    ArrayList<File> fileList;
+    ArrayList<File> fileList, adpFilesList;
     RecyclerView addDocRV;
 
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -852,6 +861,7 @@ public class IdentificationActivity extends AppCompatActivity {
         addDoc_IB = findViewById(R.id.imagebutton_edit_additional_document);
         additionalDocPath = new ArrayList<>();
         fileList = new ArrayList<File>();
+        adpFilesList = new ArrayList<File>();
         addDocRV = findViewById(R.id.recy_additional_documents);
     }
 
@@ -1007,19 +1017,46 @@ public class IdentificationActivity extends AppCompatActivity {
         aadharNumET.setText(patient1.getAadhar_details());
         mOccupation.setText(patient1.getOccupation());
 
-        //This takes up the additional doc path from the local db and populate the spinners: By Nishita
+        //For Edit -> This takes up the additional doc path from the local db and populate the spinners
         if (patient1.getAdditionalDocPath() != null && !patient1.getAdditionalDocPath().trim().isEmpty()) {
             String additionalDocPathVal = patient1.getAdditionalDocPath();
             ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
             ArrayList<File> files = new ArrayList<>();
+
+            File file = null;
+            boolean isFileExists = false;
+
             if (additionalDocPaths.size()>0) {
-                for(int i = 0; i<additionalDocPaths.size();i++)
-                    files.add(new File(additionalDocPaths.get(i).trim()));
+                for (int i = 0; i < additionalDocPaths.size(); i++) {
+                    file = new File(additionalDocPaths.get(i).trim());
+                    files.add(file);
+                    if (file.exists()) {    // path from tbl_pat_attribute exists in local mobile storage...
+                       // files.add(file);
+                        adpFilesList.add(file);
+                        isFileExists = true;
+                    } else {
+                        isFileExists = false;
+                    }
+
+                }
             }
-            addDocRV.setHasFixedSize(true);
-            addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(files, this);
-            addDocRV.setAdapter(horizontalAdapter);
+
+            if (isFileExists) {
+                addDocRV.setHasFixedSize(true);
+                addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
+                addDocRV.setAdapter(horizontalAdapter);
+            }
+            else {
+                /** if file not exists ie. its from other user than considering offline case as well...
+                 * Check if online than -> call getApi from Satyadeep end provided....
+                 */
+                if (NetworkConnection.isOnline(getApplication())) {
+                    getADPImagesFromAPI(patient1.getUuid(), files);
+                }
+            }
+
+
         }
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
@@ -1844,8 +1881,18 @@ public class IdentificationActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if (mCurrentPhotoPath == null)
+            if (mCurrentPhotoPath == null) // If profile image path empty than get from local db.
                 mCurrentPhotoPath = patientdto.getPatient_photo();
+
+            if (additionalDocPath.size() == 0) {
+                try {
+                    String[] adp_array = patientsDAO.getAttributeValue(patientdto.getUuid(),
+                                    "243dd7eb-e216-40bf-83fb-439723b22d8b").split(",");
+                    Collections.addAll(additionalDocPath, adp_array);
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -2002,6 +2049,43 @@ public class IdentificationActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
+
+    /**
+     * Get api to download the patient adp images
+     */
+    private void getADPImagesFromAPI(String patUUID, ArrayList<File> fileList) {
+        adpFilesList.clear();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getADPImageUrl(patUUID);
+        Logger.logD(TAG, "profileimage url" + url);
+        Observable<PatientADPImageDownloadResponse> adpPicDownload = AppConstants.apiInterface.ADP_IMAGE_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
+        adpPicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<PatientADPImageDownloadResponse>() {
+                    @Override
+                    public void onNext(PatientADPImageDownloadResponse response) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        for (int i = 0; i < response.getPersonimages().size(); i++) {
+                            adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        addDocRV.setHasFixedSize(true);
+                        addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+                        addDocRV.setAdapter(horizontalAdapter);
+                    }
+                });
+    }
+
 }
 
 
