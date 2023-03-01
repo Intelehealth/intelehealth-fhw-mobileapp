@@ -83,7 +83,7 @@
     <string name="identification_screen_prompt_first_name">الاسم الاول *</string>
     <string name="identification_screen_prompt_middle_name">اسم الأب</string>
     <string name="identification_screen_prompt_last_name">الكنية*</string>
-    <string name="identification_screen_prompt_address">العنوان السطر 1</string>
+    <string name="identification_screen_prompt_address">العنوان السطر 1*</string>
     <string name="identification_screen_prompt_address2">العنوان السطر 2</string>
     <string name="identification_screen_prompt_phone_number">رقم الهاتف *</string>
     <string name="admin_password_dialog_heading">أدخل كلمة مرور المسؤول</string>
@@ -1587,15 +1587,15 @@
     <string name="pin_successfully_reset"> تم اعادة تعيين الرمز الشخصي بنجاح</string>
 
     // earthquake victim questions
-    <string name="nature_of_special_needs">طبيعة الاحتياجات الخاصة</string>
-    <string name="loss_as_a_result_of_the_earthquake">خسائر في  الأرواح نتيجة الزلزال</string>
-    <string name="loss_of_analgesic_as_a_result_of_the_earthquake">فقدان المسكن نتيجة الزلزال</string>
-    <string name="loss_of_breadwinner_as_a_result_of_the_earthquake">فقدان المعيل نتيجة الزلزال</string>
-    <string name="strong_social_ties">هل لديك روابط اجتماعية قوية في منطقة إقامتك وقت الزلزال؟</string>
-    <string name="places_of_relatives">أماكن تواجد الأقارب في أجزاء أخرى من سوريا ؟</string>
+    <string name="nature_of_special_needs">طبيعة الاحتياجات الخاصة*</string>
+    <string name="loss_as_a_result_of_the_earthquake">خسائر في  الأرواح نتيجة الزلزال*</string>
+    <string name="loss_of_analgesic_as_a_result_of_the_earthquake">فقدان المسكن نتيجة الزلزال*</string>
+    <string name="loss_of_breadwinner_as_a_result_of_the_earthquake">*فقدان المعيل نتيجة الزلزال*</string>
+    <string name="strong_social_ties">هل لديك روابط اجتماعية قوية في منطقة إقامتك وقت الزلزال؟*</string>
+    <string name="places_of_relatives">أماكن تواجد الأقارب في أجزاء أخرى من سوريا ؟*</string>
     <string name="enter_places">Enter places</string>
-    <string name="places_of_preference">إذا أمكننا استضافتك لسنة مع تكاليف أساسية للمعيشة, أي من الأماكن التالية تفضل؟</string>
-    <string name="places_of_relatives_cannot_be_empty"> الرجاء ملء حقل مكان تواجد الأقارب</string>
+    <string name="places_of_preference">إذا أمكننا استضافتك لسنة مع تكاليف أساسية للمعيشة, أي من الأماكن التالية تفضل؟*</string>
+    <string name="places_of_relatives_cannot_be_empty"> الرجاء ملء حقل مكان تواجد الأقارب*</string>
     <string name="clinical_social_visits_information">المعلومات التالية مخصصة للزيارات الطبية, في حال كانت الزيارة لتقييم حالة اجتماعية يمكن تجاوز ادخال المعلومات غير المتعلقة بالحالة بسحب الشاشة نحو اليمين</string>
     <string name="swipe_to_move_forward">اسحب الشاشة إلى اليمين للتقدم</string>
     <string name="identification_fill_required_fields">املأ الخانات الاجبارية</string>

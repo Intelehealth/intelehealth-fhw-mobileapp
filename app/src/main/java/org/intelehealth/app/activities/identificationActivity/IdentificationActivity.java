@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -163,6 +164,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mPostal, countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
     MaterialAlertDialogBuilder mAgePicker;
     RadioButton mGenderM, mGenderF, mGenderO, yesHOH, noHOH;
+    RadioGroup radioGrp;
     Spinner mOccupation, mCountry, mState, mEducation, mVillage;
     LinearLayout countryStateLayout;
     ImageView mImageView;
@@ -1789,26 +1791,27 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         values.add(mRelationship);
         values.add(mOccupation);*/
 
+        // This additional validation is causing gender to be checked first. Commented as advised by Programs Team - by Arpan Sircar
 
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            return;
-        }
+//        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+//            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//            alertDialogBuilder.setTitle(R.string.error);
+//            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//
+//            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//            return;
+//        }
 
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
@@ -1822,35 +1825,38 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
 
             if (mLastName.getText().toString().equals("")) {
-                focusView = mLastName;
+                if (focusView == null) focusView = mLastName;
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
             if (mDOB.getText().toString().equals("")) {
-                focusView = mDOB;
+                if (focusView == null) focusView = mDOB;
                 mDOB.setError(getString(R.string.error_field_required));
             }
 
             if (mAge.getText().toString().equals("")) {
-                focusView = mAge;
+                if (focusView == null) focusView = mAge;
                 mAge.setError(getString(R.string.error_field_required));
             }
 
             if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
-                focusView = mPhoneNum;
+                if (focusView == null) focusView = mPhoneNum;
                 mPhoneNum.setError(getString(R.string.error_field_required));
             } else {
                 mPhoneNum.setError(null);
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+                View finalFocusView = focusView;
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        if (finalFocusView == null)
+                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
@@ -1905,18 +1911,12 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
 */
-
-            if (focusView != null) {
-                focusView.requestFocus();
-                Toast.makeText(IdentificationActivity.this, R.string.identification_fill_required_fields, Toast.LENGTH_LONG).show();
-                return;
-            }
         }
 
 
         if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
             mAddress1.setError(getString(R.string.error_field_required));
-            focusView = mAddress1;
+            if (focusView == null) focusView = mAddress1;
             cancel = true;
         } else {
             mAddress1.setError(null);
@@ -1926,63 +1926,65 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (earthquakeVictimCheckbox.isChecked()) {
 
             // Validation for Special Needs Spinner
-            if (!cancel && binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerNatureSpecialNeeds;
+                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
                 cancel = true;
             }
 
             // Validation for Loss As a Result Of Earthquake Spinner
-            if (!cancel && binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Loss of Analgesic Spinner
-            if (!cancel && binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+                if (focusView == null)
+                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Loss of Breadwinner
-            if (!cancel && binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+                if (focusView == null)
+                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Strong Social Ties Spinner
-            if (!cancel && binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerStrongSocialTies;
+                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
                 cancel = true;
             }
 
             // Validation for Places Of Relatives EditText
-            if (!cancel && (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
+            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
                 binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
-                focusView = binding.etPlacesOfRelatives;
+                if (focusView == null) focusView = binding.etPlacesOfRelatives;
                 cancel = true;
             }
 
             // Validation for Place Of Preference Spinner
-            if (!cancel && binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerPlacesOfPreference;
+                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
                 cancel = true;
             }
         }
@@ -3405,27 +3407,27 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Log.v(TAG, "Result");
         } else {
             if (mFirstName.getText().toString().equals("")) {
-                focusView = mFirstName;
+                if (focusView == null) focusView = mFirstName;
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
             if (mLastName.getText().toString().equals("")) {
-                focusView = mLastName;
+                if (focusView == null) focusView = mLastName;
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
             if (mDOB.getText().toString().equals("")) {
-                focusView = mDOB;
+                if (focusView == null) focusView = mDOB;
                 mDOB.setError(getString(R.string.error_field_required));
             }
 
             if (mAge.getText().toString().equals("")) {
-                focusView = mAge;
+                if (focusView == null) focusView = mAge;
                 mAge.setError(getString(R.string.error_field_required));
             }
 
             if (!phone_checkbox.isChecked() && mPhoneNum.getText().toString().equalsIgnoreCase("")) {
-                focusView = mPhoneNum;
+                if (focusView == null) focusView = mPhoneNum;
                 mPhoneNum.setError(getString(R.string.error_field_required));
             } else {
                 mPhoneNum.setError(null);
@@ -3435,10 +3437,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+                View finalFocusView = focusView;
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        if (finalFocusView == null)
+                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
@@ -3492,22 +3497,16 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 }
 */
-
-            if (focusView != null) {
-                focusView.requestFocus();
-                Toast.makeText(IdentificationActivity.this, R.string.identification_fill_required_fields, Toast.LENGTH_LONG).show();
-                return;
-            }
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
+//        if (mCountry.getSelectedItemPosition() == 0) {
+//            countryText.setError(getString(R.string.error_field_required));
+//            focusView = countryText;
+//            cancel = true;
+//            return;
+//        } else {
+//            countryText.setError(null);
+//        }
 
 //            if (mState.getSelectedItemPosition() == 0) {
 //                stateText.setError(getString(R.string.error_field_required));
@@ -3520,7 +3519,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
             mAddress1.setError(getString(R.string.error_field_required));
-            focusView = mAddress1;
+            if (focusView == null) focusView = mAddress1;
             cancel = true;
         } else {
             mAddress1.setError(null);
@@ -3530,63 +3529,65 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (earthquakeVictimCheckbox.isChecked()) {
 
             // Validation for Special Needs Spinner
-            if (!cancel && binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerNatureSpecialNeeds;
+                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
                 cancel = true;
             }
 
             // Validation for Loss As a Result Of Earthquake Spinner
-            if (!cancel && binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Loss of Analgesic Spinner
-            if (!cancel && binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+                if (focusView == null)
+                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Loss of Breadwinner
-            if (!cancel && binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+                if (focusView == null)
+                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
                 cancel = true;
             }
 
             // Validation for Strong Social Ties Spinner
-            if (!cancel && binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerStrongSocialTies;
+                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
                 cancel = true;
             }
 
             // Validation for Places Of Relatives EditText
-            if (!cancel && (binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
+            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
                 binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
-                focusView = binding.etPlacesOfRelatives;
+                if (focusView == null) focusView = binding.etPlacesOfRelatives;
                 cancel = true;
             }
 
             // Validation for Place Of Preference Spinner
-            if (!cancel && binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
-                focusView = binding.spinnerPlacesOfPreference;
+                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
                 cancel = true;
             }
         }
@@ -4098,6 +4099,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        radioGrp = findViewById(R.id.radioGrp);
         mGenderO = findViewById(R.id.identification_gender_others);
         mOccupation = findViewById(R.id.spinner_occupation);
         mEducation = findViewById(R.id.spinner_education);
