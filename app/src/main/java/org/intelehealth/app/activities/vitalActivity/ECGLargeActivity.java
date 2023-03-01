@@ -102,7 +102,7 @@ public class ECGLargeActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-
+                        // todo: add case here...
                     }
                 });
 

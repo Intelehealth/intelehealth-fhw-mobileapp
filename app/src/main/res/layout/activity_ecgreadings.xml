@@ -70,16 +70,28 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:text="@string/paper_speed_value"
+                        android:layout_marginEnd="5dp"
                         android:onClick="clickSetPagerSpeed"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        style="@style/SelectableItemBackground"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/lato_bold"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textColor="@color/white"/>
 
                     <Button
                         android:id="@+id/gain_btn"
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:text="@string/gain_value"
+                        android:layout_marginStart="5dp"
                         android:onClick="clickSetGain"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        style="@style/SelectableItemBackground"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/lato_bold"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:id="@+id/finger_detection_txt"
@@ -192,7 +204,16 @@
             android:layout_height="wrap_content"
             android:text="@string/start_measuring"
             android:textAllCaps="false"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            style="@style/SelectableItemBackground"
+            android:background="@color/colorPrimary"
+            android:elevation="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"/>
 
         <Button
             android:id="@+id/btn_submit"
@@ -202,7 +223,18 @@
             android:textAllCaps="false"
             android:visibility="visible"
             tools:visibility="visible"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            style="@style/SelectableItemBackground_Orange"
+            android:background="@color/orange3"
+            android:elevation="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            />
 
 
     </LinearLayout>

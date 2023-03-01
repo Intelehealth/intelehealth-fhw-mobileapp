@@ -2376,7 +2376,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                      */
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
-                      Toast.makeText(VitalsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(VitalsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
                     if (test_dialog != null) {
                         textView.setText(R.string.measuring);
                     }
@@ -2546,7 +2546,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     test_dialog.cancel();
                 }
 
-                Toast.makeText(VitalsActivity.this, R.string.spo2_test_successful, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.spo2_test_successful, Toast.LENGTH_LONG).show();
             }
 
         });
@@ -2580,7 +2580,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
                 if (test_dialog != null)
                     test_dialog.dismiss();
-                Toast.makeText(VitalsActivity.this, getString(R.string.bp_test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.bp_test_successful), Toast.LENGTH_LONG).show();
             }
         });
      //   resetState();
@@ -2650,7 +2650,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (test_dialog != null) {
                     test_dialog.cancel();
                 }
-                Toast.makeText(VitalsActivity.this, getString(R.string.body_temp_test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.body_temp_test_successful), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -2680,7 +2680,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 }
                 break;
             case TestPaperTask.EVENT_TEST_RESULT:
-                Toast.makeText(VitalsActivity.this, getString(R.string.blood_glucose_test_successful), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.blood_glucose_test_successful), Toast.LENGTH_LONG).show();
                 bg_model.setValue((double) obj);
 
                 if (bg_fasting_clicked)

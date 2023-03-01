@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.vitalActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ObservableBoolean;
@@ -57,6 +58,12 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecgreadings);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.ecg);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         initUI();
         fetchIntent();
 
@@ -102,6 +109,9 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
 
         if (patientWeight.equalsIgnoreCase(""))
             patientWeight = "0";
+
+        Log.v("ECG", "ECG: " + "intent: " + patientName + "-" + patientBirthday+ "-" +patientGender + "-" +
+                patientHeight + "-" + patientWeight);
     }
 
     public static void toggleCountDown_(@NonNull CountDownTextView textView, boolean toggleCountDown) {
@@ -177,6 +187,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         String ecgWave = ecgWaveBuilder.toString();
         ecgWave = ecgWave.substring(0, ecgWave.length() - 1);
         model.setWave(ecgWave);
+        Toast.makeText(ECGReadingsActivity.this, "ECG Test Completed", Toast.LENGTH_LONG).show();
 
       //  event.put(EVENT_FINGER_DETECT, "");
       //  resetState();
@@ -203,7 +214,8 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
             //停止测量
             //  stopMeasure(testType);
             stopMeasure();
-            Toast.makeText(ECGReadingsActivity.this, getString(R.string.start_measuring), Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(ECGReadingsActivity.this, getString(R.string.start_measuring), Toast.LENGTH_SHORT).show();
+            btn_measure.setText(getString(R.string.start_measuring));
             //设置ViewPager可滑动
             //  btnMeasure.setText(getString(R.string.start_measuring));
 //            }
@@ -217,7 +229,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
                  */
                 //设置ViewPager不可滑动
                 //  btnMeasure.setText(R.string.measuring);
-                Toast.makeText(ECGReadingsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(ECGReadingsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -304,7 +316,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         } else {
             MonitorDataTransmissionManager.getInstance().stopMeasure();
         }
-        btn_measure.setText("Start Measuring");
+        btn_measure.setText(getString(R.string.start_measuring));
     }
 
     public void openECGLarge() {
