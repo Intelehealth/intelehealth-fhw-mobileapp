@@ -190,7 +190,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
-    RecyclerView additionalDocRV;
+   // RecyclerView additionalDocRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +221,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-        additionalDocRV = findViewById(R.id.recy_additional_documents);
+      //  additionalDocRV = findViewById(R.id.recy_additional_documents);
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -624,7 +624,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientFName = patient_new.getFirst_name();
         }
 
-        if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
+      /*  if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
             String additionalDocPathVal = patient_new.getAdditionalDocPath();
             ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
             ArrayList<File> files = new ArrayList<>();
@@ -636,7 +636,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             additionalDocRV.setLayoutManager(new LinearLayoutManager(PatientDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(files, this);
             additionalDocRV.setAdapter(horizontalAdapter);
-        }
+        }*/
 
 //        setTitle(patientName);
         patinetName.setText(patientName);
@@ -655,6 +655,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
+        Log.v("ADP", "ADP: " + "pd_image: " + patient_new.getPatient_photo());
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
@@ -1197,7 +1198,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<ResponseBody>() {
@@ -1235,7 +1237,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
                         try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages
+                                    (AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }

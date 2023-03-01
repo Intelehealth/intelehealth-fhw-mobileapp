@@ -1603,6 +1603,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Patient Additional Documents"));
             patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1));
+            Log.v("ADP", "ADP: " + "patattr: " + patientAttributesDTO.getValue());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1696,6 +1697,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushADPImage = imagesPushDAO.patientADPImagesPush();
             }
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
@@ -1970,13 +1972,18 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             Logger.logD(TAG, "update ");
             boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
-            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
+            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid, "PP");
+
+            //this will update all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
+            for (int i = 0; i < additionalDocPath.size(); i++)
+                imagesDAO.updatePatientProfileImages(additionalDocPath.get(i), uuid, "ADP");
 
             if (NetworkConnection.isOnline(getApplication())) {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean ispush = syncDAO.pushDataApi();
                 boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushADPImage = imagesPushDAO.patientADPImagesPush();
             }
 
             if (isPatientUpdated && isPatientImageUpdated) {

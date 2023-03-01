@@ -10,6 +10,7 @@ import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
@@ -83,6 +84,11 @@ public interface ApiInterface {
     Single<ResponseBody> PERSON_PROFILE_PIC_UPLOAD(@Url String url,
                                                    @Header("Authorization") String authHeader,
                                                    @Body PatientProfile patientProfile);
+
+    @POST
+    Single<ResponseBody> PERSON_ADP_PIC_UPLOAD(@Url String url,
+                                                   @Header("Authorization") String authHeader,
+                                                   @Body PatientAdditionalDocModel patientAdditionalDocModel);
 
     @GET
     Observable<ResponseBody> OBS_IMAGE_DOWNLOAD(@Url String url,

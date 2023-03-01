@@ -642,6 +642,7 @@
 <!--                        Below row is added in a table to display the additional document images added by HW on previous (identification) screen.-->
                         <TableRow
                             android:id="@+id/tableRow_AdditionalDoc"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -665,6 +666,7 @@
                             android:id="@+id/recy_additional_documents"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:layout_below="@+id/textView_additional_document_images"
                             android:padding="@dimen/padding_card"></androidx.recyclerview.widget.RecyclerView>
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -86,7 +87,8 @@ public class ImagesDAO {
             ContentValues cv = new ContentValues();
             cv.put("voided", "1"); //These Fields should be your String values of actual column names
             cv.put("sync", "false");
-            localdb.updateWithOnConflict("tbl_obs", cv, "encounteruuid=? AND conceptuuid=?", new String[]{encounterUuid, conceptUuid}, SQLiteDatabase.CONFLICT_REPLACE);
+            localdb.updateWithOnConflict("tbl_obs", cv, "encounteruuid=? AND conceptuuid=?",
+                    new String[]{encounterUuid, conceptUuid}, SQLiteDatabase.CONFLICT_REPLACE);
             localdb.setTransactionSuccessful();
         } catch (SQLException sql) {
             FirebaseCrashlytics.getInstance().recordException(sql);
@@ -146,6 +148,7 @@ public class ImagesDAO {
     }
 
     public boolean insertPatientProfileImages(String imagepath, String imageType, String patientUuid) throws DAOException {
+        // todo: handle for Patient Detail download flow...
         boolean isInserted = false;
         if(imagepath == null)
             return true;
@@ -173,7 +176,7 @@ public class ImagesDAO {
         return isInserted;
     }
 
-    public boolean updatePatientProfileImages(String imagepath, String patientuuid) throws DAOException {
+    public boolean updatePatientProfileImages(String imagepath, String patientuuid, String image_type) throws DAOException {
         boolean isUpdated = false;
         long isupdate = 0;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -185,7 +188,7 @@ public class ImagesDAO {
             contentValues.put("image_path", imagepath);
             contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
             contentValues.put("sync", "false");
-            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, "PP"});
+            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, image_type});
             if (isupdate != 0)
                 isUpdated = true;
             localdb.setTransactionSuccessful();
@@ -197,7 +200,7 @@ public class ImagesDAO {
 
         }
         if (isupdate == 0)
-            isUpdated = insertPatientProfileImages(imagepath, "PP", patientuuid);
+            isUpdated = insertPatientProfileImages(imagepath, image_type, patientuuid);
         return isUpdated;
     }
 
@@ -207,13 +210,42 @@ public class ImagesDAO {
         Base64Utils base64Utils = new Base64Utils();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? OR image_type = ? COLLATE NOCASE", new String[]{"0", "false", "PP", "ADP"});
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? COLLATE NOCASE",
+                    new String[]{"0", "false", "PP"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     PatientProfile patientProfile = new PatientProfile();
                     patientProfile.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
                     patientProfile.setBase64EncodedImage(base64Utils.getBase64FromFileWithConversion(idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
                     patientProfiles.add(patientProfile);
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+
+        return patientProfiles;
+    }
+    public List<PatientAdditionalDocModel> getPatientADPUnsyncedImages() throws DAOException {
+        List<PatientAdditionalDocModel> patientProfiles = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Base64Utils base64Utils = new Base64Utils();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? COLLATE NOCASE",
+                    new String[]{"0", "false", "ADP"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    PatientAdditionalDocModel patientAdditionalDocModel = new PatientAdditionalDocModel();
+                    patientAdditionalDocModel.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    patientAdditionalDocModel.setFile(base64Utils.getBase64FromFileWithConversion
+                            (idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
+                    // Todo: Note: This converts the image to a Base64 image and pushes it.
+                    patientProfiles.add(patientAdditionalDocModel);
                 }
             }
             idCursor.close();
@@ -257,12 +289,13 @@ public class ImagesDAO {
     }
 
 
-    public String getPatientProfileChangeTime(String patientUuid) throws DAOException {
+    public String getPatientProfileChangeTime(String patientUuid) throws DAOException { // todo: handle same logic for ADP as well in PatientDetail screen.
         String datetime = "";
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where patientuuid=? AND image_type = ? COLLATE NOCASE", new String[]{patientUuid, "PP"});
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where patientuuid=? AND image_type = ? COLLATE NOCASE",
+                    new String[]{patientUuid, "PP"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     datetime = idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date"));
@@ -286,11 +319,11 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
-        String whereclause = "patientuuid = ? AND image_type = ? OR image_type = ?";
+        String whereclause = "patientuuid = ? AND image_type = ?";
         try {
             contentValues.put("patientuuid", patientuuid);
             contentValues.put("sync", "true");
-            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, type, "ADP"});
+            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, type});
             if (isupdate != 0)
                 isUpdated = true;
             localdb.setTransactionSuccessful();
@@ -337,7 +370,8 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, conceptuuid, "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE",
+                    new String[]{encounterUuid, conceptuuid, "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -360,7 +394,8 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUUid, ConceptUuid, "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE",
+                    new String[]{encounterUUid, ConceptUuid, "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));

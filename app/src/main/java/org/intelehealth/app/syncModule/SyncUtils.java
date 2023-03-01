@@ -38,6 +38,7 @@ public class SyncUtils {
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
         imagesPushDAO.patientProfileImagesPush();
+        imagesPushDAO.patientADPImagesPush();
 //        imagesPushDAO.obsImagesPush();
 
         /*
@@ -90,6 +91,7 @@ public class SyncUtils {
         }, 3000);
 
         imagesPushDAO.patientProfileImagesPush();
+        imagesPushDAO.patientADPImagesPush();
 
 //        imagesPushDAO.obsImagesPush();
         

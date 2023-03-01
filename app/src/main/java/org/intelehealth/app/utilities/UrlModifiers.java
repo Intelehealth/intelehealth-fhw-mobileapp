@@ -37,6 +37,14 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+    public String setPatientADPImageUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String adp = "uploadpersonimage";
+
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
+        return BASE_URL + adp;
+    }
+
 
     public String obsImageUrl(String obsUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
