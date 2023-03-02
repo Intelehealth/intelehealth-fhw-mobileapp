@@ -130,6 +130,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.app.models.rhemos_device.ECG_JsonModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.DownloadService;
@@ -213,6 +214,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO hemoGlobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO totalCholesterol = new ObsDTO();
+    ObsDTO ecgReadings = new ObsDTO();
     String diagnosisReturned = "";
     String rxReturned = "";
     String testsReturned = "";
@@ -253,6 +255,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView hemoglobin;
     TextView uricAcid_textview;
     TextView totalCholesterol_textview;
+    TextView ecg_textview;
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -1215,6 +1218,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
         uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
         totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
+        ecg_textview = findViewById(R.id.textView_ecg_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1325,6 +1329,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uricAcid_textview.setText(uricAcid.getValue());
         if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
             totalCholesterol_textview.setText(totalCholesterol.getValue());
+        if (ecgReadings.getValue() != null && !ecgReadings.getValue().equalsIgnoreCase("0")) {
+            Gson gson = new Gson();
+            ECG_JsonModel ecg_jsonModel = gson.fromJson(ecgReadings.getValue(), ECG_JsonModel.class);
+            ecg_textview.setText("Mood: " + ecg_jsonModel.getMood() + "\n" + "Stress level: " + ecg_jsonModel.getStress_level());
+        }
+
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3676,6 +3686,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
             {
                 totalCholesterol.setValue(value);
+                break;
+            }
+            case UuidDictionary.ECG_READINGS: // ECG Readings
+            {
+                ecgReadings.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {

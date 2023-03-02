@@ -428,38 +428,32 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         });
 
         spo2_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.pulse_oximeter);
             clickMeasure("SPO2");
         });
 
         bp_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.blood_pressure_new);  // attrition: <a href="https://www.flaticon.com/free-icons/medical-checkup" title="medical checkup icons">Medical checkup icons created by shmai - Flaticon</a>
             clickMeasure("BP");
         });
 
         tempC_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.body_temperature_icon);   // attrition: <a href="https://www.flaticon.com/free-icons/temperature" title="temperature icons">Temperature icons created by QudaDesign - Flaticon</a>
             clickMeasure("Temp");
            // tempc_clicked = true;
           //  tempf_clicked = false;
         });
 
         tempF_Btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.body_temperature_icon);   // attrition: <a href="https://www.flaticon.com/free-icons/temperature" title="temperature icons">Temperature icons created by QudaDesign - Flaticon</a>
             clickMeasure("Temp");
           //  tempc_clicked = false;
            // tempf_clicked = true;
         });
 
         bloodGlucose_Btn.setOnClickListener(v -> {  // Fasting
-            showTestDialog(R.drawable.glucose_meter);
             clickMeasure("Blood Glucose");
             bg_nonfasting_clicked = false;
             bg_fasting_clicked = true;
         });
 
         bg_nonfasting_btn.setOnClickListener(v -> { // Non-Fasting
-            showTestDialog(R.drawable.glucose_meter);
             bg_nonfasting_clicked = true;
             bg_fasting_clicked = false;
             clickMeasure("Blood Glucose");
@@ -467,7 +461,6 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         });
 
         bg_fasting_btn.setOnClickListener(v -> {
-            showTestDialog(R.drawable.glucose_meter);
             clickMeasure("Blood Glucose");
             bg_nonfasting_clicked = false;
             bg_fasting_clicked = true;
@@ -2377,6 +2370,17 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     //设置ViewPager不可滑动
                   //  btnMeasure.setText(R.string.measuring);
                     //  Toast.makeText(VitalsActivity.this, R.string.measuring, Toast.LENGTH_SHORT).show();
+
+
+                    if (testType.equalsIgnoreCase("BP"))
+                        showTestDialog(R.drawable.blood_pressure_new);// attrition: <a href="https://www.flaticon.com/free-icons/medical-checkup" title="medical checkup icons">Medical checkup icons created by shmai - Flaticon</a>
+                    else if (testType.equalsIgnoreCase("SPO2"))
+                        showTestDialog(R.drawable.pulse_oximeter);
+                    else if (testType.equalsIgnoreCase("Temp"))
+                        showTestDialog(R.drawable.body_temperature_icon);   // attrition: <a href="https://www.flaticon.com/free-icons/temperature" title="temperature icons">Temperature icons created by QudaDesign - Flaticon</a>
+                    else if (testType.equalsIgnoreCase("Blood Glucose"))
+                        showTestDialog(R.drawable.glucose_meter);
+
                     if (test_dialog != null) {
                         textView.setText(R.string.measuring);
                     }

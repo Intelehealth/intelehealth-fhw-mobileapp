@@ -383,7 +383,6 @@
                     </TableRow>
 
                     <TableRow>
-
                         <TextView
                             android:id="@+id/textView_respiratory"
                             android:layout_width="match_parent"
@@ -401,6 +400,8 @@
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
+
+
 
                 </TableLayout>
             </RelativeLayout>
@@ -453,7 +454,7 @@
 
                     <!--Glucose (Non-Fasting)-->
                     <TableRow
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:visibility="visible">
 
                         <TextView
@@ -591,6 +592,27 @@
 
                         <TextView
                             android:id="@+id/textView_total_cholestrol_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <!-- ECG Readings -->
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_ecg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/ecg"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_ecg_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
