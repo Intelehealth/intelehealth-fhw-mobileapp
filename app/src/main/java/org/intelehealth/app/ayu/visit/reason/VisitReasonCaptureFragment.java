@@ -168,6 +168,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
             @Override
             public void onRemoved(String data) {
+                mSelectedComplains.remove(data);
                 for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                     List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
                     for (int j = 0; j < reasonDataList.size(); j++) {
@@ -179,6 +180,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                     }
                 }
                 mReasonListingAdapter.refresh(mVisitReasonItemList);
+                showSelectedComplains();
             }
         });
         mSelectedComplainRecyclerView.setAdapter(reasonChipsGridAdapter);

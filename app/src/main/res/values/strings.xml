@@ -879,7 +879,7 @@
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is an innovative open source telemedicine platform connecting the last mile population for health services.</string>
+    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with doctors so that they can provide high-quality health services for their patients</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -893,8 +893,8 @@
     <string name="share_prescriptions">Share the prescription</string>
 
     <string name="provide_prescriptions_intro">Telemedicine doctor will provide a prescription. Prescription can be shared with the patient digitally or in print.</string>
-    <string name="hello_i_am_ayu">Hello, I am AYU!</string>
-    <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
+    <string name="hello_i_am_ayu">Hello, I am AYU,</string>
+    <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
@@ -923,7 +923,7 @@
     <string name="location_new">Location</string>
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
     <string name="login_success">Login successful</string>
-    <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
+    <string name="login_success_note">Hurry! You have successfully logged in</string>
     <string name="start_typing_location">Start typing or select location</string>
     <string name="patients_added">Patients added by\nyou</string>
     <string name="visits_completed_by_you">Visits completed\nby you</string>
