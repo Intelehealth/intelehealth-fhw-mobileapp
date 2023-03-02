@@ -24,6 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -88,6 +91,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList.add(node);
         notifyItemInserted(mItemList.size() - 1);
     }
+
     public void addItemAll(List<Node> nodes) {
         mItemList = nodes;
         notifyDataSetChanged();
@@ -344,7 +348,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
 
             }
-            holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            holder.recyclerView.setLayoutManager(layoutManager);
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {
@@ -682,8 +690,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setMinLines(5);
+        editText.setLines(5);
+        editText.setHorizontallyScrolling(false);
         editText.setHint(node.getText());
+        editText.setMinHeight(320);
         holder.singleComponentContainer.addView(view);
     }
 

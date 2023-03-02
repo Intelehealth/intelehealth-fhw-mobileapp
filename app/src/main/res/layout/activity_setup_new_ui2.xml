@@ -63,8 +63,8 @@
         android:background="@drawable/top_rounded_whitebg"
         android:orientation="vertical"
         android:paddingStart="@dimen/layout_setup_padding_start"
-        android:paddingEnd="@dimen/layout_setup_padding_end"
         android:paddingTop="@dimen/layout_setup_padding_top"
+        android:paddingEnd="@dimen/layout_setup_padding_end"
         android:paddingBottom="@dimen/layout_setup_padding_bottom">
 
         <ScrollView
@@ -150,9 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     app:boxStrokeWidth="0dp"
-                    app:hintEnabled="false"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@android:color/transparent">
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_username"
@@ -322,8 +320,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -333,7 +329,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_privacy_notice_link"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/layout_setup_padding_start"
         android:layout_marginTop="@dimen/button_setup1_margin_top"
+        android:layout_marginEnd="@dimen/layout_setup_padding_end"
         android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:background="@drawable/ui2_common_primary_bg"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
@@ -341,10 +340,7 @@
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
-        android:layout_alignParentBottom="true"
         android:paddingBottom="@dimen/common_button_padding_bottom"
         android:text="@string/setup"
-        android:layout_marginStart="@dimen/layout_setup_padding_start"
-        android:layout_marginEnd="@dimen/layout_setup_padding_end"
         android:textSize="@dimen/common_button_text_size" />
 </RelativeLayout>

@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -151,7 +154,12 @@ public class VisitReasonCaptureFragment extends Fragment {
         }
 
 
-        mSelectedComplainRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+        mSelectedComplainRecyclerView.setLayoutManager(layoutManager);
         SelectedChipsGridAdapter reasonChipsGridAdapter = new SelectedChipsGridAdapter(mSelectedComplainRecyclerView, getActivity(), mSelectedComplains, new SelectedChipsGridAdapter.OnItemSelection() {
             @Override
             public void onSelect(String data) {

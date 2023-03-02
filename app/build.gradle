@@ -154,7 +154,7 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
