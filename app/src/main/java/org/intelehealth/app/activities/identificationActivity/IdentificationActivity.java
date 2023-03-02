@@ -2049,11 +2049,20 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void fetchAdditionalDocImages(String patientUUID) {
+        ArrayList<String> tempList = new ArrayList<>();
         if (additionalDocPath.size() == 0) {
             try {
                 String[] adp_array = patientsDAO.getAttributeValue(patientUUID, "243dd7eb-e216-40bf-83fb-439723b22d8b")
                         .replace(" ", "").split(",");
-                Collections.addAll(additionalDocPath, adp_array);
+                Collections.addAll(tempList, adp_array);
+                
+                for (int i = 0; i < tempList.size(); i++) {
+                    if (tempList.get(i).equalsIgnoreCase(""))
+                        tempList.remove(i);
+                }
+
+                additionalDocPath = tempList;
+
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
