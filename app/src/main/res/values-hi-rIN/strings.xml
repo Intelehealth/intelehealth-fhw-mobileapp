@@ -1016,6 +1016,17 @@
     <string name="robust_heart_rate">Robust heart rate: %s</string>
     <string name="heart_beat">Heart beat: %s</string>
     <string name="heart_age">Heart age: %s</string>
+    <string name="max_four_images">You can add max 4 images.</string>
+    <string name="mood_desc_calm">Calm</string>
+    <string name="mood_desc_relaxed">Relaxed</string>
+    <string name="mood_desc_balanced">Balanced</string>
+    <string name="mood_desc_motivated">Motivated</string>
+    <string name="mood_desc_agitated">Agitated/Anxiety/Excited</string>
+    <string name="ecg">ECG</string>
+    <string name="blood_glucose_calibration_success">Blood Glucose calibration successful!</string>
+    <string name="connecting_toast">Connecting...</string>
+    <string name="device_connected">Device Connected</string>
+    <string name="ecg_test_completed">ECG Test Completed</string>
 
 
 </resources>

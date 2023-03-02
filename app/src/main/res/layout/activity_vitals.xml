@@ -941,7 +941,7 @@
                                 android:layout_weight="4"
                                 android:paddingStart="5dp"
                                 android:layout_gravity="center_vertical"
-                                android:text="ECG" />
+                                android:text="@string/ecg" />
 
                             <ImageButton
                                 android:id="@+id/ecg_button"

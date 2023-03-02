@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class DevicesActivity extends AppCompatActivity {
     Context context;
@@ -60,9 +62,10 @@ public class DevicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
 
-        setTitle(getString(R.string.devices));
         context = DevicesActivity.this;
         sessionManager = new SessionManager(context);
+        setLocale();
+        setTitle(getString(R.string.devices));
 
         Intent intent = getIntent();
         infoModel = (DeviceInfoModel) intent.getSerializableExtra("device_info");
@@ -112,6 +115,19 @@ public class DevicesActivity extends AppCompatActivity {
         });
     }
 
+    private void setLocale() {
+        String language = sessionManager.getAppLanguage();
+        Log.d("lang", "lang: " + language);
+        //In case of crash still the org should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
     private void showCalibrationDialog() {
         // show dialog
         Dialog dialog = new Dialog(context);
@@ -204,7 +220,7 @@ public class DevicesActivity extends AppCompatActivity {
             sessionManager.setTestPaperCode(mPaperCode);
             Log.v("BG_Calibrate", "BG_Calibrate: " + sessionManager.getTestManufacturer() + " : " + sessionManager.getTestPaperCode());
             dialog.dismiss();
-            Toast.makeText(context, "Blood Glucose calibration successful!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.blood_glucose_calibration_success, Toast.LENGTH_SHORT).show();
         });
 
      /*   Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);

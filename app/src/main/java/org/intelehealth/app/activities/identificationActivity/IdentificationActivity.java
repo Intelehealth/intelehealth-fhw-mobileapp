@@ -237,7 +237,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (additionalDocPath.size() < 4)
                     selectImage();
                 else
-                    Toast.makeText(IdentificationActivity.this, "You can add max 4 images.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IdentificationActivity.this, R.string.max_four_images, Toast.LENGTH_SHORT).show();
             }
         });
 

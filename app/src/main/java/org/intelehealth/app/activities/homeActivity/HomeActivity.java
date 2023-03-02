@@ -1644,7 +1644,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
                     case BluetoothState.BLE_CONNECTING_DEVICE:  // Rhemos device is connecting...
                         try {
                             //  btnText.set(getString(R.string.connecting));
-                            Toast.makeText(HomeActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, R.string.connecting_toast, Toast.LENGTH_SHORT).show();
                         } catch (Exception ignored) {
                           //  Toast.makeText(HomeActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
 
@@ -1652,7 +1652,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
                         break;
                     case BluetoothState.BLE_CONNECTED_DEVICE:   // Rhemos device is connected.
                         bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
-                        Toast.makeText(HomeActivity.this, "Device Connected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, R.string.device_connected, Toast.LENGTH_SHORT).show();
 
                         //  btnText.set(getString(R.string.disconnect));
                         break;

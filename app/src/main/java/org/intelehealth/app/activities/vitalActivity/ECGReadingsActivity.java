@@ -187,7 +187,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         String ecgWave = ecgWaveBuilder.toString();
         ecgWave = ecgWave.substring(0, ecgWave.length() - 1);
         model.setWave(ecgWave);
-        Toast.makeText(ECGReadingsActivity.this, "ECG Test Completed", Toast.LENGTH_LONG).show();
+        Toast.makeText(ECGReadingsActivity.this, R.string.ecg_test_completed, Toast.LENGTH_LONG).show();
 
       //  event.put(EVENT_FINGER_DETECT, "");
       //  resetState();
@@ -238,7 +238,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
      //   event.put(EVENT_FINGER_DETECT, "");
       //  event.put(EVENT_SQ, "");
 
-        btn_measure.setText("Measuring...");
+        btn_measure.setText(getString(R.string.measuring));
 
         countDown_txt.setCountDownParams(timeout);
         toggleCountDown_(countDown_txt, true);

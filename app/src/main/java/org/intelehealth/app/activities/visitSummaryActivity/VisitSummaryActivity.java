@@ -1329,10 +1329,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uricAcid_textview.setText(uricAcid.getValue());
         if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
             totalCholesterol_textview.setText(totalCholesterol.getValue());
+
         if (ecgReadings.getValue() != null && !ecgReadings.getValue().equalsIgnoreCase("0")) {
             Gson gson = new Gson();
             ECG_JsonModel ecg_jsonModel = gson.fromJson(ecgReadings.getValue(), ECG_JsonModel.class);
-            ecg_textview.setText("Mood: " + ecg_jsonModel.getMood() + "\n" + "Stress level: " + ecg_jsonModel.getStress_level());
+            ecg_textview.setText(getString(R.string.mood_value, ecg_jsonModel.getMood()) + "\n" +
+                    getString(R.string.stress_level, ecg_jsonModel.getStress_level()));
         }
 
 

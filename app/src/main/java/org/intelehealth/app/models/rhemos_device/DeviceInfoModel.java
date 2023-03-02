@@ -74,11 +74,11 @@ public class DeviceInfoModel implements Serializable {
 
     @Override
     public String toString() {
-        return "power_level = " + power_level + "\n" +
-                "device_id = " + device_id + "\n" +
-                "device_key = " + device_key + "\n" +
-                "software_version = " + software_version + "\n" +
-                "hardware_version = " + hardware_version + "\n" +
-                "firmware_version = " + firmware_version + "\n";
+        return "Power Level: " + power_level + "\n" +
+                "Device ID: " + device_id + "\n" +
+                "Device Key: " + device_key + "\n" +
+                "Software version: " + software_version + "\n" +
+                "Hardware version: " + hardware_version + "\n" +
+                "Firmware version: " + firmware_version + "\n";
     }
 }
