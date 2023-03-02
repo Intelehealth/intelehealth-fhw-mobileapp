@@ -393,9 +393,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), null);
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
-            if (i == 0) {
+            /*if (i == 0) {
                 optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
-            }
+            }*/
             if (map.containsKey(filterNode.getOptionsList().get(i).getText())) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));

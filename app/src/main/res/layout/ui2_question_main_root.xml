@@ -118,6 +118,7 @@
                     android:layout_below="@+id/tv_question_desc"
                     android:layout_marginTop="@dimen/margin_16"
                     android:orientation="vertical" />
+
                 <LinearLayout
                     android:id="@+id/ll_others_container"
                     android:layout_width="match_parent"
@@ -125,10 +126,28 @@
                     android:layout_below="@+id/tv_question_desc"
                     android:layout_marginTop="@dimen/margin_16"
                     android:orientation="vertical" />
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="@dimen/margin_16"
+                    android:layout_marginEnd="@dimen/margin_16"
+                    android:background="@drawable/ui2_common_button_bg_submit"
+                    android:minWidth="100dip"
+                    android:paddingHorizontal="@dimen/padding_7"
+                    android:paddingVertical="@dimen/padding_7"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
+
         </LinearLayout>
+
 
     </LinearLayout>
 

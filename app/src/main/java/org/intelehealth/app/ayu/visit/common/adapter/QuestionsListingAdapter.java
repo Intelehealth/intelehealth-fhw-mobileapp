@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -119,6 +118,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
+            genericViewHolder.index = position;
 
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -339,13 +339,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
                     break;
             }
+            holder.submitButton.setVisibility(View.GONE);
         } else {
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
+
             if (mItemList.get(index).isMultiChoice()) {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                holder.submitButton.setVisibility(View.VISIBLE);
             } else {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                holder.submitButton.setVisibility(View.GONE);
 
             }
             //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
@@ -371,7 +375,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!type.isEmpty()) {
                         holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
-                        mOnItemSelection.onSelect(node, index);
+                        if (!mItemList.get(index).isMultiChoice()) {
+                            mOnItemSelection.onSelect(node, index);
+                        }
                     }
                     Log.v("Node", "Type - " + type);
                     switch (type) {
@@ -763,14 +769,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestion, tvQuestionDesc, tvQuestionCounter, tvReferenceDesc;
         Node node;
+        int index;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
+        Button submitButton;
+
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            submitButton = itemView.findViewById(R.id.btn_submit);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
             referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
@@ -785,7 +795,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
             tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
 
-
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemList.get(index).isSelected())
+                        mOnItemSelection.onSelect(node, index);
+                    else
+                        Toast.makeText(mContext, "Please select at least one option!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 

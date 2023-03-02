@@ -120,7 +120,7 @@ public class Fragment_SecondScreen extends Fragment {
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
-         //   patientID_edit = getArguments().getString("patientUuid");
+            //   patientID_edit = getArguments().getString("patientUuid");
 
            /* if (patientID_edit != null) {
                 patientDTO.setUuid(patientID_edit);
@@ -129,9 +129,8 @@ public class Fragment_SecondScreen extends Fragment {
             }
 */
             if (patient_detail) {
-             //   patientDTO.setUuid(patientID_edit);
-            }
-            else {
+                //   patientDTO.setUuid(patientID_edit);
+            } else {
                 // do nothing...
             }
         }
@@ -234,7 +233,7 @@ public class Fragment_SecondScreen extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.countries));
 //        country_spinner.setSelection(countryAdapter.getPosition(country1));
         mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-
+        mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
        /* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setSelection(stateAdapter.getPosition(state));
@@ -264,7 +263,11 @@ public class Fragment_SecondScreen extends Fragment {
             if (patientDTO.getAddress2() != null && !patientDTO.getAddress2().isEmpty())
                 mAddress2EditText.setText(patientDTO.getAddress2());
 
-            mCountryNameSpinner.setSelection(countryAdapter.getPosition(String.valueOf(patientDTO.getCountry())));
+            int countryIndex = countryAdapter.getPosition(String.valueOf(patientDTO.getCountry()));
+            if (countryIndex <= 0) {
+                countryIndex = countryAdapter.getPosition("India");
+            }
+            mCountryNameSpinner.setSelection(countryIndex);
             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
             if (patientDTO.getCityvillage() != null) {
                 String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -308,31 +311,31 @@ public class Fragment_SecondScreen extends Fragment {
                     String district = adapterView.getItemAtPosition(i).toString();
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-                 //   if (!fromThirdScreen || fromFirstScreen) {
-                        if (district.matches("Navi Mumbai")) {
-                            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                    R.array.navi_mumbai_city, android.R.layout.simple_spinner_dropdown_item);
-                            mCityNameSpinner.setAdapter(cityAdapter);
+                    //   if (!fromThirdScreen || fromFirstScreen) {
+                    if (district.matches("Navi Mumbai")) {
+                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.navi_mumbai_city, android.R.layout.simple_spinner_dropdown_item);
+                        mCityNameSpinner.setAdapter(cityAdapter);
 
-                            // setting state according database when user clicks edit details
-                            if (fromThirdScreen || fromFirstScreen)
-                                mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
-                            else
-                                mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
+                        // setting state according database when user clicks edit details
+                        if (fromThirdScreen || fromFirstScreen)
+                            mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
+                        else
+                            mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
 
-                        } else if (district.matches("Kurla")){
-                            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                    R.array.kurla_city, android.R.layout.simple_spinner_dropdown_item);
-                            mCityNameSpinner.setAdapter(cityAdapter);
+                    } else if (district.matches("Kurla")) {
+                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.kurla_city, android.R.layout.simple_spinner_dropdown_item);
+                        mCityNameSpinner.setAdapter(cityAdapter);
 
-                            // setting state according database when user clicks edit details
-                            if (fromThirdScreen || fromFirstScreen)
-                                mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
-                            else
-                                mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
+                        // setting state according database when user clicks edit details
+                        if (fromThirdScreen || fromFirstScreen)
+                            mCityNameSpinner.setSelection(cityAdapter.getPosition(String.valueOf(city_village)));
+                        else
+                            mCityNameSpinner.setSelection(cityAdapter.getPosition("Select"));
 
-                        }
-              //      }
+                    }
+                    //      }
                 }
 
             }
@@ -582,7 +585,7 @@ public class Fragment_SecondScreen extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
-     //   bundle.putString("patientUuid", patientID_edit);
+        //   bundle.putString("patientUuid", patientID_edit);
         bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 

@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_7"
+    android:layout_marginBottom="@dimen/margin_8"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/margin_8">
 
 
         <LinearLayout
@@ -25,14 +26,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/edittext_border_blue"
+                android:background="@drawable/normal_white_reounded_bg"
                 android:drawableStart="@drawable/ic_baseline_check_18_green"
                 android:drawablePadding="@dimen/padding_7"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/padding_10"
-                android:paddingVertical="@dimen/padding_7"
+                android:paddingVertical="@dimen/padding_10"
                 android:text="Yes"
                 android:textColor="@color/ui2_black_text_color"
                 android:textSize="12sp"
@@ -42,14 +43,14 @@
                 android:id="@+id/tv_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_border_blue"
+                android:background="@drawable/normal_white_reounded_bg"
                 android:drawableStart="@drawable/ic_baseline_close_18_green"
                 android:drawablePadding="@dimen/padding_7"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/padding_10"
-                android:paddingVertical="@dimen/padding_7"
+                android:paddingVertical="@dimen/padding_10"
                 android:text="No"
                 android:textColor="@color/ui2_black_text_color"
                 android:textSize="12sp"
@@ -65,10 +66,12 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_toStartOf="@id/ll_action_view"
+            android:fontFamily="sans-serif-black"
             android:lineSpacingExtra="1sp"
             android:text="Which part of the abdomen do you feel pain?"
             android:textColor="@color/ui2_black_text_color"
-            android:textSize="12sp" />
+            android:textSize="14sp"
+            android:textStyle="normal" />
 
     </RelativeLayout>
 
@@ -81,7 +84,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginVertical="8dip"
-        android:background="@color/textColorGray1" />
+        android:layout_height="0.2dip"
+        android:layout_marginTop="@dimen/margin_8"
+        android:background="@color/edittextBorder" />
 </LinearLayout>

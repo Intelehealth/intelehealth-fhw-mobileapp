@@ -15,8 +15,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
-import org.intelehealth.apprtc.data.Constants;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -52,6 +51,9 @@ public class AwsS3Utils {
     public static void saveFileToS3Cloud(Context context, String visitUUid, String filePath) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
+        PropertyReader propertyReader = new PropertyReader(context);
+        Properties properties = propertyReader.getMyProperties("config.properties");
+        Log.e("AwsS3Utils", "properties  = " + properties);
         String mimeType;
         executor.execute(new Runnable() {
             @Override
@@ -62,9 +64,9 @@ public class AwsS3Utils {
                     File sourceFile = new File(filePath);
                     File tempFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" + fileName);
 
-                    Log.e("AwsS3Utils", "filePath  = "+filePath);
-                    Log.e("AwsS3Utils", "sourceFileName  = "+sourceFileName);
-                    Log.e("AwsS3Utils", "fileName  = "+fileName);
+                    Log.e("AwsS3Utils", "filePath  = " + filePath);
+                    Log.e("AwsS3Utils", "sourceFileName  = " + sourceFileName);
+                    Log.e("AwsS3Utils", "fileName  = " + fileName);
                     if (!tempFile.exists()) {
                         tempFile.getParentFile().mkdirs();
 
@@ -99,10 +101,10 @@ public class AwsS3Utils {
                 }*/
                     Log.v("AwsS3Utils", "saveFileToS3Cloud - fileName : " + fileName);
                     //Log.v("AwsS3Utils", "saveFileToS3Cloud - mimeType : " + mimeType);
-                    BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(Constants.S3_ACCESS_ID, Constants.S3_SECRET_KEY);
+                    BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(propertyReader.getAwsAccessID(), propertyReader.getAwsSecretKey());
                     AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials);
 
-                    PutObjectRequest por = new PutObjectRequest(Constants.S3_BUCKET_NAME, fileName, tempFile);
+                    PutObjectRequest por = new PutObjectRequest(propertyReader.getAwsS3BucketName(), fileName, tempFile);
                     //new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));
                     PutObjectResult putObjectResult = amazonS3Client.putObject(por);
 
@@ -127,7 +129,7 @@ public class AwsS3Utils {
                                     System.out.println("temp file not Deleted");
                                 }
                             }
-                            String fileUrl = Constants.S3_BUCKET_PREFIX_URL + fileName;
+                            String fileUrl = propertyReader.getAwsS3BucketPrefixUrl() + fileName;
                             Intent intent = new Intent();
                             intent.setAction(ACTION_FILE_UPLOAD_DONE);
                             intent.putExtra("fileUrl", fileUrl);

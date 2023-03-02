@@ -74,7 +74,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_white, 0, 0, 0);
             } else {
                 genericViewHolder.noTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
-                genericViewHolder.noTextView.setBackgroundResource(R.drawable.edittext_border_blue);
+                genericViewHolder.noTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
                 genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_green, 0, 0, 0);
             }
             genericViewHolder.currentRootOptionList = mItemList.get(position).getOptionsList();
@@ -120,7 +120,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 }
             } else {
                 genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
-                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.edittext_border_blue);
+                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
                 genericViewHolder.recyclerView.setVisibility(View.GONE);
             }
