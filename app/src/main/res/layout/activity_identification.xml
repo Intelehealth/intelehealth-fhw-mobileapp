@@ -652,7 +652,7 @@
                                 android:hint="@string/aadhar_number_details"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="phone"
-                                android:maxLength="25"
+                                android:maxLength="12"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />

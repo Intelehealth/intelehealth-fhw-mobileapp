@@ -34,6 +34,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:text="@string/click_here_to_see_the_full_ecg"
                         android:textColor="#50FF4081"
                         android:textSize="32sp" />

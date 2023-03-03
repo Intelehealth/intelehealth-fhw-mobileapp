@@ -1586,11 +1586,31 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(null);
         }
 
+/*
         if (!aadharNumET.getText().toString().isEmpty() && !aadharNumET.getText().toString().equalsIgnoreCase("")
                 && !aadharNumET.getText().toString().equalsIgnoreCase(" ")) {
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(aadharNumET.getText().toString());
             if (!m.matches()) {
+                aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+                cancel = true;
+                return;
+            }
+        }
+*/
+
+/*
+        if (aadharNumET.getText().toString().trim().length() < 0) {
+            aadharNumET.requestFocus();
+            aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+            cancel = true;
+            return;
+        }
+*/
+
+        if (aadharNumET.getText().toString().trim().length() > 0) {
+            if (aadharNumET.getText().toString().trim().length() < 12) {
+                aadharNumET.requestFocus();
                 aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
                 cancel = true;
                 return;
@@ -1873,11 +1893,31 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(null);
         }
 
+/*
         if (!aadharNumET.getText().toString().isEmpty() && !aadharNumET.getText().toString().equalsIgnoreCase("")
                 && !aadharNumET.getText().toString().equalsIgnoreCase(" ")) {
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(aadharNumET.getText().toString());
             if (!m.matches()) {
+                aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+                cancel = true;
+                return;
+            }
+        }
+*/
+
+/*
+        if (aadharNumET.getText().toString().trim().length() < 0) {
+            aadharNumET.requestFocus();
+            aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+            cancel = true;
+            return;
+        }
+*/
+
+        if (aadharNumET.getText().toString().trim().length() > 0) {
+            if (aadharNumET.getText().toString().trim().length() < 12) {
+                aadharNumET.requestFocus();
                 aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
                 cancel = true;
                 return;
