@@ -39,6 +39,7 @@
                         android:textSize="32sp" />
 
                     <org.intelehealth.app.widget.materialprogressbar.rhemos_widget.EcgBackgroundView
+                        android:id="@+id/wave_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:largeGridColor="@color/colorECGLargeGrid"

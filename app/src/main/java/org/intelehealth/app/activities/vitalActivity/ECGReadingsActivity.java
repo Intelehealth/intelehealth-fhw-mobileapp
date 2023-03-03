@@ -247,7 +247,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         int year = Integer.parseInt(dob_array[0]);
         int month = Integer.parseInt(dob_array[1]);
         int day = Integer.parseInt(dob_array[2]);
-        Log.v("ECG_Dob", "ECG_DOB: " + year + " " + month + " " + day);
+        Log.v("ECG", "ECG: " + "_DOB: " + year + " " + month + " " + day);
 
         int gender;
         if (patientGender.equalsIgnoreCase("M"))

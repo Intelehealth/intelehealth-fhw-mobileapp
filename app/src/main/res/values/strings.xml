@@ -934,8 +934,10 @@
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose\n (Non-Fasting)</string>
-    <string name="blood_glucose_random">Blood Glucose \n(Random)</string>
-    <string name="blood_glucose_random_vitals">Blood Glucose (Random)</string>
+<!--    <string name="blood_glucose_random">Blood Glucose \n(Random)</string>-->
+    <string name="blood_glucose_random">Blood Glucose \n(Fasting)</string>
+<!--    <string name="blood_glucose_random_vitals">Blood Glucose (Random)</string>-->
+    <string name="blood_glucose_random_vitals">Blood Glucose (Fasting)</string>
     <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
     <string name="blood_glucose_fasting">Blood Glucose\n (Fasting)</string>
     <string name="haemoglobin">Haemoglobin (mg/dL)</string>
@@ -1019,4 +1021,5 @@
     <string name="connecting_toast">Connecting...</string>
     <string name="device_connected">Device Connected</string>
     <string name="ecg_test_completed">ECG Test Completed</string>
+    <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
 </resources>

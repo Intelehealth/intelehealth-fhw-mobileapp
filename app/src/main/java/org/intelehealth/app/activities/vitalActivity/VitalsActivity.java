@@ -2339,14 +2339,14 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
             //判断手机是否和设备实现连接
             if (!manager.isConnected()) {
-                Toast.makeText(VitalsActivity.this, getString(R.string.please_connect_to_device), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.please_connect_to_device), Toast.LENGTH_LONG).show();
               //  toast(R.string.device_disconnect);
                 return;
             }
             //判断设备是否在充电，充电时不可测量
             if (manager.isCharging()) {
               //  toast(R.string.charging);
-                Toast.makeText(VitalsActivity.this, getString(R.string.is_charging_please_wait), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, getString(R.string.is_charging_please_wait), Toast.LENGTH_LONG).show();
                 return;
             }
             //判断是否测量中...
@@ -2459,13 +2459,13 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             if (mTestPaperTask.isModuleExist()) {
                 mTestPaperTask.start(getTestPaperMeasureType());
             } else {
-                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_LONG).show();
             }
         } else {
             if (MonitorDataTransmissionManager.getInstance().isTestPaperModuleExist()) {
                 MonitorDataTransmissionManager.getInstance().startMeasure(getTestPaperMeasureType());
             } else {
-                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, "This Device's Test Paper module is not exist.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -2512,13 +2512,13 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         if (mBpTask != null) {
             if (mHcService.getBleDevManager().getBatteryTask().getPower() < 20) {
-                Toast.makeText(VitalsActivity.this, "The power of the device is too low, please charge it\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.power_too_low_pls_charge, Toast.LENGTH_LONG).show();
                 return false;
             }
             mBpTask.start();
         } else {
             if (MonitorDataTransmissionManager.getInstance().getBatteryValue() < 20) {
-                Toast.makeText(VitalsActivity.this, "The power of the device is too low, please charge it\nLow power.Please charge.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.power_too_low_pls_charge, Toast.LENGTH_LONG).show();
                 return false;
             }
             MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BP);
@@ -2562,7 +2562,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         if (state == FINGER_NO_TOUCH) {
          //   stopMeasure("SPO2");
             stopMeasure();
-            Toast.makeText(VitalsActivity.this, R.string.no_finger_detected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(VitalsActivity.this, R.string.no_finger_detected, Toast.LENGTH_LONG).show();
             if (test_dialog != null) {
                 textView.setText(R.string.no_finger_detected);
             }
@@ -2592,7 +2592,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
     @Override
     public void onBpResultError() {
-        Toast.makeText(VitalsActivity.this, R.string.blood_result_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(VitalsActivity.this, R.string.blood_result_error, Toast.LENGTH_LONG).show();
         if (test_dialog != null) {
             textView.setText(R.string.blood_result_error);
         }
@@ -2616,7 +2616,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             break;
                     }
                     if (textId != 0) {
-                        Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VitalsActivity.this, getString(textId), Toast.LENGTH_LONG).show();
                         if (test_dialog != null) {
                             textView.setText(getString(textId));
                             test_dialog.dismiss();
@@ -2666,19 +2666,19 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     public void onTestPaperEvent(int eventId, Object obj) {
         switch (eventId) {
             case TestPaperTask.EVENT_PAPER_IN:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_inserted, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(VitalsActivity.this, R.string.test_paper_inserted, Toast.LENGTH_SHORT).show();
                 if (test_dialog != null) {
                     textView.setText(getString(R.string.test_paper_inserted));
                 }
                 break;
             case TestPaperTask.EVENT_PAPER_READ:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_ready, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(VitalsActivity.this, R.string.test_paper_ready, Toast.LENGTH_SHORT).show();
                 if (test_dialog != null) {
                     textView.setText(getString(R.string.test_paper_ready));
                 }
                 break;
             case TestPaperTask.EVENT_BLOOD_SAMPLE_DETECTING:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_value_calculating, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(VitalsActivity.this, R.string.test_paper_value_calculating, Toast.LENGTH_SHORT).show();
                 if (test_dialog != null) {
                     textView.setText(getString(R.string.test_paper_value_calculating));
                 }
@@ -2708,19 +2708,19 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     public void onTestPaperException(int exception) {
         switch (exception) {
             case TestPaperTask.EXCEPTION_PAPER_OUT:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_not_inserted, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_not_inserted, Toast.LENGTH_LONG).show();
                 break;
             case TestPaperTask.EXCEPTION_PAPER_USED:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_used, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_is_used, Toast.LENGTH_LONG).show();
                 break;
             case TestPaperTask.EXCEPTION_TESTING_PAPER_OUT:
-                Toast.makeText(VitalsActivity.this, R.string.test_paper_out, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.test_paper_out, Toast.LENGTH_LONG).show();
                 break;
 //            case BgTask.EXCEPTION_TIMEOUT_FOR_CHECK_BLOOD_SAMPLE:
 //                toast(R.string.collecting_sample_timeout);
 //                break;
             case TestPaperTask.EXCEPTION_TIMEOUT_FOR_DETECT_BLOOD_SAMPLE:
-                Toast.makeText(VitalsActivity.this, R.string.calculate_bg_value_timeout, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this, R.string.calculate_bg_value_timeout, Toast.LENGTH_LONG).show();
                 break;
             default:
                 Log.e("onTestPaperException", "exception:" + exception);

@@ -963,8 +963,10 @@
     <string name="uric_acid_calibration">यूरिक एसिड अंशांकन</string>
     <string name="total_cholesterol_calibration">कुल कोलेस्ट्रॉल अंशांकन</string>
     <string name="blood_glucose_non_fasting">रक्त ग्लूकोज (गैर-उपवास)</string>
-    <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>
-    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>
+<!--    <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <string name="blood_glucose_random">रक्त ग्लूकोज (उपवास)</string>
+<!--    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (उपवास)</string>
     <string name="blood_glucose_post_prandial">रक्त ग्लूकोज (पोस्ट-प्रांडियल)</string>
     <string name="blood_glucose_fasting">रक्त ग्लूकोज (उपवास)</string>
     <string name="haemoglobin">हीमोग्लोबिन (मिलीग्राम / डीएल)</string>
@@ -1027,6 +1029,7 @@
     <string name="connecting_toast">Connecting...</string>
     <string name="device_connected">Device Connected</string>
     <string name="ecg_test_completed">ECG Test Completed</string>
+    <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
 
 
 </resources>
