@@ -82,6 +82,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.msfarogyabharat.R;
@@ -177,6 +179,7 @@ public class IdentificationActivity extends AppCompatActivity {
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
     Context context;
@@ -2968,12 +2971,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
 
-        try {
-            Logger.logD(TAG, "insertpatinet ");
-            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
-            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+        executorService.execute(() -> {
+            try {
+                Logger.logD(TAG, "insertpatinet ");
 
-            if (NetworkConnection.isOnline(getApplication())) {
+                boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
+                boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+
+                if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
 
@@ -2998,44 +3003,52 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
 //
-            }
+                }
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
-            boolean medicalboolean = false;
-            if (isPatientInserted && isPatientImageInserted) {
-                if (isMedicalAdvice) {
-                    //if from medical advise option then create medical advice visit first(automatically)
-                    createMedicalAdviceVisit();
-                    medicalboolean = true;
+
+                // This needs to be a boolean array as
+                final boolean[] medicalboolean = {false};
+
+                if (isPatientInserted && isPatientImageInserted) {
+                    if (isMedicalAdvice) {
+                        //if from medical advise option then create medical advice visit first(automatically)
+                        createMedicalAdviceVisit();
+                        medicalboolean[0] = true;
+                    } else {
+                        SyncDAO syncDAO = new SyncDAO();
+                        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                        boolean push = syncDAO.pushDataApi();
+                        boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                    }
+
+                    runOnUiThread(() -> {
+
+                        Logger.logD(TAG, "inserted");
+                        Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                        i.putExtra("patientUuid", uuid);
+                        i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                        i.putExtra("tag", "newPatient");
+                        i.putExtra("privacy", privacy_value);
+                        i.putExtra("hasPrescription", "false");
+                        i.putExtra("MedicalAdvice", medicalboolean[0]);
+                        if (TextUtils.isEmpty(patientID_edit)) {
+                            i.putExtra("phoneNumber", patientdto.getPhonenumber());
+                        }
+                        Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        getApplication().startActivity(i);
+                    });
+
                 } else {
-                    SyncDAO syncDAO = new SyncDAO();
-                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                    boolean push = syncDAO.pushDataApi();
-                    boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                    runOnUiThread(() -> Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show());
                 }
-
-                Logger.logD(TAG, "inserted");
-                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
-                i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("privacy", privacy_value);
-                i.putExtra("hasPrescription", "false");
-                i.putExtra("MedicalAdvice", medicalboolean);
-                if (TextUtils.isEmpty(patientID_edit)) {
-                    i.putExtra("phoneNumber", patientdto.getPhonenumber());
-                }
-                Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                getApplication().startActivity(i);
-            } else {
-                Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
 
+        });
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
@@ -3883,16 +3896,18 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
 
         }
-        try {
-            Logger.logD(TAG, "update ");
-            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
-            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
 
-            if (NetworkConnection.isOnline(getApplication())) {
-                SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean ispush = syncDAO.pushDataApi();
-                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+        executorService.execute(() -> {
+            try {
+                Logger.logD(TAG, "update ");
+                boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+                boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
+
+                if (NetworkConnection.isOnline(getApplication())) {
+                    SyncDAO syncDAO = new SyncDAO();
+                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                    boolean ispush = syncDAO.pushDataApi();
+                    boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (ispush)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
@@ -3904,23 +3919,26 @@ public class IdentificationActivity extends AppCompatActivity {
 //                else
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", 4, getApplication());
 
-            }
-            if (isPatientUpdated && isPatientImageUpdated) {
-                Logger.logD(TAG, "updated");
-                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
-                i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("intentTag1", intentTag1);
-                i.putExtra("intentTag2", intentTag2);
-                i.putExtra("hasPrescription", "false");
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                getApplication().startActivity(i);
-            }
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
+                }
 
+                runOnUiThread(() -> {
+                    if (isPatientUpdated && isPatientImageUpdated) {
+                        Logger.logD(TAG, "updated");
+                        Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                        i.putExtra("patientUuid", uuid);
+                        i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+                        i.putExtra("tag", "newPatient");
+                        i.putExtra("intentTag1", intentTag1);
+                        i.putExtra("intentTag2", intentTag2);
+                        i.putExtra("hasPrescription", "false");
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        getApplication().startActivity(i);
+                    }
+                });
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        });
     }
 
     void createMedicalAdviceVisit() {
@@ -4067,4 +4085,9 @@ public class IdentificationActivity extends AppCompatActivity {
         return new String(buffer, "UTF-8");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdownNow();
+    }
 }

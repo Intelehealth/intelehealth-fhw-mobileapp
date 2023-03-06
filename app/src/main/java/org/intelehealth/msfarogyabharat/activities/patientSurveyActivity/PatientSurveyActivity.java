@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -85,6 +87,9 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ArrayAdapter<String> patientNoteAdapter;
     String noteText = "";
     private RatingBar ratingBar;
+
+    private ExecutorService submitExecutorService = Executors.newSingleThreadExecutor();
+    private ExecutorService skipExecutorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void onBackPressed() {
@@ -164,9 +169,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         resetScale();
 
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mSubmit.setOnClickListener(v -> {
 
 //                if(notesSpinner.getSelectedItem().equals("Other")) {
 //                    if(mComments.getText().toString().equalsIgnoreCase(""))
@@ -177,29 +180,28 @@ public class PatientSurveyActivity extends AppCompatActivity {
 //                    }
 //                }
 //                else
-                noteText = notesSpinner.getSelectedItem().toString();
-                rating = String.valueOf(ratingBar.getRating());
-                if (rating != null && !TextUtils.isEmpty(rating)&& !rating.equalsIgnoreCase("0.0") && !noteText.equalsIgnoreCase("") && !notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)) && !noteText.equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
-                    Log.d(TAG, "Rating is " + rating);
+            noteText = notesSpinner.getSelectedItem().toString();
+            rating = String.valueOf(ratingBar.getRating());
+            if (rating != null && !TextUtils.isEmpty(rating) && !rating.equalsIgnoreCase("0.0") && !noteText.equalsIgnoreCase("") && !notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)) && !noteText.equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
+                Log.d(TAG, "Rating is " + rating);
+                submitExecutorService.execute(() -> {
                     uploadSurvey();
                     endVisit();
+                });
+            } else {
+                if (notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_reasone), Toast.LENGTH_LONG).show();
                 } else {
-                    if (notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)))
-                    {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_reasone), Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_Rating), Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_Rating), Toast.LENGTH_LONG).show();
                 }
-
             }
+
         });
 
         mSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                endVisit();
+                skipExecutorService.execute(() -> endVisit());
             }
         });
     }
@@ -254,7 +256,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             Log.v("VTime", "VTime: " + time);
             encounterDTO.setEncounterTime(time);
 
-          //  encounterDTO.setEncounterTime(twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+            //  encounterDTO.setEncounterTime(twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
 //            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -322,14 +324,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
         res.updateConfiguration(conf, dm);
     }
 
-   /* public String fiveMinutesAgo(String timeStamp) throws ParseException {
+    /* public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
-        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        long time = df.parse(timeStamp).getTime();
+         long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+         long time = df.parse(timeStamp).getTime();
 
-        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
-    } */
+         return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+     } */
     public String twoMinutesAgo(String timeStamp) throws ParseException {
 
         long TWO_MINS_IN_MILLIS = 2 * 60 * 1000;
@@ -347,18 +349,20 @@ public class PatientSurveyActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        //SyncDAO syncDAO = new SyncDAO();
-        //syncDAO.pushDataApi();
-        syncUtils.syncForeground("survey"); //Sync function will work in foreground of app and
-        // the Time will be changed for last sync.
+        runOnUiThread(() -> {
+            //SyncDAO syncDAO = new SyncDAO();
+            //syncDAO.pushDataApi();
+            syncUtils.syncForeground("survey"); //Sync function will work in foreground of app and
+            // the Time will be changed for last sync.
 
 //        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
 
-        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+            sessionManager.removeVisitSummary(patientUuid, visitUuid);
 
-        Intent i = new Intent(this, HomeActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        });
     }
 
 

@@ -1306,13 +1306,15 @@ public class PatientDetailActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            try {
-                idView.setText(patientsDAO.getOpenmrsId(patientUuid));
+            runOnUiThread(() -> {
+                try {
+                    idView.setText(patientsDAO.getOpenmrsId(patientUuid));
 
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-            setTitle(idView.getText());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                setTitle(idView.getText());
+            });
         }
     }
 
