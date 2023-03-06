@@ -6,6 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class Bt extends BaseObservable {
 
     private long ts = 0;

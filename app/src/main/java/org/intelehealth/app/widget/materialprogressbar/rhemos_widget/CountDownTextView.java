@@ -12,6 +12,11 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.Locale;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class CountDownTextView extends AppCompatTextView {
 
     private CountDownTimer mCountDownTimer;

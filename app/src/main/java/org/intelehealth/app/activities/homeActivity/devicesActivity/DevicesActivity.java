@@ -43,6 +43,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class DevicesActivity extends AppCompatActivity {
     Context context;
     ExpandableListView expandableListView;

@@ -5,6 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class Bp extends BaseObservable {
 
     private long ts;

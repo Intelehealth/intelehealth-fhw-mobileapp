@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.HorizontalScrollView;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class ReboundHorizontalScrollView extends HorizontalScrollView {
 
     // 移动因子, 是一个百分比, 比如手指移动了100px, 那么View就只移动50px

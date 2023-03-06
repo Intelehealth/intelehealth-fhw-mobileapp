@@ -12,6 +12,11 @@ import android.view.View;
 
 import org.intelehealth.app.R;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class EcgBackgroundView extends View {
 
     /**

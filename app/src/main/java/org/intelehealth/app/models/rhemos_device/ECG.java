@@ -7,6 +7,11 @@ import androidx.databinding.Bindable;
 
 import java.io.Serializable;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class ECG extends BaseObservable implements Serializable {
 
     private long ts;

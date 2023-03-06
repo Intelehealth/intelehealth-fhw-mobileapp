@@ -2,6 +2,11 @@ package org.intelehealth.app.models.rhemos_device;
 
 import java.io.Serializable;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class DeviceInfoModel implements Serializable {
     private String power_level;
     private String device_id;

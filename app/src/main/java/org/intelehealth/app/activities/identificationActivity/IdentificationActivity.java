@@ -138,6 +138,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_state_india_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
@@ -779,7 +780,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //changes done for the ticket SCD-63: Nishita Goyal
 //            state = obj.getString("mState");
 
-            if (country1.equalsIgnoreCase("India")) {
+            if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("भारत")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
                 EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
@@ -1095,6 +1096,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+
+            // Edit part...
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                mCountry.setSelection(countryAdapter.getPosition("भारत"));
+
+                String state_india = switch_mr_state_india_edit(patient1.getState_province());
+                mState.setSelection(stateAdapter != null ? stateAdapter.getPosition(state_india) : 0);
+            }
+            else {
+                mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+            }
 
             if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
@@ -1650,9 +1663,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+            patientdto.setCountry(StringUtils.getValue(
+                    (mCountry.getSelectedItem().toString().equalsIgnoreCase("India") ||
+                            mCountry.getSelectedItem().toString().equalsIgnoreCase("भारत")) ?
+                            "India" : "Not Provided"));
+            patientdto.setStateprovince(StringUtils.getProvided(mState));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1963,9 +1980,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
-            patientdto.setState_province(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+            patientdto.setCountry(StringUtils.getValue(
+                    (mCountry.getSelectedItem().toString().equalsIgnoreCase("India") ||
+                            mCountry.getSelectedItem().toString().equalsIgnoreCase("भारत")) ?
+                            "India" : "Not Provided"));
+            patientdto.setState_province(StringUtils.getProvided(mState));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

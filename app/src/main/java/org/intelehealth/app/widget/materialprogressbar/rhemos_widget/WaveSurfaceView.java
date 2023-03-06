@@ -11,6 +11,11 @@ import android.view.SurfaceView;
 
 import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.wave.DrawWave;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class WaveSurfaceView extends SurfaceView implements Runnable, SurfaceHolder.Callback {
 
     private boolean isLoop;

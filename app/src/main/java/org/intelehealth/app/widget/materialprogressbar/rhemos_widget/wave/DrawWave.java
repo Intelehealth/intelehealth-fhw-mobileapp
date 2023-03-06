@@ -9,6 +9,11 @@ import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.WaveView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public abstract class DrawWave<T> {
 
     protected final List<T> dataList = new ArrayList<>();

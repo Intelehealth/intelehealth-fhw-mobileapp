@@ -18,6 +18,11 @@ import org.intelehealth.app.R;
 
 import java.util.List;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class DataBindingAdapter extends RecyclerView.Adapter<DataBindingAdapter.BindingViewHolder> {
     private Context context;
     private List<OnBLEService.DeviceSort> mList;

@@ -1,5 +1,10 @@
 package org.intelehealth.app.models.rhemos_device;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class ECG_JsonModel {
     private String r_r_interval;
     private String heart_rate;

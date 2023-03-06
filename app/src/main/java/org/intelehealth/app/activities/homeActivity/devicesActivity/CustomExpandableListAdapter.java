@@ -13,6 +13,11 @@ import org.intelehealth.app.R;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> expandableListTitle;

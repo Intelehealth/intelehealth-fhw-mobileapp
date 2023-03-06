@@ -135,6 +135,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_state_india_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
@@ -863,23 +864,50 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        if (patient_new.getPostal_code() != null) {
-            String addrFinalLine;
-            if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String country = "भारत";
+            String state_india = switch_mr_state_india_edit(patient_new.getState_province());
+
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, state_india,
+                            patient_new.getPostal_code(), country);
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, state_india,
+                            country);
+                }
+                addrFinalView.setText(addrFinalLine);
             } else {
-                addrFinalLine = String.format("%s, %s, %s",
+                String addrFinalLine = String.format("%s, %s, %s",
+                        city_village, state_india,
+                        country);
+                addrFinalView.setText(addrFinalLine);
+            }
+        }
+        else {
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getPostal_code(), patient_new.getCountry());
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getCountry());
+                }
+                addrFinalView.setText(addrFinalLine);
+            } else {
+                String addrFinalLine = String.format("%s, %s, %s",
                         city_village, patient_new.getState_province(),
                         patient_new.getCountry());
+                addrFinalView.setText(addrFinalLine);
             }
-            addrFinalView.setText(addrFinalLine);
-        } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
         }
 
         phoneView.setText(patient_new.getPhone_number());

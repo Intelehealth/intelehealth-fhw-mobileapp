@@ -9,6 +9,11 @@ import android.view.View;
 import org.intelehealth.app.R;
 import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.wave.DrawWave;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class WaveView extends View {
 
     protected DrawWave<?> mDrawWave;

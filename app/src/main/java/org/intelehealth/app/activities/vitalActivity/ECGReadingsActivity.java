@@ -38,6 +38,11 @@ import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.wave.ECGDra
 
 import java.util.Locale;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResultListener {
     private ECGDrawWave ecgDrawWave;
     protected ECG model;

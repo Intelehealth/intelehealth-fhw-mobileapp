@@ -21,6 +21,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.Subject;
 
+/**
+ * Created by Prajwal Waingankar
+ * on February 2023.
+ * Github: prajwalmw
+ */
 public class ECGLargeActivity extends AppCompatActivity {
     private ECGDrawWave ecgDrawWave;
 
