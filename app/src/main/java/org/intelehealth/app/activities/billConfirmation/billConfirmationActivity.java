@@ -151,14 +151,16 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         toolbar = findViewById(R.id.toolbar);
         sessionManager = new SessionManager(billConfirmationActivity.this);
         String language = sessionManager.getAppLanguage();
+        Log.v("Bill", "Bill: " + language);
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         //editText
         not_paying_reasonTIL = findViewById(R.id.reasonTIL);
@@ -294,6 +296,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 }
             }
         });
+
+        Checkout.preload(getApplicationContext());
 
         makePaymentCV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -776,8 +780,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_lsxV2Ylin7dw1Y");
         checkout.setImage(R.drawable.scd_logo);
+
         JSONObject object = new JSONObject();
         try {
+//            object.put("config.display.language", "mar");
             object.put("name", "MySmartCareDoc");
             object.put("description", "Test payment");
             object.put("theme.color", "#2E1E91");
