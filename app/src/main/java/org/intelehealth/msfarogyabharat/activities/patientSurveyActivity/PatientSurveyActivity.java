@@ -88,8 +88,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String noteText = "";
     private RatingBar ratingBar;
 
-    private ExecutorService submitExecutorService = Executors.newSingleThreadExecutor();
-    private ExecutorService skipExecutorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService submitExecutorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService skipExecutorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void onBackPressed() {
@@ -349,14 +349,15 @@ public class PatientSurveyActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        runOnUiThread(() -> {
-            //SyncDAO syncDAO = new SyncDAO();
-            //syncDAO.pushDataApi();
-            syncUtils.syncForeground("survey"); //Sync function will work in foreground of app and
-            // the Time will be changed for last sync.
+
+        //SyncDAO syncDAO = new SyncDAO();
+        //syncDAO.pushDataApi();
+        syncUtils.syncForeground("survey"); //Sync function will work in foreground of app and
+        // the Time will be changed for last sync.
 
 //        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
 
+        runOnUiThread(() -> {
             sessionManager.removeVisitSummary(patientUuid, visitUuid);
 
             Intent i = new Intent(this, HomeActivity.class);

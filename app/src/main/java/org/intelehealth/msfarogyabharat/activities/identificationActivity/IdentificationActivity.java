@@ -82,6 +82,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -4049,17 +4050,18 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void endVisit(String visitUuid, String patientUuid, String endTime) {
-        VisitsDAO visitsDAO = new VisitsDAO();
-        try {
-            visitsDAO.updateVisitEnddate(visitUuid, endTime);
-            // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
+        Executors.newSingleThreadExecutor().execute(() -> {
+            VisitsDAO visitsDAO = new VisitsDAO();
+            try {
+                visitsDAO.updateVisitEnddate(visitUuid, endTime);
+                // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
 
-        new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
-        sessionManager.removeVisitSummary(patientUuid, visitUuid);
-
+            new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
+            sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        });
     }
 
 //This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita

@@ -12,17 +12,23 @@ import org.intelehealth.msfarogyabharat.database.dao.SyncDAO;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.NotificationUtils;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
+
     public void initialSync(String fromActivity) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        SyncDAO syncDAO = new SyncDAO();
-        Logger.logD(TAG, "Pull Started");
-        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
-        Logger.logD(TAG, "Pull ended");
-
+        executorService.execute(() -> {
+            SyncDAO syncDAO = new SyncDAO();
+            Logger.logD(TAG, "Pull Started");
+            syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+            Logger.logD(TAG, "Pull ended");
+        });
     }
 
     public void syncBackground() {
@@ -65,6 +71,9 @@ public class SyncUtils {
     }
 
     public boolean syncForeground(String fromActivity) {
+        ExecutorService pullDataExecutor = Executors.newSingleThreadExecutor();
+        ExecutorService imagesPushExecutor = Executors.newSingleThreadExecutor();
+
         boolean isSynced = false;
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
@@ -74,14 +83,11 @@ public class SyncUtils {
 
 
 //        need to add delay for pulling the obs correctly
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
-                Logger.logD(TAG, "Pull ended");
-            }
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            Logger.logD(TAG, "Pull Started");
+            pullDataExecutor.execute(() -> syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity));
+            Logger.logD(TAG, "Pull ended");
         }, 3000);
 
         imagesPushDAO.patientProfileImagesPush();
@@ -93,14 +99,11 @@ public class SyncUtils {
          * to fix the issue of Phy exam and additional images not showing up sometimes
          * on the webapp (doctor portal).
          * */
-        final Handler handler_foreground = new Handler();
-        handler_foreground.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Logger.logD(TAG, "Image Push Started");
-                imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Image Pull ended");
-            }
+        final Handler handler_foreground = new Handler(Looper.getMainLooper());
+        handler_foreground.postDelayed(() -> {
+            Logger.logD(TAG, "Image Push Started");
+            imagesPushExecutor.execute(imagesPushDAO::obsImagesPush);
+            Logger.logD(TAG, "Image Pull ended");
         }, 3000);
 
         imagesPushDAO.deleteObsImage();

@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.mGetDaysAccording;
@@ -51,11 +52,13 @@ public class FollowUpNotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        if (getFollowUpCount(db) > 0) {
-            showNotification(getApplicationContext().getString(R.string.title_follow_reminder), getApplicationContext().getString(R.string.title_follow_up_reminder_desc), getApplicationContext());
-        }
-        scheduled = false;
-        schedule();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            if (getFollowUpCount(db) > 0) {
+                showNotification(getApplicationContext().getString(R.string.title_follow_reminder), getApplicationContext().getString(R.string.title_follow_up_reminder_desc), getApplicationContext());
+            }
+            scheduled = false;
+            schedule();
+        });
         return Result.success();
     }
 

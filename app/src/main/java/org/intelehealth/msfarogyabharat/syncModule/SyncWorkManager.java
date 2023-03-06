@@ -10,9 +10,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
+
+import java.util.concurrent.Executors;
 
 public class SyncWorkManager extends Worker {
 
@@ -37,8 +38,10 @@ public class SyncWorkManager extends Worker {
         Logger.logD(TAG, "doWork");
         //Logger.logD(TAG, "result job");
 
-        SyncUtils syncUtils = new SyncUtils();
-        syncUtils.syncBackground();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncBackground();
+        });
 
         return Result.success();
     }

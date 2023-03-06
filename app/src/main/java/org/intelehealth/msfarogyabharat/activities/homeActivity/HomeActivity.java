@@ -130,6 +130,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, myCases_textView, missedCallRecordingTV;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
+    ExecutorService initialSyncExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -319,11 +320,11 @@ public class HomeActivity extends AppCompatActivity {
                 if (isNetworkConnected()) {
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
 
-                    executorService.execute(() -> runOnUiThread(() -> {
-                        manualSyncButton.setEnabled(false);
+                    executorService.execute(() -> {
+                        runOnUiThread(() -> manualSyncButton.setEnabled(false));
                         syncUtils.syncForeground("home");
-                        manualSyncButton.setEnabled(true);
-                    }));
+                        runOnUiThread(() -> manualSyncButton.setEnabled(true));
+                    });
 
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -339,7 +340,7 @@ public class HomeActivity extends AppCompatActivity {
 
             mSyncProgressDialog.show();
 
-            syncUtils.initialSync("home");
+            initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -348,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
-        FollowUpNotificationWorker.schedule();
+        Executors.newSingleThreadExecutor().execute(FollowUpNotificationWorker::schedule);
     }
 
     //function for handling the video library feature...
@@ -884,7 +885,7 @@ public class HomeActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        Executors.newSingleThreadExecutor().execute(() -> WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST));
                     }
                 }, 10000);
             }
@@ -1052,5 +1053,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executorService.shutdown();
+        initialSyncExecutor.shutdownNow();
     }
 }

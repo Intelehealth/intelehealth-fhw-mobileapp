@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -204,6 +205,7 @@ public class SyncDAO {
 
 
     public boolean pullData(final Context context, String fromActivity) {
+        final Handler handler = new Handler(context.getMainLooper());
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
         db = mDbHelper.getWritableDatabase();
@@ -241,10 +243,11 @@ public class SyncDAO {
 //                        }
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
 
+                        // Adding handlers here so that we can show these toasts on the main thread - Added by Arpan Sircar
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                            handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
+                            handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
@@ -256,11 +259,11 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                            handler.post(() -> Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
+                            handler.post(() -> Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                            handler.post(() -> Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show());
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
