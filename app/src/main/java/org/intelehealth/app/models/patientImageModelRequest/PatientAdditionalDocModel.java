@@ -3,28 +3,23 @@ package org.intelehealth.app.models.patientImageModelRequest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+/**
+ * Created by Prajwal Waingankar
+ * on March 2023.
+ * Github: prajwalmw
+ */
 public class PatientAdditionalDocModel {
-    @SerializedName("file")
+    @SerializedName("images")
     @Expose
-    private String file;    // This returns a BASE64 Image file.
-    @SerializedName("patientuuid")
-    @Expose
-    private String patientuuid;
+    private List<ADPImageModel> images;
 
-    public String getFile() {
-        return file;
+    public List<ADPImageModel> getImages() {
+        return images;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setImages(List<ADPImageModel> images) {
+        this.images = images;
     }
-
-    public String getPatientuuid() {
-        return patientuuid;
-    }
-
-    public void setPatientuuid(String patientuuid) {
-        this.patientuuid = patientuuid;
-    }
-
 }

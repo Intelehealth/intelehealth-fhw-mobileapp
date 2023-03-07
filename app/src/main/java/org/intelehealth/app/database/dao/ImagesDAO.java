@@ -5,8 +5,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
+import com.google.common.io.Files;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.intelehealth.app.models.patientImageModelRequest.ADPImageModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
@@ -230,8 +233,8 @@ public class ImagesDAO {
 
         return patientProfiles;
     }
-    public List<PatientAdditionalDocModel> getPatientADPUnsyncedImages() throws DAOException {
-        List<PatientAdditionalDocModel> patientProfiles = new ArrayList<>();
+    public List<ADPImageModel> getPatientADPUnsyncedImages() throws DAOException {
+        List<ADPImageModel> adpImageModels = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Base64Utils base64Utils = new Base64Utils();
         localdb.beginTransaction();
@@ -240,23 +243,39 @@ public class ImagesDAO {
                     new String[]{"0", "false", "ADP"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
-                    PatientAdditionalDocModel patientAdditionalDocModel = new PatientAdditionalDocModel();
+                    ADPImageModel imageModel = new ADPImageModel();
+                    imageModel.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    imageModel.setFile(base64Utils.getBase64FromFileWithConversion
+                            (idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
+                    // Todo: Note: This converts the image to a Base64 image and pushes it.
+
+                    String fileName = (idCursor.getString((idCursor.getColumnIndexOrThrow("image_path"))));
+                    Log.v("ADPFile", "ADPFile: " + Files.getNameWithoutExtension(fileName));
+                    imageModel.setfName(Files.getNameWithoutExtension(fileName));
+
+                    adpImageModels.add(imageModel);
+
+                   /* PatientAdditionalDocModel patientAdditionalDocModel = new PatientAdditionalDocModel();
                     patientAdditionalDocModel.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
                     patientAdditionalDocModel.setFile(base64Utils.getBase64FromFileWithConversion
                             (idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
                     // Todo: Note: This converts the image to a Base64 image and pushes it.
-                    patientProfiles.add(patientAdditionalDocModel);
+
+                    String fileName = (idCursor.getString((idCursor.getColumnIndexOrThrow("image_path"))));
+                    Log.v("ADPFile", "ADPFile: " + Files.getNameWithoutExtension(fileName));
+                    patientAdditionalDocModel.setF_name(Files.getNameWithoutExtension(fileName));
+                    patientProfiles.add(patientAdditionalDocModel);*/
                 }
+
             }
             idCursor.close();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
-
         }
 
-        return patientProfiles;
+        return adpImageModels;
     }
 
     public List<ObsPushDTO> getObsUnsyncedImages() throws DAOException {

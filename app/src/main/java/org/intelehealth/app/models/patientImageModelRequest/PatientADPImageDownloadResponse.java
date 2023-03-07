@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Created by Prajwal Waingankar
+ * on March 2023.
+ * Github: prajwalmw
+ */
 public class PatientADPImageDownloadResponse {
 
     @SerializedName("personimages")

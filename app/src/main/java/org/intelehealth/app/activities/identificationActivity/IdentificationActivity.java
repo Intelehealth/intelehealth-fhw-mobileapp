@@ -205,7 +205,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     int dob_indexValue = 15;
-    private HorizontalAdapter horizontalAdapter;
+  //  private HorizontalAdapter horizontalAdapter;
+    private HorizontalADP_Adapter horizontalAdapter;
 
 
     @Override
@@ -1049,7 +1050,8 @@ public class IdentificationActivity extends AppCompatActivity {
             if (isFileExists) {
                 addDocRV.setHasFixedSize(true);
                 addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
+              //  horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
+                horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this);
                 addDocRV.setAdapter(horizontalAdapter);
             }
             else {
@@ -1369,7 +1371,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                     addDocRV.setHasFixedSize(true);
                     addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                    horizontalAdapter = new HorizontalAdapter(fileList, this);
+                  //  horizontalAdapter = new HorizontalAdapter(fileList, this);
+                    horizontalAdapter = new HorizontalADP_Adapter(fileList, this);
                     addDocRV.setAdapter(horizontalAdapter);
                     horizontalAdapter.notifyDataSetChanged();
                 }
@@ -1422,7 +1425,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             addDocRV.setHasFixedSize(true);
             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-            horizontalAdapter = new HorizontalAdapter(fileList, this);
+//            horizontalAdapter = new HorizontalAdapter(fileList, this);
+            horizontalAdapter = new HorizontalADP_Adapter(fileList, this);
             addDocRV.setAdapter(horizontalAdapter);
             horizontalAdapter.notifyDataSetChanged();
         }
@@ -1678,11 +1682,21 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            List<File> fileAdapterList = horizontalAdapter.getADPList();
+            if (fileAdapterList != null && fileAdapterList.size() > 0) {
+                additionalDocPath.clear();
+                for (int i = 0; i < fileAdapterList.size(); i++) {
+                    additionalDocPath.add(fileAdapterList.get(i).getPath());
+                    Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+                }
+            }
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Patient Additional Documents"));
-            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1));
+            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1)
+                    .replaceAll(" ", ""));
             Log.v("ADP", "ADP: " + "patattr: " + patientAttributesDTO.getValue());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -1995,11 +2009,22 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            List<File> fileAdapterList = horizontalAdapter.getADPList();
+            if (fileAdapterList != null && fileAdapterList.size() > 0) {
+                additionalDocPath.clear();
+                for (int i = 0; i < fileAdapterList.size(); i++) {
+                    additionalDocPath.add(fileAdapterList.get(i).getPath());
+                    Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+                }
+            }
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Patient Additional Documents"));
-            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1));
+            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1)
+                    .replaceAll(" ", ""));
+            Log.v("ADP", "ADP: " + "update_patattr: " + patientAttributesDTO.getValue());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2114,7 +2139,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (additionalDocPath.size() == 0) {
             try {
                 String[] adp_array = patientsDAO.getAttributeValue(patientUUID, "243dd7eb-e216-40bf-83fb-439723b22d8b")
-                        .replace(" ", "").split(",");
+                        .replaceAll(" ", "").split(",");
                 Collections.addAll(tempList, adp_array);
                 
                 for (int i = 0; i < tempList.size(); i++) {
@@ -2157,7 +2182,8 @@ public class IdentificationActivity extends AppCompatActivity {
                             adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
                             addDocRV.setHasFixedSize(true);
                             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                            horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+//                            horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+                            horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, IdentificationActivity.this);
                             addDocRV.setAdapter(horizontalAdapter);
                         }
 

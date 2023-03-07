@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.models.patientImageModelRequest.ADPImageModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -35,6 +36,7 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
+    PatientAdditionalDocModel patientADP = new PatientAdditionalDocModel();
 
 
 
@@ -89,14 +91,17 @@ public class ImagesPushDAO {
         ImagesDAO imagesDAO = new ImagesDAO();
         String url = urlModifiers.setPatientADPImageUrl();
 
-        List<PatientAdditionalDocModel> patientProfiles = new ArrayList<>();
         try {
-            patientProfiles = imagesDAO.getPatientADPUnsyncedImages();
+            List<ADPImageModel> adpImageModels = imagesDAO.getPatientADPUnsyncedImages();
+            patientADP.setImages(adpImageModels);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        for (PatientAdditionalDocModel p : patientProfiles) {
-            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_ADP_PIC_UPLOAD(url, "Basic " + encoded, p);
+
+    //    for (PatientAdditionalDocModel p : patientProfiles) {
+            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_ADP_PIC_UPLOAD
+                    (url, "Basic " + encoded, patientADP);
+
             personProfilePicUpload.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<ResponseBody>() {
@@ -104,11 +109,15 @@ public class ImagesPushDAO {
                         public void onSuccess(ResponseBody responseBody) {
                             Logger.logD(TAG, "success" + responseBody);
                             Log.v("ADP", "ADP: " + "success_insert: " + responseBody.contentLength());
-                            try {
-                                imagesDAO.updateUnsyncedPatientProfile(p.getPatientuuid(), "ADP");
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
+
+                            for (int i = 0; i < patientADP.getImages().size(); i++) {
+                                try {
+                                    imagesDAO.updateUnsyncedPatientProfile(patientADP.getImages().get(i).getPatientuuid(), "ADP");
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
                             }
+
 //                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
 
@@ -119,7 +128,7 @@ public class ImagesPushDAO {
 //                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
                     });
-        }
+    //    }
         sessionManager.setPullSyncFinished(true);
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
