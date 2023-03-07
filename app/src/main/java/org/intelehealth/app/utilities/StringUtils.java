@@ -2826,7 +2826,7 @@ public final class StringUtils {
 
     public static String en_ar_dob(String dob) {
         String mdob_text = dob
-                .replace("Seen on", "رأيت على") //this is added for the patient details activity.
+                .replace("Date of Visit", "تاريخ الزيارة")//this is added for the patient details activity.
                 .replace("January", "كانون الثاني")
                 .replace("February", "شهر شباط")
                 .replace("March", "شهر اذار")
