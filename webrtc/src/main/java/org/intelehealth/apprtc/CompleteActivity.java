@@ -292,8 +292,7 @@ public class CompleteActivity extends AppCompatActivity {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId); // incoming
-                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
+
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -303,6 +302,9 @@ public class CompleteActivity extends AppCompatActivity {
                     initializePeerConnections();
 
                     startStreamingVideo();
+
+                    socket.emit("create or join", mRoomId); // incoming
+                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
                 }
                 stopRinging();
             }
