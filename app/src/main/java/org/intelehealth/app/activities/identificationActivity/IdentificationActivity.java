@@ -5899,7 +5899,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
     }
 
-    private String checkAndRemoveEndDash(String villageString) {
+    public static String checkAndRemoveEndDash(String villageString) {
         String lastCharacter = String.valueOf(villageString.charAt(villageString.length() - 1));
         if (lastCharacter.equalsIgnoreCase("-")) {
             villageString = villageString.substring(0, villageString.length() - 1);
