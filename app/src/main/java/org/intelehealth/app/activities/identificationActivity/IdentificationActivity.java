@@ -597,6 +597,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             mCountry.setAdapter(countryAdapter);
+            mCountry.setSelection(countryAdapter.getPosition("India"));
+
         } catch (Exception e) {
             Toast.makeText(this, R.string.country_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
