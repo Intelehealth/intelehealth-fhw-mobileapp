@@ -2163,7 +2163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     /**
-     * Get api to download the patient adp images
+     * Get API: To download the patient adp images
      */
     private void getADPImagesFromAPI(String patUUID, ArrayList<File> fileList) {
         adpFilesList.clear();
@@ -2196,7 +2196,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-
+                        // on Complete add all these images into tbl_image_records...
+                        //this insert all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
+                        for (int i = 0; i < adpFilesList.size(); i++) {
+                            try {
+                                imagesDAO.insertPatientProfileImages(adpFilesList.get(i).getPath(), "ADP", patUUID);
+                            } catch (DAOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                 });
     }

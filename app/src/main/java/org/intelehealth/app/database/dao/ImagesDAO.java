@@ -103,6 +103,18 @@ public class ImagesDAO {
 
     }
 
+    public static boolean deleteADPImages(String image_path) {
+        boolean isDeleted = false;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        int delete = localdb.delete("tbl_image_records", "image_path = ?", new String[]{image_path});
+        Log.v("ADP", "ADP: " + "delete int: " + delete);
+
+        if (delete > 0)
+            return isDeleted = true;
+        else
+            return isDeleted = false;
+    }
+
     public boolean deleteImageFromDatabase(String obsUuid) throws DAOException {
         boolean isDeleted = false;
         int updateDeltedRows = 0;
@@ -185,7 +197,7 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
-        String whereclause = "patientuuid = ? AND image_type = ?";
+        String whereclause = "patientuuid = ? AND image_path = ? AND image_type = ?";
         try {
             contentValues.put("patientuuid", patientuuid);
             contentValues.put("image_path", imagepath);
@@ -356,6 +368,33 @@ public class ImagesDAO {
         }
         return isUpdated;
     }
+
+/*
+    public boolean updateUnsyncedPatientADP(String patientuuid, String filePath, String type) throws DAOException {
+        boolean isUpdated = false;
+        long isupdate = 0;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        String whereclause = "patientuuid = ? AND image_path = ? AND image_type = ?";
+        try {
+//            contentValues.put("patientuuid", patientuuid);
+            contentValues.put("sync", "true");
+            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, filePath, type});
+            if (isupdate != 0)
+                isUpdated = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isUpdated = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return isUpdated;
+    }
+*/
 
     public boolean updateUnsyncedObsImages(String uuid) throws DAOException {
         boolean isUpdated = false;

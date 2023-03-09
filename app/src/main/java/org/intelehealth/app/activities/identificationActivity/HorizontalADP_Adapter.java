@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.database.dao.ImagesDAO.deleteADPImages;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -114,7 +116,16 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
         // local image delete - end
 
         // 2. local image delete - database - start
+        String filename = file.getName();
+        Log.v("ADP", "ADP: " + "deleted filename: " + filename + "\n" + "filepath: "  + file.getPath());
+
+        // Deleting from local db is not requried as since image is deleted ie. no base64 image to push ie. on server end no image receivd
+        // ie. it wont show the deleted images as new images send altogether are overwritten. However, I m deleting it from local storage
+        // as its not a good practise to send empty base64 image and cause error on server end also avoiding pushing empty images too.
+        deleteADPImages(file.getPath());
+
        /* try {
+
             List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
             for (String images : imageList) {
                 Log.d(TAG,"image= "+images);
