@@ -191,6 +191,44 @@ public class ImagesDAO {
         return isInserted;
     }
 
+    /**
+     * This function is used on initial sync when user tries to open the patient for editing at that time
+     * since this pat is of another user its images has to be downloaded and stored in local db table with sync = true.
+     * @param imagepath
+     * @param imageType
+     * @param patientUuid
+     * @return
+     * @throws DAOException
+     */
+    public boolean pullSaveADPImages(String imagepath, String imageType, String patientUuid) throws DAOException {
+        // todo: handle for Patient Detail download flow...
+        boolean isInserted = false;
+        if(imagepath == null)
+            return true;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        try {
+            contentValues.put("uuid", UUID.randomUUID().toString());
+            contentValues.put("patientuuid", patientUuid);
+            contentValues.put("visituuid", "");
+            contentValues.put("image_path", imagepath);
+            contentValues.put("image_type", imageType);
+            contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            contentValues.put("sync", "true");  // sync set to true as this image is from another users device.
+            localdb.insertWithOnConflict("tbl_image_records", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            isInserted = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isInserted = false;
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return isInserted;
+    }
+
     public boolean updatePatientProfileImages(String imagepath, String patientuuid, String image_type) throws DAOException {
         boolean isUpdated = false;
         long isupdate = 0;
@@ -261,6 +299,7 @@ public class ImagesDAO {
                             (idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
                     // Todo: Note: This converts the image to a Base64 image and pushes it.
 
+                    imageModel.setFilePath(idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))); // String file path
                     String fileName = (idCursor.getString((idCursor.getColumnIndexOrThrow("image_path"))));
                     Log.v("ADPFile", "ADPFile: " + Files.getNameWithoutExtension(fileName));
                     imageModel.setfName(Files.getNameWithoutExtension(fileName));
@@ -369,7 +408,6 @@ public class ImagesDAO {
         return isUpdated;
     }
 
-/*
     public boolean updateUnsyncedPatientADP(String patientuuid, String filePath, String type) throws DAOException {
         boolean isUpdated = false;
         long isupdate = 0;
@@ -394,7 +432,6 @@ public class ImagesDAO {
         }
         return isUpdated;
     }
-*/
 
     public boolean updateUnsyncedObsImages(String uuid) throws DAOException {
         boolean isUpdated = false;

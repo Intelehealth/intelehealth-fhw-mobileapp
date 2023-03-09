@@ -20,6 +20,8 @@ public class ADPImageModel {
     @Expose
     private String fName;
 
+    private String filePath;
+
     public String getFile() {
         return file;
     }
@@ -44,4 +46,11 @@ public class ADPImageModel {
         this.fName = fName;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }

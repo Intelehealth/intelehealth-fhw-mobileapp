@@ -112,7 +112,10 @@ public class ImagesPushDAO {
 
                             for (int i = 0; i < patientADP.getImages().size(); i++) {
                                 try {
-                                    imagesDAO.updateUnsyncedPatientProfile(patientADP.getImages().get(i).getPatientuuid(), "ADP");
+                                  //  imagesDAO.updateUnsyncedPatientProfile(patientADP.getImages().get(i).getPatientuuid(), "ADP");
+                                    imagesDAO.updateUnsyncedPatientADP(
+                                            patientADP.getImages().get(i).getPatientuuid(),
+                                            patientADP.getImages().get(i).getFilePath(),"ADP");
                                 } catch (DAOException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 }

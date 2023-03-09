@@ -236,6 +236,15 @@ public class IdentificationActivity extends AppCompatActivity {
         addDoc_IB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+/*
+                if (horizontalAdapter != null) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                        additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+                    }
+                }
+*/
                 if (additionalDocPath.size() < 4)
                     selectImage();
                 else
@@ -1364,6 +1373,17 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.i(TAG, "Result OK");
                 mAdditionalPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mAdditionalPhotoPath);
+
+/*
+                if (horizontalAdapter != null) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                        additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+                    }
+                }
+*/
+
                 if (additionalDocPath.size() < 4) {
                     additionalDocPath.add(mAdditionalPhotoPath);
                     if (new File(mAdditionalPhotoPath).exists()) {
@@ -1418,6 +1438,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
     private void saveImage(String picturePath, ArrayList<File> fileList) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+/*
+        if (horizontalAdapter != null) {
+            additionalDocPath.clear();
+            for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+            }
+        }
+*/
+
         if (additionalDocPath.size() < 4) {
             additionalDocPath.add(picturePath);
             if (new File(picturePath).exists()) {
@@ -2166,6 +2196,7 @@ public class IdentificationActivity extends AppCompatActivity {
      * Get API: To download the patient adp images
      */
     private void getADPImagesFromAPI(String patUUID, ArrayList<File> fileList) {
+        ImagesDAO imagesDAO = new ImagesDAO();
         adpFilesList.clear();
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getADPImageUrl(patUUID);
@@ -2200,11 +2231,13 @@ public class IdentificationActivity extends AppCompatActivity {
                         //this insert all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
                         for (int i = 0; i < adpFilesList.size(); i++) {
                             try {
-                                imagesDAO.insertPatientProfileImages(adpFilesList.get(i).getPath(), "ADP", patUUID);
+                                imagesDAO.pullSaveADPImages(adpFilesList.get(i).getPath(), "ADP", patUUID);
                             } catch (DAOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
+
+                        fetchAdditionalDocImages(patUUID);
                     }
                 });
     }

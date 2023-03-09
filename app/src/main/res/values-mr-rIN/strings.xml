@@ -1013,6 +1013,7 @@
     <string name="connecting_toast">कनेक्ट करत आहे...</string>
     <string name="device_connected">डिव्हाइस कनेक्ट केले</string>
     <string name="ecg_test_completed">ईसीजी चाचणी पूर्ण झाली</string>
-    <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
+    <string name="power_too_low_pls_charge">डिव्हाइसची शक्ती खूप कमी आहे, कृपया ते चार्ज करा.</string>
+    <string name="image_deleted_successfully">प्रतिमा यशस्वीरित्या हटवली</string>
 
 </resources>

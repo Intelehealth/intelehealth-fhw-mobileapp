@@ -1030,6 +1030,7 @@
     <string name="device_connected">Device Connected</string>
     <string name="ecg_test_completed">ECG Test Completed</string>
     <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
+    <string name="image_deleted_successfully">Image Deleted Successfully</string>
 
 
 </resources>

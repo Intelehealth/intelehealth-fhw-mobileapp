@@ -99,7 +99,7 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
                 public void onClick(View v) {
                    // displayImage(list.get(position));
                     deleteCurrentImage(list.get(holder.getAdapterPosition()), holder.getAdapterPosition());
-                    Toast.makeText(context, "Delete clicked.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.image_deleted_successfully, Toast.LENGTH_SHORT).show();
                 }
             });
         }
