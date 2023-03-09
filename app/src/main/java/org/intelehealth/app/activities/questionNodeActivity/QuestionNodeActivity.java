@@ -339,7 +339,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             String complaintStringArabic = currentNode.generateLanguage("ar");
 
             //changes done to handle null pointer exception crash
-            if(complaintStringArabic!=null && !complaintStringArabic.isEmpty()) {
+            if (complaintStringArabic != null && !complaintStringArabic.isEmpty()) {
                 complaintStringArabic = complaintStringArabic
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("Patient reports -", "يقر المريض ب-")
@@ -474,7 +474,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             recyclerViewIndicator.setScaleX(-1);
 
     }
@@ -575,7 +575,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             recyclerViewIndicator.setScaleX(-1);
 
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
@@ -613,7 +613,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void setRecyclerViewIndicator() {
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             recyclerViewIndicator.setScaleX(-1);
 
     }
@@ -689,10 +689,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+        String currentNodeText = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
+        if (currentNodeText.equalsIgnoreCase("Question not answered\n")) {
+            alertDialogBuilder.setMessage(getString(R.string.details_required));
+            alertDialogBuilder.setNeutralButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss());
+            alertDialogBuilder.show();
+            return;
+        }
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash
-            if(message!=null && !message.isEmpty()) {
+            if (message != null && !message.isEmpty()) {
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("Patient reports -", "يقر المريض ب-")
@@ -721,7 +730,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         .replace("Dec", "شهر كانون الأول");
             }
             alertDialogBuilder.setMessage(message);
-        }  else {
+        } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 

@@ -1607,6 +1607,6 @@
     <string name="swipe_to_move_forward">Swipe to the right to move forward</string>
     <string name="identification_fill_required_fields">Fill required fields</string>
     <string name="action_homepage">Homepage</string>
-
+    <string name="details_required">Please add the details</string>
 
 </resources>
