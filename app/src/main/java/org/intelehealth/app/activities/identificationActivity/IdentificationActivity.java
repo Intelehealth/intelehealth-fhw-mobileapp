@@ -173,13 +173,15 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     Intent i_privacy;
     int dob_indexValue = 15;
-    String mAddress1Value = "", mAddress2Value = "", mPostalValue = "", stateValue = "", countryValue = "", villageValue = "", mRelationshipValue = "";
+    String mAddress1Value = "NA", mAddress2Value = "", mPostalValue = "", stateValue = "", countryValue = "", villageValue = "", mRelationshipValue = "";
     Spinner HOH_relation_spinner, marital_status_spinner, husband_status_spinner, residence_nature_spinner, link_nature_spinner, independent_resid_spinner, whyHOH_spinner, mainTendency_spinner, changeConditionReason_spinner, percentage_income_spinner;
     private ActivityIdentificationBinding binding;
     MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
     ArrayList<String> selectedAid_en, selectedAid_ar;
     ScrollView scrollView;
-    private MaterialCheckBox phone_checkbox, earthquakeVictimCheckbox;
+    private MaterialCheckBox phone_checkbox/*, earthquakeVictimCheckbox*/;
+
+    // Earthquake victim checkbox is commented out for dummy release - Arpan Sircar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -903,106 +905,106 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         // We will set the data only if the emergency victim checkbox is selected
 
-        if (earthquakeVictimCheckbox.isChecked()) {
-
-            // Set data for special needs spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getNatureOfSpecialNeeds() == null || getPatientAttributeFromJSON(patient1.getNatureOfSpecialNeeds()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerNatureSpecialNeeds.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getNatureOfSpecialNeeds());
-                String natureOfSpecialNeeds = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    natureOfSpecialNeeds = patientAttributeLanguageModel.getAr();
-                } else {
-                    natureOfSpecialNeeds = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerNatureSpecialNeeds.setSelection(specialNeedsAdapter.getPosition(natureOfSpecialNeeds));
-            }
-
-            // Set data for loss as a result of earthquake spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getLossAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerLossAsAResultOfTheEarthquake.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossAsAResultOfTheEarthquake());
-                String lossAsAResultOfTheEarthquake = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    lossAsAResultOfTheEarthquake = patientAttributeLanguageModel.getAr();
-                } else {
-                    lossAsAResultOfTheEarthquake = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerLossAsAResultOfTheEarthquake.setSelection(lossDueToEarthquakeAdapter.getPosition(lossAsAResultOfTheEarthquake));
-            }
-
-            // Set data for loss of breadwinner as a result of earthquake spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake());
-                String lossOfBreadwinner = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    lossOfBreadwinner = patientAttributeLanguageModel.getAr();
-                } else {
-                    lossOfBreadwinner = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.setSelection(lossOfBreadwinnerAdapter.getPosition(lossOfBreadwinner));
-            }
-
-            // Set data for loss of analgesic as a result of earthquake spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getLossOfAnalgesicAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossOfAnalgesicAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossOfAnalgesicAsAResultOfTheEarthquake());
-                String lossOfAnalgesic = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    lossOfAnalgesic = patientAttributeLanguageModel.getAr();
-                } else {
-                    lossOfAnalgesic = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.setSelection(lossOfAnalgesicAdapter.getPosition(lossOfAnalgesic));
-            }
-
-            // Set data for strong social ties as a result of earthquake spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getStrongSocialTiesInYourResidenceArea() == null || getPatientAttributeFromJSON(patient1.getStrongSocialTiesInYourResidenceArea()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerStrongSocialTies.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getStrongSocialTiesInYourResidenceArea());
-                String strongSocialTies = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    strongSocialTies = patientAttributeLanguageModel.getAr();
-                } else {
-                    strongSocialTies = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerStrongSocialTies.setSelection(strongSocialTiesAdapter.getPosition(strongSocialTies));
-            }
-
-            // Set data for places of relatives in other parts of Syria
-            // Check if the field has no value
-            if (patient1 == null || patient1.getPlacesOfRelativesInOtherPartsOfSyria() == null || patient1.getPlacesOfRelativesInOtherPartsOfSyria().isEmpty()) {
-                binding.etPlacesOfRelatives.setText("");
-            } else {
-                binding.etPlacesOfRelatives.setText(patient1.getPlacesOfRelativesInOtherPartsOfSyria());
-            }
-
-            // Set data for places of preference for hosting as a result of earthquake spinner
-            // Check if the field has no value
-            if (patient1 == null || patient1.getPlacesOfPreferenceForHosting() == null || getPatientAttributeFromJSON(patient1.getPlacesOfPreferenceForHosting()).getEn().equalsIgnoreCase("Not provided")) {
-                binding.spinnerPlacesOfPreference.setSelection(0);
-            } else {
-                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getPlacesOfPreferenceForHosting());
-                String placesOfPreference = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                    placesOfPreference = patientAttributeLanguageModel.getAr();
-                } else {
-                    placesOfPreference = patientAttributeLanguageModel.getEn();
-                }
-                binding.spinnerPlacesOfPreference.setSelection(placesOfPreferenceAdapter.getPosition(placesOfPreference));
-            }
-        }
+//        if (earthquakeVictimCheckbox.isChecked()) {
+//
+//            // Set data for special needs spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getNatureOfSpecialNeeds() == null || getPatientAttributeFromJSON(patient1.getNatureOfSpecialNeeds()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerNatureSpecialNeeds.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getNatureOfSpecialNeeds());
+//                String natureOfSpecialNeeds = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    natureOfSpecialNeeds = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    natureOfSpecialNeeds = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerNatureSpecialNeeds.setSelection(specialNeedsAdapter.getPosition(natureOfSpecialNeeds));
+//            }
+//
+//            // Set data for loss as a result of earthquake spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getLossAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerLossAsAResultOfTheEarthquake.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossAsAResultOfTheEarthquake());
+//                String lossAsAResultOfTheEarthquake = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    lossAsAResultOfTheEarthquake = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    lossAsAResultOfTheEarthquake = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerLossAsAResultOfTheEarthquake.setSelection(lossDueToEarthquakeAdapter.getPosition(lossAsAResultOfTheEarthquake));
+//            }
+//
+//            // Set data for loss of breadwinner as a result of earthquake spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossOfBreadwinnerAsAResultOfTheEarthquake());
+//                String lossOfBreadwinner = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    lossOfBreadwinner = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    lossOfBreadwinner = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.setSelection(lossOfBreadwinnerAdapter.getPosition(lossOfBreadwinner));
+//            }
+//
+//            // Set data for loss of analgesic as a result of earthquake spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getLossOfAnalgesicAsAResultOfTheEarthquake() == null || getPatientAttributeFromJSON(patient1.getLossOfAnalgesicAsAResultOfTheEarthquake()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getLossOfAnalgesicAsAResultOfTheEarthquake());
+//                String lossOfAnalgesic = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    lossOfAnalgesic = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    lossOfAnalgesic = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.setSelection(lossOfAnalgesicAdapter.getPosition(lossOfAnalgesic));
+//            }
+//
+//            // Set data for strong social ties as a result of earthquake spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getStrongSocialTiesInYourResidenceArea() == null || getPatientAttributeFromJSON(patient1.getStrongSocialTiesInYourResidenceArea()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerStrongSocialTies.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getStrongSocialTiesInYourResidenceArea());
+//                String strongSocialTies = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    strongSocialTies = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    strongSocialTies = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerStrongSocialTies.setSelection(strongSocialTiesAdapter.getPosition(strongSocialTies));
+//            }
+//
+//            // Set data for places of relatives in other parts of Syria
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getPlacesOfRelativesInOtherPartsOfSyria() == null || patient1.getPlacesOfRelativesInOtherPartsOfSyria().isEmpty()) {
+//                binding.etPlacesOfRelatives.setText("");
+//            } else {
+//                binding.etPlacesOfRelatives.setText(patient1.getPlacesOfRelativesInOtherPartsOfSyria());
+//            }
+//
+//            // Set data for places of preference for hosting as a result of earthquake spinner
+//            // Check if the field has no value
+//            if (patient1 == null || patient1.getPlacesOfPreferenceForHosting() == null || getPatientAttributeFromJSON(patient1.getPlacesOfPreferenceForHosting()).getEn().equalsIgnoreCase("Not provided")) {
+//                binding.spinnerPlacesOfPreference.setSelection(0);
+//            } else {
+//                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(patient1.getPlacesOfPreferenceForHosting());
+//                String placesOfPreference = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+//                    placesOfPreference = patientAttributeLanguageModel.getAr();
+//                } else {
+//                    placesOfPreference = patientAttributeLanguageModel.getEn();
+//                }
+//                binding.spinnerPlacesOfPreference.setSelection(placesOfPreferenceAdapter.getPosition(placesOfPreference));
+//            }
+//        }
     }
 
     private void setAdapterToSpinners() {
@@ -1556,31 +1558,31 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("CREATED_BY")) {
                     patient1.setHealthWorkerID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
-                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    earthquakeVictimCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase("yes"));
-                }
-                if (name.equalsIgnoreCase("NATURE_OF_SPECIAL_NEEDS")) {
-                    patient1.setNatureOfSpecialNeeds(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE")) {
-                    patient1.setLossAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE")) {
-                    patient1.setLossOfAnalgesicAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE")) {
-                    patient1.setLossOfBreadwinnerAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA")) {
-                    patient1.setStrongSocialTiesInYourResidenceArea(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA")) {
-                    patient1.setPlacesOfRelativesInOtherPartsOfSyria(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("PLACES_OF_PREFERENCE_FOR_HOSTING")) {
-                    patient1.setPlacesOfPreferenceForHosting(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+//                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
+//                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    earthquakeVictimCheckbox.setChecked(isDisasterVictim.equalsIgnoreCase("yes"));
+//                }
+//                if (name.equalsIgnoreCase("NATURE_OF_SPECIAL_NEEDS")) {
+//                    patient1.setNatureOfSpecialNeeds(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE")) {
+//                    patient1.setLossAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE")) {
+//                    patient1.setLossOfAnalgesicAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE")) {
+//                    patient1.setLossOfBreadwinnerAsAResultOfTheEarthquake(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA")) {
+//                    patient1.setStrongSocialTiesInYourResidenceArea(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA")) {
+//                    patient1.setPlacesOfRelativesInOtherPartsOfSyria(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
+//                if (name.equalsIgnoreCase("PLACES_OF_PREFERENCE_FOR_HOSTING")) {
+//                    patient1.setPlacesOfPreferenceForHosting(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+//                }
 
                 /*if (name.equalsIgnoreCase("FirstLocation")) {
                     patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -1928,71 +1930,71 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
-        if (earthquakeVictimCheckbox.isChecked()) {
-
-            // Validation for Special Needs Spinner
-            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss As a Result Of Earthquake Spinner
-            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss of Analgesic Spinner
-            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null)
-                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss of Breadwinner
-            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null)
-                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Strong Social Ties Spinner
-            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
-                cancel[0] = true;
-            }
-
-            // Validation for Places Of Relatives EditText
-            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
-                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
-                if (focusView == null) focusView = binding.etPlacesOfRelatives;
-                cancel[0] = true;
-            }
-
-            // Validation for Place Of Preference Spinner
-            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
-                cancel[0] = true;
-            }
-        }
+//        if (earthquakeVictimCheckbox.isChecked()) {
+//
+//            // Validation for Special Needs Spinner
+//            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss As a Result Of Earthquake Spinner
+//            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss of Analgesic Spinner
+//            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null)
+//                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss of Breadwinner
+//            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null)
+//                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Strong Social Ties Spinner
+//            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Places Of Relatives EditText
+//            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
+//                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
+//                if (focusView == null) focusView = binding.etPlacesOfRelatives;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Place Of Preference Spinner
+//            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
+//                cancel[0] = true;
+//            }
+//        }
 
         /*if (sinceSupportingFamilyET.getVisibility() == View.VISIBLE && (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase(""))) {
             sinceSupportingFamilyET.setError(getString(R.string.error_field_required));
@@ -2525,11 +2527,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-        if (earthquakeVictimCheckbox.isChecked()) {
-            patientAttributesDTO.setValue("Yes");
-        } else {
-            patientAttributesDTO.setValue("No");
-        }
+//        if (earthquakeVictimCheckbox.isChecked()) {
+//            patientAttributesDTO.setValue("Yes");
+//        } else {
+//            patientAttributesDTO.setValue("No");
+//        }
 
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2554,77 +2556,77 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         //House Hold Registration - End
 
         // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
-        if (earthquakeVictimCheckbox.isChecked()) {
-
-            // Nature of special needs spinner
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
-            String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
-            String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
-            patientAttributesDTO.setValue(specialNeedsInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Loss as a result of the earthquake
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-            String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
-            String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
-            patientAttributesDTO.setValue(lossInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Loss of analgesic as a result of the earthquake
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-            String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
-            String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
-            patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Loss of breadwinner as a result of the earthquake
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
-            String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
-            String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
-            patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Strong social ties spinner
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
-            String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
-            String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
-            patientAttributesDTO.setValue(strongSocialTiesInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Place of relatives
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
-            String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
-            patientAttributesDTO.setValue(placesOfRelativesInfoValue);
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Place of hosting spinner
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
-            String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
-            String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
-            patientAttributesDTO.setValue(placeOfHostingInfoJson);
-            patientAttributesDTOList.add(patientAttributesDTO);
-        }
+//        if (earthquakeVictimCheckbox.isChecked()) {
+//
+//            // Nature of special needs spinner
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
+//            String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
+//            String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
+//            patientAttributesDTO.setValue(specialNeedsInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Loss as a result of the earthquake
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+//            String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
+//            String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
+//            patientAttributesDTO.setValue(lossInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Loss of analgesic as a result of the earthquake
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+//            String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
+//            String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
+//            patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Loss of breadwinner as a result of the earthquake
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
+//            String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
+//            String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
+//            patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Strong social ties spinner
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
+//            String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
+//            String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
+//            patientAttributesDTO.setValue(strongSocialTiesInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Place of relatives
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
+//            String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
+//            patientAttributesDTO.setValue(placesOfRelativesInfoValue);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+//            // Place of hosting spinner
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
+//            String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
+//            String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
+//            patientAttributesDTO.setValue(placeOfHostingInfoJson);
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//        }
 
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3537,71 +3539,71 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         // Check for validations on Earthquake Victim questions only if the Earthquake Victim Checkbox is checked - Added by Arpan Sircar
-        if (earthquakeVictimCheckbox.isChecked()) {
-
-            // Validation for Special Needs Spinner
-            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss As a Result Of Earthquake Spinner
-            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss of Analgesic Spinner
-            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null)
-                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Loss of Breadwinner
-            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null)
-                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
-                cancel[0] = true;
-            }
-
-            // Validation for Strong Social Ties Spinner
-            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
-                cancel[0] = true;
-            }
-
-            // Validation for Places Of Relatives EditText
-            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
-                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
-                if (focusView == null) focusView = binding.etPlacesOfRelatives;
-                cancel[0] = true;
-            }
-
-            // Validation for Place Of Preference Spinner
-            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
-                cancel[0] = true;
-            }
-        }
+//        if (earthquakeVictimCheckbox.isChecked()) {
+//
+//            // Validation for Special Needs Spinner
+//            if (binding.spinnerNatureSpecialNeeds.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerNatureSpecialNeeds.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerNatureSpecialNeeds;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss As a Result Of Earthquake Spinner
+//            if (binding.spinnerLossAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerLossAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss of Analgesic Spinner
+//            if (binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null)
+//                    focusView = binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Loss of Breadwinner
+//            if (binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null)
+//                    focusView = binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Strong Social Ties Spinner
+//            if (binding.spinnerStrongSocialTies.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerStrongSocialTies.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerStrongSocialTies;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Places Of Relatives EditText
+//            if ((binding.etPlacesOfRelatives.getText().toString().isEmpty() || binding.etPlacesOfRelatives.getText().toString().equalsIgnoreCase(""))) {
+//                binding.etPlacesOfRelatives.setError(getString(R.string.places_of_relatives_cannot_be_empty));
+//                if (focusView == null) focusView = binding.etPlacesOfRelatives;
+//                cancel[0] = true;
+//            }
+//
+//            // Validation for Place Of Preference Spinner
+//            if (binding.spinnerPlacesOfPreference.getSelectedItemPosition() == 0) {
+//                TextView t = (TextView) binding.spinnerPlacesOfPreference.getSelectedView();
+//                t.setError(getString(R.string.select));
+//                t.setTextColor(Color.RED);
+//                if (focusView == null) focusView = binding.spinnerPlacesOfPreference;
+//                cancel[0] = true;
+//            }
+//        }
 
             /*if (HOH_relation_spinner.getVisibility() == View.VISIBLE && (HOH_relation_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) HOH_relation_spinner.getSelectedView();
@@ -3948,11 +3950,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
 
-            if (earthquakeVictimCheckbox.isChecked()) {
-                patientAttributesDTO.setValue("Yes");
-            } else {
-                patientAttributesDTO.setValue("No");
-            }
+//            if (earthquakeVictimCheckbox.isChecked()) {
+//                patientAttributesDTO.setValue("Yes");
+//            } else {
+//                patientAttributesDTO.setValue("No");
+//            }
 
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3975,77 +3977,77 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
 
             // If the earthquake checkbox is checked, we will show the earthquake questions. And only then we will extract the data.
-            if (earthquakeVictimCheckbox.isChecked()) {
-
-                // Nature of special needs spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
-                String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
-                String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
-                patientAttributesDTO.setValue(specialNeedsInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
-                String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
-                patientAttributesDTO.setValue(lossInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss of analgesic as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
-                String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
-                String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
-                patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Loss of breadwinner as a result of the earthquake
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
-                String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
-                String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
-                patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Strong social ties spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
-                String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
-                String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
-                patientAttributesDTO.setValue(strongSocialTiesInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Place of relatives
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
-                String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
-                patientAttributesDTO.setValue(placesOfRelativesInfoValue);
-                patientAttributesDTOList.add(patientAttributesDTO);
-
-                // Place of hosting spinner
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
-                String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
-                String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
-                patientAttributesDTO.setValue(placeOfHostingInfoJson);
-                patientAttributesDTOList.add(patientAttributesDTO);
-            }
+//            if (earthquakeVictimCheckbox.isChecked()) {
+//
+//                // Nature of special needs spinner
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NATURE_OF_SPECIAL_NEEDS"));
+//                String specialNeedsInfoValue = StringUtils.getProvided(binding.spinnerNatureSpecialNeeds);
+//                String specialNeedsInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), specialNeedsInfoValue, R.array.victim_special_needs_en, R.array.victim_special_needs_ar);
+//                patientAttributesDTO.setValue(specialNeedsInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Loss as a result of the earthquake
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+//                String lossInfoValue = StringUtils.getProvided(binding.spinnerLossAsAResultOfTheEarthquake);
+//                String lossInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossInfoValue, R.array.victim_loss_due_to_earthquake_en, R.array.victim_loss_due_to_earthquake_ar);
+//                patientAttributesDTO.setValue(lossInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Loss of analgesic as a result of the earthquake
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_ANALGESIC_AS_A_RESULT_OF_THE_EARTHQUAKE"));
+//                String lossOfAnalgesicInfoValue = StringUtils.getProvided(binding.spinnerLossOfAnalgesicAsAResultOfTheEarthquake);
+//                String lossOfAnalgesicInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfAnalgesicInfoValue, R.array.victim_loss_of_analgesic_en, R.array.victim_loss_of_analgesic_ar);
+//                patientAttributesDTO.setValue(lossOfAnalgesicInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Loss of breadwinner as a result of the earthquake
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("LOSS_OF_BREADWINNER_AS_RESULT_OF_EARTHQUAKE"));
+//                String lossOfBreadwinnerInfoValue = StringUtils.getProvided(binding.spinnerLossOfBreadwinnerAsAResultOfTheEarthquake);
+//                String lossOfBreadwinnerInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), lossOfBreadwinnerInfoValue, R.array.victim_loss_of_breadwinner_en, R.array.victim_loss_of_breadwinner_ar);
+//                patientAttributesDTO.setValue(lossOfBreadwinnerInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Strong social ties spinner
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("STRONG_SOCIAL_TIES_IN_YOUR_RESIDENCE_AREA"));
+//                String strongSocialTiesInfoValue = StringUtils.getProvided(binding.spinnerStrongSocialTies);
+//                String strongSocialTiesInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), strongSocialTiesInfoValue, R.array.victim_strong_social_ties_en, R.array.victim_strong_social_ties_ar);
+//                patientAttributesDTO.setValue(strongSocialTiesInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Place of relatives
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_RELATIVES_IN_OTHER_PARTS_OF_SYRIA"));
+//                String placesOfRelativesInfoValue = binding.etPlacesOfRelatives.getText().toString();
+//                patientAttributesDTO.setValue(placesOfRelativesInfoValue);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//
+//                // Place of hosting spinner
+//                patientAttributesDTO = new PatientAttributesDTO();
+//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//                patientAttributesDTO.setPatientuuid(uuid);
+//                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PLACES_OF_PREFERENCE_FOR_HOSTING"));
+//                String placeOfHostingInfoValue = StringUtils.getProvided(binding.spinnerPlacesOfPreference);
+//                String placeOfHostingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), placeOfHostingInfoValue, R.array.victim_place_of_preference_en, R.array.victim_place_of_preference_ar);
+//                patientAttributesDTO.setValue(placeOfHostingInfoJson);
+//                patientAttributesDTOList.add(patientAttributesDTO);
+//            }
 
             //House Hold Registration - End
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -4095,7 +4097,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         phone_checkbox = findViewById(R.id.phone_checkbox);
-        earthquakeVictimCheckbox = findViewById(R.id.earthquake_victim_checkbox);
+//        earthquakeVictimCheckbox = findViewById(R.id.earthquake_victim_checkbox);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
@@ -4193,12 +4195,12 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     }
 
     private void initializeEarthquakeVictimCheckbox() {
-        // We will show the earthquake victim questions only if the Earthquake Victim checkbox is checked - Added by Arpan Sircar for Syriana Emergency Release
-        earthquakeVictimCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) binding.llEarthquakeVictimQuestions.setVisibility(View.VISIBLE);
-            else binding.llEarthquakeVictimQuestions.setVisibility(View.GONE);
-
-        });
+//        // We will show the earthquake victim questions only if the Earthquake Victim checkbox is checked - Added by Arpan Sircar for Syriana Emergency Release
+//        earthquakeVictimCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            if (isChecked) binding.llEarthquakeVictimQuestions.setVisibility(View.VISIBLE);
+//            else binding.llEarthquakeVictimQuestions.setVisibility(View.GONE);
+//
+//        });
     }
 
     private void hideSpinnersBasedOnAid() {

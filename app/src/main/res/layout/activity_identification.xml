@@ -358,7 +358,9 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -386,9 +388,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    tools:visibility="visible">
 
 
                     <LinearLayout
@@ -1562,7 +1566,9 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
                             android:text="@string/earthquake_victim"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
                         <!--Checkbox - earthquake victim - End -->
 
                         <androidx.appcompat.widget.LinearLayoutCompat

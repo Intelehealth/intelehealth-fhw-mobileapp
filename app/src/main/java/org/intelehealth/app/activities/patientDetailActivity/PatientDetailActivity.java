@@ -166,7 +166,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Myreceiver reMyreceive;
     ImageView photoView;
     ImagesDAO imagesDAO = new ImagesDAO();
-    TextView idView, tvEarthquakeVictim;
+    TextView idView /*, tvEarthquakeVictim*/;    // This earthquake victim tv is commented out for dummy release
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
 
@@ -216,7 +216,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-        tvEarthquakeVictim = findViewById(R.id.textView_earthquake_victim);
+//        tvEarthquakeVictim = findViewById(R.id.textView_earthquake_victim);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -632,14 +632,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("RelationshipStatusHOH")) {
                     patient_new.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
-                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (isDisasterVictim.equalsIgnoreCase("yes")) {
-                        tvEarthquakeVictim.setText(getText(R.string.yes));
-                    } else {
-                        tvEarthquakeVictim.setText(getText(R.string.no));
-                    }
-                }
+//                if (name.equalsIgnoreCase("IS_DISASTER_VICTIM")) {
+//                    String isDisasterVictim = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (isDisasterVictim.equalsIgnoreCase("yes")) {
+//                        tvEarthquakeVictim.setText(getText(R.string.yes));
+//                    } else {
+//                        tvEarthquakeVictim.setText(getText(R.string.no));
+//                    }
+//                }
 
             } while (idCursor1.moveToNext());
         }
