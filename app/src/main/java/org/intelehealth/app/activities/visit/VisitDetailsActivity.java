@@ -13,6 +13,8 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -30,15 +32,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
+import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -47,12 +56,20 @@ import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Prajwal Waingankar on 16/09/2022.
@@ -67,7 +84,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView priorityTag, profile_image, icon_presc_details;
-    public static final String TAG = "FollowUp_visitDetails";
+    public static final String TAG = "VisitDetailsActivity";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
@@ -79,6 +96,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private Button btn_end_visit, yes_followup_btn;
     private ClsDoctorDetails clsDoctorDetails;
     private NetworkUtils networkUtils;
+
+    private RecyclerView mPastVisitsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -420,6 +439,150 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             endvisit_relative_block.setVisibility(View.GONE);
         }
         // end visit - end
+
+        mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
+        mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        initForPastVisit();
+    }
+
+    private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
+
+    private void initForPastVisit() {
+        mPastVisitDataList.clear();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
+        String[] visitArgs = {patientUuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        if (visitCursor == null || visitCursor.getCount() <= 0) {
+            findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+            if (visitCursor.moveToLast()) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    encounterCursor.close();
+
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                    if (previsitCursor != null && previsitCursor.moveToLast()) {
+
+                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        if (visitValue != null && !visitValue.isEmpty()) {
+
+                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                            String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                            visitValue = "";
+                            String colon = ":";
+                            if (complaints != null) {
+                                for (String comp : complaints) {
+                                    if (!comp.trim().isEmpty()) {
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                    }
+                                }
+                                if (!visitValue.isEmpty()) {
+                                    visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                    visitValue = visitValue.replaceAll("<br/>", "");
+                                    visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                    //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                    visitValue = visitValue.replaceAll("<b>", "");
+                                    visitValue = visitValue.replaceAll("</b>", "");
+                                }
+                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                try {
+
+                                    Date formatted = currentDate.parse(date);
+                                    String visitDate = currentDate.format(formatted);
+                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                    PastVisitData pastVisitData = new PastVisitData();
+                                    pastVisitData.setVisitDate(visitDate);
+                                    pastVisitData.setVisitUUID(visit_id);
+                                    pastVisitData.setChiefComplain(visitValue);
+                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    mPastVisitDataList.add(pastVisitData);
+                                    Log.v(TAG,new Gson().toJson(mPastVisitDataList));
+
+                                } catch (ParseException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
+                            }
+                        }
+                        // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
+                        /*else {
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            try {
+
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                            } catch (ParseException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                        }*/
+                    }
+                    // Called when we close org on vitals screen and Didn't select any complaints
+                    /*else {
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        try {
+
+                            Date formatted = currentDate.parse(date);
+                            String visitDate = currentDate.format(formatted);
+                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                        } catch (ParseException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }*/
+                } while (visitCursor.moveToPrevious());
+            }
+
+            if(!mPastVisitDataList.isEmpty()){
+                PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mPastVisitsRecyclerView, VisitDetailsActivity.this, mPastVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
+                    @Override
+                    public void onItemSelected(PastVisitData pastVisitData) {
+                        Intent in = new Intent(VisitDetailsActivity.this, VisitSummaryActivity_New.class);
+                        in.putExtra("patientUuid", patientUuid);
+                        in.putExtra("visitUuid", pastVisitData.getVisitUUID());
+                        in.putExtra("gender", gender);
+                        in.putExtra("name", patientName);
+                        in.putExtra("encounterUuidVitals", pastVisitData.getEncounterVitals());
+                        in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
+                        in.putExtra("float_ageYear_Month", age);
+                        in.putExtra("tag", "VisitDetailsActivity");
+                        startActivity(in);
+                    }
+                });
+                mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
+            }
+        }
     }
 
     /**

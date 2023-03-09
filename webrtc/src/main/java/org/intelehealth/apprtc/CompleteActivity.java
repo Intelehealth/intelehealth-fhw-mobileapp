@@ -104,6 +104,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -570,38 +571,39 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
-        if (socket != null) {
-            socket.disconnect();
-            socket = null;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        if (peerConnection != null) {
-            peerConnection.dispose();
-            peerConnection = null;
-        }
-        if (videoSource != null) {
-            videoSource.dispose();
-            videoSource = null;
-        }
-        if (localVideoTrack != null) {
-            localVideoTrack.dispose();
-            localVideoTrack = null;
-        }
-        if (surfaceTextureHelper != null) {
-            surfaceTextureHelper.dispose();
-            surfaceTextureHelper = null;
-        }
-
-        stopRinging();
         try {
+            if (socket != null) {
+                socket.disconnect();
+                socket = null;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            if (peerConnection != null) {
+                peerConnection.dispose();
+                peerConnection = null;
+            }
+            if (videoSource != null) {
+                videoSource.dispose();
+                videoSource = null;
+            }
+            if (localVideoTrack != null) {
+                localVideoTrack.dispose();
+                localVideoTrack = null;
+            }
+            if (surfaceTextureHelper != null) {
+                surfaceTextureHelper.dispose();
+                surfaceTextureHelper = null;
+            }
+
+            stopRinging();
+
             unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             e.printStackTrace();
         }
         finish();
