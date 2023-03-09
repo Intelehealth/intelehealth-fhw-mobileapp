@@ -67,6 +67,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -138,7 +139,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
-    private String intentTag;
+    private String intentTag, focusTo = "";
     private String state;
     private String patientUuid;
     private String visitUuid;
@@ -175,6 +176,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             patientFName = intent.getStringExtra("patientFirstName");
             patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
+            focusTo = intent.getStringExtra("focusTo");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             Log.v(TAG, "Patient ID: " + patientUuid);
@@ -219,6 +221,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         bg_fasting_btn = findViewById(R.id.bloodGlucose_Btn_fasting);
         ecg_button = findViewById(R.id.ecg_button);
 
+
      //   initRemosDevice();
 
         //rhemos device fields added: By Nishita
@@ -229,6 +232,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
         uricAcid_editText = findViewById(R.id.uricAcid_editText);
         totalCholestrol_editText = findViewById(R.id.totalCholestrol_editText);
+
+//        ecg_button.setFocusable(true);
+//        ecg_button.requestFocus();
+        ScrollView scrollView = findViewById(R.id.scrollView);
 
         mBMI = findViewById(R.id.table_bmi);
         mAbdominalGirth = findViewById(R.id.table_abdominal_girth);
@@ -888,6 +895,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         //end
 
         TextView fab = findViewById(R.id.fab);
+        if (!focusTo.equalsIgnoreCase("") && focusTo.equalsIgnoreCase("diagnostics")) {
+            scrollView.post(new Runnable() {
+                public void run() {
+                    scrollView.smoothScrollTo(0, fab.getBottom());
+                }
+            });
+
+        }
+
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

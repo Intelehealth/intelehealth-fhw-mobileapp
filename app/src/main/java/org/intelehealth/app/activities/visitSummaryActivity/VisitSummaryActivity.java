@@ -1351,6 +1351,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("focusTo", "vitals");
                 startActivity(intent1);
             }
         });
@@ -1369,6 +1370,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("focusTo", "diagnostics");
                 startActivity(intent1);
             }
         });
