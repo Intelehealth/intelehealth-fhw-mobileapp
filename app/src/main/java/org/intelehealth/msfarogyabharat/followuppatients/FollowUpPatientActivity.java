@@ -157,7 +157,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
 //        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
@@ -440,7 +440,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String search = query.trim().replaceAll("\\s", "");
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
 
         List<String> patientUUID_List = new ArrayList<>();
@@ -523,7 +523,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private String getSeverity(String patientUid) {
         String severity = null;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
         if (obsCursor.moveToFirst()) {
@@ -539,7 +539,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
         try {
