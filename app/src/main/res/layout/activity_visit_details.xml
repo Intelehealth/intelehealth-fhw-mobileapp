@@ -7,7 +7,7 @@
     android:background="@drawable/frame_10021"
     tools:context=".activities.visit.VisitDetailsActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/frame_10021"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"
@@ -18,7 +18,7 @@
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
@@ -32,7 +32,7 @@
             android:weightSum="3">
 
             <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -238,7 +238,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/fu_card_margin_sides"
-                android:layout_marginTop="@dimen/fu_vs_margin_top"
+                android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginRight="@dimen/fu_card_margin_sides"
                 android:layout_marginBottom="@dimen/fu_card_margin_sides"
                 android:elevation="16dp"
@@ -456,7 +456,8 @@
                                 android:background="@drawable/ic_baseline_lens_24_light"
                                 android:onClick="startTextChat"
                                 android:padding="12dip"
-                                android:src="@drawable/ic_baseline_chat_24" />
+                                android:src="@drawable/ic_baseline_chat_24"
+                                android:visibility="gone" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -907,4 +908,28 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/chat_fab"
+        android:onClick="startVideoChat"
+        android:src="@drawable/icons8_video_call" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_video"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dip"
+        android:contentDescription="@string/chat_fab"
+        android:onClick="startTextChat"
+        android:src="@drawable/icons8_chat_new" />
 </RelativeLayout>

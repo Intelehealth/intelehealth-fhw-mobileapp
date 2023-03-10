@@ -687,7 +687,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     }
 
     public void startVideoChat(View view) {
-        EncounterDAO encounterDAO = new EncounterDAO();
+        Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
+        /*EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
@@ -707,7 +708,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
         if (callState == TelephonyManager.CALL_STATE_IDLE) {
             startActivity(in);
-        }
+        }*/
 
     }
 }
