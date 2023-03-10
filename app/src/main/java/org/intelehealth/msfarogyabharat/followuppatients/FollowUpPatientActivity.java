@@ -64,7 +64,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     TextView msg;
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = FollowUpPatientActivity.class.getSimpleName();
-    private SQLiteDatabase db;
+//    private SQLiteDatabase db;
     //    FloatingActionButton new_patient;
     //    boolean fullyLoaded = false;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -104,7 +104,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         llToolbar = findViewById(R.id.ll_toolbar);
         llToolbar.setVisibility(View.GONE);
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -156,6 +156,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 //        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') AND o.value is NOT NULL ORDER BY startdate DESC";
         String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
 //        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
@@ -400,6 +403,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             while (searchCursor.moveToNext());
         }
         searchCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
 //        try {
 //            if (searchCursor.moveToFirst()) {
 //                do {
@@ -518,6 +523,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private String getSeverity(String patientUid) {
         String severity = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
         if (obsCursor.moveToFirst()) {
             do {
@@ -525,11 +532,15 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             } while (obsCursor.moveToNext());
             obsCursor.close();
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return severity;
     }
 
     private String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
         try {
             if (idCursor.getCount() != 0) {
@@ -543,12 +554,13 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(s);
         }
         idCursor.close();
-
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return phone;
     }
 
     private void getFollowUpCount() {
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount();
         sessionManager.setFollowUpVisit(String.valueOf(followUpCount));
     }
 

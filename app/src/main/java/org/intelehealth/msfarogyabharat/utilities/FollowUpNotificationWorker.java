@@ -53,7 +53,9 @@ public class FollowUpNotificationWorker extends Worker {
     @Override
     public Result doWork() {
         Executors.newSingleThreadExecutor().execute(() -> {
-            if (getFollowUpCount(db) > 0) {
+            // Todo: Temporary deleted
+            long count = getFollowUpCount();
+            if (count > 0) {
                 showNotification(getApplicationContext().getString(R.string.title_follow_reminder), getApplicationContext().getString(R.string.title_follow_up_reminder_desc), getApplicationContext());
             }
             scheduled = false;
@@ -86,7 +88,7 @@ public class FollowUpNotificationWorker extends Worker {
         }
         long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
         if (BuildConfig.DEBUG) {
-            timeDiff = TimeUnit.MINUTES.toMillis(5);
+          //  timeDiff = TimeUnit.MINUTES.toMillis(5);
         }
 //        WorkManager.getInstance().cancelAllWorkByTag(TAG);
         OneTimeWorkRequest dailyWorkRequest = new OneTimeWorkRequest.Builder(FollowUpNotificationWorker.class)
@@ -97,7 +99,8 @@ public class FollowUpNotificationWorker extends Worker {
         scheduled = true;
     }
 
-    public static long getFollowUpCount(SQLiteDatabase db) {
+    public static long getFollowUpCount() {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         int count = 0;
         String visitType = "General";
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
@@ -105,6 +108,8 @@ public class FollowUpNotificationWorker extends Worker {
         Date cDate = new Date();
         FollowUpModel model = new FollowUpModel();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+
+        db.beginTransaction();
         String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
@@ -202,6 +207,8 @@ public class FollowUpNotificationWorker extends Worker {
             while (searchCursor.moveToNext());
         }
         searchCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return count;
     }
 

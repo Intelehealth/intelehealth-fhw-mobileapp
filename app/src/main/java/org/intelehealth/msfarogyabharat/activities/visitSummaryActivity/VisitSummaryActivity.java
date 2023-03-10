@@ -806,12 +806,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //here set emergency as True for this visit...
-                            try {
-                                EncounterDAO encounterDAO = new EncounterDAO();
-                                encounterDAO.setEmergency(visitUuid, true);
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
+                            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        EncounterDAO encounterDAO = new EncounterDAO();
+                                        encounterDAO.setEmergency(visitUuid, true);
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
+                                }
+                            });
+
                             dialogInterface.dismiss(); //close the dialog
                             //    flag.setChecked(true); //check the dialog here...
                         }
@@ -819,12 +825,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertdialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                EncounterDAO encounterDAO = new EncounterDAO();
-                                encounterDAO.setEmergency(visitUuid, false);
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
+                            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        EncounterDAO encounterDAO = new EncounterDAO();
+                                        encounterDAO.setEmergency(visitUuid, false);
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
+
+                                }
+                            });
 
                             flag.setChecked(false); //uncheck the checkbox here...
                             dialog.dismiss(); //dialog is closed...

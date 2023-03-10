@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">MSF Arogya Bharat</string>
+<!--    <string name="app_name">MSF Arogya Bharat</string>-->
+    <string name="app_name">MSF Diabetes Care Helpline</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +40,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">MSF Arogya Bharat</string>
+    <string name="title_activity_login">MSF Diabetes Care Helpline</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -597,7 +598,7 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">MSF Arogya Bharat is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_a_telemedicine_platform">MSF Diabetes Care Helpline is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth Helpline</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>

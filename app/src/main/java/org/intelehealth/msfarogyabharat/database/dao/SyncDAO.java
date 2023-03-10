@@ -70,36 +70,44 @@ public class SyncDAO {
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-        try {
-            Logger.logD(TAG, "pull sync started");
 
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList
-                    (responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Logger.logD(TAG, "pull sync started");
 
-            Executors.newSingleThreadExecutor().execute(() -> {
-                long value = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-                sessionManager.setFollowUpVisit(String.valueOf(value));
-            });
+                    patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+                    patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+                    patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                    visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+                    encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+                    obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+                    locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+                    providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+                    providerAttributeLIstDAO.insertProvidersAttributeList
+                            (responseDTO.getData().getProviderAttributeList());
+                    visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+
+
+                    // Todo: This was the main cause of app hang issue: MHM-219
+                   /* long value = FollowUpNotificationWorker.getFollowUpCount();
+                    sessionManager.setFollowUpVisit(String.valueOf(value));*/
+
 //            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
-            //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
-            Logger.logD(TAG, "Pull sync ended");
-            sessionManager.setPullExcutedTime(sessionManager.isPulled());
-            sessionManager.setFirstTimeSyncExecute(false);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE(TAG, "Exception", e);
-            throw new DAOException(e.getMessage(), e);
-        }
+                    //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+                    Logger.logD(TAG, "Pull sync ended");
+                    sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                    sessionManager.setFirstTimeSyncExecute(false);
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Logger.logE(TAG, "Exception", e);
+                  //  throw new DAOException(e.getMessage(), e);
+                }
+            }
+        });
+
 
         return isSynced;
 
