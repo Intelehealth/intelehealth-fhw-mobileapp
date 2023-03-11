@@ -1188,7 +1188,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
-        if (famHistory.getValue() != null)
+        if (famHistory.getValue() != null && !famHistory.getValue().isEmpty())
             famHistView.setText(Node.bullet + Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
