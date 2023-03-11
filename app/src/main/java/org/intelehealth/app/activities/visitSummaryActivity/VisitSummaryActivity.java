@@ -2357,16 +2357,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_vitals)) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_ht)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_wt)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bmi)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bp)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_pulse)) + ": %s | %s | %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                            "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                            "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                            "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                            "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" +
+                            "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" +
+                            "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
+//                            "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_vitals)) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_ht)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_wt)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bmi)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bp)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_pulse)) + ": %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                            "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_pre_comp)) + "</p></b>" +
+                            "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_reason_for_visit)) + "</p></b>" +
 
                             para_open + "%s" + para_close + "<br><br>"
 
-                    , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                    , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",*/
                     /*pat_hist, fam_hist,*/ mComplaint);
 
 
@@ -5016,29 +5023,21 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String checkAndConvertPrescriptionHeadings(String string) {
         String newString = string;
         if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
+            if (string.equalsIgnoreCase("Patient Information")) newString = "معلومات المريض";
+            if (string.equalsIgnoreCase("Name")) newString = "الاسم";
             if (string.equalsIgnoreCase("Age")) newString = "العمر";
-            if (string.equalsIgnoreCase("Gender")) newString = "جنس";
-            if (string.equalsIgnoreCase("Address and Contact")) newString = "العنوان والاتصال";
-            if (string.equalsIgnoreCase("Patient Id")) newString = "رقم المريض";
-            if (string.equalsIgnoreCase("Date of visit")) newString = "موعد الزيارة";
-            if (string.equalsIgnoreCase("Vitals")) newString = "الاعضاء الحيوية الهامة";
-            if (string.equalsIgnoreCase("Respiratory Rate")) newString = "معدل التنفس";
-            if (string.equalsIgnoreCase("Pulse(bpm)")) newString = "النبض (نبضة بالدقيقة)";
-            if (string.equalsIgnoreCase("Blood Pressure")) newString = "ضغط الدم";
-            if (string.equalsIgnoreCase("BMI")) newString = "مؤشر كتلة الجسم";
-            if (string.equalsIgnoreCase("Weight(kg)")) newString = "الوزن (كغ)";
-            if (string.equalsIgnoreCase("Height(cm)")) newString = "الطول (سم)";
+            if (string.equalsIgnoreCase("Gender")) newString = "الجنس";
+            if (string.equalsIgnoreCase("Address and Contact")) newString = "العنوان";
+            if (string.equalsIgnoreCase("Patient Id")) newString = "رقم الاضبارة";
+            if (string.equalsIgnoreCase("Date of Visit")) newString = "موعد الزيارة";
+            if (string.equalsIgnoreCase("Reason of Visit")) newString = "سبب الزيارة";
             if (string.equalsIgnoreCase("Presenting complaint(s)")) newString = "تقديم الشكاوى (s)";
-            if (string.equalsIgnoreCase("Diagnosis")) newString = "تشخيص";
-            if (string.equalsIgnoreCase("Medication(s) plan")) newString = "خطة الأدوية ";
+            if (string.equalsIgnoreCase("Diagnosis")) newString = "التشخيص";
+            if (string.equalsIgnoreCase("Medication Plan")) newString = "الخطة العلاجية";
             if (string.equalsIgnoreCase("Recommended Investigation(s)"))
-                newString = "التحقيقات الموصى بها";
-            if (string.equalsIgnoreCase("General Advice")) newString = "نصيحة عامة";
+                newString = "التحاليل و الفحوصات المطلوبة";
+            if (string.equalsIgnoreCase("General Instructions")) newString = "توجيهات عامة";
             if (string.equalsIgnoreCase("Follow Up Date")) newString = "متابعة التاريخ";
-            if (string.equalsIgnoreCase("Temperature (C) : ")) newString = "درجة الحرارة المئوية";
-            if (string.equalsIgnoreCase("Temperature (F) : "))
-                newString = "درجة الحرارة بالفهرنهايت";
-            if (string.equalsIgnoreCase("SpO2(%): ")) newString = "نسبة الاكسجة: ";
         }
         return newString;
     }

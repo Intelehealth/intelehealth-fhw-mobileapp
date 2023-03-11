@@ -733,7 +733,7 @@
     <string name="prescription_ht">الطول (سم)</string>
     <string name="prescription_pre_comp">تقديم الشكاوى (s)</string>
     <string name="prescription_diagnosis">التشخيص</string>
-    <string name="prescription_med_plan">خطة الأدوية </string>
+    <string name="prescription_med_plan">الخطة العلاجية</string>
     <string name="prescription_rec_investigation">التحاليل و الفحوصات المطلوبة</string>
     <string name="prescription_general_advice">نصيحة عامة</string>
     <string name="prescription_follow_up_date">تاريخ زيارة المتابعة</string>

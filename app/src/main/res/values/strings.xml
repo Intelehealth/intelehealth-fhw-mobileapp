@@ -726,7 +726,7 @@
     <string name="prescription_gender">Gender</string>
     <string name="prescription_address_contact">Address and Contact</string>
     <string name="prescription_patient_id">Patient Id</string>
-    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_date_of_visit">Date of Visit</string>
     <string name="prescription_vitals">Vitals</string>
     <string name="prescription_rr">Respiratory Rate</string>
     <string name="prescription_pulse">Pulse(bpm)</string>
@@ -1610,7 +1610,7 @@
     <string name="patient_information">Patient Information</string>
     <string name="prescription_name">Name</string>
     <string name="prescription_reason_for_visit">Reason of Visit</string>
-    <string name="prescription_med_plan_ordered_items">Medication Plan / Ordered Items</string>
+    <string name="prescription_med_plan_ordered_items">Medication Plan</string>
     <string name="prescription_general_instructions">General Instructions</string>
 
 
