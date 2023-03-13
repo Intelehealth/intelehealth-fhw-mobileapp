@@ -20,11 +20,11 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/layout_start_date"
                 android:layout_width="0dp"
-                android:id="@+id/layout_select_from_date"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -36,6 +36,7 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_start_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/date_frag_date_margin_top"
@@ -43,7 +44,6 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:letterSpacing="0.02"
                     android:paddingEnd="@dimen/date_frag_date_padding_end"
-                    android:text="23 May, 2020"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/date_frag_date_text_size"
                     app:drawableEndCompat="@drawable/ui2_ic_calendar"
@@ -53,6 +53,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_end_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/date_frag_layout2_margin_start"
@@ -68,6 +69,7 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_end_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -75,7 +77,6 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:letterSpacing="0.02"
                     android:paddingEnd="20dp"
-                    android:text="27 May, 2020"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/date_frag_date_text_size"
                     app:drawableEndCompat="@drawable/ui2_ic_calendar"
@@ -119,13 +120,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_range_patients_created"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="3"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -155,13 +156,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_range_visits_ended"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="4"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -202,13 +203,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_average_patient_satisfaction_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="4.2"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -233,17 +234,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
-                    android:text="@string/your_time_spent_today"
+                    android:text="@string/total_time_spent"
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_time_spent_in_range"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="1h 40m"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />

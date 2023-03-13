@@ -22,6 +22,8 @@ import android.text.TextUtils;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.intelehealth.app.R;
@@ -3768,8 +3770,14 @@ public final class StringUtils {
         }
 
         private boolean isCharAllowed(char c) {
-         //   return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
+            //   return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
             return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets.
         }
     };
+
+    public static String formatDoubleValues(Double value) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        return String.valueOf(df.format(value));
+    }
 }

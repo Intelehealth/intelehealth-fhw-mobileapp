@@ -409,6 +409,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                                     sessionManager.setBaseUrl(BASE_URL);
                                                     sessionManager.setSetupComplete(true);
                                                     sessionManager.setFirstTimeLaunch(false);
+                                                    sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
+
                                                     Log.d(TAG, "onNext: 11");
                                                     // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                                     AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -438,7 +440,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                                     try {
                                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                         hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                                    } catch (NoSuchAlgorithmException |
+                                                             UnsupportedEncodingException e) {
                                                         FirebaseCrashlytics.getInstance().recordException(e);
                                                     }
 

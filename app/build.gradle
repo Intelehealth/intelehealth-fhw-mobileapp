@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 59
         buildToolsVersion('29.0.2')

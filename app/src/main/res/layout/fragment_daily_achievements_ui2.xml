@@ -76,7 +76,6 @@
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="3"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -106,13 +105,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_visits_ended_today"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="4"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -151,13 +150,13 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_avg_satisfaction_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:gravity="top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="4.2"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />
@@ -187,12 +186,12 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_daily_time_spent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
                     android:lineHeight="@dimen/card_achieve_value_line_height"
                     android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
-                    android:text="1h 40m"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/card_achieve_value_textsize"
                     android:textStyle="bold" />

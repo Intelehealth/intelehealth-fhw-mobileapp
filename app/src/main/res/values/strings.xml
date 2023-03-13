@@ -930,7 +930,7 @@
     <string name="your_patient_score">Your patient\nsatisfactions score</string>
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
-
+    <string name="total_time_spent">Total time spent</string>
 
     <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
         Privacy Policy aligns with Generally Accepted
@@ -1622,7 +1622,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="select_location">Please select location</string>
 
 
-
     <!--  Change Password UI2.0-->
 
     <string name="current_password">Current password</string>
@@ -1689,7 +1688,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="evening">Evening</string>
     <string name="pick_time_slot">Pick a time slot</string>
     <string name="enter_cred">Enter the credentials given by intelehealth team</string>
-
 
 
     <!--    Follow-up new screens -->
@@ -1782,6 +1780,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="add_a_picture">Add a picture</string>
     <string name="sync_completed">Sync done!</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
+    <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
+    <string name="permissions_required">Permissions Required</string>
 
     <!--END-->
 
