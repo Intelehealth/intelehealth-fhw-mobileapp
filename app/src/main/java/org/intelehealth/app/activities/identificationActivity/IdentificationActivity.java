@@ -245,6 +245,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 }
 */
+                if (adpFilesList != null && additionalDocPath != null)
+                    Log.v("ADP", "addPath: " + additionalDocPath.size() + "\n" + "adpList: " + adpFilesList.size());
+
                 if (additionalDocPath.size() < 4)
                     selectImage();
                 else
@@ -1058,12 +1061,18 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
+            additionalDocPath.clear();
+            for (int i = 0; i < adpFilesList.size(); i++) {
+                additionalDocPath.add(adpFilesList.get(i).getPath());
+            }
+
             if (isFileExists) {
                 addDocRV.setHasFixedSize(true);
                 addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
               //  horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
-                horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this);
+                horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this, additionalDocPath);
                 addDocRV.setAdapter(horizontalAdapter);
+                horizontalAdapter.notifyDataSetChanged();
             }
             else {
                 /** if file not exists ie. its from other user than considering offline case as well...
@@ -1390,11 +1399,12 @@ public class IdentificationActivity extends AppCompatActivity {
                     additionalDocPath.add(mAdditionalPhotoPath);
                     if (new File(mAdditionalPhotoPath).exists()) {
                         fileList.add(new File(mAdditionalPhotoPath));
+                        adpFilesList.add(new File(mAdditionalPhotoPath));
                     }
                     addDocRV.setHasFixedSize(true);
                     addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
                   //  horizontalAdapter = new HorizontalAdapter(fileList, this);
-                    horizontalAdapter = new HorizontalADP_Adapter(fileList, this);
+                    horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this, additionalDocPath);
                     addDocRV.setAdapter(horizontalAdapter);
                     horizontalAdapter.notifyDataSetChanged();
                 }
@@ -1429,7 +1439,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (flag) {
-                            saveImage(filePath, fileList);
+                            saveImage(filePath, adpFilesList);
                         } else
                             Toast.makeText(IdentificationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -1458,7 +1468,7 @@ public class IdentificationActivity extends AppCompatActivity {
             addDocRV.setHasFixedSize(true);
             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
 //            horizontalAdapter = new HorizontalAdapter(fileList, this);
-            horizontalAdapter = new HorizontalADP_Adapter(fileList, this);
+            horizontalAdapter = new HorizontalADP_Adapter(fileList, this, additionalDocPath);
             addDocRV.setAdapter(horizontalAdapter);
             horizontalAdapter.notifyDataSetChanged();
         }
@@ -2188,13 +2198,18 @@ public class IdentificationActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
+
+            fileList.clear();
+            adpFilesList.clear();
+            for (int i = 0; i < additionalDocPath.size(); i++) {
+                if (new File(additionalDocPath.get(i)).exists()) {
+                    fileList.add(new File(additionalDocPath.get(i)));
+                    adpFilesList.add(new File(additionalDocPath.get(i)));
+                }
+            }
+
         }
 
-        for (int i = 0; i < additionalDocPath.size(); i++) {
-            if (new File(additionalDocPath.get(i)).exists()) {
-                fileList.add(new File(additionalDocPath.get(i)));
-            }
-        }
 
     }
 
@@ -2204,6 +2219,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private void getADPImagesFromAPI(String patUUID, ArrayList<File> fileList) {
         ImagesDAO imagesDAO = new ImagesDAO();
         adpFilesList.clear();
+        additionalDocPath.clear();
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getADPImageUrl(patUUID);
         Logger.logD(TAG, "profileimage url" + url);
@@ -2215,13 +2231,16 @@ public class IdentificationActivity extends AppCompatActivity {
                     @Override
                     public void onNext(PatientADPImageDownloadResponse response) {
                         DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        Log.v("ADP", "response: "  + response.getPersonimages().size() + "\n" + "addPath_response: " + additionalDocPath.size());
                         for (int i = 0; i < response.getPersonimages().size(); i++) {
                             adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
+                        //    additionalDocPath.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()).getPath());
                             addDocRV.setHasFixedSize(true);
                             addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
 //                            horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
-                            horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, IdentificationActivity.this);
+                            horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, IdentificationActivity.this, additionalDocPath);
                             addDocRV.setAdapter(horizontalAdapter);
+                            horizontalAdapter.notifyDataSetChanged();
                         }
 
                     }

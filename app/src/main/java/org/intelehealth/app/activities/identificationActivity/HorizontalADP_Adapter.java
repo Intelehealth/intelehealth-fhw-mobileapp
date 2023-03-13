@@ -44,6 +44,7 @@ import java.util.List;
 public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
 
     public List<File> list;
+    public List<String> additionalDocPath;
     Context context;
     int screen_height;
     int screen_width;
@@ -55,9 +56,10 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
         return list.size();
     }
 
-    public HorizontalADP_Adapter(List<File> list, Context context) {
+    public HorizontalADP_Adapter(List<File> list, Context context, List<String> additionalDocPath) {
         this.list = list;
         this.context = context;
+        this.additionalDocPath = additionalDocPath;
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screen_height = displayMetrics.heightPixels;
@@ -90,7 +92,6 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
                 @Override
                 public void onClick(View v) {
                     displayImage(list.get(position));
-
                 }
             });
 
@@ -110,7 +111,9 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
         // 1. local image delete - start
         if (file.exists())
             file.delete();
+
         list.remove(adapterPosition);
+        additionalDocPath.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, list.size());
         // local image delete - end
