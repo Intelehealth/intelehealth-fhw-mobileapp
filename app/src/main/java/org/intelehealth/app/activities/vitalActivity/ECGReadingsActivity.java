@@ -541,7 +541,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         String stress;
         switch (level) {
             case Constants.ECG_STRESS_LEVEL_INVALID:
-                stress = "Invalid";
+                stress = "NA";
                 break;
             case Constants.ECG_STRESS_LEVEL_NO:
                 stress = "No";
@@ -569,7 +569,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         String stress;
         switch (level) {
             case Constants.ECG_STRESS_LEVEL_INVALID:
-                stress = "Invalid";
+                stress = "NA";
                 break;
             case Constants.ECG_STRESS_LEVEL_NO:
                 stress = "No";
