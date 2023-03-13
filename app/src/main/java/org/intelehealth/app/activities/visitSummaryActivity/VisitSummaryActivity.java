@@ -506,10 +506,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
 
-            // Commented out as we want dynamic heading here based on the village name - Arpan Sircar
-//            prescription1 = obj.getString("presciptionHeader0") + "<br/> " + obj.getString("presciptionHeader1");
-
-            prescription1 = getPrescriptionHeading();
+            prescription1 = obj.getString("presciptionHeader0") + "<br/> " + obj.getString("presciptionHeader1");
             prescription2 = obj.getString("presciptionHeader2");
 
             //For AFI we are not using Respiratory Value
@@ -2257,7 +2254,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String doctor_web = stringToWeb(doctorName);
 
-        String heading = prescription1;
+        String heading = getPrescriptionHeading();
         String heading2 = prescription2;
         String heading3 = "<br/>";
 
@@ -4801,7 +4798,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String doctor_web = stringToWeb_sms(doctorName);
 
-        String heading = prescription1;
+        String heading = getPrescriptionHeading();
         String heading2 = prescription2;
         String heading3 = "<br/>";
 
@@ -5043,7 +5040,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private String getPrescriptionHeading() {
-        String villageName = checkAndRemoveEndDash(sessionManager1.getVillageName());
+        String villageName = checkAndRemoveEndDash(patient.getCity_village());
         String villageNameInArabic = switch_en_to_ar_village_edit(villageName);
 
         String arabicHeading = "فريق ".concat(villageNameInArabic).concat(" الصحي");
