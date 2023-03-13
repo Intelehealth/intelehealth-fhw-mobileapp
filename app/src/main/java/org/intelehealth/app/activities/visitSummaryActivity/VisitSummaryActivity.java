@@ -5048,6 +5048,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String arabicHeading = "فريق ".concat(villageNameInArabic).concat(" الصحي");
         String englishHeading = villageName + " Health Unit";
-        return arabicHeading + "<br/> " + englishHeading;
+        return englishHeading + "<br/> " + arabicHeading;
     }
 }
