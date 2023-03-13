@@ -8,12 +8,12 @@ import java.io.Serializable;
  * Github: prajwalmw
  */
 public class DeviceInfoModel implements Serializable {
-    private String power_level;
-    private String device_id;
-    private String device_key;
-    private String software_version;
-    private String hardware_version;
-    private String firmware_version;
+    private String power_level = "NA";
+    private String device_id = "NA";
+    private String device_key = "NA";
+    private String software_version = "NA";
+    private String hardware_version = "NA";
+    private String firmware_version = "NA";
 
     public DeviceInfoModel() {
     }
