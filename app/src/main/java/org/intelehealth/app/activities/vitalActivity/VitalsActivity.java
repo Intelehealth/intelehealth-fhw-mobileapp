@@ -2701,7 +2701,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 break;
             case TestPaperTask.EVENT_TEST_RESULT:
                 Toast.makeText(VitalsActivity.this, getString(R.string.blood_glucose_test_successful), Toast.LENGTH_LONG).show();
-                bg_model.setValue((double) obj);
+                bg_model.setValue((double) obj * 18);   // Note: As per doc: Readings are shown in mmol/l. To convert to mg/dl, pls multiply the reading by 18.
 
                 if (bg_fasting_clicked)
                     bloodGlucoseRandom_editText.setText(String.valueOf(bg_model.getValue()));
