@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent_otp"
     android:layout_width="match_parent"
@@ -182,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/pinview_otp"
                         android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
-                        android:layout_marginTop="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:text="@string/resend_otp_in"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />

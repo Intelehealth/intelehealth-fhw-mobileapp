@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">IHUtils</string>
+    //Camera Permissions
+    <string name="util_permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="util_permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="util_permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
+    <string name="util_button_allow">Allow</string>
+    <string name="util_button_deny">Deny</string>
+    <string name="util_button_ok">OK</string>
+    <string name="util_button_cancel">Cancel</string>
+    <string name="util_picture_taken">Picture taken</string>
+    <string name="util_switch_flash">Switch flash</string>
+    <string name="util_switch_camera">Switch camera</string>
+    <string name="util_flash_auto">Flash auto</string>
+    <string name="util_flash_off">Flash off</string>
+    <string name="util_flash_on">Flash on</string>
+    <string name="util_title_activity_camera">Camera</string>
+    <string name="util_cancel">Cancel</string>
+    <string name="util_take_image">Take image</string>
+</resources>

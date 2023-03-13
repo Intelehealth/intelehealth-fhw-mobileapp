@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/vs_arrowRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:paddingHorizontal="10dp"
+        android:src="@drawable/arrow_right_icon8" />
+
+    <TextView
+        android:id="@+id/chief_complaint_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_toStartOf="@+id/vs_arrowRight"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3sp"
+        android:text="Abdominal Pain"
+        android:textAppearance="@style/details_head1"
+        android:textColor="@null"
+        android:textSize="@dimen/fu_name_txt_size" />
+
+    <TextView
+        android:id="@+id/visitID_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chief_complaint_txt"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3sp"
+        android:text="Visit Id : XXXXca57"
+        android:textAppearance="@style/details_head2"
+        android:textColor="@null"
+        android:textSize="@dimen/fu_male_textsize" />
+
+    <TextView
+        android:id="@+id/visit_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/visitID_tv"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3sp"
+        android:text="Visit Date : 05/03/2023"
+        android:textAppearance="@style/details_head2"
+        android:textColor="@null"
+        android:textSize="@dimen/fu_male_textsize" />
+
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_below="@id/visit_date_tv"
+        android:layout_marginVertical="@dimen/padding_12"
+        android:background="@color/gray_1" />
+</RelativeLayout>

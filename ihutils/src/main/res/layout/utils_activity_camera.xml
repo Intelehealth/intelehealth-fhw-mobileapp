@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/utils_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.CameraActivity">
+
+    <RelativeLayout
+        android:id="@+id/header_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="64dip">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginTop="16dip"
+            android:layout_marginBottom="16dip"
+            android:onClick="endCameraSession"
+            app:srcCompat="@drawable/utils_arrow_right" />
+
+        <TextView
+            android:id="@+id/title_incoming_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dip"
+            android:layout_marginTop="16dip"
+            android:layout_toEndOf="@+id/back_iv"
+            android:text="@string/util_take_image"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/photo_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dip"
+            android:text="PHOTO"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dip">
+
+            <ImageView
+                android:id="@+id/utils_take_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="24dip"
+                android:layout_marginTop="24dip"
+                android:layout_marginEnd="24dip"
+                android:layout_marginBottom="24dip"
+                android:onClick="takeImage"
+                app:srcCompat="@drawable/utils_capture_icon" />
+
+            <TextView
+                android:id="@+id/cancel_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dip"
+                android:onClick="endCameraSession"
+                android:text="@string/util_cancel"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/camera_switch_iv"
+                android:layout_width="32dip"
+                android:layout_height="32dip"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="24dip"
+                android:onClick="flipCamera"
+                app:srcCompat="@drawable/util_flip_camera" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <com.google.android.cameraview.CameraView
+        android:id="@+id/utils_camera_surface_CameraView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/header_ll"
+        android:adjustViewBounds="true"
+        android:background="@android:color/black"
+        app:aspectRatio="4:3"
+        app:facing="back" />
+
+    <ImageView
+        android:id="@+id/flash_switch_iv"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:layout_below="@id/header_ll"
+        android:layout_marginStart="24dip"
+        android:layout_marginTop="24dip"
+        android:layout_marginEnd="24dip"
+        android:layout_marginBottom="24dip"
+        android:elevation="8dip"
+        android:onClick="switchFlash"
+        app:srcCompat="@drawable/utils_camera_flash" />
+
+
+</RelativeLayout>

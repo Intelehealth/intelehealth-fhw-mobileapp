@@ -71,8 +71,10 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         .thumbnail(0.1f)
                         .into(genericViewHolder.mainImageView);
                 genericViewHolder.addImageView.setVisibility(View.GONE);
+                genericViewHolder.mainImageView.setBackgroundResource(R.drawable.edittext_border_blue);
             } else {
                 genericViewHolder.addImageView.setVisibility(View.VISIBLE);
+                genericViewHolder.mainImageView.setBackgroundResource(R.drawable.edittext_border_blue_dotted);
             }
 
         }

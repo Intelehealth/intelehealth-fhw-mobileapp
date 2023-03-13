@@ -39,7 +39,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -49,16 +48,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.PatientDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;

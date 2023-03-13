@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent_login"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activities.loginActivity.LoginActivityNew">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -106,18 +106,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
                         android:layout_marginEnd="@dimen/tv_login_details_info_margin_end"
+                        android:fontFamily="@font/lato_regular"
                         android:text="@string/enter_login_details"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/common_header_text_size"
                         android:textStyle="bold" />
+
                     <ImageView
                         android:id="@+id/iv_login_details_info"
                         android:layout_width="@dimen/tv_login_details_info_height_width"
                         android:layout_height="@dimen/tv_login_details_info_height_width"
                         android:layout_gravity="center_vertical|center_horizontal"
-                        android:src="@drawable/ui2_ic_info_question_mark"/>
+                        android:src="@drawable/ui2_ic_info_question_mark" />
                 </LinearLayout>
 
 
@@ -134,9 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    app:hintEnabled="false"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@android:color/transparent">
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_username_login"
@@ -241,13 +240,13 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginStart="@dimen/layout_login_padding_start"
         android:layout_marginEnd="@dimen/layout_login_padding_end"
+        android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:background="@drawable/ui2_common_primary_bg"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
         android:drawableTint="@color/iconTintWhite"
         android:fitsSystemWindows="true"
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"
-        android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
         android:text="@string/login" />

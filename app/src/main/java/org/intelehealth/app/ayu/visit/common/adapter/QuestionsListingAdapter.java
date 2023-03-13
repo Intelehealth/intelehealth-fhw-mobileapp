@@ -19,11 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -88,6 +90,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList.add(node);
         notifyItemInserted(mItemList.size() - 1);
     }
+
     public void addItemAll(List<Node> nodes) {
         mItemList = nodes;
         notifyDataSetChanged();
@@ -115,6 +118,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
+            genericViewHolder.index = position;
 
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -335,16 +339,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
                     break;
             }
+            holder.submitButton.setVisibility(View.GONE);
         } else {
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
+
             if (mItemList.get(index).isMultiChoice()) {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                holder.submitButton.setVisibility(View.VISIBLE);
             } else {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                holder.submitButton.setVisibility(View.GONE);
 
             }
-            holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            holder.recyclerView.setLayoutManager(layoutManager);
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {
@@ -363,7 +375,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!type.isEmpty()) {
                         holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
-                        mOnItemSelection.onSelect(node, index);
+                        if (!mItemList.get(index).isMultiChoice()) {
+                            mOnItemSelection.onSelect(node, index);
+                        }
                     }
                     Log.v("Node", "Type - " + type);
                     switch (type) {
@@ -682,8 +696,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setMinLines(5);
+        editText.setLines(5);
+        editText.setHorizontallyScrolling(false);
         editText.setHint(node.getText());
+        editText.setMinHeight(320);
         holder.singleComponentContainer.addView(view);
     }
 
@@ -751,14 +769,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestion, tvQuestionDesc, tvQuestionCounter, tvReferenceDesc;
         Node node;
+        int index;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
+        Button submitButton;
+
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            submitButton = itemView.findViewById(R.id.btn_submit);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
             referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
@@ -773,7 +795,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
             tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
 
-
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemList.get(index).isSelected())
+                        mOnItemSelection.onSelect(node, index);
+                    else
+                        Toast.makeText(mContext, "Please select at least one option!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 

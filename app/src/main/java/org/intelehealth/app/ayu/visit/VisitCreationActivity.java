@@ -33,7 +33,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -64,6 +63,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -393,9 +393,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), null);
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
-            if (i == 0) {
+            /*if (i == 0) {
                 optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
-            }
+            }*/
             if (map.containsKey(filterNode.getOptionsList().get(i).getText())) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));

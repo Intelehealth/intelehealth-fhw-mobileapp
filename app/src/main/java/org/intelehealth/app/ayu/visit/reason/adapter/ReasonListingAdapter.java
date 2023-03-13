@@ -9,6 +9,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 
@@ -86,8 +90,11 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
         GenericViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.rcv_container);
-            recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
 
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            recyclerView.setLayoutManager(layoutManager);
             tvAlphabets = itemView.findViewById(R.id.tv_alphabets);
 
 

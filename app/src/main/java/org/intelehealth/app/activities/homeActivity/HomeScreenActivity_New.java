@@ -1048,7 +1048,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 }, 10000);
             }
         }
-
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            stopService(serviceIntent);
+        }
+        startService(serviceIntent);
     }
 
 

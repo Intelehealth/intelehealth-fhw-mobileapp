@@ -81,7 +81,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
@@ -94,6 +93,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -101,9 +101,12 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -116,6 +119,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -290,6 +295,67 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     Button btnAppointment;
     private FrameLayout filter_framelayout;
     private View hl_2;
+
+    public void startTextChat(View view) {
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, ChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitUUID);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        if (rtcConnectionDTO != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                } else {
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    startActivity(chatIntent);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void startVideoChat(View view) {
+        Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
+        /*EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+        Intent in = new Intent(VisitDetailsActivity.this, CompleteActivity.class);
+        String roomId = patientUuid;
+        String doctorName = "";
+        String nurseId = encounterDTO.getProvideruuid();
+        in.putExtra("roomId", roomId);
+        in.putExtra("isInComingRequest", false);
+        in.putExtra("doctorname", doctorName);
+        in.putExtra("nurseId", nurseId);
+        in.putExtra("startNewCall", true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+            startActivity(in);
+        }*/
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

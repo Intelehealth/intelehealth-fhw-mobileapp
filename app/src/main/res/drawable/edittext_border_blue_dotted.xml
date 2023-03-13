@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/white" />
+    <stroke
+        android:width="1dip"
+        android:color="@color/ui2_chat_edit_bubble_color"
+        android:dashWidth="4dip"
+        android:dashGap="2dip" />
+    <corners android:radius="8dp" />
+
+
+</shape>
