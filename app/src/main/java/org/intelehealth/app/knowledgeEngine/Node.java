@@ -35,13 +35,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.InputFilterMinMax;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

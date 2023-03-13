@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.util.UUID;
 

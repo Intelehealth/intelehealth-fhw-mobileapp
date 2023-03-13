@@ -25,7 +25,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -49,7 +48,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -72,6 +70,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -504,7 +503,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         .skipMemoryCache(true)
                         .into(ivProfileImage);
 
-                saveImage(mCurrentPhotoPath);            }
+                saveImage(mCurrentPhotoPath);
+            }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (data != null) {
                 try {

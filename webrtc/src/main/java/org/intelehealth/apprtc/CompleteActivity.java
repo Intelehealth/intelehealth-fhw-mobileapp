@@ -69,6 +69,7 @@ import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
 import org.intelehealth.apprtc.utils.AwsS3Utils;
 import org.intelehealth.apprtc.utils.BitmapUtils;
 import org.intelehealth.apprtc.utils.RealPathUtil;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -230,6 +231,8 @@ public class CompleteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sample_peer_connection);
+        mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
+
         mRoomId = getIntent().getStringExtra("roomId");
         mIsInComingRequest = getIntent().getBooleanExtra("isInComingRequest", false);
         if (getIntent().hasExtra("doctorname"))
@@ -269,6 +272,18 @@ public class CompleteActivity extends AppCompatActivity {
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
         registerReceiver(mBroadcastReceiver, filterSend);
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String fileUrl = intent.getStringExtra("fileUrl");
+                postMessages(mFromUUId, mToUUId, mPatientUUid, fileUrl, "attachment");
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
+        registerReceiver(mBroadcastReceiver, intentFilter);
+
 
         mRequestQueue = Volley.newRequestQueue(this);
         // Instantiate the cache
@@ -1258,11 +1273,11 @@ public class CompleteActivity extends AppCompatActivity {
 
 
     private void cameraStart() {
-        /*File file = new File(AppConstants.IMAGE_PATH);
+        File file = new File(mImagePathRoot);
         final String imagePath = file.getAbsolutePath();
         final String imageName = UUID.randomUUID().toString();
         mLastSelectedImageName = imageName;
-        Intent cameraIntent = new Intent(VisitCreationActivity.this, CameraActivity.class);
+        Intent cameraIntent = new Intent(CompleteActivity.this, CameraActivity.class);
         File filePath = new File(imagePath);
         if (!filePath.exists()) {
             boolean res = filePath.mkdirs();
@@ -1270,11 +1285,44 @@ public class CompleteActivity extends AppCompatActivity {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
-        mStartForCameraResult.launch(cameraIntent);*/
-        Intent broadcast = new Intent();
+        mStartForCameraResult.launch(cameraIntent);
+       /* Intent broadcast = new Intent();
         broadcast.setAction(Constants.IMAGE_CAPTURE_REQUEST_INTENT_ACTION);
-        sendBroadcast(broadcast);
+        sendBroadcast(broadcast);*/
     }
+
+    ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // Handle the Intent
+                        String currentPhotoPath = data.getStringExtra("RESULT");
+
+                        Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                        if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                            Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            JSONObject inputJsonObject = new JSONObject();
+                            inputJsonObject.put("fromUser", mFromUUId);
+                            inputJsonObject.put("toUser", mToUUId);
+                            inputJsonObject.put("patientId", mPatientUUid);
+                            inputJsonObject.put("message", ".jpg");
+                            inputJsonObject.put("type", "attachment");
+                            inputJsonObject.put("isLoading", true);
+
+                            addNewMessage(inputJsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
+                    }
+                }
+            });
+
 
     private void galleryStart() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -1386,7 +1434,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                             // copy & rename the file
                             String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = mImagePath + finalImageName + ".jpg";
+                            currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
                             // Handle the Intent
@@ -1473,7 +1521,7 @@ public class CompleteActivity extends AppCompatActivity {
                     }
                 }
             });
-    public String mImagePath = "";
+    public String mImagePathRoot = "";
 
     public void hideSoftKeyboard() {
         try {
@@ -1485,6 +1533,9 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
     private void getAllMessages(boolean isAlreadySetReadStatus) {
+        Log.v(TAG, "getAllMessages -mFromUUId - " + mFromUUId);
+        Log.v(TAG, "getAllMessages -mToUUId - " + mToUUId);
+        Log.v(TAG, "getAllMessages -mPatientUUid - " + mPatientUUid);
         if (mFromUUId.isEmpty() || mToUUId.isEmpty() || mPatientUUid.isEmpty()) {
             return;
         }
