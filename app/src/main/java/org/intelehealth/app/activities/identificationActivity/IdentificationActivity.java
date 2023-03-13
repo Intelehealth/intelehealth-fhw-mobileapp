@@ -2043,12 +2043,14 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            List<File> fileAdapterList = horizontalAdapter.getADPList();
-            if (fileAdapterList != null && fileAdapterList.size() > 0) {
-                additionalDocPath.clear();
-                for (int i = 0; i < fileAdapterList.size(); i++) {
-                    additionalDocPath.add(fileAdapterList.get(i).getPath());
-                    Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+            if (horizontalAdapter != null) {
+                List<File> fileAdapterList = horizontalAdapter.getADPList();
+                if (fileAdapterList != null && fileAdapterList.size() > 0) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < fileAdapterList.size(); i++) {
+                        additionalDocPath.add(fileAdapterList.get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+                    }
                 }
             }
 

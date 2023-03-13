@@ -514,7 +514,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         } else if (mood > 80 && mood <= 100) {
             moodDesc = res.getString(R.string.mood_desc_agitated);
         } else {
-            moodDesc = "-";
+            moodDesc = "NA";
         }
         view.setText(res.getString(R.string.mood_value, moodDesc));
     }
@@ -531,7 +531,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         } else if (mood > 80 && mood <= 100) {
             moodDesc = getString(R.string.mood_desc_agitated);
         } else {
-            moodDesc = "-";
+            moodDesc = "NA";
         }
 
         return moodDesc;
@@ -559,7 +559,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
                 stress = "Very high";
                 break;
             default:
-                stress = "-";
+                stress = "NA";
                 break;
         }
         textView.setText(String.format(Locale.getDefault(), "Stress level: %s", stress));
@@ -587,7 +587,7 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
                 stress = "Very high";
                 break;
             default:
-                stress = "-";
+                stress = "NA";
                 break;
         }
         return stress;

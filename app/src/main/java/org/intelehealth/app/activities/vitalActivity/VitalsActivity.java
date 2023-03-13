@@ -895,7 +895,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         //end
 
         TextView fab = findViewById(R.id.fab);
-        if (!focusTo.equalsIgnoreCase("") && focusTo.equalsIgnoreCase("diagnostics")) {
+        if (focusTo != null && !focusTo.equalsIgnoreCase("") && focusTo.equalsIgnoreCase("diagnostics")) {
             scrollView.post(new Runnable() {
                 public void run() {
                     scrollView.smoothScrollTo(0, fab.getBottom());
