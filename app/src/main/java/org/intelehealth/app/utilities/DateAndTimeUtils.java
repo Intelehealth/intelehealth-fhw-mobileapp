@@ -11,11 +11,14 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.app.R;
 
@@ -51,14 +54,10 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if (period.getYears() > 0)
-            xyears = period.getYears();
-        else
-            xyears = 0;
-        if (period.getMonths() > 0)
-            xmonths = period.getMonths();
-        else
-            xmonths = 0;
+        if (period.getYears() > 0) xyears = period.getYears();
+        else xyears = 0;
+        if (period.getMonths() > 0) xmonths = period.getMonths();
+        else xmonths = 0;
 
         x_format = xyears + "." + xmonths;
         year_month = Float.parseFloat(x_format);
@@ -226,14 +225,11 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if (period.getYears() > 0)
-            tyears = "" + period.getYears();
+        if (period.getYears() > 0) tyears = "" + period.getYears();
 
-        if (period.getMonths() > 0)
-            tmonth = "" + period.getMonths();
+        if (period.getMonths() > 0) tmonth = "" + period.getMonths();
 
-        if (period.getDays() > 0)
-            tdays = "" + period.getDays();
+        if (period.getDays() > 0) tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -855,5 +851,79 @@ public class DateAndTimeUtils {
     public static String getTodaysDateInRequiredFormat(String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(new Date());
+    }
+
+    private static Date convertStringToDateObject(String date, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        Date parsedDate = null;
+
+        try {
+            parsedDate = simpleDateFormat.parse(date);
+        } catch (ParseException exception) {
+            exception.printStackTrace();
+        }
+
+        return parsedDate;
+    }
+
+    public static Calendar convertStringToCalendarObject(String date, String format) {
+        Calendar calendar = Calendar.getInstance();
+        Date parsedDate = convertStringToDateObject(date, format);
+
+        if (parsedDate != null) {
+            calendar.setTime(parsedDate);
+        }
+
+        return calendar;
+    }
+
+    // method returns the 12 A.M. time of the current day in milliseconds
+    public static long getTodaysDateInMilliseconds() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        return cal.getTimeInMillis();
+    }
+
+    public static long getEndDateInMilliseconds(String date, String format) {
+        Calendar calendar = Calendar.getInstance();
+        Date parsedDate = convertStringToDateObject(date, format);
+
+        if (parsedDate != null) {
+            calendar.setTime(parsedDate);
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DATE);
+            calendar.clear();
+            calendar.set(year, month, day, 23, 59, 59);
+        }
+
+        return calendar.getTimeInMillis();
+    }
+
+    public static long convertStringDateToMilliseconds(String date, String format) {
+        Calendar calendarObject = convertStringToCalendarObject(date, format);
+        return calendarObject.getTimeInMillis();
+    }
+
+    public static String convertDateObjectToString(Date date, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        return simpleDateFormat.format(date);
+    }
+
+    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format) {
+        Date createdDateObject = convertStringToDateObject(date, format);
+        Date startDateObject = convertStringToDateObject(startDate, format);
+        Date endDateObject = convertStringToDateObject(endDate, format);
+        return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
+    }
+
+    public static String convertMillisecondsToHoursAndMinutes(long timeInMilliseconds) {
+        int minutes = (int) ((timeInMilliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((timeInMilliseconds / (1000 * 60 * 60)) % 24);
+        return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
     }
 }

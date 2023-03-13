@@ -99,8 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                     } else {
                         checkPerm();
                     }
-                }
-                else {
+                } else {
                     checkPerm();
                 }
             }
@@ -239,7 +238,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
