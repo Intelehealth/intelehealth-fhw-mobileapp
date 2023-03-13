@@ -658,7 +658,15 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         setTitle(patientName + " : " + receiptNum);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Note: This set up an arrow in the toolbar.
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 
     public void onRadioButtonClicked(View view) {
@@ -684,6 +692,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     public void onBackPressed() {
         //do nothing
         //Use the buttons on the screen to navigate
+        super.onBackPressed();
     }
 
     private Bitmap LoadBitmap(View v, int width, int height) {
