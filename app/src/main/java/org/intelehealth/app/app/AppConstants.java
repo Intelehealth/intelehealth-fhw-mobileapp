@@ -132,7 +132,9 @@ public class AppConstants {
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
 
-    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-3-0-default-rtdb.firebaseio.com/";
+  //  public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-3-0-default-rtdb.firebaseio.com/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://smartcaredoc-f7646-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
