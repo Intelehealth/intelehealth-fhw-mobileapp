@@ -114,7 +114,7 @@ public class IntroActivity extends AppCompatActivity {
 
         btnNext.setText(R.string.next);
 
-        BASE_URL = "https://service.sila.care:3004/api/openmrs/";
+        BASE_URL = "https://services.sila.care:3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -335,7 +335,7 @@ public class IntroActivity extends AppCompatActivity {
                                                 for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
                                                     village_name = entry;
                                                 }
-                                                TestSetup("service.sila.care", "nurse1", "Nurse@123", "", village_name);
+                                                TestSetup("services.sila.care", "nurse1", "Nurse@123", "", village_name);
                                             }
                                         }
                                     } else {
@@ -615,7 +615,8 @@ public class IntroActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 
