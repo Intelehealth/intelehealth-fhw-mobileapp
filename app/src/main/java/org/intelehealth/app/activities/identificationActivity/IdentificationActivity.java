@@ -909,7 +909,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
             case R.id.identification_gender_other:
                 if (checked)
-                    mGender = "Other";
+                    mGender = "O";
                 Log.v(TAG, "gender: " + mGender);
                 break;
         }
@@ -1016,13 +1016,13 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void setFieldsForUpdate() {
-        if (mGenderM.isChecked()) {
+        /*if (mGenderM.isChecked()) {
             mGender = "M";
         } else if (mGenderF.isChecked()) {
             mGender = "F";
         } else {
             mGender = "O";
-        }
+        }*/
 
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
@@ -1095,6 +1095,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (patientID_edit != null) {
             if (patient1.getGender().equals("M")) {
+                mGender = "M";
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
@@ -1102,6 +1103,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else if (patient1.getGender().equals("F")) {
+                mGender = "F";
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
@@ -1109,6 +1111,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
+                mGender = "O";
                 mGenderO.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
