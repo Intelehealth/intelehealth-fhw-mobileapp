@@ -439,4 +439,16 @@ public class CameraActivity extends AppCompatActivity {
         finish();
 
     }
+
+    /** Prajwal -
+     * This function is called from camera xml directly. It is used to Flip the camera in case user wants
+     * front camera and vice-versa.
+     * @param view
+     */
+    public void flipCamera(View view) {
+        if (mCameraView != null) {
+            int facing = mCameraView.getFacing();
+            mCameraView.setFacing(facing == CameraView.FACING_FRONT ? CameraView.FACING_BACK : CameraView.FACING_FRONT);
+        }
+    }
 }

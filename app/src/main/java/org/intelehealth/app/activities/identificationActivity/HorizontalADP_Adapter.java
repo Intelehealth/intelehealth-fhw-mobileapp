@@ -69,7 +69,7 @@ public class HorizontalADP_Adapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_image_carousel, parent, false);
+                .inflate(R.layout.content_adp_layout, parent, false);
 
         return new MyViewHolder(itemView);
     }
