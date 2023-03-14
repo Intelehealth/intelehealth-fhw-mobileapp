@@ -5316,6 +5316,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 receiptNum = generateReceiptNum();
                 receiptDate = fetchSystemDateForBill();
                 passIntent(selectedTests);
+                dialog.dismiss();
             }
         });
 
