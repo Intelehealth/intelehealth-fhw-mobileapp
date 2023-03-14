@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
+import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
@@ -2032,7 +2034,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     public String parseDateToddMMyyyy(String time) {
         String inputPattern = "dd-MM-yyyy";
-        String outputPattern = "dd MMM yyyy";
+        String outputPattern = "dd-MMMM-yyyy";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
@@ -2093,7 +2095,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        String mDate = (sessionManager1.getAppLanguage().equalsIgnoreCase("ar") ? en_ar_dob(DateAndTimeUtils.SimpleDatetoLongDate(startDateTime)) : DateAndTimeUtils.SimpleDatetoLongDate(startDateTime));
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -2251,6 +2253,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
 
         String followUp_web = stringToWeb(followUpDateStr);
+        if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar"))
+            followUp_web = en_ar_dob(followUp_web);
 
         String doctor_web = stringToWeb(doctorName);
 
@@ -2261,7 +2265,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String bp = mBP;
         if (bp.equals("/") || bp.equals("null/null")) bp = "";
 
-        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
+        if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar"))
+            mCityState = switch_en_to_ar_village_edit(mCityState);
+
+        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone) && !mPhone.equalsIgnoreCase("-")) ? ", " + mPhone : ", " + checkAndConvertPrescriptionHeadings(getString(R.string.not_provided)));
 
         String fam_hist = mFamHist;
         String pat_hist = mPatHist;
@@ -2301,7 +2308,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + doctSp + "</span><br>" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + /*"<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + doctSp + "</span><br>" +*/
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + "</div>";
@@ -2311,11 +2318,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                             /* doctorDetailStr +*/
-                            "<u><p id=\"patient_information_title\" style=\"font-size:15pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.patient_information)) + "</p></b></u>" +
-                            "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_name)) + ": %s</p></b>" +
-                            "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" +
-                            "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" +
-                            "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
+                            "<u><p id=\"patient_information_title\" style=\"font-size:15pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.patient_information)) + "</p></b></u>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_name)) + ": %s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
 //                            "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_vitals)) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" +
 //                            checkAndConvertPrescriptionHeadings(getString(R.string.prescription_ht)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_wt)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bmi)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bp)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_pulse)) + ": %s | %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_rr)) + ": %s |  %s </p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
@@ -2354,13 +2357,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                            "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                            "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                            "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                            "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" +
-                            "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" +
-                            "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
 //                            "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_vitals)) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_ht)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_wt)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bmi)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_bp)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_pulse)) + ": %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -5016,7 +5013,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 */
 
     // Prescription headings are not getting converted for some devices. We are unsure why this is happening.
-    // To fix this, we're are forcefully converting the strings if the language selected is Arabic - Added by Arpan Sircar
+    // For now, we're are forcefully converting the strings if the language selected is Arabic - Added by Arpan Sircar
     private String checkAndConvertPrescriptionHeadings(String string) {
         String newString = string;
         if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
@@ -5035,16 +5032,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 newString = "التحاليل و الفحوصات المطلوبة";
             if (string.equalsIgnoreCase("General Instructions")) newString = "توجيهات عامة";
             if (string.equalsIgnoreCase("Follow Up Date")) newString = "متابعة التاريخ";
+            if (string.equalsIgnoreCase("Not provided")) newString = "غير مزود";
         }
         return newString;
     }
 
     private String getPrescriptionHeading() {
         String villageName = checkAndRemoveEndDash(patient.getCity_village());
-        String villageNameInArabic = switch_en_to_ar_village_edit(villageName);
-
-        String arabicHeading = "فريق ".concat(villageNameInArabic).concat(" الصحي");
-        String englishHeading = villageName + " Health Unit";
-        return englishHeading + "<br/> " + arabicHeading;
+        if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
+            villageName = switch_en_to_ar_village_edit(villageName);
+            villageName = "فريق ".concat(villageName).concat(" الصحي");
+        } else {
+            villageName = villageName.concat(" Health Unit");
+        }
+        return villageName;
     }
 }
