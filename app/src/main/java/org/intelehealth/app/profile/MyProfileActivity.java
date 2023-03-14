@@ -25,11 +25,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,6 +114,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private ObjectAnimator syncAnimator;
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
+    Switch fingerprintSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +152,27 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         refresh = toolbar.findViewById(R.id.imageview_is_internet_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
+
+        if(sessionManager.isEnableAppLock())
+            fingerprintSwitch.setChecked(true);
+        else
+            fingerprintSwitch.setChecked(false);
+
+        fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    sessionManager.setEnableAppLock(true);
+                    Toast.makeText(MyProfileActivity.this,getResources().getString(R.string.fingerprint_lock_enabled), Toast.LENGTH_LONG).show();
+                }
+                else {
+                    sessionManager.setEnableAppLock(false);
+                    Toast.makeText(MyProfileActivity.this, getResources().getString(R.string.fingerprint_lock_disabled), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(new View.OnClickListener() {

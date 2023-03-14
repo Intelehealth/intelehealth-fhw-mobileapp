@@ -83,6 +83,9 @@ dependencies {
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
 
+    //fingerprint lock
+    implementation 'androidx.biometric:biometric:1.1.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     //mvvm

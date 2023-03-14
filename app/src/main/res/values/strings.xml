@@ -1784,6 +1784,18 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
     <string name="permissions_required">Permissions Required</string>
 
+
+    //fingerprint IDA_613
+    <string name="fingerprint_lock">Fingerprint Lock</string>
+    <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
+    <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
+    <string name="intelehealth_login">Intelehealth Login</string>
+    <string name="touch_fingerprint">Touch fingerprint sensor to login</string>
+    <string name="login_failed">Log in failed, please try again later.</string>
+    <string name="login_successfully">Successfully logged in!</string>
+    <string name="no_fingerprint_assigned">Device fingerprint sensor has no fingerprint assigned.</string>
+    <string name="fingerprint_not_working">Device fingerprint sensor is not working.</string>
+    <string name="no_fingerprint_sensor">Device doesn\'t have a fingerprint sensor.</string>
     <!--END-->
 
 </resources>

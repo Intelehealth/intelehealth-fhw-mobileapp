@@ -92,6 +92,43 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/view_fingerprint_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/tv_pass_margin_start"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/tv_pass_margin_end">
+
+                <ImageView
+                    android:id="@+id/iv_icon3"
+                    android:layout_width="@dimen/iv_camera_width"
+                    android:layout_height="@dimen/iv_camera_height"
+                    android:src="@drawable/ic_baseline_fingerprint_24" />
+
+                <TextView
+                    android:id="@+id/tv_fingerprint_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/tv_change_pass_margin_start"
+                    android:layout_marginTop="@dimen/tv_change_pass_margin_top"
+                    android:layout_toEndOf="@+id/iv_icon3"
+                    android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                    android:text="@string/fingerprint_lock"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_info_text_size"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/fingerprint_enable_Switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackground"/>
+
+            </RelativeLayout>
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
