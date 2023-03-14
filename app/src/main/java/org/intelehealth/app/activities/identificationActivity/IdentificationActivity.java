@@ -404,7 +404,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

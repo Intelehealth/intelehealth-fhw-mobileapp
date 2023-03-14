@@ -1084,6 +1084,7 @@ public class Node implements Serializable {
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
@@ -1765,6 +1766,7 @@ public class Node implements Serializable {
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // To avoid showing Future dates.
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
