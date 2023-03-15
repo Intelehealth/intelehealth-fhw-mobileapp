@@ -2244,7 +2244,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parseDateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = (sessionManager1.getAppLanguage().equalsIgnoreCase("ar") ? en_ar_dob(spiltFollowDate[0]) + ", " + remainingStr : spiltFollowDate[0] + ", " + remainingStr);
             } else {
                 followUpDateStr = followUpDate;
             }
