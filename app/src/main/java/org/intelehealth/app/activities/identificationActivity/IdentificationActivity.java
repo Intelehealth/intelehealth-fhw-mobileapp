@@ -600,7 +600,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             mCountry.setAdapter(countryAdapter);
-            mCountry.setSelection(countryAdapter.getPosition("India"));
+        //    mCountry.setSelection(countryAdapter.getPosition("India"));
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr") ||
+                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                mCountry.setSelection(countryAdapter.getPosition("भारत"));
+            }
+            else {
+                mCountry.setSelection(countryAdapter.getPosition("India"));
+            }
 
         } catch (Exception e) {
             Toast.makeText(this, R.string.country_values_missing, Toast.LENGTH_SHORT).show();
