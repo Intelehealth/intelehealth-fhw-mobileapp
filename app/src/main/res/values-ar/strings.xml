@@ -1601,5 +1601,9 @@
     <string name="identification_fill_required_fields">املأ الخانات الاجبارية</string>
 
     <string name="action_homepage">الصفحة الرئيسية</string>
+    <string name="past_medical_history_aid_skip_message">لزيارات تقديم المساعدات بامكانك تجاوز  معلومات السوابق المرضية</string>
+    <string name="aid_skip">تجاوز</string>
+    <string name="aid_enter_data">أدخل البيانات</string>
+    <string name="vitals_aid_skip_message">قسم العلامات الحيوية مخصص للزيارات الصحية، يمكنكم تجاوزه لزيارات تقديم المساعدات</string>
 
 </resources>

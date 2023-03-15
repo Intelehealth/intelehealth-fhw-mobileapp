@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.json.JSONException;
@@ -150,11 +151,35 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 new_result = getValue(getFamilyHistoryVisitData(), sessionManager.getAppLanguage());
         }
 
-        boolean past = sessionManager.isReturning();
-        if (past && edit_FamHist == null) {
-            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
-            alertdialog.setTitle(getString(R.string.question_update_details));
-            //AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
+        if (intentTag == null || !intentTag.equalsIgnoreCase("edit")) {
+            MaterialAlertDialogBuilder aidAlertDialog = new MaterialAlertDialogBuilder(this);
+            aidAlertDialog.setMessage(getString(R.string.past_medical_history_aid_skip_message));
+            aidAlertDialog.setPositiveButton(getString(R.string.aid_skip), (dialog, which) -> {
+                Intent skipIntent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                skipIntent.putExtra("patientUuid", patientUuid);
+                skipIntent.putExtra("visitUuid", visitUuid);
+                skipIntent.putExtra("encounterUuidVitals", encounterVitals);
+                skipIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                skipIntent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                skipIntent.putExtra("state", state);
+                skipIntent.putExtra("name", patientName);
+                skipIntent.putExtra("gender", patientGender);
+                skipIntent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                skipIntent.putExtra("tag", intentTag);
+                //    intent.putStringArrayListExtra("exams", physicalExams);
+                startActivity(skipIntent);
+            });
+
+            aidAlertDialog.setNegativeButton(getString(R.string.aid_enter_data), (noAidAlertDialog, which) -> {
+                noAidAlertDialog.dismiss();
+
+                // If the user clicks on Enter Data option, we will show them the other dialog regarding if they want to update the previous details or not
+
+                boolean past = sessionManager.isReturning();
+                if (past && edit_FamHist == null) {
+                    MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+                    alertdialog.setTitle(getString(R.string.question_update_details));
+                    //AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
 //            TextView textViewTitle = new TextView(this);
 //            textViewTitle.setText(getString(R.string.question_update_details));
 //            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
@@ -163,82 +188,86 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 //            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 //            alertdialog.setCustomTitle(textViewTitle);
 
-            View layoutInflater = LayoutInflater.from(FamilyHistoryActivity.this)
-                    .inflate(R.layout.past_fam_hist_previous_details, null);
-            alertdialog.setView(layoutInflater);
-            TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            textView.setSingleLine(false);
-            Log.v(TAG, new_result);
+                    View layoutInflater = LayoutInflater.from(FamilyHistoryActivity.this)
+                            .inflate(R.layout.past_fam_hist_previous_details, null);
+                    alertdialog.setView(layoutInflater);
+                    TextView textView = layoutInflater.findViewById(R.id.textview_details);
+                    textView.setSingleLine(false);
+                    Log.v(TAG, new_result);
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                textView.setText(Html.fromHtml(getUpdateTranslations(new_result)));
-            } else {
-                textView.setText(Html.fromHtml(new_result));
-            }
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                        textView.setText(Html.fromHtml(getUpdateTranslations(new_result)));
+                    } else {
+                        textView.setText(Html.fromHtml(new_result));
+                    }
 
 //            alertdialog.setMessage(getString(R.string.question_update_details));
-            alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // allow to edit
-                    flag = true;
+                    alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // allow to edit
+                            flag = true;
+                        }
+                    });
+                    alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // skip
+                            flag = false;
+
+                            String[] columns = {"value", " conceptuuid"};
+
+                            try {
+                                String famHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
+                                String[] famHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                                Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
+                                famHistCursor.moveToLast();
+                                fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                                famHistCursor.close();
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                fhistory = ""; // if family history does not exist
+                            }
+
+                            if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
+                                insertDb(fhistory);
+                            }
+
+                            Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientUuid", patientUuid);
+                            intent.putExtra("visitUuid", visitUuid);
+                            intent.putExtra("encounterUuidVitals", encounterVitals);
+                            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("gender", patientGender);
+                            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                            intent.putExtra("tag", intentTag);
+
+                            startActivity(intent);
+
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertdialog.create();
+                    alertDialog.show();
+
+                    Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    alertDialog.setCancelable(false);
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
                 }
+
             });
-            alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // skip
-                    flag = false;
-
-                    String[] columns = {"value", " conceptuuid"};
-
-                    try {
-                        String famHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-                        String[] famHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
-                        Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
-                        famHistCursor.moveToLast();
-                        fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-                        famHistCursor.close();
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        fhistory = ""; // if family history does not exist
-                    }
-
-                    if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
-                        insertDb(fhistory);
-                    }
-
-                    Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("gender", patientGender);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-
-                    startActivity(intent);
-
-                }
-            });
-
-            AlertDialog alertDialog = alertdialog.create();
-            alertDialog.show();
-
-            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            alertDialog.setCancelable(false);
-            alertDialog.setCanceledOnTouchOutside(false);
-            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
+            aidAlertDialog.show();
         }
 
         super.onCreate(savedInstanceState);
@@ -290,7 +319,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(family_history_recyclerView);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
             recyclerViewIndicator.setScaleX(-1);
 
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
@@ -368,7 +397,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash
-            if(message!=null && !message.isEmpty()) {
+            if (message != null && !message.isEmpty()) {
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("Patient reports -", "يقر المريض ب-")
@@ -560,9 +589,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-        }
-        else
-        {
+        } else {
             //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
             //update previous obs value's void = 1
         }
@@ -621,7 +648,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     private String getUpdateTranslations(String text) {
-        if(text!=null && !text.isEmpty()) {
+        if (text != null && !text.isEmpty()) {
             text = text
                     .replace("High BP", "ارتفاع ضغط الدم")
                     .replace("Heart Disease", "مرض قلبي بسن < 50")

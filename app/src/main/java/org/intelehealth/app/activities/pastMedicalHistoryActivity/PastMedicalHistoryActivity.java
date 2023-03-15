@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.pastMedicalHistoryActivity;
 
 
+import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,22 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,8 +29,39 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,27 +72,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
-
-import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -164,10 +160,31 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 new_result = getValue(getPastMedicalVisitData(), sessionManager.getAppLanguage());
         }
 
-        boolean past = sessionManager.isReturning();
-        if (past && edit_PatHist == null) {
-            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
-            alertdialog.setTitle(getString(R.string.question_update_details));
+        if (intentTag == null || !intentTag.equalsIgnoreCase("edit")) {
+            MaterialAlertDialogBuilder aidAlertDialog = new MaterialAlertDialogBuilder(this);
+            aidAlertDialog.setMessage(getString(R.string.past_medical_history_aid_skip_message));
+
+            aidAlertDialog.setPositiveButton(getString(R.string.aid_skip), (yesAidAlertDialog, which) -> {
+                Intent skipIntent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                skipIntent.putExtra("patientUuid", patientUuid);
+                skipIntent.putExtra("visitUuid", visitUuid);
+                skipIntent.putExtra("encounterUuidVitals", encounterVitals);
+                skipIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                skipIntent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                skipIntent.putExtra("state", state);
+                skipIntent.putExtra("name", patientName);
+                skipIntent.putExtra("gender", patientGender);
+                skipIntent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                skipIntent.putExtra("tag", intentTag);
+                //    intent.putStringArrayListExtra("exams", physicalExams);
+                startActivity(skipIntent);
+            });
+
+            aidAlertDialog.setNegativeButton(getString(R.string.aid_enter_data), (noAidAlertDialog, which) -> {
+                boolean past = sessionManager.isReturning();
+                if (past && edit_PatHist == null) {
+                    MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+                    alertdialog.setTitle(getString(R.string.question_update_details));
 //            TextView textViewTitle = new TextView(this);
 //            textViewTitle.setText(getString(R.string.question_update_details));
 //            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
@@ -175,85 +192,87 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //            textViewTitle.setTextSize(16F);
 //            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 //            alertdialog.setCustomTitle(textViewTitle);
-            //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
+                    //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
 
-            View layoutInflater = LayoutInflater.from(PastMedicalHistoryActivity.this)
-                    .inflate(R.layout.past_fam_hist_previous_details, null);
-            alertdialog.setView(layoutInflater);
-            TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
+                    View layoutInflater = LayoutInflater.from(PastMedicalHistoryActivity.this)
+                            .inflate(R.layout.past_fam_hist_previous_details, null);
+                    alertdialog.setView(layoutInflater);
+                    TextView textView = layoutInflater.findViewById(R.id.textview_details);
+                    Log.v(TAG, new_result);
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                textView.setText(Html.fromHtml(new_result));
-            } else {
-                textView.setText(Html.fromHtml(new_result));
-            }
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                        textView.setText(Html.fromHtml(new_result));
+                    } else {
+                        textView.setText(Html.fromHtml(new_result));
+                    }
 
 
 //            alertdialog.setMessage(getString(R.string.question_update_details));
-            alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // allow to edit
-                    flag = true;
+                    alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // allow to edit
+                            flag = true;
+                        }
+                    });
+                    alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            String[] columns = {"value", " conceptuuid"};
+                            try {
+                                String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
+                                String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                                Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+                                medHistCursor.moveToLast();
+                                phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                                medHistCursor.close();
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                phistory = ""; // if medical history does not exist
+                            }
+
+                            // skip
+                            flag = false;
+                            if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
+                                insertDb(phistory);
+                            }
+
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientUuid", patientUuid);
+                            intent.putExtra("visitUuid", visitUuid);
+                            intent.putExtra("encounterUuidVitals", encounterVitals);
+                            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("gender", patientGender);
+                            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                            intent.putExtra("tag", intentTag);
+                            //    intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+
+                        }
+                    });
+                    AlertDialog alertDialog = alertdialog.create();
+                    alertDialog.show();
+
+                    Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    alertDialog.setCancelable(false);
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
                 }
+                noAidAlertDialog.dismiss();
             });
-            alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
 
-                    String[] columns = {"value", " conceptuuid"};
-                    try {
-                        String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-                        String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-                        Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-                        medHistCursor.moveToLast();
-                        phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-                        medHistCursor.close();
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        phistory = ""; // if medical history does not exist
-                    }
-
-                    // skip
-                    flag = false;
-                    if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
-                        insertDb(phistory);
-                    }
-
-                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("gender", patientGender);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-                    //    intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
-
-                }
-            });
-            AlertDialog alertDialog = alertdialog.create();
-            alertDialog.show();
-
-            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            alertDialog.setCancelable(false);
-            alertDialog.setCanceledOnTouchOutside(false);
-            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-
+            aidAlertDialog.show();
         }
-
 
         setTitle(getString(R.string.title_activity_patient_history));
         setTitle(getTitle() + ": " + patientName);
@@ -569,7 +588,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 phistory = phistory + patientHistory; // only PMH updated
                 sessionManager.setReturning(true);
                 insertDb(phistory);
-                // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                // however, we concat it here to patientHistory and
+                // pass it along to FH, not inserting into db
             } else  // new patient, directly insert into database
             {
                 insertDb(patientHistory);
