@@ -2133,7 +2133,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
+            Log.v("HH", "HH: "  + "on edit: " + sessionManager.getHouseholdUuid());
+            /**
+             * As per the process, we generally push the fields that are as well not updated during the edit part. However,
+             * for this we can avoid it as sending a patient attribute is not required on edit part as it will generated duplicates unnecessarily.
+             * Or if we can also use a HashMap in the recycler on Patient detail. So better is comment this below code.
+             */
+           /* if (sessionManager.getHouseholdUuid().equals("")) {
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -2150,7 +2156,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdID"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
             }
-
+*/
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));

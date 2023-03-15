@@ -1401,10 +1401,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
-                            cancel = true;
+                         //   cancel = true;
                             break;
                         } else {
-                            cancel = false;
+                         //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
@@ -1414,10 +1414,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
-                            cancel = true;
+                          //  cancel = true;
                             break;
                         } else {
-                            cancel = false;
+                         //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
