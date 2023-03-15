@@ -1850,27 +1850,31 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                View finalFocusView = focusView;
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (finalFocusView == null) {
-                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
-                        }
-                        cancel[0] = true;
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+//                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//                alertDialogBuilder.setTitle(R.string.error);
+//                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//                View finalFocusView = focusView;
+//                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        if (finalFocusView == null) {
+//                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
+//                        }
+//                        cancel[0] = true;
+//                    }
+//                });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//
+//                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                Toast.makeText(this, R.string.identification_screen_dialog_error_gender, Toast.LENGTH_LONG).show();
+                if (focusView == null) radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
+                cancel[0] = true;
             }
 
 /*
@@ -3444,26 +3448,31 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                View finalFocusView = focusView;
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (finalFocusView == null)
-                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
-                        cancel[0] = true;
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+//                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//                alertDialogBuilder.setTitle(R.string.error);
+//                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//                View finalFocusView = focusView;
+//                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        if (finalFocusView == null)
+//                            radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
+//                        cancel[0] = true;
+//                    }
+//                });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//
+//                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+//                return;
 
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                return;
+                Toast.makeText(this, R.string.identification_screen_dialog_error_gender, Toast.LENGTH_LONG).show();
+                if (focusView == null) radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
+                cancel[0] = true;
+
             }
 
 /*
