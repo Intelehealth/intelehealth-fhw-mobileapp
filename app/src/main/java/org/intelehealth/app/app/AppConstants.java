@@ -39,6 +39,7 @@ public class AppConstants {
     //App vitals constants
     public static final String MAXIMUM_ABDOMINAL_GIRTH_MALE = "40";
     public static final String MAXIMUM_ABDOMINAL_GIRTH_FEMALE = "35";
+    public static final String MAXIMUM_ABDOMINAL_GIRTH = "100";
     public static final String MAXIMUM_BP_SYS = "250";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";

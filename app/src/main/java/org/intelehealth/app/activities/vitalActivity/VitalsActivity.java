@@ -158,6 +158,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
 
     ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
+    private TextView abdominal_warning_txt;
 
     private long totalSecs;
 
@@ -239,6 +240,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
         mBMI = findViewById(R.id.table_bmi);
         mAbdominalGirth = findViewById(R.id.table_abdominal_girth);
+        abdominal_warning_txt = findViewById(R.id.abdominal_warning_txt);
 //    Respiratory added by mahiti dev team
 
         mResp = findViewById(R.id.table_respiratory);
@@ -653,21 +655,37 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+
+                    // As per SCD-108 ticket, max validation to be 100 irrespective of Gender.
+                    // 1. Upper limit set to 100
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH)) {
+                        mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH));
+                    }
+
+                    // 2. To show warning when based on gender values exceeds...
                     if(patientGender.equalsIgnoreCase("M")) {
                         if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE)) {
-                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+//                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                            abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                            abdominal_warning_txt.setVisibility(View.VISIBLE);
                         } else {
                             mAbdominalGirth.setError(null);
+                            abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
                     else
                     {
                         if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE)) {
-                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+//                            mAbdominalGirth.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                            abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                            abdominal_warning_txt.setVisibility(View.VISIBLE);
                         } else {
                             mAbdominalGirth.setError(null);
+                            abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
+
+
                 }
             }
             @Override
@@ -1365,26 +1383,42 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+
+                    // As per SCD-108 ticket, max validation to be 100 irrespective of Gender.
+                    // 1. Upper limit set to 100
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ABDOMINAL_GIRTH))) {
+                        et.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+
                     if(patientGender.equalsIgnoreCase("M")) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE))) {
-                            et.setError(getString(R.string.abdominal_girth_male_error,
-                                    AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+//                            et.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                            abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_MALE));
+                            abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                             cancel = true;
                             break;
                         } else {
                             cancel = false;
+                            abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
                     else {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE))) {
-                            et.setError(getString(R.string.abdominal_girth_male_error,
-                                    AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+//                            et.setError(getString(R.string.abdominal_girth_male_error, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                            abdominal_warning_txt.setText(getString(R.string.abdominal_girth_warning, AppConstants.MAXIMUM_ABDOMINAL_GIRTH_FEMALE));
+                            abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                             cancel = true;
                             break;
                         } else {
                             cancel = false;
+                            abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
                 } else {
