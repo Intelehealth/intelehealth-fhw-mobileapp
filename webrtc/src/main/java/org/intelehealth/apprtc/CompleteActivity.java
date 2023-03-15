@@ -1340,27 +1340,28 @@ public class CompleteActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), "Choose Documents", getString(R.string.cancel_lbl)};
+        final CharSequence[] options = {/*getString(R.string.take_photo_lbl),*/ getString(R.string.choose_from_gallery_lbl), "Choose Documents", getString(R.string.cancel_lbl)};
         AlertDialog.Builder builder = new AlertDialog.Builder(CompleteActivity.this);
         builder.setTitle("Select");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
+               /* if (item == 0) {
                     if (mImageCount >= 5) {
                         Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     cameraStart();
 
-                } else if (item == 1) {
+                } else*/
+                if (item == 0) {
                     if (mImageCount >= 5) {
                         Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     galleryStart();
 
-                } else if (item == 2) {
+                } else if (item == 1) {
                     if (mPDFCount >= 2) {
                         Toast.makeText(CompleteActivity.this, "Maximum 2 documents you can send per one case", Toast.LENGTH_SHORT).show();
                         return;
@@ -1440,7 +1441,6 @@ public class CompleteActivity extends AppCompatActivity {
                             // Handle the Intent
 
 
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
                             if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
                                 Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();

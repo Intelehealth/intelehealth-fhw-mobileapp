@@ -108,6 +108,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         public void onCameraRequest() {
 
                         }
+
+                        @Override
+                        public void onImageRemoved(int index,String image) {
+
+                        }
                     });
                     genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
                     //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
@@ -162,7 +167,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     } else {
                         mItemList.get(index).setAssociated_symptoms(1);
                     }
-                    notifyDataSetChanged();
+                    notifyItemChanged(index);
                 }
             });
 
@@ -185,7 +190,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     } else {
                         mItemList.get(index).setAssociated_symptoms(-1);
                     }
-                    notifyDataSetChanged();
+                    notifyItemChanged(index);
                 }
             });
 

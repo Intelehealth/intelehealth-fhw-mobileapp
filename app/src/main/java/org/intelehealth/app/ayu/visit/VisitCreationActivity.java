@@ -497,6 +497,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     @Override
+    public void onImageRemoved(int index, String image) {
+        deleteImageFromDatabase(index, image);
+    }
+
+    @Override
     public void onBackPressed() {
         //super.onBackPressed();
     }
@@ -711,6 +716,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     PhysicalExam physicalExamMap;
 
     private boolean savePhysicalExamData() {
+        Log.v(TAG, "savePhysicalExamData");
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
@@ -718,7 +724,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             physicalString = physicalExamMap.generateFindings();
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
-
+            Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
                     updateImageDatabase(imagePath);
@@ -858,6 +864,19 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
+
+    private void deleteImageFromDatabase(int index, String imageName) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
+            imagesDAO.deleteImageFromDatabase(obsUUID);
+            imageUtilsListener.onImageReadyForDelete(index, imageName);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
     ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -869,7 +888,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                         Bundle bundle = new Bundle();
                         bundle.putString("image", mCurrentPhotoPath);
-                        selectedBundle.onBundleSelect(bundle);
+                        imageUtilsListener.onImageReady(bundle);
 
                         //physicalExamMap.setImagePath(mCurrentPhotoPath);
                         Log.i(TAG, mCurrentPhotoPath);
@@ -897,8 +916,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                             Log.v("path", picturePath + "");
 
                             // copy & rename the file
-                            String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                            mLastSelectedImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
                             // Handle the Intent
@@ -906,7 +925,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                             Bundle bundle = new Bundle();
                             bundle.putString("image", currentPhotoPath);
-                            selectedBundle.onBundleSelect(bundle);
+                            imageUtilsListener.onImageReady(bundle);
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
@@ -995,10 +1014,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
-    SelectedBundle selectedBundle;
+    ImageUtilsListener imageUtilsListener;
 
-    public void setOnBundleSelected(SelectedBundle selectedBundle) {
-        this.selectedBundle = selectedBundle;
+    public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
+        this.imageUtilsListener = imageUtilsListener;
     }
 
     public void syncNow(View view) {
@@ -1011,8 +1030,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void showInfo(View view) {
     }
 
-    public interface SelectedBundle {
-        void onBundleSelect(Bundle bundle);
+    public interface ImageUtilsListener {
+        void onImageReady(Bundle bundle);
+
+        void onImageReadyForDelete(int index, String image);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

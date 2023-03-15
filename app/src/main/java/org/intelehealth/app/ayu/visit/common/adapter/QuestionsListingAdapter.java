@@ -59,6 +59,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("ImageCaptured", new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
+    public void removeImageInLastNode(int index, String image) {
+        mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
+        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+    }
 
     public interface OnItemSelection {
         void onSelect(Node node, int index);
@@ -68,6 +72,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         void onAllAnswered(boolean isAllAnswered);
 
         void onCameraRequest();
+        void onImageRemoved(int index, String image);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -426,18 +431,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             holder.recyclerView.setAdapter(optionsChipsGridAdapter);
-            /*for (int i = 0; i < options.size(); i++) {
+            for (int i = 0; i < options.size(); i++) {
                 String type = options.get(i).getInputType();
-
-                if (type == null || type.isEmpty() && (options.get(i).getOptionsList() != null && !options.get(i).getOptionsList().isEmpty())) {
-                    type = "options";
-                }
-
-                if (type.equalsIgnoreCase("camera")) {
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
                     // openCamera(context, imagePath, imageName);
                     showCameraView(options.get(i), holder, index);
                 }
-            }*/
+            }
         }
 
     }
@@ -479,8 +479,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
             @Override
-            public void onImageRemoved(int index) {
-
+            public void onImageRemoved(int index, String image) {
+                mOnItemSelection.onImageRemoved(index, image);
             }
 
             @Override
