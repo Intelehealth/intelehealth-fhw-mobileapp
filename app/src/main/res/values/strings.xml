@@ -1784,6 +1784,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
     <string name="permissions_required">Permissions Required</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
+    <string name="sanity_alert_title">Please wash/sanitize your hands</string>
+    <string name="slider_desc">range slider</string>
+    <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
 
     <!--END-->
 

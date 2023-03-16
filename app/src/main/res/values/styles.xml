@@ -495,4 +495,21 @@
     </style>
 
 
+    <style name="slider_tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="shapeAppearanceOverlay">@style/tooltipShOverylay</item>
+       <!-- <item name="android:textAppearance">@style/tooltipShOverylay</item>-->
+        <item name="backgroundTint">@color/colorPrimary1</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="tooltipShOverylay">
+        <item name="cornerSize">50%</item>
+
+    </style>
+    <style name="slider_scrollbar" parent="Widget.MaterialComponents.Slider">
+        <item name="trackColorActive">@color/colorPrimary1</item>
+        <item name="trackColorInactive">@color/gray_1</item>
+
+    </style>
+
 </resources>

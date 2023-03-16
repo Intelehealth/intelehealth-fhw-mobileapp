@@ -193,14 +193,15 @@ public class CompleteActivity extends AppCompatActivity {
     private Ringtone mRingtone;
 
     BroadcastReceiver broadcastReceiver;
-    BroadcastReceiver mImageCaptureReceiver;
+
     boolean mMicrophonePluggedIn = false;
     private JSONObject mRoomJsonObject = new JSONObject();
     private static final int WAIT_TIMER = 6 * 60 * 60 * 1000; // expecting max 6 hour call
     private TextView mTimerTextView;
 
     private boolean mIsChatWindowOpened = false;
-    private BroadcastReceiver mBroadcastReceiver;
+    private BroadcastReceiver mCallEndBroadcastReceiver;
+    private BroadcastReceiver mImageUrlFormatBroadcastReceiver;
 
     private CountDownTimer mCountDownTimer = new CountDownTimer(WAIT_TIMER, 1000) {
 
@@ -227,6 +228,8 @@ public class CompleteActivity extends AppCompatActivity {
         }
     };
 
+    private String mLastS3FormattedUrl = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,6 +251,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorId"))
             mDoctorUUID = getIntent().getStringExtra("doctorId");
 
+        binding.tvDoctorName.setText(mDoctorName);
         mFromUUId = mNurseId;
         mToUUId = mDoctorUUID;
         mPatientUUid = mRoomId;
@@ -258,7 +262,7 @@ public class CompleteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        mBroadcastReceiver = new BroadcastReceiver() {
+        mCallEndBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 runOnUiThread(new Runnable() {
@@ -271,18 +275,22 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        registerReceiver(mCallEndBroadcastReceiver, filterSend);
 
-        mBroadcastReceiver = new BroadcastReceiver() {
+        mImageUrlFormatBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String fileUrl = intent.getStringExtra("fileUrl");
-                postMessages(mFromUUId, mToUUId, mPatientUUid, fileUrl, "attachment");
+                String url = intent.getStringExtra("fileUrl");
+                if (url.equals(mLastS3FormattedUrl)) {
+                    return;
+                }
+                mLastS3FormattedUrl = url;
+                postMessages(mFromUUId, mToUUId, mPatientUUid, url, "attachment");
             }
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        registerReceiver(mBroadcastReceiver, intentFilter);
+        registerReceiver(mImageUrlFormatBroadcastReceiver, intentFilter);
 
 
         mRequestQueue = Volley.newRequestQueue(this);
@@ -483,33 +491,6 @@ public class CompleteActivity extends AppCompatActivity {
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(broadcastReceiver, receiverFilter);
 
-        mImageCaptureReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String currentPhotoPath = intent.getStringExtra("");
-                Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
-                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                    Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                try {
-                    JSONObject inputJsonObject = new JSONObject();
-                    inputJsonObject.put("fromUser", mFromUUId);
-                    inputJsonObject.put("toUser", mToUUId);
-                    inputJsonObject.put("patientId", mPatientUUid);
-                    inputJsonObject.put("message", ".jpg");
-                    inputJsonObject.put("type", "attachment");
-                    inputJsonObject.put("isLoading", true);
-
-                    addNewMessage(inputJsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
-            }
-        };
-        registerReceiver(mImageCaptureReceiver, new IntentFilter(Constants.IMAGE_CAPTURE_DONE_INTENT_ACTION));
-
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
@@ -576,6 +557,8 @@ public class CompleteActivity extends AppCompatActivity {
         disconnectAll();
         try {
             unregisterReceiver(mPhoneStateBroadcastReceiver);
+            unregisterReceiver(mCallEndBroadcastReceiver);
+            unregisterReceiver(mImageUrlFormatBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -689,6 +672,7 @@ public class CompleteActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 binding.remoteVideoOffLl.setVisibility(View.GONE);
+                                binding.tvDoctorName.setTextColor(getResources().getColor(R.color.white));
                             }
                         });
 
@@ -708,6 +692,7 @@ public class CompleteActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 binding.remoteVideoOffLl.setVisibility(View.VISIBLE);
+                                binding.tvDoctorName.setTextColor(getResources().getColor(R.color.gray_4));
                             }
                         });
 

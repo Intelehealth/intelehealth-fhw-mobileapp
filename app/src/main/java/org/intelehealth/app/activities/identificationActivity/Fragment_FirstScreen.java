@@ -23,6 +23,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +58,7 @@ import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -283,6 +286,16 @@ public class Fragment_FirstScreen extends Fragment {
 
             }
         }
+
+        mPhoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                return null;
+            }
+        };
+
+        mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(11)});
     }
 
     class MyTextWatcher implements TextWatcher {

@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,8 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.RangeSlider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -59,6 +63,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("ImageCaptured", new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
+
     public void removeImageInLastNode(int index, String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
@@ -72,6 +77,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         void onAllAnswered(boolean isAllAnswered);
 
         void onCameraRequest();
+
         void onImageRemoved(int index, String image);
     }
 
@@ -119,7 +125,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
@@ -214,7 +220,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         break;
                     case "range":
                         // askRange(questionNode, context, adapter);
-                        addNumberView(mItemList.get(position), genericViewHolder, position);
+                        addRangeView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "frequency":
                         //askFrequency(questionNode, context, adapter);
@@ -251,6 +257,64 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 showCameraView(mItemList.get(position), genericViewHolder, position);
             }
         }
+    }
+
+    private void addRangeView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
+        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rangeTextView.getText().toString().equalsIgnoreCase("---")){
+                    Toast.makeText(mContext, "Please select the range!", Toast.LENGTH_SHORT).show();
+                }else{
+                    List<Float> values = rangeSlider.getValues();
+                    int x = values.get(0).intValue();
+                    int y = values.get(1).intValue();
+                    String durationString = x + " to " + y;
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, index);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = rangeSlider.getValues();
+                int x = values.get(0).intValue();
+                int y = values.get(1).intValue();
+                rangeTextView.setText(String.format("%d to %d", x, y));
+            }
+        });
+
+
+        holder.singleComponentContainer.addView(view);
     }
 
     private void showAssociateSymptoms(Node node, GenericViewHolder holder, int position) {
@@ -327,7 +391,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "range":
                     // askRange(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addRangeView(options.get(0), holder, index);
                     break;
                 case "frequency":
                     //askFrequency(questionNode, context, adapter);
@@ -410,7 +474,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             break;
                         case "range":
                             // askRange(questionNode, context, adapter);
-                            addNumberView(node, holder, index);
+                            addRangeView(node, holder, index);
                             break;
                         case "frequency":
                             //askFrequency(questionNode, context, adapter);
@@ -517,6 +581,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
      */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
         Log.v("addDurationView", new Gson().toJson(node));
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
         final TextView numberRangeTextView = view.findViewById(R.id.tv_number_range);
         final TextView durationTypeTextView = view.findViewById(R.id.tv_duration_type);
@@ -618,6 +683,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
@@ -661,6 +727,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
@@ -706,6 +773,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);

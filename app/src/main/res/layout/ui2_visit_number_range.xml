@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
+
+    <TextView
+        android:id="@+id/tv_desc"
+        style="@style/label_misc_txt_14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="1sp"
+        android:text="@string/drag_tow_capture_range_from_0_to_100" />
+
+    <LinearLayout
+        android:id="@+id/ll_range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_desc"
+        android:layout_marginTop="@dimen/padding_12"
+        android:background="@drawable/ui2_common_gray_round_stroke_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_12">
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_slider"
+            style="@style/slider_scrollbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/slider_desc"
+            android:valueFrom="1"
+            android:valueTo="100"
+            app:labelBehavior="floating"
+            app:labelStyle="@style/slider_tooltip"
+            app:thumbColor="@color/white"
+            app:values="@array/initial_slider_values" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_range"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/edittext_border_blue"
+        android:gravity="center"
+        android:minWidth="80dip"
+        android:padding="@dimen/padding_10"
+        android:text="---"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary1"
+        android:textSize="@dimen/card_content_normal_text_size"
+        android:textStyle="bold"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_range"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:gravity="center"
+        android:minWidth="80dip"
+        android:padding="@dimen/padding_10"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/card_content_normal_text_size"
+        android:textStyle="bold"
+        tools:ignore="TextContrastCheck" />
+
+</RelativeLayout>

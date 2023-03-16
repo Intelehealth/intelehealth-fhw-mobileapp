@@ -1880,5 +1880,8 @@
         <item>Другое заболевание твердых тканей зубов</item>
         <item>Заражение зубов или десен</item>
     </string-array>
-
+    <array name="initial_slider_values">
+        <item>10</item>
+        <item>25</item>
+    </array>
 </resources>
