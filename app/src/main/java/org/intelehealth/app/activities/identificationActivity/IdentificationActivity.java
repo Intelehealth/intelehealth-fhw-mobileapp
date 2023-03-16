@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_state;
 import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 
@@ -252,8 +253,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patient1.getLast_name() != null && !patient1.getLast_name().equalsIgnoreCase("-"))
             mLastName.setText(patient1.getLast_name());
 
-        if (patient1.getDate_of_birth() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-"))
-            mDOB.setText(patient1.getDate_of_birth());
+        if (patient1.getDate_of_birth() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                mDOB.setText(en_ar_dob(patient1.getDate_of_birth()));
+            } else {
+                mDOB.setText(patient1.getDate_of_birth());
+            }
+        }
 
         if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-"))
             mPhoneNum.setText(patient1.getPhone_number());
@@ -716,14 +722,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 dob_indexValue = monthOfYear; //fetching the inex value of month selected...
 
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    //TODO: Change hindi language to arabic
-                    String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    String dob_text = en_ar_dob(dobString); //to show text of English into Arabic...
                     mDOB.setText(dob_text);
                 } else {
                     mDOB.setText(dobString);
@@ -761,13 +766,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                //TODO: Change hindi language to arabic
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                String dob_text = en_ar_dob(dob); //to show text of English into Arabic...
                 mDOB.setText(dob_text);
             } else {
                 mDOB.setText(dob);
             }
+
             //get year month days
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
             mAgeYears = Integer.valueOf(ymdData[0]);
@@ -862,12 +867,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     } else {
                         mDOBDay = birthDay;
                     }
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        //TODO: Change hindi language to arabic
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                        String dob_text = en_ar_dob(dobString); //to show text of English into Hindi...
                         mDOB.setText(dob_text);
                     } else {
                         mDOB.setText(dobString);
@@ -2322,7 +2326,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
         patientdto.setGender(StringUtils.getValue(mGender));
 
-        String[] dob_array = mDOB.getText().toString().split(" ");
+        String[] dob_array = mDOB.getText().toString().split("-");
         Log.d("dob_array", "0: " + dob_array[0]);
         Log.d("dob_array", "0: " + dob_array[1]);
         Log.d("dob_array", "0: " + dob_array[2]);
@@ -2334,7 +2338,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         } else {
             String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
             dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-            String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+            String dob_value = dob_array[0] + "-" + dob_array[1] + "-" + dob_array[2];
             patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
         }
 
@@ -3754,7 +3758,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
 
-            String[] dob_array = mDOB.getText().toString().split(" ");
+            String[] dob_array = mDOB.getText().toString().split("-");
             Log.d("dob_array", "0: " + dob_array[0]);
             Log.d("dob_array", "0: " + dob_array[1]);
             Log.d("dob_array", "0: " + dob_array[2]);
@@ -3767,7 +3771,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
-                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+                String dob_value = dob_array[0] + "-" + dob_array[1] + "-" + dob_array[2];
 
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             }

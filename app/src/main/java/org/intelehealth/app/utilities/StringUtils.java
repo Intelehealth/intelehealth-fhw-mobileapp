@@ -3178,6 +3178,20 @@ public final class StringUtils {
                     .replace("Ноябрь", "November")
                     .replace("Декабрь", "December");
             return dob;
+        } else if (locale.equalsIgnoreCase("ar")) {
+            return dobString
+                    .replace("كانون الثاني", "January")
+                    .replace("شهر شباط", "February")
+                    .replace("شهر اذار", "March")
+                    .replace("أشهر نيسان", "April")
+                    .replace("شهر أيار", "May")
+                    .replace("شهر حزيران", "June")
+                    .replace("شهر تموز", "July")
+                    .replace("شهر أب", "August")
+                    .replace("شهر أيلول", "September")
+                    .replace("شهر تشرين الأول", "October")
+                    .replace("شهر تشرين الثاني", "November")
+                    .replace("شهر كانون الأول", "December");
         } else {
             return dobString;
         }

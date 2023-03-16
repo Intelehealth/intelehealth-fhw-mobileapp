@@ -76,6 +76,7 @@ public class DateAndTimeUtils {
         Date todayDate = new Date();
         return date.format(todayDate);
     }
+
     public String currentDateTimeFormat() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -250,7 +251,7 @@ public class DateAndTimeUtils {
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {
 
-        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
         try {
@@ -273,7 +274,7 @@ public class DateAndTimeUtils {
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
