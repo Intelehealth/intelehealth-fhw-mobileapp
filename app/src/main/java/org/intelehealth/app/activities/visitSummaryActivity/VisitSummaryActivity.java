@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
+import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
@@ -2081,7 +2082,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
         String mOccupation = patient.getOccupation();
-        String mGender = patient.getGender();
+        String mGender = getLocaleGender(this, patient.getGender());
 
         Calendar c = Calendar.getInstance();
         //System.out.println(getString(R.string.current_time) + c.getTime());
