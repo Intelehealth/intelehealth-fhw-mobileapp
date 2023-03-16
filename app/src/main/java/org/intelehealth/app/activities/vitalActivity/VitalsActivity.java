@@ -1600,6 +1600,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ECG_READINGS));
                 obsDAO.updateObs(obsDTO);
 
+                // Abdominal Girth - Update
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.ABDOMINAL_GIRTH);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getAbdominalGirth());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ABDOMINAL_GIRTH));
+                obsDAO.updateObs(obsDTO);
+
                 // Glucose
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
@@ -1844,6 +1853,18 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getEcg());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Abdominal Girth - Insert
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.ABDOMINAL_GIRTH);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getAbdominalGirth());
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
