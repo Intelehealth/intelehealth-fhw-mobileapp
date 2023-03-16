@@ -2082,7 +2082,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
         String mOccupation = patient.getOccupation();
-        String mGender = getLocaleGender(this, patient.getGender());
+        String mGender = (sessionManager.getAppLanguage().equalsIgnoreCase("ar") ? getLocaleGender(this, patient.getGender()) : patient.getGender());
 
         Calendar c = Calendar.getInstance();
         //System.out.println(getString(R.string.current_time) + c.getTime());
