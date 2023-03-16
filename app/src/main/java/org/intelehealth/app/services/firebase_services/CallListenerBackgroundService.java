@@ -95,7 +95,7 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-//        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
         //do heavy work on a background thread
 
         // Write a message to the database
