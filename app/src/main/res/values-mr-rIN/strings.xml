@@ -1016,5 +1016,6 @@
     <string name="power_too_low_pls_charge">डिव्हाइसची शक्ती खूप कमी आहे, कृपया ते चार्ज करा.</string>
     <string name="image_deleted_successfully">प्रतिमा यशस्वीरित्या हटवली</string>
     <string name="abdominal_girth_warning">पोटाचा घेर %1$s पेक्षा जास्त आहे, आरोग्याशी संबंधित समस्यांसाठी काळजी घ्या.</string>
+    <string name="abdominal_girth">पोटाचा घेर</string>
 
 </resources>

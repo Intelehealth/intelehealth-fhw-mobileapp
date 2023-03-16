@@ -1024,4 +1024,5 @@
     <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
     <string name="image_deleted_successfully">Image Deleted Successfully</string>
     <string name="abdominal_girth_warning">Abdominal Girth is exceeding %1$s, Be careful for health related issues.</string>
+    <string name="abdominal_girth">Abdominal Girth</string>
 </resources>
