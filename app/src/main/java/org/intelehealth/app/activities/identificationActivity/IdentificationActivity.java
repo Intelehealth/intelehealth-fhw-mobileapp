@@ -1873,8 +1873,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
                 Toast.makeText(this, R.string.identification_screen_dialog_error_gender, Toast.LENGTH_LONG).show();
-                if (focusView == null) radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
                 cancel[0] = true;
+                if (focusView == null) focusView = radioGrp;
             }
 
 /*
@@ -3470,8 +3470,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                return;
 
                 Toast.makeText(this, R.string.identification_screen_dialog_error_gender, Toast.LENGTH_LONG).show();
-                if (focusView == null) radioGrp.getParent().requestChildFocus(radioGrp, radioGrp);
                 cancel[0] = true;
+                if (focusView == null) focusView = radioGrp;
 
             }
 
