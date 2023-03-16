@@ -689,6 +689,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+        String currentNodeText = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
+        if (currentNodeText.equalsIgnoreCase("Question not answered\n")) {
+            alertDialogBuilder.setMessage(getString(R.string.details_required));
+            alertDialogBuilder.setNeutralButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss());
+            alertDialogBuilder.show();
+            return;
+        }
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash

@@ -1612,4 +1612,6 @@
     <string name="prescription_med_plan_ordered_items">الخطة العلاجية</string>
     <string name="prescription_general_instructions">توجيهات عامة</string>
 
+    <string name="details_required">الرجاء إضافة التفاصيل</string>
+
 </resources>

@@ -1618,5 +1618,6 @@
     <string name="prescription_med_plan_ordered_items">Medication Plan</string>
     <string name="prescription_general_instructions">General Instructions</string>
 
+    <string name="details_required">Please add the details</string>
 
 </resources>
