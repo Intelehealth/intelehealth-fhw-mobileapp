@@ -719,10 +719,10 @@
     <string name="country_matching_String_forKyrgyzstan">قيرغيزستان</string>
     <!--Prescription-->
     <string name="prescription_age">العمر</string>
-    <string name="prescription_gender">جنس</string>
-    <string name="prescription_address_contact">العنوان والاتصال</string>
-    <string name="prescription_patient_id">رقم المريض</string>
-    <string name="prescription_date_of_visit">موعد الزيارة</string>
+    <string name="prescription_gender">الجنس</string>
+    <string name="prescription_address_contact">العنوان</string>
+    <string name="prescription_patient_id">رقم الاضبارة</string>
+    <string name="prescription_date_of_visit">تاريخ الزيارة</string>
     <string name="prescription_vitals">الاعضاء الحيوية الهامة</string>
     <string name="prescription_rr">معدل التنفس</string>
     <string name="prescription_pulse">النبض (نبضة بالدقيقة)</string>
@@ -732,11 +732,11 @@
     <string name="prescription_wt">الوزن (كغ)</string>
     <string name="prescription_ht">الطول (سم)</string>
     <string name="prescription_pre_comp">تقديم الشكاوى (s)</string>
-    <string name="prescription_diagnosis">تشخيص</string>
-    <string name="prescription_med_plan">خطة الأدوية </string>
-    <string name="prescription_rec_investigation">التحقيقات الموصى بها</string>
+    <string name="prescription_diagnosis">التشخيص</string>
+    <string name="prescription_med_plan">الخطة العلاجية</string>
+    <string name="prescription_rec_investigation">التحاليل و الفحوصات المطلوبة</string>
     <string name="prescription_general_advice">نصيحة عامة</string>
-    <string name="prescription_follow_up_date">متابعة التاريخ</string>
+    <string name="prescription_follow_up_date">تاريخ زيارة المتابعة</string>
     <string name="prescription_temp_c">درجة الحرارة المئوية</string>
     <string name="prescription_temp_f">درجة الحرارة بالفهرنهايت</string>
     <string name="prescription_spo2">نسبة الاكسجة: </string>
@@ -1606,5 +1606,10 @@
     <string name="aid_skip">تجاوز</string>
     <string name="aid_enter_data">أدخل البيانات</string>
     <string name="vitals_aid_skip_message">قسم العلامات الحيوية مخصص للزيارات الصحية، يمكنكم تجاوزه لزيارات تقديم المساعدات</string>
+    <string name="patient_information">معلومات المريض</string>
+    <string name="prescription_name">الاسم</string>
+    <string name="prescription_reason_for_visit">سبب الزيارة</string>
+    <string name="prescription_med_plan_ordered_items">الخطة العلاجية</string>
+    <string name="prescription_general_instructions">توجيهات عامة</string>
 
 </resources>

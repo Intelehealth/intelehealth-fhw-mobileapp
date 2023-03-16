@@ -726,7 +726,7 @@
     <string name="prescription_gender">Gender</string>
     <string name="prescription_address_contact">Address and Contact</string>
     <string name="prescription_patient_id">Patient Id</string>
-    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_date_of_visit">Date of Visit</string>
     <string name="prescription_vitals">Vitals</string>
     <string name="prescription_rr">Respiratory Rate</string>
     <string name="prescription_pulse">Pulse(bpm)</string>
@@ -740,7 +740,7 @@
     <string name="prescription_med_plan">Medication(s) plan</string>
     <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
     <string name="prescription_general_advice">General Advice</string>
-    <string name="prescription_follow_up_date">Follow Up Date</string>
+    <string name="prescription_follow_up_date">Followup Date</string>
     <string name="prescription_temp_c">Temperature (C) : </string>
     <string name="prescription_temp_f">Temperature (F) : </string>
     <string name="prescription_spo2">SpO2(%): </string>
@@ -1612,6 +1612,11 @@
     <string name="vitals_aid_skip_message">For aid visits, you may skip the Vitals</string>
     <string name="aid_skip">Skip</string>
     <string name="aid_enter_data">Enter data</string>
+    <string name="patient_information">Patient Information</string>
+    <string name="prescription_name">Name</string>
+    <string name="prescription_reason_for_visit">Reason of Visit</string>
+    <string name="prescription_med_plan_ordered_items">Medication Plan</string>
+    <string name="prescription_general_instructions">General Instructions</string>
 
 
 </resources>
