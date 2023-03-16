@@ -128,6 +128,7 @@ public class VitalsActivity extends AppCompatActivity {
         if (intentTag == null || !intentTag.equalsIgnoreCase("edit")) {
             MaterialAlertDialogBuilder aidAlertDialog = new MaterialAlertDialogBuilder(this);
             aidAlertDialog.setMessage(getString(R.string.vitals_aid_skip_message));
+            aidAlertDialog.setCancelable(false);
             aidAlertDialog.setPositiveButton(getString(R.string.aid_skip), (dialog, which) -> {
                 Intent skipIntent = new Intent(VitalsActivity.this, QuestionNodeActivity.class);
                 skipIntent.putExtra("patientUuid", patientUuid);

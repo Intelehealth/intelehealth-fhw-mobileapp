@@ -1602,6 +1602,7 @@
 
     <string name="action_homepage">الصفحة الرئيسية</string>
     <string name="past_medical_history_aid_skip_message">لزيارات تقديم المساعدات بامكانك تجاوز  معلومات السوابق المرضية</string>
+    <string name="family_history_aid_skip_message">لزيارات تقديم المساعدات بامكانك تجاوز معلومات السوابق المرضية العائلية</string>
     <string name="aid_skip">تجاوز</string>
     <string name="aid_enter_data">أدخل البيانات</string>
     <string name="vitals_aid_skip_message">قسم العلامات الحيوية مخصص للزيارات الصحية، يمكنكم تجاوزه لزيارات تقديم المساعدات</string>
