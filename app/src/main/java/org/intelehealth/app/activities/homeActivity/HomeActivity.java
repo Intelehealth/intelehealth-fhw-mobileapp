@@ -498,14 +498,14 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+
         }
         /*sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }*/
-
+        requestPermission();
         showProgressbar();
     }
 
