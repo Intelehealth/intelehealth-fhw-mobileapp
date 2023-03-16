@@ -70,7 +70,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             if(!patinet.getFollowup_date().equalsIgnoreCase("null")) {
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
-                holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+                holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 14));
             }
             else
             {
