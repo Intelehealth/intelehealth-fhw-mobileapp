@@ -153,7 +153,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     String appLanguage;
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp, mAbdominalGirth,
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
+            mAbdominalGirth, mArmGirth,
             bloodGlucose_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
 
@@ -241,6 +242,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         mBMI = findViewById(R.id.table_bmi);
         mAbdominalGirth = findViewById(R.id.table_abdominal_girth);
         abdominal_warning_txt = findViewById(R.id.abdominal_warning_txt);
+        mArmGirth = findViewById(R.id.table_arm_girth);
 //    Respiratory added by mahiti dev team
 
         mResp = findViewById(R.id.table_respiratory);
@@ -654,8 +656,8 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
 
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     // As per SCD-108 ticket, max validation to be 100 irrespective of Gender.
                     // 1. Upper limit set to 100
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ABDOMINAL_GIRTH)) {
@@ -693,6 +695,30 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (mAbdominalGirth.getText().toString().startsWith(".")) {
                     mAbdominalGirth.setText("");
                 } else {
+                }
+            }
+        });
+
+        mArmGirth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    // 1. Upper limit set to 100
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_ARM_GIRTH)) {
+                        mArmGirth.setError(getString(R.string.arm_girth_shouldbe_lessthan, AppConstants.MAXIMUM_ARM_GIRTH));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mArmGirth.getText().toString().startsWith(".")) {
+                    mArmGirth.setText("");
                 }
             }
         });
@@ -1010,6 +1036,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             case UuidDictionary.ABDOMINAL_GIRTH: //Abdominal Girth
                 mAbdominalGirth.setText(value);
                 break;
+            case UuidDictionary.ARM_GIRTH: //Abdominal Girth
+                mArmGirth.setText(value);
+                break;
             case UuidDictionary.TEMPERATURE: //Temperature
                 if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
@@ -1104,6 +1133,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         values.add(uricAcid_editText);
         values.add(totalCholestrol_editText);
         values.add(mAbdominalGirth);
+        values.add(mArmGirth);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -1402,7 +1432,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                          //   cancel = true;
-                            break;
+                         //   break;
                         } else {
                          //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
@@ -1415,13 +1445,34 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                           //  cancel = true;
-                            break;
+                         //   break;
                         } else {
                          //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
                         }
                     }
                 } else {
+                    cancel = false;
+                }
+            }
+            // arm girth
+            else if (i == 15) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+
+                    // As per req, max validation to be 100 irrespective of Gender.
+                    // 1. Upper limit set to 100
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_ARM_GIRTH))) {
+                        et.setError(getString(R.string.arm_girth_shouldbe_lessthan, AppConstants.MAXIMUM_ARM_GIRTH));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                }
+                else {
                     cancel = false;
                 }
             }
@@ -1453,6 +1504,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 }
                 if (mAbdominalGirth.getText() != null) {
                     results.setAbdominalGirth((mAbdominalGirth.getText().toString()));
+                }
+                if (mArmGirth.getText() != null) {
+                    results.setArmGirth((mArmGirth.getText().toString()));
                 }
                 if (mTemperature.getText() != null) {
 
@@ -1598,6 +1652,24 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getEcg());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ECG_READINGS));
+                obsDAO.updateObs(obsDTO);
+
+                // Abdominal Girth - Update
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.ABDOMINAL_GIRTH);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getAbdominalGirth());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ABDOMINAL_GIRTH));
+                obsDAO.updateObs(obsDTO);
+
+                // Arm Girth - Update
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.ARM_GIRTH);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getArmGirth());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ARM_GIRTH));
                 obsDAO.updateObs(obsDTO);
 
                 // Glucose
@@ -1844,6 +1916,30 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getEcg());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Abdominal Girth - Insert
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.ABDOMINAL_GIRTH);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getAbdominalGirth());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Arm Girth - Insert
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.ARM_GIRTH);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getArmGirth());
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
