@@ -71,7 +71,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     private ActivePatientAdapter mActivePatientAdapter;
 
     public static long getActiveVisitsCount(SQLiteDatabase db) {
-        int count =0;
+        int count = 0;
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
@@ -133,7 +133,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
@@ -221,7 +221,8 @@ public class ActivePatientActivity extends AppCompatActivity {
                                         finalEncounterAdultIntialslocal,
                                         null,
                                         String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
-                                        ""
+                                        "",
+                                        sessionManager.getAppLanguage()
                                 );
 
 

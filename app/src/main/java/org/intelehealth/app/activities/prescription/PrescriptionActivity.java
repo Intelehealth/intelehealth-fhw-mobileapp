@@ -770,7 +770,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        VisitUtils.endVisit(PrescriptionActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+        VisitUtils.endVisit(PrescriptionActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag, sessionManager.getAppLanguage());
     }
 
     @Override

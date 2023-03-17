@@ -2308,11 +2308,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
             String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + /*"<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + doctSp + "</span><br>" +*/
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + "</div>";
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_email)) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + "</div>";
 
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
@@ -3303,7 +3303,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag, sessionManager1.getAppLanguage());
     }
 
 
@@ -3647,7 +3647,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 if (followUpDateCard.getVisibility() != View.VISIBLE) {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
-                followUpDateTextView.setText(followUpDate);
+                followUpDateTextView.setText((sessionManager1.getAppLanguage().equalsIgnoreCase("ar") ? en_ar_dob(followUpDate) : followUpDate));
                 //checkForDoctor();
                 break;
             }
@@ -3679,10 +3679,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
             String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", " + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? doctSp : "") + "</span><br>" +
                     // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "") + "</div>";
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "") + "</div>";
             if (LocaleHelper.isArabic(this)) {
                 doctorDetailStr = "<html dir=\"rtl\" lang=\"\"><body>" + doctorDetailStr + "</body></html>";
                 mDoctorName.setGravity(Gravity.END);
@@ -4610,7 +4610,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
             String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "";
 
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
@@ -5034,6 +5034,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (string.equalsIgnoreCase("General Instructions")) newString = "توجيهات عامة";
             if (string.equalsIgnoreCase("Follow Up Date")) newString = "متابعة التاريخ";
             if (string.equalsIgnoreCase("Not provided")) newString = "غير مزود";
+            if (string.equalsIgnoreCase("Email: ")) newString = "البريد الإلكتروني:";
+            if (string.equalsIgnoreCase("Registration No: ")) newString = "رقم التسجيل:";
         }
         return newString;
     }
