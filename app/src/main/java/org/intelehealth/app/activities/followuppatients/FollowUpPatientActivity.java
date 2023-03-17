@@ -130,7 +130,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         if (searchCursor.moveToFirst()) {
             do {
                 try {
-                    String followUpDate = getValue(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")), sessionManager.getAppLanguage()).substring(0, 14);
+                    String followUpDate = getValue(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")), sessionManager.getAppLanguage()).substring(0, 13);
                     Date followUp = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH).parse(followUpDate);
                     Date currentD = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH).parse(currentDate);
                     int value = followUp.compareTo(currentD);
