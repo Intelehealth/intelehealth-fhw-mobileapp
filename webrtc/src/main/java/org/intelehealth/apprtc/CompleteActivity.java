@@ -213,14 +213,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (localAudioTrack != null) {
-                    localAudioTrack.setEnabled(!localAudioTrack.enabled());
-                    if (localAudioTrack.enabled()) {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_24);
-                        Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
-                    } else {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_off_24);
-                        Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
-                    }
+                    setAudioStatus(!localAudioTrack.enabled());
                 }
             }
         });
@@ -228,7 +221,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (socket != null)
-                    socket.emit("bye");
+                    socket.emit("bye", "app");
                 disconnectAll();
 
             }
@@ -239,11 +232,13 @@ public class CompleteActivity extends AppCompatActivity {
                 if (videoTrackFromCamera != null) {
                     videoTrackFromCamera.setEnabled(!videoTrackFromCamera.enabled());
                     if (videoTrackFromCamera.enabled()) {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(1.0f);
                     } else {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_off_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_off_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(0.2f);
                     }
                 }
             }
@@ -251,12 +246,13 @@ public class CompleteActivity extends AppCompatActivity {
         binding.flipImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean lastStatusOfAudioEnabled = localAudioTrack.enabled();
                 mIsReverseCamera = !mIsReverseCamera;
                 // recreate the video track
                 createVideoTrackFromCameraAndShowIt();
                 // start again the video streaming
                 startStreamingVideo();
-
+                setAudioStatus(lastStatusOfAudioEnabled);
             }
         });
 
@@ -303,6 +299,20 @@ public class CompleteActivity extends AppCompatActivity {
         registerReceiver(mCallEndBroadcastReceiver, filterSend);
     }
 
+    private void setAudioStatus(boolean targetAudioStatus) {
+        if (localAudioTrack != null) {
+            localAudioTrack.setEnabled(targetAudioStatus);
+            if (localAudioTrack.enabled()) {
+                binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
+                Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
+                binding.audioImv.setAlpha(1.0f);
+            } else {
+                binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
+                Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
+                binding.audioImv.setAlpha(0.2f);
+            }
+        }
+    }
 
 
     private void stopRinging() {
@@ -320,8 +330,7 @@ public class CompleteActivity extends AppCompatActivity {
         alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (socket != null)
-                    socket.emit("bye");
+                binding.inCallRejectImv.performClick();
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.no, null);
@@ -462,7 +471,7 @@ public class CompleteActivity extends AppCompatActivity {
     private void connectToSignallingServer() {
         try {
             String url = Constants.BASE_URL + "?userId=" + mNurseId + "&name=" + mNurseId;
-            Log.v("url", url);
+            Log.v(TAG, "connectToSignallingServer - " + url);
             socket = IO.socket(url);
 
             //socket emitter "call", you can listen on it after connection;
@@ -484,7 +493,7 @@ public class CompleteActivity extends AppCompatActivity {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");
             }).on("bye", args -> {
                 Log.d(TAG, "connectToSignallingServer: bye");
-                socket.emit("bye");
+                //socket.emit("bye");
                 disconnectAll();
 
             }).on("call", args -> {
@@ -492,7 +501,7 @@ public class CompleteActivity extends AppCompatActivity {
                 socket.emit("create or join", mRoomId);
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
-                socket.emit("bye");
+                // socket.emit("bye");
                 disconnectAll();
             }).on("created", args -> {
                 Log.d(TAG, "connectToSignallingServer: created");
