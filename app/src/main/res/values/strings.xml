@@ -1025,4 +1025,7 @@
     <string name="image_deleted_successfully">Image Deleted Successfully</string>
     <string name="abdominal_girth_warning">Abdominal Girth is exceeding %1$s, Be careful for health related issues.</string>
     <string name="abdominal_girth">Abdominal Girth</string>
+    <string name="arm_girth_inches">Arm Girth (inches)</string>
+    <string name="arm_girth_shouldbe_lessthan">Arm girth should be less than %1$s inches</string>
+    <string name="arm_girth">Arm Girth</string>
 </resources>

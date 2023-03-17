@@ -1017,5 +1017,8 @@
     <string name="image_deleted_successfully">प्रतिमा यशस्वीरित्या हटवली</string>
     <string name="abdominal_girth_warning">पोटाचा घेर %1$s पेक्षा जास्त आहे, आरोग्याशी संबंधित समस्यांसाठी काळजी घ्या.</string>
     <string name="abdominal_girth">पोटाचा घेर</string>
+    <string name="arm_girth_inches">हाताचा घेर (इंच)</string>
+    <string name="arm_girth_shouldbe_lessthan">हाताचा घेर %1$s इंचांपेक्षा कमी असावा</string>
+    <string name="arm_girth">Arm Girth</string>
 
 </resources>

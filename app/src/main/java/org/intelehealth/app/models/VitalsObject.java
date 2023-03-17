@@ -20,6 +20,7 @@ public class VitalsObject {
     private String uricAcid;
     private String totlaCholesterol;
     private String abdominalGirth;
+    private String armGirth;
     private String ecg;
 
     public String getPatientUuid() {
@@ -171,5 +172,13 @@ public class VitalsObject {
 
     public void setEcg(String ecg) {
         this.ecg = ecg;
+    }
+
+    public String getArmGirth() {
+        return armGirth;
+    }
+
+    public void setArmGirth(String armGirth) {
+        this.armGirth = armGirth;
     }
 }

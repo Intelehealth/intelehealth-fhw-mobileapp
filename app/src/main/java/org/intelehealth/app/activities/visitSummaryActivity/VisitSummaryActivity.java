@@ -202,6 +202,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
     ObsDTO abdominalgirth = new ObsDTO();
+    ObsDTO armgirth = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
     ObsDTO bpSys = new ObsDTO();
     ObsDTO bpDias = new ObsDTO();
@@ -237,7 +238,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView visitView;
     TextView heightView;
     TextView weightView;
-    TextView abdominalGirthView;
+    TextView abdominalGirthView, armGirthView;
     TextView pulseView;
     TextView bpView;
     TextView tempView;
@@ -1211,6 +1212,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         heightView = findViewById(R.id.textView_height_value);
         weightView = findViewById(R.id.textView_weight_value);
         abdominalGirthView = findViewById(R.id.textView_abdgirth_value);
+        armGirthView = findViewById(R.id.textView_armgirth_value);
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
@@ -1277,6 +1279,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         weightView.setText(weight.getValue());
         abdominalGirthView.setText(abdominalgirth.getValue());
+        armGirthView.setText(armgirth.getValue());
         pulseView.setText(pulse.getValue());
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
@@ -3630,9 +3633,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 weight.setValue(value);
                 break;
             }
-            case UuidDictionary.ABDOMINAL_GIRTH:
+            case UuidDictionary.ABDOMINAL_GIRTH:    // Abdominal Girth
             {
                 abdominalgirth.setValue(value);
+                break;
+            }
+            case UuidDictionary.ARM_GIRTH:    // Arm Girth
+            {
+                armgirth.setValue(value);
                 break;
             }
             case UuidDictionary.PULSE: //Pulse

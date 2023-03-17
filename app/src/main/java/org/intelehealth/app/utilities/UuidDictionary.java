@@ -94,4 +94,5 @@ public class UuidDictionary {
 
     //Abdominal Girth
     public static final String ABDOMINAL_GIRTH = "4a49bacc-3510-4700-9099-2b7aa788688e";
+    public static final String ARM_GIRTH = "052dd06f-b71f-404b-a851-e9c7f74d982d";
 }

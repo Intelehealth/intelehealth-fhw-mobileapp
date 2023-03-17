@@ -302,6 +302,27 @@
                     </TableRow>
                     <!-- Abdominal Girth - End -->
 
+                    <!-- Arm Girth - Start -->
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/textView_arm_girth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/arm_girth"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_armgirth_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+                    <!-- Arm Girth - End -->
+
                     <!--Blood Pressure-->
                     <TableRow>
 

@@ -248,6 +248,29 @@
                             android:background="@drawable/bg_end_visit"
                              />
 
+                        <!--Arm Girth - Start -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_arm_girth"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/arm_girth_inches"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <!--Arm Girth - End-->
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
