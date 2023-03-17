@@ -1432,7 +1432,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                          //   cancel = true;
-                            break;
+                         //   break;
                         } else {
                          //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
@@ -1445,7 +1445,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                             abdominal_warning_txt.setVisibility(View.VISIBLE);
                             focusView = et;
                           //  cancel = true;
-                            break;
+                         //   break;
                         } else {
                          //   cancel = false;
                             abdominal_warning_txt.setVisibility(View.GONE);
