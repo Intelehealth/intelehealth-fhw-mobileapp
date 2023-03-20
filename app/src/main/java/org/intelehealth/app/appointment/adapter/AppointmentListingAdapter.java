@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointment.adapter;
 
+import static org.intelehealth.app.utilities.StringUtils.getTranslatedSlot;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<AppointmentInfo> mItemList = new ArrayList<AppointmentInfo>();
+    private String appLanguage;
 
     public interface OnItemSelection {
         public void onSelect(AppointmentInfo appointmentInfo);
@@ -37,10 +40,11 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
 
     private OnItemSelection mOnItemSelection;
 
-    public AppointmentListingAdapter(RecyclerView recyclerView, Context context, List<AppointmentInfo> itemList, OnItemSelection onItemSelection) {
+    public AppointmentListingAdapter(RecyclerView recyclerView, Context context, List<AppointmentInfo> itemList, OnItemSelection onItemSelection, String appLanguage) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
+        this.appLanguage = appLanguage;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
 
@@ -68,7 +72,7 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.appointmentInfo = mItemList.get(position);
             genericViewHolder.patientInfoTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getPatientName(), genericViewHolder.appointmentInfo.getOpenMrsId()));
-            genericViewHolder.dateTimeTextView.setText(String.format("%s %s", genericViewHolder.appointmentInfo.getSlotDate(), genericViewHolder.appointmentInfo.getSlotTime()));
+            genericViewHolder.dateTimeTextView.setText(getTranslatedSlot(String.format("%s %s", genericViewHolder.appointmentInfo.getSlotDate(), genericViewHolder.appointmentInfo.getSlotTime()), appLanguage));
             genericViewHolder.dayTextView.setText(StringUtils.getTranslatedDays(genericViewHolder.appointmentInfo.getSlotDay(), new SessionManager(mContext).getAppLanguage()));
             genericViewHolder.statusTextView.setText(StringUtils.getAppointmentBookStatus(genericViewHolder.appointmentInfo.getStatus().toUpperCase(), new SessionManager(mContext).getAppLanguage()));
             genericViewHolder.doctorDetailsTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getDrName(), getSpeciality(genericViewHolder.appointmentInfo.getSpeciality())));
