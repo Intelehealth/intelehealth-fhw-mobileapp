@@ -1484,7 +1484,7 @@ app:layout_constraintStart_toEndOf="@+id/gd"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:contentPadding="@dimen/padding_card">
 
             <LinearLayout
