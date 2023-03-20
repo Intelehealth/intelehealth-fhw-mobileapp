@@ -5032,10 +5032,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (string.equalsIgnoreCase("Recommended Investigation(s)"))
                 newString = "التحاليل و الفحوصات المطلوبة";
             if (string.equalsIgnoreCase("General Instructions")) newString = "توجيهات عامة";
-            if (string.equalsIgnoreCase("Follow Up Date")) newString = "متابعة التاريخ";
+            if (string.equalsIgnoreCase("Followup Date")) newString = "تاريخ زيارة المتابعة";
             if (string.equalsIgnoreCase("Not provided")) newString = "غير مزود";
-            if (string.equalsIgnoreCase("Email: ")) newString = "البريد الإلكتروني:";
-            if (string.equalsIgnoreCase("Registration No: ")) newString = "رقم التسجيل:";
+            if (string.equalsIgnoreCase("Email:")) newString = "البريد الإلكتروني:";
+            if (string.equalsIgnoreCase("Registration No:")) newString = "رقم التسجيل:";
         }
         return newString;
     }
