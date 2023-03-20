@@ -563,7 +563,7 @@
                     <!--Glucose (Fasting)-->
                     <TableRow>
                         <TextView
-                            android:id="@+id/textView_glucose_fasting"
+                            android:id="@+id/textView_hba1c"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -572,7 +572,7 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
-                            android:id="@+id/textView_glucose_value_fasting"
+                            android:id="@+id/textView_hba1c_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

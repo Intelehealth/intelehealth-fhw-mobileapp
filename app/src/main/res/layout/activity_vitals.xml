@@ -736,7 +736,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
-                                android:id="@+id/bloodGlucoseRandom_Btn"
+                                android:id="@+id/bloodGlucose_Fasting_Btn"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -790,7 +790,7 @@
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
 
-                        <!--Blood Glucose (Fasting)-->
+                        <!-- HbA1c (%) - start -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -798,14 +798,14 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bloodGlucose_fasting"
+                                android:id="@+id/hba1c_layout"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:layout_weight="4">
 
                                 <EditText
-                                    android:id="@+id/bloodGlucose_editText_fasting"
+                                    android:id="@+id/hba1c_editText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_regular"
@@ -833,7 +833,7 @@
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
-
+                        <!-- HbA1c (%) - end -->
 
                         <!--Haemoglobin Test-->
                         <LinearLayout

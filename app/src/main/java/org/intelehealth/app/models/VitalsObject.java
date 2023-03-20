@@ -16,6 +16,7 @@ public class VitalsObject {
     private String bloodglucoseFasting;
     private String bloodGlucoseRandom;
     private String bloodGlucosePostPrandial;
+    private String hba1c;
     private String hemoglobin;
     private String uricAcid;
     private String totlaCholesterol;
@@ -180,5 +181,13 @@ public class VitalsObject {
 
     public void setArmGirth(String armGirth) {
         this.armGirth = armGirth;
+    }
+
+    public String getHba1c() {
+        return hba1c;
+    }
+
+    public void setHba1c(String hba1c) {
+        this.hba1c = hba1c;
     }
 }
