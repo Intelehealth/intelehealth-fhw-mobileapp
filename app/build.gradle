@@ -18,9 +18,9 @@ android {
         applicationId "syriana.intelehealth.org"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 3
+        versionCode 4
         buildToolsVersion('29.0.2')
-        versionName "1.0.2"
+        versionName "1.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true

@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.LocaleHelper;
@@ -123,6 +125,29 @@ public class VitalsActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         //EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
+        if (intentTag == null || !intentTag.equalsIgnoreCase("edit")) {
+            MaterialAlertDialogBuilder aidAlertDialog = new MaterialAlertDialogBuilder(this);
+            aidAlertDialog.setMessage(getString(R.string.vitals_aid_skip_message));
+            aidAlertDialog.setCancelable(false);
+            aidAlertDialog.setPositiveButton(getString(R.string.aid_skip), (dialog, which) -> {
+                Intent skipIntent = new Intent(VitalsActivity.this, QuestionNodeActivity.class);
+                skipIntent.putExtra("patientUuid", patientUuid);
+                skipIntent.putExtra("visitUuid", visitUuid);
+                skipIntent.putExtra("encounterUuidVitals", encounterVitals);
+                skipIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                skipIntent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                skipIntent.putExtra("state", state);
+                skipIntent.putExtra("name", patientName);
+                skipIntent.putExtra("gender", patientGender);
+                skipIntent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                skipIntent.putExtra("tag", intentTag);
+                skipIntent.putStringArrayListExtra("complaints", complaintArrayList);
+                startActivity(skipIntent);
+            });
+
+            aidAlertDialog.setNegativeButton(getString(R.string.aid_enter_data), (dialog, which) -> dialog.dismiss());
+            aidAlertDialog.show();
+        }
 
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));

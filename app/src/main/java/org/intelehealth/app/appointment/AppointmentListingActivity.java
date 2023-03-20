@@ -38,9 +38,11 @@ public class AppointmentListingActivity extends AppCompatActivity {
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sessionManager = new SessionManager(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_listing);
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
@@ -62,7 +64,7 @@ public class AppointmentListingActivity extends AppCompatActivity {
             public void onSelect(AppointmentInfo appointmentInfo) {
 
             }
-        });
+        }, sessionManager.getAppLanguage());
         rvAppointments.setAdapter(appointmentListingAdapter);
         if (appointmentInfoList.isEmpty()) {
             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);

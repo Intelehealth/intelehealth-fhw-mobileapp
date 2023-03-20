@@ -345,7 +345,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                             finalEncounterAdultIntialslocal,
                             null,
                             String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
-                            ""
+                            "",
+                            sessionManager.getAppLanguage()
                     );
                     AppointmentDAO appointmentDAO = new AppointmentDAO();
                     //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);

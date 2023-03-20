@@ -113,6 +113,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
+import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getValueForStateCity_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_state;
@@ -766,6 +767,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+            dobView.setText(dob_text);
+        }
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            String dob_text = en_ar_dob(dob); // to convert the English text into Arabic - Arpan Sircar
             dobView.setText(dob_text);
         } else {
             dobView.setText(dob);

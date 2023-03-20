@@ -123,16 +123,16 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+        String currentDate = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH).format(cDate);
         String oldQuery = "SELECT * FROM " + table + " as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%" + currentDate + "%')))";
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid";
         final Cursor searchCursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (searchCursor.moveToFirst()) {
             do {
                 try {
-                    String followUpDate = getValue(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")), sessionManager.getAppLanguage()).substring(0, 10);
-                    Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
-                    Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+                    String followUpDate = getValue(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")), sessionManager.getAppLanguage()).substring(0, 13);
+                    Date followUp = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH).parse(followUpDate);
+                    Date currentD = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH).parse(currentDate);
                     int value = followUp.compareTo(currentD);
                     if (value == -1) {
                         modelList.add(new FollowUpModel(
