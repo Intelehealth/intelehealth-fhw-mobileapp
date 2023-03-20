@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
+import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -448,7 +451,10 @@ public class HomeActivity extends AppCompatActivity {
 
         ivSync = findViewById(R.id.iv_sync);
 
-        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+        String lastSyncString = formatDateFromOnetoAnother(sessionManager.getLastSyncDateTime(), "dd MMM yyyy HH:mm", "dd MMMM yyyy HH:mm");
+        lastSyncString = (sessionManager.getAppLanguage().equalsIgnoreCase("ar") ? en_ar_dob(lastSyncString) : lastSyncString);
+        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + lastSyncString);
+
         locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -1254,7 +1260,10 @@ public class HomeActivity extends AppCompatActivity {
                     showBadge();
                 }
             }
-            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+
+            String lastSyncString = formatDateFromOnetoAnother(sessionManager.getLastSyncDateTime(), "dd MMM yyyy HH:mm", "dd MMMM yyyy HH:mm");
+            lastSyncString = (sessionManager.getAppLanguage().equalsIgnoreCase("ar") ? en_ar_dob(lastSyncString) : lastSyncString);
+            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + lastSyncString);
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
