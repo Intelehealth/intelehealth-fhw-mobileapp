@@ -1600,7 +1600,6 @@
     <string name="swipe_to_move_forward">اسحب الشاشة إلى اليمين للتقدم</string>
     <string name="identification_fill_required_fields">املأ الخانات الاجبارية</string>
     <string name="action_homepage">الصفحة الرئيسية</string>
-    <string name="details_required">الرجاء إضافة التفاصيل</string>
     <string name="past_medical_history_aid_skip_message">لزيارات تقديم المساعدات بامكانك تجاوز  معلومات السوابق المرضية</string>
     <string name="family_history_aid_skip_message">لزيارات تقديم المساعدات بامكانك تجاوز معلومات السوابق المرضية العائلية</string>
     <string name="aid_skip">تجاوز</string>

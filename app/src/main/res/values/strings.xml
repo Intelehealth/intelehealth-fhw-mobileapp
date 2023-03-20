@@ -1607,7 +1607,6 @@
     <string name="swipe_to_move_forward">Swipe to the right to move forward</string>
     <string name="identification_fill_required_fields">Fill required fields</string>
     <string name="action_homepage">Homepage</string>
-    <string name="details_required">Please add the details</string>
     <string name="past_medical_history_aid_skip_message">For aid visits, you may skip the Past Medical History</string>
     <string name="family_history_aid_skip_message">For aid visits, you may skip the Family History</string>
     <string name="vitals_aid_skip_message">For aid visits, you may skip the Vitals</string>
