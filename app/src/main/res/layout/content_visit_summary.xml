@@ -519,10 +519,10 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
+                    <!--Fasting - Start -->
                     <TableRow>
-
                         <TextView
-                            android:id="@+id/textView_glucose_random"
+                            android:id="@+id/textView_glucose_Fasting"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -531,13 +531,14 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
-                            android:id="@+id/textView_glucose_random_value"
+                            android:id="@+id/textView_glucose_Fasting_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
+                    <!--Fasting - End-->
 
                     <TableRow android:visibility="gone">
 
@@ -561,7 +562,6 @@
 
                     <!--Glucose (Fasting)-->
                     <TableRow>
-
                         <TextView
                             android:id="@+id/textView_glucose_fasting"
                             android:layout_width="match_parent"

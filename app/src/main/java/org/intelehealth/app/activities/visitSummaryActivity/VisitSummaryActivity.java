@@ -252,7 +252,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
     TextView glucose;
-    TextView glucoseRandom;
+    TextView textView_glucose_Fasting_value;
     TextView glucosePostPrandial;
     TextView glucoseFasting;
     TextView hemoglobin;
@@ -1217,7 +1217,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
         glucose = findViewById(R.id.textView_glucose_value);
-        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
+        textView_glucose_Fasting_value = findViewById(R.id.textView_glucose_Fasting_value);
         glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
         glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
@@ -1324,12 +1324,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (bldglucose.getValue() != null && !bldglucose.getValue().equalsIgnoreCase("0"))
             glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
-            glucoseRandom.setText(bldglucose_random.getValue());
+        
+       /* if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
+            textView_glucose_Fasting_value.setText(bldglucose_random.getValue());*/
+        
         if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
             glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
+        
+        // Fasting
         if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
-            glucoseFasting.setText(bldglucose_fasting.getValue());
+            textView_glucose_Fasting_value.setText(bldglucose_fasting.getValue());
+        
         if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
             hemoglobin.setText(hemoGlobin.getValue());
         if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
@@ -3674,7 +3679,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_ID: // Glucose - Non Fasting.
+            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID: // Glucose - Non Fasting.
             {
                 bldglucose.setValue(value);
                 break;
@@ -3689,7 +3694,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 bldglucose_post_prandial.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID: // Glucose
             {
                 bldglucose_fasting.setValue(value);
                 break;
@@ -5264,7 +5269,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 selected_tests[2] = true;
             if (!glucosePostPrandial.getText().toString().isEmpty())
                 selected_tests[3] = true;
-            if (!glucoseRandom.getText().toString().isEmpty())
+            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
                 selected_tests[4] = true;
             if (!uricAcid_textview.getText().toString().isEmpty())
                 selected_tests[5] = true;

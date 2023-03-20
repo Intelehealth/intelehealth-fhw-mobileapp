@@ -155,7 +155,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
             mAbdominalGirth, mArmGirth,
-            bloodGlucose_nonfasting_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
+            bloodGlucose_nonfasting_editText, bloodGlucose_editText_fasting, bloodGlucose_Fasting_editText, bloodGlucosePostPrandial_editText,
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
 
     ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
@@ -229,7 +229,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         //rhemos device fields added: By Nishita
         bloodGlucose_nonfasting_editText = findViewById(R.id.bloodGlucose_nonfasting_editText);
         bloodGlucose_editText_fasting = findViewById(R.id.bloodGlucose_editText_fasting);
-        bloodGlucoseRandom_editText = findViewById(R.id.bloodGlucoseRandom_editText);
+        bloodGlucose_Fasting_editText = findViewById(R.id.bloodGlucose_Fasting_editText);
         bloodGlucosePostPrandial_editText = findViewById(R.id.bloodGlucosePostPrandial_editText);
         haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
         uricAcid_editText = findViewById(R.id.uricAcid_editText);
@@ -756,7 +756,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         //end
 
         // glucose - random - start
-        bloodGlucoseRandom_editText.addTextChangedListener(new TextWatcher() {
+        bloodGlucose_Fasting_editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -767,18 +767,18 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_RANDOM) ||
                             Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_RANDOM)) {
-                        bloodGlucoseRandom_editText.setError(getString(R.string.glucose_random_validation,
+                        bloodGlucose_Fasting_editText.setError(getString(R.string.glucose_random_validation,
                                 AppConstants.MINIMUM_GLUCOSE_RANDOM, AppConstants.MAXIMUM_GLUCOSE_RANDOM));
                     } else {
-                        bloodGlucoseRandom_editText.setError(null);
+                        bloodGlucose_Fasting_editText.setError(null);
                     }
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (bloodGlucoseRandom_editText.getText().toString().startsWith("."))
-                    bloodGlucoseRandom_editText.setText("");
+                if (bloodGlucose_Fasting_editText.getText().toString().startsWith("."))
+                    bloodGlucose_Fasting_editText.setText("");
             }
         });
         // glucose - random - end
@@ -1057,22 +1057,22 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_ID: // Glucose // Non-Fasting
+            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID: // Glucose // Non-Fasting // Final: 20th March
                 if (!value.equalsIgnoreCase("0"))
                     bloodGlucose_nonfasting_editText.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID:
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID: // Glucose // Fasting // Final: 20th March
                 if (!value.equalsIgnoreCase("0"))
-                    bloodGlucoseRandom_editText.setText(value);
+                    bloodGlucose_Fasting_editText.setText(value);
                 break;
             case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID:
                 if(!value.equalsIgnoreCase("0"))
                     bloodGlucosePostPrandial_editText.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
+          /*  case UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID: // Glucose // Non-Fasting
                 if(!value.equalsIgnoreCase("0"))
                     bloodGlucose_editText_fasting.setText(value);
-                break;
+                break;*/
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
                 if(!value.equalsIgnoreCase("0"))
                     haemoglobin_editText.setText(value);
@@ -1126,7 +1126,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
-        values.add(bloodGlucoseRandom_editText);
+        values.add(bloodGlucose_Fasting_editText);
         values.add(bloodGlucosePostPrandial_editText);
         values.add(bloodGlucose_editText_fasting);
         values.add(haemoglobin_editText);
@@ -1526,22 +1526,29 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
+
+                // Non-Fasting // Final
                 if (bloodGlucose_nonfasting_editText.getText() != null && !bloodGlucose_nonfasting_editText.getText().toString().equals("")) {
                     results.setBloodglucose((bloodGlucose_nonfasting_editText.getText().toString()));
                 } else
                     results.setBloodglucose("0");
-                if (bloodGlucoseRandom_editText.getText() != null && !bloodGlucoseRandom_editText.getText().toString().equals("")) {
-                    results.setBloodGlucoseRandom((bloodGlucoseRandom_editText.getText().toString()));
+
+             /*   if (bloodGlucose_Fasting_editText.getText() != null && !bloodGlucose_Fasting_editText.getText().toString().equals("")) {
+                    results.setBloodGlucoseRandom((bloodGlucose_Fasting_editText.getText().toString()));
                 } else
-                    results.setBloodGlucoseRandom("0");
+                    results.setBloodGlucoseRandom("0");*/
+
                 if (bloodGlucosePostPrandial_editText.getText() != null && !bloodGlucosePostPrandial_editText.getText().toString().equals("")) {
                     results.setBloodGlucosePostPrandial(bloodGlucosePostPrandial_editText.getText().toString());
                 } else
                     results.setBloodGlucosePostPrandial("0");
-                if (bloodGlucose_editText_fasting.getText() != null && !bloodGlucose_editText_fasting.getText().toString().equals("")) {
-                    results.setBloodglucoseFasting((bloodGlucose_editText_fasting.getText().toString()));
+
+                // Fasting  // Final
+                if (bloodGlucose_Fasting_editText.getText() != null && !bloodGlucose_Fasting_editText.getText().toString().equals("")) {
+                    results.setBloodglucoseFasting((bloodGlucose_Fasting_editText.getText().toString()));
                 } else
                     results.setBloodglucoseFasting("0");
+
                 if (haemoglobin_editText.getText() != null && !haemoglobin_editText.getText().toString().equals("")) {
                     results.setHemoglobin((haemoglobin_editText.getText().toString()));
                 } else
@@ -1674,7 +1681,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
                 // Glucose Non-Fasting
                 obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_ID);
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucose());
@@ -1720,7 +1727,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
                 // Glucose - Fasting
                 obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucoseFasting());
@@ -1730,7 +1737,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
                 else
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID));
                 obsDAO.updateObs(obsDTO);
 
                 // Hemoglobin
@@ -1948,7 +1955,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
             // Glucose - NonFasting
             obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_ID);
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getBloodglucose());
@@ -1984,7 +1991,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
 
             // Glucose - Fasting
             obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getBloodglucoseFasting());
@@ -2834,7 +2841,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 bg_model.setValue((double) obj * 18);   // Note: As per doc: Readings are shown in mmol/l. To convert to mg/dl, pls multiply the reading by 18.
 
                 if (bg_fasting_clicked)
-                    bloodGlucoseRandom_editText.setText(String.valueOf(bg_model.getValue()));
+                    bloodGlucose_Fasting_editText.setText(String.valueOf(bg_model.getValue()));
                 else if (bg_nonfasting_clicked)
                     bloodGlucose_nonfasting_editText.setText(String.valueOf(bg_model.getValue()));
 
