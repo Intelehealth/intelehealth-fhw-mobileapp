@@ -3674,7 +3674,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_ID: // Glucose - Non Fasting.
             {
                 bldglucose.setValue(value);
                 break;
