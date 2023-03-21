@@ -8,11 +8,14 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -64,7 +67,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -77,7 +79,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -87,9 +88,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -98,7 +102,6 @@ import org.intelehealth.app.activities.billConfirmation.billConfirmationActivity
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -157,6 +160,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -467,6 +471,51 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+
+    private void collectChatConnectionInfoFromFirebase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
+        DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
+        chatDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap value = (HashMap) snapshot.getValue();
+                if (value != null) {
+                    try {
+                        String fromUUId = String.valueOf(value.get("toUser"));
+                        String toUUId = String.valueOf(value.get("fromUser"));
+                        String patientUUid = String.valueOf(value.get("patientId"));
+                        String visitUUID = String.valueOf(value.get("visitId"));
+                        String patientName = String.valueOf(value.get("patientName"));
+                        JSONObject connectionInfoObject = new JSONObject();
+                        connectionInfoObject.put("fromUUID", fromUUId);
+                        connectionInfoObject.put("toUUID", toUUId);
+                        connectionInfoObject.put("patientUUID", patientUUid);
+
+                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                        String packageName = pInfo.packageName;
+
+                        Intent intent = new Intent(ACTION_NAME);
+                        intent.putExtra("visit_uuid", visitUUID);
+                        intent.putExtra("connection_info", connectionInfoObject.toString());
+                        intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                        getApplicationContext().sendBroadcast(intent);
+
+                        Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
+                    } catch (JSONException | PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "collectChatConnectionInfoFromFirebase - Failed to read value.", error.toException());
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -500,6 +549,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
+            collectChatConnectionInfoFromFirebase();
         }
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
@@ -901,7 +951,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
             generateBillBtn.setVisibility(View.GONE);
-            if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+            if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                 card_share.setVisibility(View.VISIBLE);
                 card_print.setVisibility(View.VISIBLE);
             }
@@ -957,7 +1007,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
-                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                        if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                             downloadButton.setVisibility(View.VISIBLE);
                             generateBillBtn.setVisibility(View.VISIBLE);
                         }
@@ -1049,13 +1099,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
-                                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                                        if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                                             downloadButton.setVisibility(View.VISIBLE);
                                             generateBillBtn.setVisibility(View.VISIBLE);
                                         }
                                     }
 
-                                    if(intentTag!=null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
+                                    if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
                                         endVisit();
 
                                 } else {
@@ -1852,7 +1902,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
-        if(!intentTag.equalsIgnoreCase("skipComplaint"))
+        if (!intentTag.equalsIgnoreCase("skipComplaint"))
             getAppointmentDetails(visitUuid);
     }
 
@@ -4362,7 +4412,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     editMedHist.setVisibility(View.GONE);
                     editAddDocs.setVisibility(View.GONE);
                     uploadButton.setVisibility(View.GONE);
-                    generateBillBtn.setVisibility(View.GONE );
+                    generateBillBtn.setVisibility(View.GONE);
                     if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                         card_print.setVisibility(View.VISIBLE);
                         card_share.setVisibility(View.VISIBLE);
@@ -4510,7 +4560,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     default:
                 }
                 obsCursor.close();
-                if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                if (!intentTag.equalsIgnoreCase("skipComplaint"))
                     addDownloadButton();
 
                 //if any obs  found then end the visit
@@ -4747,7 +4797,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //}
 
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                            if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                            if (!intentTag.equalsIgnoreCase("skipComplaint"))
                                 getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
 
                         } else {

@@ -225,10 +225,13 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
                     connectionInfoObject.put("toUUID", toUUId);
                     connectionInfoObject.put("patientUUID", patientUUid);
 
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String packageName = pInfo.packageName;
+
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -286,6 +289,8 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
                     }
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }

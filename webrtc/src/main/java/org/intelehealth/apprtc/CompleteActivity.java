@@ -365,7 +365,9 @@ public class CompleteActivity extends AppCompatActivity {
                 start();
             } else {
                 Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
-                finish();
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
             }
 
         }
@@ -373,7 +375,16 @@ public class CompleteActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        disconnectAll();
+        if (socket != null) {
+            socket.disconnect();
+            socket = null;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         try {
             unregisterReceiver(mPhoneStateBroadcastReceiver);
             unregisterReceiver(mCallEndBroadcastReceiver);
@@ -419,11 +430,19 @@ public class CompleteActivity extends AppCompatActivity {
 
             stopRinging();
 
-            unregisterReceiver(broadcastReceiver);
+            //unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException | NoSuchElementException e) {
             e.printStackTrace();
         } finally {
-            finish();
+            try {
+                Thread.sleep(500);
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
@@ -494,7 +513,13 @@ public class CompleteActivity extends AppCompatActivity {
             }).on("bye", args -> {
                 Log.d(TAG, "connectToSignallingServer: bye");
                 //socket.emit("bye");
-                disconnectAll();
+                //disconnectAll();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
 
             }).on("call", args -> {
                 Log.d(TAG, "connectToSignallingServer: call");
@@ -502,7 +527,13 @@ public class CompleteActivity extends AppCompatActivity {
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
                 // socket.emit("bye");
-                disconnectAll();
+                //disconnectAll();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
             }).on("created", args -> {
                 Log.d(TAG, "connectToSignallingServer: created");
                 isInitiator = true;
@@ -569,7 +600,10 @@ public class CompleteActivity extends AppCompatActivity {
 
                     }
                 });
-                finish();
+
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
             });
             socket.connect();
         } catch (URISyntaxException e) {
