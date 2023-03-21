@@ -933,6 +933,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        if (mIsFirstTimeSyncDone && mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+        }
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -1225,6 +1228,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
+    private boolean mIsFirstTimeSyncDone = false;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1274,6 +1278,7 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        mIsFirstTimeSyncDone = true;
         saveToken();
         requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
@@ -1492,6 +1497,19 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == 101 && resultCode == RESULT_OK) {
             startStopScan();
+        }
+
+        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+                mSyncProgressDialog.dismiss();
+            }
+            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setProgress(i);
+            mSyncProgressDialog.show();
+
+            syncUtils.initialSync("home");
         }
     }
 
