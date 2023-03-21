@@ -5273,20 +5273,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
             fetchBillDetails(billEncounterUuid);
         } else {
             boolean[] selected_tests = new boolean[8];
-            if (!glucose.getText().toString().isEmpty())
+            if (!glucose.getText().toString().isEmpty())    // non fasting
                 selected_tests[1] = true;
-            if (!textView_hba1c_value.getText().toString().isEmpty())
+
+            if (!textView_glucose_Fasting_value.getText().toString().isEmpty()) // Fasting
                 selected_tests[2] = true;
+
             if (!glucosePostPrandial.getText().toString().isEmpty())
                 selected_tests[3] = true;
-            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
-                selected_tests[4] = true;
+
+//            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
+//                selected_tests[4] = true;
+
             if (!uricAcid_textview.getText().toString().isEmpty())
                 selected_tests[5] = true;
+
             if (!totalCholesterol_textview.getText().toString().isEmpty())
                 selected_tests[6] = true;
+
             if (!hemoglobin.getText().toString().isEmpty())
                 selected_tests[7] = true;
+
             showTestConfirmationCustomDialog(selected_tests);
         }
     }
@@ -5306,8 +5313,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         CheckBox glucose_fast = dialog.findViewById(R.id.glucose_f_CB);
         CheckBox glucose_non_fast = dialog.findViewById(R.id.glucose_nf_CB);
-        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
-        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
+//        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
+//        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
         CheckBox bp = dialog.findViewById(R.id.bp_CB);
         CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
         CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
@@ -5319,10 +5326,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             glucose_non_fast.setChecked(true);
         if (checkedTests[2])
             glucose_fast.setChecked(true);
-        if (checkedTests[3])
+      /*  if (checkedTests[3])
             glucose_ppn.setChecked(true);
         if (checkedTests[4])
-            glucose_rand.setChecked(true);
+            glucose_rand.setChecked(true);*/
         if (checkedTests[5])
             uric_acid.setChecked(true);
         if (checkedTests[6])

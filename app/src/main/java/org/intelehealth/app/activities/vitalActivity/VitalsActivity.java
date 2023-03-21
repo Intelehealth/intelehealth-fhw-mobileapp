@@ -1727,14 +1727,14 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getHba1c());
-                price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+              /*  price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
                 price = getPrice(price, price.indexOf('.'));
                 if ((results.getHba1c() == null || results.getHba1c().equals("0") ||
                         results.getHba1c().equals("") || results.getHba1c().equals(" ")) &&
                         (encounterBill != null && !encounterBill.equals("")))
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
                 else
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);*/
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HBA1C));
                 obsDAO.updateObs(obsDTO);
 
