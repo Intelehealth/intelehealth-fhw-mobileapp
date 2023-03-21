@@ -1,4 +1,4 @@
-package org.intelehealth.app.utilities;
+package org.intelehealth.app.services.firebase_services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class RTCMessageReceiver extends BroadcastReceiver {

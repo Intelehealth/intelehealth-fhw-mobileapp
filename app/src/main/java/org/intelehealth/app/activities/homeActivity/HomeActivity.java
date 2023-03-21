@@ -11,7 +11,6 @@ import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -24,8 +23,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -33,7 +30,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -69,7 +65,6 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -204,10 +199,13 @@ public class HomeActivity extends AppCompatActivity {
                     connectionInfoObject.put("toUUID", toUUId);
                     connectionInfoObject.put("patientUUID", patientUUid);
 
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String packageName = pInfo.packageName;
+
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -265,6 +263,8 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -498,14 +498,14 @@ public class HomeActivity extends AppCompatActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+
         }
         /*sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }*/
-
+        requestPermission();
         showProgressbar();
     }
 
@@ -1301,10 +1301,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private void requestPermission() {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            //CallListenerBackgroundService.getInstance().stopForegroundService();
-            ContextCompat.startForegroundService(this, serviceIntent);
+        if (CallListenerBackgroundService.isInstanceCreated()) {
+            CallListenerBackgroundService.getInstance().stopSelf();
+
         }
+        ContextCompat.startForegroundService(this, serviceIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
