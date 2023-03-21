@@ -1037,6 +1037,7 @@
     <string name="arm_girth_shouldbe_lessthan">बांह का घेरा %1$s इंच से कम होना चाहिए</string>
     <string name="arm_girth">आर्म गर्थ</string>
     <string name="temperature">तापमान</string>
+    <string name="general_physician">सामान्य चिकित्सक</string>
 
 
 </resources>

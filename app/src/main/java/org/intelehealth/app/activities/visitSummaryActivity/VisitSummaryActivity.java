@@ -774,7 +774,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid), sessionManager.getAppLanguage());
+        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit
+                (visitUuid), sessionManager.getAppLanguage());
 
 
         //Hashmap to List<String> add all value
@@ -788,8 +789,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
+
             if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
-                speciality_spinner.setSelection(9);
+//                speciality_spinner.setSelection(9); // wrong implementation
+                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.general_physician)));
                 speciality_spinner.setEnabled(false);
             }
 

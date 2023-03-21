@@ -1029,4 +1029,5 @@
     <string name="arm_girth_shouldbe_lessthan">Arm girth should be less than %1$s inches</string>
     <string name="arm_girth">Arm Girth</string>
     <string name="temperature">Temperature</string>
+    <string name="general_physician">General Physician</string>
 </resources>
