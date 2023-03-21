@@ -25,7 +25,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth " + versionName + " - " + getDateTime()
+        archivesBaseName = "MySmartCareDoc " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = '1.8'

@@ -90,7 +90,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />
+                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
             </intent-filter>
         </receiver>
 
@@ -374,6 +374,12 @@
             android:enabled="true"
             android:exported="true" />
         <service android:name=".services.HcService" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
     </application>
 
 </manifest>
