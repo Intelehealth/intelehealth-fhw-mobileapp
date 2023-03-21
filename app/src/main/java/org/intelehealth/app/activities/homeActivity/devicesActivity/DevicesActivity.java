@@ -92,7 +92,29 @@ public class DevicesActivity extends AppCompatActivity {
                         .equalsIgnoreCase(getString(R.string.rhemos_device_info))) {
 
                     try {
-                        showInfoDialog(DevicesActivity.this, infoModel.toString(), getString(R.string.rhemos_device_info));
+                        String info = infoModel.toString();
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            info = info.replace("Power Level:", "अधिकार का स्तर:")
+                                    .replace("Device ID:", "डिवाइस आईडी:")
+                                    .replace("Device Key:", "डिवाइस कुंजी:")
+                                    .replace("Software version:", "सॉफ्टवेयर संस्करण:")
+                                    .replace("Hardware version:", "हार्डवेयर संस्करण:")
+                                    .replace("Firmware version:", "प्रक्रिया यंत्र सामग्री संस्करण:");
+
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            info = info.replace("Power Level:", "शक्ती पातळी:")
+                                    .replace("Device ID:", "डिव्हाइस आयडी:")
+                                    .replace("Device Key:", "डिव्हाइस की:")
+                                    .replace("Software version:", "सॉफ्टवेअर आवृत्ती:")
+                                    .replace("Hardware version:", "हार्डवेअर आवृत्ती:")
+                                    .replace("Firmware version:", "फर्मवेअर आवृत्ती:");
+
+                        }
+                        else {
+                            // english - do nothing
+                        }
+
+                        showInfoDialog(DevicesActivity.this, info, getString(R.string.rhemos_device_info));
                     } catch (Exception e) {
                     }
                 }

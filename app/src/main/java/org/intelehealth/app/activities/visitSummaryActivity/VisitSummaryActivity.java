@@ -217,6 +217,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO bldglucose_random = new ObsDTO();
     ObsDTO bldglucose_post_prandial = new ObsDTO();
     ObsDTO bldglucose_fasting = new ObsDTO();
+    ObsDTO hba1c_value = new ObsDTO();
     ObsDTO hemoGlobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO totalCholesterol = new ObsDTO();
@@ -256,9 +257,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
     TextView glucose;
-    TextView glucoseRandom;
+    TextView textView_glucose_Fasting_value;
     TextView glucosePostPrandial;
-    TextView glucoseFasting;
+    TextView textView_hba1c_value;
     TextView hemoglobin;
     TextView uricAcid_textview;
     TextView totalCholesterol_textview;
@@ -1267,9 +1268,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
         glucose = findViewById(R.id.textView_glucose_value);
-        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
+        textView_glucose_Fasting_value = findViewById(R.id.textView_glucose_Fasting_value);
         glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
-        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
+        textView_hba1c_value = findViewById(R.id.textView_hba1c_value);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
         uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
         totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
@@ -1374,12 +1375,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (bldglucose.getValue() != null && !bldglucose.getValue().equalsIgnoreCase("0"))
             glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
-            glucoseRandom.setText(bldglucose_random.getValue());
+        
+       /* if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
+            textView_glucose_Fasting_value.setText(bldglucose_random.getValue());*/
+        
         if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
             glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
+        
+        // Fasting
         if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
-            glucoseFasting.setText(bldglucose_fasting.getValue());
+            textView_glucose_Fasting_value.setText(bldglucose_fasting.getValue());
+
+       // hba1c
+        if (hba1c_value.getValue() != null && !hba1c_value.getValue().equalsIgnoreCase("0"))
+            textView_hba1c_value.setText(hba1c_value.getValue());
+
         if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
             hemoglobin.setText(hemoGlobin.getValue());
         if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
@@ -3724,7 +3734,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID: // Glucose - Non Fasting.
             {
                 bldglucose.setValue(value);
                 break;
@@ -3739,9 +3749,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 bldglucose_post_prandial.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID: // Glucose
             {
                 bldglucose_fasting.setValue(value);
+                break;
+            }
+            case UuidDictionary.HBA1C: // Glucose
+            {
+                hba1c_value.setValue(value);
                 break;
             }
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
@@ -5310,11 +5325,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             boolean[] selected_tests = new boolean[8];
             if (!glucose.getText().toString().isEmpty())
                 selected_tests[1] = true;
-            if (!glucoseFasting.getText().toString().isEmpty())
+            if (!textView_hba1c_value.getText().toString().isEmpty())
                 selected_tests[2] = true;
             if (!glucosePostPrandial.getText().toString().isEmpty())
                 selected_tests[3] = true;
-            if (!glucoseRandom.getText().toString().isEmpty())
+            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
                 selected_tests[4] = true;
             if (!uricAcid_textview.getText().toString().isEmpty())
                 selected_tests[5] = true;
@@ -5328,7 +5343,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
         ArrayList selectedTests = new ArrayList<>();
-        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid), getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting),
+                getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial),
+                getString(R.string.blood_glucose_random), getString(R.string.uric_acid),
+                getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
 //        selectedTests.clear();
 
         final Dialog dialog = new Dialog(VisitSummaryActivity.this);

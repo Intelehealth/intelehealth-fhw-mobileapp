@@ -19,7 +19,11 @@ public class UuidDictionary {
     public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String BLOOD_GLUCOSE_ID = "8df25ddf-ff39-4fa3-bd13-5dfbec8cb5ee";
-    public static final String BLOOD_GLUCOSE_FASTING_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";
+    public static final String BLOOD_GLUCOSE_NON_FASTING_FINAL_ID = "c20f12cc-3858-4db8-a9b7-ce446b86f038";   // Shared on 20th March 2023.
+    public static final String BLOOD_GLUCOSE_FASTING_FINAL_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";   // Shared on 20th March 2023.
+    public static final String HBA1C = "1f5ff880-f113-49cf-8c34-ee1f9d1468fc";   // Shared on 20th March 2023. // Final
+
+//    public static final String BLOOD_GLUCOSE_FASTING_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";
     public static final String BLOOD_GLUCOSE_RANDOM_ID = "dab6dfb4-0560-42d6-a5f6-af04085c3358";
     public static final String BLOOD_GLUCOSE_POST_PRANDIAL_ID = "b0a7d2b6-64ba-4597-bde3-63623c8237ef";
     public static final String HEMOGLOBIN_ID = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";

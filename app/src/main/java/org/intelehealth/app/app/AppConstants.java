@@ -79,7 +79,7 @@ public class AppConstants {
     public static final String MAXIMUM_URIC_ACID = "12";
 
     public static final String MINIMUM_HbA1c = "0";
-    public static final String MAXIMUM_HbA1c = "13";
+    public static final String MAXIMUM_HbA1c = "25";
 
     public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
     public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
