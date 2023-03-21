@@ -47,9 +47,9 @@
 
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
-            android:label="@string/view_print"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="@string/view_print"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.householdSurvey.DraftSurveyActivity"
             android:exported="false"
@@ -64,8 +64,9 @@
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
@@ -76,7 +77,7 @@
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name="org.intelehealth.app.utilities.RTCMessageReceiver"
+            android:name="org.intelehealth.app.services.firebase_services.RTCMessageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -364,7 +365,8 @@
         <service
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+             />
     </application>
 
 </manifest>
