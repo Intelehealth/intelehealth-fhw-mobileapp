@@ -526,6 +526,49 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             }
         }
 
+        // spo2
+        if (selectedTests.contains(getString(R.string.table_spo2))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_SPO2_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("15");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+        // temperature
+        if (selectedTests.contains(getString(R.string.temperature))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_TEMPERATURE_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("10");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+        // ecg
+        if (selectedTests.contains(getString(R.string.ecg))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_ECG_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("15");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+
         return success;
     }
 
@@ -614,7 +657,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             total_amount += Integer.parseInt(price);
         }
 
-        // todo....
         if (spo2_charges_LL.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("SpO2_Bill");
             price = getPrice(price, price.indexOf('.'));
@@ -633,7 +675,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             ecg_chargesTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
-        // todo - end
 
         if (uricAcidCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
