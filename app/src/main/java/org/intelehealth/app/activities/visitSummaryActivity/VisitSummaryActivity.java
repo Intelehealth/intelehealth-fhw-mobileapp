@@ -10,11 +10,14 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -88,6 +91,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -467,7 +475,51 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
     }
 
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
 
+    private void collectChatConnectionInfoFromFirebase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
+        DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
+        chatDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap value = (HashMap) snapshot.getValue();
+                if (value != null) {
+                    try {
+                        String fromUUId = String.valueOf(value.get("toUser"));
+                        String toUUId = String.valueOf(value.get("fromUser"));
+                        String patientUUid = String.valueOf(value.get("patientId"));
+                        String visitUUID = String.valueOf(value.get("visitId"));
+                        String patientName = String.valueOf(value.get("patientName"));
+                        JSONObject connectionInfoObject = new JSONObject();
+                        connectionInfoObject.put("fromUUID", fromUUId);
+                        connectionInfoObject.put("toUUID", toUUId);
+                        connectionInfoObject.put("patientUUID", patientUUid);
+
+                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                        String packageName = pInfo.packageName;
+
+                        Intent intent = new Intent(ACTION_NAME);
+                        intent.putExtra("visit_uuid", visitUUID);
+                        intent.putExtra("connection_info", connectionInfoObject.toString());
+                        intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+                        getApplicationContext().sendBroadcast(intent);
+
+                        Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
+                    } catch (JSONException | PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "collectChatConnectionInfoFromFirebase - Failed to read value.", error.toException());
+            }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
@@ -495,6 +547,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
+            collectChatConnectionInfoFromFirebase();
         }
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
