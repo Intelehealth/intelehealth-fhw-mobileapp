@@ -80,6 +80,31 @@
         android:enabled="false"
         android:text="@string/haemoglobin" />
 
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/spo2_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/table_spo2" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/temperature_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/temperature" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/ecg_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/ecg" />
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

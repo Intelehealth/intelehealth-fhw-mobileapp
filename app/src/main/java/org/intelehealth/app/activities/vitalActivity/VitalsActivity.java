@@ -1633,18 +1633,27 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpdia());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
-
                 obsDAO.updateObs(obsDTO);
 
+                // Temperature
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getTemperature());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
 
+                price = conceptAttributeListDAO.getConceptPrice("Temperature_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getTemperature() == null || results.getTemperature().equals("0") || results.getTemperature().equals("")
+                        || results.getTemperature().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TEMPERATURE_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TEMPERATURE_ID, price);
+
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                 obsDAO.updateObs(obsDTO);
 
+                // Repiratory Rate
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
                 obsDTO.setEncounteruuid(encounterVitals);
@@ -1653,11 +1662,21 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                 obsDAO.updateObs(obsDTO);
 
+                // spo2
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.SPO2);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
+
+                price = conceptAttributeListDAO.getConceptPrice("SpO2_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getSpo2() == null || results.getSpo2().equals("0") || results.getSpo2().equals("")
+                        || results.getSpo2().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_SPO2_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_SPO2_ID, price);
+
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                 obsDAO.updateObs(obsDTO);
 
@@ -1667,6 +1686,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getEcg());
+
+                price = conceptAttributeListDAO.getConceptPrice("ECG_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getEcg() == null || results.getEcg().equals("0") || results.getEcg().equals("")
+                        || results.getEcg().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_ECG_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_ECG_ID, price);
+
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ECG_READINGS));
                 obsDAO.updateObs(obsDTO);
 

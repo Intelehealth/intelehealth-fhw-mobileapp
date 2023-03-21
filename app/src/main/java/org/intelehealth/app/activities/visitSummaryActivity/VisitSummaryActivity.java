@@ -5272,7 +5272,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
         } else {
-            boolean[] selected_tests = new boolean[8];
+            boolean[] selected_tests = new boolean[11];
             if (!glucose.getText().toString().isEmpty())    // non fasting
                 selected_tests[1] = true;
 
@@ -5294,6 +5294,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (!hemoglobin.getText().toString().isEmpty())
                 selected_tests[7] = true;
 
+            // new fields
+            if (!spO2View.getText().toString().isEmpty()) // spo2
+                selected_tests[8] = true;
+
+            if (!tempView.getText().toString().isEmpty()) // temperature
+                selected_tests[9] = true;
+
+            if (!ecg_textview.getText().toString().isEmpty()) // ecg
+                selected_tests[10] = true;
+
             showTestConfirmationCustomDialog(selected_tests);
         }
     }
@@ -5303,7 +5313,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting),
                 getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial),
                 getString(R.string.blood_glucose_random), getString(R.string.uric_acid),
-                getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+                getString(R.string.total_cholestrol), getString(R.string.haemoglobin),
+        getString(R.string.table_spo2), getString(R.string.temperature), getString(R.string.ecg)};
 //        selectedTests.clear();
 
         final Dialog dialog = new Dialog(VisitSummaryActivity.this);
@@ -5319,6 +5330,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
         CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
         CheckBox cholesterol = dialog.findViewById(R.id.cholesterol_CB);
+        // new fields.
+        CheckBox cb_spo2 = dialog.findViewById(R.id.spo2_CB);
+        CheckBox cb_temperature = dialog.findViewById(R.id.temperature_CB);
+        CheckBox cb_ecg = dialog.findViewById(R.id.ecg_CB);
+
         TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
         TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
 
@@ -5336,6 +5352,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             cholesterol.setChecked(true);
         if (checkedTests[7])
             haemoglobin.setChecked(true);
+        if (checkedTests[8])
+            cb_spo2.setChecked(true);
+        if (checkedTests[9])
+            cb_temperature.setChecked(true);
+        if (checkedTests[10])
+            cb_ecg.setChecked(true);
 
         bp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -5468,7 +5490,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 selectedTests.add(getString(R.string.blood_glucose_non_fasting));
                 break;
             }
-            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+          /*  case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
             {
                 selectedTests.add(getString(R.string.blood_glucose_random));
                 break;
@@ -5477,10 +5499,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             {
                 selectedTests.add(getString(R.string.blood_glucose_post_prandial));
                 break;
-            }
+            }*/
             case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID: // Glucose
             {
                 selectedTests.add(getString(R.string.blood_glucose_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_SPO2_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.table_spo2));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_TEMPERATURE_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.temperature));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_ECG_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.ecg));
                 break;
             }
             case UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID: // Hemoglobin

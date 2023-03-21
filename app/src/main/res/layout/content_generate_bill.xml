@@ -251,7 +251,118 @@
                         android:text="10.00"
                         android:textSize="14sp" />
                 </LinearLayout>
-                
+
+                <!--Temperature - Start-->
+                <LinearLayout
+                    android:id="@+id/temp_charges_LL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginBottom="5dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/temp_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingStart="5dp"
+                        android:minLines="1"
+                        android:text="@string/temperature"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/temp_chargesTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_gravity="center_vertical"
+                        android:paddingEnd="5dp"
+                        android:text="10.00"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <!--Temperature - End-->
+
+                <!--SPO2 - Start-->
+                <LinearLayout
+                    android:id="@+id/spo2_charges_LL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginBottom="5dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/spo2_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingStart="5dp"
+                        android:minLines="1"
+                        android:text="@string/table_spo2"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/spo2_chargesTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_gravity="center_vertical"
+                        android:paddingEnd="5dp"
+                        android:text="10.00"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <!--SPO2 - End-->
+
+                <!-- ECG - Start-->
+                <LinearLayout
+                    android:id="@+id/ecg_charges_LL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginBottom="5dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/ecg_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingStart="5dp"
+                        android:minLines="1"
+                        android:text="@string/ecg"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/ecg_chargesTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_gravity="center_vertical"
+                        android:paddingEnd="5dp"
+                        android:text="10.00"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <!-- ECG - End-->
+
                 <LinearLayout
                     android:id="@+id/glucose_nf_chargesCV"
                     android:layout_width="match_parent"

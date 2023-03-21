@@ -1036,6 +1036,7 @@
     <string name="arm_girth_inches">आर्म गर्थ (इंच)</string>
     <string name="arm_girth_shouldbe_lessthan">बांह का घेरा %1$s इंच से कम होना चाहिए</string>
     <string name="arm_girth">आर्म गर्थ</string>
+    <string name="temperature">Temperature</string>
 
 
 </resources>
