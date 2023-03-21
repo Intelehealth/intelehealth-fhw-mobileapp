@@ -1020,5 +1020,6 @@
     <string name="arm_girth_inches">हाताचा घेर (इंच)</string>
     <string name="arm_girth_shouldbe_lessthan">हाताचा घेर %1$s इंचांपेक्षा कमी असावा</string>
     <string name="arm_girth">हाताचा घेर</string>
+    <string name="temperature">तापमान</string>
 
 </resources>

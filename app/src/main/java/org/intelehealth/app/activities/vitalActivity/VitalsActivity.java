@@ -1128,9 +1128,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
-        values.add(bloodGlucose_Fasting_editText);
+        values.add(bloodGlucose_Fasting_editText);  // fasting 8
         values.add(bloodGlucosePostPrandial_editText);
-        values.add(hba1c_editText);
+        values.add(hba1c_editText); // 10
         values.add(haemoglobin_editText);
         values.add(uricAcid_editText);
         values.add(totalCholestrol_editText);
@@ -1291,15 +1291,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 }
             }
 
-            // glucose - random
+            // glucose - fasting
             else if (i == 8) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_RANDOM)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_RANDOM))) {
-                        et.setError(getString(R.string.glucose_random_validation,
-                                AppConstants.MAXIMUM_GLUCOSE_RANDOM, AppConstants.MINIMUM_GLUCOSE_RANDOM));
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
+                        et.setError(getString(R.string.glucose_fasting_validation,
+                                AppConstants.MAXIMUM_GLUCOSE_FASTING, AppConstants.MINIMUM_GLUCOSE_FASTING));
                         focusView = et;
                         cancel = true;
                         break;
@@ -1633,18 +1633,27 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpdia());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
-
                 obsDAO.updateObs(obsDTO);
 
+                // Temperature
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getTemperature());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
 
+                price = conceptAttributeListDAO.getConceptPrice("Temperature_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getTemperature() == null || results.getTemperature().equals("0") || results.getTemperature().equals("")
+                        || results.getTemperature().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TEMPERATURE_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TEMPERATURE_ID, price);
+
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                 obsDAO.updateObs(obsDTO);
 
+                // Repiratory Rate
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
                 obsDTO.setEncounteruuid(encounterVitals);
@@ -1653,11 +1662,21 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                 obsDAO.updateObs(obsDTO);
 
+                // spo2
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.SPO2);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
+
+                price = conceptAttributeListDAO.getConceptPrice("SpO2_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getSpo2() == null || results.getSpo2().equals("0") || results.getSpo2().equals("")
+                        || results.getSpo2().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_SPO2_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_SPO2_ID, price);
+
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                 obsDAO.updateObs(obsDTO);
 
@@ -1667,6 +1686,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getEcg());
+
+                price = conceptAttributeListDAO.getConceptPrice("ECG_Bill");
+                price = getPrice(price, price.indexOf('.'));
+                if ((results.getEcg() == null || results.getEcg().equals("0") || results.getEcg().equals("")
+                        || results.getEcg().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_ECG_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_ECG_ID, price);
+
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.ECG_READINGS));
                 obsDAO.updateObs(obsDTO);
 
@@ -1700,7 +1728,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, "0");
                 else
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, price);
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID));
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID));
                 obsDAO.updateObs(obsDTO);
 
 
@@ -1712,7 +1740,9 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setValue(results.getBloodglucoseFasting());
                 price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
                 price = getPrice(price, price.indexOf('.'));
-                if ((results.getBloodglucoseFasting() == null || results.getBloodglucoseFasting().equals("0") || results.getBloodglucoseFasting().equals("") || results.getBloodglucoseFasting().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                if ((results.getBloodglucoseFasting() == null || results.getBloodglucoseFasting().equals("0")
+                        || results.getBloodglucoseFasting().equals("") || results.getBloodglucoseFasting().equals(" "))
+                        && (encounterBill != null && !encounterBill.equals("")))
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
                 else
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
@@ -1725,15 +1755,15 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getHba1c());
-                price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+              /*  price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
                 price = getPrice(price, price.indexOf('.'));
                 if ((results.getHba1c() == null || results.getHba1c().equals("0") ||
                         results.getHba1c().equals("") || results.getHba1c().equals(" ")) &&
                         (encounterBill != null && !encounterBill.equals("")))
                     updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
                 else
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID));
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);*/
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HBA1C));
                 obsDAO.updateObs(obsDTO);
 
 

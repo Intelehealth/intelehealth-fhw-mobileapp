@@ -107,9 +107,15 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     String patientDetails;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
-    LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
+    LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV,
+            haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd,
+            spo2_charges_LL, temp_charges_LL, ecg_charges_LL;
     CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV, makePaymentCV;
-    TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected;
+    TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV,
+            glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV,
+            bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected,
+            temp_chargesTV, spo2_chargesTV, ecg_chargesTV;
+    ;
     String paymentStatus = "Paid";
     Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
@@ -178,6 +184,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         glucoseFChargeTV = findViewById(R.id.glucose_f_chargesTV);
         glucoseRChargeTV = findViewById(R.id.glucose_ran_chargesTV);
         glucoseNFChargeTV = findViewById(R.id.glucose_nf_chargesTV);
+
+        temp_chargesTV = findViewById(R.id.temp_chargesTV);
+        spo2_chargesTV = findViewById(R.id.spo2_chargesTV);
+        ecg_chargesTV = findViewById(R.id.ecg_chargesTV);
+
         glucosePPNChargeTV = findViewById(R.id.glucose_ppn_chargesTV);
         haemoglobinChargeTV = findViewById(R.id.haemeo_chargesTV);
         cholesterolChargeTV = findViewById(R.id.cholestrol_chargesTV);
@@ -192,6 +203,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         glucoseFCV = findViewById(R.id.glucose_f_chargesCV);
         glucoseRCV = findViewById(R.id.glucose_ran_chargesCV);
         glucoseNFCV = findViewById(R.id.glucose_nf_chargesCV);
+
+        spo2_charges_LL = findViewById(R.id.spo2_charges_LL);
+        temp_charges_LL = findViewById(R.id.temp_charges_LL);
+        ecg_charges_LL = findViewById(R.id.ecg_charges_LL);
+
         glucosePPNCV = findViewById(R.id.glucose_ppn_chargesCV);
         haemoglobinCV = findViewById(R.id.haemeo_chargesCV);
         cholesterolCV = findViewById(R.id.cholestrol_chargesCV);
@@ -427,6 +443,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+/*
         if (selectedTests.contains(getString(R.string.blood_glucose_post_prandial))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
@@ -440,6 +457,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+*/
+/*
         if (selectedTests.contains(getString(R.string.blood_glucose_random))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
@@ -453,6 +472,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+*/
         if (selectedTests.contains(getString(R.string.uric_acid))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_URIC_ACID_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
@@ -505,6 +525,49 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+
+        // spo2
+        if (selectedTests.contains(getString(R.string.table_spo2))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_SPO2_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("15");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+        // temperature
+        if (selectedTests.contains(getString(R.string.temperature))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_TEMPERATURE_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("10");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+        // ecg
+        if (selectedTests.contains(getString(R.string.ecg))) {
+            obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_ECG_ID);
+            obsDTO.setEncounteruuid(encounter_uuid);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue("15");
+            obsDTO.setUuid(AppConstants.NEW_UUID);
+            try {
+                success = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
 
         return success;
     }
@@ -593,6 +656,26 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             glucoseNFChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
+
+        if (spo2_charges_LL.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("SpO2_Bill");
+            price = getPrice(price, price.indexOf('.'));
+            spo2_chargesTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (temp_charges_LL.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Temperature_Bill");
+            price = getPrice(price, price.indexOf('.'));
+            temp_chargesTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (ecg_charges_LL.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("ECG_Bill");
+            price = getPrice(price, price.indexOf('.'));
+            ecg_chargesTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+
         if (uricAcidCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
             price = getPrice(price, price.indexOf('.'));
@@ -650,6 +733,12 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             haemoglobinCV.setVisibility(View.VISIBLE);
         if (selectedTests.contains(getString(R.string.visit_summary_bp)))
             bpCV.setVisibility(View.VISIBLE);
+        if (selectedTests.contains(getString(R.string.table_spo2))) // spo2
+            spo2_charges_LL.setVisibility(View.VISIBLE);
+        if (selectedTests.contains(getString(R.string.temperature))) // temperature
+            temp_charges_LL.setVisibility(View.VISIBLE);
+        if (selectedTests.contains(getString(R.string.ecg))) // ecg
+            ecg_charges_LL.setVisibility(View.VISIBLE);
 
     }
 
