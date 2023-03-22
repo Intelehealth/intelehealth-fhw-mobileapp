@@ -520,6 +520,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
@@ -2322,7 +2323,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar"))
             mCityState = switch_en_to_ar_village_edit(mCityState);
 
-        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone) && !mPhone.equalsIgnoreCase("-")) ? ", " + mPhone : ", " + checkAndConvertPrescriptionHeadings(getString(R.string.not_provided)));
+        String address = checkAndRemoveEndDash(mAddress).trim() + /*" " + mCityState + */ ((!TextUtils.isEmpty(mPhone) && !mPhone.equalsIgnoreCase("-")) ? ", " + mPhone : ", " + checkAndConvertPrescriptionHeadings(getString(R.string.not_provided)));
 
         String fam_hist = mFamHist;
         String pat_hist = mPatHist;
@@ -5096,10 +5097,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String getPrescriptionHeading() {
         String villageName = checkAndRemoveEndDash(patient.getCity_village());
         if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
-            villageName = switch_en_to_ar_village_edit(villageName);
-            villageName = "فريق ".concat(villageName).concat(" الصحي");
+            villageName = "فريق الصحي";
         } else {
-            villageName = villageName.concat(" Health Unit");
+            villageName = " Health Unit";
         }
         return villageName;
     }
