@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ekalarogya.R;
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
@@ -52,11 +53,6 @@ public class CallListenerBackgroundService extends Service {
         return instance;
     }
 
-    public void stopForegroundService() {
-        stopForeground(true);
-        stopSelf();
-    }
-
     public CallListenerBackgroundService() {
     }
 
@@ -73,7 +69,6 @@ public class CallListenerBackgroundService extends Service {
         super.onDestroy();
         Log.v(TAG, "onDestroy");
         instance = null;
-        stopForeground(true);
         Intent intent = new Intent(CallListenerBackgroundService.this, RestartServiceReceiver.class);
         intent.setAction("org.intelehealth.app.RTC_SERVICE_START");
         sendBroadcast(intent);
@@ -136,6 +131,22 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
+                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+                        Intent broadcast = new Intent();
+                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        sendBroadcast(broadcast);
+                        return;
+                    }
+
+                    String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";
+                    Log.d(TAG, "callID is: " + callID);
+                    Log.d(TAG, "webrtcTempCallId is: " + IntelehealthApplication.getInstance().webrtcTempCallId);
+                    if (!callID.isEmpty() && callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
+                        return;
+                    } else {
+                        IntelehealthApplication.getInstance().webrtcTempCallId = callID;
+                    }
+
                     String device_token = String.valueOf(value.get("device_token"));
                     if (!device_token.equals(refreshedFCMTokenID)) return;
                     Bundle bundle = new Bundle();
@@ -145,19 +156,9 @@ public class CallListenerBackgroundService extends Service {
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
                     bundle.putString("actionType", "VIDEO_CALL");
 
-                    boolean isCallEnded = Boolean.parseBoolean(String.valueOf(value.get("callEnded")));
-                    bundle.putBoolean("callEnded", isCallEnded);
-
-                    if (isCallEnded) {
-                        Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
-                        intent.putExtras(bundle);
-                        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
-                        sendBroadcast(intent);
-                    }
-                    boolean isOldNotification = true;
+                    boolean isOldNotification = false;
                     if (value.containsKey("timestamp")) {
                         String timestamp = String.valueOf(value.get("timestamp"));
-
 
                         Date date = new Date();
                         if (timestamp != null) {
@@ -171,12 +172,11 @@ public class CallListenerBackgroundService extends Service {
                                 if (ourDate != null) {
                                     seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
                                 }
-                                //stopForeground(true);
-                                //stopSelf();
+                                Log.v(TAG, "Current time - " + new Date());
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds <= 10) {
-                                    isOldNotification = false;
+                                if (seconds >= 10) {
+                                    isOldNotification = true;
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();
@@ -189,6 +189,8 @@ public class CallListenerBackgroundService extends Service {
                         intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
                         sendBroadcast(intent);
                     }
+
+
                 }
 
                 @Override

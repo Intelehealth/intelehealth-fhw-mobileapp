@@ -54,7 +54,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
-
+    public String webrtcTempCallId = "";
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }

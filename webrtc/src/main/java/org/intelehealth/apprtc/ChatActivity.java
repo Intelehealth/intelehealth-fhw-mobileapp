@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -113,6 +115,7 @@ public class ChatActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
         // Instantiate the cache
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
 
@@ -215,8 +218,10 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(mChatList, new Comparator<JSONObject>() {
             public int compare(JSONObject o1, JSONObject o2) {
                 try {
-                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
-                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    //Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
+                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o1.getString("createdAt"));
+                    //Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o2.getString("createdAt"));
                     return b.compareTo(a);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -288,9 +293,10 @@ public class ChatActivity extends AppCompatActivity {
                         in.putExtra("doctorname", jsonObject.getString("doctorName"));
                         in.putExtra("nurseId", jsonObject.getString("nurseId"));
                         int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                        // not required bcz from firebase listener it working fine
+                        /*if (callState == TelephonyManager.CALL_STATE_IDLE) {
                             startActivity(in);
-                        }
+                        }*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -334,14 +340,19 @@ public class ChatActivity extends AppCompatActivity {
                                     connectionInfoObject.put("toUUID", mToUUId);
                                     connectionInfoObject.put("patientUUID", mPatientUUid);
 
+                                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                    String packageName = pInfo.packageName;
+
                                     Intent intent = new Intent(ACTION_NAME);
                                     intent.putExtra("visit_uuid", mVisitUUID);
                                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
 
                                     getApplicationContext().sendBroadcast(intent);
                                     getAllMessages();
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (PackageManager.NameNotFoundException e) {
                                     e.printStackTrace();
                                 }
 
@@ -402,7 +413,8 @@ public class ChatActivity extends AppCompatActivity {
                 jsonObject.put("type", Constants.LEFT_ITEM);
             }
             if (!jsonObject.has("createdAt")) {
-                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
                 rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
             }
@@ -446,12 +458,12 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -469,5 +481,6 @@ public class ChatActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }
