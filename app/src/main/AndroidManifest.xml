@@ -54,7 +54,9 @@
             android:exported="false" />
         <activity
             android:name=".activities.vitalActivity.ECGReadingsActivity"
-            android:exported="false" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"
+            />
         <activity
             android:name=".activities.homeActivity.devicesActivity.DevicesActivity"
             android:exported="false" />

@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".activities.vitalActivity.ECGReadingsActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -206,7 +221,7 @@
             android:layout_height="wrap_content"
             android:text="@string/start_measuring"
             android:textAllCaps="false"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_18sp"
             style="@style/SelectableItemBackground"
             android:background="@color/colorPrimary"
             android:elevation="5dp"
@@ -225,7 +240,7 @@
             android:textAllCaps="false"
             android:visibility="visible"
             tools:visibility="visible"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_18sp"
             style="@style/SelectableItemBackground_Orange"
             android:background="@color/orange3"
             android:elevation="5dp"

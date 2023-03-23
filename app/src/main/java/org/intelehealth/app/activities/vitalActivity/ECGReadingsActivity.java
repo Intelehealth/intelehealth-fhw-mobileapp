@@ -12,12 +12,14 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.linktop.MonitorDataTransmissionManager;
@@ -63,10 +65,23 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecgreadings);
 
-        ActionBar actionBar = getSupportActionBar();
+/*        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.ecg);
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }*/
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setTitle(R.string.ecg);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // back button pressed
+                    onBackPressed();
+                }
+            });
+
         }
 
         initUI();
@@ -593,4 +608,8 @@ public class ECGReadingsActivity extends AppCompatActivity implements OnEcgResul
         return stress;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
