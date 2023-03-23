@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
 import android.Manifest;
@@ -2194,7 +2195,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             };*/
 
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-            String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+            String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
+            String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
 
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
@@ -2216,7 +2218,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                            phoneNumber, whatsappMessage))));
+                                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 
