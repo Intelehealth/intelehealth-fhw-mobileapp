@@ -1632,7 +1632,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm_new_password_1">Confirm new password</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
-    <string name="password_match">New password and confirm password must be equal</string>
+    <string name="password_match">New password and confirm password must be same.</string>
     <string name="password_changed_successfully">Password changed successfully</string>
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>

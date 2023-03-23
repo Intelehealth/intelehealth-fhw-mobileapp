@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
@@ -34,6 +36,10 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -51,6 +57,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     TextView tvUsernameError, tvMobileError;
     String optionSelected = "username";
     private CountryCodePicker countryCodePicker;
+    private Button buttonContinue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         clickListeners();
         manageErrorFields();
     }
-
-    private Button buttonContinue;
 
     private void clickListeners() {
         Button buttonUsername = findViewById(R.id.button_username);
@@ -158,12 +163,13 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
+        buttonContinue.setEnabled(false);
         cpd.show();
         String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(username, mobileNo);
+        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
@@ -172,7 +178,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             public void onSubscribe(Disposable d) {
 
             }
-
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 cpd.dismiss();
@@ -186,6 +191,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                             //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
                             intent.putExtra("userUuid", forgotPasswordApiResponseModel_new.getData().getUuid());
+                            intent.putExtra("userName", username);
+                            intent.putExtra("userPhoneNum", mobileNo);
                             startActivity(intent);
                             finish();
                         }
@@ -201,6 +208,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                         tvMobileError.setVisibility(View.VISIBLE);
                     }
                 }
+                buttonContinue.setEnabled(true);
             }
             @Override
             public void onError(Throwable e) {
@@ -208,6 +216,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 e.printStackTrace();
                 cpd.dismiss();
                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to send OTP");
+                buttonContinue.setEnabled(true);
 
             }
 
