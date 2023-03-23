@@ -183,7 +183,7 @@
                         android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
                         android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:text="@string/resend_otp_in"
-                        android:textColor="@color/textColorGray"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/common_label_text_size" />
 
                 </LinearLayout>

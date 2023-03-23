@@ -55,7 +55,7 @@
 
             <TextView
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10007"
+                android:id="@+id/add_new_patientTV"
                 android:layout_width="@dimen/search_addbtn_width"
                 android:layout_height="@dimen/search_add_btn_height"
                 android:layout_marginTop="@dimen/toolbar_margin_right"

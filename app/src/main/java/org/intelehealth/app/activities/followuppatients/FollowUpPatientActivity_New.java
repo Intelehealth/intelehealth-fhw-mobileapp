@@ -365,7 +365,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } while (cursor.moveToNext());
         }
@@ -454,7 +454,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } while (cursor.moveToNext());
         }

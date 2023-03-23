@@ -180,7 +180,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 

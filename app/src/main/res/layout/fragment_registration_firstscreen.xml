@@ -171,7 +171,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/last_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
@@ -181,7 +180,7 @@
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
-                    android:hint="Enter surname"
+                    android:hint="@string/enter_last_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
@@ -228,7 +227,7 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -441,7 +440,7 @@
                         android:background="@drawable/edittext_border"
                         android:hint="Phone Number"
                         android:inputType="number"
-                        android:maxLength="15"
+                        android:maxLength="10"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"

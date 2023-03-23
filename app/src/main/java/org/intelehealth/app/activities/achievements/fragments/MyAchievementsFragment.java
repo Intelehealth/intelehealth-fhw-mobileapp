@@ -63,7 +63,6 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public void onResume() {
         super.onResume();
         initUI();
-
     }
 
     private void initUI() {

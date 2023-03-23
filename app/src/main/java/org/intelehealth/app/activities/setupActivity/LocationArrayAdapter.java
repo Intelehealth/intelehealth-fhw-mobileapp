@@ -13,7 +13,7 @@ import org.intelehealth.app.R;
 public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     public LocationArrayAdapter(Context context, List<String> objects) {
-        super(context, R.layout.spinner_textview, objects);
+        super(context, R.layout.spinner_textview, R.id.text1, objects);
         setDropDownViewResource(R.layout.spinner_checked_textview);
     }
 
@@ -30,9 +30,11 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
             tv.setHeight(0);
             tv.setVisibility(View.GONE);
             v = tv;
-        } else {
+        }
+        else {
             v = super.getDropDownView(position, null, parent);
         }
+
         parent.setVerticalScrollBarEnabled(false);
         return v;
     }

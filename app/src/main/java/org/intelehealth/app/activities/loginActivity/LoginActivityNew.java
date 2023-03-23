@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
@@ -42,6 +43,7 @@ import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringEncryption;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
@@ -73,6 +75,7 @@ public class LoginActivityNew extends AppCompatActivity {
     CoordinatorLayout layoutParent;
     SnackbarUtils snackbarUtils;
     private static final int ID_DOWN = 2;
+    TooltipWindow tipWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,7 @@ public class LoginActivityNew extends AppCompatActivity {
         TextView buttonLogin = findViewById(R.id.button_login);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvPasswordError = findViewById(R.id.tv_password_error);
-
+        tipWindow = new TooltipWindow(LoginActivityNew.this);
         layoutParent = findViewById(R.id.layout_parent_login);
 
 
@@ -130,8 +133,8 @@ public class LoginActivityNew extends AppCompatActivity {
 
         ImageView ivLoginDetails = findViewById(R.id.iv_login_details_info);
         ivLoginDetails.setOnClickListener(v -> {
-            Toast.makeText(context, getResources().getString(R.string.enter_cred), Toast.LENGTH_LONG).show();
-
+            if (!tipWindow.isTooltipShown())
+                tipWindow.showToolTip(ivLoginDetails, getResources().getString(R.string.setup_tooltip_text));
         });
 
         manageErrorFields();

@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -55,6 +56,8 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         etPin6 = layoutPinView.findViewById(R.id.et_pin_6);
         tvOtpError = findViewById(R.id.tv_otp_error);
         tvResendOtp = findViewById(R.id.textview_no_otp);
+        tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         layoutParent = findViewById(R.id.layout_parent_otp);
         rvHelpInfo = findViewById(R.id.rv_help_info);
 
@@ -64,8 +67,6 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onClick(View v) {
                 //api call for resend otp request
                 // snackbarUtils.showSnacksWithRelativeLayoutSuccess(ForgotPasswordOtpVerificationActivity_New.this, getResources().getString(R.string.otp_sent_success), layoutParent);
-
-
             }
         });
 
@@ -132,12 +133,12 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         etPin6.addTextChangedListener(new GenericTextWatcher(etPin6, etPin6));
 
         //for focus to the previous edittext
-        etPin1.setOnKeyListener(new GenericKeyEvent(etPin1, etPin1));
+        /*etPin1.setOnKeyListener(new GenericKeyEvent(etPin1, etPin1));
         etPin2.setOnKeyListener(new GenericKeyEvent(etPin2, etPin1));
         etPin3.setOnKeyListener(new GenericKeyEvent(etPin3, etPin2));
         etPin4.setOnKeyListener(new GenericKeyEvent(etPin4, etPin3));
         etPin5.setOnKeyListener(new GenericKeyEvent(etPin5, etPin4));
-        etPin6.setOnKeyListener(new GenericKeyEvent(etPin6, etPin5));
+        etPin6.setOnKeyListener(new GenericKeyEvent(etPin6, etPin5));*/
 
     }
 
@@ -175,9 +176,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
         @Override
         public void afterTextChanged(Editable editable) {
-
             if (sb.length() == 0) {
-
                 etPrev.requestFocus();
             }
         }
@@ -185,9 +184,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         @Override
         public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             if (sb.length() == 1) {
-
                 sb.deleteCharAt(0);
-
             }
         }
 
