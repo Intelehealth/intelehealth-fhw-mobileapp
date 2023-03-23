@@ -319,7 +319,7 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime() {
-        DateFormat date = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMM yyyy", Locale.ENGLISH);
         Date todayDate = new Date();
         return date.format(todayDate);
     }
