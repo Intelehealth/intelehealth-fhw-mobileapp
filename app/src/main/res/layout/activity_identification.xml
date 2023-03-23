@@ -1326,7 +1326,8 @@
                                 android:layout_height="1dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+                                android:background="?android:attr/listDivider"
+                                android:visibility="gone"/>
 
                             <Space
                                 android:layout_width="10dp"
@@ -1337,16 +1338,19 @@
                                 android:layout_height="wrap_content"
                                 android:paddingHorizontal="5dp"
                                 android:text="@string/when_was_the_last_time_your_bmi_was_checked"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone"/>
 
                             <Space
                                 android:layout_width="10dp"
-                                android:layout_height="10dp" />
+                                android:layout_height="10dp"
+                                android:visibility="gone"/>
 
                             <Spinner
                                 android:id="@+id/bmi_level_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
 
                         </LinearLayout>
 
@@ -1475,6 +1479,66 @@
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
+
+                <!--Tobacco Consumption - Start -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_tobacco_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/tobacco_main_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tobacco_heading_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_tobacco_status_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/history_of_tobacco_consumption"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_tobacco_status_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/tobacco_history_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/tobacco_main_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+                <!--Tobacco Consumption - End -->
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_view_alcohol_consumption"
@@ -2310,16 +2374,19 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
                             android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone"/>
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="10dp" />
+                            android:layout_height="10dp"
+                            android:visibility="gone"/>
 
                         <Spinner
                             android:id="@+id/water_availability_spinner"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -2486,14 +2553,16 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/average_expenditure_on_health"
                             android:textColor="@color/primary_text"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:visibility="gone"/>
 
                         <RadioGroup
                             android:id="@+id/annual_health_expenditure_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:layout_width="match_parent"
@@ -2546,14 +2615,16 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/average_expenditure_on_education"
                             android:textColor="@color/primary_text"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:visibility="gone"/>
 
                         <RadioGroup
                             android:id="@+id/education_expenditure_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone" >
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:layout_width="match_parent"
@@ -2839,14 +2910,16 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason"
                             android:textColor="@color/primary_text"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:visibility="gone"/>
 
                         <RadioGroup
                             android:id="@+id/open_defecation_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/open_defecation_yes"
@@ -2874,7 +2947,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:visibility="gone"
-                            tools:visibility="visible">
+                            >
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/reason_for_open_defecation_text_view"
@@ -3036,6 +3109,10 @@
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/food_cooked_in_twenty_four_hours_text_view"
                             android:layout_width="match_parent"
@@ -3046,7 +3123,8 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours"
                             android:textColor="@color/primary_text"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:visibility="gone"/>
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/food_cooked_in_twenty_four_hours_linear_layout"
@@ -3054,7 +3132,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/food_cooked_in_twenty_four_hours_text_view"
                             android:layout_marginTop="20sp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/starch_staple_food_checkbox"

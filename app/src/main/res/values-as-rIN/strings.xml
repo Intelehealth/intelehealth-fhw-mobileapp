@@ -1048,7 +1048,7 @@
     <string name="reason_for_surgery_specify_the_reason">অস্ত্ৰোপচাৰৰ কাৰণ (কাৰণ উল্লেখ কৰক)*</string>
 
     <string name="smoking_status">ধূমপানৰ অৱস্থা*</string>
-    <string name="does_the_person_smoke">ব্যক্তিজনে ধূমপান কৰে নেকি?</string>
+    <string name="does_the_person_smoke">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
     <string name="smoker">ধূমপায়ী</string>
     <string name="non_smoker">ধূমপান নকৰা</string>
     <string name="five_ten_bids_cigarette">৫ – ১০ বিদি / চিগাৰেট</string>
@@ -1114,4 +1114,7 @@
 
     <string name="enter_valid_email">বৈধ ইমেইল ঠিকনা দিয়ক</string>
     <string name="enter_valid_gender">লিংগ পুৰুষ বা মহিলা প্ৰৱেশ কৰক</string>
+    <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
+    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
+    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
 </resources>

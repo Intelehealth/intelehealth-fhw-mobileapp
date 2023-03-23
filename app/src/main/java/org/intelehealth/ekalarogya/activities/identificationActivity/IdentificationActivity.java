@@ -61,16 +61,20 @@ import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.AlcoholConsumptionHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.MedicalHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.SmokingHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.TobaccoHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.AlcoholConsumptionCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.MedicalHistoryCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.SmokingHistoryCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.TobaccoHistoryCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.TobaccoHistory;
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.AlcoholConsumptionHistoryDialog;
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.MedicalHistoryDialog;
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.SmokingHistoryDialog;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.TobaccoHistoryDialog;
 import org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.ekalarogya.activities.setupActivity.SetupActivity;
@@ -109,7 +113,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class IdentificationActivity extends AppCompatActivity implements AlcoholConsumptionCallback, MedicalHistoryCallback, SmokingHistoryCallback, ViewPagerCallback {
+public class IdentificationActivity extends AppCompatActivity implements
+        AlcoholConsumptionCallback, MedicalHistoryCallback, SmokingHistoryCallback, ViewPagerCallback,
+        TobaccoHistoryCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -179,7 +185,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     Spinner spinner_vaccination;
     private LinearLayoutCompat ll18;
-    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addAlcoholConsumptionButton;
+    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton,
+            addTobaccoStatusButton, addAlcoholConsumptionButton;
 
     private Context updatedContext;
     private ActivityIdentificationBinding binding;
@@ -188,16 +195,19 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     private List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
     private List<MedicalHistory> medicalHistoryList = new ArrayList<>();
     private List<SmokingHistory> smokingHistoryList = new ArrayList<>();
+    private List<TobaccoHistory> tobaccoHistoryList = new ArrayList<>();
 
     // Adapters
     private AlcoholConsumptionHistoryAdapter alcoholConsumptionHistoryAdapter;
     private MedicalHistoryAdapter medicalHistoryAdapter;
     private SmokingHistoryAdapter smokingHistoryAdapter;
+    private TobaccoHistoryAdapter tobaccoHistoryAdapter;
 
     // ViewPager2
     private ViewPager2 alcoholViewPager;
     private ViewPager2 medicalHistoryViewPager;
     private ViewPager2 smokingHistoryViewPager;
+    private ViewPager2 tobaccoHistoryViewPager;
 
     // RadioButtons
     private MaterialRadioButton hohYes, hohNo;
@@ -336,7 +346,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
-        water_availability_spinner = findViewById(R.id.water_availability_spinner);
+      //  water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
@@ -346,7 +356,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         bpSpinner = findViewById(R.id.bp_spinner);
         sugarLevelSpinner = findViewById(R.id.sugar_level_spinner);
         hbLevelSpinner = findViewById(R.id.hb_level_spinner);
-        bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
+    //    bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
         time_water_checkbox = findViewById(R.id.time_water_checkbox);
@@ -368,12 +378,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         // Button
         addMedicalHistoryButton = findViewById(R.id.add_medical_history_button);
         addSmokingStatusButton = findViewById(R.id.add_smoking_status_button);
+        addTobaccoStatusButton = findViewById(R.id.add_tobacco_status_button);
         addAlcoholConsumptionButton = findViewById(R.id.add_alcohol_consumption_button);
 
         // ViewPager2
         alcoholViewPager = findViewById(R.id.alcohol_consumption_view_pager);
         medicalHistoryViewPager = findViewById(R.id.medical_history_view_pager);
         smokingHistoryViewPager = findViewById(R.id.smoking_history_view_pager);
+        tobaccoHistoryViewPager = findViewById(R.id.tobacco_history_view_pager);
 
         // RadioButton
         hohYes = findViewById(R.id.hoh_yes);
@@ -675,7 +687,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             Logger.logE("Identification", "#648", e);
         }
 
-        //  BMI Level Spinner
+      /*  //  BMI Level Spinner
         try {
             String bmiLanguage = "test_status_" + sessionManager.getAppLanguage();
             int bmi_id = res.getIdentifier(bmiLanguage, "array", getApplicationContext().getPackageName());
@@ -687,7 +699,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
+*/
         hohRelationshipSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -818,7 +830,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //        availa_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.water_availability_spinner));
 
-        // Water Availability Adapter ...
+      /*  // Water Availability Adapter ...
         try {
             String wateravailLanguage = "water_availability_spinner_" + sessionManager.getAppLanguage();
             int wateravail_id = res.getIdentifier(wateravailLanguage, "array", getApplicationContext().getPackageName());
@@ -831,7 +843,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         } catch (Exception e) {
             Toast.makeText(this, "Water Availability values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
 //        toiletfacility_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.toiletFacility_spinner));
@@ -931,6 +943,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
         });
 
+/*
         binding.openDefecationRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == binding.openDefecationYes.getId()) {
                 binding.llReasonForOpenDefecation.setVisibility(View.VISIBLE);
@@ -938,6 +951,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 binding.llReasonForOpenDefecation.setVisibility(View.GONE);
             }
         });
+*/
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
@@ -952,6 +966,11 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         addSmokingStatusButton.setOnClickListener(v -> {
             SmokingHistoryDialog dialog = new SmokingHistoryDialog();
             dialog.show(getSupportFragmentManager(), SmokingHistoryDialog.TAG);
+        });
+        // Tobacco Card + button click
+        addTobaccoStatusButton.setOnClickListener(v -> {
+            TobaccoHistoryDialog dialog = new TobaccoHistoryDialog();
+            dialog.show(getSupportFragmentManager(), TobaccoHistoryDialog.TAG);
         });
 
         addAlcoholConsumptionButton.setOnClickListener(v -> {
@@ -1504,12 +1523,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 hbLevelSpinner.setSelection(spinnerPosition);
             }
 
-            // Set data for bmi checked spinner
+           /* // Set data for bmi checked spinner
             if (patient1.getBmiChecked() != null && !patient1.getBmiChecked().equalsIgnoreCase("")) {
                 int spinnerPosition = bmi_adapt.getPosition(getTestStrings(patient1.getBmiChecked(), updatedContext, context, sessionManager.getAppLanguage()));
                 bmiLevelSpinner.setSelection(spinnerPosition);
             }
-
+*/
             if (patient1.getAyushmanCardStatus() != null && !patient1.getAyushmanCardStatus().equalsIgnoreCase("")) {
                 setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
             }
@@ -1646,13 +1665,15 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, patient1.getAverageAnnualHouseholdIncome(), updatedContext, this, sessionManager.getAppLanguage());
                 }
 
-                if (patient1.getAverageExpenditureOnHealth() != null && !patient1.getAverageExpenditureOnHealth().equalsIgnoreCase("")) {
+              /*  if (patient1.getAverageExpenditureOnHealth() != null && !patient1.getAverageExpenditureOnHealth().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, patient1.getAverageExpenditureOnHealth(), updatedContext, this, sessionManager.getAppLanguage());
                 }
-
+*/
+/*
                 if (patient1.getAverageExpenditureOnEducation() != null && !patient1.getAverageExpenditureOnEducation().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.educationExpenditureRadioGroup, patient1.getAverageExpenditureOnEducation(), updatedContext, this, sessionManager.getAppLanguage());
                 }
+*/
 
                 if (patient1.getCookingFuel() != null && !patient1.getCookingFuel().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, patient1.getCookingFuel(), updatedContext, this, sessionManager.getAppLanguage());
@@ -1662,6 +1683,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, patient1.getHouseholdLighting(), updatedContext, this, sessionManager.getAppLanguage());
                 }
 
+/*
                 if (patient1.getOpenDefecationStatus() != null && !patient1.getOpenDefecationStatus().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.openDefecationRadioGroup, patient1.getOpenDefecationStatus(), updatedContext, context, sessionManager.getAppLanguage());
                     if (patient1.getOpenDefecationStatus().equalsIgnoreCase(getString(R.string.generic_yes)))
@@ -1669,6 +1691,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     else
                         binding.llReasonForOpenDefecation.setVisibility(View.GONE);
                 }
+*/
 
                 if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE &&
                         patient1.getReasonForOpenDefecation() != null && !patient1.getReasonForOpenDefecation().equalsIgnoreCase("")) {
@@ -1679,11 +1702,13 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
+/*
                 if (patient1.getFoodPreparedInTwentyFourHours() != null && !patient1.getFoodPreparedInTwentyFourHours().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, patient1.getFoodPreparedInTwentyFourHours(), updatedContext, context, sessionManager.getAppLanguage());
                 }
+*/
 
-                if (patient1.getWater_availability() != null && !patient1.getWater_availability()
+              /*  if (patient1.getWater_availability() != null && !patient1.getWater_availability()
                         .equalsIgnoreCase("")) {
 
                     String wateravail_Transl = "";
@@ -1704,6 +1729,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     int spinner_position = availa_adapt.getPosition(wateravail_Transl);
                     water_availability_spinner.setSelection(spinner_position);
                 }
+              */
                 if (patient1.getToilet_facility() != null && !patient1.getToilet_facility()
                         .equalsIgnoreCase("")) {
 
@@ -2581,11 +2607,23 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     smokingHistoryList = new Gson().fromJson(value, new TypeToken<List<SmokingHistory>>() {
                     }.getType());
-                    smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(),
+                            this, updatedContext, this);
                     smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
                     smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
                     smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                     setViewPagerOffset(smokingHistoryViewPager);
+                }
+                if (name.equalsIgnoreCase("TobaccoStatus")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    tobaccoHistoryList = new Gson().fromJson(value, new TypeToken<List<TobaccoHistory>>() {
+                    }.getType());
+                    tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
+                            this, updatedContext, this);
+                    tobaccoHistoryViewPager.setAdapter(tobaccoHistoryAdapter);
+                    tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
+                    tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(tobaccoHistoryViewPager);
                 }
 
                 if (name.equalsIgnoreCase("alcoholConsumptionStatus")) {
@@ -2984,7 +3022,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         }
 
         // BMI Validation
-        if (bmiLevelSpinner.getSelectedItemPosition() == 0) {
+       /* if (bmiLevelSpinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bmiLevelSpinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
@@ -2992,7 +3030,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             cancel = true;
             return;
         }
-
+*/
         if (hohRadioGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, getString(R.string.please_state_if_you_are_the_head_of_the_family), Toast.LENGTH_SHORT).show();
             focusView = hohRadioGroup;
@@ -3143,6 +3181,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //                    return;
 //                }
 
+/*
             if (water_availability_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) water_availability_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -3151,6 +3190,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 cancel = true;
                 return;
             }
+*/
 
             if (toilet_facility_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) toilet_facility_spinner.getSelectedView();
@@ -3206,22 +3246,22 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            // Validations for Annual Health Expenditure Radio Group
+          /*  // Validations for Annual Health Expenditure Radio Group
             if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.annualHealthExpenditureRadioGroup;
                 cancel = true;
                 return;
             }
-
-            // Validations for Education Expenditure Radio Group
+*/
+           /* // Validations for Education Expenditure Radio Group
             if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.educationExpenditureRadioGroup;
                 cancel = true;
                 return;
             }
-
+*/
             // Validations for Household Cooking Fuel Linear Layout
             if (checkIfCheckboxesEmpty(binding.householdCookingFuelCheckboxLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
@@ -3238,14 +3278,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            // Validations for Open Defecation Radio Group
+          /*  // Validations for Open Defecation Radio Group
             if (binding.openDefecationRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.openDefecationRadioGroup;
                 cancel = true;
                 return;
             }
-
+*/
             if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                 if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
                     Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
@@ -3262,12 +3302,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
+/*
             if (checkIfCheckboxesEmpty(binding.foodCookedInTwentyFourHoursLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.householdCookingFuelCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
+*/
 
         }
 
@@ -3292,6 +3334,13 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         if (smokingHistoryList.isEmpty()) {
             Toast.makeText(this, getString(R.string.smoking_history_cannot_be_empty), Toast.LENGTH_SHORT).show();
             focusView = smokingHistoryViewPager;
+            cancel = true;
+            return;
+        }
+        // tobacco valdiation
+        if (tobaccoHistoryList.isEmpty()) {
+            Toast.makeText(this, getString(R.string.tobacco_consumption_cannot_empty), Toast.LENGTH_SHORT).show();
+            focusView = tobaccoHistoryViewPager;
             cancel = true;
             return;
         }
@@ -3572,14 +3621,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            // BMI Checked Adapter
+          /*  // BMI Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3828,7 +3877,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-                //Drinking water availability...
+               /* //Drinking water availability...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3838,7 +3887,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(water_availability_spinner));
                 Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 //Toilet Facility...
                 if (toiletfacility_edittext.getVisibility() == View.VISIBLE && !toiletfacility_edittext
                         .getText().toString().isEmpty() && !toiletfacility_edittext.getText()
@@ -3900,7 +3949,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // averageExpenditureOnHealth
+              /*  // averageExpenditureOnHealth
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3912,8 +3961,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
-                // averageExpenditureOnEducation
+*/
+            /*    // averageExpenditureOnEducation
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3925,7 +3974,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 // cookingFuel
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3954,7 +4003,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // defecatedInOpen
+             /*   // defecatedInOpen
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3966,7 +4015,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                     // reasonForOpenDefecation
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -3997,7 +4046,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // foodItemsPreparedInTwentyFourHours
+              /*  // foodItemsPreparedInTwentyFourHours
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -4010,7 +4059,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         "-"
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 // sessionManager.setHOH_checkbox(true);
                 // Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
@@ -4042,6 +4091,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
             patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Tobacco History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("TobaccoStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(tobaccoHistoryList));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Alcohol Consumption History
@@ -4425,7 +4482,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
-        // BMI Validation
+       /* // BMI Validation
         if (bmiLevelSpinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bmiLevelSpinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -4434,7 +4491,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             cancel = true;
             return;
         }
-
+*/
         if (hohRadioGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, getString(R.string.please_state_if_you_are_the_head_of_the_family), Toast.LENGTH_SHORT).show();
             focusView = hohRadioGroup;
@@ -4586,6 +4643,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //                return;
 //            }
 
+/*
             if (water_availability_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) water_availability_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -4594,6 +4652,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 cancel = true;
                 return;
             }
+*/
 
             if (toilet_facility_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) toilet_facility_spinner.getSelectedView();
@@ -4649,22 +4708,22 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            // Validations for Annual Health Expenditure Radio Group
+          /*  // Validations for Annual Health Expenditure Radio Group
             if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.annualHealthExpenditureRadioGroup;
                 cancel = true;
                 return;
             }
-
-            // Validations for Education Expenditure Radio Group
+*/
+          /*  // Validations for Education Expenditure Radio Group
             if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.educationExpenditureRadioGroup;
                 cancel = true;
                 return;
             }
-
+*/
             // Validations for Household Cooking Fuel Linear Layout
             if (checkIfCheckboxesEmpty(binding.householdCookingFuelCheckboxLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
@@ -4681,14 +4740,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            // Validations for Open Defecation Radio Group
+          /*  // Validations for Open Defecation Radio Group
             if (binding.openDefecationRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.openDefecationRadioGroup;
                 cancel = true;
                 return;
             }
-
+*/
             if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                 if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
                     Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
@@ -4705,12 +4764,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
+/*
             if (checkIfCheckboxesEmpty(binding.foodCookedInTwentyFourHoursLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = binding.householdCookingFuelCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
+*/
 
         }
 
@@ -4738,6 +4799,15 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             cancel = true;
             return;
         }
+
+        // tobacco valdiation
+        if (tobaccoHistoryList.isEmpty()) {
+            Toast.makeText(this, getString(R.string.tobacco_consumption_cannot_empty), Toast.LENGTH_SHORT).show();
+            focusView = tobaccoHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
 
         if (alcoholConsumptionHistoryList.isEmpty()) {
             Toast.makeText(this, getString(R.string.alcohol_consumption_history_cannot_be_empty), Toast.LENGTH_SHORT).show();
@@ -5017,14 +5087,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            // BMI Checked Adapter
+           /* // BMI Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -5287,7 +5357,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-                //Drinking water availability...
+             /*   //Drinking water availability...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -5297,7 +5367,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(water_availability_spinner));
                 Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 //Toilet Facility...
                 if (toiletfacility_edittext.getVisibility() == View.VISIBLE && !toiletfacility_edittext
                         .getText().toString().isEmpty() && !toiletfacility_edittext.getText()
@@ -5359,7 +5429,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // averageExpenditureOnHealth
+             /*   // averageExpenditureOnHealth
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -5371,8 +5441,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
-                // averageExpenditureOnEducation
+*/
+              /*  // averageExpenditureOnEducation
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -5384,7 +5454,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
 //                sessionManager.setHOH_checkbox(true);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
@@ -5416,7 +5486,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // defecatedInOpen
+             /*   // defecatedInOpen
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -5428,7 +5498,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                     // reasonForOpenDefecation
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -5459,7 +5529,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // foodItemsPreparedInTwentyFourHours
+              /*  // foodItemsPreparedInTwentyFourHours
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -5472,7 +5542,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         "-"
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             } else {
 //                sessionManager.setHOH_checkbox(false);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
@@ -5493,6 +5563,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
             patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Tobacco History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("TobaccoStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(tobaccoHistoryList));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Alcohol Consumption History
@@ -5697,6 +5775,28 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     }
 
     @Override
+    public void getTobaccoHistory(TobaccoHistory tobaccoHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("TobaccoStatus", tobaccoHistory.getChewTobaccoStatus());
+
+                TobaccoHistoryDialog tobaccoHistoryDialog = new TobaccoHistoryDialog();
+                tobaccoHistoryDialog.setArguments(bundle);
+                tobaccoHistoryDialog.show(getSupportFragmentManager(), TobaccoHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, tobaccoHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
+    @Override
     public void getAlcoholHistory(AlcoholConsumptionHistory alcoholConsumptionHistory,
                                   int position) {
         MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
@@ -5748,6 +5848,20 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 setViewPagerOffset(smokingHistoryViewPager);
             }
         }
+        // Tobacco Consumption
+        if (object instanceof TobaccoHistory) {
+            if (tobaccoHistoryList.size() != 0) {
+                tobaccoHistoryList.remove(position);
+                tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
+                        this, updatedContext, this);
+                tobaccoHistoryViewPager.setAdapter(tobaccoHistoryAdapter);
+                if (!medicalHistoryList.isEmpty()) {
+                    tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
+                }
+                tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                setViewPagerOffset(tobaccoHistoryViewPager);
+            }
+        }
 
         if (object instanceof AlcoholConsumptionHistory) {
             if (alcoholConsumptionHistoryList.size() != 0) { // Added this check to ensure  that the list isn't empty before removing the element - Added by Arpan Sircar
@@ -5783,5 +5897,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
         AlertDialog alertDialog = timeBuilder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+    }
+
+    @Override
+    public void saveTobaccoHistory(TobaccoHistory tobaccoHistory) {
+        tobaccoHistoryList.add(tobaccoHistory);
+        tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
+                this, updatedContext, this);
+        tobaccoHistoryViewPager.setAdapter(tobaccoHistoryAdapter);
+        tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
+        tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(tobaccoHistoryViewPager);
+    }
+
+    @Override
+    public void saveTobaccoHistoryAtPosition(TobaccoHistory tobaccoHistory, int position) {
+        tobaccoHistoryList.set(position, tobaccoHistory);
+        tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
+                this, updatedContext, this);
+        tobaccoHistoryViewPager.setAdapter(tobaccoHistoryAdapter);
+        tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
+        tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(tobaccoHistoryViewPager);
     }
 }

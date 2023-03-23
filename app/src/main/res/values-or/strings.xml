@@ -932,7 +932,7 @@
     <string name="reason_for_surgery_specify_the_reason">ଅସ୍ତ୍ରୋପଚାରର କାରଣ (କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ)*</string>
 
     <string name="smoking_status">ଗୃହରେ ଧୂମପାନ ସ୍ଥିତି ଜ୍ଝ*</string>
-    <string name="does_the_person_smoke">ଏହି ଲୋକ ଧୁମ୍ରପାନ କରେକି?</string>
+    <string name="does_the_person_smoke">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି ?</string>
     <string name="smoker">ଧୂମପାନକାରୀ</string>
     <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
     <string name="five_ten_bids_cigarette">୫ – ୧୦ ବିଡି / ସିଗାରେଟ୍</string>
@@ -1026,4 +1026,7 @@
 
     <string name="enter_valid_email">ସଠିକ୍ ଇମେଲ୍ ଠିକଣା ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="enter_valid_gender">ଲିଙ୍ଗ ପୁରୁଷ କିମ୍ବା ମହିଳା ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
+    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
+    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
 </resources>

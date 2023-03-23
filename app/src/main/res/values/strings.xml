@@ -1135,4 +1135,7 @@
     <string name="update_hw_profile">Updated Succussfully</string>
     <string name="enter_valid_email">Enter valid email address</string>
     <string name="enter_valid_gender">Enter gender male or female</string>
+    <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
+    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
+    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
 </resources>

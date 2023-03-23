@@ -4624,6 +4624,23 @@ public final class StringUtils {
         return text;
     }
 
+    public static String getTobaccoHistoryStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // Yes string conversion
+        if (context.getString(R.string.yes).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.yes);
+
+        // No string conversion
+        if (context.getString(R.string.no).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.no);
+
+        // Declined to answer string conversion
+        if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.denied_to_answer);
+
+        return text;
+    }
+
     public static String getSmokingHistoryStrings(String text, Context context, Context updatedContext, String locale) {
         text = getSurveyValue(text);
         //  if (!locale.equalsIgnoreCase("en")) {
