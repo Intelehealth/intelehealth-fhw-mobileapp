@@ -117,8 +117,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_hi">
@@ -129,8 +128,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_bn">
@@ -141,8 +139,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_or">
@@ -153,8 +150,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <!--    <string-array name="education_en">-->
@@ -203,8 +199,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_as">
@@ -215,8 +210,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="caste_or">
@@ -1491,64 +1485,44 @@
 
     <string-array name="marital_status_en">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_bn">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_hi">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_or">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
-        <item>@string/deserted</item>
     </string-array>
 
     <string-array name="marital_status_gu">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
-        <item>@string/deserted</item>
     </string-array>
 
     <string-array name="marital_status_as">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="test_status_en">

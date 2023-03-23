@@ -1501,7 +1501,8 @@ public class IdentificationActivity extends AppCompatActivity implements
 
             // Set data for marital spinner
             if (patient1.getMaritalStatus() != null && !patient1.getMaritalStatus().equalsIgnoreCase("")) {
-                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings(patient1.getMaritalStatus(), updatedContext, context, sessionManager.getAppLanguage()));
+                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings
+                        (patient1.getMaritalStatus(), updatedContext, context, sessionManager.getAppLanguage()));
                 maritalStatusSpinner.setSelection(spinnerPosition);
             }
 
@@ -1530,11 +1531,13 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
 */
             if (patient1.getAyushmanCardStatus() != null && !patient1.getAyushmanCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
+                setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(),
+                        updatedContext, context, sessionManager.getAppLanguage());
             }
 
             if (patient1.getMgnregaCardStatus() != null && !patient1.getMgnregaCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.mgnregaRadioGroup, patient1.getMgnregaCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
+                setSelectedCheckboxes(binding.mgnregaRadioGroup, patient1.getMgnregaCardStatus(),
+                        updatedContext, context, sessionManager.getAppLanguage());
             }
 
             if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
@@ -3429,7 +3432,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    ((RadioButton) binding.ayushmanRadioGroup.findViewById
+                            (binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
@@ -3441,7 +3445,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    ((RadioButton) binding.mgnregaRadioGroup.findViewById
+                            (binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
@@ -3471,7 +3476,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), context, updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided
+                    (mEducation), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3591,7 +3597,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMaritalStatusStrings
+                    (maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not
@@ -4894,7 +4901,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    ((RadioButton) binding.ayushmanRadioGroup.findViewById
+                            (binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
@@ -4906,7 +4914,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    ((RadioButton) binding.mgnregaRadioGroup.findViewById
+                            (binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
@@ -4936,7 +4945,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), context, updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided
+                    (mEducation), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -5057,7 +5067,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMaritalStatusStrings
+                    (maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not

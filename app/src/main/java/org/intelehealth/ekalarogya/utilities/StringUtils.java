@@ -3860,6 +3860,10 @@ public final class StringUtils {
                     radioButton.setChecked(true);
                     break;
                 }
+                if (text.contains(getTobaccoHistoryStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                    radioButton.setChecked(true);
+                    break;
+                }
                 if (text.contains(getAlcoholHistory(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
@@ -3930,14 +3934,28 @@ public final class StringUtils {
         text = getSurveyValue(text);
         // If the app language is not in English, only in that case will the strings be translated.
       //  if (!locale.equalsIgnoreCase("en")) {
-            // Translate string Yes to English
-            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_yes);
-            }
-            // Translate string No to English
-            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_no);
-            }
+
+        // Translate string Yes to English
+        if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.generic_yes);
+        }
+        // Translate string No to English
+        if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.generic_no);
+        }
+        // Translate string Yes.. to English
+        if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.yes);
+        }
+        // Translate string No.. to English
+        if (context.getString(R.string.no).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.no);
+        }
+        // Translate string Not Sure to English
+        if (context.getString(R.string.not_sure).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.not_sure);
+        }
+
             // Translate string No Expense to English
             if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_expense);
@@ -4006,14 +4024,6 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_twenty_five_thousand).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_twenty_five_thousand);
             }
-            // Translate string Yes to English
-            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_yes);
-            }
-            // Translate string No to English
-            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_no);
-            }
             // Translate string Yes, Card Seen to English
             if (context.getString(R.string.yes_card_seen).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.yes_card_seen);
@@ -4073,6 +4083,10 @@ public final class StringUtils {
             if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.generic_no);
             }
+        // Translate string Not Sure to English
+        if (context.getString(R.string.not_sure).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.not_sure);
+        }
             // Translate string Electricity to English
             if (context.getString(R.string.electricity).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.electricity);
@@ -4442,10 +4456,20 @@ public final class StringUtils {
             if (context.getString(R.string.married_gauna_not_performed).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.married_gauna_not_performed);
             }
+
+        // Translate string Married to English
+        if (context.getString(R.string.married).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.married);
+        }
+        // Translate string Unmarried to English
+        if (context.getString(R.string.unmarried).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.unmarried);
+        }
             // Translate string Widowed to English
             if (context.getString(R.string.widowed).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.widowed);
             }
+
             // Translate string Divorced to English
             if (context.getString(R.string.divorced).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.divorced);
@@ -4527,14 +4551,19 @@ public final class StringUtils {
             if (context.getString(R.string.passed_senior_secondary_school).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.passed_senior_secondary_school);
             }
-            // Translate string Graduate to English
+           /* // Translate string Graduate to English
             if (context.getString(R.string.graduate).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.graduate);
             }
             // Translate string Postgraduate to English
             if (context.getString(R.string.postgraduate).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.postgraduate);
-            }
+            }*/
+
+        // Translate string -> Graduation and above.
+        if (context.getString(R.string.graduation_and_above).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.graduation_and_above);
+        }
             //  }
         return text;
     }

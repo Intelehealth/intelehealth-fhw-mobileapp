@@ -1117,4 +1117,8 @@
     <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
     <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
     <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
+    <string name="not_sure">নিশ্চিত নহয়</string>
+    <string name="graduation_and_above">স্নাতক আৰু তাৰ ওপৰৰ</string>
+    <string name="married">বিবাহিত</string>
+    <string name="unmarried">অবিবাহিত</string>
 </resources>

@@ -784,7 +784,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_seen"
+                                android:text="@string/yes"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -792,7 +792,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_not_seen"
+                                android:text="@string/no"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -800,15 +800,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/no_card"
-                                android:textSize="13sp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/do_not_know"
+                                android:text="@string/not_sure"
                                 android:textSize="13sp" />
 
                         </RadioGroup>
@@ -836,7 +828,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_seen"
+                                android:text="@string/yes"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -844,7 +836,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_not_seen"
+                                android:text="@string/no"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -852,17 +844,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/no_card"
+                                android:text="@string/not_sure"
                                 android:textSize="13sp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/do_not_know"
-                                android:textSize="13sp" />
-
                         </RadioGroup>
 
                         <com.google.android.material.textview.MaterialTextView
@@ -978,7 +961,6 @@
                                     android:focusableInTouchMode="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
