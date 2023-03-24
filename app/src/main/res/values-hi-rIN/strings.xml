@@ -1153,4 +1153,13 @@
     <string name="do_nothing">कुछ नहीं करते है</string>
     <string name="landless">भूमिहीन</string>
     <string name="ekal_process_takeup_question">एकल आपके गांव में प्राथमिक स्वास्थ्य देखभाल प्रदान करने के लिए एक टेलीमेडिसिन कार्यक्रम शुरू कर रहा है, जिसमें - एचबी परीक्षण, बीपी परीक्षण, शुगर परीक्षण और आवश्यकतानुसार डॉक्टर परामर्श शामिल हैं। क्या आप हमारी सेवा लेना चाहेंगे?</string>
+    <string name="lantern_kerosenelamp_candle">लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती</string>
+    <string name="describe_hand_wash_practise">अपने हाथ धोने आदत का वर्णन करें</string>
+    <string name="use_soap">साबुन का प्रयोग करते है</string>
+    <string name="use_other_means_wash_hands">हाथ धोने के लिए अन्य साधनों का प्रयोग करते है</string>
+    <string name="wash_after_using_toilet">शौचालय का उपयोग करने के बाद धो लेते है</string>
+    <string name="wash_before_cooking">खाना पकाने से पहले धो लेते है</string>
+    <string name="wash_before_after_eating">खाने से पहले और बाद में धो लेते है</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">क्या घर से आने-जाने के 30 मिनट के भीतर पीने के पानी का स्रोत है?</string>
+
 </resources>

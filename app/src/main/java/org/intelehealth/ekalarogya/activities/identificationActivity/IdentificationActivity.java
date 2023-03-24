@@ -213,7 +213,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     private MaterialRadioButton hohYes, hohNo;
 
     // RadioGroup
-    private RadioGroup hohRadioGroup, ekalProcessRadioGroup;
+    private RadioGroup hohRadioGroup, ekalProcessRadioGroup, waterSourceWithin30minutesRadioGroup;
 
     Intent i_privacy;
     String privacy_value;
@@ -223,7 +223,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner, water_availability_spinner,
             toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
             bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner, unitsSpinner;
-    MaterialCheckBox time_water_checkbox;
+  //  MaterialCheckBox time_water_checkbox;
     EditText time_water_editText, no_of_member_edittext, no_of_staying_members_edittext, landOwnedEditText, occupation_edittext,
             toiletfacility_edittext, otherHohRelationshipEditText;
     CardView cardview_household, hohRelationshipCardView;
@@ -359,13 +359,13 @@ public class IdentificationActivity extends AppCompatActivity implements
     //    bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
-        time_water_checkbox = findViewById(R.id.time_water_checkbox);
+    //    time_water_checkbox = findViewById(R.id.time_water_checkbox);
 
         // LinearLayout
         ll18 = findViewById(R.id.ll_18);
 
         //EditText
-        time_water_editText = findViewById(R.id.time_water_editText);
+   //     time_water_editText = findViewById(R.id.time_water_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
         otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
@@ -394,6 +394,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         // RadioGroup
         hohRadioGroup = findViewById(R.id.hoh_radio_group);
         ekalProcessRadioGroup = findViewById(R.id.ekal_process_radio_group);
+        waterSourceWithin30minutesRadioGroup = findViewById(R.id.water_source_30minutes_radio_group);
 
         //Initialize the local database to store patient information
 
@@ -993,6 +994,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
         binding.loadSheddingDaysEditText.setOnClickListener(v -> timePicker(getString(R.string.days), binding.loadSheddingDaysEditText, 7));
 
+/*
         time_water_editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1062,7 +1064,9 @@ public class IdentificationActivity extends AppCompatActivity implements
 
             }
         });
+*/
 
+/*
         time_water_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -1075,6 +1079,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
             }
         });
+*/
 
         binding.householdRunningWaterRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == binding.waterSupplyYes.getId())
@@ -1215,28 +1220,6 @@ public class IdentificationActivity extends AppCompatActivity implements
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
 
-            if (patient1.getEconomic_status() == null || patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
-                mEconomicStatus.setSelection(0);
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String economic = switch_bn_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String economic = switch_gu_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else {
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-                }
-            }
 
             if (patient1.getCaste() == null || patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
                 mCaste.setSelection(0);
@@ -1547,9 +1530,6 @@ public class IdentificationActivity extends AppCompatActivity implements
                         updatedContext, context, sessionManager.getAppLanguage());
             }
 
-            if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
-            }
 
             // Set data for head of household
             if (patient1.getHeadOfHousehold() != null && !patient1.getHeadOfHousehold().equalsIgnoreCase("-")) {
@@ -1570,6 +1550,16 @@ public class IdentificationActivity extends AppCompatActivity implements
                 no_of_member_edittext.setText(patient1.getNo_of_family_members());
                 no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
 
+                if (patient1.getTime_travel_water() != null && !patient1.getTime_travel_water().equalsIgnoreCase("")) {
+                    setSelectedCheckboxes(binding.waterSource30minutesRadioGroup,
+                            patient1.getTime_travel_water(),
+                            updatedContext,
+                            context,
+                            sessionManager.getAppLanguage()
+                    );
+                }
+
+/*
                 if (patient1.getTime_travel_water() != null || patient1.getHectars_land() != null) {
                     if (patient1.getTime_travel_water().equalsIgnoreCase("Declined to answer")) {
                         time_water_editText.setVisibility(View.GONE);
@@ -1581,6 +1571,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                                 getResources().getString(R.string.identification_screen_picker_minute)));
                     }
                 }
+*/
 
                 if (patient1.getSource_of_water() != null && !patient1.getSource_of_water().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
@@ -1607,6 +1598,36 @@ public class IdentificationActivity extends AppCompatActivity implements
                             updatedContext, context, sessionManager.getAppLanguage()));
                     unitsSpinner.setSelection(spinnerPosition);
                 }
+
+                // ration card moved here - start...
+                if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
+                    setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
+                }
+
+                // Economic Card
+                if (patient1.getEconomic_status() == null || patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+                    mEconomicStatus.setSelection(0);
+                else {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                        String economic = switch_bn_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                        String economic = switch_gu_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        String economic = switch_as_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    } else {
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                    }
+                }
+                // moved here - end
 
                 if (patient1.getReligion() != null && !patient1.getReligion().equalsIgnoreCase("")) {
                     String religionTranslation = getReligionStrings(patient1.getReligion(), updatedContext, context, sessionManager.getAppLanguage());
@@ -1691,6 +1712,12 @@ public class IdentificationActivity extends AppCompatActivity implements
                     setSelectedCheckboxes(binding.ekalProcessRadioGroup, patient1.getEkalProcess(),
                             updatedContext, this, sessionManager.getAppLanguage());
                 }
+                // Water source within 30 minutes -> set fields.
+                if (patient1.getTime_travel_water() != null && !patient1.getTime_travel_water().equalsIgnoreCase("")) {
+                    setSelectedCheckboxes(binding.waterSource30minutesRadioGroup, patient1.getTime_travel_water(),
+                            updatedContext, this, sessionManager.getAppLanguage());
+                }
+
 
                 if (patient1.getCookingFuel() != null && !patient1.getCookingFuel().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, patient1.getCookingFuel(),
@@ -1718,7 +1745,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
 
                 if (patient1.getHandWashOccasion() != null && !patient1.getHandWashOccasion().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(), updatedContext, context, sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(),
+                            updatedContext, context, sessionManager.getAppLanguage());
                 }
 
 /*
@@ -2913,12 +2941,6 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 
-        if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-            focusView = binding.rationCardRadioGroup;
-            cancel = true;
-            return;
-        }
 
         // TODO: Add validations for all Spinners here...
         if (occupation_spinner.getSelectedItemPosition() == 0) {
@@ -3063,6 +3085,16 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
 
         if (hohRadioGroup.getCheckedRadioButtonId() != -1 && hohRadioGroup.getCheckedRadioButtonId() == binding.hohYes.getId()) {
+
+            // move Ration Card and Economic card here - Start
+            if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = binding.rationCardRadioGroup;
+                cancel = true;
+                return;
+            }
+            // move Ration Card and Economic card here - End
+
             if (checkIfEmpty(this, binding.religionDropDown.getSelectedItem().toString())) {
                 TextView t = (TextView) binding.religionDropDown.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -3185,6 +3217,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 
+/*
             if (!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
                     time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
@@ -3195,6 +3228,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 cancel = true;
                 return;
             }
+*/
 
 //                if(time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
 //                time_water_editText.getText().toString().equalsIgnoreCase("")) {
@@ -3337,6 +3371,16 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 */
+
+            // water source within 30 mints - start
+            if (waterSourceWithin30minutesRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = waterSourceWithin30minutesRadioGroup;
+                cancel = true;
+                return;
+            }
+            // water source within 30 mints
+
 
             // Ekal process take up - New question added on 24th march 2023
             if (ekalProcessRadioGroup.getCheckedRadioButtonId() == -1) {
@@ -3484,25 +3528,6 @@ public class IdentificationActivity extends AppCompatActivity implements
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    context,
-                    updatedContext,
-                    sessionManager.getAppLanguage()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3687,6 +3712,29 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
                 patientAttributesDTO.setValue("-");
                 patientAttributesDTOList.add(patientAttributesDTO);
+
+                // move fields here - start
+                // ration card
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
+                patientAttributesDTO.setValue(getRadioButtonStrings(
+                        ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // economic card
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+                patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+                patientAttributesDTOList.add(patientAttributesDTO);
+                // move fields here - end
 
                 // religion
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -3886,7 +3934,22 @@ public class IdentificationActivity extends AppCompatActivity implements
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // Time taken to get water...
+                // Time taken to get water - Updated - Start
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Time Drinking Water Source"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.waterSource30minutesRadioGroup.
+                                findViewById(binding.waterSource30minutesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+                // Time taken to get water - Updated - End
+
+              /*  // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3909,7 +3972,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setValue(StringUtils.getValue(water_time));
                     Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
-                }
+                }*/
 
                 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -4407,12 +4470,6 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 
-        if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-            focusView = binding.rationCardRadioGroup;
-            cancel = true;
-            return;
-        }
 
         // TODO: Add validations for all Spinners here...
         if (occupation_spinner.getSelectedItemPosition() == 0) {
@@ -4557,6 +4614,16 @@ public class IdentificationActivity extends AppCompatActivity implements
 
         if (hohRadioGroup.getCheckedRadioButtonId() != -1 && binding.hohRadioGroup.getCheckedRadioButtonId() == binding.hohYes.getId()) {
 
+            // move fields here - start
+            // Ration card
+            if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = binding.rationCardRadioGroup;
+                cancel = true;
+                return;
+            }
+            // move fields here - end
+
             if (checkIfEmpty(this, binding.religionDropDown.getSelectedItem().toString())) {
                 TextView t = (TextView) binding.religionDropDown.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -4678,6 +4745,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 
+/*
             if (!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
                     time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
@@ -4688,6 +4756,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 cancel = true;
                 return;
             }
+*/
 
 //            if(time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
 //                    time_water_editText.getText().toString().equalsIgnoreCase("")) {
@@ -4830,6 +4899,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 */
+
+            // water source within 30 mints - start
+            if (waterSourceWithin30minutesRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = waterSourceWithin30minutesRadioGroup;
+                cancel = true;
+                return;
+            }
+            // water source within 30 mints
 
              // Ekal process take up - New question added on 24th march 2023
             if (ekalProcessRadioGroup.getCheckedRadioButtonId() == -1) {
@@ -4980,25 +5058,6 @@ public class IdentificationActivity extends AppCompatActivity implements
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
-                    ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    context,
-                    updatedContext,
-                    sessionManager.getAppLanguage()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -5183,6 +5242,29 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
                 patientAttributesDTO.setValue("-");
                 patientAttributesDTOList.add(patientAttributesDTO);
+
+                // move fields here - start
+                // ration card
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
+                patientAttributesDTO.setValue(getRadioButtonStrings(
+                        ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // economic status
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+                patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+                patientAttributesDTOList.add(patientAttributesDTO);
+                // move fields here - end
 
                 // religion
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -5395,7 +5477,22 @@ public class IdentificationActivity extends AppCompatActivity implements
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // Time taken to get water...
+                // Time taken to get water - Updated - Start
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Time Drinking Water Source"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.waterSource30minutesRadioGroup.
+                                findViewById(binding.waterSource30minutesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+                // Time taken to get water - Updated - End
+
+               /* // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -5419,6 +5516,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
+*/
 
                 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());

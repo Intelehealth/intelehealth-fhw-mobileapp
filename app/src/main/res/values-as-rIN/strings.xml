@@ -1125,4 +1125,13 @@
     <string name="do_nothing">একো নকৰিব</string>
     <string name="landless">ভূমিহীন</string>
     <string name="ekal_process_takeup_question">একল আপোনাৰ গাঁৱত এটা টেলিমেডিচিন কাৰ্যসূচী আৰম্ভ কৰিছে যাতে প্ৰাথমিক স্বাস্থ্যসেৱা প্ৰদান কৰিব পাৰে - এইচ বি পৰীক্ষা, বি পি পৰীক্ষা, চুগাৰৰ পৰীক্ষা, আৰু প্ৰয়োজন অনুসৰি চিকিৎসকৰ পৰামৰ্শ। আপুনি আমাৰ সেৱা ল\'ব বিচাৰেনে?</string>
+    <string name="lantern_kerosenelamp_candle">বন্তি/কেৰাচিন লেম্প/মমবাতি</string>
+    <string name="describe_hand_wash_practise">আপোনাৰ হাত ধোৱাৰ প্ৰথাৰ বৰ্ণনা কৰক</string>
+    <string name="use_soap">চাবোন ব্যৱহাৰ কৰক</string>
+    <string name="use_other_means_wash_hands">হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক</string>
+    <string name="wash_after_using_toilet">শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব</string>
+    <string name="wash_before_cooking">ৰন্ধা আগতে ধুব</string>
+    <string name="wash_before_after_eating">খোৱাৰ আগতে আৰু পিছত ধুব লাগে।</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">ঘৰৰ পৰা অহা-যোৱা কৰাৰ ৩০ মিনিটৰ ভিতৰত খোৱাপানীৰ উৎস নেকি?</string>
+
 </resources>

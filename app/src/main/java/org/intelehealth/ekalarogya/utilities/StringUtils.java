@@ -4139,7 +4139,7 @@ public final class StringUtils {
         if (context.getString(R.string.others).equalsIgnoreCase(text)) {
             return updatedContext.getString(R.string.others);
         }
-            // Translate string Lantern to English
+            /*// Translate string Lantern to English
             if (context.getString(R.string.lantern).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.lantern);
             }
@@ -4150,7 +4150,13 @@ public final class StringUtils {
             // Translate string Candle to English
             if (context.getString(R.string.candle).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.candle);
-            }
+            }*/
+
+        // Translate string Electric to English
+        if (context.getString(R.string.lantern_kerosenelamp_candle).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.lantern_kerosenelamp_candle);
+        }
+
             // Translate string Electric to English
             if (context.getString(R.string.electric).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.electric);
@@ -4284,7 +4290,7 @@ public final class StringUtils {
             if (context.getString(R.string.problem_in_toilet_plumbing).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.problem_in_toilet_plumbing);
             }
-            // Translate string No Soap Available In The Household to English
+          /*  // Translate string No Soap Available In The Household to English
             if (context.getString(R.string.no_soap_available_in_the_household).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_soap_available_in_the_household);
             }
@@ -4307,7 +4313,29 @@ public final class StringUtils {
             // Translate string After Using Toilet to English
             if (context.getString(R.string.after_using_toilet).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.after_using_toilet);
-            }
+            }*/
+
+        // Translate string Use Soap to English
+        if (context.getString(R.string.use_soap).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.use_soap);
+        }
+        // Translate string -> Use other means... to English
+        if (context.getString(R.string.use_other_means_wash_hands).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.use_other_means_wash_hands);
+        }
+        // Translate string -> Wash after using... to English
+        if (context.getString(R.string.wash_after_using_toilet).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_after_using_toilet);
+        }
+        // Translate string -> Wash before cooking to English
+        if (context.getString(R.string.wash_before_cooking).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_before_cooking);
+        }
+        // Translate string -> Wash before and after eating to English
+        if (context.getString(R.string.wash_before_after_eating).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_before_after_eating);
+        }
+
             // Translate string Starch Staple Food to English
             if (context.getString(R.string.starch_staple_food).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.starch_staple_food);

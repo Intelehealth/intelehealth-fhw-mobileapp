@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="-6500dp"
+    android:layout_marginTop="-5000dp"
     tools:context=".activities.identificationActivity.IdentificationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -849,95 +849,6 @@
                                 android:textSize="13sp" />
                         </RadioGroup>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/ration_card_text_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5sp"
-                            android:layout_marginTop="15sp"
-                            android:fontFamily="@font/lato_medium"
-                            android:text="@string/does_this_household_have_ration_card"
-                            android:textColor="@color/primary_text"
-                            android:textSize="14sp" />
-
-                        <RadioGroup
-                            android:id="@+id/ration_card_radio_group"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_seen"
-                                android:textSize="13sp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_not_seen"
-                                android:textSize="13sp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/no_card"
-                                android:textSize="13sp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/do_not_know"
-                                android:textSize="13sp" />
-
-                        </RadioGroup>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/identification_txtleconomic"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <EditText
-                                    android:id="@+id/identification_econiomic_status"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:clickable="false"
-                                    android:cursorVisible="false"
-                                    android:drawableStart="@drawable/econiomic_status_icon"
-                                    android:drawableLeft="@drawable/econiomic_status_icon"
-                                    android:drawablePadding="10dp"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
-                                    android:inputType="textCapWords"
-                                    android:maxLines="1"
-                                    android:text="@string/identification_screen_prompt_economic_status"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                                <Spinner
-                                    android:id="@+id/spinner_economic_status"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
-                            </LinearLayout>
-                        </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/identification_txtleducation"
                             android:layout_width="match_parent"
@@ -973,8 +884,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
-
-
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
@@ -1663,12 +1572,117 @@
                     app:cardPreventCornerOverlap="false"
                     tools:visibility="visible">
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="8dp">
+
+                        <!--Fields moved from above to here - Start -->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/ration_card_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/does_this_household_have_ration_card"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/ration_card_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/yes_card_seen"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/yes_card_not_seen"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_card"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/do_not_know"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+
+                            android:background="?android:attr/listDivider" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/identification_txtleconomic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:weightSum="4">
+
+                                <EditText
+                                    android:id="@+id/identification_econiomic_status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:drawableStart="@drawable/econiomic_status_icon"
+                                    android:drawableLeft="@drawable/econiomic_status_icon"
+                                    android:drawablePadding="10dp"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:imeOptions="actionUnspecified"
+                                    android:inputType="textCapWords"
+                                    android:maxLines="1"
+                                    android:text="@string/identification_screen_prompt_economic_status"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_economic_status"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!--Fields moved from above to here - End -->
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/religion_text_view"
@@ -1677,6 +1691,7 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/religion"
                             android:textColor="@color/primary_text"
+                            android:layout_marginTop="15sp"
                             android:textSize="15sp" />
 
                         <Spinner
@@ -2337,55 +2352,84 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="5dp"
-                            android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"
+                            android:text="@string/is_the_source_drinking_water_within_30_minutes"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/time_water_checkbox"
+                        <RadioGroup
+                            android:id="@+id/water_source_30minutes_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/declined"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+                            android:orientation="horizontal">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="15dp">
-
-                            <EditText
-                                android:id="@+id/time_water_editText"
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/water_source_30minutes_yes_radioBtn"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:focusable="false"
-                                android:focusableInTouchMode="true"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:hint="@string/enter_time"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="number"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/yes"
+                                android:textSize="13sp" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"
-                            android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone"/>
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/water_source_30minutes_no_radioBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no"
+                                android:textSize="13sp" />
+                        </RadioGroup>
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="10dp"
-                            android:visibility="gone"/>
+                            android:layout_height="10dp" />
+
+                        <!--  <com.google.android.material.checkbox.MaterialCheckBox
+                              android:id="@+id/time_water_checkbox"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:text="@string/declined"
+                              android:textSize="@dimen/card_content_sub_text_size" />
+
+                          <com.google.android.material.textfield.TextInputLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginBottom="15dp">
+
+                              <EditText
+                                  android:id="@+id/time_water_editText"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:ems="10"
+                                  android:focusable="false"
+                                  android:focusableInTouchMode="true"
+                                  android:fontFamily="@font/lato_regular"
+                                  android:freezesText="true"
+                                  android:hint="@string/enter_time"
+                                  android:imeOptions="actionUnspecified"
+                                  android:inputType="number"
+                                  android:maxLines="1"
+                                  android:singleLine="true"
+                                  android:textSize="@dimen/card_content_sub_text_size" />
+
+                          </com.google.android.material.textfield.TextInputLayout>
+
+                          <TextView
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:paddingStart="5dp"
+                              android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"
+                              android:textSize="@dimen/card_content_sub_text_size"
+                              android:visibility="gone"/>
+
+                          <Space
+                              android:layout_width="10dp"
+                              android:layout_height="10dp"
+                              android:visibility="gone"/>-->
 
                         <Spinner
                             android:id="@+id/water_availability_spinner"
@@ -2839,7 +2883,7 @@
                             android:layout_marginTop="20sp"
                             android:orientation="vertical">
 
-                            <com.google.android.material.checkbox.MaterialCheckBox
+                           <!-- <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/lantern_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -2869,6 +2913,17 @@
                                 android:paddingStart="4sp"
                                 android:paddingEnd="4sp"
                                 android:text="@string/candle"
+                                android:textSize="13sp" />-->
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/lantern_kerso_candle_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/lantern_kerosenelamp_candle"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
@@ -2882,6 +2937,7 @@
                                 android:text="@string/electricity"
                                 android:textSize="13sp" />
 
+<!--
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/lpg_checkbox"
                                 android:layout_width="wrap_content"
@@ -2892,6 +2948,7 @@
                                 android:paddingEnd="4sp"
                                 android:text="@string/lpg"
                                 android:textSize="13sp" />
+-->
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/solar_energy_checkbox"
@@ -2913,6 +2970,17 @@
                                 android:paddingStart="4sp"
                                 android:paddingEnd="4sp"
                                 android:text="@string/none"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/others_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/others"
                                 android:textSize="13sp" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -3041,7 +3109,7 @@
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="25dp"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday"
+                            android:text="@string/describe_hand_wash_practise"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp" />
 
@@ -3050,79 +3118,135 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/hand_wash_occasion_text_view"
-                            android:layout_marginTop="20sp"
+                            android:layout_marginTop="10sp"
                             android:orientation="vertical">
 
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/no_soap_available_checkbox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="top"
-                                android:paddingStart="4sp"
-                                android:paddingEnd="4sp"
-                                android:text="@string/no_soap_available_in_the_household"
-                                android:textSize="13sp" />
-
-                            <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/soap_not_used_for_washing_hands_checkbox"
+                                android:id="@+id/use_soap_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:gravity="top"
+                                android:gravity="center_vertical"
                                 android:paddingStart="4sp"
-                                android:paddingTop="2dp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/soap_available_in_the_household_but_did_not_use_it_to_wash_hands"
+                                android:text="@string/use_soap"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/before_cooking_checkbox"
+                                android:id="@+id/use_other_means_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:gravity="top"
+                                android:gravity="center_vertical"
                                 android:paddingStart="4sp"
-                                android:paddingTop="2dp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/before_cooking"
+                                android:text="@string/use_other_means_wash_hands"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/after_handling_food_checkbox"
+                                android:id="@+id/wash_after_toilet_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:gravity="top"
+                                android:gravity="center_vertical"
                                 android:paddingStart="4sp"
-                                android:paddingTop="2dp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/after_handling_food"
+                                android:text="@string/wash_after_using_toilet"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/before_eating_checkbox"
+                                android:id="@+id/wash_before_cooking_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:gravity="top"
+                                android:gravity="center_vertical"
                                 android:paddingStart="4sp"
-                                android:paddingTop="2dp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/before_eating"
+                                android:text="@string/wash_before_cooking"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/after_using_toilet_checkbox"
+                                android:id="@+id/wash_before_after_eating_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:gravity="top"
+                                android:gravity="center_vertical"
                                 android:paddingStart="4sp"
-                                android:paddingTop="2dp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/after_using_toilet"
+                                android:text="@string/wash_before_after_eating"
                                 android:textSize="13sp" />
 
+
+                            <!-- <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/no_soap_available_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/no_soap_available_in_the_household"
+                                 android:textSize="13sp" />
+
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/soap_not_used_for_washing_hands_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingTop="2dp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/soap_available_in_the_household_but_did_not_use_it_to_wash_hands"
+                                 android:textSize="13sp" />
+
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/before_cooking_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingTop="2dp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/before_cooking"
+                                 android:textSize="13sp" />
+
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/after_handling_food_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingTop="2dp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/after_handling_food"
+                                 android:textSize="13sp" />
+
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/before_eating_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingTop="2dp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/before_eating"
+                                 android:textSize="13sp" />
+
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/after_using_toilet_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="top"
+                                 android:paddingStart="4sp"
+                                 android:paddingTop="2dp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/after_using_toilet"
+                                 android:textSize="13sp" />
+ -->
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <Space

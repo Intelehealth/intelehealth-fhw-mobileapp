@@ -1146,4 +1146,12 @@
     <string name="do_nothing">Do Nothing</string>
     <string name="landless">Landless</string>
     <string name="ekal_process_takeup_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, BP testing, Sugar testing, and doctor consultations as needed. would you like to take our service?</string>
+    <string name="lantern_kerosenelamp_candle">Lantern/Kerosene Lamp/Candle</string>
+    <string name="describe_hand_wash_practise">Describe your hand wash practice</string>
+    <string name="use_soap">Use Soap</string>
+    <string name="use_other_means_wash_hands">Use other means to wash hands</string>
+    <string name="wash_after_using_toilet">Wash after using toilet</string>
+    <string name="wash_before_cooking">Wash before cooking</string>
+    <string name="wash_before_after_eating">Wash before and after eating</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">Is the source of drinking water within 30 minutes of round trip from the household?</string>
 </resources>

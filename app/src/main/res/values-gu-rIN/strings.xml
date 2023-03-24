@@ -1146,4 +1146,13 @@
     <string name="do_nothing">મૂકી રાખો અને સ્થિર કરો</string>
     <string name="landless">જમીન વિહોણા</string>
     <string name="ekal_process_takeup_question">એકલ તમારા ગામમાં ટેલીમેડીસીન પ્રોગ્રામ શરૂ કરી રહ્યું છે જેમાં તમારા ગામને પ્રાથમિક આરોગ્યની સંભાળ જેમકે - હિમોગ્લોબીન ટેસ્ટ , બીપી ટેસ્ટ , સુગર ટેસ્ટ , અને જરૂરિયાત મુજબ ડોકટરની પરામર્શ અપાશે.શું તમે આ સેવા લેવા માંગો છો?</string>
+    <string name="lantern_kerosenelamp_candle">લાલટેન/કેરોસીન દીવો/મીણબત્તી</string>
+    <string name="describe_hand_wash_practise">હાથ ધોવાના આદત વિશે જણાવો</string>
+    <string name="use_soap">સાબુનો ઉપયોગ</string>
+    <string name="use_other_means_wash_hands">ઘરમાં સાબુ ઉપલબ્ધ છે પણ ધોવામાં ઉપયોગ કરેલ નથી</string>
+    <string name="wash_after_using_toilet">શૌચાલયનો ઉપયોગ કર્યા પછી</string>
+    <string name="wash_before_cooking">જમવાનું બનાવવા પહેલા</string>
+    <string name="wash_before_after_eating">જમ્યા પહેલાં અને જમ્યા પછી</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">શું ત્યાં જવામાં અને પાછા આવામાં 30 મિનિટ થી વધારે સમય લાગે છે?</string>
+
 </resources>
