@@ -1572,6 +1572,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_bn">
@@ -1580,6 +1581,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_hi">
@@ -1588,6 +1590,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_or">
@@ -1596,6 +1599,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_gu">
@@ -1604,6 +1608,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_as">
@@ -1612,6 +1617,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
 </resources>

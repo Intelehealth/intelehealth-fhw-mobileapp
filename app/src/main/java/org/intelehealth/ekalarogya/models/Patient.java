@@ -62,6 +62,7 @@ public class Patient {
     private String openDefecationStatus;
     private String reasonForOpenDefecation;
     private String handWashOccasion;
+    private String ekalProcess;
     private String foodPreparedInTwentyFourHours;
     private String hohRelationship;
     private String relationWithHead;
@@ -576,5 +577,13 @@ public class Patient {
 
     public void setRelationWithHead(String relationWithHead) {
         this.relationWithHead = relationWithHead;
+    }
+
+    public String getEkalProcess() {
+        return ekalProcess;
+    }
+
+    public void setEkalProcess(String ekalProcess) {
+        this.ekalProcess = ekalProcess;
     }
 }

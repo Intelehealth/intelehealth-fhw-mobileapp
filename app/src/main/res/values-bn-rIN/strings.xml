@@ -1144,4 +1144,6 @@
     <string name="unmarried">অবিবাহিত</string>
     <string name="handmade_purifier">হ্যান্ড মেড পিউরিফায়ার</string>
     <string name="do_nothing">কিছুই করবেন না</string>
+    <string name="landless">ভূমিহীন</string>
+    <string name="ekal_process_takeup_question">Ekal প্রাথমিক স্বাস্থ্যসেবা প্রদানের জন্য আপনার গ্রামে একটি টেলিমেডিসিন প্রোগ্রাম শুরু করছে যার মধ্যে রয়েছে - এইচবি টেস্টিং, বিপি টেস্টিং, সুগার টেস্টিং এবং প্রয়োজনে ডাক্তারের পরামর্শ। আপনি কি আমাদের সেবা নিতে চান?</string>
 </resources>

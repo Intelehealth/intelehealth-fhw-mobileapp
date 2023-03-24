@@ -4068,6 +4068,10 @@ public final class StringUtils {
             if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hectare);
             }
+        // Translate string Landless to English
+        if (context.getString(R.string.landless).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.landless);
+        }
       //  }
         return text;
     }
@@ -4131,6 +4135,10 @@ public final class StringUtils {
             if (context.getString(R.string.dung_cakes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.dung_cakes);
             }
+        // Translate string Others to English
+        if (context.getString(R.string.others).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.others);
+        }
             // Translate string Lantern to English
             if (context.getString(R.string.lantern).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.lantern);
@@ -4223,10 +4231,7 @@ public final class StringUtils {
             if (context.getString(R.string.nal_jal_yojana).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.nal_jal_yojana);
             }*/
-            // Translate string Others to English
-            if (context.getString(R.string.others).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.others);
-            }
+
             // Translate string Boil to English
             if (context.getString(R.string.boil).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.boil);

@@ -1144,4 +1144,6 @@
     <string name="not_sure">Not Sure</string>
     <string name="handmade_purifier">Hand Made Purifier</string>
     <string name="do_nothing">Do Nothing</string>
+    <string name="landless">Landless</string>
+    <string name="ekal_process_takeup_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, BP testing, Sugar testing, and doctor consultations as needed. would you like to take our service?</string>
 </resources>

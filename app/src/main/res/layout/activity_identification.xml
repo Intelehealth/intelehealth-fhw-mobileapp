@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="-6500dp"
     tools:context=".activities.identificationActivity.IdentificationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -2807,6 +2808,17 @@
                                 android:text="@string/dung_cakes"
                                 android:textSize="13sp" />
 
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/other_fuel_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/others"
+                                android:textSize="13sp" />
+
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <com.google.android.material.textview.MaterialTextView
@@ -3116,6 +3128,56 @@
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <!--Ekal process - Start -->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ekal_process_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/ekal_process_takeup_question"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/ekal_process_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/ekal_process_yes_radioBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/yes"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/ekal_process_no_radioBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no"
+                                android:textSize="13sp" />
+                        </RadioGroup>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <!--Ekal process - End -->
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/food_cooked_in_twenty_four_hours_text_view"

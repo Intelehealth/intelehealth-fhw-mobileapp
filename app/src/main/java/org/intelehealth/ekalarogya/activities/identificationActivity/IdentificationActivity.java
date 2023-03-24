@@ -213,7 +213,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     private MaterialRadioButton hohYes, hohNo;
 
     // RadioGroup
-    private RadioGroup hohRadioGroup;
+    private RadioGroup hohRadioGroup, ekalProcessRadioGroup;
 
     Intent i_privacy;
     String privacy_value;
@@ -393,6 +393,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
         // RadioGroup
         hohRadioGroup = findViewById(R.id.hoh_radio_group);
+        ekalProcessRadioGroup = findViewById(R.id.ekal_process_radio_group);
 
         //Initialize the local database to store patient information
 
@@ -932,7 +933,13 @@ public class IdentificationActivity extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     landOwnedEditText.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else {
+                    landOwnedEditText.setVisibility(View.GONE);
+                }
+
+                if (position == 5) {
+                    landOwnedEditText.setText("");    // so that when user selects this option that the amount becomes "" for Landless.
                     landOwnedEditText.setVisibility(View.GONE);
                 }
             }
@@ -1596,7 +1603,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String[] splitString = patient1.getHectars_land().split(" ");
                     if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
                         binding.landOwnedEditText.setText(splitString[0].trim());
-                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1], updatedContext, context, sessionManager.getAppLanguage()));
+                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1],
+                            updatedContext, context, sessionManager.getAppLanguage()));
                     unitsSpinner.setSelection(spinnerPosition);
                 }
 
@@ -1678,12 +1686,20 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
 */
 
+                // Ekal process on Edit click -> Set fields with values from db.
+                if (patient1.getEkalProcess() != null && !patient1.getEkalProcess().equalsIgnoreCase("")) {
+                    setSelectedCheckboxes(binding.ekalProcessRadioGroup, patient1.getEkalProcess(),
+                            updatedContext, this, sessionManager.getAppLanguage());
+                }
+
                 if (patient1.getCookingFuel() != null && !patient1.getCookingFuel().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, patient1.getCookingFuel(), updatedContext, this, sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, patient1.getCookingFuel(),
+                            updatedContext, this, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getHouseholdLighting() != null && !patient1.getHouseholdLighting().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, patient1.getHouseholdLighting(), updatedContext, this, sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, patient1.getHouseholdLighting(),
+                            updatedContext, this, sessionManager.getAppLanguage());
                 }
 
 /*
@@ -2591,6 +2607,10 @@ public class IdentificationActivity extends AppCompatActivity implements
                 if (name.equalsIgnoreCase("soapHandWashingOccasion")) {
                     patient1.setHandWashOccasion(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                // ekal process - on edit set fields.
+                if (name.equalsIgnoreCase("TakeOurService")) {
+                    patient1.setEkalProcess(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 // foodItemsPreparedInTwentyFourHours
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHours")) {
                     patient1.setFoodPreparedInTwentyFourHours(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -3034,6 +3054,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 */
+
         if (hohRadioGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, getString(R.string.please_state_if_you_are_the_head_of_the_family), Toast.LENGTH_SHORT).show();
             focusView = hohRadioGroup;
@@ -3133,7 +3154,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
 
             // Validations for Running Water Hours Edit Text
-            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
+            if (binding.waterSupplyYes.isChecked() &&
+                    checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
                 binding.runningWaterHoursEditText.setError(getString(R.string.enter_number));
                 focusView = binding.runningWaterHoursEditText;
                 cancel = true;
@@ -3232,12 +3254,14 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 
-            if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
-                if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
-                    binding.landOwnedEditText.setError(getString(R.string.enter_number));
-                    focusView = binding.landOwnedEditText;
-                    cancel = true;
-                    return;
+            if (landOwnedEditText.getVisibility() == View.VISIBLE) {
+                if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+                    if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
+                        binding.landOwnedEditText.setError(getString(R.string.enter_number));
+                        focusView = binding.landOwnedEditText;
+                        cancel = true;
+                        return;
+                    }
                 }
             }
 
@@ -3292,7 +3316,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                 if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
                     Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-                    focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                    focusView = binding.reasonForOpenDefecationCheckboxLinearLayout;
                     cancel = true;
                     return;
                 }
@@ -3300,7 +3324,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
             if (checkIfCheckboxesEmpty(binding.handWashOccasionLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-                focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                focusView = binding.handWashOccasionLinearLayout;
                 cancel = true;
                 return;
             }
@@ -3313,6 +3337,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 */
+
+            // Ekal process take up - New question added on 24th march 2023
+            if (ekalProcessRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = ekalProcessRadioGroup;
+                cancel = true;
+                return;
+            }
+            // Ekal process - End
 
         }
 
@@ -3716,12 +3749,14 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                        ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        ((RadioButton) binding.householdElectricityRadioGroup.
+                                findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
+
 
                 if (binding.householdElectricityYes.isChecked()) {
 
@@ -4050,6 +4085,20 @@ public class IdentificationActivity extends AppCompatActivity implements
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // ekal process
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("TakeOurService"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.ekalProcessRadioGroup.
+                                findViewById(binding.ekalProcessRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4698,12 +4747,14 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 
-            if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
-                if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
-                    binding.landOwnedEditText.setError(getString(R.string.enter_number));
-                    focusView = binding.landOwnedEditText;
-                    cancel = true;
-                    return;
+            if (landOwnedEditText.getVisibility() == View.VISIBLE) {
+                if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+                    if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
+                        binding.landOwnedEditText.setError(getString(R.string.enter_number));
+                        focusView = binding.landOwnedEditText;
+                        cancel = true;
+                        return;
+                    }
                 }
             }
 
@@ -4758,7 +4809,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
                 if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
                     Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-                    focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                    focusView = binding.reasonForOpenDefecationCheckboxLinearLayout;
                     cancel = true;
                     return;
                 }
@@ -4766,7 +4817,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
             if (checkIfCheckboxesEmpty(binding.handWashOccasionLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-                focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                focusView = binding.handWashOccasionLinearLayout;
                 cancel = true;
                 return;
             }
@@ -4779,6 +4830,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 */
+
+             // Ekal process take up - New question added on 24th march 2023
+            if (ekalProcessRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = ekalProcessRadioGroup;
+                cancel = true;
+                return;
+            }
+            // Ekal process - End
 
         }
 
@@ -5537,6 +5597,20 @@ public class IdentificationActivity extends AppCompatActivity implements
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // ekal process
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("TakeOurService"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.ekalProcessRadioGroup.
+                                findViewById(binding.ekalProcessRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        context,
+                        updatedContext,
+                        sessionManager.getAppLanguage()
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
