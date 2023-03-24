@@ -130,7 +130,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
                     String message = "Are you sure you want to change language to " + selected_language + "?";
-                    dialog(context, getResources().getDrawable(R.drawable.close_patient_svg), "Change language?",
+                    dialog(context, getResources().getDrawable(R.drawable.alert_error_svg), "Change language?",
                             message, "Yes", "No", false);
 
                 }
