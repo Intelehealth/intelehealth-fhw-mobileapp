@@ -917,10 +917,10 @@
 
     <string name="never_checked">କଦାପି ଯାଞ୍ଚ କରାଯାଇ ନାହିଁ</string>
     <string name="in_past_one_week">ଗତ ଏକ ସପ୍ତାହରେ</string>
-    <string name="within_last_month">ଗତ ମାସ ମଧ୍ୟରେ</string>
+    <string name="within_last_month">ଗତ ୬ ମାସ ଭିତରେ</string>
     <string name="between_one_month_to_three_months_ago">୧ ରୁ ୩ ମାସ ମଧ୍ୟରେ</string>
     <string name="between_three_months_to_six_months_ago">୩ ରୁ ୬ ମାସ ପୂର୍ବେ</string>
-    <string name="more_than_six_months">୬ ମାସରୁ ଅଧିକ</string>
+    <string name="more_than_six_months">୬ ମାସରୁ ଅଧିକ ସମୟ</string>
 
     <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
     <string name="medical_history">ଚିକିତ୍ସା ଇତିହାସ*</string>
@@ -1033,4 +1033,6 @@
     <string name="graduation_and_above">ସ୍ନାତକ ଓ ଅଧିକ</string>
     <string name="married">ବିବାହିତ</string>
     <string name="unmarried">ଅବିବାହିତ</string>
+    <string name="handmade_purifier">ହାତ ତିଆରି ବିଶୋଧକ</string>
+    <string name="do_nothing">କିଛି କରୁ ନାହିଁ</string>
 </resources>

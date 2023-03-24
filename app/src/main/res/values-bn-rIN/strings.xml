@@ -1054,10 +1054,10 @@
 
     <string name="never_checked">কখনই চেক করা হয়নি</string>
     <string name="in_past_one_week">গত এক সপ্তাহে</string>
-    <string name="within_last_month">গত মাসের মধ্যে</string>
+    <string name="within_last_month">গত 6 মাসের মধ্যে</string>
     <string name="between_one_month_to_three_months_ago">এক মাস থেকে তিন মাস আগে</string>
     <string name="between_three_months_to_six_months_ago">3 মাস-6 মাস আগে</string>
-    <string name="more_than_six_months">৬ মাসের বেশি</string>
+    <string name="more_than_six_months">6 মাসেরও বেশি আগে</string>
 
     <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="medical_history">চিকিৎসা ইতিহাস*</string>
@@ -1142,4 +1142,6 @@
     <string name="graduation_and_above">স্নাতক এবং তার উপরে</string>
     <string name="married">বিবাহিত</string>
     <string name="unmarried">অবিবাহিত</string>
+    <string name="handmade_purifier">হ্যান্ড মেড পিউরিফায়ার</string>
+    <string name="do_nothing">কিছুই করবেন না</string>
 </resources>

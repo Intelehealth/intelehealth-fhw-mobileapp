@@ -1028,10 +1028,10 @@
     <string name="when_was_the_last_time_your_bmi_was_checked">आखिरी बार आपका बीएमआई (ऊंचाई और वजन) कब चेक किया गया था?*</string>
     <string name="never_checked">कभी चेक नहीं किया गया</string>
     <string name="in_past_one_week">पिछले एक सप्ताह में</string>
-    <string name="within_last_month">पिछले महीने के भीतर</string>
+    <string name="within_last_month">पिछले 6 महीनों के भीतर</string>
     <string name="between_one_month_to_three_months_ago">1 महीने से 3 महीने पहले के बीच</string>
     <string name="between_three_months_to_six_months_ago">3 से 6 महीने पहले</string>
-    <string name="more_than_six_months">6 महीने से अधिक</string>
+    <string name="more_than_six_months">6 महीने से अधिक पहले</string>
 
     <!--    Education Strings -->
     <string name="cannot_read_and_write">पढ़ या लिख नहीं सकता</string>
@@ -1149,4 +1149,6 @@
     <string name="graduation_and_above">स्नातक या स्नातक से ऊपर</string>
     <string name="married">विवाहित</string>
     <string name="unmarried">अविवाहित</string>
+    <string name="handmade_purifier">घर पर बनाये फ़िल्टर का उपयोग करते है</string>
+    <string name="do_nothing">कुछ नहीं करते है</string>
 </resources>

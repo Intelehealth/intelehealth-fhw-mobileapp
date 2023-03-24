@@ -197,7 +197,7 @@ public final class StringUtils {
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             switch (checkbox_text) {
-                case "जवाब देने के लिए मना कर दिया":
+                case "खुले में शौच":
                     val = "Declined to answer";
                     break;
                 default:
@@ -490,23 +490,23 @@ public final class StringUtils {
 
     public static String switch_hi_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "खुले में शौच";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "घर में शौचालय का प्रयोग करते है है लेकिन वह अनुपयोगी है";
+                break;
+            case "Use toilet at home":
+                val = "घर में शौचालय का प्रयोग करते है";
+                break;
+            case "Use Community Toilet":
+                val = "सामुदायिक शौचालय का प्रयोग करते है";
+                break;
+            case "Shared Toilet with other households":
+                val = "अन्य घरों के साथ साझा शौचालय है";
+                break;
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
-                break;
-            case "No facility /uses open space or field":
-                val = "कोई सुविधा नहीं / खुली जगह या क्षेत्र का उपयोग करते हैं";
-                break;
-            case "Own toilet":
-                val = "खुद का शौचालय";
-                break;
-            case "Community toilet":
-                val = "सामुदायिक शौचालय";
-                break;
-            case "Shared toilet with other household":
-                val = "अन्य घर के साथ साझा शौचालय";
-                break;
-            case "Other [Enter]":
-                val = "अन्य [दर्ज करें]";
+                val = "जवाब देने से मना कर दिया";
                 break;
             default:
                 return val;
@@ -515,23 +515,23 @@ public final class StringUtils {
     }
     public static String switch_bn_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "খোলা মলত্যাগ";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "একটি টয়লেটের মালিক কিন্তু এটি ব্যবহারের অনুপযোগী";
+                break;
+            case "Use toilet at home":
+                val = "বাড়িতে টয়লেট ব্যবহার করুন।";
+                break;
+            case "Use Community Toilet":
+                val = "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক";
+                break;
+            case "Shared Toilet with other households":
+                val = "অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ";
+                break;
             case "Declined to answer":
-                val = "উত্তর দিতে অস্বীকৃতি জানায়";
-                break;
-            case "No facility /uses open space or field":
-                val = "কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না";
-                break;
-            case "Own toilet":
-                val = "নিজস্ব টয়লেট";
-                break;
-            case "Community toilet":
-                val = "কমিউনিটি টয়লেট";
-                break;
-            case "Shared toilet with other household":
-                val = "অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট";
-                break;
-            case "Other [Enter]":
-                val = "অন্যান্য [এন্টার]";
+                val = "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে";
                 break;
             default:
                 return val;
@@ -541,23 +541,23 @@ public final class StringUtils {
 
     public static String switch_or_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "ମୁକ୍ତ ଜାଗା";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି";
+                break;
+            case "Use toilet at home":
+                val = "ଘରେ ପାଇଖାନା ରବ୍ୟବହାର";
+                break;
+            case "Use Community Toilet":
+                val = "ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର";
+                break;
+            case "Shared Toilet with other households":
+                val = "ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର";
+                break;
             case "Declined to answer":
-                val = "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ";
-                break;
-            case "No facility /uses open space or field":
-                val = "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର";
-                break;
-            case "Own toilet":
-                val = "ନିଜର ଶୌଚାଳୟ";
-                break;
-            case "Community toilet":
-                val = "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ";
-                break;
-            case "Shared toilet with other household":
-                val = "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର";
-                break;
-            case "Other [Enter]":
-                val = "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]";
+                val = "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ";
                 break;
             default:
                 return val;
@@ -567,23 +567,23 @@ public final class StringUtils {
 
     public static String switch_gu_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "ઓપન ડીફેકેશન";//-------replace with gujrati
+                break;
+            case "Own a toilet but it is unusable":
+                val = "શૌચાલયની માલિકી છે પરંતુ તે બિનઉપયોગી છે";
+                break;
+            case "Use toilet at home":
+                val = "ઘરમાં શૌચાલયનો ઉપયોગ કરો.";
+                break;
+            case "Use Community Toilet":
+                val = "સામુદાયિક શૌચાલયનો ઉપયોગ કરો";
+                break;
+            case "Shared Toilet with other households":
+                val = "અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય";
+                break;
             case "Declined to answer":
-                val = "જવાબ આપવાનો ઇનકાર કર્યો";//-------replace with gujrati
-                break;
-            case "No facility /uses open space or field":
-                val = "કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી";
-                break;
-            case "Own toilet":
-                val = "પોતાનું શૌચાલય";
-                break;
-            case "Community toilet":
-                val = "સામુદાયિક શૌચાલય";
-                break;
-            case "Shared toilet with other household":
-                val = "અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય";
-                break;
-            case "Other [Enter]":
-                val = "અન્ય [દાખલ કરો]";
+                val = "જવાબ આપવાનો ઇનકાર કર્યો";
                 break;
             default:
                 return val;
@@ -593,23 +593,23 @@ public final class StringUtils {
 
     public static String switch_as_toiletfacil_edit(String val) {
         switch (val) {
-            case "Declined to answer":
-                val = "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে";
+            case "Open Defacation":
+                val = "মুকলিকৈ শৌচ কৰা";
                 break;
-            case "No facility /uses open space or field":
-                val = "কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে";
+            case "Own a toilet but it is unusable":
+                val = "শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা";
                 break;
-            case "Own toilet":
-                val = "নিজা শৌচাগাৰ";
+            case "Use toilet at home":
+                val = "ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক।";
                 break;
-            case "Community toilet":
-                val = "কমিউনিটি টয়লেট";
+            case "Use Community Toilet":
+                val = "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক";
                 break;
-            case "Shared toilet with other household":
+            case "Shared Toilet with other households":
                 val = "আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট";
                 break;
-            case "Other [Enter]":
-                val = "અન્ય [દાખલ કરો]";
+            case "Declined to answer":
+                val = "જવાબ આપવાનો ઇનકાર કર્યો";
                 break;
             default:
                 return val;
@@ -619,24 +619,24 @@ public final class StringUtils {
 
     public static String switch_hi_en_toiletfacil(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
+                val = "Open Defacation";
+                break;
+            case "घर में शौचालय का प्रयोग करते है है लेकिन वह अनुपयोगी है":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "घर में शौचालय का प्रयोग करते है":
+                val = "Use toilet at home";
+                break;
+            case "सामुदायिक शौचालय का प्रयोग करते है":
+                val = "Use Community Toilet";
+                break;
+            case "अन्य घरों के साथ साझा शौचालय है":
+                val = "Shared Toilet with other households";
+                break;
+            case "जवाब देने से मना कर दिया":
                 val = "Declined to answer";
                 break;
-            case "कोई सुविधा नहीं / खुली जगह या क्षेत्र का उपयोग करते हैं":
-                val = "No facility /uses open space or field";
-                break;
-            case "खुद का शौचालय":
-                val = "Own toilet";
-                break;
-            case "सामुदायिक शौचालय":
-                val = "Community toilet";
-                break;
-            case "अन्य घर के साथ साझा शौचालय":
-                val = "Shared toilet with other household";
-                break;
-           /* case "अन्य [दर्ज करें]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -644,24 +644,24 @@ public final class StringUtils {
     }
     public static String switch_bn_en_toiletfacil(String val) {
         switch (val) {
-            case "উত্তর দিতে অস্বীকৃতি জানায়":
+            case "খোলা মলত্যাগ":
+                val = "Open Defacation";
+                break;
+            case "একটি টয়লেটের মালিক কিন্তু এটি ব্যবহারের অনুপযোগী":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "বাড়িতে টয়লেট ব্যবহার করুন।":
+                val = "Use toilet at home";
+                break;
+            case "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক":
+                val = "Use Community Toilet";
+                break;
+            case "অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ":
+                val = "Shared Toilet with other households";
+                break;
+            case "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে":
                 val = "Declined to answer";
                 break;
-            case "কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না":
-                val = "No facility /uses open space or field";
-                break;
-            case "নিজস্ব টয়লেট":
-                val = "Own toilet";
-                break;
-            case "কমিউনিটি টয়লেট":
-                val = "Community toilet";
-                break;
-            case "অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট":
-                val = "Shared toilet with other household";
-                break;
-           /* case "अन्य [दर्ज करें]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -670,24 +670,24 @@ public final class StringUtils {
 
     public static String switch_or_en_toiletfacil(String val) {
         switch (val) {
-            case "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ":
+            case "ମୁକ୍ତ ଜାଗା":
+                val = "Open Defacation";
+                break;
+            case "ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "ଘରେ ପାଇଖାନା ରବ୍ୟବହାର":
+                val = "Use toilet at home";
+                break;
+            case "ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର":
+                val = "Use Community Toilet";
+                break;
+            case "ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର":
+                val = "Shared Toilet with other households";
+                break;
+            case "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ":
                 val = "Declined to answer";
                 break;
-            case "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର":
-                val = "No facility /uses open space or field";
-                break;
-            case "ନିଜର ଶୌଚାଳୟ":
-                val = "Own toilet";
-                break;
-            case "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ":
-                val = "Community toilet";
-                break;
-            case "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର":
-                val = "Shared toilet with other household";
-                break;
-           /* case "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -696,23 +696,23 @@ public final class StringUtils {
 
     public static String switch_gu_en_toiletfacil(String val) {
         switch (val) {
-            case "જવાબ આપવાનો ઇનકાર કર્યો"://-------replace with gujrati
+            case "ઓપન ડીફેકેશન"://-------replace with gujrati
+                val = "Open Defacation";
+                break;
+            case "શૌચાલયની માલિકી છે પરંતુ તે બિનઉપયોગી છે":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "ઘરમાં શૌચાલયનો ઉપયોગ કરો.":
+                val = "Use toilet at home";
+                break;
+            case "સામુદાયિક શૌચાલયનો ઉપયોગ કરો":
+                val = "Use Community Toilet";
+                break;
+            case "અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય":
+                val = "Shared Toilet with other households";
+                break;
+           /* case "જવાબ આપવાનો ઇનકાર કર્યો":
                 val = "Declined to answer";
-                break;
-            case "કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી":
-                val = "No facility /uses open space or field";
-                break;
-            case "પોતાનું શૌચાલય":
-                val = "Own toilet";
-                break;
-            case "સામુદાયિક શૌચાલય":
-                val = "Community toilet";
-                break;
-            case "અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય":
-                val = "Shared toilet with other household";
-                break;
-           /* case "અન્ય [દાખલ કરો]":
-                val = "Other [Enter]";
                 break;*/
             default:
                 return val;
@@ -722,24 +722,24 @@ public final class StringUtils {
 
     public static String switch_as_en_toiletfacil(String val) {
         switch (val) {
-            case "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে"://-------replace with Assamese
-                val = "Declined to answer";
+            case "মুকলিকৈ শৌচ কৰা"://-------replace with Assamese
+                val = "Open Defacation";
                 break;
-            case "কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে":
-                val = "No facility /uses open space or field";
+            case "শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা":
+                val = "Own a toilet but it is unusable";
                 break;
-            case "নিজা শৌচাগাৰ":
-                val = "Own toilet";
+            case "ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক।":
+                val = "Use toilet at home";
                 break;
-            case "কমিউনিটি টয়লেট":
-                val = "Community toilet";
+            case "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক":
+                val = "Use Community Toilet";
                 break;
             case "আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট":
-                val = "Shared toilet with other household";
+                val = "Shared Toilet with other households";
                 break;
-           /* case "અન્ય [દાખલ કરો]":
-                val = "Other [Enter]";
-                break;*/
+            case "જવાબ આપવાનો ઇનકાર કર્યો":
+                val = "Declined to answer";
+                break;
             default:
                 return val;
         }
@@ -748,7 +748,7 @@ public final class StringUtils {
 
     public static String switch_hi_en_wateravail(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
                 val = "Declined to answer";
                 break;
             case "हाँ":
@@ -1491,7 +1491,7 @@ public final class StringUtils {
 
     public static String switch_hi_en_bankaccount(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
                 val = "Declined to answer";
                 break;
             case "हाँ":
@@ -2302,7 +2302,7 @@ public final class StringUtils {
     public static String switch_hi_bankaccount_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Yes":
                 val = "हाँ";
@@ -2454,7 +2454,7 @@ public final class StringUtils {
     /*public static String switch_hi_watersource_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Chapakal/Hand Pump":
                 val = "चापाकल/हैण्ड पंप";
@@ -2541,7 +2541,7 @@ public final class StringUtils {
     public static String switch_hi_wateravail_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Yes":
                 val = "हाँ";
@@ -2640,7 +2640,7 @@ public final class StringUtils {
     /*public static String switch_hi_watersafe_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Nothing":
                 val = "कुछ भी नहीं";
@@ -2664,7 +2664,7 @@ public final class StringUtils {
                 val = "इलेक्ट्रॉनिक फ़िल्टर का उपयोग करें";
                 break;
             case "Other[Enter]":
-                val = "अन्य [दर्ज करें]";
+                val = "जवाब देने से मना कर दिया";
                 break;
             default:
                 return val;
@@ -2699,7 +2699,7 @@ public final class StringUtils {
                 val = "ଇଲେକ୍ଟ୍ରୋନିକ୍ ଫିଲ୍ଟର୍ ବ୍ୟବହାର କରନ୍ତୁ";
                 break;
             case "Other[Enter]":
-                val = "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]";
+                val = "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ";
                 break;
             default:
                 return val;
@@ -2957,7 +2957,7 @@ public final class StringUtils {
    /* public static String switch_hi_occupation_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Government job":
                 val = "सरकारी नौकरी";
@@ -3912,7 +3912,7 @@ public final class StringUtils {
             if (inputContext.getString(R.string.jain).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.jain);
             }
-            // Translate string Jewish to English
+          /*  // Translate string Jewish to English
             if (inputContext.getString(R.string.jewish).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.jewish);
             }
@@ -3925,7 +3925,11 @@ public final class StringUtils {
             // Translate string No Religion to English
             if (inputContext.getString(R.string.no_religion).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.no_religion);
-            }
+            }*/
+        // Translate string Others to English
+        if (inputContext.getString(R.string.others).equalsIgnoreCase(text)) {
+            return outputContext.getString(R.string.others);
+        }
      //   }
         return text;
     }
@@ -4215,9 +4219,13 @@ public final class StringUtils {
             if (context.getString(R.string.hand_pump_at_home).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hand_pump_at_home);
             }
-            // Translate string Nal Jal Yojana to English
+          /*  // Translate string Nal Jal Yojana to English
             if (context.getString(R.string.nal_jal_yojana).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.nal_jal_yojana);
+            }*/
+            // Translate string Others to English
+            if (context.getString(R.string.others).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.others);
             }
             // Translate string Boil to English
             if (context.getString(R.string.boil).equalsIgnoreCase(text)) {
@@ -4239,13 +4247,21 @@ public final class StringUtils {
             if (context.getString(R.string.use_water_filter_ceramic_sand_composite_etc).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_water_filter_ceramic_sand_composite_etc);
             }
-            // Translate string Use Electronic Purifier to English
+           /* // Translate string Use Electronic Purifier to English
             if (context.getString(R.string.use_electronic_purifier).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_electronic_purifier);
             }
             // Translate string Let It Stand And Settle to English
             if (context.getString(R.string.let_it_stand_and_settle).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.let_it_stand_and_settle);
+            }*/
+         // Translate string Handmade purifier to English
+            if (context.getString(R.string.handmade_purifier).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.handmade_purifier);
+            }
+            // Translate string Do Nothing to English
+            if (context.getString(R.string.do_nothing).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.do_nothing);
             }
             // Translate string No Water Available In The Toilet to English
             if (context.getString(R.string.no_water_available_in_the_toilet).equalsIgnoreCase(text)) {
@@ -4499,21 +4515,9 @@ public final class StringUtils {
             if (context.getString(R.string.never_checked).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.never_checked);
             }
-            // Translate string In Past One Week to English
-            if (context.getString(R.string.in_past_one_week).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.in_past_one_week);
-            }
             // Translate string Within Last Month to English
             if (context.getString(R.string.within_last_month).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.within_last_month);
-            }
-            // Translate string Between One Month To Three Months Ago to English
-            if (context.getString(R.string.between_one_month_to_three_months_ago).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.between_one_month_to_three_months_ago);
-            }
-            // Translate string Between Three Months To Six Months Ago to English
-            if (context.getString(R.string.between_three_months_to_six_months_ago).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.between_three_months_to_six_months_ago);
             }
             // Translate string More Than Six Months to English
             if (context.getString(R.string.more_than_six_months).equalsIgnoreCase(text)) {

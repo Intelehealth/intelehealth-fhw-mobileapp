@@ -1041,10 +1041,10 @@
     <string name="when_was_the_last_time_your_bmi_was_checked">છેલ્લી વાર તમે તમારા એચબી સ્તરનું પરીક્ષણ  ક્યારે કરાવ્યુ  હતું?*</string>
     <string name="never_checked">ક્યારે તપાસવામાં આવ્યું નથી </string>
     <string name="in_past_one_week">પાછલા એક અઠવાડિયામાં</string>
-    <string name="within_last_month">પાછલા એક માહિનામાં </string>
+    <string name="within_last_month">છેલ્લા 6 મહિનાની અંદર</string>
     <string name="between_one_month_to_three_months_ago">1 થી 3 મહિનાની વચ્ચે </string>
     <string name="between_three_months_to_six_months_ago">3 મહિના અને 6 મહિનાની વચ્ચે</string>
-    <string name="more_than_six_months">6 મહિનાથી વધારે</string>
+    <string name="more_than_six_months">6 મહિના કરતાં પહેલાં</string>
 
     <!--    Medical History Strings -->
     <string name="medical_history">સરવારનો ઇતિહાસ*</string>
@@ -1142,4 +1142,6 @@
     <string name="graduation_and_above">સ્નાતક અને વધુ</string>
     <string name="married">વિવાહિત</string>
     <string name="unmarried">અવિવાહિત</string>
+    <string name="handmade_purifier">ઘરે બનાવેલું ફિલ્ટર</string>
+    <string name="do_nothing">મૂકી રાખો અને સ્થિર કરો</string>
 </resources>

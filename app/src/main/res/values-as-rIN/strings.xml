@@ -1033,10 +1033,10 @@
 
     <string name="never_checked">কেতিয়াও পৰীক্ষা কৰা হোৱা নাই</string>
     <string name="in_past_one_week">যোৱা এসপ্তাহত</string>
-    <string name="within_last_month">যোৱা মাহৰ ভিতৰত</string>
+    <string name="within_last_month">যোৱা 6 মাহৰ ভিতৰত</string>
     <string name="between_one_month_to_three_months_ago">এমাহৰ পৰা ৩ মাহৰ আগৰ ভিতৰত</string>
     <string name="between_three_months_to_six_months_ago">৩ মাহ-৬মাহৰ আগৰ ভিতৰত</string>
-    <string name="more_than_six_months">৬ মাহতকৈ অধিক</string>
+    <string name="more_than_six_months">6 মাহতকৈ অধিক আগতে</string>
 
     <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="medical_history">চিকিৎসা ইতিহাস*</string>
@@ -1121,4 +1121,6 @@
     <string name="graduation_and_above">স্নাতক আৰু তাৰ ওপৰৰ</string>
     <string name="married">বিবাহিত</string>
     <string name="unmarried">অবিবাহিত</string>
+    <string name="handmade_purifier">হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ</string>
+    <string name="do_nothing">একো নকৰিব</string>
 </resources>

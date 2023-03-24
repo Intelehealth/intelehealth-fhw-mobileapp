@@ -2175,15 +2175,26 @@
                                 android:text="@string/hand_pump_at_home"
                                 android:textSize="13sp" />
 
+<!--                            <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                                android:id="@+id/nal_jal_yojana_checkbox"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="10dp"-->
+<!--                                android:gravity="center_vertical"-->
+<!--                                android:paddingStart="4sp"-->
+<!--                                android:paddingEnd="4sp"-->
+<!--                                android:text="@string/nal_jal_yojana"-->
+<!--                                android:textSize="13sp" />-->
+
                             <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/nal_jal_yojana_checkbox"
+                                android:id="@+id/others_water_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center_vertical"
                                 android:paddingStart="4sp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/nal_jal_yojana"
+                                android:text="@string/others"
                                 android:textSize="13sp" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -2276,7 +2287,7 @@
                                 android:gravity="center_vertical"
                                 android:paddingStart="4sp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/use_electronic_purifier"
+                                android:text="@string/handmade_purifier"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
@@ -2287,7 +2298,18 @@
                                 android:gravity="center_vertical"
                                 android:paddingStart="4sp"
                                 android:paddingEnd="4sp"
-                                android:text="@string/let_it_stand_and_settle"
+                                android:text="@string/do_nothing"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/water_safe_others_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/others"
                                 android:textSize="13sp" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>

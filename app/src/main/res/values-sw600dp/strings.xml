@@ -1054,10 +1054,10 @@
 
     <string name="never_checked">Never Checked</string>
     <string name="in_past_one_week">In past one week</string>
-    <string name="within_last_month">Within last month</string>
+    <string name="within_last_month">Within the last 6 months</string>
     <string name="between_one_month_to_three_months_ago">Between 1 month to 3 months ago</string>
     <string name="between_three_months_to_six_months_ago">Between 3 months to 6 months ago</string>
-    <string name="more_than_six_months">More than 6 months</string>
+    <string name="more_than_six_months">More than 6 months ago</string>
 
     <string name="identification_screen_checkbox_other">Other</string>
     <string name="medical_history">Medical History*</string>
@@ -1140,4 +1140,6 @@
     <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
     <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
     <string name="not_sure">Not Sure</string>
+    <string name="handmade_purifier">Hand Made Purifier</string>
+    <string name="do_nothing">Do Nothing</string>
 </resources>
