@@ -131,9 +131,9 @@ public class ChatActivity extends AppCompatActivity {
         // test nurseid / from userid - 28cea4ab-3188-434a-82f0-055133090a38
         //patientId  - a286e0de-eba0-4ad5-b698-900657d8ac75
         //Doctor id - a4ac4fee-538f-11e6-9cfe-86f436325720
-        connectTOSocket();
 
-        getAllMessages();
+
+
         //postMessages(FROM_UUID, TO_UUID, PATIENT_UUID, "hell.. mobile test - " + System.currentTimeMillis());
         mMessageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -292,7 +292,7 @@ public class ChatActivity extends AppCompatActivity {
                         in.putExtra("isInComingRequest", true);
                         in.putExtra("doctorname", jsonObject.getString("doctorName"));
                         in.putExtra("nurseId", jsonObject.getString("nurseId"));
-                        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                        //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
                         // not required bcz from firebase listener it working fine
                         /*if (callState == TelephonyManager.CALL_STATE_IDLE) {
                             startActivity(in);
@@ -439,9 +439,22 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         if (mSocket != null) {
             mSocket.disconnect();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connectTOSocket();
+        getAllMessages();
     }
 
     public void sendMessageNow(View view) {

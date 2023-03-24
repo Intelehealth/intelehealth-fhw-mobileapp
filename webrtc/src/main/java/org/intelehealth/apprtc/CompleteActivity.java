@@ -1,5 +1,10 @@
 package org.intelehealth.apprtc;
 
+import static org.webrtc.SessionDescription.Type.ANSWER;
+import static org.webrtc.SessionDescription.Type.OFFER;
+import static io.socket.client.Socket.EVENT_CONNECT;
+import static io.socket.client.Socket.EVENT_DISCONNECT;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,8 +21,6 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -60,11 +63,6 @@ import java.util.NoSuchElementException;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-
-import static io.socket.client.Socket.EVENT_CONNECT;
-import static io.socket.client.Socket.EVENT_DISCONNECT;
-import static org.webrtc.SessionDescription.Type.ANSWER;
-import static org.webrtc.SessionDescription.Type.OFFER;
 
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
@@ -215,7 +213,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (localAudioTrack != null) {
-                    setAudioStatus(!localAudioTrack.enabled());
+                    setAudioStatus(!localAudioTrack.enabled(), true);
                 }
             }
         });
@@ -254,7 +252,7 @@ public class CompleteActivity extends AppCompatActivity {
                 createVideoTrackFromCameraAndShowIt();
                 // start again the video streaming
                 startStreamingVideo();
-                setAudioStatus(lastStatusOfAudioEnabled);
+                setAudioStatus(lastStatusOfAudioEnabled, false);
             }
         });
 
@@ -301,16 +299,18 @@ public class CompleteActivity extends AppCompatActivity {
         registerReceiver(mCallEndBroadcastReceiver, filterSend);
     }
 
-    private void setAudioStatus(boolean targetAudioStatus) {
+    private void setAudioStatus(boolean targetAudioStatus, boolean showToast) {
         if (localAudioTrack != null) {
             localAudioTrack.setEnabled(targetAudioStatus);
             if (localAudioTrack.enabled()) {
                 binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
-                Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
+                if (showToast)
+                    Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
                 binding.audioImv.setAlpha(1.0f);
             } else {
                 binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
-                Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
+                if (showToast)
+                    Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
                 binding.audioImv.setAlpha(0.2f);
             }
         }
