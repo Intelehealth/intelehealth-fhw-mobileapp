@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
@@ -51,11 +53,12 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     String otp = "";
     String userUuid = "";
     Context context;
-    RelativeLayout layoutParent;
+    LinearLayout layoutParent, rvHelpInfo;
     CustomProgressDialog cpd;
     SnackbarUtils snackbarUtils;
     TextView tvErrorNewPassword, tvErrorConfirmPassword, tvGeneratePassword;
     TextInputEditText etNewPassword, etConfirmPassword;
+    Button btnSavePassword;
 
 
     @Override
@@ -65,7 +68,8 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         context = ResetPasswordActivity_New.this;
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
-
+        rvHelpInfo = findViewById(R.id.rv_help_info);
+        layoutParent = findViewById(R.id.layout_parent_otp);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             otp = extras.getString("otp");
@@ -73,14 +77,13 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         }
         etNewPassword = findViewById(R.id.et_new_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
-        Button btnSavePassword = findViewById(R.id.btn_save_password);
+        btnSavePassword = findViewById(R.id.btn_save_password);
         ImageView ivBack = findViewById(R.id.imageview_back_reset);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResetPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
@@ -97,10 +100,11 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
             }
 
-           /* if (etNewPassword.getText().toString().equals(etConfirmPassword.getText().toString().trim()) && !otp.isEmpty()) {
+        });
 
-                // apiCallForResetPasswordOld(ResetPasswordActivity_New.this, etNewPassword.getText().toString(), otp);
-            }*/
+        rvHelpInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(ResetPasswordActivity_New.this, ChatSupportHelpActivity_New.class);
+            startActivity(intent);
         });
 
         manageErrorFields();
@@ -110,8 +114,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, ForgotPasswordActivity_New.class);
-        startActivity(intent);
+        finish();
     }
 
     public void apiCallForResetPassword(Context context, String newPassword, String otp) {
@@ -123,7 +126,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         ///, "Basic YWRtaW46QWRtaW4xMjM="
-        ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword, otp);
+        ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword/*, otp*/);
 
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -138,14 +141,12 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             @Override
             public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
                 cpd.dismiss();
-                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.password_changed_successfully),
-                        layoutParent);
+                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, resetPasswordResModel_new.getMessage());
                 if (resetPasswordResModel_new.getSuccess()) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, SetupActivityNew.class);
                             startActivity(intent);
                         }
@@ -161,8 +162,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, "Failed to change password",
-                        layoutParent);
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to change password");
 
             }
 

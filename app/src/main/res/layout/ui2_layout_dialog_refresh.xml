@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+app:cardElevation="6dp">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/iv_icon_height"
+        android:layout_marginTop="@dimen/iv_icon_margin_top"
+        android:src="@drawable/ui2_icon_logging_in" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tv_internet_title_margin_top"
+        android:gravity="center"
+        android:text="@string/app_sync"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/internet_warning_title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tv_internet_desc_margin_top"
+        android:layout_marginBottom="@dimen/btn_okay_internet_margin_bottom"
+        android:gravity="center"
+        android:lineHeight="@dimen/tv_internet_desc_line_height"
+        android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
+        android:text="@string/please_wait_sync_progress"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/internet_warning_note" />
+
+</LinearLayout>
+</androidx.cardview.widget.CardView>

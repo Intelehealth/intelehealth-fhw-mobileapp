@@ -6,23 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--
-                <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        -->
         <item name="android:textViewStyle">@style/DefaultTextviewStyle</item>
-
         <item name="android:textColor">@color/primary_text</item>
-        <!--
-                <item name="buttonStyle">@style/RobotoButtonStyle</item>
-        -->
         <item name="buttonStyle">@style/DefaultButtonStyle</item>
-
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="colorSurface">#FFFFFF</item>
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
         <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -492,6 +485,12 @@
         <item name="android:inputType">number</item>
         <item name="android:maxLength">1</item>
 
+    </style>
+
+    <style name="DropDownListViewStyle" parent="@style/Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/bg_spinner</item>
+        <item name="android:divider">@color/gray_0</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
 

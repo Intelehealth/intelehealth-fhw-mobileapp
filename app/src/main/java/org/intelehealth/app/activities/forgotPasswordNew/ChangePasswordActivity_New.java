@@ -160,7 +160,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
                 // snackbarUtils.showSnackCoordinatorLayoutParentSuccess(LoginActivityNew.this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
 
-                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 // mEmailSignInButton.setText(getString(R.string.action_sign_in));
                 //mEmailSignInButton.setEnabled(true);
             }

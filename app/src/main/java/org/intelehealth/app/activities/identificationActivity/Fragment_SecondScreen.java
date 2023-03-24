@@ -58,7 +58,7 @@ public class Fragment_SecondScreen extends Fragment {
     Context context;
     private String country1, state;
     ArrayAdapter<String> districtAdapter, cityAdapter;
-
+    EditText mDistrictET, mCityVillageET;
     private PatientDTO patientDTO;
     private Fragment_ThirdScreen fragment_thirdScreen;
     private Fragment_FirstScreen firstScreen;
@@ -82,7 +82,6 @@ public class Fragment_SecondScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         sessionManager = new SessionManager(getActivity());
-
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
         other_icon = getActivity().findViewById(R.id.other_icon);
@@ -96,11 +95,10 @@ public class Fragment_SecondScreen extends Fragment {
         mCityNameSpinner = view.findViewById(R.id.city_spinner);
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
         mAddress2EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-
-
+        mDistrictET = view.findViewById(R.id.district_edittext);
+        mCityVillageET = view.findViewById(R.id.city_village_edittext);
         mPostalCodeErrorTextView = view.findViewById(R.id.postalcode_error);
         mCountryNameErrorTextView = view.findViewById(R.id.country_error);
         mStateNameErrorTextView = view.findViewById(R.id.state_error);
@@ -108,11 +106,9 @@ public class Fragment_SecondScreen extends Fragment {
         mCityNameErrorTextView = view.findViewById(R.id.city_error);
         mAddress1ErrorTextView = view.findViewById(R.id.address1_error);
         mAddress2ErrorTextView = view.findViewById(R.id.address2_error);
-
         mPostalCodeEditText.addTextChangedListener(new MyTextWatcher(mPostalCodeEditText));
         mAddress1EditText.addTextChangedListener(new MyTextWatcher(mAddress1EditText));
         mAddress2EditText.addTextChangedListener(new MyTextWatcher(mAddress2EditText));
-
         firstScreen = new Fragment_FirstScreen();
         fragment_thirdScreen = new Fragment_ThirdScreen();
         if (getArguments() != null) {
@@ -234,8 +230,7 @@ public class Fragment_SecondScreen extends Fragment {
         Resources res = getResources();
 
         // country
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.countries));
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item , getResources().getStringArray(R.array.countries));
 //        country_spinner.setSelection(countryAdapter.getPosition(country1));
         mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
         mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
@@ -274,12 +269,30 @@ public class Fragment_SecondScreen extends Fragment {
             }
             mCountryNameSpinner.setSelection(countryIndex);
             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-            if (patientDTO.getCityvillage() != null) {
-                String[] district_city = patientDTO.getCityvillage().trim().split(":");
-                district = district_city[0];
-                city_village = district_city[1];
-                mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
-                mCityNameSpinner.setSelection(cityAdapter.getPosition(city_village));
+
+            if(patientDTO.getStateprovince()!=null && patientDTO.getStateprovince().equalsIgnoreCase("Maharashtra")) {
+                if (patientDTO.getCityvillage() != null) {
+                    String[] district_city = patientDTO.getCityvillage().trim().split(":");
+                    district = district_city[0];
+                    city_village = district_city[1];
+                    mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
+                    mCityNameSpinner.setSelection(cityAdapter.getPosition(city_village));
+                }
+            }
+            else
+            {
+                if(patientDTO.getCityvillage()!=null)
+                {
+                    mDistrictNameSpinner.setVisibility(View.GONE);
+                    mCityNameSpinner.setVisibility(View.GONE);
+                    mDistrictET.setVisibility(View.VISIBLE);
+                    mCityVillageET.setVisibility(View.VISIBLE);
+                    String[] district_city = patientDTO.getCityvillage().trim().split(":");
+                    district = district_city[0];
+                    city_village = district_city[1];
+                    mDistrictET.setText(district);
+                    mCityVillageET.setText(city_village);
+                }
             }
         }
 
@@ -365,6 +378,10 @@ public class Fragment_SecondScreen extends Fragment {
                         ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
                                 R.array.district, android.R.layout.simple_spinner_dropdown_item);
                         mDistrictNameSpinner.setAdapter(districtAdapter);
+                        mDistrictNameSpinner.setVisibility(View.VISIBLE);
+                        mCityNameSpinner.setVisibility(View.VISIBLE);
+                        mDistrictET.setVisibility(View.GONE);
+                        mCityVillageET.setVisibility(View.GONE);
 
                         // setting state according database when user clicks edit details
                         if (fromThirdScreen || fromFirstScreen)
@@ -376,10 +393,14 @@ public class Fragment_SecondScreen extends Fragment {
                         ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
                                 R.array.select, android.R.layout.simple_spinner_dropdown_item);
                         mDistrictNameSpinner.setAdapter(districtAdapter);
+                        mDistrictNameSpinner.setVisibility(View.GONE);
+                        mDistrictET.setVisibility(View.VISIBLE);
 
                         ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
                                 R.array.select, android.R.layout.simple_spinner_dropdown_item);
                         mCityNameSpinner.setAdapter(cityAdapter);
+                        mCityNameSpinner.setVisibility(View.GONE);
+                        mCityVillageET.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -457,8 +478,14 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
         patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
+
+        if(mDistrictNameSpinner.getVisibility()==View.VISIBLE && mCityNameSpinner.getVisibility()==View.VISIBLE)
         patientDTO.setCityvillage(StringUtils.getValue(mDistrictNameSpinner.getSelectedItem().toString() +
                 ":" + mCityNameSpinner.getSelectedItem().toString()));
+        if(mDistrictET.getVisibility()==View.VISIBLE && mCityVillageET.getVisibility()==View.VISIBLE)
+            patientDTO.setCityvillage(StringUtils.getValue(mDistrictET.getText().toString() +
+                    ":" + mCityVillageET.getText().toString()));
+
         patientDTO.setAddress1(mAddress1EditText.getText().toString());
         patientDTO.setAddress2(mAddress2EditText.getText().toString());
 
@@ -525,7 +552,7 @@ public class Fragment_SecondScreen extends Fragment {
             mStateNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (mDistrictNameSpinner.getSelectedItemPosition() == 0) {
+        if (mDistrictNameSpinner.getVisibility()==View.VISIBLE && mDistrictNameSpinner.getSelectedItemPosition() == 0) {
             mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
             mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
             mDistrictNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -536,7 +563,7 @@ public class Fragment_SecondScreen extends Fragment {
             mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (mCityNameSpinner.getSelectedItemPosition() == 0) {
+        if (mCityNameSpinner.getVisibility()==View.VISIBLE && mCityNameSpinner.getSelectedItemPosition() == 0) {
             mCityNameErrorTextView.setVisibility(View.VISIBLE);
             mCityNameErrorTextView.setText(getString(R.string.error_field_required));
             mCityNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -545,6 +572,28 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             mCityNameErrorTextView.setVisibility(View.GONE);
             mCityNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+        }
+
+        if (mDistrictET.getVisibility()==View.VISIBLE && mDistrictET.getText().toString().equals("")) {
+            mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
+            mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
+            mDistrictET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mDistrictET.requestFocus();
+            return;
+        } else {
+            mDistrictNameErrorTextView.setVisibility(View.GONE);
+            mDistrictET.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
+        if (mCityVillageET.getVisibility()==View.VISIBLE && mCityVillageET.getText().toString().equals("")) {
+            mCityNameErrorTextView.setVisibility(View.VISIBLE);
+            mCityNameErrorTextView.setText(getString(R.string.error_field_required));
+            mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mCityVillageET.requestFocus();
+            return;
+        } else {
+            mCityNameErrorTextView.setVisibility(View.GONE);
+            mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
         if (mAddress1EditText.getText().toString().equals("")) {
@@ -579,8 +628,15 @@ public class Fragment_SecondScreen extends Fragment {
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
             patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
             patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
-            patientDTO.setCityvillage(StringUtils.getValue(mDistrictNameSpinner.getSelectedItem().toString() +
-                    ":" + mCityNameSpinner.getSelectedItem().toString()));
+
+            if(mDistrictNameSpinner.getVisibility()==View.VISIBLE && mCityNameSpinner.getVisibility()==View.VISIBLE)
+                patientDTO.setCityvillage(StringUtils.getValue(mDistrictNameSpinner.getSelectedItem().toString() +
+                        ":" + mCityNameSpinner.getSelectedItem().toString()));
+
+            if(mDistrictET.getVisibility()==View.VISIBLE && mCityVillageET.getVisibility()==View.VISIBLE)
+                patientDTO.setCityvillage(StringUtils.getValue(mDistrictET.getText().toString() +
+                        ":" + mCityVillageET.getText().toString()));
+
             patientDTO.setAddress1(mAddress1EditText.getText().toString());
             patientDTO.setAddress2(mAddress2EditText.getText().toString());
 

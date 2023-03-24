@@ -16,6 +16,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -82,6 +83,7 @@ import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
@@ -103,6 +105,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
@@ -138,7 +141,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private static final int ID_DOWN = 2;
     private DrawerLayout mDrawerLayout;
     SessionManager sessionManager;
-    Dialog dialogLoginSuccess;
+    Dialog dialogLoginSuccess, dialogRefreshInProgress;
     NavigationView mNavigationView;
     private int versionCode = 0;
     private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
@@ -159,7 +162,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     NetworkUtils networkUtils;
     String currentFragment;
     private AlertDialog resetDialog;
-
+    TooltipWindow tipWindow;
     private static final String TAG_HOME = "TAG_HOME";
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
@@ -311,13 +314,13 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
 
 
-        tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
+        /*tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         imageViewIsNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,8 +388,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            /*DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));*/
+            showRefreshFailedDialog();
         }
     }
 
@@ -462,7 +466,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
                 mRefreshProgressDialog.dismiss();
                 ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
             } else {
@@ -502,6 +506,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void initUI() {
+        tipWindow = new TooltipWindow(HomeScreenActivity_New.this);
         survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         tvAppVersion = findViewById(R.id.tv_app_version);
@@ -551,12 +556,15 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
 
                 if (isNetworkConnected()) {
-                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
                 } else {
-                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                    if (!tipWindow.isTooltipShown())
+                        tipWindow.showToolTip(imageViewIsInternet, getResources().getString(R.string.no_network_tooltip));
+//                    showRefreshFailedDialog();
                 }
 //                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -566,12 +574,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         });
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();
-
+            mSyncProgressDialog.show();*/
+            showRefreshInProgressDialog();
             syncUtils.initialSync("home");
         } else {
             // if initial setup done then we can directly set the periodic background sync job
@@ -741,6 +749,46 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         alertDialog.show();
     }
 
+    public void showRefreshInProgressDialog() {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(HomeScreenActivity_New.this);
+        builder.setCancelable(false);
+        LayoutInflater inflater = LayoutInflater.from(HomeScreenActivity_New.this);
+        View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_refresh, null);
+        builder.setView(customLayout);
+        dialogRefreshInProgress = builder.create();
+        dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogRefreshInProgress.show();
+        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogRefreshInProgress.dismiss();
+            }
+        }, 3000);
+    }
+
+    public void showRefreshFailedDialog() {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(HomeScreenActivity_New.this);
+        builder.setCancelable(false);
+        LayoutInflater inflater = LayoutInflater.from(HomeScreenActivity_New.this);
+        View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_failed_refresh, null);
+        builder.setView(customLayout);
+        dialogRefreshInProgress = builder.create();
+        dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogRefreshInProgress.show();
+        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogRefreshInProgress.dismiss();
+            }
+        }, 3000);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -824,6 +872,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tvAppLastSync.setVisibility(View.GONE);
+                ivHamburger.setVisibility(View.GONE);
+                imageViewIsInternet.setVisibility(View.VISIBLE);
+                imageViewIsNotification.setVisibility(View.GONE);
                 fragment = new MyAchievementsFragment();
                 tag = TAG_ACHIEVEMENT;
                 break;
@@ -863,8 +916,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     @Override
     protected void onResume() {
-        if (mIsFirstTimeSyncDone && mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-            mSyncProgressDialog.dismiss();
+        if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+            dialogRefreshInProgress.dismiss();
         }
         Log.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
@@ -984,19 +1037,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 if (sessionManager.isFirstTimeLaunched()) {
                     if (flagType == AppConstants.SYNC_FAILED) {
                         hideSyncProgressBar(false);
-                        /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
-                        finish();*/
-                        new AlertDialog.Builder(HomeScreenActivity_New.this)
-                                .setMessage(R.string.failed_initial_synced)
-                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-
-                                }).setCancelable(false)
-
-                                .show();
+                        showRefreshFailedDialog();
+                        finish();
                     } else {
                         mTempSyncHelperList.add(flagType);
                         if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
@@ -1032,8 +1074,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         saveToken();
         requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
-        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-            mSyncProgressDialog.dismiss();
+        if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+            dialogRefreshInProgress.dismiss();
             if (isSuccess) {
                 saveToken();
                 sessionManager.setFirstTimeLaunched(false);
@@ -1123,8 +1165,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-                    mSyncProgressDialog.dismiss();
+                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+                    dialogRefreshInProgress.dismiss();
                 }
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + this.getPackageName()));
@@ -1153,22 +1195,32 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                             Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                             fragment = new HomeFragment_New();
+                            ivHamburger.setVisibility(View.VISIBLE);
                             loadFragment(fragment, TAG_HOME);
                             return true;
                         case R.id.bottom_nav_achievements:
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                            tvAppLastSync.setVisibility(View.GONE);
+                            ivHamburger.setVisibility(View.GONE);
+                            imageViewIsInternet.setVisibility(View.VISIBLE);
+                            imageViewIsNotification.setVisibility(View.GONE);
                             fragment = new MyAchievementsFragment();
                             //loadFragmentForBottomNav(fragment);
                             loadFragment(fragment, TAG_ACHIEVEMENT);
                             return true;
                         case R.id.bottom_nav_help:
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
+                            tvTitleHomeScreenCommon.setText("Help center");
+                            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                            tvAppLastSync.setVisibility(View.GONE);
+                            imageViewIsInternet.setVisibility(View.VISIBLE);
+                            imageViewIsNotification.setVisibility(View.GONE);
+                            ivHamburger.setVisibility(View.GONE);
                             fragment = new HelpFragment_New();
                             //loadFragmentForBottomNav(fragment);
                             loadFragment(fragment, TAG_HELP);
                             return true;
                         case R.id.bottom_nav_add_patient:
-
                             Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
                             intent.putExtra("add_patient", "add_patient");
                             startActivity(intent);
@@ -1374,10 +1426,16 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         } else if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();
             bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
-            tvTitleHomeScreenCommon.setText(getString(R.string.help));
+            tvTitleHomeScreenCommon.setText("Help center");
+            ivHamburger.setVisibility(View.GONE);
+            imageview_notifications_home.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
         } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
             bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            ivHamburger.setVisibility(View.GONE);
+            imageview_notifications_home.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
         }
@@ -1390,14 +1448,19 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            /*if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
                 mSyncProgressDialog.dismiss();
             }
             mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();
+            mSyncProgressDialog.show();*/
+
+            if(dialogRefreshInProgress!=null && dialogRefreshInProgress.isShowing())
+                dialogRefreshInProgress.dismiss();
+
+            showRefreshInProgressDialog();
 
             syncUtils.initialSync("home");
         }

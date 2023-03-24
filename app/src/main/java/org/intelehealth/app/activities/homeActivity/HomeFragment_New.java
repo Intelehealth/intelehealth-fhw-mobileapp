@@ -89,9 +89,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
+        tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
-        tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);

@@ -678,7 +678,7 @@
 
                         <Spinner
                             android:id="@+id/speciality_spinner"
-                            style="@style/SpinnerTheme"
+                            style="@style/AppTheme"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:layout_below="@+id/doc_speciality_title"
@@ -702,9 +702,9 @@
                 android:layout_above="@+id/bottom_btn_relative"
                 android:layout_below="@+id/relative_speciality_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:layout_marginBottom="@dimen/margin_50"
+                android:layout_marginBottom="65dp"
                 android:elevation="16dp"
                 app:cardCornerRadius="@dimen/margin_5"
                 app:cardElevation="@dimen/margin_5">
@@ -874,16 +874,17 @@
         android:layout_marginBottom="92dip"
         android:contentDescription="@string/chat_fab"
         android:onClick="startVideoChat"
+        android:visibility="gone"
         android:src="@drawable/icons8_video_call" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fab_video"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dip"
+        android:layout_marginBottom="80dip"
         android:contentDescription="@string/chat_fab"
         android:onClick="startTextChat"
         android:src="@drawable/icons8_chat_new" />

@@ -77,14 +77,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ui2_ic_info_question_mark"
-                    android:drawablePadding="@dimen/common_tv_icon_padding"
+                    android:id="@+id/enterDetailsTV"
                     android:text="@string/enter_following_details"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_header_text_size" />
+
+                <ImageView
+                    android:id="@+id/setup_info_question_mark"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_toEndOf="@id/enterDetailsTV"
+                    android:src="@drawable/ui2_ic_info_question_mark"/>
+
+            </RelativeLayout>
+
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"
@@ -107,6 +123,7 @@
                         android:id="@+id/autotv_select_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/AppTheme"
                         android:background="@drawable/bg_input_fieldnew"
                         android:hint="@string/start_typing_location"
                         android:importantForAutofill="no"

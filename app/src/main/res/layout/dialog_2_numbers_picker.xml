@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -66,7 +66,46 @@
             android:gravity="center"
             android:padding="@dimen/padding_card"
             android:fontFamily="@font/lato_regular"/>
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_cancel_picker"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/white_bg_button"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingTop="16dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="16dp"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/button_ok_picker"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/btn_cancel_picker"
+            android:background="@drawable/darkblue_bg_button"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingTop="16dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="16dp"
+            android:text="@string/okay"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
 
 
 

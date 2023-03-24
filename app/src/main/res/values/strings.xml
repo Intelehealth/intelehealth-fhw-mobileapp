@@ -52,6 +52,7 @@
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
+    <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
     <string name="error_location_not_selected">Please select a value form the location dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
@@ -634,6 +635,7 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_15_digits">Enter 15 digits</string>
     <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
@@ -908,7 +910,8 @@
     <string name="okay">Okay</string>
     <string name="my_achievements">My achievements</string>
     <string name="my_profile">My profile</string>
-
+    <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="no_network_tooltip">No network!</string>
     <string name="educational_videos">Educational videos</string>
     <string name="change_lang">Change language &amp; protocol</string>
     <string name="about_us">About us</string>
@@ -922,6 +925,7 @@
     <string name="enter_following_details">Please enter the following details</string>
     <string name="location_new">Location</string>
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
+    <string name="please_wait_refresh">Please wait a moment,\nthe app is refreshing.</string>
     <string name="login_success">Login successful</string>
     <string name="login_success_note">Hurry! You have successfully logged in</string>
     <string name="start_typing_location">Start typing or select location</string>
@@ -1605,9 +1609,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="first_name">First name</string>
     <string name="middle_name">Middle name</string>
     <string name="last_name">Last name</string>
-    <string name="enter_first_name">Enter your first name</string>
-    <string name="enter_middle_name">Enter your middle name</string>
-    <string name="enter_last_name">Enter your last name</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_middle_name">Enter middle name</string>
+    <string name="enter_last_name">Enter last name</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -1615,9 +1619,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="age">Age</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="phone_number">Phone number</string>
-    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="enter_phone_number">Enter phone number</string>
     <string name="email">Email</string>
-    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_email">Enter email ID</string>
     <string name="select_profile_image">Select profile image</string>
     <string name="select_location">Please select location</string>
 
@@ -1628,7 +1632,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm_new_password_1">Confirm new password</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
-    <string name="password_match">New password and confirm password must be equal</string>
+    <string name="password_match">New password and confirm password must be same.</string>
     <string name="password_changed_successfully">Password changed successfully</string>
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>
@@ -1754,7 +1758,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
-    <string name="please_wait_sync_progress">Please wait a moment while sync is in progress</string>
+    <string name="please_wait_sync_progress">Please wait a moment while \nsync is in progress</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -1788,6 +1792,18 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
 
+
+    //fingerprint IDA_613
+    <string name="fingerprint_lock">Fingerprint Lock</string>
+    <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
+    <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
+    <string name="intelehealth_login">Intelehealth Login</string>
+    <string name="touch_fingerprint">Touch fingerprint sensor to login</string>
+    <string name="login_failed">Log in failed, please try again later.</string>
+    <string name="login_successfully">Successfully logged in!</string>
+    <string name="no_fingerprint_assigned">Device fingerprint sensor has no fingerprint assigned.</string>
+    <string name="fingerprint_not_working">Device fingerprint sensor is not working.</string>
+    <string name="no_fingerprint_sensor">Device doesn\'t have a fingerprint sensor.</string>
     <!--END-->
 
 </resources>

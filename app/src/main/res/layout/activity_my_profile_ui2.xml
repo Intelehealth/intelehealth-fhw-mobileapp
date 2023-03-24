@@ -92,6 +92,43 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/view_fingerprint_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/tv_pass_margin_start"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/tv_pass_margin_end">
+
+                <ImageView
+                    android:id="@+id/iv_icon3"
+                    android:layout_width="@dimen/iv_camera_width"
+                    android:layout_height="@dimen/iv_camera_height"
+                    android:src="@drawable/ic_baseline_fingerprint_24" />
+
+                <TextView
+                    android:id="@+id/tv_fingerprint_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/tv_change_pass_margin_start"
+                    android:layout_marginTop="@dimen/tv_change_pass_margin_top"
+                    android:layout_toEndOf="@+id/iv_icon3"
+                    android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                    android:text="@string/fingerprint_lock"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_info_text_size"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/fingerprint_enable_Switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackground"/>
+
+            </RelativeLayout>
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -266,53 +303,36 @@
                 <RadioButton
                     android:id="@+id/rb_male"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
                     android:layout_weight="1"
-                    android:button="@drawable/ui2_ic_circle"
-                    android:drawableEnd="@drawable/ui2_ic_icons8_user_male_1"
-                    android:drawablePadding="@dimen/radio_gender_icon_padding"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:padding="@dimen/radio_gender_padding"
-                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:drawableEnd="@drawable/gender_male_svg"
                     android:text="@string/male"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/common_info_text_size" />
+                    android:textSize="@dimen/select_language"
+                    android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
                     android:id="@+id/rb_female"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/gender_margin"
+                    android:layout_marginEnd="@dimen/gender_margin"
                     android:layout_weight="1"
-                    android:button="@drawable/ui2_ic_circle"
-                    android:drawableEnd="@drawable/ui2_ic_icons8_female_user_1"
-                    android:drawablePadding="@dimen/radio_gender_icon_padding"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:padding="@dimen/radio_gender_padding"
-                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:drawableEnd="@drawable/gender_female_svg"
                     android:text="@string/female"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/common_info_text_size" />
+                    android:textSize="@dimen/select_language"
+                    android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
                     android:id="@+id/rb_other"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
                     android:layout_weight="1"
-                    android:button="@drawable/ui2_ic_circle"
-                    android:drawableEnd="@drawable/ui2_ic_frame_2608678"
-                    android:drawablePadding="@dimen/radio_gender_icon_padding"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:padding="@dimen/radio_gender_padding"
-                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:drawableEnd="@drawable/gender_other_svg"
                     android:text="@string/other"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/common_info_text_size" />
+                    android:textSize="@dimen/select_language"
+                    android:theme="@style/RadioButtonStyleSelection" />
             </RadioGroup>
 
             <LinearLayout
@@ -470,7 +490,7 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
-                android:text="@string/enter_mobile_no"
+                android:text="@string/enter_phone_number"
                 android:textAppearance="@style/registr_error_msg"
                 android:textColor="@color/red"
                 android:textSize="@null"

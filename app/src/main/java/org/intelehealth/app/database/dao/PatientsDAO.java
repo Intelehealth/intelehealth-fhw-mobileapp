@@ -34,6 +34,7 @@ public class PatientsDAO {
 
     private int updatecount = 0;
     private long createdRecordsCount = 0;
+    int limit = 10, offset = 0;
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
@@ -579,6 +580,37 @@ public class PatientsDAO {
         return gender;
     }
 
+    public static List<PatientDTO> getAllPatientsFromDB() {
+        List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String table = "tbl_patient";
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{"10", "0"});
+        try {
+            if (searchCursor.moveToFirst()) {
+                do {
+                    PatientDTO model = new PatientDTO();
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                    model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(searchCursor.getString(searchCursor.getColumnIndexOrThrow("gender")));
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty
+                            (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                    model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+                    modelList.add(model);
+                } while (searchCursor.moveToNext());
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return modelList;
+
+    }
+
     public static List<PatientDTO> getQueryPatients(String query) {
         String search = query.trim().replaceAll("\\s", "");
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
@@ -630,7 +662,6 @@ public class PatientsDAO {
                             model.setPhonenumber(StringUtils.mobileNumberEmpty
                                     (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                             model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
-
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }

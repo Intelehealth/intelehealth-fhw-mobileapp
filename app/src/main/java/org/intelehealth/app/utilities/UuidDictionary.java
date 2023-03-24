@@ -74,6 +74,7 @@ public class UuidDictionary {
     // Visit Attribute Types
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
+    public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
 
 
 }

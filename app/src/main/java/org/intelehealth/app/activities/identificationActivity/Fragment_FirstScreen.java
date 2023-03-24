@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -30,6 +31,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +56,9 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
+import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
@@ -73,19 +79,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class Fragment_FirstScreen extends Fragment {
+public class Fragment_FirstScreen extends Fragment implements SendSelectedDateInterface {
     private View view;
     private String patientUuid = "";
     private ImageView patient_imgview;
     private Button frag1_nxt_btn_main;
     SessionManager sessionManager = null;
     private ImageView personal_icon, address_icon, other_icon;
-    EditText mFirstNameEditText, mMiddleNameEditText, mLastNameEditText,
-            mDOBEditText, mAgeEditText, mPhoneNumberEditText;
+    EditText mFirstNameEditText, mMiddleNameEditText, mLastNameEditText, mDOBEditText, mAgeEditText, mPhoneNumberEditText;
     private Fragment_SecondScreen fragment_secondScreen;
     PatientDTO patientdto = new PatientDTO();
     private String mGender;
-    String uuid = "";
+    String uuid = "", dobToDb;
     private String mCurrentPhotoPath;
     RadioButton mGenderMaleRadioButton, mGenderFemaleRadioButton, mGenderOthersRadioButton;
     private static final String TAG = Fragment_FirstScreen.class.getSimpleName();
@@ -117,23 +122,17 @@ public class Fragment_FirstScreen extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
-
         patient_imgview = view.findViewById(R.id.patient_imgview);
         frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
         other_icon = getActivity().findViewById(R.id.other_icon);
-
         mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
         mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-
         mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
         mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-
         mLastNameEditText = view.findViewById(R.id.lastname_edittext);
         mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-
-
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
         mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
@@ -143,8 +142,6 @@ public class Fragment_FirstScreen extends Fragment {
         mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
         Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
-
-
         mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
         mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
         mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
@@ -188,7 +185,7 @@ public class Fragment_FirstScreen extends Fragment {
 
             //if patient update then age will be set
             //dob to be displayed based on translation...
-            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientdto.getDateofbirth());
+            /*String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientdto.getDateofbirth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 mDOBEditText.setText(dob_text);
@@ -224,19 +221,18 @@ public class Fragment_FirstScreen extends Fragment {
                 mDOBEditText.setText(dob_text);
             } else {
                 mDOBEditText.setText(dob);
-            }
+            }*/
+
+            mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(patientdto.getDateofbirth()));
 
             // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth(), getActivity());
-
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth()).split(" ");
             mAgeYears = Integer.valueOf(ymdData[0]);
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                    mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                    mAgeDays + getResources().getString(R.string.days);
+            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
             mAgeEditText.setText(age);
 
             mCountryCodePicker.setFullNumber(patientdto.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
@@ -250,14 +246,16 @@ public class Fragment_FirstScreen extends Fragment {
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
-            } else if (patientdto.getGender().equals("F")) {
+            }
+            else if (patientdto.getGender().equals("F")) {
                 mGenderFemaleRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
-            } else {
+            }
+            else {
                 mGenderOthersRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
@@ -298,16 +296,42 @@ public class Fragment_FirstScreen extends Fragment {
         mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(11)});
     }
 
+    @Override
+    public void getSelectedDate(String selectedDate, String whichDate) {
+        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+        if (!selectedDate.isEmpty()) {
+            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+            //for age
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+            mAgeYears = Integer.valueOf(ymdData[0]);
+            mAgeMonths = Integer.valueOf(ymdData[1]);
+            mAgeDays = Integer.valueOf(ymdData[2]);
+            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
+            String[] splitedDate = selectedDate.split("/");
+            if (age != null && !age.isEmpty()) {
+                mAgeEditText.setText(age);
+                mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
+                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+            }
+            else {
+                mAgeEditText.setText("");
+                mDOBEditText.setText("");
+            }
+        } else {
+            Log.d(TAG, "onClick: date empty");
+        }
+    }
+
     class MyTextWatcher implements TextWatcher {
         EditText editText;
-
         MyTextWatcher(EditText editText) {
             this.editText = editText;
         }
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -383,8 +407,6 @@ public class Fragment_FirstScreen extends Fragment {
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
 
-
-
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
             onPatientCreateClicked();
@@ -428,10 +450,10 @@ public class Fragment_FirstScreen extends Fragment {
                 onRadioButtonClicked(v);
             }
         });
-        // Gender - end
+
 
         // DOB - start
-        mDOBPicker = new DatePickerDialog(getActivity(), R.style.datepicker,
+        /*mDOBPicker = new DatePickerDialog(getActivity(), R.style.datepicker,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -519,11 +541,15 @@ public class Fragment_FirstScreen extends Fragment {
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE)); // so that todays date as shown as default selection.
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());*/
         mDOBEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDOBPicker.show();
+//                mDOBPicker.show();
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    customCalendarViewUI2.showDatePicker(getActivity(), "");
+                }
             }
         });
         // DOB - end
@@ -534,6 +560,7 @@ public class Fragment_FirstScreen extends Fragment {
             public void onClick(View v) {
                 mAgePicker = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogStyle);
                 mAgePicker.setTitle(R.string.identification_screen_prompt_age);
+
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
                 mAgePicker.setView(convertView);
@@ -541,17 +568,16 @@ public class Fragment_FirstScreen extends Fragment {
                 NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
                 NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
                 dayPicker.setVisibility(View.VISIBLE);
-
+                Button okButton = convertView.findViewById(R.id.button_ok_picker);
+                Button cancelButton = convertView.findViewById(R.id.btn_cancel_picker);
                 final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
                 final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
                 final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
                 dayPicker.setVisibility(View.VISIBLE);
 
-                int totalDays = today.getActualMaximum(Calendar.DAY_OF_MONTH);
                 dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
-
 
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
@@ -565,10 +591,15 @@ public class Fragment_FirstScreen extends Fragment {
                 EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
                 EditText dayText = dayPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
 
-
                 yearPicker.setValue(mAgeYears);
                 monthPicker.setValue(mAgeMonths);
                 dayPicker.setValue(mAgeDays);
+
+                AlertDialog alertDialog = mAgePicker.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                int width = getContext().getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
                 //year
                 EditTextUtils.returnEditextValues(new IReturnValues() {
@@ -594,84 +625,53 @@ public class Fragment_FirstScreen extends Fragment {
                     }
                 }, dayText);
 
-
-                mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
-                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                            mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                            mAgeDays + getString(R.string.days);
-                    mAgeEditText.setText(ageString);
-
-                    mDOBErrorTextView.setVisibility(View.GONE);
-                    mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                    mAgeErrorTextView.setVisibility(View.GONE);
-                    mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
-                    calendar.add(Calendar.MONTH, -mAgeMonths);
-                    calendar.add(Calendar.YEAR, -mAgeYears);
-
-                    mDOBYear = calendar.get(Calendar.YEAR);
-                    mDOBMonth = calendar.get(Calendar.MONTH);
-                    mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
-                            Locale.ENGLISH);
-                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                    String dobString = simpleDateFormat.format(dob.getTime());
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String dob_text = en__as_dob(dobString); //to show text of English into assame...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String dob_text = en__ml_dob(dobString);
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                        mDOBEditText.setText(dob_text);
-                    } else {
-                        mDOBEditText.setText(dobString);
-                    }
-
-//                    dob_edittext.setText(dobString);
-                    mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
-                    dialog.dismiss();
-                });
-                mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(View view) {
+                        String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
+                                mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                                mAgeDays + getString(R.string.days);
+                        mAgeEditText.setText(ageString);
+
+                        mDOBErrorTextView.setVisibility(View.GONE);
+                        mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                        mAgeErrorTextView.setVisibility(View.GONE);
+                        mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
+                        calendar.add(Calendar.MONTH, -mAgeMonths);
+                        calendar.add(Calendar.YEAR, -mAgeYears);
+
+                        mDOBYear = calendar.get(Calendar.YEAR);
+                        mDOBMonth = calendar.get(Calendar.MONTH);
+                        mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                                Locale.ENGLISH);
+                        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy",
+                                Locale.ENGLISH);
+                        dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                        String dobString = simpleDateFormat.format(dob.getTime());
+                        dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
+                        mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
+                        alertDialog.dismiss();
                     }
                 });
 
-                AlertDialog alertDialog = mAgePicker.show();
-                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+//                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
             }
         });
+
         // Age - end
     }
 
@@ -903,9 +903,16 @@ public class Fragment_FirstScreen extends Fragment {
         } else {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
             Log.v("phone", "phone: " + s);
-            if (s.length() < 10) {
+            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 10) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                 mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
+                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mPhoneNumberEditText.requestFocus();
+                return;
+            }
+            if (!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 15) {
+                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                mPhoneNumberErrorTextView.setText(getString(R.string.enter_15_digits));
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 mPhoneNumberEditText.requestFocus();
                 return;
@@ -946,8 +953,8 @@ public class Fragment_FirstScreen extends Fragment {
         //get unformatted number with prefix "+" i.e "+14696641766"
         //   patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
         patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
-
-        String[] dob_array = mDOBEditText.getText().toString().split(" ");
+        patientdto.setDateofbirth(dobToDb);
+        /*String[] dob_array = mDOBEditText.getText().toString().split(" ");
         Log.d("dob_array", "0: " + dob_array[0]);
         Log.d("dob_array", "0: " + dob_array[1]);
         Log.d("dob_array", "0: " + dob_array[2]);
@@ -964,7 +971,7 @@ public class Fragment_FirstScreen extends Fragment {
             String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
             patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                     (StringUtils.getValue(dob_value)));
-        }
+        }*/
 
         // Bundle data
         Bundle bundle = new Bundle();

@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
+import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -69,6 +70,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -1878,7 +1880,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             };*/
 
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-            String whatsapp_url = partial_whatsapp_presc_url.concat(visitID);
+            String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, PRESCRIPTION_LINK);
+            String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
 
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
@@ -1900,7 +1903,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                            phoneNumber, whatsappMessage))));
+                                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 

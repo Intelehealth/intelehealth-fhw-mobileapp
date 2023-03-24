@@ -1,13 +1,16 @@
 package org.intelehealth.app.activities.help.activities;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,20 +27,23 @@ import org.intelehealth.app.activities.help.activities.MostSearchedVideosActivit
 import org.intelehealth.app.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_New;
 import org.intelehealth.app.activities.help.models.QuestionModel;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HelpFragment_New extends Fragment implements View.OnClickListener {
+public class HelpFragment_New extends Fragment implements View.OnClickListener, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HelpFragment";
     View view;
+    ImageView ivInternet;
+    private ObjectAnimator syncAnimator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_help_ui2, container, false);
-
         return view;
     }
 
@@ -83,6 +89,8 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener {
         TextView tvMoreVideos = view.findViewById(R.id.tv_more_videos);
         TextView tvMoreFaq = view.findViewById(R.id.tv_faq_more);
         FloatingActionButton fabHelp = view.findViewById(R.id.fab_chat_help);
+        ivInternet = view.findViewById(R.id.iv_help_internet);
+        ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
 
         fabHelp.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChatSupportHelpActivity_New.class);
@@ -131,6 +139,18 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener {
 
         return questionsList;
 
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        Log.d(TAG, "updateUIForInternetAvailability: ");
+        if (isInternetAvailable) {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+
+        } else {
+            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
     }
 
     @Override

@@ -21,7 +21,7 @@
             android:layout_marginTop="@dimen/intro_heading_margin_top"
             android:gravity="center"
             android:lineHeight="@dimen/intro_description_line_height"
-            android:text="@string/share_prescriptions"
+            android:text="@string/provide_prescriptions"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/introscreen_title"
             android:textStyle="bold" />

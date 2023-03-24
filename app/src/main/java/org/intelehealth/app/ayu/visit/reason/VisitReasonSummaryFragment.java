@@ -106,7 +106,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {
                     new SyncUtils().syncBackground();
-                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
                 }
             }
         });
