@@ -10,14 +10,14 @@ static def getDateTime() {
     return df.format(new Date());
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "com.smartcaredoc.app"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         buildToolsVersion('29.0.2')
         versionName '1.0'
