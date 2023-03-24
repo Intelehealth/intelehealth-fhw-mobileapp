@@ -440,7 +440,6 @@
                         android:background="@drawable/edittext_border"
                         android:hint="Phone Number"
                         android:inputType="number"
-                        android:maxLength="10"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"

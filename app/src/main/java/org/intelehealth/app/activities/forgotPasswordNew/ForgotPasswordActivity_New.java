@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.ArrayMap;
@@ -118,7 +119,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                         etMobileNo.getText().toString().trim());
             }
         });
-
 
     }
 

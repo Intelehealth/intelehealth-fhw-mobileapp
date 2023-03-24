@@ -659,15 +659,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         });
 
-        mCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-//                if(mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91"))
-//                    mPhoneNumberEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
-                if(!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91"))
-                    mPhoneNumberEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
-            }
-        });
         // Age - end
     }
 

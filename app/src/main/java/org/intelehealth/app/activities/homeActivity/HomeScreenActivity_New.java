@@ -872,7 +872,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                imageViewIsInternet.setVisibility(View.GONE);
+                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tvAppLastSync.setVisibility(View.GONE);
+                ivHamburger.setVisibility(View.GONE);
+                imageViewIsInternet.setVisibility(View.VISIBLE);
+                imageViewIsNotification.setVisibility(View.GONE);
                 fragment = new MyAchievementsFragment();
                 tag = TAG_ACHIEVEMENT;
                 break;
@@ -1199,6 +1203,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                             tvAppLastSync.setVisibility(View.GONE);
                             ivHamburger.setVisibility(View.GONE);
+                            imageViewIsInternet.setVisibility(View.VISIBLE);
                             imageViewIsNotification.setVisibility(View.GONE);
                             fragment = new MyAchievementsFragment();
                             //loadFragmentForBottomNav(fragment);
@@ -1208,6 +1213,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                             tvTitleHomeScreenCommon.setText("Help center");
                             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                             tvAppLastSync.setVisibility(View.GONE);
+                            imageViewIsInternet.setVisibility(View.VISIBLE);
                             imageViewIsNotification.setVisibility(View.GONE);
                             ivHamburger.setVisibility(View.GONE);
                             fragment = new HelpFragment_New();
@@ -1420,10 +1426,16 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         } else if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();
             bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
-            tvTitleHomeScreenCommon.setText(getString(R.string.help));
+            tvTitleHomeScreenCommon.setText("Help center");
+            ivHamburger.setVisibility(View.GONE);
+            imageview_notifications_home.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
         } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
             bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            ivHamburger.setVisibility(View.GONE);
+            imageview_notifications_home.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
         }
