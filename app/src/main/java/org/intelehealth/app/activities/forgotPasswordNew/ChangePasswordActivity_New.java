@@ -145,7 +145,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             @Override
             public void onNext(ResponseBody test) {
                 SnackbarUtils snackbarUtils = new SnackbarUtils();
-                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.password_changed_successfully), layoutParent);
+                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.the_password_has_been_successfully_changed), layoutParent);
 
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> performLogout(), 2000);
