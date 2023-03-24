@@ -118,6 +118,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -1196,7 +1197,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
                 }
                 tvUsername.setText(userFullName);
-                tvUserId.setText(sessionManager.getChwname());
+                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
 

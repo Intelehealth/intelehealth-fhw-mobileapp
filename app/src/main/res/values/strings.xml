@@ -1783,6 +1783,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
     <string name="permissions_required">Permissions Required</string>
+    <string name="chw_id">CHW ID:</string>
 
     <!--END-->
 
