@@ -1142,9 +1142,9 @@
 
     <string name="enter_valid_email">वैध ईमेल पता दर्ज करें</string>
     <string name="enter_valid_gender">लिंग दर्ज करें पुरुष या महिला</string>
-    <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
-    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
-    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
+    <string name="does_person_chew_tobacco">क्या आप तम्बाकू चबाते है ?</string>
+    <string name="history_of_tobacco_consumption">तंबाकू की खपत का इतिहास</string>
+    <string name="tobacco_consumption_cannot_empty">तंबाकू की खपत का इतिहास खाली नहीं हो सकता</string>
     <string name="not_sure">पता नहीं</string>
     <string name="graduation_and_above">स्नातक या स्नातक से ऊपर</string>
     <string name="married">विवाहित</string>
