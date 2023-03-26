@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -159,6 +160,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     NetworkUtils networkUtils;
     String currentFragment;
     private AlertDialog resetDialog;
+    private MaterialAlertDialogBuilder resetAlertDialogBuilder;
 
     private static final String TAG_HOME = "TAG_HOME";
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
@@ -299,10 +301,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen"))
-                    showSnackBarAndRemoveLater();
-                else
-                    survey_snackbar_cv.setVisibility(View.GONE);
+                if (intentTag.equalsIgnoreCase("Feedback screen")) showSnackBarAndRemoveLater();
+                else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -367,18 +367,57 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void resetApp() {
         // to insert time spent by user into the db
         insertTimeSpentByUserIntoDb();
+        showResetConfirmationDialog();
+    }
 
+    private void showResetConfirmationDialog() {
+        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                checkNetworkConnectionAndPerformSync();
+                //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
+//                            deleteCache(getApplicationContext());
+/*
+                        new Handler(Looper.getMainLooper())
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        resetDialog.dismiss();
+                                        deleteCache(getApplicationContext());
+                                    }
+                                }, 2000);
+*/
+            }
+        });
+    }
+
+    private void checkNetworkConnectionAndPerformSync() {
         if ((isNetworkConnected())) {
-            showSimpleDialog(getString(R.string.app_sync), getString(R.string.please_wait_sync_progress));
+
+            // first we're showing the sync in progress dialog - Added by Arpan Sircar
+            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+
             boolean isSynced = syncUtils.syncForeground("home");
             if (isSynced) {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() { //Do something after 100ms
-                        showResetConfirmationDialog();
-                    }
-                }, 3000);
+
+                new Handler().postDelayed(() -> {
+
+                    // next we're displaying the sync successful message - Added by Arpan Sircar
+                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_login_success));
+
+                    new Handler().postDelayed(() -> {
+
+                        // finally, we'll be displaying the reset dialog - Added by Arpan Sircar
+                        showResetProgressbar();
+
+                        new Handler().postDelayed(() -> { //Do something after 100ms
+                            Toast.makeText(getApplicationContext(), getString(R.string.app_reset_successfully), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.please_open_the_app_again), Toast.LENGTH_SHORT).show();
+                            deleteCache(getApplicationContext());
+                        }, 1000);
+
+                    }, 2000);
+                }, 4000);
+
             } else {
                 // mResetSyncDialog.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
@@ -390,43 +429,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
-    private void showResetConfirmationDialog() {
-        resetDialog.dismiss();
-        patientRegistrationDialog(context,
-                getResources().getDrawable(R.drawable.close_patient_svg),
-                getString(R.string.reset_app_new),
-                getString(R.string.sure_to_reset_app),
-                getString(R.string.generic_yes),
-                getString(R.string.no), new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            showResetProgressbar();
-                            deleteCache(getApplicationContext());
-
-                            //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
-//                            deleteCache(getApplicationContext());
-/*
-                            new Handler(Looper.getMainLooper())
-                                    .postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            resetDialog.dismiss();
-                                            deleteCache(getApplicationContext());
-                                        }
-                                    }, 2000);
-*/
-                        }
-                    }
-                });
-    }
-
     private void showResetProgressbar() {
-        mRefreshProgressDialog = new ProgressDialog(context, R.style.AlertDialogStyle);
-        mRefreshProgressDialog.setTitle(R.string.resetting_app_dialog);
-        mRefreshProgressDialog.setCancelable(false);
-        mRefreshProgressDialog.setProgress(i);
-        mRefreshProgressDialog.show();
+        resetDialog.dismiss();
+        MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
+        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
     }
 
     public void deleteCache(Context context) {
@@ -459,11 +465,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void clearAppData() {
+        resetDialog.dismiss();
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
-                mRefreshProgressDialog.dismiss();
                 ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
             } else {
                 String packageName = getApplicationContext().getPackageName();
@@ -476,32 +481,43 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
-    private void showSimpleDialog(String title, String subtitle) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+    private void showSimpleDialog(MaterialAlertDialogBuilder alertDialog, String title, String subtitle, Drawable dialogIcon) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-        alertdialogBuilder.setView(convertView);
+        alertDialog.setView(convertView);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
         TextView dialog_title = convertView.findViewById(R.id.dialog_title);
         TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
         Button positive_btn = convertView.findViewById(R.id.positive_btn);
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+        icon.setImageDrawable(dialogIcon);
         dialog_title.setText(title);
         dialog_subtitle.setText(subtitle);
         positive_btn.setVisibility(View.GONE);
         negative_btn.setVisibility(View.GONE);
 
-        resetDialog = alertdialogBuilder.create();
+        resetDialog = alertDialog.create();
         resetDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
         resetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         resetDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        resetDialog.setCancelable(false);
         resetDialog.show();
     }
 
+    private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
+        ImageView icon = dialog.findViewById(R.id.dialog_icon);
+        TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
+        TextView dialogSubtitle = dialog.findViewById(R.id.dialog_subtitle);
+
+        icon.setImageDrawable(dialogIcon);
+        dialogTitle.setText(title);
+        dialogSubtitle.setText(subtitle);
+    }
+
     private void initUI() {
+        resetAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
         survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         tvAppVersion = findViewById(R.id.tv_app_version);
@@ -629,8 +645,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equalsIgnoreCase(TAG_HOME)) {
             // finish();
-            wantToExitApp(this, "Exit App", getResources().getString(R.string.sure_to_exit),
-                    getResources().getString(R.string.yes), getResources().getString(R.string.no));
+            wantToExitApp(this, "Exit App", getResources().getString(R.string.sure_to_exit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
         } else {
             //super.onBackPressed();
@@ -657,8 +672,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     }
 
-    public void wantToExitApp(Context context, String title, String subTitle,
-                              String positiveBtnTxt, String negativeBtnTxt) {
+    public void wantToExitApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -697,8 +711,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         alertDialog.show();
     }
 
-    public void wantToLogoutFromApp(Context context, String title, String subTitle,
-                                    String positiveBtnTxt, String negativeBtnTxt) {
+    public void wantToLogoutFromApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -784,8 +797,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     public void showLoggingInDialog() {
 
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(HomeScreenActivity_New.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity_New.this);
         builder.setCancelable(false);
         LayoutInflater inflater = LayoutInflater.from(HomeScreenActivity_New.this);
         View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_login_success, null);
@@ -807,14 +819,13 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return false;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                selectDrawerItem(menuItem);
+                return false;
+            }
+        });
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -840,8 +851,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 startActivity(i);
                 break;
             case R.id.menu_logout:
-                wantToLogoutFromApp(this, "Logout", getResources().getString(R.string.sure_to_logout),
-                        getResources().getString(R.string.yes), getResources().getString(R.string.no));
+                wantToLogoutFromApp(this, "Logout", getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
                 break;
             default:
         }
@@ -915,60 +925,52 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             e.printStackTrace();
         }
 
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-                    @Override
-                    public void onSuccess(CheckAppUpdateRes res) {
-                        int latestVersionCode = 0;
-                        if (!res.getLatestVersionCode().isEmpty()) {
-                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                        }
+        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+            @Override
+            public void onSuccess(CheckAppUpdateRes res) {
+                int latestVersionCode = 0;
+                if (!res.getLatestVersionCode().isEmpty()) {
+                    latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                }
 
-                        if (latestVersionCode > versionCode) {
-                            android.app.AlertDialog.Builder builder;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
-                            } else {
-                                builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
-                            }
-
-
-                            builder.setTitle(getResources().getString(R.string.new_update_available))
-                                    .setCancelable(false)
-                                    .setMessage(getResources().getString(R.string.update_app_note))
-                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-                                        }
-                                    })
-
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false);
-
-                            Dialog dialog = builder.show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                                TextView tv = (TextView) dialog.findViewById(textViewId);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                            }
-                        }
+                if (latestVersionCode > versionCode) {
+                    android.app.AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("Error", "" + e);
+
+                    builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                    } catch (ActivityNotFoundException anfe) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                    }
+
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
+
+                    Dialog dialog = builder.show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                        TextView tv = (TextView) dialog.findViewById(textViewId);
+                        tv.setTextColor(getResources().getColor(R.color.white));
                     }
-                })
-        );
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("Error", "" + e);
+            }
+        }));
 
     }
 
@@ -986,9 +988,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
-                        new AlertDialog.Builder(HomeScreenActivity_New.this)
-                                .setMessage(R.string.failed_initial_synced)
-                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(HomeScreenActivity_New.this).setMessage(R.string.failed_initial_synced).setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         finish();
@@ -1126,8 +1126,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
                     mSyncProgressDialog.dismiss();
                 }
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + this.getPackageName()));
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
                 startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
             } else {
                 //Permission Granted-System will work
@@ -1142,42 +1141,41 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment fragment;
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment;
 
-                    switch (item.getItemId()) {
-                        case R.id.bottom_nav_home_menu:
-                            Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
-                            fragment = new HomeFragment_New();
-                            loadFragment(fragment, TAG_HOME);
-                            return true;
-                        case R.id.bottom_nav_achievements:
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                            fragment = new MyAchievementsFragment();
-                            //loadFragmentForBottomNav(fragment);
-                            loadFragment(fragment, TAG_ACHIEVEMENT);
-                            return true;
-                        case R.id.bottom_nav_help:
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
-                            fragment = new HelpFragment_New();
-                            //loadFragmentForBottomNav(fragment);
-                            loadFragment(fragment, TAG_HELP);
-                            return true;
-                        case R.id.bottom_nav_add_patient:
+            switch (item.getItemId()) {
+                case R.id.bottom_nav_home_menu:
+                    Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
+                    fragment = new HomeFragment_New();
+                    loadFragment(fragment, TAG_HOME);
+                    return true;
+                case R.id.bottom_nav_achievements:
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                    fragment = new MyAchievementsFragment();
+                    //loadFragmentForBottomNav(fragment);
+                    loadFragment(fragment, TAG_ACHIEVEMENT);
+                    return true;
+                case R.id.bottom_nav_help:
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
+                    fragment = new HelpFragment_New();
+                    //loadFragmentForBottomNav(fragment);
+                    loadFragment(fragment, TAG_HELP);
+                    return true;
+                case R.id.bottom_nav_add_patient:
 
-                            Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
-                            intent.putExtra("add_patient", "add_patient");
-                            startActivity(intent);
-                            return false;
-                    }
-
+                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
+                    intent.putExtra("add_patient", "add_patient");
+                    startActivity(intent);
                     return false;
-                }
-            };
+            }
+
+            return false;
+        }
+    };
 
 
     private void updateNavHeaderUserDetails() {
@@ -1201,13 +1199,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
 
-                    Glide.with(HomeScreenActivity_New.this)
-                            .load(providerDTO.getImagePath())
-                            .thumbnail(0.3f)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .into(ivProfileIcon);
+                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
 
 
                 }
@@ -1282,58 +1274,47 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Log.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
-        Observable<ResponseBody> profilePicDownload =
-                AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
 
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        Log.d(TAG, "onNext: ");
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, uuid);
-                    }
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                Log.d(TAG, "onNext: ");
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, uuid);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Logger.logD(TAG, e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        ProviderDAO providerDAO = new ProviderDAO();
-                        boolean updated = false;
-                        try {
-                            updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg",
-                                    sessionManager.getProviderID());
+            @Override
+            public void onComplete() {
+                ProviderDAO providerDAO = new ProviderDAO();
+                boolean updated = false;
+                try {
+                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(HomeScreenActivity_New.this)
-                                    .load(AppConstants.IMAGE_PATH + uuid + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(ivProfileIcon);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg",
-                                    sessionManager.getProviderID());
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
     }
 
     //update ui as per internet availability

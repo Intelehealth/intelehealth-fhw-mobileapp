@@ -695,13 +695,14 @@
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
     <string name="app_reset_toast">App Reset is done!</string>
-    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="resetting_app_dialog">Resetting app</string>
     <string name="sure_to_reset_app">Are you sure you want to reset the app?</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+    <string name="app_sync_dialog_title">Syncing app</string>
 
     <string name="saving_captured_image">Saving Captured Image...</string>
     <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
@@ -914,6 +915,7 @@
     <string name="about_us">About us</string>
     <string name="log_out">Log-out</string>
     <string name="reset_app_new">Reset app</string>
+    <string name="reset_app_new_title">Reset app?</string>
     <string name="snack_policy">Please agree to terms &amp; conditions and Privacy policy</string>
 
 
@@ -1755,7 +1757,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
-    <string name="please_wait_sync_progress">Please wait a moment while sync is in progress</string>
+    <string name="please_wait_sync_progress">Please wait a moment while the app is being synced</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -1785,6 +1787,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
     <string name="permissions_required">Permissions Required</string>
     <string name="chw_id">CHW ID:</string>
+    <string name="sync_successful">Sync successful</string>
+    <string name="app_reset_successfully">App Reset Successfully</string>
+    <string name="please_open_the_app_again">Please open the app again.</string>
 
     <!--END-->
 
