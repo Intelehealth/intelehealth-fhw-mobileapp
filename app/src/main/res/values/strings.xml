@@ -1790,6 +1790,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="sync_successful">Sync successful</string>
     <string name="app_reset_successfully">App Reset Successfully</string>
     <string name="please_open_the_app_again">Please open the app again.</string>
+    <string name="network_failure">Network failure!</string>
+    <string name="reset_app_requires_internet_message">Resting app requires data syncing with strong connection so check your internet connection.</string>
+    <string name="try_again">Try again</string>
 
     <!--END-->
 

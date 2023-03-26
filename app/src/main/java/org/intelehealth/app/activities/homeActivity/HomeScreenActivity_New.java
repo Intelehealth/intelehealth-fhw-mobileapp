@@ -424,8 +424,19 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            AlertDialog networkFailureDialog = builder.show();
+
+            networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            networkFailureDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+            networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
+            if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
+                networkFailureDialog.dismiss();
+                checkNetworkConnectionAndPerformSync();
+            });
         }
     }
 
