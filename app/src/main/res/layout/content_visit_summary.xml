@@ -1827,7 +1827,6 @@
             android:fontFamily="@font/lato_bold"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:onClick="generateBill"
             android:text="@string/generate_bill"
             android:textAlignment="center"
             android:textColor="@android:color/white"

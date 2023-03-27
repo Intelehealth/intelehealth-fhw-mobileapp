@@ -1919,6 +1919,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         } catch (DAOException exception) {
             FirebaseCrashlytics.getInstance().recordException(exception);
         }
+
+        generateBillBtn.setOnClickListener(v -> {
+            generateBill();
+        });
     }
 
     private void fetchVisitIdAfterSomeTime() {
@@ -2055,7 +2059,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //        Configuration config = new Configuration();
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        Resources res = getResources();
+      /*  Resources res = getResources();
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
@@ -2069,7 +2073,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         } else {
             conf.locale = locale;
         }
-        res.updateConfiguration(conf, dm);
+        res.updateConfiguration(conf, dm);*/
+
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
 //    private String convertCtoF(String temperature) {
@@ -3981,6 +3991,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     @Override
     public void onResume() // register the receiver here
     {
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
+
         //get from encountertbl from the encounter
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -5232,7 +5246,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 */
 
-    public void generateBill(View view) {
+    public void generateBill() {
         String billEncounterUuid = checkForOldBill();
         if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
