@@ -501,7 +501,7 @@
     <string name="image_upload">ImageUpload</string>
     <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
-    <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="sure_to_logout">Are you sure you want to log out from the app?</string>
     <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
@@ -697,13 +697,14 @@
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
     <string name="app_reset_toast">App Reset is done!</string>
-    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="resetting_app_dialog">Resetting app</string>
     <string name="sure_to_reset_app">Are you sure you want to reset the app?</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+    <string name="app_sync_dialog_title">Syncing app</string>
 
     <string name="saving_captured_image">Saving Captured Image...</string>
     <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
@@ -917,6 +918,7 @@
     <string name="about_us">About us</string>
     <string name="log_out">Log-out</string>
     <string name="reset_app_new">Reset app</string>
+    <string name="reset_app_new_title">Reset app?</string>
     <string name="snack_policy">Please agree to terms &amp; conditions and Privacy policy</string>
 
 
@@ -1634,6 +1636,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="change_password">Change password</string>
     <string name="password_match">New password and confirm password must be same.</string>
     <string name="password_changed_successfully">Password changed successfully</string>
+    <string name="the_password_has_been_successfully_changed">The password has been successfully changed!</string>
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>
     <string name="password_validation">Password length must be greater or equal to 8 and with combination of small, capital characters and digits</string>
@@ -1758,7 +1761,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
-    <string name="please_wait_sync_progress">Please wait a moment while \nsync is in progress</string>
+    <string name="please_wait_sync_progress">Please wait a moment while the app is being synced</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -1791,6 +1794,13 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="sanity_alert_title">Please wash/sanitize your hands</string>
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
+    <string name="chw_id">CHW ID:</string>
+    <string name="sync_successful">Sync successful</string>
+    <string name="app_reset_successfully">App Reset Successfully</string>
+    <string name="please_open_the_app_again">Please open the app again.</string>
+    <string name="network_failure">Network failure!</string>
+    <string name="reset_app_requires_internet_message">Resting app requires data syncing with strong connection so check your internet connection.</string>
+    <string name="try_again">Try again</string>
 
 
     //fingerprint IDA_613

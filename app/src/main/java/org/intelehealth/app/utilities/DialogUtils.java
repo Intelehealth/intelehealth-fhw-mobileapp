@@ -149,4 +149,23 @@ public class DialogUtils {
 
         alertDialog.show();
     }
+
+    public MaterialAlertDialogBuilder showErrorDialogWithTryAgainButton(Context context, Drawable drawable, String title, String message, String buttonText) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_error_and_button, null);
+        builder.setView(dialogView);
+
+        ImageView dialogIcon = dialogView.findViewById(R.id.dialog_icon);
+        TextView tvTitle = dialogView.findViewById(R.id.dialog_title);
+        TextView tvSubtitle = dialogView.findViewById(R.id.dialog_subtitle);
+        Button tryAgainButton = dialogView.findViewById(R.id.positive_btn);
+
+        dialogIcon.setImageDrawable(drawable);
+        tvTitle.setText(title);
+        tvSubtitle.setText(message);
+        tryAgainButton.setText(buttonText);
+
+        return builder;
+    }
 }

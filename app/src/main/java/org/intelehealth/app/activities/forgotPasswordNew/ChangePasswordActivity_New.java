@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -65,6 +67,9 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
     ObjectAnimator syncAnimator;
+    private CardView customSnackBar;
+    private TextView customSnackBarText;
+    private Button btnSave;
     private final SyncUtils syncUtils = new SyncUtils();
 
 
@@ -89,7 +94,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         cpd = new CustomProgressDialog(context);
         sessionManager = new SessionManager(context);
 
-
+        customSnackBar = findViewById(R.id.snackbar_cv);
+        customSnackBarText = findViewById(R.id.snackbar_text);
         etCurrentPassword = findViewById(R.id.et_current_password);
         etNewPassword = findViewById(R.id.et_new_password_change);
         etNewPasswordConfirm = findViewById(R.id.et_new_password_confirm);
@@ -101,7 +107,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
 
-        Button btnSave = findViewById(R.id.btn_save_change);
+        btnSave = findViewById(R.id.btn_save_change);
 
         ivIsInternet.setOnClickListener(v -> {
             SyncUtils.syncNow(ChangePasswordActivity_New.this, ivIsInternet, syncAnimator);
@@ -144,9 +150,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
             @Override
             public void onNext(ResponseBody test) {
-                SnackbarUtils snackbarUtils = new SnackbarUtils();
-                snackbarUtils.showSnacksWithRelativeLayoutSuccess(context, context.getString(R.string.password_changed_successfully), layoutParent);
-
+                showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed));
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> performLogout(), 2000);
                 cpd.dismiss();
@@ -364,5 +368,16 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+    }
+
+    private void showSnackBarAndRemoveLater(String text) {
+        btnSave.setVisibility(View.GONE);           // While displaying this snackbar over the button, the snackbar elevation is not visible if the button is visible
+        customSnackBar.setVisibility(View.VISIBLE); // due to this, while displaying this snackbar, we're hiding the button so that the elevation is properly visible - added by Arpan Sircar
+        customSnackBarText.setText(text);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            customSnackBar.setVisibility(View.GONE);
+            btnSave.setVisibility(View.VISIBLE);
+        }, 4000);
     }
 }
