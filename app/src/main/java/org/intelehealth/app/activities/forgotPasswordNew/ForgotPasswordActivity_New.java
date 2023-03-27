@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.ArrayMap;
@@ -137,10 +140,30 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         tvMobileError = findViewById(R.id.tv_mobile_error);
         countryCodePicker = findViewById(R.id.countrycode_spinner_forgot);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
+        countryCodePicker.setNumberAutoFormattingEnabled(false);
+
         etUsername.addTextChangedListener(new MyWatcher(etUsername));
         etMobileNo.addTextChangedListener(new MyWatcher(etMobileNo));
+        setMobileNumberLimit();
     }
+    private int mSelectedMobileNumberValidationLength = 0;
+    private String mSelectedCountryCode = "";
 
+    private void setMobileNumberLimit() {
+        mSelectedCountryCode = countryCodePicker.getSelectedCountryCode();
+        if (mSelectedCountryCode.equals("91")) {
+            mSelectedMobileNumberValidationLength = 10;
+        }
+        etMobileNo.setInputType(InputType.TYPE_CLASS_PHONE);
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                return null;
+            }
+        };
+
+        etMobileNo.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
+    }
     private class MyWatcher implements TextWatcher {
         EditText editText;
 

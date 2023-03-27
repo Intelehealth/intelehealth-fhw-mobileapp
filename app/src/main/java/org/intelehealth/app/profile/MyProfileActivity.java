@@ -20,6 +20,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -210,7 +213,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
         countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
-
+        countryCodePicker.setNumberAutoFormattingEnabled(false);
 
         ivProfileImage = findViewById(R.id.iv_profilePic);
         tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
@@ -285,6 +288,26 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         // fetch user details if added
         fetchUserDetailsIfAdded();
         manageListeners();
+        setMobileNumberLimit();
+    }
+
+    private int mSelectedMobileNumberValidationLength = 0;
+    private String mSelectedCountryCode = "";
+
+    private void setMobileNumberLimit() {
+        mSelectedCountryCode = countryCodePicker.getSelectedCountryCode();
+        if (mSelectedCountryCode.equals("91")) {
+            mSelectedMobileNumberValidationLength = 10;
+        }
+        etMobileNo.setInputType(InputType.TYPE_CLASS_PHONE);
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                return null;
+            }
+        };
+
+        etMobileNo.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
     }
 
     private void fetchUserDetailsIfAdded() {

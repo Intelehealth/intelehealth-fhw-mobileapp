@@ -64,7 +64,6 @@ import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -142,6 +141,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
         Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
+        mCountryCodePicker.setNumberAutoFormattingEnabled(false);
+
         mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
         mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
         mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
@@ -160,7 +161,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         fragment_secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
             patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
-         //   patientID_edit = getArguments().getString("patientUuid");
+            //   patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
 
@@ -285,6 +286,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
+        setMobileNumberLimit();
+    }
+
+    private int mSelectedMobileNumberValidationLength = 0;
+    private String mSelectedCountryCode = "";
+
+    private void setMobileNumberLimit() {
+        mSelectedCountryCode = mCountryCodePicker.getSelectedCountryCode();
+        if (mSelectedCountryCode.equals("91")) {
+            mSelectedMobileNumberValidationLength = 10;
+        }
         mPhoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
         InputFilter inputFilter = new InputFilter() {
             @Override
@@ -293,7 +305,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         };
 
-        mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(11)});
+        mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
     }
 
     @Override
@@ -407,6 +419,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
 
+
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
             onPatientCreateClicked();
@@ -426,7 +439,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patient_imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   checkPerm();
+                checkPerm();
             }
         });
 
@@ -821,9 +834,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }*/
 
         if (patient_detail) {
-         //   patientdto.setUuid(patientID_edit);
-        }
-        else {
+            //   patientdto.setUuid(patientID_edit);
+        } else {
             patientdto.setUuid(uuid);
         }
 
@@ -903,7 +915,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         } else {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
             Log.v("phone", "phone: " + s);
-            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 10) {
+            if (s.length() < mSelectedMobileNumberValidationLength) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                 mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -921,18 +933,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
 
-              if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
-                      && s.length() > 10) {
-                  mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                  mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
-                  mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                  mPhoneNumberEditText.requestFocus();
-                  return;
-              }
-              else {
-                  mPhoneNumberErrorTextView.setVisibility(View.GONE);
-                  mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-              }
+            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
+                    && s.length() != mSelectedMobileNumberValidationLength) {
+                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
+                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mPhoneNumberEditText.requestFocus();
+                return;
+            } else {
+                mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
             // Indian mobile number max
         }
 
@@ -978,7 +989,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         bundle.putSerializable("patientDTO", (Serializable) patientdto);
         bundle.putBoolean("fromFirstScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
-     //   bundle.putString("patientUuid", patientID_edit);
+        //   bundle.putString("patientUuid", patientID_edit);
         fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()
