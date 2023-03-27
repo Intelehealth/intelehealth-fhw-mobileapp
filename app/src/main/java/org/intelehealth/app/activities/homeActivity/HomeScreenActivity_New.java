@@ -894,7 +894,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 tvAppLastSync.setVisibility(View.GONE);
                 ivHamburger.setVisibility(View.GONE);
                 imageViewIsInternet.setVisibility(View.VISIBLE);
@@ -1201,43 +1201,40 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
 
-                    switch (item.getItemId()) {
-                        case R.id.bottom_nav_home_menu:
-                            Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
-                            fragment = new HomeFragment_New();
-                            ivHamburger.setVisibility(View.VISIBLE);
-                            loadFragment(fragment, TAG_HOME);
-                            return true;
-                        case R.id.bottom_nav_achievements:
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                            tvAppLastSync.setVisibility(View.GONE);
-                            ivHamburger.setVisibility(View.GONE);
-                            imageViewIsInternet.setVisibility(View.VISIBLE);
-                            imageViewIsNotification.setVisibility(View.GONE);
-                            fragment = new MyAchievementsFragment();
-                            //loadFragmentForBottomNav(fragment);
-                            loadFragment(fragment, TAG_ACHIEVEMENT);
-                            return true;
-                        case R.id.bottom_nav_help:
-                            tvTitleHomeScreenCommon.setText("Help center");
-                            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                            tvAppLastSync.setVisibility(View.GONE);
-                            imageViewIsInternet.setVisibility(View.VISIBLE);
-                            imageViewIsNotification.setVisibility(View.GONE);
-                            ivHamburger.setVisibility(View.GONE);
-                            fragment = new HelpFragment_New();
-                            //loadFragmentForBottomNav(fragment);
-                            loadFragment(fragment, TAG_HELP);
-                            return true;
-                        case R.id.bottom_nav_add_patient:
-                            Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
-                            intent.putExtra("add_patient", "add_patient");
-                            startActivity(intent);
-                            return false;
-                    }
-
+            switch (item.getItemId()) {
+                case R.id.bottom_nav_home_menu:
+                    Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
+                    fragment = new HomeFragment_New();
+                    ivHamburger.setVisibility(View.VISIBLE);
+                    loadFragment(fragment, TAG_HOME);
+                    return true;
+                case R.id.bottom_nav_achievements:
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    tvAppLastSync.setVisibility(View.GONE);
+                    ivHamburger.setVisibility(View.GONE);
+                    imageViewIsInternet.setVisibility(View.VISIBLE);
+                    imageViewIsNotification.setVisibility(View.GONE);
+                    fragment = new MyAchievementsFragment();
+                    //loadFragmentForBottomNav(fragment);
+                    loadFragment(fragment, TAG_ACHIEVEMENT);
+                    return true;
+                case R.id.bottom_nav_help:
+                    tvTitleHomeScreenCommon.setText("Help center");
+                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    tvAppLastSync.setVisibility(View.GONE);
+                    imageViewIsInternet.setVisibility(View.VISIBLE);
+                    imageViewIsNotification.setVisibility(View.GONE);
+                    ivHamburger.setVisibility(View.GONE);
+                    fragment = new HelpFragment_New();
+                    //loadFragmentForBottomNav(fragment);
+                    loadFragment(fragment, TAG_HELP);
+                    return true;
+                case R.id.bottom_nav_add_patient:
+                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
+                    intent.putExtra("add_patient", "add_patient");
+                    startActivity(intent);
                     return false;
             }
 
@@ -1454,7 +1451,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             mSyncProgressDialog.setProgress(i);
             mSyncProgressDialog.show();*/
 
-            if(dialogRefreshInProgress!=null && dialogRefreshInProgress.isShowing())
+            if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
                 dialogRefreshInProgress.dismiss();
 
             showRefreshInProgressDialog();
