@@ -318,13 +318,13 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
             public void onFinish() {
                 tvResendOtp.setEnabled(true);
-                etPin1.setText("");
+                /*etPin1.setText("");
                 etPin2.setText("");
                 etPin3.setText("");
                 etPin4.setText("");
                 etPin5.setText("");
                 etPin6.setText("");
-                etPin1.requestFocus();
+                etPin1.requestFocus();*/
                 tvResendOtp.setText(getResources().getString(R.string.resend_otp));
 
             }
