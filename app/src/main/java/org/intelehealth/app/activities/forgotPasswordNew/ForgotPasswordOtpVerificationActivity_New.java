@@ -82,6 +82,15 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                etPin1.setText("");
+                etPin2.setText("");
+                etPin3.setText("");
+                etPin4.setText("");
+                etPin5.setText("");
+                etPin6.setText("");
+                etPin1.requestFocus();
+                if(tvOtpError.getVisibility()==View.VISIBLE)
+                    tvOtpError.setVisibility(View.GONE);
                 apiCallForRequestOTP(ForgotPasswordOtpVerificationActivity_New.this, userName, userPhoneNum);
             }
         });
