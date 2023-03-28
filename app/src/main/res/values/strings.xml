@@ -1814,6 +1814,12 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="no_fingerprint_assigned">Device fingerprint sensor has no fingerprint assigned.</string>
     <string name="fingerprint_not_working">Device fingerprint sensor is not working.</string>
     <string name="no_fingerprint_sensor">Device doesn\'t have a fingerprint sensor.</string>
+    <string name="ui2_no_information">No information</string>
+    <string name="confirm_visit_reason">Confirm visit reason?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+    <string name="check_up_reason">Check-up reason</string>
+    <string name="know_more_txt">Know more</string>
+    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <!--END-->
 
 </resources>

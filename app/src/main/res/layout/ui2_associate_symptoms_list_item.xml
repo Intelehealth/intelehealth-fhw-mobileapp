@@ -82,6 +82,15 @@
         android:layout_marginTop="@dimen/margin_16"
         android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/ll_single_component_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_question_desc"
+        android:layout_marginTop="@dimen/margin_16"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.2dip"

@@ -1,7 +1,6 @@
 package org.intelehealth.app.ayu.visit.vital;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -52,8 +53,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String encounterVitals;
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-
-    TextView mHeightTextView, mWeightTextView, mBMITextView, mBmiStatusTextView;
+    private Spinner mHeightTextView, mWeightTextView;
+    TextView mBMITextView, mBmiStatusTextView;
     TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView;
     EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
@@ -126,10 +127,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection, container, false);
 
-        mHeightTextView = view.findViewById(R.id.tv_height);
-        mWeightTextView = view.findViewById(R.id.tv_weight);
-        mHeightTextView.setOnClickListener(this);
-        mWeightTextView.setOnClickListener(this);
+        mHeightTextView = view.findViewById(R.id.sp_height);
+        mWeightTextView = view.findViewById(R.id.sp_weight);
+        /*mHeightTextView.setOnClickListener(this);
+        mWeightTextView.setOnClickListener(this);*/
 
         mBMITextView = view.findViewById(R.id.tv_bmi_value);
         mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);
@@ -175,6 +176,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         mSubmitButton = view.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
+
+
+        showHeightListing();
+
+
+        showWeightListing();
+
 
         return view;
     }
@@ -231,68 +239,79 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, results);
                 }
                 break;
-            case R.id.tv_height:
-                showHeightListing();
-                break;
-            case R.id.tv_weight:
-                showWeightListing();
-                break;
+
         }
     }
 
 
     private void showHeightListing() {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select Height");
-
         // add a list
-        final String[] data = new String[mHeightMasterList.size()];
-        for (int i = 0; i < mHeightMasterList.size(); i++) {
-            data[i] = String.valueOf(mHeightMasterList.get(i)) /*+ " cm"*/;
+        final String[] data = new String[mHeightMasterList.size() + 1];
+        data[0] = "Select Height";
+        for (int i = 1; i < data.length; i++) {
+            data[i] = String.valueOf(mHeightMasterList.get(i - 1)) + " cm";
         }
-        builder.setItems(data, new DialogInterface.OnClickListener() {
+
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, data);
+        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        mHeightTextView.setAdapter(adaptador);
+        mHeightTextView.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mHeightTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mHeightTextView.setText(data[which]);
-                heightvalue = String.valueOf(mHeightMasterList.get(which));
-                calculateBMI();
-                mHeightErrorTextView.setVisibility(View.GONE);
-                mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                if (which != 0) {
+                    heightvalue = data[which].split(" ")[0];
+                    calculateBMI();
+                    mHeightErrorTextView.setVisibility(View.GONE);
+                    mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void showWeightListing() {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select Weight");
 
         // add a list
-        final String[] data = new String[mWeightMasterList.size()];
-        for (int i = 0; i < mWeightMasterList.size(); i++) {
-            data[i] = String.valueOf(mWeightMasterList.get(i)) /*+ " kg"*/;
+        final String[] data = new String[mWeightMasterList.size() + 1];
+        data[0] = "Select Wight";
+        for (int i = 1; i < data.length; i++) {
+            data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " kg";
         }
-        builder.setItems(data, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mWeightTextView.setText(data[which]);
-                weightvalue = String.valueOf(mWeightMasterList.get(which));
-                calculateBMI();
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, data);
+        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
-                mWeightErrorTextView.setVisibility(View.GONE);
-                mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
+        mWeightTextView.setAdapter(adaptador);
+        mWeightTextView.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+
+        mWeightTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                if (which != 0) {
+                    weightvalue = data[which].split(" ")[0];
+                    calculateBMI();
+                    mWeightErrorTextView.setVisibility(View.GONE);
+                    mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+
     }
+
 
     private BMIStatus getBmiStatus(double bmi) {
         BMIStatus bmiStatus = new BMIStatus();
@@ -382,10 +401,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-                mHeightTextView.setText(value);
+                heightvalue = value;
+                //mHeightTextView.setText(value);
                 break;
             case UuidDictionary.WEIGHT: //Weight
-                mWeightTextView.setText(value);
+                weightvalue = value;
+                //mWeightTextView.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse
                 mPulseEditText.setText(value);
@@ -415,7 +436,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
         if (mBMITextView.getText().toString().equalsIgnoreCase("")) {
-            calculateBMI_onEdit(mHeightTextView.getText().toString(), mWeightTextView.getText().toString());
+            calculateBMI_onEdit(heightvalue, weightvalue);
         }
     }
 
@@ -423,8 +444,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         boolean cancel = false;
         View focusView = null;
 
-        String height = mHeightTextView.getText().toString().trim();
-        String weight = mWeightTextView.getText().toString().trim();
+        String height = heightvalue;
+        String weight = weightvalue;
         if (height.isEmpty()) {
             mHeightErrorTextView.setVisibility(View.VISIBLE);
             mHeightErrorTextView.setText(getString(R.string.error_field_required));

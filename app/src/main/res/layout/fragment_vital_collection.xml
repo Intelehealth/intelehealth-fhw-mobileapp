@@ -74,18 +74,28 @@
                         android:textSize="@dimen/common_label_text_size"
                         android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/tv_height"
-                        style="@style/edittext_textcolor"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/edittext_border"
-                        android:drawableEnd="@drawable/ui2_ic_dropdown"
-                        android:hint="Select"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/hamburger_margin_start">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/sp_height"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:background="@drawable/edittext_border"
+                            android:dropDownVerticalOffset="56dp"
+                            android:padding="@dimen/padding_10" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="@dimen/margin_12"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ui2_ic_dropdown"
+                            android:visibility="visible" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tv_height_error"
@@ -118,18 +128,28 @@
                         android:textSize="@dimen/common_label_text_size"
                         android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/tv_weight"
-                        style="@style/edittext_textcolor"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/edittext_border"
-                        android:drawableEnd="@drawable/ui2_ic_dropdown"
-                        android:hint="Select"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/hamburger_margin_start">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/sp_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:background="@drawable/edittext_border"
+                            android:dropDownVerticalOffset="56dp"
+                            android:padding="@dimen/padding_10" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="@dimen/margin_12"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ui2_ic_dropdown"
+                            android:visibility="visible" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tv_weight_error"

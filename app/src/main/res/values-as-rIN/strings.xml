@@ -881,5 +881,11 @@
     <string name="sanity_alert_title">Please wash/sanitize your hands</string>
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
+    <string name="ui2_no_information">No information</string>
+    <string name="confirm_visit_reason">Confirm visit reason?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+    <string name="check_up_reason">Check-up reason</string>
+    <string name="know_more_txt">Know more</string>
+    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
 
 </resources>

@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +29,7 @@ import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.IOException;
@@ -93,7 +93,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                     Toast.makeText(getActivity(), "Please select at least one complain!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
+                showConfirmDialog();
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
@@ -142,6 +142,18 @@ public class VisitReasonCaptureFragment extends Fragment {
         return view;
     }
 
+    private void showConfirmDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialogWithChipsGrid(getActivity(), mSelectedComplains, R.drawable.ui2_visit_reason_summary_icon, getResources().getString(R.string.confirm_visit_reason), getResources().getString(R.string.are_you_sure_the_patient_has_the_following_reasons_for_a_visit), false, getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
+                }
+            }
+        });
+    }
+
     private void showSelectedComplains() {
         if (mSelectedComplains.isEmpty()) {
             mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
@@ -152,7 +164,6 @@ public class VisitReasonCaptureFragment extends Fragment {
             //mClearImageView.setVisibility(View.VISIBLE);
             mSelectedComplainRecyclerView.setVisibility(View.VISIBLE);
         }
-
 
 
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());

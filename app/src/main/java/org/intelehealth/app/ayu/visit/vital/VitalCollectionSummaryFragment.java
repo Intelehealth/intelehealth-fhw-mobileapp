@@ -93,18 +93,18 @@ public class VitalCollectionSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection_summary, container, false);
-        ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight());
-        ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight());
+        ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() +" cm");
+        ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() +" kg");
         ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
 
         if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty())
             ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
         else
-            ((TextView) view.findViewById(R.id.tv_bp)).setText("N/A");
+            ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
         if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
             ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " bpm");
         else
-            ((TextView) view.findViewById(R.id.tv_pulse)).setText("N/A");
+            ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
             if (new ConfigUtils(getActivity()).fahrenheit()) {
@@ -114,18 +114,18 @@ public class VitalCollectionSummaryFragment extends Fragment {
             }
         } else {
 
-            ((TextView) view.findViewById(R.id.tv_temperature)).setText("N/A");
+            ((TextView) view.findViewById(R.id.tv_temperature)).setText(getString(R.string.ui2_no_information));
         }
 
         if (mVitalsObject.getSpo2() != null && !mVitalsObject.getSpo2().isEmpty())
             ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
         else
-            ((TextView) view.findViewById(R.id.tv_spo2)).setText("N/A");
+            ((TextView) view.findViewById(R.id.tv_spo2)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getResp() != null && !mVitalsObject.getResp().isEmpty())
             ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " breaths/min");
         else
-            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText("N/A");
+            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
 
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override

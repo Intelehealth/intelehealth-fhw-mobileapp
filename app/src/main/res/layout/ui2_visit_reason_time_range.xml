@@ -12,38 +12,56 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <TextView
-            android:id="@+id/tv_number_range"
-            style="@style/edittext_textcolor"
+
+        <FrameLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_border_blue"
-            android:drawableEnd="@drawable/ui2_ic_dropdown"
-            android:drawablePadding="@dimen/margin_8"
-            android:hint="Select number"
-            android:inputType="textAutoComplete"
-            android:padding="@dimen/padding_10"
-            android:textColor="@color/ui2_black_text_color"
-            android:textSize="12sp"
-            android:textStyle="normal" />
+            android:layout_marginTop="@dimen/hamburger_margin_start"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tv_duration_type"
-            style="@style/edittext_textcolor"
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_number_range"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:background="@drawable/edittext_border"
+                android:dropDownVerticalOffset="56dp"
+                android:padding="@dimen/padding_10" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:contentDescription="@null"
+                android:src="@drawable/ui2_ic_dropdown"
+                android:visibility="visible" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_border_blue"
-            android:drawableEnd="@drawable/ui2_ic_dropdown"
-            android:drawablePadding="@dimen/margin_8"
-            android:hint="Select duration type"
-            android:inputType="textAutoComplete"
-            android:padding="@dimen/padding_10"
-            android:textColor="@color/ui2_black_text_color"
-            android:textSize="12sp"
-            android:textStyle="normal" />
+            android:layout_marginTop="@dimen/hamburger_margin_start"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_duration_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:background="@drawable/edittext_border"
+                android:dropDownVerticalOffset="56dp"
+                android:padding="@dimen/padding_10" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:contentDescription="@null"
+                android:src="@drawable/ui2_ic_dropdown"
+                android:visibility="visible" />
+        </FrameLayout>
+
 
     </LinearLayout>
 

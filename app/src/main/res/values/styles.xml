@@ -433,6 +433,17 @@
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_bg</item>
         <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
+        <item name="android:textColor">@color/gray_5</item>
+    </style>
+
+
+    <style name="SpinnerTheme1" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@color/red</item>
+        <item name="android:paddingHorizontal">10dip</item>
+
+    </style>
+    <style name="myListPopupWindow" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
     </style>
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
@@ -496,7 +507,7 @@
 
     <style name="slider_tooltip" parent="Widget.MaterialComponents.Tooltip">
         <item name="shapeAppearanceOverlay">@style/tooltipShOverylay</item>
-       <!-- <item name="android:textAppearance">@style/tooltipShOverylay</item>-->
+        <!-- <item name="android:textAppearance">@style/tooltipShOverylay</item>-->
         <item name="backgroundTint">@color/colorPrimary1</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -505,6 +516,7 @@
         <item name="cornerSize">50%</item>
 
     </style>
+
     <style name="slider_scrollbar" parent="Widget.MaterialComponents.Slider">
         <item name="trackColorActive">@color/colorPrimary1</item>
         <item name="trackColorInactive">@color/gray_1</item>
