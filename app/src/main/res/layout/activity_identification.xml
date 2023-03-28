@@ -1602,6 +1602,30 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
+                                android:text="@string/yes"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/not_sure"
+                                android:textSize="13sp" />
+
+                          <!--  <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
                                 android:text="@string/yes_card_seen"
                                 android:textSize="13sp" />
 
@@ -1627,7 +1651,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/do_not_know"
-                                android:textSize="13sp" />
+                                android:textSize="13sp" />-->
 
                         </RadioGroup>
 

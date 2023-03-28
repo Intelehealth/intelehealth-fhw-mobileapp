@@ -1124,7 +1124,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
     <string name="no_expense">No expense</string>
     <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
-    <string name="does_this_household_have_ration_card">Does this household have a Ration Card?*</string>
+    <string name="does_this_household_have_ration_card">Do you have a Ration card?*</string>
 
     <string name="third_dose">Third Dose</string>
     <string name="zero_fifty_ml">0 – 50 ml</string>

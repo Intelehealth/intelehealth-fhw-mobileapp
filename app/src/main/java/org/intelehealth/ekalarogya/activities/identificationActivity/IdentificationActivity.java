@@ -1601,7 +1601,8 @@ public class IdentificationActivity extends AppCompatActivity implements
 
                 // ration card moved here - start...
                 if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(),
+                            updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 // Economic Card
@@ -3720,7 +3721,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
                 patientAttributesDTO.setValue(getRadioButtonStrings(
-                        ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        ((RadioButton) binding.rationCardRadioGroup.findViewById(
+                                binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
@@ -5250,7 +5252,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
                 patientAttributesDTO.setValue(getRadioButtonStrings(
-                        ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        ((RadioButton) binding.rationCardRadioGroup.findViewById(
+                                binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()

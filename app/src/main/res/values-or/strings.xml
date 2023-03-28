@@ -993,7 +993,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">ଦୟାକରି କୁହ ତୁମ ଘରେ ବିଜୁଳି ଆଲୁଅ ଅଛି କି?</string>
     <string name="no_expense">କିଛି ଖର୍ଚ୍ଚ ନାହିଁ</string>
     <string name="does_this_household_have_an_ayushman_card">ଏହି ଘରର ଆୟୁଷମାନ କାର୍ଡ ଅଛି କି?*</string>
-    <string name="does_this_household_have_ration_card">ଏହି ଘରର ରେସନ କାର୍ଡ ଅଛି କି?*</string>
+    <string name="does_this_household_have_ration_card">ତୁମର ପଡ଼ି କାର୍ଡ ଅଛି କି ?*</string>
 
     <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>
 

@@ -1127,7 +1127,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">कृपया बताएं कि क्या आपके घर में बिजली है</string>
     <string name="no_expense">कोई खर्च नहीं</string>
     <string name="does_this_household_have_an_ayushman_card">क्या इस परिवार के पास आयुष्मान कार्ड है?*</string>
-    <string name="does_this_household_have_ration_card">क्या इस परिवार के पास राशन कार्ड है?*</string>
+    <string name="does_this_household_have_ration_card">क्या आपके पास राशन कार्ड है?*</string>
 
     <string name="third_dose">तीसरी खुराक</string>
     <string name="zero_fifty_ml">0 – 50 ml</string>

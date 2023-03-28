@@ -1100,7 +1100,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">ঘৰত বিদ্যুৎ আছে নে নাই তাক উল্লেখ কৰক</string>
     <string name="no_expense">কোনো খৰচ নাই</string>
     <string name="does_this_household_have_an_ayushman_card">এই ঘৰত আয়ুষ্মান কাৰ্ড আছে নেকি?*</string>
-    <string name="does_this_household_have_ration_card">এই ঘৰৰ ৰেচন কাৰ্ড আছে নেকি?*</string>
+    <string name="does_this_household_have_ration_card">আপোনাৰ Ration কাৰ্ড আছে নেকি?*</string>
 
     <string name="third_dose">তৃতীয় ড’জ</string>
     <string name="zero_fifty_ml">০ – ৫০ মি.লি</string>

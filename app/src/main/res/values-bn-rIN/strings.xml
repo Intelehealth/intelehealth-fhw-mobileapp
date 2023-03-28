@@ -1121,7 +1121,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">আপনার বাড়িতে বিদ্যুৎ আছে কিনা দয়া করে বলুন</string>
     <string name="no_expense">কোনো খরচ নেই</string>
     <string name="does_this_household_have_an_ayushman_card">এই পরিবারের কি আয়ুষ্মান কার্ড আছে?*</string>
-    <string name="does_this_household_have_ration_card">এই পরিবারের কি রেশন কার্ড আছে?*</string>
+    <string name="does_this_household_have_ration_card">আপনার কি রেশন কার্ড আছে?*</string>
 
     <string name="third_dose">তৃতীয় ডোজ</string>
     <string name="zero_fifty_ml">0 - 50 মিলি</string>
