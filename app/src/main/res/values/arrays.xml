@@ -81,7 +81,7 @@
 
     <string-array name="countries_mr">
         <item>देश निवडा</item>
-        <item>India</item>
+        <item>भारत</item>
         <!--        <item>United States</item>-->
         <!--        <item>Philippines</item>-->
     </string-array>
@@ -457,35 +457,35 @@
 
     <string-array name="states_india_mr">
         <item>राज्य निवडा</item>
-        <item>Andhra Pradesh</item>
-        <item>Arunachal Pradesh</item>
-        <item>Assam</item>
-        <item>Bihar</item>
-        <item>Chhattisgarh</item>
-        <item>Goa</item>
-        <item>Gujarat</item>
-        <item>Haryana</item>
-        <item>Himachal Pradesh</item>
-        <item>Jammu &amp; Kashmir</item>
-        <item>Jharkhand</item>
-        <item>Karnataka</item>
-        <item>Kerala</item>
-        <item>Madhya Pradesh</item>
-        <item>Maharashtra</item>
-        <item>Manipur</item>
-        <item>Meghalaya</item>
-        <item>Mizoram</item>
-        <item>Nagaland</item>
-        <item>Odisha</item>
-        <item>Punjab</item>
-        <item>Rajasthan</item>
-        <item>Sikkim</item>
-        <item>Tamil Nadu</item>
-        <item>Telangana</item>
-        <item>Tripura</item>
-        <item>Uttar Pradesh</item>
-        <item>Uttarakhand</item>
-        <item>West Bengal</item>
+        <item>आंध्र प्रदेश</item>
+        <item>अरुणाचल प्रदेश</item>
+        <item>आसाम</item>
+        <item>बिहार</item>
+        <item>छत्तीसगड</item>
+        <item>गोवा</item>
+        <item>गुजरात</item>
+        <item>हरियाणा</item>
+        <item>हिमाचल प्रदेश</item>
+        <item>जम्मू आणि काश्मीर</item>
+        <item>झारखंड</item>
+        <item>कर्नाटक</item>
+        <item>केरळा</item>
+        <item>मध्य प्रदेश</item>
+        <item>महाराष्ट्र</item>
+        <item>मणिपूर</item>
+        <item>मेघालय</item>
+        <item>मिझोराम</item>
+        <item>नागालँड</item>
+        <item>ओडिशा</item>
+        <item>पंजाब</item>
+        <item>राजस्थान</item>
+        <item>सिक्कीम</item>
+        <item>तामिळनाडू</item>
+        <item>तेलंगणा</item>
+        <item>त्रिपुरा</item>
+        <item>उत्तर प्रदेश</item>
+        <item>उत्तराखंड</item>
+        <item>पश्चिम बंगाल</item>
     </string-array>
 
     <string-array name="states_philippines">

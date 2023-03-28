@@ -223,14 +223,45 @@ public class PatientsDAO {
         }
         return patientAttributesList;
     }
+/*
+    public Attribute getPatientAttribute(String patientuuid) throws DAOException {
+        List<Attribute> patientAttributesList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "' AND " +
+                    "person_attribute_type_uuid = ''";
+            Cursor cursor = db.rawQuery(query, null, null);
+            Attribute attribute = new Attribute();
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    attribute = new Attribute();
+                    attribute.setAttributeType(cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid")));
+                    attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
+                    patientAttributesList.add(attribute);
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage());
+        } finally {
+            db.endTransaction();
+
+        }
+        return patientAttributesList;
+    }
+*/
 
     //Fetch householdID value using Patient UUID
-    public String getHouseHoldValue(String patientuuid) throws DAOException {
+    public String getAttributeValue(String patientuuid, String attr_type) throws DAOException {
         String houseHoldID = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0"});
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
+                    "person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, attr_type});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -530,6 +561,24 @@ public class PatientsDAO {
         cursor.close();
 
         return gender;
+    }
+
+    public static String fetch_dob(String patientUuid) {
+        String dob = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.query("tbl_patient", new String[]{"date_of_birth"}, "uuid=?",
+                new String[]{patientUuid}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dob;
     }
 
 

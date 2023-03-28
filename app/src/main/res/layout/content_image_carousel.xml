@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
     android:layout_height="150dp"
     android:id="@+id/content_image_carousel"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <ImageView
+        android:id="@+id/imageView_medical"
         android:layout_height="match_parent"
         android:layout_width="100dp"
-        android:id="@+id/imageView_medical"
+        android:src="@drawable/ic_prescription_gray"
         android:contentDescription="TODO"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="centerCrop">
         </ImageView>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:src="@drawable/action_delete"
+        android:elevation="10dp"
+        android:visibility="gone"
+        android:background="@drawable/rzp_loader_circle"/>
+    </FrameLayout>
+
+</FrameLayout>

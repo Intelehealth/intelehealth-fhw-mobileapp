@@ -159,6 +159,7 @@ public final class StringUtils {
             val = switch_mr_caste(val);
             val = switch_mr_economic(val);
             val = switch_mr_education(val);
+            val = switch_mr_states_india(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             val = switch_as_caste(val);
             val = switch_as_economic(val);
@@ -191,6 +192,8 @@ public final class StringUtils {
 
         return val;
     }
+
+
 
     public static String switch_ru_education_edit(String val) {
         switch (val) {
@@ -598,6 +601,101 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_mr_state_india_edit(String val) {
+        switch (val) {
+            case "Andhra Pradesh":
+                val = "आंध्र प्रदेश";
+                break;
+            case "Arunachal Pradesh":
+                val = "अरुणाचल प्रदेश";
+                break;
+            case "Assam":
+                val = "आसाम";
+                break;
+            case "Bihar":
+                val = "बिहार";
+                break;
+            case "Chhattisgarh":
+                val = "छत्तीसगड";
+                break;
+            case "Goa":
+                val = "गोवा";
+                break;
+            case "Gujarat":
+                val = "गुजरात";
+                break;
+            case "Haryana":
+                val = "हरियाणा";
+                break;
+            case "Himachal Pradesh":
+                val = "हिमाचल प्रदेश";
+                break;
+            case "Jammu &amp; Kashmir":
+                val = "जम्मू आणि काश्मीर";
+                break;
+            case "Jharkhand":
+                val = "झारखंड";
+                break;
+            case "Karnataka":
+                val = "कर्नाटक";
+                break;
+            case "Kerala":
+                val = "केरळा";
+                break;
+            case "Madhya Pradesh":
+                val = "मध्य प्रदेश";
+                break;
+            case "Maharashtra":
+                val = "महाराष्ट्र";
+                break;
+            case "Manipur":
+                val = "मणिपूर";
+                break;
+            case "Meghalaya":
+                val = "मेघालय";
+                break;
+            case "Mizoram":
+                val = "मिझोराम";
+                break;
+            case "Nagaland":
+                val = "नागालँड";
+                break;
+            case "Odisha":
+                val = "ओडिशा";
+                break;
+            case "Punjab":
+                val = "पंजाब";
+                break;
+            case "Rajasthan":
+                val = "राजस्थान";
+                break;
+            case "Sikkim":
+                val = "सिक्कीम";
+                break;
+            case "Tamil Nadu":
+                val = "तामिळनाडू";
+                break;
+            case "Telangana":
+                val = "तेलंगणा";
+                break;
+            case "Tripura":
+                val = "त्रिपुरा";
+                break;
+            case "Uttar Pradesh":
+                val = "उत्तर प्रदेश";
+                break;
+            case "Uttarakhand":
+                val = "उत्तराखंड";
+                break;
+            case "West Bengal":
+                val = "पश्चिम बंगाल";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_mr_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -614,6 +712,101 @@ public final class StringUtils {
                 break;
             case "Graduation & Higher":
                 val = "पदवी आणि उच्च";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    private static String switch_mr_states_india(String val) {
+        switch (val) {
+            case "आंध्र प्रदेश":
+                val = "Andhra Pradesh";
+                break;
+            case "अरुणाचल प्रदेश":
+                val = "Arunachal Pradesh";
+                break;
+            case "आसाम":
+                val = "Assam";
+                break;
+            case "बिहार":
+                val = "Bihar";
+                break;
+            case "छत्तीसगड":
+                val = "Chhattisgarh";
+                break;
+            case "गोवा":
+                val = "Goa";
+                break;
+            case "गुजरात":
+                val = "Gujarat";
+                break;
+            case "हरियाणा":
+                val = "Haryana";
+                break;
+            case "हिमाचल प्रदेश":
+                val = "Himachal Pradesh";
+                break;
+            case "जम्मू आणि काश्मीर":
+                val = "Jammu &amp; Kashmir";
+                break;
+            case "झारखंड":
+                val = "Jharkhand";
+                break;
+            case "कर्नाटक":
+                val = "Karnataka";
+                break;
+            case "केरळा":
+                val = "Kerala";
+                break;
+            case "मध्य प्रदेश":
+                val = "Madhya Pradesh";
+                break;
+            case "महाराष्ट्र":
+                val = "Maharashtra";
+                break;
+            case "मणिपूर":
+                val = "Manipur";
+                break;
+            case "मेघालय":
+                val = "Meghalaya";
+                break;
+            case "मिझोराम":
+                val = "Mizoram";
+                break;
+            case "नागालँड":
+                val = "Nagaland";
+                break;
+            case "ओडिशा":
+                val = "Odisha";
+                break;
+            case "पंजाब":
+                val = "Punjab";
+                break;
+            case "राजस्थान":
+                val = "Rajasthan";
+                break;
+            case "सिक्कीम":
+                val = "Sikkim";
+                break;
+                case "तामिळनाडू":
+                val = "Tamil Nadu";
+                break;
+            case "तेलंगणा":
+                val = "Telangana";
+                break;
+            case "त्रिपुरा":
+                val = "Tripura";
+                break;
+            case "उत्तर प्रदेश":
+                val = "Uttar Pradesh";
+                break;
+            case "उत्तराखंड":
+                val = "Uttarakhand";
+                break;
+            case "पश्चिम बंगाल":
+                val = "West Bengal";
                 break;
             default:
                 return val;

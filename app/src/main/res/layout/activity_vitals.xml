@@ -236,6 +236,41 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <TextView
+                            android:id="@+id/abdominal_warning_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/abdominal_girth_warning"
+                            android:paddingStart="10dp"
+                            android:paddingVertical="5dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:background="@drawable/bg_end_visit"
+                             />
+
+                        <!--Arm Girth - Start -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_arm_girth"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/arm_girth_inches"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <!--Arm Girth - End-->
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -351,7 +386,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
 
@@ -442,7 +477,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
 
@@ -507,10 +542,18 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tinput_c"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="4">
 
                             <EditText
                                 android:id="@+id/table_temp"
@@ -528,11 +571,31 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <ImageButton
+                            android:id="@+id/tempc_Btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/circle"
+                            android:visibility="visible"
+                            android:backgroundTint="@color/colorAccent"
+                            android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tinput_f"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="4">
 
                             <EditText
                                 android:id="@+id/table_temp_faren"
@@ -550,6 +613,18 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+                        <ImageButton
+                            android:id="@+id/tempf_Btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/circle"
+                            android:visibility="visible"
+                            android:backgroundTint="@color/colorAccent"
+                            android:src="@drawable/ic_add_24dp" />
+                    </LinearLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -590,25 +665,26 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="5dp"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                            tools:visibility="visible"
+                            android:visibility="visible">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bloodGlucose"
+                                android:id="@+id/bloodGlucose_nonfasting"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:layout_weight="4">
 
                                 <EditText
-                                    android:id="@+id/bloodGlucose_editText"
+                                    android:id="@+id/bloodGlucose_nonfasting_editText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_regular"
                                     android:hint="@string/blood_glucose_non_fasting"
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
-                                    android:inputType="number"
-                                    android:maxLength="3"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
@@ -617,18 +693,18 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
-                                android:id="@+id/bloodGlucose_Btn"
+                                android:id="@+id/bg_nonfasting_btn"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
+                                android:focusable="true"
                                 android:background="@drawable/circle"
-                                android:visibility="gone"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
 
-                        <!-- Blood Glucose (Random)-->
+                        <!-- Blood Glucose (Fasting)-->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -636,22 +712,22 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bloodGlucoseRandom"
+                                android:id="@+id/bloodGlucoseFasting"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:layout_weight="4">
 
                                 <EditText
-                                    android:id="@+id/bloodGlucoseRandom_editText"
+                                    android:id="@+id/bloodGlucose_Fasting_editText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_regular"
                                     android:hint="@string/blood_glucose_random_vitals"
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
-                                    android:inputType="number"
-                                    android:maxLength="3"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
@@ -660,12 +736,11 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
-                                android:id="@+id/bloodGlucoseRandom_Btn"
+                                android:id="@+id/bloodGlucose_Fasting_Btn"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
-                                android:visibility="gone"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
@@ -715,7 +790,7 @@
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
 
-                        <!--Blood Glucose (Fasting)-->
+                        <!-- HbA1c (%) - start -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -723,22 +798,22 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bloodGlucose_fasting"
+                                android:id="@+id/hba1c_layout"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:layout_weight="4">
 
                                 <EditText
-                                    android:id="@+id/bloodGlucose_editText_fasting"
+                                    android:id="@+id/hba1c_editText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_regular"
                                     android:hint="@string/hba1c"
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
-                                    android:inputType="number"
-                                    android:maxLength="3"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="4"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
@@ -753,11 +828,12 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:visibility="gone"
+                                tools:visibility="visible"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
-
+                        <!-- HbA1c (%) - end -->
 
                         <!--Haemoglobin Test-->
                         <LinearLayout
@@ -889,6 +965,35 @@
                                 android:src="@drawable/ic_add_24dp" />
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                        
+                            <TextView
+                                android:id="@+id/ecg_txtview"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:paddingStart="5dp"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/ecg" />
+
+                            <ImageButton
+                                android:id="@+id/ecg_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="end|center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_keyboard_arrow_right_12dp" />
+
+
+                        </LinearLayout>
+                        
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

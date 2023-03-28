@@ -50,26 +50,34 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.vitalActivity.ECGLargeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.vitalActivity.ECGReadingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"
+            />
+        <activity
+            android:name=".activities.homeActivity.devicesActivity.DevicesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.billConfirmation.billConfirmationActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
-            android:label="@string/view_print"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-
+            android:label="@string/view_print"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
@@ -84,7 +92,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />
+                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
             </intent-filter>
         </receiver>
 
@@ -205,6 +213,7 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
+            android:exported="true"
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -244,6 +253,7 @@
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
+            android:exported="true"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -261,6 +271,7 @@
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -300,13 +311,13 @@
             android:permission="" />
 
         <provider
-            android:authorities="com.smartcaredoc.app.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.smartcaredoc.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"/>
+                android:resource="@xml/file_path" />
         </provider>
 
         <receiver
@@ -324,7 +335,8 @@
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name=".services.firebase_services.MyFirebaseMessagingService">
+        <service android:name=".services.firebase_services.MyFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -367,6 +379,13 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
+        <service android:name=".services.HcService" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
     </application>
 
 </manifest>

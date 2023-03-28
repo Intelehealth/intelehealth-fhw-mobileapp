@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -289,9 +291,11 @@ public class ChatActivity extends AppCompatActivity {
                         in.putExtra("doctorname", jsonObject.getString("doctorName"));
                         in.putExtra("nurseId", jsonObject.getString("nurseId"));
                         int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                        // not required bcz from firebase listener it working fine
+                        /*if (callState == TelephonyManager.CALL_STATE_IDLE) {
                             startActivity(in);
-                        }
+                        }*/
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -335,14 +339,19 @@ public class ChatActivity extends AppCompatActivity {
                                     connectionInfoObject.put("toUUID", mToUUId);
                                     connectionInfoObject.put("patientUUID", mPatientUUid);
 
+                                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                    String packageName = pInfo.packageName;
+
                                     Intent intent = new Intent(ACTION_NAME);
                                     intent.putExtra("visit_uuid", mVisitUUID);
                                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
 
                                     getApplicationContext().sendBroadcast(intent);
                                     getAllMessages();
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (PackageManager.NameNotFoundException e) {
                                     e.printStackTrace();
                                 }
 

@@ -8,11 +8,14 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -64,7 +67,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -77,7 +79,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -87,9 +88,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -98,7 +102,6 @@ import org.intelehealth.app.activities.billConfirmation.billConfirmationActivity
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -130,6 +133,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.app.models.rhemos_device.ECG_JsonModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.DownloadService;
@@ -156,6 +160,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -200,6 +205,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO phyExam = new ObsDTO();
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
+    ObsDTO abdominalgirth = new ObsDTO();
+    ObsDTO armgirth = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
     ObsDTO bpSys = new ObsDTO();
     ObsDTO bpDias = new ObsDTO();
@@ -210,9 +217,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO bldglucose_random = new ObsDTO();
     ObsDTO bldglucose_post_prandial = new ObsDTO();
     ObsDTO bldglucose_fasting = new ObsDTO();
+    ObsDTO hba1c_value = new ObsDTO();
     ObsDTO hemoGlobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO totalCholesterol = new ObsDTO();
+    ObsDTO ecgReadings = new ObsDTO();
     String diagnosisReturned = "";
     String rxReturned = "";
     String testsReturned = "";
@@ -234,6 +243,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView visitView;
     TextView heightView;
     TextView weightView;
+    TextView abdominalGirthView, armGirthView;
     TextView pulseView;
     TextView bpView;
     TextView tempView;
@@ -247,12 +257,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
     TextView glucose;
-    TextView glucoseRandom;
+    TextView textView_glucose_Fasting_value;
     TextView glucosePostPrandial;
-    TextView glucoseFasting;
+    TextView textView_hba1c_value;
     TextView hemoglobin;
     TextView uricAcid_textview;
     TextView totalCholesterol_textview;
+    TextView ecg_textview;
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -461,6 +472,51 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+
+    private void collectChatConnectionInfoFromFirebase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
+        DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
+        chatDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap value = (HashMap) snapshot.getValue();
+                if (value != null) {
+                    try {
+                        String fromUUId = String.valueOf(value.get("toUser"));
+                        String toUUId = String.valueOf(value.get("fromUser"));
+                        String patientUUid = String.valueOf(value.get("patientId"));
+                        String visitUUID = String.valueOf(value.get("visitId"));
+                        String patientName = String.valueOf(value.get("patientName"));
+                        JSONObject connectionInfoObject = new JSONObject();
+                        connectionInfoObject.put("fromUUID", fromUUId);
+                        connectionInfoObject.put("toUUID", toUUId);
+                        connectionInfoObject.put("patientUUID", patientUUid);
+
+                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                        String packageName = pInfo.packageName;
+
+                        Intent intent = new Intent(ACTION_NAME);
+                        intent.putExtra("visit_uuid", visitUUID);
+                        intent.putExtra("connection_info", connectionInfoObject.toString());
+                        intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                        getApplicationContext().sendBroadcast(intent);
+
+                        Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
+                    } catch (JSONException | PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "collectChatConnectionInfoFromFirebase - Failed to read value.", error.toException());
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -494,6 +550,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
+            collectChatConnectionInfoFromFirebase();
         }
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
@@ -767,7 +824,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid), sessionManager.getAppLanguage());
+        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit
+                (visitUuid), sessionManager.getAppLanguage());
 
 
         //Hashmap to List<String> add all value
@@ -781,8 +839,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
+
             if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
-                speciality_spinner.setSelection(9);
+//                speciality_spinner.setSelection(9); // wrong implementation
+                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.general_physician)));
                 speciality_spinner.setEnabled(false);
             }
 
@@ -895,7 +955,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
             generateBillBtn.setVisibility(View.GONE);
-            if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+            if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                 card_share.setVisibility(View.VISIBLE);
                 card_print.setVisibility(View.VISIBLE);
             }
@@ -951,7 +1011,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
-                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                        if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                             downloadButton.setVisibility(View.VISIBLE);
                             generateBillBtn.setVisibility(View.VISIBLE);
                         }
@@ -1043,13 +1103,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
-                                        if(!intentTag.equalsIgnoreCase("skipComplaint")) {
+                                        if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                                             downloadButton.setVisibility(View.VISIBLE);
                                             generateBillBtn.setVisibility(View.VISIBLE);
                                         }
                                     }
 
-                                    if(intentTag!=null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
+                                    if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
                                         endVisit();
 
                                 } else {
@@ -1205,16 +1265,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         heightView = findViewById(R.id.textView_height_value);
         weightView = findViewById(R.id.textView_weight_value);
+        abdominalGirthView = findViewById(R.id.textView_abdgirth_value);
+        armGirthView = findViewById(R.id.textView_armgirth_value);
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
         glucose = findViewById(R.id.textView_glucose_value);
-        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
+        textView_glucose_Fasting_value = findViewById(R.id.textView_glucose_Fasting_value);
         glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
-        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
+        textView_hba1c_value = findViewById(R.id.textView_hba1c_value);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
         uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
         totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
+        ecg_textview = findViewById(R.id.textView_ecg_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1269,6 +1332,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         weightView.setText(weight.getValue());
+        abdominalGirthView.setText(abdominalgirth.getValue());
+        armGirthView.setText(armgirth.getValue());
         pulseView.setText(pulse.getValue());
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
@@ -1313,18 +1378,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (bldglucose.getValue() != null && !bldglucose.getValue().equalsIgnoreCase("0"))
             glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
-            glucoseRandom.setText(bldglucose_random.getValue());
+        
+       /* if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
+            textView_glucose_Fasting_value.setText(bldglucose_random.getValue());*/
+        
         if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
             glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
+        
+        // Fasting
         if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
-            glucoseFasting.setText(bldglucose_fasting.getValue());
+            textView_glucose_Fasting_value.setText(bldglucose_fasting.getValue());
+
+       // hba1c
+        if (hba1c_value.getValue() != null && !hba1c_value.getValue().equalsIgnoreCase("0"))
+            textView_hba1c_value.setText(hba1c_value.getValue());
+
         if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
             hemoglobin.setText(hemoGlobin.getValue());
         if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
             uricAcid_textview.setText(uricAcid.getValue());
         if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
             totalCholesterol_textview.setText(totalCholesterol.getValue());
+
+        if (ecgReadings.getValue() != null && !ecgReadings.getValue().equalsIgnoreCase("0")) {
+            Gson gson = new Gson();
+            ECG_JsonModel ecg_jsonModel = gson.fromJson(ecgReadings.getValue(), ECG_JsonModel.class);
+            ecg_textview.setText(getString(R.string.mood_value, ecg_jsonModel.getMood()) + "\n" +
+                    getString(R.string.stress_level, ecg_jsonModel.getStress_level()));
+        }
+
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1339,6 +1421,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("focusTo", "vitals");
                 startActivity(intent1);
             }
         });
@@ -1357,6 +1440,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("focusTo", "diagnostics");
                 startActivity(intent1);
             }
         });
@@ -1831,7 +1915,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
-        if(!intentTag.equalsIgnoreCase("skipComplaint"))
+        if (!intentTag.equalsIgnoreCase("skipComplaint"))
             getAppointmentDetails(visitUuid);
     }
 
@@ -3612,6 +3696,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 weight.setValue(value);
                 break;
             }
+            case UuidDictionary.ABDOMINAL_GIRTH:    // Abdominal Girth
+            {
+                abdominalgirth.setValue(value);
+                break;
+            }
+            case UuidDictionary.ARM_GIRTH:    // Arm Girth
+            {
+                armgirth.setValue(value);
+                break;
+            }
             case UuidDictionary.PULSE: //Pulse
             {
                 pulse.setValue(value);
@@ -3643,7 +3737,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_NON_FASTING_FINAL_ID: // Glucose - Non Fasting.
             {
                 bldglucose.setValue(value);
                 break;
@@ -3658,9 +3752,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 bldglucose_post_prandial.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_FINAL_ID: // Glucose
             {
                 bldglucose_fasting.setValue(value);
+                break;
+            }
+            case UuidDictionary.HBA1C: // Glucose
+            {
+                hba1c_value.setValue(value);
                 break;
             }
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
@@ -3676,6 +3775,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
             {
                 totalCholesterol.setValue(value);
+                break;
+            }
+            case UuidDictionary.ECG_READINGS: // ECG Readings
+            {
+                ecgReadings.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
@@ -4326,7 +4430,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     editMedHist.setVisibility(View.GONE);
                     editAddDocs.setVisibility(View.GONE);
                     uploadButton.setVisibility(View.GONE);
-                    generateBillBtn.setVisibility(View.GONE );
+                    generateBillBtn.setVisibility(View.GONE);
                     if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                         card_print.setVisibility(View.VISIBLE);
                         card_share.setVisibility(View.VISIBLE);
@@ -4474,7 +4578,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     default:
                 }
                 obsCursor.close();
-                if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                if (!intentTag.equalsIgnoreCase("skipComplaint"))
                     addDownloadButton();
 
                 //if any obs  found then end the visit
@@ -4711,7 +4815,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //}
 
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                            if(!intentTag.equalsIgnoreCase("skipComplaint"))
+                            if (!intentTag.equalsIgnoreCase("skipComplaint"))
                                 getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
 
                         } else {
@@ -5221,28 +5325,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
         } else {
-            boolean[] selected_tests = new boolean[8];
-            if (!glucose.getText().toString().isEmpty())
+            boolean[] selected_tests = new boolean[11];
+            if (!glucose.getText().toString().isEmpty())    // non fasting
                 selected_tests[1] = true;
-            if (!glucoseFasting.getText().toString().isEmpty())
+
+            if (!textView_glucose_Fasting_value.getText().toString().isEmpty()) // Fasting
                 selected_tests[2] = true;
+
             if (!glucosePostPrandial.getText().toString().isEmpty())
                 selected_tests[3] = true;
-            if (!glucoseRandom.getText().toString().isEmpty())
-                selected_tests[4] = true;
+
+//            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
+//                selected_tests[4] = true;
+
             if (!uricAcid_textview.getText().toString().isEmpty())
                 selected_tests[5] = true;
+
             if (!totalCholesterol_textview.getText().toString().isEmpty())
                 selected_tests[6] = true;
+
             if (!hemoglobin.getText().toString().isEmpty())
                 selected_tests[7] = true;
+
+            // new fields
+            if (!spO2View.getText().toString().isEmpty()) // spo2
+                selected_tests[8] = true;
+
+            if (!tempView.getText().toString().isEmpty()) // temperature
+                selected_tests[9] = true;
+
+            if (!ecg_textview.getText().toString().isEmpty()) // ecg
+                selected_tests[10] = true;
+
             showTestConfirmationCustomDialog(selected_tests);
         }
     }
 
     private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
         ArrayList selectedTests = new ArrayList<>();
-        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid), getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting),
+                getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial),
+                getString(R.string.blood_glucose_random), getString(R.string.uric_acid),
+                getString(R.string.total_cholestrol), getString(R.string.haemoglobin),
+        getString(R.string.table_spo2), getString(R.string.temperature), getString(R.string.ecg)};
 //        selectedTests.clear();
 
         final Dialog dialog = new Dialog(VisitSummaryActivity.this);
@@ -5252,12 +5377,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         CheckBox glucose_fast = dialog.findViewById(R.id.glucose_f_CB);
         CheckBox glucose_non_fast = dialog.findViewById(R.id.glucose_nf_CB);
-        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
-        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
+//        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
+//        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
         CheckBox bp = dialog.findViewById(R.id.bp_CB);
         CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
         CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
         CheckBox cholesterol = dialog.findViewById(R.id.cholesterol_CB);
+        // new fields.
+        CheckBox cb_spo2 = dialog.findViewById(R.id.spo2_CB);
+        CheckBox cb_temperature = dialog.findViewById(R.id.temperature_CB);
+        CheckBox cb_ecg = dialog.findViewById(R.id.ecg_CB);
+
         TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
         TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
 
@@ -5265,16 +5395,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             glucose_non_fast.setChecked(true);
         if (checkedTests[2])
             glucose_fast.setChecked(true);
-        if (checkedTests[3])
+      /*  if (checkedTests[3])
             glucose_ppn.setChecked(true);
         if (checkedTests[4])
-            glucose_rand.setChecked(true);
+            glucose_rand.setChecked(true);*/
         if (checkedTests[5])
             uric_acid.setChecked(true);
         if (checkedTests[6])
             cholesterol.setChecked(true);
         if (checkedTests[7])
             haemoglobin.setChecked(true);
+        if (checkedTests[8])
+            cb_spo2.setChecked(true);
+        if (checkedTests[9])
+            cb_temperature.setChecked(true);
+        if (checkedTests[10])
+            cb_ecg.setChecked(true);
 
         bp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -5297,6 +5433,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 receiptNum = generateReceiptNum();
                 receiptDate = fetchSystemDateForBill();
                 passIntent(selectedTests);
+                dialog.dismiss();
             }
         });
 
@@ -5406,7 +5543,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 selectedTests.add(getString(R.string.blood_glucose_non_fasting));
                 break;
             }
-            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+          /*  case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
             {
                 selectedTests.add(getString(R.string.blood_glucose_random));
                 break;
@@ -5415,10 +5552,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             {
                 selectedTests.add(getString(R.string.blood_glucose_post_prandial));
                 break;
-            }
+            }*/
             case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID: // Glucose
             {
                 selectedTests.add(getString(R.string.blood_glucose_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_SPO2_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.table_spo2));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_TEMPERATURE_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.temperature));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_ECG_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.ecg));
                 break;
             }
             case UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID: // Hemoglobin

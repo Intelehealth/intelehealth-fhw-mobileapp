@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.linktop.constant.TestPaper;
+
 import java.util.Set;
 
 public class SessionManager {
@@ -49,6 +51,10 @@ public class SessionManager {
     private static final String OFFLINE_OPENMRSID = "OFFLINE_OPENMRSID";
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
+
+    private static final String TEST_MANUFACTURER = "TEST_MANUFACTURER";
+
+    private static final String TEST_PAPER_CODE = "TEST_PAPER_CODE";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     // LogCat tag
@@ -66,6 +72,23 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public String getTestManufacturer() {
+        return pref.getString(TEST_MANUFACTURER, TestPaper.Manufacturer.YI_CHENG);
+    }
+
+    public String getTestPaperCode() {
+        return pref.getString(TEST_PAPER_CODE, TestPaper.Code.C21);
+    }
+
+    public void setTestManufacturer(String manufacturer) {
+        editor.putString(TEST_MANUFACTURER, manufacturer);
+        editor.commit();
+    }
+
+    public void setTestPaperCode(String paperCode) {
+        editor.putString(TEST_PAPER_CODE, paperCode);
+        editor.commit();
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");

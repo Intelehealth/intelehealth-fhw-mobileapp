@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.vitalActivity.ECGReadingsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:background="@color/colorPrimary"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/click_to_see"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="@string/click_here_to_see_the_full_ecg"
+                        android:textColor="#50FF4081"
+                        android:textSize="32sp" />
+
+                    <org.intelehealth.app.widget.materialprogressbar.rhemos_widget.EcgBackgroundView
+                        android:id="@+id/wave_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:largeGridColor="@color/colorECGLargeGrid"
+                        app:smallGridColor="@color/colorECGSmallGrid" />
+
+                    <org.intelehealth.app.widget.materialprogressbar.rhemos_widget.WaveSurfaceView
+                        android:id="@+id/wave_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:scrollable="false" />
+                </FrameLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp">
+
+                    <TextView
+                        android:layout_rowWeight="1"
+                        android:layout_columnSpan="2"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/ecg_settings" />
+
+                    <Button
+                        android:id="@+id/paper_speed_btn"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="@string/paper_speed_value"
+                        android:layout_marginEnd="5dp"
+                        android:onClick="clickSetPagerSpeed"
+                        android:textAllCaps="false"
+                        style="@style/SelectableItemBackground"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/lato_bold"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textColor="@color/white"/>
+
+                    <Button
+                        android:id="@+id/gain_btn"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="@string/gain_value"
+                        android:layout_marginStart="5dp"
+                        android:onClick="clickSetGain"
+                        android:textAllCaps="false"
+                        style="@style/SelectableItemBackground"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/lato_bold"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/finger_detection_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnSpan="2"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/finger_detection"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/signal_quality_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnSpan="2"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/ecg_sq"
+                        android:textSize="14sp" />
+
+
+                    <org.intelehealth.app.widget.materialprogressbar.rhemos_widget.CountDownTextView
+                        android:id="@+id/countDown_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnSpan="2"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/r_r_interval_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/rr_interval_value"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/heart_rate_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/hr_value"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/hrv_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/hrv_value"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/respiratory_rate_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/rr_value"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mood_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/mood_value"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/heart_age_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/heart_age"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/heart_beat_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/heart_beat"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/robust_heart_rate_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:text="@string/robust_heart_rate"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/stress_level_txt"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:textSize="14sp"
+                        android:text="@string/stress_level"
+                        />
+
+                </GridLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_measure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_measuring"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18sp"
+            style="@style/SelectableItemBackground"
+            android:background="@color/colorPrimary"
+            android:elevation="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:visibility="visible"
+            tools:visibility="visible"
+            android:textSize="@dimen/text_18sp"
+            style="@style/SelectableItemBackground_Orange"
+            android:background="@color/orange3"
+            android:elevation="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -16,10 +16,13 @@ public class VitalsObject {
     private String bloodglucoseFasting;
     private String bloodGlucoseRandom;
     private String bloodGlucosePostPrandial;
+    private String hba1c;
     private String hemoglobin;
     private String uricAcid;
     private String totlaCholesterol;
     private String abdominalGirth;
+    private String armGirth;
+    private String ecg;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -162,5 +165,29 @@ public class VitalsObject {
 
     public void setAbdominalGirth(String abdominalGirth) {
         this.abdominalGirth = abdominalGirth;
+    }
+
+    public String getEcg() {
+        return ecg;
+    }
+
+    public void setEcg(String ecg) {
+        this.ecg = ecg;
+    }
+
+    public String getArmGirth() {
+        return armGirth;
+    }
+
+    public void setArmGirth(String armGirth) {
+        this.armGirth = armGirth;
+    }
+
+    public String getHba1c() {
+        return hba1c;
+    }
+
+    public void setHba1c(String hba1c) {
+        this.hba1c = hba1c;
     }
 }

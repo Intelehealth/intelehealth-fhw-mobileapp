@@ -53,6 +53,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -134,6 +136,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_state_india_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
@@ -190,7 +193,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
-    RecyclerView additionalDocRV;
+   // RecyclerView additionalDocRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +224,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-        additionalDocRV = findViewById(R.id.recy_additional_documents);
+      //  additionalDocRV = findViewById(R.id.recy_additional_documents);
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -261,7 +264,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String houseHoldValue = "";
                 try {
-                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+                    houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -406,7 +409,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String houseHoldValue = "";
         try {
-            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+            houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -624,7 +627,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientFName = patient_new.getFirst_name();
         }
 
-        if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
+      /*  if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
             String additionalDocPathVal = patient_new.getAdditionalDocPath();
             ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
             ArrayList<File> files = new ArrayList<>();
@@ -636,7 +639,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             additionalDocRV.setLayoutManager(new LinearLayoutManager(PatientDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(files, this);
             additionalDocRV.setAdapter(horizontalAdapter);
-        }
+        }*/
 
 //        setTitle(patientName);
         patinetName.setText(patientName);
@@ -655,6 +658,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
+        Log.v("ADP", "ADP: " + "pd_image: " + patient_new.getPatient_photo());
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
@@ -861,23 +865,50 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        if (patient_new.getPostal_code() != null) {
-            String addrFinalLine;
-            if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String country = "भारत";
+            String state_india = switch_mr_state_india_edit(patient_new.getState_province());
+
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, state_india,
+                            patient_new.getPostal_code(), country);
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, state_india,
+                            country);
+                }
+                addrFinalView.setText(addrFinalLine);
             } else {
-                addrFinalLine = String.format("%s, %s, %s",
+                String addrFinalLine = String.format("%s, %s, %s",
+                        city_village, state_india,
+                        country);
+                addrFinalView.setText(addrFinalLine);
+            }
+        }
+        else {
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getPostal_code(), patient_new.getCountry());
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getCountry());
+                }
+                addrFinalView.setText(addrFinalLine);
+            } else {
+                String addrFinalLine = String.format("%s, %s, %s",
                         city_village, patient_new.getState_province(),
                         patient_new.getCountry());
+                addrFinalView.setText(addrFinalLine);
             }
-            addrFinalView.setText(addrFinalLine);
-        } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
         }
 
         phoneView.setText(patient_new.getPhone_number());
@@ -1197,7 +1228,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<ResponseBody>() {
@@ -1235,7 +1267,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
                         try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages
+                                    (AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
@@ -1619,9 +1652,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                             String colon = ":";
                             if (complaints != null) {
                                 for (String comp : complaints) {
-                                    if (!comp.trim().isEmpty()) {
+                                    if (!comp.trim().isEmpty() && comp.contains(colon)) {
                                         visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
