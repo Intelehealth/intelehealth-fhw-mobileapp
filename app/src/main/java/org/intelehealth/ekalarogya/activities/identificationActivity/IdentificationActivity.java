@@ -4107,7 +4107,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                ).replace("\\", "")); // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
                 patientAttributesDTOList.add(patientAttributesDTO);
 
              /*   // defecatedInOpen
@@ -5655,7 +5655,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                ).replace("\\", ""));   // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
                 patientAttributesDTOList.add(patientAttributesDTO);
 
              /*   // defecatedInOpen
