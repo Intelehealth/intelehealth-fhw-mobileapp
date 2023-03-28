@@ -551,6 +551,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -3994,6 +3996,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         //get from encountertbl from the encounter
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {

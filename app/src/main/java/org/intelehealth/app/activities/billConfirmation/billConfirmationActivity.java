@@ -18,6 +18,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -149,6 +150,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     private String mChartsetName = "UTF-8";
     private ESCFontTypeEnum curESCFontType = null;
     private Object configObj;
+    private String appLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +164,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         sessionManager = new SessionManager(this);
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
             bmpPrintWidth = 40;
@@ -361,6 +368,14 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                 shareFile();
             }
         });
+    }
+
+    private void setLocale(String appLanguage) {
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
     private void textPrint() throws UnsupportedEncodingException {
