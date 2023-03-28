@@ -665,7 +665,7 @@
     <string name="enter_number">সংখ্যা প্রবেশ করান</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">আপনার পরিবারে সাধারণত কতজন সদস্য থাকেন বা এখন আপনার সাথে থাকেন*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের প্রধান উৎস কি?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">পানীয় জল নিরাপদ করতে আপনি কি করবেন?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">পানি পান করা নিরাপদ করার জন্য আপনি সাধারণত কী করেন?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">সেখানে যেতে, পানি নিতে এবং এক ট্রিপে ফিরে আসতে কতক্ষণ লাগে?*</string>
     <string name="declined">উত্তর দিতে অস্বীকৃতি জানায়</string>
     <string name="enter_time">সময় লিখুন</string>
@@ -944,9 +944,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">পানি পান করা নিরাপদ করতে আপনি সাধারণত কী করেন?</string>
     <string name="boil">ফুটান</string>
     <string name="use_alum">অ্যালুম ব্যবহার করুন</string>
-    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ বা ক্লোরিন ট্যাবলেট বা ড্রপ যোগ করুন</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ যোগ করুন</string>
     <string name="strain_through_a_cloth">একটি কাপড় মাধ্যমে স্ট্রেন</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার ব্যবহার করুন (সিরামিক বা বালি বা যৌগিক, ইত্যাদি)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার</string>
     <string name="use_electronic_purifier">ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন</string>
     <string name="let_it_stand_and_settle">লেট ইট স্ট্যান্ড অ্যান্ড সেটেল</string>
     <string name="flush_to_piped_sewer_system">পাইপড নর্দমা সিস্টেম ফ্লাশ</string>

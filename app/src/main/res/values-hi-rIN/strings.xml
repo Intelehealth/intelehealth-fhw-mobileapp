@@ -663,7 +663,7 @@
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">आपके घर में आमतौर पर कितने सदस्य रहते हैं या अब आपके साथ रह रहे हैं?*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">
         आपके घर के सदस्यों के लिए पीने के पानी का मुख्य स्रोत क्या है?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">पेयजल को सुरक्षित बनाने के लिए आप क्या करते हैं?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">आप आमतौर पर पानी को पीने के लिए सुरक्षित बनाने के लिए क्या करते हैं? सभी उल्लेखित रिकॉर्ड करें*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">
         वहां जाने, पानी लाने और वापस आने (एक यात्रा)में कितना समय लगता है?*</string>
     <string name="declined">जवाब देने के लिए मना कर दिया</string>
@@ -911,9 +911,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">आप आमतौर पर पानी को पीने के लिए सुरक्षित बनाने के लिए क्या करते हैं? सभी उल्लेखित रिकॉर्ड करें</string>
     <string name="boil">उबालते है</string>
     <string name="use_alum">फिटकरी  का उपयोग करें</string>
-    <string name="add_bleach_chlorine_tablets_drops">ब्लीच/क्लोरीन की गोलियां/बूंदें जोड़ें</string>
-    <string name="strain_through_a_cloth">कपड़े के माध्यम से तनाव</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">पानी फिल्टर का उपयोग करते है (सिरेमिक/रेत/समग्र/ईटीसी।)</string>
+    <string name="add_bleach_chlorine_tablets_drops">ब्लीच डालते हैं</string>
+    <string name="strain_through_a_cloth">कपड़े से छानते है</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">पानी फिल्टर का उपयोग करते है</string>
     <string name="use_electronic_purifier">इलेक्ट्रॉनिक फ़िल्टर का उपयोग करते है</string>
     <string name="let_it_stand_and_settle">इसे खड़े रहने दें और व्यवस्थित करें</string>
     <string name="flush_to_piped_sewer_system">पाइप्ड सीवर सिस्टम के लिए फ्लश</string>

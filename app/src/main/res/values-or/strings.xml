@@ -518,7 +518,7 @@
     <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ସାଧାରଣତଃ ଆପଣଙ୍କର କେତେ ଜଣ ସଦସ୍ୟ ଘରେ ରୁହନ୍ତି କିମ୍ବା ବର୍ତ୍ତମାନ ଆପଣଙ୍କ ସହିତ ରହୁଛନ୍ତି</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନଙ୍କ ପାଇଁ ପାନୀୟ ଜଳର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">ପାନୀୟ ଜଳକୁ ସୁରକ୍ଷିତ କରିବା ପାଇଁ ଆପଣ କ’ଣ କରନ୍ତି?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">ସୁରକ୍ଷିତ ପାନୀୟ ଜଳ ପାଇଁ ତୁମେ କଣ କର ?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ସେଠାକୁ ଯିବା, ପାଣି ପାଇବା ଏବଂ ଗୋଟିଏ ଯାତ୍ରାରେ ଫେରିବା ପାଇଁ କେତେ ସମୟ ଲାଗେ?*</string>
     <string name="declined">ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</string>
     <string name="enter_time">ସମୟ ପ୍ରବେଶ କରନ୍ତୁ</string>
@@ -787,9 +787,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">ଏହାକୁ ପିଇବାକୁ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ସାଧାରଣତ ପାଣିରେ କ’ଣ କରନ୍ତି?</string>
     <string name="boil">ଫୁଟାପାଣି</string>
     <string name="use_alum">ଫିଟିକିରି ବ୍ୟବହାର</string>
-    <string name="add_bleach_chlorine_tablets_drops">ବ୍ଲିଚିଙ୍ଗ/କ୍ଲୋରାଇନ ପକାନ୍ତି</string>
-    <string name="strain_through_a_cloth">କପଡାରେ ଛାଣନ୍ତି</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">ୱାଟର ଫିଲଟର ବ୍ୟବହାର</string>
+    <string name="add_bleach_chlorine_tablets_drops">ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା</string>
+    <string name="strain_through_a_cloth">କପଡ଼ାରେ ଛ।ନିବା</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">ଫିଲ୍ଟର ପାଣି</string>
     <string name="use_electronic_purifier">ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର</string>
     <string name="let_it_stand_and_settle">ଏହାକୁ ଛିଡ଼ା ହେବାକୁ ଦିଅନ୍ତୁ ଏଵଂ ସ୍ଥିର / ବ୍ୟବସ୍ଥା କରନ୍ତୁ</string>
     <string name="flush_to_piped_sewer_system">ପାଇପ ପାଇଖାନା ସିଷ୍ଟମକୁ ଫ୍ଲାଶ କରି</string>

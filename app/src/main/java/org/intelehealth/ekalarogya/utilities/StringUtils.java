@@ -849,19 +849,19 @@ public final class StringUtils {
     public static String switch_hi_en_watersafe(String val) {
         switch (val) {
             case "उबालते है"://----replace with Hindi
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "फिटकरी  का उपयोग करें":
                 val = "Use Alum";
                 break;
-            case "्लीच/क्लोरीन की गोलियां/बूंदें जोड़ें":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ब्लीच डालते हैं":
+                val = "Add bleach";
                 break;
-            case "कपड़े के माध्यम से तनाव":
+            case "कपड़े से छानते है":
                 val = "Strain Through A Cloth";
                 break;
-            case "पानी फिल्टर का उपयोग करते है (सिरेमिक/रेत/समग्र/ईटीसी।)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "पानी फिल्टर का उपयोग करते है":
+                val = "Water Filter";
                 break;
             case "इलेक्ट्रॉनिक फ़िल्टर का उपयोग करते है":
                 val = "Use Electronic Purifier";
@@ -877,19 +877,19 @@ public final class StringUtils {
     public static String switch_bn_en_watersafe(String val) {
         switch (val) {
             case "ফুটন্ত"://----replace with Hindi
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "অ্যালাম ব্যবহার করুন":
                 val = "Use Alum";
                 break;
-            case "ব্লিচ বা ক্লোরিন ট্যাবলেট বা ড্রপ যোগ করুন":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ব্লিচ যোগ করুন":
+                val = "Add bleach";
                 break;
             case "একটি কাপড় মাধ্যমে স্ট্রেন":
                 val = "Strain Through A Cloth";
                 break;
-            case "জল ফিল্টার ব্যবহার করুন (সিরামিক বা বালি বা যৌগিক, ইত্যাদি)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "জল ফিল্টার":
+                val = "Water Filter";
                 break;
             case "ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন":
                 val = "Use Electronic Purifier";
@@ -906,19 +906,19 @@ public final class StringUtils {
     public static String switch_or_en_watersafe(String val) {
         switch (val) {
             case "ଫୁଟାପାଣି"://----replace with Oriya
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "ଆଲମ ବ୍ୟବହାର":
                 val = "Use Alum";
                 break;
-            case "ବ୍ଲିଚିଙ୍ଗ/କ୍ଲୋରାଇନ ପକାନ୍ତି":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା":
+                val = "Add bleach";
                 break;
-            case "କପଡାରେ ଛାଣନ୍ତି":
+            case "କପଡ଼ାରେ ଛ।ନିବା":
                 val = "Strain Through A Cloth";
                 break;
-            case "ୱାଟର ଫିଲଟର ବ୍ୟବହାର":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "ଫିଲ୍ଟର ପାଣି":
+                val = "Water Filter";
                 break;
             case "ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର":
                 val = "Use Electronic Purifier";
@@ -935,19 +935,19 @@ public final class StringUtils {
     public static String switch_gu_en_watersafe(String val) {
         switch (val) {
             case "ઉકાળો"://----replace with Gujarati
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "ફટકડીનો ઉપયોગ કરો":
                 val = "Use Alum";
                 break;
-            case "બ્લીચ/ક્લોરીન ટેબ્લેટ/ટીપાં ઉમેરો":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "બ્લિચ ઉમેરવું":
+                val = "Add bleach";
                 break;
             case "કાપડ દ્વારા તાણ":
                 val = "Strain Through A Cloth";
                 break;
-            case "વોટર ફિલ્ટરનો ઉપયોગ કરો (સિરામિક/રેતી/કમ્પોઝિટ/ઇટીસી.)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "વોટર ફિલ્ટરનો ઉપયોગ":
+                val = "Water Filter";
                 break;
             case "ઈલેક્ટ્રોનિક પ્યુરીફાયરનો ઉપયોગ કરો":
                 val = "Use Electronic Purifier";
@@ -964,19 +964,19 @@ public final class StringUtils {
     public static String switch_as_en_watersafe(String val) {
         switch (val) {
             case "উতলোৱা"://----replace with Assamese
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "এলুম ব্যৱহাৰ কৰক":
                 val = "Use Alum";
                 break;
-            case "ব্লিচ বা ক্ল’ৰিন টেবলেট বা ড্ৰপ দিব":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ব্লিচ যোগ কৰক":
+                val = "Add bleach";
                 break;
             case "ষ্ট্ৰেইন থ্ৰু এ ক্লথ":
                 val = "Strain Through A Cloth";
                 break;
-            case "পানী ফিল্টাৰ ব্যৱহাৰ কৰক (চিৰামিক বা বালি বা কম্পোজিট আদি)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "পানী ফিল্টাৰ":
+                val = "Water Filter";
                 break;
             case "ইলেক্ট্ৰনিক পিউৰিফায়াৰ ব্যৱহাৰ কৰক":
                 val = "Use Electronic Purifier";
@@ -4246,7 +4246,7 @@ public final class StringUtils {
             if (context.getString(R.string.use_alum).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_alum);
             }
-            // Translate string Add Bleach or Chlorine Tablets or Drops to English
+            // Translate string Add bleach to English
             if (context.getString(R.string.add_bleach_chlorine_tablets_drops).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.add_bleach_chlorine_tablets_drops);
             }

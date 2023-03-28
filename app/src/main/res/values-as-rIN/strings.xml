@@ -644,7 +644,7 @@
     <string name="enter_number">নম্বৰ দিয়ক</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">সাধাৰণতে আপোনাৰ ঘৰত কিমান সদস্য থাকে বা এতিয়া আপোনাৰ লগত থাকে*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">খোৱাপানী সুৰক্ষিত কৰিবলৈ আপুনি কি কৰে?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">সাধাৰণতে পানীখিনি কি কৰে যাতে পানী খাবলৈ সুৰক্ষিত হয়?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">তালৈ যাবলৈ, পানী লৈ, এটা ভ্ৰমণত উভতি আহিবলৈ কিমান সময় লাগে?*</string>
     <string name="declined">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
     <string name="enter_time">সময় প্ৰৱেশ কৰক</string>
@@ -923,9 +923,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">পানী খোৱাটো সুৰক্ষিত কৰিবলৈ আপুনি সাধাৰণতে কি কৰে?</string>
     <string name="boil">উতলোৱা</string>
     <string name="use_alum">এলুম ব্যৱহাৰ কৰক</string>
-    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ বা ক্ল’ৰিন টেবলেট বা ড্ৰপ দিব</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ যোগ কৰক</string>
     <string name="strain_through_a_cloth">ষ্ট্ৰেইন থ্ৰু এ ক্লথ</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">পানী ফিল্টাৰ ব্যৱহাৰ কৰক (চিৰামিক বা বালি বা কম্পোজিট আদি)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">পানী ফিল্টাৰ</string>
     <string name="use_electronic_purifier">ইলেক্ট্ৰনিক পিউৰিফায়াৰ ব্যৱহাৰ কৰক</string>
     <string name="let_it_stand_and_settle">থিয় হৈ থিতাপি লওক</string>
     <string name="flush_to_piped_sewer_system">পাইপযুক্ত নলা ব্যৱস্থালৈ ফ্লাছ কৰা</string>

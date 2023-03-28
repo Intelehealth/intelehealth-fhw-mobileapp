@@ -651,7 +651,7 @@
     <string name="enter_number">નંબર દાખલ કરો</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">સામાન્ય રીતે તમારા ઘરમાં કેટલા સભ્યો રહે છે અથવા અત્યારે તમારી સાથે રહે છે*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">તમારા ઘરના સભ્યો માટે પીવાના પાણીનો મુખ્ય સ્ત્રોત કયો છે?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">પીવાના પાણીને સુરક્ષિત બનાવવા તમે શું કરો છો?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">પીવાના પાણીને સુરક્ષિત કરવા તમે શું કરો છો?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ત્યાં જવામાં, પાણી લેવા અને એક જ સફરમાં પાછા આવવામાં કેટલો સમય લાગે છે?*</string>
     <string name="declined">જવાબ આપવાનો ઇનકાર કર્યો</string>
     <string name="enter_time">સમય દાખલ કરો</string>
@@ -930,9 +930,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">તમે સામાન્ય રીતે પાણીને પીવા માટે સુરક્ષિત બનાવવા માટે શું કરો છો?</string>
     <string name="boil">ઉકાળો</string>
     <string name="use_alum">ફટકડીનો ઉપયોગ કરો</string>
-    <string name="add_bleach_chlorine_tablets_drops">બ્લીચ/ક્લોરીન ટેબ્લેટ/ટીપાં ઉમેરો</string>
+    <string name="add_bleach_chlorine_tablets_drops">બ્લિચ ઉમેરવું</string>
     <string name="strain_through_a_cloth">કાપડ દ્વારા તાણ</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">વોટર ફિલ્ટરનો ઉપયોગ કરો (સિરામિક/રેતી/કમ્પોઝિટ/ઇટીસી.)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">વોટર ફિલ્ટરનો ઉપયોગ</string>
     <string name="use_electronic_purifier">ઈલેક્ટ્રોનિક પ્યુરીફાયરનો ઉપયોગ કરો</string>
     <string name="let_it_stand_and_settle">મુકી રાખો અને સ્થિર થવા દો</string>
     <string name="flush_to_piped_sewer_system">પાઇપ્ડ ગટર સિસ્ટમ માટે ફ્લશ</string>
