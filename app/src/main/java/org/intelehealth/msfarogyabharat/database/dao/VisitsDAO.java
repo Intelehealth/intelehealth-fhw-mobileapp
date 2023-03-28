@@ -325,7 +325,7 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+      //  db.close();    // no need to close db instance this causes the issue of Sqlite object being closed.
         return visitDTOList;
     }
 

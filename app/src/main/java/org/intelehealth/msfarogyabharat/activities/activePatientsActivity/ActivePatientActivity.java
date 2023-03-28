@@ -181,6 +181,11 @@ public class ActivePatientActivity extends AppCompatActivity {
             //Get all Encounters
             EncounterDAO encounterDAO = new EncounterDAO();
             List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
+            /**
+             * Note: MHM-221: Attempt to re-open issue was being caused here in getAllEncounters() becuase in the above function: getAllVisits()
+             * the db object was been closed after every transaction and so when it was trying to use the db instance in getAllEncoutners()
+             * it was giving an error: Attempt to reopen an already closed object - Prajwal @ 28th March 2023.
+             */
 
             //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
             if (encounterDTOList.size() > 0) {
