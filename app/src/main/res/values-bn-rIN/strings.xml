@@ -1005,7 +1005,7 @@
 
     <string name="what_is_your_marital_status">আপনার বৈবাহিক অবস্থা কি?*</string>
     <string name="currently_married">বর্তমানে বিবাহিত</string>
-    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>
+<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
     <string name="widowed">বিধবা</string>
     <string name="divorced">তালাকপ্রাপ্ত</string>
     <string name="separated">বিচ্ছিন্ন</string>

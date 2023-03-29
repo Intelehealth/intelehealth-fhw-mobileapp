@@ -997,7 +997,7 @@
     <!--    Marital Status -->
     <string name="what_is_your_marital_status">ની વૈવાહિક સ્થિતિ શું છે?*</string>
     <string name="currently_married">વર્તમાનમાં વિવાહિત</string>
-    <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>
+<!--    <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>-->
     <string name="widowed">વિધવા</string>
     <string name="divorced">છૂટાછેડવાળા</string>
     <string name="separated">અલગ</string>

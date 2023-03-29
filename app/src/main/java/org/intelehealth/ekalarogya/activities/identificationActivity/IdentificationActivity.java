@@ -1592,11 +1592,22 @@ public class IdentificationActivity extends AppCompatActivity implements
 
                 if (patient1.getHectars_land() != null && !patient1.getHectars_land().equalsIgnoreCase("")) {
                     String[] splitString = patient1.getHectars_land().split(" ");
-                    if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
-                        binding.landOwnedEditText.setText(splitString[0].trim());
-                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1],
-                            updatedContext, context, sessionManager.getAppLanguage()));
-                    unitsSpinner.setSelection(spinnerPosition);
+                    if (splitString.length == 2) {
+                        if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
+                            binding.landOwnedEditText.setText(splitString[0].trim());
+                        int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1],
+                                updatedContext, context, sessionManager.getAppLanguage()));
+                        unitsSpinner.setSelection(spinnerPosition);
+
+                    }
+                    else {
+//                        if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
+//                            binding.landOwnedEditText.setText(splitString[0].trim());
+                        int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[0],
+                                updatedContext, context, sessionManager.getAppLanguage()));
+                        unitsSpinner.setSelection(spinnerPosition);
+
+                    }
                 }
 
                 // ration card moved here - start...
@@ -3856,7 +3867,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById
+                                (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()

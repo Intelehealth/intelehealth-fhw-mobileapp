@@ -984,7 +984,7 @@
 
     <string name="what_is_your_marital_status">আপোনাৰ বৈবাহিক অৱস্থা কি?*</string>
     <string name="currently_married">বৰ্তমান বিবাহিত</string>
-    <string name="married_gauna_not_performed">বিবাহিত, গৌনা নট পাৰ্ফৰ্ম</string>
+<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌনা নট পাৰ্ফৰ্ম</string>-->
     <string name="widowed">বিধৱা</string>
     <string name="divorced">বিবাহ বিচ্ছেদ কৰা</string>
     <string name="separated">পৃথক কৰা হৈছে</string>

@@ -1014,7 +1014,7 @@
     <!--    Marital Status Strings -->
     <string name="what_is_your_marital_status">वैवाहिक स्थिति क्या है?*</string>
     <string name="currently_married">वर्तमान में विवाहित</string>
-    <string name="married_gauna_not_performed">विवाहित, गौना नहीं किया गया</string>
+<!--    <string name="married_gauna_not_performed">विवाहित, गौना नहीं किया गया</string>-->
     <string name="widowed">विधवा</string>
     <string name="divorced">तलाकशुदा</string>
     <string name="separated">अलग</string>

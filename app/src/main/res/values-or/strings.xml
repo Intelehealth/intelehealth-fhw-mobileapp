@@ -878,7 +878,7 @@
 
     <string name="what_is_your_marital_status">ବୈବାହିକ ସ୍ଥିତି*</string>
     <string name="currently_married">ବିବାହିତ</string>
-    <string name="married_gauna_not_performed">ବିବାହିତ , ସମ୍ପାଦନ ହୋଇନାହିଁ</string>
+<!--    <string name="married_gauna_not_performed">ବିବାହିତ , ସମ୍ପାଦନ ହୋଇନାହିଁ</string>-->
     <string name="widowed">ବିଧବା</string>
     <string name="divorced">ଛାଡପତ୍ର</string>
     <string name="separated">ପୃଥକ ରହିବା</string>

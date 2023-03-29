@@ -1084,7 +1084,7 @@
         <item>বাড়িতে টয়লেট ব্যবহার করুন।</item>
         <item>কমিউনিটি টয়লেট ব্যবহার করুন</item>
         <item>অন্যান্য পরিবারের সাথে শেয়ারড টয়লেট</item>
-        <item>উত্তর দিতে অস্বীকার করেছে</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_hi">

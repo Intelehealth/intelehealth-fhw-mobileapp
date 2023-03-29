@@ -1005,7 +1005,7 @@
 
     <string name="what_is_your_marital_status">What is your marital status?*</string>
     <string name="currently_married">Currently Married</string>
-    <string name="married_gauna_not_performed">Married</string>
+<!--    <string name="married_gauna_not_performed">Married</string>-->
     <string name="married">Married</string>
     <string name="unmarried">Unmarried</string>
     <string name="widowed">Widowed</string>
