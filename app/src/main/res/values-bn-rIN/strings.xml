@@ -665,7 +665,7 @@
     <string name="enter_number">সংখ্যা প্রবেশ করান</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">আপনার পরিবারে সাধারণত কতজন সদস্য থাকেন বা এখন আপনার সাথে থাকেন*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের প্রধান উৎস কি?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">পানীয় জল নিরাপদ করতে আপনি কি করবেন?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">পানি পান করা নিরাপদ করার জন্য আপনি সাধারণত কী করেন?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">সেখানে যেতে, পানি নিতে এবং এক ট্রিপে ফিরে আসতে কতক্ষণ লাগে?*</string>
     <string name="declined">উত্তর দিতে অস্বীকৃতি জানায়</string>
     <string name="enter_time">সময় লিখুন</string>
@@ -944,9 +944,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">পানি পান করা নিরাপদ করতে আপনি সাধারণত কী করেন?</string>
     <string name="boil">ফুটান</string>
     <string name="use_alum">অ্যালুম ব্যবহার করুন</string>
-    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ বা ক্লোরিন ট্যাবলেট বা ড্রপ যোগ করুন</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ যোগ করুন</string>
     <string name="strain_through_a_cloth">একটি কাপড় মাধ্যমে স্ট্রেন</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার ব্যবহার করুন (সিরামিক বা বালি বা যৌগিক, ইত্যাদি)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার</string>
     <string name="use_electronic_purifier">ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন</string>
     <string name="let_it_stand_and_settle">লেট ইট স্ট্যান্ড অ্যান্ড সেটেল</string>
     <string name="flush_to_piped_sewer_system">পাইপড নর্দমা সিস্টেম ফ্লাশ</string>
@@ -1005,7 +1005,7 @@
 
     <string name="what_is_your_marital_status">আপনার বৈবাহিক অবস্থা কি?*</string>
     <string name="currently_married">বর্তমানে বিবাহিত</string>
-    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>
+<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
     <string name="widowed">বিধবা</string>
     <string name="divorced">তালাকপ্রাপ্ত</string>
     <string name="separated">বিচ্ছিন্ন</string>
@@ -1054,10 +1054,10 @@
 
     <string name="never_checked">কখনই চেক করা হয়নি</string>
     <string name="in_past_one_week">গত এক সপ্তাহে</string>
-    <string name="within_last_month">গত মাসের মধ্যে</string>
+    <string name="within_last_month">গত 6 মাসের মধ্যে</string>
     <string name="between_one_month_to_three_months_ago">এক মাস থেকে তিন মাস আগে</string>
     <string name="between_three_months_to_six_months_ago">3 মাস-6 মাস আগে</string>
-    <string name="more_than_six_months">৬ মাসের বেশি</string>
+    <string name="more_than_six_months">6 মাসেরও বেশি আগে</string>
 
     <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="medical_history">চিকিৎসা ইতিহাস*</string>
@@ -1069,7 +1069,7 @@
     <string name="reason_for_surgery_specify_the_reason">অস্ত্রোপচারের কারণ (কারণ উল্লেখ করুন)*</string>
 
     <string name="smoking_status">পরিবারের মধ্যে ধূমপানের অবস্থা*</string>
-    <string name="does_the_person_smoke">ব্যক্তি কি ধূমপান করে?</string>
+    <string name="does_the_person_smoke">ব্যক্তি কি তামাক চিবিয়ে খায়?</string>
     <string name="smoker">ধূমপায়ী</string>
     <string name="non_smoker">অ ধূমপায়ী</string>
     <string name="five_ten_bids_cigarette">5 - 10 বিড়ি / সিগারেট</string>
@@ -1121,7 +1121,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">আপনার বাড়িতে বিদ্যুৎ আছে কিনা দয়া করে বলুন</string>
     <string name="no_expense">কোনো খরচ নেই</string>
     <string name="does_this_household_have_an_ayushman_card">এই পরিবারের কি আয়ুষ্মান কার্ড আছে?*</string>
-    <string name="does_this_household_have_ration_card">এই পরিবারের কি রেশন কার্ড আছে?*</string>
+    <string name="does_this_household_have_ration_card">আপনার কি রেশন কার্ড আছে?*</string>
 
     <string name="third_dose">তৃতীয় ডোজ</string>
     <string name="zero_fifty_ml">0 - 50 মিলি</string>
@@ -1135,4 +1135,24 @@
     <string name="update_hw_profile">সফলভাবে আপডেট করা হয়েছে</string>
     <string name="enter_valid_email">বৈধ ইমেল ঠিকানা লিখুন</string>
     <string name="enter_valid_gender">লিঙ্গ পুরুষ বা মহিলা লিখুন</string>
+    <string name="does_person_chew_tobacco">ব্যক্তি কি তামাক চিবিয়ে খায়?</string>
+    <string name="history_of_tobacco_consumption">তামাক সেবনের ইতিহাস</string>
+    <string name="tobacco_consumption_cannot_empty">তামাক সেবনের ইতিহাস খালি হতে পারে না</string>
+    <string name="not_sure">নিশ্চিত না</string>
+    <string name="graduation_and_above">স্নাতক এবং তার উপরে</string>
+    <string name="married">বিবাহিত</string>
+    <string name="unmarried">অবিবাহিত</string>
+    <string name="handmade_purifier">হ্যান্ড মেড পিউরিফায়ার</string>
+    <string name="do_nothing">কিছুই করবেন না</string>
+    <string name="landless">ভূমিহীন</string>
+    <string name="ekal_process_takeup_question">Ekal প্রাথমিক স্বাস্থ্যসেবা প্রদানের জন্য আপনার গ্রামে একটি টেলিমেডিসিন প্রোগ্রাম শুরু করছে যার মধ্যে রয়েছে - এইচবি টেস্টিং, বিপি টেস্টিং, সুগার টেস্টিং এবং প্রয়োজনে ডাক্তারের পরামর্শ। আপনি কি আমাদের সেবা নিতে চান?</string>
+    <string name="lantern_kerosenelamp_candle">লণ্ঠন/কেরোসিন ল্যাম্প/মোমবাতি</string>
+    <string name="describe_hand_wash_practise">আপনার হাত ধোয়ার অভ্যাস বর্ণনা করুন</string>
+    <string name="use_soap">সাবান ব্যবহার করুন</string>
+    <string name="use_other_means_wash_hands">হাত ধোয়ার জন্য অন্য উপায় ব্যবহার করুন</string>
+    <string name="wash_after_using_toilet">টয়লেট ব্যবহারের পর ধুয়ে ফেলুন</string>
+    <string name="wash_before_cooking">রান্না করার আগে ধুয়ে ফেলুন</string>
+    <string name="wash_before_after_eating">খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">রাউন্ড ট্রিপের 30 মিনিটের মধ্যে পানীয় জলের উৎস কি ,পরিবার থেকে?</string>
+
 </resources>

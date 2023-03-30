@@ -665,7 +665,7 @@
     <string name="enter_number">Enter Number</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">What do you usually do to the water to make it safer to drink?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?*</string>
     <string name="declined">Declined to answer</string>
     <string name="enter_time">Enter Time</string>
@@ -916,7 +916,7 @@
     <string name="dung_cakes">Dung Cakes</string>
     <string name="other_specify">Other (Specify)</string>
     <string name="what_is_the_main_source_of_lighting_in_this_household">What is the main source of lighting in this household?</string>
-    <string name="lantern">Lantern</string>
+    <string name="lantern">Lantern / Kerosene Lamp / Candle</string>
     <string name="kerosene_lamp">Kerosene Lamp</string>
     <string name="candle">Candle</string>
     <string name="electric">Electric</string>
@@ -942,11 +942,11 @@
     <string name="number_of_minutes">Number of minutes</string>
     <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">Do you treat your water in any way to make it safer to drink?</string>
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
-    <string name="boil">Boil</string>
+    <string name="boil">Boiling</string>
     <string name="use_alum">Use Alum</string>
-    <string name="add_bleach_chlorine_tablets_drops">Add Bleach or Chlorine Tablets or Drops</string>
+    <string name="add_bleach_chlorine_tablets_drops">Add bleach</string>
     <string name="strain_through_a_cloth">Strain Through A Cloth</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">Use Water Filter (Ceramic or Sand or Composite, etc.)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">Water Filter</string>
     <string name="use_electronic_purifier">Use Electronic Purifier</string>
     <string name="let_it_stand_and_settle">Let It Stand And Settle</string>
     <string name="flush_to_piped_sewer_system">Flush to Piped Sewer System</string>
@@ -1005,7 +1005,9 @@
 
     <string name="what_is_your_marital_status">What is your marital status?*</string>
     <string name="currently_married">Currently Married</string>
-    <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
+<!--    <string name="married_gauna_not_performed">Married</string>-->
+    <string name="married">Married</string>
+    <string name="unmarried">Unmarried</string>
     <string name="widowed">Widowed</string>
     <string name="divorced">Divorced</string>
     <string name="separated">Separated</string>
@@ -1020,6 +1022,7 @@
     <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
     <string name="graduate">Graduate</string>
     <string name="postgraduate">Postgraduate</string>
+    <string name="graduation_and_above">Graduation and above</string>
 
     <string name="salaried_government_job">Salaried Government Job</string>
     <string name="salaried_private_job">Salaried Private Job</string>
@@ -1054,10 +1057,10 @@
 
     <string name="never_checked">Never Checked</string>
     <string name="in_past_one_week">In past one week</string>
-    <string name="within_last_month">Within last month</string>
+    <string name="within_last_month">Within the last 6 months</string>
     <string name="between_one_month_to_three_months_ago">Between 1 month to 3 months ago</string>
     <string name="between_three_months_to_six_months_ago">Between 3 months to 6 months ago</string>
-    <string name="more_than_six_months">More than 6 months</string>
+    <string name="more_than_six_months">More than 6 months ago</string>
 
     <string name="identification_screen_checkbox_other">Other</string>
     <string name="medical_history">Medical History*</string>
@@ -1121,7 +1124,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
     <string name="no_expense">No expense</string>
     <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
-    <string name="does_this_household_have_ration_card">Does this household have a Ration Card?*</string>
+    <string name="does_this_household_have_ration_card">Do you have a Ration card?*</string>
 
     <string name="third_dose">Third Dose</string>
     <string name="zero_fifty_ml">0 – 50 ml</string>
@@ -1135,4 +1138,20 @@
     <string name="update_hw_profile">Updated Succussfully</string>
     <string name="enter_valid_email">Enter valid email address</string>
     <string name="enter_valid_gender">Enter gender male or female</string>
+    <string name="does_person_chew_tobacco">Does the person chew tobacco?</string>
+    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
+    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
+    <string name="not_sure">Not Sure</string>
+    <string name="handmade_purifier">Hand Made Purifier</string>
+    <string name="do_nothing">Do Nothing</string>
+    <string name="landless">Landless</string>
+    <string name="ekal_process_takeup_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, BP testing, Sugar testing, and doctor consultations as needed. would you like to take our service?</string>
+    <string name="lantern_kerosenelamp_candle">Lantern/Kerosene Lamp/Candle</string>
+    <string name="describe_hand_wash_practise">Describe your hand wash practice</string>
+    <string name="use_soap">Use Soap</string>
+    <string name="use_other_means_wash_hands">Use other means to wash hands</string>
+    <string name="wash_after_using_toilet">Wash after using toilet</string>
+    <string name="wash_before_cooking">Wash before cooking</string>
+    <string name="wash_before_after_eating">Wash before and after eating</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">Is the source of drinking water within 30 minutes of round trip from the household?</string>
 </resources>

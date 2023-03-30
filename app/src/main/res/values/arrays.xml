@@ -117,8 +117,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_hi">
@@ -129,8 +128,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_bn">
@@ -141,8 +139,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_or">
@@ -153,8 +150,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <!--    <string-array name="education_en">-->
@@ -203,8 +199,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_as">
@@ -215,8 +210,7 @@
         <item>@string/middle_school_sixth_eighth</item>
         <item>@string/passed_secondary_school</item>
         <item>@string/passed_senior_secondary_school</item>
-        <item>@string/graduate</item>
-        <item>@string/postgraduate</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="caste_or">
@@ -951,7 +945,7 @@
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Nothing</item>
-        <item>Boil</item>
+        <item>Boiling</item>
         <item>Alum</item>
         <item>Add Bleach/Chlorine tablets</item>
         <item>Strain through cloth</item>
@@ -1075,55 +1069,61 @@
 
     <string-array name="toiletFacility_spinner_en">
         <item>Select</item>
-        <item>No facility /uses open space or field</item>
-        <item>Own toilet</item>
-        <item>Community toilet</item>
-        <item>Shared toilet with other household</item>
+        <item>Open Defacation</item>
+        <item>Own a toilet but it is unusable</item>
+        <item>Use toilet at home</item>
+        <item>Use Community Toilet</item>
+        <item>Shared Toilet with other households</item>
         <item>Declined to answer</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_bn">
         <item>নির্বাচন করুন</item>
-        <item>কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না</item>
-        <item>নিজস্ব টয়লেট</item>
-        <item>কমিউনিটি টয়লেট</item>
-        <item>অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট</item>
-        <item>উত্তর দিতে অস্বীকৃতি জানায়</item>
+        <item>খোলা মলত্যাগ</item>
+        <item>একটি টয়লেটের মালিক কিন্তু এটি ব্যবহারের অনুপযোগী</item>
+        <item>বাড়িতে টয়লেট ব্যবহার করুন।</item>
+        <item>কমিউনিটি টয়লেট ব্যবহার করুন</item>
+        <item>অন্যান্য পরিবারের সাথে শেয়ারড টয়লেট</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_hi">
         <item>चुनते हैं</item>
-        <item>कोई सुविधा नहीं  / खुली जगह या क्षेत्र का उपयोग करते हैं</item>
-        <item>खुद का शौचालय</item>
-        <item>सामुदायिक शौचालय</item>
-        <item>अन्य घर के साथ साझा शौचालय</item>
-        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>खुले में शौच</item>
+        <item>खुद का शौचालय है लेकिन वह अनुपयोगी है</item>
+        <item>घर में शौचालय का प्रयोग करते है</item>
+        <item>सामुदायिक शौचालय का प्रयोग करते है</item>
+        <item>अन्य घरों के साथ साझा शौचालय है</item>
+        <item>जवाब देने से मना कर दिया</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର</item>
-        <item>ନିଜର ଶୌଚାଳୟ</item>
-        <item>ଗୋଷ୍ଠୀ ଶୌଚାଳୟ</item>
-        <item>ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର</item>
-        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>ମୁକ୍ତ ଜାଗା</item>
+        <item>ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି</item>
+        <item>ଘରେ ପାଇଖାନା ରବ୍ୟବହାର</item>
+        <item>ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର</item>
+        <item>ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_gu">
         <item>પસંદ કરો</item>
-        <item>કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી</item>
-        <item>પોતાનું શૌચાલય</item>
-        <item>સામુદાયિક શૌચાલય</item>
-        <item>અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય</item>
+        <item>ઓપન ડીફેકેશન</item>
+        <item>શૌચાલયની માલિકી છે પરંતુ તે બિનઉપયોગી છે</item>
+        <item>ઘરમાં શૌચાલયનો ઉપયોગ કરો.</item>
+        <item>સામુદાયિક શૌચાલયનો ઉપયોગ કરો</item>
+        <item>અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય</item>
         <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_as">
         <item>চয়ন কৰা</item>
-        <item>কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে</item>
-        <item>নিজা শৌচাগাৰ</item>
-        <item>কমিউনিটি টয়লেট</item>
-        <item>আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট</item>
+        <item>মুকলিকৈ শৌচ কৰা</item>
+        <item>শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা</item>
+        <item>ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক।</item>
+        <item>সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক</item>
+        <item>অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ</item>
         <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
     </string-array>
 
@@ -1261,9 +1261,8 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
-        <item>@string/denied_to_answer</item>
+        <item>@string/others</item>
+
     </string-array>
 
     <string-array name="religion_bn">
@@ -1274,9 +1273,7 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
-        <item>@string/denied_to_answer</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="religion_hi">
@@ -1287,8 +1284,7 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="religion_or">
@@ -1299,8 +1295,7 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="religion_gu">
@@ -1311,8 +1306,7 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="religion_as">
@@ -1323,8 +1317,7 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/parsi_zoroastrian</item>
-        <item>@string/no_religion</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="survey_caste_en">
@@ -1491,123 +1484,85 @@
 
     <string-array name="marital_status_en">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_bn">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_hi">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="marital_status_or">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
-        <item>@string/deserted</item>
     </string-array>
 
     <string-array name="marital_status_gu">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
-        <item>@string/deserted</item>
     </string-array>
 
     <string-array name="marital_status_as">
         <item>@string/select</item>
-        <item>@string/currently_married</item>
-        <item>@string/married_gauna_not_performed</item>
-        <item>@string/never_married</item>
+        <item>@string/married</item>
+        <item>@string/unmarried</item>
         <item>@string/widowed</item>
-        <item>@string/divorced</item>
-        <item>@string/separated</item>
     </string-array>
 
     <string-array name="test_status_en">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
     <string-array name="test_status_bn">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
     <string-array name="test_status_hi">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
     <string-array name="test_status_or">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
     <string-array name="test_status_gu">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
     <string-array name="test_status_as">
         <item>@string/select</item>
         <item>@string/never_checked</item>
-        <item>@string/in_past_one_week</item>
         <item>@string/within_last_month</item>
-        <item>@string/between_one_month_to_three_months_ago</item>
-        <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
     </string-array>
 
@@ -1617,6 +1572,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_bn">
@@ -1625,6 +1581,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_hi">
@@ -1633,6 +1590,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_or">
@@ -1641,6 +1599,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_gu">
@@ -1649,6 +1608,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
     <string-array name="land_units_as">
@@ -1657,6 +1617,7 @@
         <item>@string/gunta</item>
         <item>@string/acre</item>
         <item>@string/hectare</item>
+        <item>@string/landless</item>
     </string-array>
 
 </resources>

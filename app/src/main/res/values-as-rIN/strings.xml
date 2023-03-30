@@ -644,7 +644,7 @@
     <string name="enter_number">নম্বৰ দিয়ক</string>
     <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">সাধাৰণতে আপোনাৰ ঘৰত কিমান সদস্য থাকে বা এতিয়া আপোনাৰ লগত থাকে*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">খোৱাপানী সুৰক্ষিত কৰিবলৈ আপুনি কি কৰে?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">সাধাৰণতে পানীখিনি কি কৰে যাতে পানী খাবলৈ সুৰক্ষিত হয়?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">তালৈ যাবলৈ, পানী লৈ, এটা ভ্ৰমণত উভতি আহিবলৈ কিমান সময় লাগে?*</string>
     <string name="declined">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
     <string name="enter_time">সময় প্ৰৱেশ কৰক</string>
@@ -923,9 +923,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">পানী খোৱাটো সুৰক্ষিত কৰিবলৈ আপুনি সাধাৰণতে কি কৰে?</string>
     <string name="boil">উতলোৱা</string>
     <string name="use_alum">এলুম ব্যৱহাৰ কৰক</string>
-    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ বা ক্ল’ৰিন টেবলেট বা ড্ৰপ দিব</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ যোগ কৰক</string>
     <string name="strain_through_a_cloth">ষ্ট্ৰেইন থ্ৰু এ ক্লথ</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">পানী ফিল্টাৰ ব্যৱহাৰ কৰক (চিৰামিক বা বালি বা কম্পোজিট আদি)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">পানী ফিল্টাৰ</string>
     <string name="use_electronic_purifier">ইলেক্ট্ৰনিক পিউৰিফায়াৰ ব্যৱহাৰ কৰক</string>
     <string name="let_it_stand_and_settle">থিয় হৈ থিতাপি লওক</string>
     <string name="flush_to_piped_sewer_system">পাইপযুক্ত নলা ব্যৱস্থালৈ ফ্লাছ কৰা</string>
@@ -984,7 +984,7 @@
 
     <string name="what_is_your_marital_status">আপোনাৰ বৈবাহিক অৱস্থা কি?*</string>
     <string name="currently_married">বৰ্তমান বিবাহিত</string>
-    <string name="married_gauna_not_performed">বিবাহিত, গৌনা নট পাৰ্ফৰ্ম</string>
+<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌনা নট পাৰ্ফৰ্ম</string>-->
     <string name="widowed">বিধৱা</string>
     <string name="divorced">বিবাহ বিচ্ছেদ কৰা</string>
     <string name="separated">পৃথক কৰা হৈছে</string>
@@ -1033,10 +1033,10 @@
 
     <string name="never_checked">কেতিয়াও পৰীক্ষা কৰা হোৱা নাই</string>
     <string name="in_past_one_week">যোৱা এসপ্তাহত</string>
-    <string name="within_last_month">যোৱা মাহৰ ভিতৰত</string>
+    <string name="within_last_month">যোৱা 6 মাহৰ ভিতৰত</string>
     <string name="between_one_month_to_three_months_ago">এমাহৰ পৰা ৩ মাহৰ আগৰ ভিতৰত</string>
     <string name="between_three_months_to_six_months_ago">৩ মাহ-৬মাহৰ আগৰ ভিতৰত</string>
-    <string name="more_than_six_months">৬ মাহতকৈ অধিক</string>
+    <string name="more_than_six_months">6 মাহতকৈ অধিক আগতে</string>
 
     <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="medical_history">চিকিৎসা ইতিহাস*</string>
@@ -1048,7 +1048,7 @@
     <string name="reason_for_surgery_specify_the_reason">অস্ত্ৰোপচাৰৰ কাৰণ (কাৰণ উল্লেখ কৰক)*</string>
 
     <string name="smoking_status">ধূমপানৰ অৱস্থা*</string>
-    <string name="does_the_person_smoke">ব্যক্তিজনে ধূমপান কৰে নেকি?</string>
+    <string name="does_the_person_smoke">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
     <string name="smoker">ধূমপায়ী</string>
     <string name="non_smoker">ধূমপান নকৰা</string>
     <string name="five_ten_bids_cigarette">৫ – ১০ বিদি / চিগাৰেট</string>
@@ -1100,7 +1100,7 @@
     <string name="please_state_if_you_have_electricity_in_the_household">ঘৰত বিদ্যুৎ আছে নে নাই তাক উল্লেখ কৰক</string>
     <string name="no_expense">কোনো খৰচ নাই</string>
     <string name="does_this_household_have_an_ayushman_card">এই ঘৰত আয়ুষ্মান কাৰ্ড আছে নেকি?*</string>
-    <string name="does_this_household_have_ration_card">এই ঘৰৰ ৰেচন কাৰ্ড আছে নেকি?*</string>
+    <string name="does_this_household_have_ration_card">আপোনাৰ Ration কাৰ্ড আছে নেকি?*</string>
 
     <string name="third_dose">তৃতীয় ড’জ</string>
     <string name="zero_fifty_ml">০ – ৫০ মি.লি</string>
@@ -1114,4 +1114,24 @@
 
     <string name="enter_valid_email">বৈধ ইমেইল ঠিকনা দিয়ক</string>
     <string name="enter_valid_gender">লিংগ পুৰুষ বা মহিলা প্ৰৱেশ কৰক</string>
+    <string name="does_person_chew_tobacco">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
+    <string name="history_of_tobacco_consumption">ধঁপাত সেৱনৰ ইতিহাস</string>
+    <string name="tobacco_consumption_cannot_empty">ধঁপাত সেৱনৰ ইতিহাস খালী হ’ব নোৱাৰে</string>
+    <string name="not_sure">নিশ্চিত নহয়</string>
+    <string name="graduation_and_above">স্নাতক আৰু তাৰ ওপৰৰ</string>
+    <string name="married">বিবাহিত</string>
+    <string name="unmarried">অবিবাহিত</string>
+    <string name="handmade_purifier">হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ</string>
+    <string name="do_nothing">একো নকৰিব</string>
+    <string name="landless">ভূমিহীন</string>
+    <string name="ekal_process_takeup_question">একল আপোনাৰ গাঁৱত এটা টেলিমেডিচিন কাৰ্যসূচী আৰম্ভ কৰিছে যাতে প্ৰাথমিক স্বাস্থ্যসেৱা প্ৰদান কৰিব পাৰে - এইচ বি পৰীক্ষা, বি পি পৰীক্ষা, চুগাৰৰ পৰীক্ষা, আৰু প্ৰয়োজন অনুসৰি চিকিৎসকৰ পৰামৰ্শ। আপুনি আমাৰ সেৱা ল\'ব বিচাৰেনে?</string>
+    <string name="lantern_kerosenelamp_candle">বন্তি/কেৰাচিন লেম্প/মমবাতি</string>
+    <string name="describe_hand_wash_practise">আপোনাৰ হাত ধোৱাৰ প্ৰথাৰ বৰ্ণনা কৰক</string>
+    <string name="use_soap">চাবোন ব্যৱহাৰ কৰক</string>
+    <string name="use_other_means_wash_hands">হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক</string>
+    <string name="wash_after_using_toilet">শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব</string>
+    <string name="wash_before_cooking">ৰন্ধা আগতে ধুব</string>
+    <string name="wash_before_after_eating">খোৱাৰ আগতে আৰু পিছত ধুব লাগে।</string>
+    <string name="is_the_source_drinking_water_within_30_minutes">ঘৰৰ পৰা অহা-যোৱা কৰাৰ ৩০ মিনিটৰ ভিতৰত খোৱাপানীৰ উৎস নেকি?</string>
+
 </resources>

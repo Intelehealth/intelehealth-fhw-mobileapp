@@ -197,7 +197,7 @@ public final class StringUtils {
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             switch (checkbox_text) {
-                case "जवाब देने के लिए मना कर दिया":
+                case "खुले में शौच":
                     val = "Declined to answer";
                     break;
                 default:
@@ -490,23 +490,23 @@ public final class StringUtils {
 
     public static String switch_hi_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "खुले में शौच";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "खुद का शौचालय है लेकिन वह अनुपयोगी है";
+                break;
+            case "Use toilet at home":
+                val = "घर में शौचालय का प्रयोग करते है";
+                break;
+            case "Use Community Toilet":
+                val = "सामुदायिक शौचालय का प्रयोग करते है";
+                break;
+            case "Shared Toilet with other households":
+                val = "अन्य घरों के साथ साझा शौचालय है";
+                break;
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
-                break;
-            case "No facility /uses open space or field":
-                val = "कोई सुविधा नहीं / खुली जगह या क्षेत्र का उपयोग करते हैं";
-                break;
-            case "Own toilet":
-                val = "खुद का शौचालय";
-                break;
-            case "Community toilet":
-                val = "सामुदायिक शौचालय";
-                break;
-            case "Shared toilet with other household":
-                val = "अन्य घर के साथ साझा शौचालय";
-                break;
-            case "Other [Enter]":
-                val = "अन्य [दर्ज करें]";
+                val = "जवाब देने से मना कर दिया";
                 break;
             default:
                 return val;
@@ -515,23 +515,23 @@ public final class StringUtils {
     }
     public static String switch_bn_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "খোলা মলত্যাগ";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "একটি টয়লেটের মালিক কিন্তু এটি ব্যবহারের অনুপযোগী";
+                break;
+            case "Use toilet at home":
+                val = "বাড়িতে টয়লেট ব্যবহার করুন।";
+                break;
+            case "Use Community Toilet":
+                val = "কমিউনিটি টয়লেট ব্যবহার করুন";
+                break;
+            case "Shared Toilet with other households":
+                val = "অন্যান্য পরিবারের সাথে শেয়ারড টয়লেট";
+                break;
             case "Declined to answer":
-                val = "উত্তর দিতে অস্বীকৃতি জানায়";
-                break;
-            case "No facility /uses open space or field":
-                val = "কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না";
-                break;
-            case "Own toilet":
-                val = "নিজস্ব টয়লেট";
-                break;
-            case "Community toilet":
-                val = "কমিউনিটি টয়লেট";
-                break;
-            case "Shared toilet with other household":
-                val = "অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট";
-                break;
-            case "Other [Enter]":
-                val = "অন্যান্য [এন্টার]";
+                val = "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে";
                 break;
             default:
                 return val;
@@ -541,23 +541,23 @@ public final class StringUtils {
 
     public static String switch_or_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "ମୁକ୍ତ ଜାଗା";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି";
+                break;
+            case "Use toilet at home":
+                val = "ଘରେ ପାଇଖାନା ରବ୍ୟବହାର";
+                break;
+            case "Use Community Toilet":
+                val = "ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର";
+                break;
+            case "Shared Toilet with other households":
+                val = "ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର";
+                break;
             case "Declined to answer":
-                val = "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ";
-                break;
-            case "No facility /uses open space or field":
-                val = "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର";
-                break;
-            case "Own toilet":
-                val = "ନିଜର ଶୌଚାଳୟ";
-                break;
-            case "Community toilet":
-                val = "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ";
-                break;
-            case "Shared toilet with other household":
-                val = "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର";
-                break;
-            case "Other [Enter]":
-                val = "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]";
+                val = "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ";
                 break;
             default:
                 return val;
@@ -567,23 +567,23 @@ public final class StringUtils {
 
     public static String switch_gu_toiletfacil_edit(String val) {
         switch (val) {
+            case "Open Defacation":
+                val = "ઓપન ડીફેકેશન";//-------replace with gujrati
+                break;
+            case "Own a toilet but it is unusable":
+                val = "શૌચાલયની માલિકી છે પરંતુ તે બિનઉપયોગી છે";
+                break;
+            case "Use toilet at home":
+                val = "ઘરમાં શૌચાલયનો ઉપયોગ કરો.";
+                break;
+            case "Use Community Toilet":
+                val = "સામુદાયિક શૌચાલયનો ઉપયોગ કરો";
+                break;
+            case "Shared Toilet with other households":
+                val = "અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય";
+                break;
             case "Declined to answer":
-                val = "જવાબ આપવાનો ઇનકાર કર્યો";//-------replace with gujrati
-                break;
-            case "No facility /uses open space or field":
-                val = "કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી";
-                break;
-            case "Own toilet":
-                val = "પોતાનું શૌચાલય";
-                break;
-            case "Community toilet":
-                val = "સામુદાયિક શૌચાલય";
-                break;
-            case "Shared toilet with other household":
-                val = "અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય";
-                break;
-            case "Other [Enter]":
-                val = "અન્ય [દાખલ કરો]";
+                val = "જવાબ આપવાનો ઇનકાર કર્યો";
                 break;
             default:
                 return val;
@@ -593,23 +593,23 @@ public final class StringUtils {
 
     public static String switch_as_toiletfacil_edit(String val) {
         switch (val) {
-            case "Declined to answer":
-                val = "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে";
+            case "Open Defacation":
+                val = "মুকলিকৈ শৌচ কৰা";
                 break;
-            case "No facility /uses open space or field":
-                val = "কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে";
+            case "Own a toilet but it is unusable":
+                val = "শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা";
                 break;
-            case "Own toilet":
-                val = "নিজা শৌচাগাৰ";
+            case "Use toilet at home":
+                val = "ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক।";
                 break;
-            case "Community toilet":
-                val = "কমিউনিটি টয়লেট";
+            case "Use Community Toilet":
+                val = "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক";
                 break;
-            case "Shared toilet with other household":
+            case "Shared Toilet with other households":
                 val = "আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট";
                 break;
-            case "Other [Enter]":
-                val = "અન્ય [દાખલ કરો]";
+            case "Declined to answer":
+                val = "જવાબ આપવાનો ઇનકાર કર્યો";
                 break;
             default:
                 return val;
@@ -619,24 +619,24 @@ public final class StringUtils {
 
     public static String switch_hi_en_toiletfacil(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
+                val = "Open Defacation";
+                break;
+            case "खुद का शौचालय है लेकिन वह अनुपयोगी है":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "घर में शौचालय का प्रयोग करते है":
+                val = "Use toilet at home";
+                break;
+            case "सामुदायिक शौचालय का प्रयोग करते है":
+                val = "Use Community Toilet";
+                break;
+            case "अन्य घरों के साथ साझा शौचालय है":
+                val = "Shared Toilet with other households";
+                break;
+            case "जवाब देने से मना कर दिया":
                 val = "Declined to answer";
                 break;
-            case "कोई सुविधा नहीं / खुली जगह या क्षेत्र का उपयोग करते हैं":
-                val = "No facility /uses open space or field";
-                break;
-            case "खुद का शौचालय":
-                val = "Own toilet";
-                break;
-            case "सामुदायिक शौचालय":
-                val = "Community toilet";
-                break;
-            case "अन्य घर के साथ साझा शौचालय":
-                val = "Shared toilet with other household";
-                break;
-           /* case "अन्य [दर्ज करें]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -644,24 +644,24 @@ public final class StringUtils {
     }
     public static String switch_bn_en_toiletfacil(String val) {
         switch (val) {
-            case "উত্তর দিতে অস্বীকৃতি জানায়":
+            case "খোলা মলত্যাগ":
+                val = "Open Defacation";
+                break;
+            case "একটি টয়লেটের মালিক কিন্তু এটি ব্যবহারের অনুপযোগী":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "বাড়িতে টয়লেট ব্যবহার করুন।":
+                val = "Use toilet at home";
+                break;
+            case "কমিউনিটি টয়লেট ব্যবহার করুন":
+                val = "Use Community Toilet";
+                break;
+            case "অন্যান্য পরিবারের সাথে শেয়ারড টয়লেট":
+                val = "Shared Toilet with other households";
+                break;
+            case "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে":
                 val = "Declined to answer";
                 break;
-            case "কোন সুবিধা / খোলা জায়গা বা মাঠ ব্যবহার করে না":
-                val = "No facility /uses open space or field";
-                break;
-            case "নিজস্ব টয়লেট":
-                val = "Own toilet";
-                break;
-            case "কমিউনিটি টয়লেট":
-                val = "Community toilet";
-                break;
-            case "অন্যান্য পরিবারের সাথে শেয়ার করা টয়লেট":
-                val = "Shared toilet with other household";
-                break;
-           /* case "अन्य [दर्ज करें]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -670,24 +670,24 @@ public final class StringUtils {
 
     public static String switch_or_en_toiletfacil(String val) {
         switch (val) {
-            case "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ":
+            case "ମୁକ୍ତ ଜାଗା":
+                val = "Open Defacation";
+                break;
+            case "ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "ଘରେ ପାଇଖାନା ରବ୍ୟବହାର":
+                val = "Use toilet at home";
+                break;
+            case "ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର":
+                val = "Use Community Toilet";
+                break;
+            case "ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର":
+                val = "Shared Toilet with other households";
+                break;
+            case "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ":
                 val = "Declined to answer";
                 break;
-            case "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର":
-                val = "No facility /uses open space or field";
-                break;
-            case "ନିଜର ଶୌଚାଳୟ":
-                val = "Own toilet";
-                break;
-            case "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ":
-                val = "Community toilet";
-                break;
-            case "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର":
-                val = "Shared toilet with other household";
-                break;
-           /* case "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]":
-                val = "Other [Enter]";
-                break;*/
             default:
                 return val;
         }
@@ -696,23 +696,23 @@ public final class StringUtils {
 
     public static String switch_gu_en_toiletfacil(String val) {
         switch (val) {
-            case "જવાબ આપવાનો ઇનકાર કર્યો"://-------replace with gujrati
+            case "ઓપન ડીફેકેશન"://-------replace with gujrati
+                val = "Open Defacation";
+                break;
+            case "શૌચાલયની માલિકી છે પરંતુ તે બિનઉપયોગી છે":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "ઘરમાં શૌચાલયનો ઉપયોગ કરો.":
+                val = "Use toilet at home";
+                break;
+            case "સામુદાયિક શૌચાલયનો ઉપયોગ કરો":
+                val = "Use Community Toilet";
+                break;
+            case "અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય":
+                val = "Shared Toilet with other households";
+                break;
+           /* case "જવાબ આપવાનો ઇનકાર કર્યો":
                 val = "Declined to answer";
-                break;
-            case "કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી":
-                val = "No facility /uses open space or field";
-                break;
-            case "પોતાનું શૌચાલય":
-                val = "Own toilet";
-                break;
-            case "સામુદાયિક શૌચાલય":
-                val = "Community toilet";
-                break;
-            case "અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય":
-                val = "Shared toilet with other household";
-                break;
-           /* case "અન્ય [દાખલ કરો]":
-                val = "Other [Enter]";
                 break;*/
             default:
                 return val;
@@ -722,24 +722,24 @@ public final class StringUtils {
 
     public static String switch_as_en_toiletfacil(String val) {
         switch (val) {
-            case "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে"://-------replace with Assamese
-                val = "Declined to answer";
+            case "মুকলিকৈ শৌচ কৰা"://-------replace with Assamese
+                val = "Open Defacation";
                 break;
-            case "কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে":
-                val = "No facility /uses open space or field";
+            case "শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা":
+                val = "Own a toilet but it is unusable";
                 break;
-            case "নিজা শৌচাগাৰ":
-                val = "Own toilet";
+            case "ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক।":
+                val = "Use toilet at home";
                 break;
-            case "কমিউনিটি টয়লেট":
-                val = "Community toilet";
+            case "সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক":
+                val = "Use Community Toilet";
                 break;
             case "আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট":
-                val = "Shared toilet with other household";
+                val = "Shared Toilet with other households";
                 break;
-           /* case "અન્ય [દાખલ કરો]":
-                val = "Other [Enter]";
-                break;*/
+            case "જવાબ આપવાનો ઇનકાર કર્યો":
+                val = "Declined to answer";
+                break;
             default:
                 return val;
         }
@@ -748,7 +748,7 @@ public final class StringUtils {
 
     public static String switch_hi_en_wateravail(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
                 val = "Declined to answer";
                 break;
             case "हाँ":
@@ -849,19 +849,19 @@ public final class StringUtils {
     public static String switch_hi_en_watersafe(String val) {
         switch (val) {
             case "उबालते है"://----replace with Hindi
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "फिटकरी  का उपयोग करें":
                 val = "Use Alum";
                 break;
-            case "्लीच/क्लोरीन की गोलियां/बूंदें जोड़ें":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ब्लीच डालते हैं":
+                val = "Add bleach";
                 break;
-            case "कपड़े के माध्यम से तनाव":
+            case "कपड़े से छानते है":
                 val = "Strain Through A Cloth";
                 break;
-            case "पानी फिल्टर का उपयोग करते है (सिरेमिक/रेत/समग्र/ईटीसी।)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "पानी फिल्टर का उपयोग करते है":
+                val = "Water Filter";
                 break;
             case "इलेक्ट्रॉनिक फ़िल्टर का उपयोग करते है":
                 val = "Use Electronic Purifier";
@@ -877,19 +877,19 @@ public final class StringUtils {
     public static String switch_bn_en_watersafe(String val) {
         switch (val) {
             case "ফুটন্ত"://----replace with Hindi
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "অ্যালাম ব্যবহার করুন":
                 val = "Use Alum";
                 break;
-            case "ব্লিচ বা ক্লোরিন ট্যাবলেট বা ড্রপ যোগ করুন":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ব্লিচ যোগ করুন":
+                val = "Add bleach";
                 break;
             case "একটি কাপড় মাধ্যমে স্ট্রেন":
                 val = "Strain Through A Cloth";
                 break;
-            case "জল ফিল্টার ব্যবহার করুন (সিরামিক বা বালি বা যৌগিক, ইত্যাদি)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "জল ফিল্টার":
+                val = "Water Filter";
                 break;
             case "ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন":
                 val = "Use Electronic Purifier";
@@ -906,19 +906,19 @@ public final class StringUtils {
     public static String switch_or_en_watersafe(String val) {
         switch (val) {
             case "ଫୁଟାପାଣି"://----replace with Oriya
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "ଆଲମ ବ୍ୟବହାର":
                 val = "Use Alum";
                 break;
-            case "ବ୍ଲିଚିଙ୍ଗ/କ୍ଲୋରାଇନ ପକାନ୍ତି":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା":
+                val = "Add bleach";
                 break;
-            case "କପଡାରେ ଛାଣନ୍ତି":
+            case "କପଡ଼ାରେ ଛ।ନିବା":
                 val = "Strain Through A Cloth";
                 break;
-            case "ୱାଟର ଫିଲଟର ବ୍ୟବହାର":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "ଫିଲ୍ଟର ପାଣି":
+                val = "Water Filter";
                 break;
             case "ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର":
                 val = "Use Electronic Purifier";
@@ -935,19 +935,19 @@ public final class StringUtils {
     public static String switch_gu_en_watersafe(String val) {
         switch (val) {
             case "ઉકાળો"://----replace with Gujarati
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "ફટકડીનો ઉપયોગ કરો":
                 val = "Use Alum";
                 break;
-            case "બ્લીચ/ક્લોરીન ટેબ્લેટ/ટીપાં ઉમેરો":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "બ્લિચ ઉમેરવું":
+                val = "Add bleach";
                 break;
             case "કાપડ દ્વારા તાણ":
                 val = "Strain Through A Cloth";
                 break;
-            case "વોટર ફિલ્ટરનો ઉપયોગ કરો (સિરામિક/રેતી/કમ્પોઝિટ/ઇટીસી.)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "વોટર ફિલ્ટરનો ઉપયોગ":
+                val = "Water Filter";
                 break;
             case "ઈલેક્ટ્રોનિક પ્યુરીફાયરનો ઉપયોગ કરો":
                 val = "Use Electronic Purifier";
@@ -964,19 +964,19 @@ public final class StringUtils {
     public static String switch_as_en_watersafe(String val) {
         switch (val) {
             case "উতলোৱা"://----replace with Assamese
-                val = "Boil";
+                val = "Boiling";
                 break;
             case "এলুম ব্যৱহাৰ কৰক":
                 val = "Use Alum";
                 break;
-            case "ব্লিচ বা ক্ল’ৰিন টেবলেট বা ড্ৰপ দিব":
-                val = "Add Bleach or Chlorine Tablets or Drops";
+            case "ব্লিচ যোগ কৰক":
+                val = "Add bleach";
                 break;
             case "ষ্ট্ৰেইন থ্ৰু এ ক্লথ":
                 val = "Strain Through A Cloth";
                 break;
-            case "পানী ফিল্টাৰ ব্যৱহাৰ কৰক (চিৰামিক বা বালি বা কম্পোজিট আদি)":
-                val = "Use Water Filter (Ceramic or Sand or Composite, etc.)";
+            case "পানী ফিল্টাৰ":
+                val = "Water Filter";
                 break;
             case "ইলেক্ট্ৰনিক পিউৰিফায়াৰ ব্যৱহাৰ কৰক":
                 val = "Use Electronic Purifier";
@@ -1491,7 +1491,7 @@ public final class StringUtils {
 
     public static String switch_hi_en_bankaccount(String val) {
         switch (val) {
-            case "जवाब देने के लिए मना कर दिया":
+            case "खुले में शौच":
                 val = "Declined to answer";
                 break;
             case "हाँ":
@@ -2302,7 +2302,7 @@ public final class StringUtils {
     public static String switch_hi_bankaccount_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Yes":
                 val = "हाँ";
@@ -2454,7 +2454,7 @@ public final class StringUtils {
     /*public static String switch_hi_watersource_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Chapakal/Hand Pump":
                 val = "चापाकल/हैण्ड पंप";
@@ -2541,7 +2541,7 @@ public final class StringUtils {
     public static String switch_hi_wateravail_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Yes":
                 val = "हाँ";
@@ -2640,7 +2640,7 @@ public final class StringUtils {
     /*public static String switch_hi_watersafe_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Nothing":
                 val = "कुछ भी नहीं";
@@ -2664,7 +2664,7 @@ public final class StringUtils {
                 val = "इलेक्ट्रॉनिक फ़िल्टर का उपयोग करें";
                 break;
             case "Other[Enter]":
-                val = "अन्य [दर्ज करें]";
+                val = "जवाब देने से मना कर दिया";
                 break;
             default:
                 return val;
@@ -2699,7 +2699,7 @@ public final class StringUtils {
                 val = "ଇଲେକ୍ଟ୍ରୋନିକ୍ ଫିଲ୍ଟର୍ ବ୍ୟବହାର କରନ୍ତୁ";
                 break;
             case "Other[Enter]":
-                val = "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]";
+                val = "ଉତ୍ତର ଦେବାକୁ ମନା କଲେ";
                 break;
             default:
                 return val;
@@ -2957,7 +2957,7 @@ public final class StringUtils {
    /* public static String switch_hi_occupation_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "जवाब देने के लिए मना कर दिया";
+                val = "खुले में शौच";
                 break;
             case "Government job":
                 val = "सरकारी नौकरी";
@@ -3852,15 +3852,21 @@ public final class StringUtils {
 
             if (childAt instanceof RadioButton) {
                 RadioButton radioButton = (RadioButton) childAt;
-                if (text.contains(getRadioButtonStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                String a = getRadioButtonStrings(radioButton.getText().toString(), updatedContext, context, locale);
+                String b = text;
+                if (text.equalsIgnoreCase(getRadioButtonStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
                 }
-                if (text.contains(getSmokingHistoryStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                if (text.equalsIgnoreCase(getSmokingHistoryStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
                 }
-                if (text.contains(getAlcoholHistory(radioButton.getText().toString(), updatedContext, context, locale))) {
+                if (text.equalsIgnoreCase(getTobaccoHistoryStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+                if (text.equalsIgnoreCase(getAlcoholHistory(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
                 }
@@ -3908,7 +3914,7 @@ public final class StringUtils {
             if (inputContext.getString(R.string.jain).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.jain);
             }
-            // Translate string Jewish to English
+          /*  // Translate string Jewish to English
             if (inputContext.getString(R.string.jewish).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.jewish);
             }
@@ -3921,116 +3927,127 @@ public final class StringUtils {
             // Translate string No Religion to English
             if (inputContext.getString(R.string.no_religion).equalsIgnoreCase(text)) {
                 return outputContext.getString(R.string.no_religion);
-            }
+            }*/
+        // Translate string Others to English
+        if (inputContext.getString(R.string.others).equalsIgnoreCase(text)) {
+            return outputContext.getString(R.string.others);
+        }
      //   }
         return text;
     }
 
     public static String getRadioButtonStrings(String text, Context context, Context updatedContext, String locale) {
+        String a = text;
         text = getSurveyValue(text);
         // If the app language is not in English, only in that case will the strings be translated.
-      //  if (!locale.equalsIgnoreCase("en")) {
-            // Translate string Yes to English
-            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_yes);
-            }
-            // Translate string No to English
-            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_no);
-            }
-            // Translate string No Expense to English
-            if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.no_expense);
-            }
-            // Translate string 0 - 1 to English
-            if (context.getString(R.string.zero_one).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.zero_one);
-            }
-            // Translate string 1 - 2 to English
-            if (context.getString(R.string.one_two).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.one_two);
-            }
-            // Translate string 2 - 5 to English
-            if (context.getString(R.string.two_five).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.two_five);
-            }
-            // Translate string 5 - 10 to English
-            if (context.getString(R.string.five_ten).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.five_ten);
-            }
-            // Translate string More than 10 to English
-            if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.more_than_10);
-            }
-            // Translate string 1 - 3000 to English
-            if (context.getString(R.string.one_three_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.one_three_thousand);
-            }
-            // Translate string 0 - 30000 to English
-            if (context.getString(R.string.zero_thirty_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.zero_thirty_thousand);
-            }
-            // Translate string 30000 - 50000 to English
-            if (context.getString(R.string.thirty_fifty_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.thirty_fifty_thousand);
-            }
-            // Translate string 50000 - 100000 to English
-            if (context.getString(R.string.fifty_thousand_one_lakh).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.fifty_thousand_one_lakh);
-            }
-            // Translate string 100000 - 250000 to English
-            if (context.getString(R.string.one_lakh_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.one_lakh_two_lakh_fifty_thousand);
-            }
-            // Translate string More Than 2,50,000 to English
-            if (context.getString(R.string.more_than_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.more_than_two_lakh_fifty_thousand);
-            }
-            // Translate string 0 - 3000 to English
-            if (context.getString(R.string.zero_three_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.zero_three_thousand);
-            }
-            // Translate string 3000 - 5000 to English
-            if (context.getString(R.string.three_five_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.three_five_thousand);
-            }
-            // Translate string 5000 - 10000 to English
-            if (context.getString(R.string.five_ten_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.five_ten_thousand);
-            }
-            // Translate string 0 - 3000 to English
-            if (context.getString(R.string.ten_twenty_five_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.ten_twenty_five_thousand);
-            }
-            // Translate string More Than 25,000 to English
-            if (context.getString(R.string.more_than_twenty_five_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.more_than_twenty_five_thousand);
-            }
-            // Translate string Yes to English
-            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_yes);
-            }
-            // Translate string No to English
-            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.generic_no);
-            }
-            // Translate string Yes, Card Seen to English
-            if (context.getString(R.string.yes_card_seen).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.yes_card_seen);
-            }
-            // Translate string Yes, Card Not Seen to English
-            if (context.getString(R.string.yes_card_not_seen).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.yes_card_not_seen);
-            }
-            // Translate string No Card to English
-            if (context.getString(R.string.no_card).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.no_card);
-            }
-            // Translate string Do Not Know to English
-            if (context.getString(R.string.do_not_know).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.do_not_know);
-            }
-     //   }
+        //  if (!locale.equalsIgnoreCase("en")) {
+
+        // Translate string Yes to English
+        if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.generic_yes);
+        }
+        // Translate string No to English
+        if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.generic_no);
+        }
+        // Translate string Yes.. to English
+        if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.yes);
+        }
+        // Translate string No.. to English
+        if (context.getString(R.string.no).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.no);
+        }
+        // Translate string Not Sure to English
+        if (context.getString(R.string.not_sure).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.not_sure);
+        }
+
+        // Translate string No Expense to English
+        if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.no_expense);
+        }
+        // Translate string 0 - 1 to English
+        if (context.getString(R.string.zero_one).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.zero_one);
+        }
+        // Translate string 1 - 2 to English
+        if (context.getString(R.string.one_two).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.one_two);
+        }
+        // Translate string 2 - 5 to English
+        if (context.getString(R.string.two_five).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.two_five);
+        }
+        // Translate string 5 - 10 to English
+        if (context.getString(R.string.five_ten).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.five_ten);
+        }
+        // Translate string More than 10 to English
+        if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.more_than_10);
+        }
+        // Translate string 1 - 3000 to English
+        if (context.getString(R.string.one_three_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.one_three_thousand);
+        }
+        // Translate string 0 - 30000 to English
+        if (context.getString(R.string.zero_thirty_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.zero_thirty_thousand);
+        }
+        // Translate string 30000 - 50000 to English
+        if (context.getString(R.string.thirty_fifty_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.thirty_fifty_thousand);
+        }
+        // Translate string 50000 - 100000 to English
+        if (context.getString(R.string.fifty_thousand_one_lakh).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.fifty_thousand_one_lakh);
+        }
+        // Translate string 100000 - 250000 to English
+        if (context.getString(R.string.one_lakh_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.one_lakh_two_lakh_fifty_thousand);
+        }
+        // Translate string More Than 2,50,000 to English
+        if (context.getString(R.string.more_than_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.more_than_two_lakh_fifty_thousand);
+        }
+        // Translate string 0 - 3000 to English
+        if (context.getString(R.string.zero_three_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.zero_three_thousand);
+        }
+        // Translate string 3000 - 5000 to English
+        if (context.getString(R.string.three_five_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.three_five_thousand);
+        }
+        // Translate string 5000 - 10000 to English
+        if (context.getString(R.string.five_ten_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.five_ten_thousand);
+        }
+        // Translate string 0 - 3000 to English
+        if (context.getString(R.string.ten_twenty_five_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.ten_twenty_five_thousand);
+        }
+        // Translate string More Than 25,000 to English
+        if (context.getString(R.string.more_than_twenty_five_thousand).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.more_than_twenty_five_thousand);
+        }
+        // Translate string Yes, Card Seen to English
+        if (context.getString(R.string.yes_card_seen).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.yes_card_seen);
+        }
+        // Translate string Yes, Card Not Seen to English
+        if (context.getString(R.string.yes_card_not_seen).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.yes_card_not_seen);
+        }
+        // Translate string No Card to English
+        if (context.getString(R.string.no_card).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.no_card);
+        }
+        // Translate string Do Not Know to English
+        if (context.getString(R.string.do_not_know).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.do_not_know);
+        }
+        //   }
         return text;
     }
 
@@ -4054,6 +4071,10 @@ public final class StringUtils {
             if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hectare);
             }
+            // Translate string Landless to English
+            if (context.getString(R.string.landless).equalsIgnoreCase(text)) {
+               return updatedContext.getString(R.string.landless);
+            }
       //  }
         return text;
     }
@@ -4072,6 +4093,10 @@ public final class StringUtils {
             // Translate string No to English
             if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.generic_no);
+            }
+            // Translate string Not Sure to English
+            if (context.getString(R.string.not_sure).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.not_sure);
             }
             // Translate string Electricity to English
             if (context.getString(R.string.electricity).equalsIgnoreCase(text)) {
@@ -4113,7 +4138,11 @@ public final class StringUtils {
             if (context.getString(R.string.dung_cakes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.dung_cakes);
             }
-            // Translate string Lantern to English
+        // Translate string Others to English
+        if (context.getString(R.string.others).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.others);
+        }
+            /*// Translate string Lantern to English
             if (context.getString(R.string.lantern).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.lantern);
             }
@@ -4124,7 +4153,13 @@ public final class StringUtils {
             // Translate string Candle to English
             if (context.getString(R.string.candle).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.candle);
-            }
+            }*/
+
+        // Translate string Electric to English
+        if (context.getString(R.string.lantern_kerosenelamp_candle).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.lantern_kerosenelamp_candle);
+        }
+
             // Translate string Electric to English
             if (context.getString(R.string.electric).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.electric);
@@ -4201,10 +4236,11 @@ public final class StringUtils {
             if (context.getString(R.string.hand_pump_at_home).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hand_pump_at_home);
             }
-            // Translate string Nal Jal Yojana to English
+          /*  // Translate string Nal Jal Yojana to English
             if (context.getString(R.string.nal_jal_yojana).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.nal_jal_yojana);
-            }
+            }*/
+
             // Translate string Boil to English
             if (context.getString(R.string.boil).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.boil);
@@ -4213,7 +4249,7 @@ public final class StringUtils {
             if (context.getString(R.string.use_alum).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_alum);
             }
-            // Translate string Add Bleach or Chlorine Tablets or Drops to English
+            // Translate string Add bleach to English
             if (context.getString(R.string.add_bleach_chlorine_tablets_drops).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.add_bleach_chlorine_tablets_drops);
             }
@@ -4225,13 +4261,21 @@ public final class StringUtils {
             if (context.getString(R.string.use_water_filter_ceramic_sand_composite_etc).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_water_filter_ceramic_sand_composite_etc);
             }
-            // Translate string Use Electronic Purifier to English
+           /* // Translate string Use Electronic Purifier to English
             if (context.getString(R.string.use_electronic_purifier).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.use_electronic_purifier);
             }
             // Translate string Let It Stand And Settle to English
             if (context.getString(R.string.let_it_stand_and_settle).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.let_it_stand_and_settle);
+            }*/
+         // Translate string Handmade purifier to English
+            if (context.getString(R.string.handmade_purifier).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.handmade_purifier);
+            }
+            // Translate string Do Nothing to English
+            if (context.getString(R.string.do_nothing).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.do_nothing);
             }
             // Translate string No Water Available In The Toilet to English
             if (context.getString(R.string.no_water_available_in_the_toilet).equalsIgnoreCase(text)) {
@@ -4249,7 +4293,7 @@ public final class StringUtils {
             if (context.getString(R.string.problem_in_toilet_plumbing).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.problem_in_toilet_plumbing);
             }
-            // Translate string No Soap Available In The Household to English
+          /*  // Translate string No Soap Available In The Household to English
             if (context.getString(R.string.no_soap_available_in_the_household).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_soap_available_in_the_household);
             }
@@ -4272,7 +4316,29 @@ public final class StringUtils {
             // Translate string After Using Toilet to English
             if (context.getString(R.string.after_using_toilet).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.after_using_toilet);
-            }
+            }*/
+
+        // Translate string Use Soap to English
+        if (context.getString(R.string.use_soap).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.use_soap);
+        }
+        // Translate string -> Use other means... to English
+        if (context.getString(R.string.use_other_means_wash_hands).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.use_other_means_wash_hands);
+        }
+        // Translate string -> Wash after using... to English
+        if (context.getString(R.string.wash_after_using_toilet).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_after_using_toilet);
+        }
+        // Translate string -> Wash before cooking to English
+        if (context.getString(R.string.wash_before_cooking).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_before_cooking);
+        }
+        // Translate string -> Wash before and after eating to English
+        if (context.getString(R.string.wash_before_after_eating).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.wash_before_after_eating);
+        }
+
             // Translate string Starch Staple Food to English
             if (context.getString(R.string.starch_staple_food).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.starch_staple_food);
@@ -4438,14 +4504,24 @@ public final class StringUtils {
             if (context.getString(R.string.currently_married).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.currently_married);
             }
-            // Translate string Married, Gauna Not Performed to English
-            if (context.getString(R.string.married_gauna_not_performed).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.married_gauna_not_performed);
-            }
+//            // Translate string Married, Gauna Not Performed to English
+//            if (context.getString(R.string.married_gauna_not_performed).equalsIgnoreCase(text)) {
+//                return updatedContext.getString(R.string.married_gauna_not_performed);
+//            }
+
+        // Translate string Married to English
+        if (context.getString(R.string.married).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.married);
+        }
+        // Translate string Unmarried to English
+        if (context.getString(R.string.unmarried).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.unmarried);
+        }
             // Translate string Widowed to English
             if (context.getString(R.string.widowed).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.widowed);
             }
+
             // Translate string Divorced to English
             if (context.getString(R.string.divorced).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.divorced);
@@ -4475,21 +4551,9 @@ public final class StringUtils {
             if (context.getString(R.string.never_checked).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.never_checked);
             }
-            // Translate string In Past One Week to English
-            if (context.getString(R.string.in_past_one_week).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.in_past_one_week);
-            }
             // Translate string Within Last Month to English
             if (context.getString(R.string.within_last_month).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.within_last_month);
-            }
-            // Translate string Between One Month To Three Months Ago to English
-            if (context.getString(R.string.between_one_month_to_three_months_ago).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.between_one_month_to_three_months_ago);
-            }
-            // Translate string Between Three Months To Six Months Ago to English
-            if (context.getString(R.string.between_three_months_to_six_months_ago).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.between_three_months_to_six_months_ago);
             }
             // Translate string More Than Six Months to English
             if (context.getString(R.string.more_than_six_months).equalsIgnoreCase(text)) {
@@ -4527,14 +4591,19 @@ public final class StringUtils {
             if (context.getString(R.string.passed_senior_secondary_school).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.passed_senior_secondary_school);
             }
-            // Translate string Graduate to English
+           /* // Translate string Graduate to English
             if (context.getString(R.string.graduate).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.graduate);
             }
             // Translate string Postgraduate to English
             if (context.getString(R.string.postgraduate).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.postgraduate);
-            }
+            }*/
+
+        // Translate string -> Graduation and above.
+        if (context.getString(R.string.graduation_and_above).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.graduation_and_above);
+        }
             //  }
         return text;
     }
@@ -4621,6 +4690,23 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.generic_no);
             }
             //    }
+        return text;
+    }
+
+    public static String getTobaccoHistoryStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // Yes string conversion
+        if (context.getString(R.string.yes).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.yes);
+
+        // No string conversion
+        if (context.getString(R.string.no).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.no);
+
+        // Declined to answer string conversion
+        if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.denied_to_answer);
+
         return text;
     }
 
