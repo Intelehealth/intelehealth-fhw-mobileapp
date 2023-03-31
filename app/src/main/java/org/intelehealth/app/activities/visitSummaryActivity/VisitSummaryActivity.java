@@ -107,6 +107,7 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
 import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
@@ -432,9 +433,25 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 onEndVisit();
                 return true;
             }
+            case R.id.summary_patient_detail: {
+                onPatientDetailClicked();
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void onPatientDetailClicked() {
+        String patientStatus = "returning";
+        Intent patientDetailIntent = new Intent(context, PatientDetailActivity.class);
+        patientDetailIntent.putExtra("patientUuid", patientUuid);
+        patientDetailIntent.putExtra("patientName", patient.getFirst_name() + "" + patient.getLast_name());
+        patientDetailIntent.putExtra("status", patientStatus);
+        patientDetailIntent.putExtra("tag", "search");
+        patientDetailIntent.putExtra("hasPrescription", "false");     // At the time of writing this statement, this hasPrescription has no significance as the prescription imageview is set as gone in patient detail activity
+        startActivity(patientDetailIntent);
+        finish();
     }
 
     private void onEndVisit() {
@@ -520,6 +537,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());

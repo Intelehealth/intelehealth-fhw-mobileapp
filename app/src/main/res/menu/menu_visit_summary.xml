@@ -45,4 +45,10 @@
 
     </item>
 
+    <item
+        android:id="@+id/summary_patient_detail"
+        android:orderInCategory="400"
+        android:title="@string/title_activity_patient_detail"
+        app:showAsAction="never" />
+
 </menu>
