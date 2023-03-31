@@ -208,10 +208,11 @@ public class HwProfileActivity extends AppCompatActivity {
 //                hw_aboutme_value.setFocusableInTouchMode(true);
 //                hw_aboutme_value.setVisibility(View.VISIBLE);
 
+              /* This is not needed to edit as per: https://intelehealthwiki.atlassian.net/browse/AEAT-473
                 hw_gender_value.setClickable(true);
                 hw_gender_value.setFocusable(true);
                 hw_gender_value.setCursorVisible(true);
-                hw_gender_value.setFocusableInTouchMode(true);
+                hw_gender_value.setFocusableInTouchMode(true);*/
 
                 hw_mobile_value.setClickable(true);
                 hw_mobile_value.setFocusable(true);
