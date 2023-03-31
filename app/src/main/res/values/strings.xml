@@ -1585,7 +1585,7 @@
     <string name="incorrect_healthworker_disclaimer">This is personal information, please enter the PIN to continue</string>
     <string name="earthquake_victim">Earthquake Victim</string>
     <string name="enter_4_digit_pin">Enter your 4-digit pin</string>
-    <string name="request_patient_pin_string">This is personal information, please enter the PIN number for follow-up.</string>
+    <string name="request_patient_pin_string">To protect the privacy of the patient\'s information, please ask them to choose a 4-digit pin and save it; this pin would be required for any other healthcare worker to access their record.</string>
     <string name="empty_pin_error">Pin cannot be blank</string>
     <string name="please_enter_four_digit_pin">Please enter a 4-digit pin</string>
     <string name="incorrect_pin_entered">Incorrect Pin Entered</string>
