@@ -88,7 +88,6 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
@@ -817,8 +816,12 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         // setting district and city
         String[] district_city = patientDTO.getCityvillage().trim().split(":");
-        String district = district_city[0];
-        String city_village = district_city[1];
+        String district = null;
+        String city_village = null;
+        if (district_city.length == 2) {
+            district = district_city[0];
+            city_village = district_city[1];
+        }
 
         if (district != null) {
             patientdistrict.setText(district);
@@ -841,7 +844,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         // setting phone number
-        phone.setText(patientDTO.getPhonenumber());
+        if (patientDTO.getPhonenumber() != null && !patientDTO.getPhonenumber().isEmpty()) {
+            phone.setText(patientDTO.getPhonenumber());
+        } else {
+            phone.setText("No mobile number added");
+        }
 
         // setting education status
         if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&

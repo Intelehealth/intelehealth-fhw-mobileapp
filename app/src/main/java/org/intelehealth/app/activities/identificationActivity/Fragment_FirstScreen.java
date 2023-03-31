@@ -1,17 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 import static android.app.Activity.RESULT_OK;
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.Manifest;
@@ -33,13 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +43,6 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.PatientDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -156,7 +142,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
         mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText));
         mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
-        mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
+        //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
 
         fragment_secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
@@ -247,16 +233,14 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else if (patientdto.getGender().equals("F")) {
+            } else if (patientdto.getGender().equals("F")) {
                 mGenderFemaleRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else {
+            } else {
                 mGenderOthersRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
@@ -287,6 +271,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         setMobileNumberLimit();
+
+
     }
 
     private int mSelectedMobileNumberValidationLength = 0;
@@ -306,6 +292,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         };
 
         mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
+        // hide the validation fields ...
+        mPhoneNumberErrorTextView.setVisibility(View.GONE);
+        mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
     }
 
     @Override
@@ -326,8 +315,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mAgeEditText.setText(age);
                 mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-            }
-            else {
+            } else {
                 mAgeEditText.setText("");
                 mDOBEditText.setText("");
             }
@@ -338,6 +326,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     class MyTextWatcher implements TextWatcher {
         EditText editText;
+
         MyTextWatcher(EditText editText) {
             this.editText = editText;
         }
@@ -906,13 +895,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (mPhoneNumberEditText.getText().toString().equals("")) {
-            mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-            mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
-            mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mPhoneNumberEditText.requestFocus();
-            return;
-        } else {
+        if (!mPhoneNumberEditText.getText().toString().equals("")) {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
             Log.v("phone", "phone: " + s);
             if (s.length() < mSelectedMobileNumberValidationLength) {

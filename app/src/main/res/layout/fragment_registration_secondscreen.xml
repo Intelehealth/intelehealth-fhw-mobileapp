@@ -98,8 +98,8 @@
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
-                        android:background="@drawable/ui2_spinner_background_new"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:background="@drawable/ui2_spinner_background_new"
                         android:entries="@array/countries"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
@@ -148,11 +148,30 @@
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/ui2_spinner_background_new"
+                    android:dropDownVerticalOffset="56dp"
                     android:entries="@array/states_india"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10" />
+
+                <EditText
+                    android:id="@+id/state_edittext"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/edittext_border"
+                    android:hint="Enter State"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="@dimen/edittext_textsize_16sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/state_error"
@@ -199,8 +218,9 @@
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
-                        android:background="@drawable/ui2_spinner_background_new"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:background="@drawable/ui2_spinner_background_new"
+                        android:dropDownVerticalOffset="56dp"
                         android:entries="@array/district"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
@@ -223,7 +243,7 @@
                         android:textColorHint="@color/edittext_hint_color"
                         android:textSize="@dimen/edittext_textsize_16sp"
                         android:visibility="gone"
-                        tools:visibility="visible"/>
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/district_error"
@@ -263,13 +283,14 @@
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
-                        android:background="@drawable/ui2_spinner_background_new"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:background="@drawable/ui2_spinner_background_new"
                         android:entries="@array/navi_mumbai_city"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
-                        android:paddingBottom="@dimen/margin_10" />
+                        android:paddingBottom="@dimen/margin_10"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/city_village_edittext"
@@ -278,16 +299,14 @@
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
                         android:background="@drawable/edittext_border"
-                        android:hint="Enter Village"
+                        android:hint="Enter village/town/city"
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingBottom="@dimen/margin_10"
                         android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="@dimen/edittext_textsize_16sp"
-                        android:visibility="gone"
-                        tools:visibility="visible"/>
+                        android:textSize="@dimen/edittext_textsize_16sp" />
 
                     <TextView
                         android:id="@+id/city_error"

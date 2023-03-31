@@ -1416,6 +1416,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         //if (currentFragment != null && !currentFragment.isEmpty()) {
         if (tag.equalsIgnoreCase(TAG_HOME)) {
             fragment = new HomeFragment_New();
+            ivHamburger.setVisibility(View.VISIBLE);
             bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         } else if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();

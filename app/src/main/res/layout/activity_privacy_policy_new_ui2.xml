@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activities.onboarding.PrivacyPolicyActivity_New">
 
 
@@ -19,7 +20,6 @@
             android:id="@+id/iv_back_arrow_terms"
             android:layout_width="@dimen/back_arrow_width"
             android:layout_height="@dimen/back_arrow_height"
-
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
@@ -27,11 +27,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
-
-            android:layout_toEndOf="@+id/iv_back_arrow_terms"
-
             android:text="@string/privacy_policy"
-            android:textSize="@dimen/setup_privacy_screen_info" />
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/setup_privacy_screen_info"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
@@ -50,6 +49,7 @@
             android:layout_marginHorizontal="@dimen/content_margin_start"
             android:layout_toEndOf="@+id/iv_back_arrow_terms"
             android:fontFamily="@font/lato_regular"
+            android:justificationMode="inter_word"
             android:text="@string/privacy_policy_content"
             android:textSize="@dimen/info_options_text_size" />
 
@@ -76,8 +76,9 @@
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
             android:lineHeight="@dimen/button_line_height"
+            android:onClick="declinePP"
             android:padding="@dimen/hamburger_margin_top"
-            android:text="@string/decline" android:onClick="declinePP"
+            android:text="@string/decline"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
             android:textStyle="bold" />

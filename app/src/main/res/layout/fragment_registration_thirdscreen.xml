@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="Son/Daughter/Wife of"
+                android:text="@string/son_daughter_wife_of"
                 android:textAppearance="@style/blur_txtview"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="Enter your relation with patient"
+                android:hint="@string/enter_your_relation_with_patient"
                 android:paddingStart="@dimen/fu_margin_start"
                 android:inputType="textCapWords"
                 android:paddingTop="@dimen/margin_10"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
                 android:textColor="@color/red"
-                android:text="This field is mandatory"
+                android:text="@string/this_field_is_mandatory"
                 android:textAppearance="@style/registr_error_msg"
                 android:textSize="@null" />
 
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="Occupation"
+                android:text="@string/occupation"
                 android:textAppearance="@style/blur_txtview"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -99,7 +99,7 @@
                 android:textSize="@dimen/edittext_textsize_16sp"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="Select Occupation"
+                android:hint="@string/enter_occupation_txt"
                 android:paddingStart="@dimen/fu_margin_start"
                 android:inputType="textCapWords"
                 android:paddingTop="@dimen/margin_10"
@@ -117,7 +117,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
                 android:textColor="@color/red"
-                android:text="This field is mandatory"
+                android:text="@string/this_field_is_mandatory"
                 android:textAppearance="@style/registr_error_msg"
                 android:textSize="@null" />
 
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="Caste"
+                android:text="@string/caste"
                 android:textAppearance="@style/blur_txtview"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -169,7 +169,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
                 android:textColor="@color/red"
-                android:text="This field is mandatory"
+                android:text="@string/this_field_is_mandatory"
                 android:textAppearance="@style/registr_error_msg"
                 android:textSize="@null" />
 
@@ -189,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="Education"
+                android:text="@string/education"
                 android:textAppearance="@style/blur_txtview"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -221,7 +221,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
                 android:textColor="@color/red"
-                android:text="This field is mandatory"
+                android:text="@string/this_field_is_mandatory"
                 android:textAppearance="@style/registr_error_msg"
                 android:textSize="@null" />
 
@@ -274,7 +274,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:lineSpacingExtra="0sp"
                 android:textColor="@color/red"
-                android:text="This field is mandatory"
+                android:text="@string/this_field_is_mandatory"
                 android:textAppearance="@style/registr_error_msg"
                 android:textSize="@null" />
 
