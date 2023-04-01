@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Intelehealth</string>
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">Intelehealth</string>
+    <string name="notification_title_1">Checking for new messages</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>

@@ -76,6 +76,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -459,6 +460,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     public void setDisplay(String dataString) {
 
+        patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
@@ -619,6 +621,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         // setTitle(patientDTO.getOpenmrs_id());
 
+        Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
         // setting age
         String age = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), context);
         patientage.setText(age);

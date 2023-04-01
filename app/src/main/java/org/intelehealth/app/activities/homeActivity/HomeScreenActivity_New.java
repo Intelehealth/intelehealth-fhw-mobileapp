@@ -1051,7 +1051,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     if (flagType == AppConstants.SYNC_FAILED) {
                         hideSyncProgressBar(false);
                         showRefreshFailedDialog();
-                        finish();
+                        //finish();
                     } else {
                         mTempSyncHelperList.add(flagType);
                         if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)

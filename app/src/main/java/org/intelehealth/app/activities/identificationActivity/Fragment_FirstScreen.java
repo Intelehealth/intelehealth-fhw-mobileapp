@@ -170,47 +170,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mMiddleNameEditText.setText(patientdto.getMiddlename());
             mLastNameEditText.setText(patientdto.getLastname());
 
-            //if patient update then age will be set
-            //dob to be displayed based on translation...
-            /*String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientdto.getDateofbirth());
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                String dob_text = en__as_dob(dob); //to show text of English into assame...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                mDOBEditText.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                mDOBEditText.setText(dob_text);
-            } else {
-                mDOBEditText.setText(dob);
-            }*/
+            dobToDb = patientdto.getDateofbirth();
 
-            mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(patientdto.getDateofbirth()));
+            mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
 
             // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
@@ -453,97 +415,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         });
 
-
-        // DOB - start
-        /*mDOBPicker = new DatePickerDialog(getActivity(), R.style.datepicker,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        //Set the DOB calendar to the date selected by the user
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        mDOBEditText.setError(null);
-                        mAgeEditText.setError(null);
-
-                        mDOBErrorTextView.setVisibility(View.GONE);
-                        mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                        mAgeErrorTextView.setVisibility(View.GONE);
-                        mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                        //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-
-                        // Locale.setDefault(Locale.ENGLISH);
-                        //Formatted so that it can be read the way the user sets
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        dob_indexValue = monthOfYear; //fetching the inex value of month selected...
-
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                            mDOBEditText.setText(dob_text);
-                        } else {
-                            mDOBEditText.setText(dobString);
-                        }
-
-                        //  dob_edittext.setText(dobString);
-                        mDOBYear = year;
-                        mDOBMonth = monthOfYear;
-                        mDOBDay = dayOfMonth;
-
-                        String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
-                                today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
-                        //get years months days
-                        String[] frtData = age.split("-");
-
-                        String[] yearData = frtData[0].split(" ");
-                        String[] monthData = frtData[1].split(" ");
-                        String[] daysData = frtData[2].split(" ");
-
-                        mAgeYears = Integer.valueOf(yearData[0]);
-                        mAgeMonths = Integer.valueOf(monthData[1]);
-                        mAgeDays = Integer.valueOf(daysData[1]);
-                        String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                                mAgeDays + getResources().getString(R.string.days);
-                        mAgeEditText.setText(ageS);
-
-                    }
-                }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE)); // so that todays date as shown as default selection.
-
-        //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());*/
         mDOBEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

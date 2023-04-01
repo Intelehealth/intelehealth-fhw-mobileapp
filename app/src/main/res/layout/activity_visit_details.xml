@@ -210,19 +210,21 @@
                         android:layout_gravity="bottom"
                         android:orientation="horizontal">
 
-                        <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                        <ImageButton
                             android:id="@+id/pat_call_btn"
-                            android:layout_width="@dimen/fu_icon_width"
-                            android:layout_height="@dimen/fu_icon_height"
+                            android:layout_width="42dip"
+                            android:layout_height="42dip"
                             android:background="@null"
+                            android:scaleType="fitXY"
                             android:src="@drawable/ic_icon8_phone" />
 
-                        <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                        <ImageButton
                             android:id="@+id/pat_whatsapp_btn"
-                            android:layout_width="@dimen/fu_icon_width"
-                            android:layout_height="@dimen/fu_icon_height"
+                            android:layout_width="42dip"
+                            android:layout_height="42dip"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:background="@null"
+                            android:scaleType="fitXY"
                             android:src="@drawable/ic_icon8_whatsapp" />
 
                     </LinearLayout>
@@ -917,17 +919,17 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
         android:contentDescription="@string/chat_fab"
         android:onClick="startVideoChat"
-        android:src="@drawable/icons8_video_call" />
+        android:src="@drawable/icons8_video_call"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dip"
         android:contentDescription="@string/chat_fab"

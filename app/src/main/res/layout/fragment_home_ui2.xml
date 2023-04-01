@@ -164,7 +164,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
+                    android:id="@+id/imageview_prescription_img"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_below="@+id/textview_prescriptions"
@@ -201,7 +201,7 @@
                 android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
-                    android:id="@+id/textview_prescriptions"
+                    android:id="@+id/textview_close_visit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/close_visits"
@@ -211,19 +211,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textview_received_no"
+                    android:id="@+id/textview_close_visit_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_below="@+id/textview_close_visit"
                     android:layout_marginTop="@dimen/common_info_margin_top"
                     android:text="12 unclosed visits"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
+                    android:id="@+id/imageview_close_visit_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
@@ -238,12 +238,12 @@
                     android:id="@+id/imageview_prescription_next2"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
-                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_below="@+id/textview_close_visit"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/home_card_images_padding"
                     android:src="@drawable/ui2_ic_close_visit"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit_no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

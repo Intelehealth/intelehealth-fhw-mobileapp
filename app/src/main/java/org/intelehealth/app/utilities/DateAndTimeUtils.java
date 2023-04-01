@@ -4,23 +4,19 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.R;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import org.intelehealth.app.R;
 
 
 public class DateAndTimeUtils {
@@ -297,6 +293,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
+        Log.e(TAG, "getFormatedDateOfBirthAsView - " + oldformatteddate);
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = null;
@@ -441,6 +438,7 @@ public class DateAndTimeUtils {
         }
         return str;
     }
+
     public static String parse_DateToddMMyyyy_new(String time) {
         String inputPattern = "yyyy-MM-dd";
         String outputPattern = "dd MMM yyyy";

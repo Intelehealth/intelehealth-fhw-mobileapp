@@ -86,12 +86,13 @@ public class CallListenerBackgroundService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))
-                //.setContentText(getText(R.string.notification_message))
+                .setContentText(getText(R.string.notification_title_1))
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false)
                 .setNotificationSilent()
-                //.setTicker(getText(R.string.ticker_text))
+                .setOngoing(true)
+                //.setTicker(getText(R.string.notification_title_1))
                 .build();
 
         // Notification ID cannot be 0.
