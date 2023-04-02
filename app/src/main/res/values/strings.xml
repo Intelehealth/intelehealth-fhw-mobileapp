@@ -1619,5 +1619,6 @@
     <string name="prescription_general_instructions">General Instructions</string>
 
     <string name="details_required">Please add the details</string>
+    <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
 
 </resources>
