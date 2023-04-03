@@ -553,6 +553,24 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         }
 
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
+        if (!isVisitSpecialityExists) {
+            doc_speciality_card.setVisibility(View.VISIBLE);
+            special_vd_card.setVisibility(View.GONE);
+
+
+        }
+        btn_bottom_printshare.setVisibility(View.GONE);
+        btn_bottom_vs.setVisibility(View.VISIBLE);
+
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            doc_speciality_card.setVisibility(View.GONE);
+            special_vd_card.setVisibility(View.VISIBLE);
+
+            btn_bottom_printshare.setVisibility(View.VISIBLE);
+            btn_bottom_vs.setVisibility(View.GONE);
+        }
     }
 
     private int mOpenCount = 0;
@@ -602,7 +620,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_vitals_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -624,7 +642,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -646,7 +664,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -668,7 +686,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -690,7 +708,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vd_special_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_special_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -712,7 +730,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -1030,6 +1048,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //            speciality_spinner.setSelection(spinner_position);
 
             vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            speciality_selected = special_value;
         } else {
 
         }
@@ -2158,16 +2177,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class)
-                        .putExtra("visitUuid", visitUuid)
-                        .putExtra("patientUuid", patientUuid)
-                        .putExtra("patientName", patientName)
-                        .putExtra("appointmentId", 0)
-                        .putExtra("actionTag", "visitSummary")
-                        .putExtra("openMrsId", patient.getOpenmrs_id())
-                        .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
-                );
-                finish();
+                if (isVisitSpecialityExists) {
+                    startActivityForResult(new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class)
+                            .putExtra("visitUuid", visitUuid)
+                            .putExtra("patientUuid", patientUuid)
+                            .putExtra("patientName", patientName)
+                            .putExtra("appointmentId", 0)
+                            .putExtra("actionTag", "visitSummary")
+                            .putExtra("openMrsId", patient.getOpenmrs_id())
+                            .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
+                    );
+                    finish();
+                } else
+                    Toast.makeText(VisitSummaryActivity_New.this, "Please upload the visit first!", Toast.LENGTH_SHORT).show();
+                //finish();
 
             }
         });
@@ -2219,7 +2242,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
 
                     // isreturningWhatsapp = true;
 

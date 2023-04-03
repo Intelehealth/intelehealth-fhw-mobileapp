@@ -1263,7 +1263,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     ClsDoctorDetails details;
 
     private void parseDoctorDetails(String dbValue) {
-        if(dbValue==null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")){
+        if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -1276,8 +1276,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         }
         Log.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
-        dr_age_gender.setText(details.getEmailId());
-        qualification.setText(details.getQualification());
+        dr_age_gender.setText("");
+        if (details.getQualification() != null && !details.getQualification().isEmpty())
+            qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
     }
     // parse dr details - end
@@ -1904,7 +1905,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString()))));
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
 
                     // isreturningWhatsapp = true;
 

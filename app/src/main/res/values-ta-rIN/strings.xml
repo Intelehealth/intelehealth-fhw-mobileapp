@@ -718,6 +718,12 @@
     <string name="enter_occupation_txt">Enter Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
+    <string name="end_visits">End Visits</string>
+    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
+    <string name="confirm_end_visit_reason">End this visit?</string>
+    <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
+    <string name="support_mobile_no_1">9503692181</string>
+    <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
 
 </resources>
 

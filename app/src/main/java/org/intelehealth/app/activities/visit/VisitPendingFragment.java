@@ -30,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
@@ -92,6 +94,20 @@ public class VisitPendingFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
+        ((TextView)view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+
+        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
 
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);

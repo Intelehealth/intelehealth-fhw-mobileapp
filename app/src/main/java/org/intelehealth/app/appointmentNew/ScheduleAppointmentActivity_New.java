@@ -4,14 +4,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
-import org.intelehealth.app.appointment.sync.AppointmentSync;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -59,6 +48,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -332,6 +323,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                     }
 
                 }
+
+                // sort data
+                sortByTime(slotInfoMorningList);
+                sortByTime(slotInfoAfternoonList);
+                sortByTime(slotInfoAfternoonList);
                 setDataForMorningAppointments(slotInfoMorningList);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
@@ -344,6 +340,25 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             }
         });
 
+    }
+
+    private void sortByTime(List<SlotInfo> slotInfoList) {
+        Collections.sort(slotInfoList, new Comparator<SlotInfo>() {
+            @Override
+            public int compare(SlotInfo t1, SlotInfo t2) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+                Date x = null;
+                Date y = null;
+                try {
+                    x = simpleDateFormat.parse(t1.getSlotTime());
+                    y = simpleDateFormat.parse(t2.getSlotTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return x.compareTo(y);
+            }
+        });
     }
 
     private void setDataForAfternoonAppointments(List<SlotInfo> slotInfoList) {

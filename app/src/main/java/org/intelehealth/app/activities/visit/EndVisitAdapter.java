@@ -24,6 +24,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -111,14 +112,26 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             holder.fu_date_txtview.setText(model.getVisit_start_date());
 
             holder.end_visit_btn.setOnClickListener(v -> {
-                String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
-                String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
-
-                VisitUtils.endVisit(context, model.getVisitUuid(), model.getPatientUuid(), model.getFollowup_date(),
-                        vitalsUUID, adultInitialUUID, "state",
-                        model.getFirst_name() + " " + model.getLast_name().substring(0,1), "VisitDetailsActivity");
+                showConfirmDialog(model);
             });
         }
+    }
+
+    private void showConfirmDialog(final PrescriptionModel model) {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message) + " " + model.getFirst_name() + " " + model.getLast_name() + " ?", false, context.getResources().getString(R.string.yes), context.getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
+
+                    VisitUtils.endVisit(context, model.getVisitUuid(), model.getPatientUuid(), model.getFollowup_date(),
+                            vitalsUUID, adultInitialUUID, "state",
+                            model.getFirst_name() + " " + model.getLast_name().substring(0, 1), "VisitDetailsActivity");
+                }
+            }
+        });
     }
 
     @Override

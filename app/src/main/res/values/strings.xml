@@ -561,8 +561,8 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To download your prescription click here  "</string>
+    <string name="and_enter_your_patient_id">" and enter OTP received on your registered mobile number."</string>
 
 
     <!--New Ayu Related Changes-->
@@ -1666,9 +1666,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="more_videos">More Videos</string>
 
     <!-- Appointment  -->
-    <string name="my_appointments">My appointments</string>
+    <string name="my_appointments">My Appointments</string>
     <string name="todays">Today\'s</string>
-    <string name="all_appointments">All appointments</string>
+    <string name="all_appointments">All</string>
     <string name="search_patient">Search patient</string>
     <string name="upcoming">Upcoming</string>
     <string name="cancelled">Cancelled</string>
@@ -1825,6 +1825,12 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enter_occupation_txt">Enter Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
+    <string name="end_visits">End Visits</string>
+    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
+    <string name="confirm_end_visit_reason">End this visit?</string>
+    <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
+    <string name="support_mobile_no_1">9503692181</string>
+    <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
     <!--END-->
 
 </resources>

@@ -7,93 +7,68 @@
     android:background="@color/white"
     tools:context=".activities.notification.NotificationActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/notifi_relative"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/followup_toolbar"
-        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="-24dp"
-        android:background="@drawable/frame_10021">
+        android:layout_alignParentEnd="true"
+        android:background="@color/white">
 
-        <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/fu_toolbat_txt_height"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/toolbar_margin_left"
-            android:layout_marginTop="@dimen/toolbar_margin_top"
-            android:layout_marginRight="@dimen/toolbar_margin_right"
-            android:orientation="horizontal"
-            android:weightSum="1">
 
-            <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:orientation="horizontal">
+        <!-- Frame 100116 -->
+        <RelativeLayout
+            android:id="@+id/frame_10011"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="@dimen/toolbar_margin_left">
 
-                <!-- arrow-right -->
-                <ImageButton
-                    android:id="@+id/backbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@null"
-                    android:padding="@dimen/margin_5"
-                    android:src="@drawable/ic_arrow_right" />
+            <!-- arrow-right -->
+            <ImageButton
+                android:id="@+id/backbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/ic_arrow_right" />
 
-                <!-- Label -->
-                <TextView
-                    android:id="@+id/label"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_10"
-                    android:gravity="top"
-                    android:lineSpacingExtra="1sp"
-                    android:text="@string/notifi_title"
-                    android:textAppearance="@style/label"
-                    android:textColor="@null"
-                    android:textSize="@dimen/toolbar_text_size"
-                    android:translationY="-0.28sp" />
+            <!-- Label -->
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_toEndOf="@+id/backbtn"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/notifi_title"
+                android:textAppearance="@style/label"
+                android:textColor="@null"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textStyle="bold"
+                android:translationY="-0.28sp" />
 
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/ic_refreshbtn" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_weight="0.2"
-                android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ui2_ic_filter"
+                android:visibility="gone" />
+        </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/refresh"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/margin_20"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:src="@drawable/ic_refreshbtn" />
 
-                <ImageButton
-                    android:id="@+id/filter"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:src="@drawable/ui2_ic_filter" />
-
-            </LinearLayout>
-        </LinearLayout>
     </RelativeLayout>
 
     <!--card view-->

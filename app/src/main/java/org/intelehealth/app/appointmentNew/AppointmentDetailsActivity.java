@@ -282,7 +282,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + "<b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + " <b>" + patientName + "?</b>";
                 cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, "Yes", "No");
 
             });

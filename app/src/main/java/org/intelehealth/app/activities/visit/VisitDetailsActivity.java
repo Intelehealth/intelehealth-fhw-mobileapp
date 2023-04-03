@@ -310,7 +310,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 presc_remind_block.setVisibility(View.GONE);
             } else {
                 // here show remind block as its pending from more than 1 day.
-                presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
+                //presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
+                presc_remind_block.setVisibility(View.GONE); // For now
             }
             presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
             presc_time.setTextColor(getResources().getColor(R.color.red));

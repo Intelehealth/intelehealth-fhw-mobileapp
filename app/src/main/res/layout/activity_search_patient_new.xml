@@ -49,27 +49,27 @@
                     android:id="@+id/search_txt_enter"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
                     android:layout_marginStart="@dimen/fu_vs_margin_start"
                     android:layout_marginTop="@dimen/margin_10"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_toStartOf="@+id/icon_search"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:layout_alignParentStart="true"
                     android:hint="@string/search_txt_enter"
                     android:lineSpacingExtra="3sp"
-                    android:textAppearance="@style/search_txt_enter"
-                    android:textColorHint="@null"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_3"
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <ImageView
                     android:id="@+id/icon_search"
                     android:layout_width="@dimen/search_icon_toolbar"
                     android:layout_height="@dimen/search_icon_toolbar"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/margin_14"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginEnd="@dimen/margin_14"
                     android:layout_marginBottom="@dimen/margin_12"
                     android:background="@drawable/ic_search_white_icon8" />
 
@@ -95,10 +95,10 @@
         android:id="@+id/divider_view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/search_hint_text"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
-        android:background="@color/gray_1"
-        android:layout_below="@id/search_hint_text"/>
+        android:background="@color/gray_1" />
 
     <TextView
         android:id="@+id/all_patients_tv"

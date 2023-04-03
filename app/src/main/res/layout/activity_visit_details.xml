@@ -476,7 +476,7 @@
                         android:background="@color/notifi_divider_color" />
 
                     <!-- Frame 2608662 -->
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <RelativeLayout
                         android:id="@+id/vs_card"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/notifi_header_icon"
@@ -495,7 +495,7 @@
 
                         <!-- label-text -->
                         <TextView
-                            android:id="@+id/visitDetails_text"
+                            android:id="@+id/visitDetails_summary_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -522,7 +522,7 @@
 
                     <!--View based on visibility and condition - start-->
                     <!--Presc block - Start-->
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <RelativeLayout
                         android:id="@+id/prescription_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -679,7 +679,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider_5"
+                            android:id="@+id/divider_54"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginBottom="@dimen/fu_card_margin_updown"
@@ -690,7 +690,7 @@
                             android:id="@+id/followup_date_txtv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider_5"
+                            android:layout_below="@+id/divider_54"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="4sp"
                             android:text="@string/followup_date_txtv"
@@ -753,7 +753,7 @@
 
                             <!--Button - start -->
                             <LinearLayout
-                                android:id="@+id/btn_bottom"
+                                android:id="@+id/btn_bottom_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/followup_accept_text"
@@ -763,7 +763,7 @@
                                 android:weightSum="2">
 
                                 <Button
-                                    android:id="@+id/btn_vs_appointment"
+                                    android:id="@+id/btn_vs_appointment_followup_no"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/margin_8"

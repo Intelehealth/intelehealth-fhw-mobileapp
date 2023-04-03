@@ -602,7 +602,7 @@
                                 android:layout_toEndOf="@+id/vs_icon"
                                 android:text="Doctor's Speciality" />
 
-                            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                            <ImageButton
                                 android:id="@+id/btn_up_special_vd_header"
                                 android:layout_width="@dimen/fu_icon_width"
                                 android:layout_height="@dimen/fu_icon_height"
