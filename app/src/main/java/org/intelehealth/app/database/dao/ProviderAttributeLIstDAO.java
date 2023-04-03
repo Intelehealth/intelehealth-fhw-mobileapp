@@ -50,38 +50,30 @@ public class ProviderAttributeLIstDAO {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
 
-        try{
+        try {
             values.put("uuid", attributeListDTO.getUuid());
             values.put("provideruuid", attributeListDTO.getProvideruuid());
             values.put("attributetypeuuid", attributeListDTO.getAttributetypeuuid());
             values.put("value", attributeListDTO.getValue());
             values.put("voided", attributeListDTO.getVoided());
 
-            if(attributeListDTO.getVoided() == 0 &&
-            attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062"))
-            {
+            if (attributeListDTO.getVoided() == 0 &&
+                    attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062")) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if(createdRecordsCount != -1)
-                {
+                if (createdRecordsCount != -1) {
                     Log.d("SPECI", "SIZEXXX: " + createdRecordsCount);
-                }
-                else
-                {
+                } else {
                     Log.d("SPECI", "SIZEXXX: " + createdRecordsCount);
                 }
 
             }
 
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
-        }
-        finally
-        {
+        } finally {
 
         }
 
@@ -101,9 +93,7 @@ public class ProviderAttributeLIstDAO {
             while (idCursor.moveToNext()) {
                 dto = new ProviderAttributeListDTO();
                 dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                //Only "General Physician" speciality is required for Syria project
-                if(dto.getValue().equalsIgnoreCase("General Physician"))
-                    listDTOArrayList.add(dto.getValue());
+                listDTOArrayList.add(dto.getValue());
             }
         }
         idCursor.close();
@@ -137,8 +127,6 @@ public class ProviderAttributeLIstDAO {
         db.close();
         return listDTOArrayList;
     }
-
-
 
 
 }
