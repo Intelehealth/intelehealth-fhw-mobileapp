@@ -920,48 +920,6 @@
                 app:cardElevation="8dp">
 
                 <Button
-                    android:id="@+id/acute_homecare_utilizers_btn"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorYellow"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/comm_general_need_survey"
-                    tools:foreground="?android:attr/selectableItemBackground" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
-
-                <Button
-                    android:id="@+id/cha_button"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/orange3"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_acute_homecare_utilizers"
-                    tools:foreground="?android:attr/selectableItemBackground" />
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
-
-                <Button
                     android:id="@+id/emergencyaid_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
@@ -970,6 +928,45 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/medical_emergency_need_assessment"
                     tools:foreground="?android:attr/selectableItemBackground" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/generalaid_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/green"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/general_aid_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="10dp">
+
+                <Button
+                    android:id="@+id/button_new_visit"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/button_new_visit"
+                    tools:background="@color/colorPrimary" />
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -999,16 +996,38 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
 
                 <Button
-                    android:id="@+id/generalaid_btn"
+                    android:id="@+id/cha_button"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/green"
+                    android:background="@color/orange3"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/general_aid_survey"
+                    android:text="@string/survey_acute_homecare_utilizers"
+                    tools:foreground="?android:attr/selectableItemBackground" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:id="@+id/acute_homecare_utilizers_btn"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorYellow"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/comm_general_need_survey"
                     tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
@@ -1056,27 +1075,6 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/triage_survey"
                     tools:foreground="?android:attr/selectableItemBackground" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="10dp">
-
-                <Button
-                    android:id="@+id/button_new_visit"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:text="@string/button_new_visit"
-                    tools:background="@color/colorPrimary" />
-
             </androidx.cardview.widget.CardView>
 
 
