@@ -150,6 +150,7 @@
             android:layout_alignEnd="@+id/text_etv"
             android:onClick="loadAttachment"
             android:padding="16dip"
+            android:visibility="gone"
             app:srcCompat="@drawable/attachment_icon_new" />
 
     </RelativeLayout>

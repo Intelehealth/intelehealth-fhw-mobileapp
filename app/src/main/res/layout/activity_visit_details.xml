@@ -173,17 +173,15 @@
                                     android:textColor="@null"
                                     android:textSize="@dimen/fu_name_txt_size" />
 
-                                <ImageButton
+                                <ImageView
                                     android:id="@+id/icons8_edit"
-                                    android:layout_width="@dimen/fu_pencil_width"
-                                    android:layout_height="@dimen/fu_pencil_height"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_toEndOf="@id/gender_age_txt"
-                                    android:background="@drawable/ic_icno8_edit"
-                                    android:visibility="gone"
-                                    tools:visibility="visible" />
+                                    android:onClick="editPatientInfo"
+                                    android:padding="@dimen/margin_4"
+                                    android:src="@drawable/ic_icno8_edit" />
 
                             </LinearLayout>
 
@@ -745,6 +743,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/fu_male_margin_start"
+                                android:layout_marginBottom="@dimen/padding_12"
                                 android:gravity="center_vertical"
                                 android:lineSpacingExtra="3sp"
                                 android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"
@@ -760,6 +759,7 @@
                                 android:layout_marginBottom="@dimen/fu_margin_start"
                                 android:orientation="horizontal"
                                 android:paddingTop="@dimen/fu_margin_start"
+                                android:visibility="gone"
                                 android:weightSum="2">
 
                                 <Button

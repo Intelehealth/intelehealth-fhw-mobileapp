@@ -363,6 +363,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         menuResetApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 resetApp();
             }
         });

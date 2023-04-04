@@ -70,6 +70,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -423,6 +424,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private Node loadFileToNode(String fileLocation) {
         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
         Node mainNode = new Node(currentFile);
+        mainNode.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
         return mainNode;
     }
 
@@ -432,21 +434,43 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
+            Node associateSymptoms = null;
 
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
                 if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
-                    mAssociateSymptomsNodeList.add(mainNode.getOptionsList().get(j));
+                    associateSymptoms = mainNode.getOptionsList().get(j);
+
                 } else {
-                    optionList.add(mainNode.getOptionsList().get(j));
+                    if (checkNodeValidByGender(mainNode.getOptionsList().get(j).getGender()))
+                        optionList.add(mainNode.getOptionsList().get(j));
                 }
             }
-            if (mAssociateSymptomsNodeList.size() > 0)
-                optionList.add(mAssociateSymptomsNodeList.get(i));
+            if (associateSymptoms != null) {
+
+                associateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
+
+                optionList.add(associateSymptoms);
+            }
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
 
         }
 
+    }
+
+    private boolean checkNodeValidByGender(String nodeGender) {
+        Log.v(TAG, "nodeGender = " + nodeGender);
+        boolean isValidByGender = true;
+        if (patientGender.equalsIgnoreCase("M") &&
+                nodeGender.equalsIgnoreCase("0")) {
+
+            isValidByGender = false;
+        } else if (patientGender.equalsIgnoreCase("F") &&
+                nodeGender.equalsIgnoreCase("1")) {
+            isValidByGender = false;
+        }
+        Log.v(TAG, "isValidByGender = " + isValidByGender);
+        return isValidByGender;
     }
 
     public void setTitle(String text) {

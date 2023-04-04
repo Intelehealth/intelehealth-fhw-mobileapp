@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:padding="16dip"
-                android:weightSum="5">
+                android:weightSum="4">
 
                 <RelativeLayout
                     android:layout_width="0dip"
@@ -217,7 +217,8 @@
                 <RelativeLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/chat_imv"

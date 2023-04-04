@@ -198,6 +198,45 @@ public class ProviderDAO {
 
     }
 
+    public ProviderDTO getProviderInfo(String uuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ProviderDTO providerDTO = null;
+
+        db.beginTransaction();
+        try {
+            String query = "select * from tbl_provider where uuid = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{uuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    providerDTO = new ProviderDTO();
+                    providerDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                    providerDTO.setGivenName(cursor.getString(cursor.getColumnIndexOrThrow("given_name")));
+                    providerDTO.setFamilyName(cursor.getString(cursor.getColumnIndexOrThrow("family_name")));
+                    providerDTO.setEmailId(cursor.getString(cursor.getColumnIndexOrThrow("emailId")));
+                    providerDTO.setTelephoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("telephoneNumber")));
+                    providerDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("dateofbirth")));
+                    providerDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    providerDTO.setProviderId(cursor.getString(cursor.getColumnIndexOrThrow("providerId")));
+                    providerDTO.setImagePath(cursor.getString(cursor.getColumnIndexOrThrow("imagePath")));
+                    providerDTO.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    providerDTO.setCountryCode(cursor.getString(cursor.getColumnIndexOrThrow("countryCode")));
+
+
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+
+        }
+        return providerDTO;
+
+    }
+
 
     public boolean updateProfileDetails(ProviderDTO provider) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

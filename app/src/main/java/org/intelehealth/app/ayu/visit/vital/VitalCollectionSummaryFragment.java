@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -93,9 +92,21 @@ public class VitalCollectionSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection_summary, container, false);
-        ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() +" cm");
-        ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() +" kg");
-        ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
+        if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
+            ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " cm");
+        else
+            ((TextView) view.findViewById(R.id.tv_height)).setText(getString(R.string.ui2_no_information));
+
+        if (mVitalsObject.getWeight() != null && !mVitalsObject.getWeight().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() + " kg");
+        else
+            ((TextView) view.findViewById(R.id.tv_weight)).setText(getString(R.string.ui2_no_information));
+
+        if (mVitalsObject.getBmi() != null && !mVitalsObject.getBmi().isEmpty())
+            ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
+        else
+            ((TextView) view.findViewById(R.id.tv_bmi)).setText(getString(R.string.ui2_no_information));
+
 
         if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty())
             ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());

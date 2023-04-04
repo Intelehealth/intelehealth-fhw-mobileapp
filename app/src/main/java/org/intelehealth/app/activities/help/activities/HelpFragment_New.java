@@ -91,7 +91,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             //Intent intent = new Intent(getActivity(), ChatSupportHelpActivity_New.class);
             //startActivity(intent);
 
-            String phoneNumber = "8480077342";//getString(R.string.support_mobile_no_1);
+            String phoneNumber = getString(R.string.support_mobile_no_1);
             String message = String.format(getString(R.string.help_whatsapp_string), new SessionManager(getActivity()).getChwname());
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(

@@ -31,7 +31,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
     private int[] layouts;
     private int page = 0;
     private Handler handler;
-    private int delay = 5000;
+    private int delay = 7000;
 
     Runnable runnable = new Runnable() {
         public void run() {

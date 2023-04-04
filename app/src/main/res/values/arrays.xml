@@ -3,7 +3,7 @@
 
     <string-array name="language_names">
         <item>English</item>
-        <item>हिंदी</item>
+        <!--<item>हिंदी</item>
         <item>ଓଡିଆ</item>
         <item>తెలుగు</item>
         <item>ગુજરાતી</item>
@@ -12,15 +12,15 @@
         <item>অসমীয়া</item>
         <item>മലയാളം</item>
         <item>Русский</item>
-        <!--        <item>Cebuano</item>-->
+        &lt;!&ndash;        <item>Cebuano</item>&ndash;&gt;
         <item>বাংলা</item>
-        <item>தமிழ்</item>
+        <item>தமிழ்</item>-->
 <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
         <item>en</item>
-        <item>hi</item>
+        <!--<item>hi</item>
         <item>or</item>
         <item>te</item>
         <item>gu</item>
@@ -29,9 +29,9 @@
         <item>as</item>
         <item>ml</item>
         <item>ru</item>
-        <!--        <item>cb</item>-->
+        &lt;!&ndash;        <item>cb</item>&ndash;&gt;
         <item>bn</item>
-        <item>ta</item>
+        <item>ta</item>-->
 <!--        <item>cb</item>-->
     </string-array>
 

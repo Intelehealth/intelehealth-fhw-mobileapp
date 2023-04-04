@@ -59,8 +59,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
 
-    private String heightvalue;
-    private String weightvalue;
+    private String heightvalue = "";
+    private String weightvalue = "";
     private int flag_height = 0, flag_weight = 0;
     SessionManager sessionManager;
     ConfigUtils configUtils;
@@ -446,7 +446,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String height = heightvalue;
         String weight = weightvalue;
-        if (height.isEmpty()) {
+        if (!weight.isEmpty() && height.isEmpty()) {
             mHeightErrorTextView.setVisibility(View.VISIBLE);
             mHeightErrorTextView.setText(getString(R.string.error_field_required));
             mHeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -456,7 +456,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
         }
 
-        if (weight.isEmpty()) {
+        if (!height.isEmpty() && weight.isEmpty()) {
             mWeightErrorTextView.setVisibility(View.VISIBLE);
             mWeightErrorTextView.setText(getString(R.string.error_field_required));
             mWeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);

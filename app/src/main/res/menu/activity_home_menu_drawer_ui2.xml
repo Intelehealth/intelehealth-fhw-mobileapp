@@ -8,7 +8,7 @@
             android:id="@+id/menu_my_achievements"
             android:icon="@drawable/ui2_ic_my_achievements"
             android:title="@string/my_achievements" />
-        <item
+        <item android:visible="false"
             android:id="@+id/menu_video_lib"
             android:icon="@drawable/ui2_ic_icon_video_library"
             android:title="@string/educational_videos" />

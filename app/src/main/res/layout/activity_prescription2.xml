@@ -197,7 +197,15 @@
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
-
+                                    <ImageView
+                                        android:id="@+id/icons8_edit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="@dimen/fu_male_margin_start"
+                                        android:onClick="editPatientInfo"
+                                        android:padding="@dimen/margin_4"
+                                        android:src="@drawable/ic_icno8_edit" />
                                 </LinearLayout>
 
                                 <!-- Caption -->
@@ -465,7 +473,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="@dimen/margin_4"
                                 android:layout_weight="2"
-                                android:visibility="gone">
+                                android:visibility="visible">
 
                                 <TextView
                                     android:layout_width="wrap_content"

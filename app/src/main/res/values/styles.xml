@@ -434,6 +434,7 @@
         <item name="android:background">@drawable/spinner_bg</item>
         <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
         <item name="android:textColor">@color/gray_5</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 
 

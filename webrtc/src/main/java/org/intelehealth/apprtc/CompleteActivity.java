@@ -251,7 +251,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorId"))
             mDoctorUUID = getIntent().getStringExtra("doctorId");
 
-        binding.tvDoctorName.setText(mDoctorName);
+        binding.tvDoctorName.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
         mFromUUId = mNurseId;
         mToUUId = mDoctorUUID;
         mPatientUUid = mRoomId;
@@ -1059,6 +1059,18 @@ public class CompleteActivity extends AppCompatActivity {
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
+
+
+        /*Testing*/
+        /*iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
+        //iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_5_URL, Constants.ICE_SERVER_5_USER, Constants.ICE_SERVER_5_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_6_URL, Constants.ICE_SERVER_6_USER, Constants.ICE_SERVER_6_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_7_URL, Constants.ICE_SERVER_7_USER, Constants.ICE_SERVER_7_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_8_URL, Constants.ICE_SERVER_8_USER, Constants.ICE_SERVER_8_PASSWORD));*/
+
 
         PeerConnection.RTCConfiguration rtcConfig = new PeerConnection.RTCConfiguration(iceServers);
         MediaConstraints pcConstraints = new MediaConstraints();
