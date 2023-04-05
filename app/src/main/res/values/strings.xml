@@ -194,8 +194,8 @@
     <string name="visit_summary_additional_comments">Additional Comments</string>
     <string name="visit_summary_heading_name">Name</string>
     <string name="visit_summary_heading_id">ID</string>
-    <string name="visit_summary_button_download">Download</string>
-    <string name="visit_summary_button_upload">Upload</string>
+    <string name="visit_summary_button_download">Download new recommendations</string>
+    <string name="visit_summary_button_upload">Upload data above for evaluation</string>
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
@@ -631,7 +631,7 @@
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-    <string name="share">Share</string>
+    <string name="share">Send recommendations</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I, the social-healthcare worker, attest that I read the above statement to the participant and acquired their approval for data collection.</string>
@@ -1529,7 +1529,7 @@
     <string name="_main_disconnect">" disconnected"</string>
     <string name="printing">Printing...</string>
     <string name="visit_confirmation">Are you sure that you want to start the visit?</string>
-    <string name="save_prescription">Save Prescription</string>
+    <string name="save_prescription">Export order slips to device</string>
 
 
     //Sila

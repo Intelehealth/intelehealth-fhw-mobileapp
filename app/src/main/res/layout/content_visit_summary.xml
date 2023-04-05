@@ -1476,17 +1476,19 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
+                    android:id="@+id/tv_upload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/iv_upload"
                     android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
                     android:text="@string/visit_summary_button_upload"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:id="@+id/iv_upload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -1498,7 +1500,7 @@
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -1514,9 +1516,11 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
+                    android:id="@+id/tv_download"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/iv_download"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
                     android:text="@string/visit_summary_button_download"
@@ -1525,11 +1529,12 @@
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:id="@+id/iv_download"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="5dp"
-                    app:srcCompat="@drawable/ic_cloud_download"></ImageView>
+                    app:srcCompat="@drawable/ic_cloud_download" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1554,6 +1559,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
                     android:text="@string/save_prescription"
@@ -1562,6 +1568,7 @@
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:id="@+id/iv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -1624,7 +1631,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.cardview.widget.CardView
                 android:id="@+id/card_print"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -1661,7 +1668,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="15dp"
                         android:paddingVertical="10dp"
-                        app:srcCompat="@drawable/ic_print_24dp"></ImageView>
+                        app:srcCompat="@drawable/ic_print_24dp" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -1684,6 +1691,7 @@
                     android:background="@color/colorPrimary">
 
                     <TextView
+                        android:id="@+id/tv_share"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -1695,6 +1703,7 @@
                         android:textSize="20sp" />
 
                     <ImageView
+                        android:id="@+id/iv_share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
