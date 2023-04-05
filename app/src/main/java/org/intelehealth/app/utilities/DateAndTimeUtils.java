@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.intelehealth.app.R;
+import org.json.JSONObject;
 
 
 public class DateAndTimeUtils {
@@ -405,5 +408,16 @@ public class DateAndTimeUtils {
         });
     }
 
+    public static String getValue(String value, String language) {
+        try {
+            JSONObject jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
+    }
 
 }

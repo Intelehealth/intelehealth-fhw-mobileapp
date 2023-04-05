@@ -48,6 +48,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -316,7 +317,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             do {
 //                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                followupdate = dbValue;
+                followupdate = DateAndTimeUtils.getValue(dbValue, sessionManager.getAppLanguage());
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
