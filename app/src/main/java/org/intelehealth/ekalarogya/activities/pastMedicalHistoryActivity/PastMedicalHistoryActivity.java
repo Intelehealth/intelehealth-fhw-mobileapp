@@ -106,7 +106,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi, patientHistoryOdiya,patientHistoryGujrati,patientHistoryAssamese;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya,
+            patientHistoryGujrati,patientHistoryAssamese,
+    patientHistoryBengali, patientHistoryKannada;
     String phistory = "";
 
     boolean flag = false;
@@ -451,6 +453,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             patientHistoryOdiya = "";
             patientHistoryGujrati = "";
             patientHistoryAssamese = "";
+            patientHistoryBengali = "";
+            patientHistoryKannada = "";
             List<String> imagePathList = patientHistoryMap.getImagePathList();
 
             if (imagePathList != null) {
@@ -477,8 +481,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                             patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
                             ConfirmationDialog(patientHistory, patientHistoryAssamese);
                         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
-                            patientHistoryAssamese = patientHistoryMap.generateLanguage("bn");
-                            ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                            patientHistoryBengali = patientHistoryMap.generateLanguage("bn");
+                            ConfirmationDialog(patientHistory, patientHistoryBengali);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+                            patientHistoryKannada = patientHistoryMap.generateLanguage("kn");
+                            ConfirmationDialog(patientHistory, patientHistoryKannada);
                         } else {
                             ConfirmationDialog(patientHistory, patientHistory);
                         }
@@ -518,8 +525,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
                         ConfirmationDialog(patientHistory, patientHistoryAssamese);
                     } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
-                        patientHistoryAssamese = patientHistoryMap.generateLanguage("bn");
-                        ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                        patientHistoryBengali = patientHistoryMap.generateLanguage("bn");
+                        ConfirmationDialog(patientHistory, patientHistoryBengali);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+                        patientHistoryKannada = patientHistoryMap.generateLanguage("kn");
+                        ConfirmationDialog(patientHistory, patientHistoryKannada);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }

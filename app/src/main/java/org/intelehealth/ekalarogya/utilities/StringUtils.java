@@ -4274,7 +4274,20 @@ public final class StringUtils {
             }
 
         }
+        if (locale.equalsIgnoreCase("kn")) {
 
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "ಬುಕ್ ಮಾಡಿದೆ";
+                    break;
+                case "cancelled":
+                    val = "ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
         if (locale.equalsIgnoreCase("gu")) {
 
             switch (val.toLowerCase()) {

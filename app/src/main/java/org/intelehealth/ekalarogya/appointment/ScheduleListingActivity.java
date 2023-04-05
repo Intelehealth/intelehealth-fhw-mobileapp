@@ -99,6 +99,11 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 specialityTextView.setText("জেনারেল ফিজিশিয়ান");
             }
         }
+        if (sessionManager.getAppLanguage().equals("kn")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("ಸಾಮಾನ್ಯ ವೈದ್ಯ");
+            }
+        }
         if (sessionManager.getAppLanguage().equals("as")) {
             if (speciality.equalsIgnoreCase("General Physician")) {
                 specialityTextView.setText("সাধাৰণ চিকিৎসক");

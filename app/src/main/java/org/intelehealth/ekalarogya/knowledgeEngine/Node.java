@@ -78,7 +78,7 @@ public class Node implements Serializable {
     private String display;
     private String display_oriya;
     private String display_cebuno;
-    private String display_hindi, display_gujarati, display_assamese, display_bengali;
+    private String display_hindi, display_gujarati, display_assamese, display_bengali, display_kannada;
     private String language;
     private String choiceType;
     private String inputType;
@@ -216,6 +216,14 @@ public class Node implements Serializable {
                 this.display_bengali = this.display;
             }
 
+            this.display_kannada = jsonNode.optString("display-kn");
+            if (this.display_kannada.isEmpty()) {
+                this.display_kannada = jsonNode.optString("display-kn");
+            }
+            if (this.display_kannada.isEmpty()) {
+                this.display_kannada = this.display;
+            }
+
             this.display_gujarati = jsonNode.optString("display-gu");
             if (this.display_gujarati.isEmpty()) {
                 this.display_gujarati = jsonNode.optString("display-gu");
@@ -292,6 +300,7 @@ public class Node implements Serializable {
         this.display = source.display;
         this.display_hindi = source.display_hindi;
         this.display_bengali = source.display_bengali;
+        this.display_kannada = source.display_kannada;
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
         this.display_gujarati = source.display_gujarati;
@@ -540,6 +549,18 @@ public class Node implements Serializable {
             case "bn": {
                 if (display_bengali != null && !display_bengali.isEmpty()) {
                     return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -1305,6 +1326,18 @@ public class Node implements Serializable {
             case "bn": {
                 if (display_bengali != null && !display_bengali.isEmpty()) {
                     return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -3021,12 +3054,20 @@ public class Node implements Serializable {
         return display_bengali;
     }
 
+    public String getDisplay_kannada() {
+        return display_kannada;
+    }
+
     public void setDisplay_hindi(String display_hindi) {
         this.display_hindi = display_hindi;
     }
 
     public void setDisplay_bengali(String display_bengali) {
         this.display_bengali = display_bengali;
+    }
+
+    public void setDisplay_kannada(String display_kannada) {
+        this.display_kannada = display_kannada;
     }
 
     public String getDisplay_gujarati() {
@@ -3392,6 +3433,7 @@ public class Node implements Serializable {
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_bengali='" + display_bengali + '\'' +
+                ", display_kannada='" + display_kannada + '\'' +
                 ", display_gujarati='" + display_gujarati + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
                 ", language='" + language + '\'' +
@@ -3824,6 +3866,26 @@ public class Node implements Serializable {
                     .replaceAll("Oct", "অক্টো")
                     .replaceAll("Nov", "নভেম্বর")
                     .replaceAll("Dec", "ডিসেম্বর");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+            displayStr = displayStr.replaceAll("Minutes", "ನಿಮಿಷಗಳು")
+                    .replaceAll("Hours", "ಗಂಟೆಗಳು")
+                    .replaceAll("Days", "ದಿನಗಳು")
+                    .replaceAll("Weeks", "ವಾರಗಳು")
+                    .replaceAll("Months", "ತಿಂಗಳುಗಳು")
+                    .replaceAll("Years", "ವರ್ಷಗಳು")
+
+                    .replaceAll("Jan", "ಜನವರಿ")
+                    .replaceAll("Feb", "ಫೆಬ್ರವರಿ")
+                    .replaceAll("Mar", "ಮಾರ್")
+                    .replaceAll("Apr", "ಎಪ್ರಿಲ್")
+                    .replaceAll("May", "ಮೇ")
+                    .replaceAll("Jun", "ಜೂನ್")
+                    .replaceAll("Jul", "ಜುಲೈ")
+                    .replaceAll("Aug", "ಆಗಸ್ಟ್")
+                    .replaceAll("Sep", "ಸೆ")
+                    .replaceAll("Oct", "ಅಕ್ಟೋಬರ್")
+                    .replaceAll("Nov", "ನವೆಂಬರ್")
+                    .replaceAll("Dec", "ಡಿಸೆಂಬರ್");
         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
             displayStr = displayStr.replaceAll("Minutes", "મિનિટ")
                     .replaceAll("Hours", "કલાકો")
@@ -3895,6 +3957,9 @@ public class Node implements Serializable {
                             case "bn":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_bengali);
                                 break;
+                            case "kn":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_kannada);
+                                break;
                             case "or":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_oriya);
                                 break;
@@ -3918,6 +3983,9 @@ public class Node implements Serializable {
                                 break;
                             case "bn":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_bengali);
+                                break;
+                            case "kn":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_kannada);
                                 break;
                             case "or":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_oriya);
@@ -3977,6 +4045,9 @@ public class Node implements Serializable {
                                                     case "bn":
                                                         stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_bengali);
                                                         break;
+                                                    case "kn":
+                                                        stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_kannada);
+                                                        break;
                                                     case "or":
                                                         stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_oriya);
                                                         break;
@@ -4000,6 +4071,9 @@ public class Node implements Serializable {
                                                         break;
                                                     case "bn":
                                                         stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_bengali);
+                                                        break;
+                                                    case "kn":
+                                                        stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_kannada);
                                                         break;
                                                     case "or":
                                                         stringBuilder.append("\n").append(bullet + " ").append(supersubnode.display_oriya);
@@ -4028,6 +4102,9 @@ public class Node implements Serializable {
                                         case "bn":
                                             stringBuilder.append("\n").append(bullet + " ").append(subnode.display_bengali);
                                             break;
+                                        case "kn":
+                                            stringBuilder.append("\n").append(bullet + " ").append(subnode.display_kannada);
+                                            break;
                                         case "or":
                                             stringBuilder.append("\n").append(bullet + " ").append(subnode.display_oriya);
                                             break;
@@ -4054,6 +4131,9 @@ public class Node implements Serializable {
                                 break;
                             case "bn":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_bengali);
+                                break;
+                            case "kn":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_kannada);
                                 break;
                             case "or":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_oriya);

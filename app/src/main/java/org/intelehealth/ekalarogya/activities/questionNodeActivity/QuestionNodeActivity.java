@@ -657,6 +657,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত উপসর্গ(গুলি) আছে?");
+                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣಗಳನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
                 assoSympObj.put("display-gu", "તમે નીચેનાં લક્ષણ(લક્ષણો) છે?");
                 assoSympObj.put("display-as", "আপোনাৰ তলত দিয়া লক্ষণ(সমূহ) আছেনে?");
@@ -774,6 +775,24 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "প্রতি সপ্তাহে বার")
                     .replace("times per month", "প্রতি মাসে বার")
                     .replace("times per year", "প্রতি বছর বার");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ")
+                    .replace("Patient reports -", "ರೋಗಿಗಳ ವರದಿಗಳು -")
+                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -")
+                    .replace("Minutes", "ನಿಮಿಷಗಳು")
+                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
+                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
+                    .replace("Years", "ವರ್ಷಗಳು")
+                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ")
+                    .replace("time per day", "ದಿನಕ್ಕೆ ಸಮಯ")
+                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
+                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ");
             currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
