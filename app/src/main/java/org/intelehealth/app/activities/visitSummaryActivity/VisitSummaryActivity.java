@@ -758,86 +758,28 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
 
-        card_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        card_share.setOnClickListener(v -> {
 
-                if (hasPrescription.equalsIgnoreCase("true")) {
-//                    try {
-//                        doWebViewPrint();
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    EditText editText = new EditText(VisitSummaryActivity.this);
-                    editText.setInputType(InputType.TYPE_CLASS_PHONE);
-                    InputFilter inputFilter = new InputFilter() {
-                        @Override
-                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                            return null;
-                        }
-                    };
-                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                        partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrlArabic();
-                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
-//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
-
-                    editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
-
-                    if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
-                        editText.setText(patient.getPhone_number());
-                    }
-
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    editText.setLayoutParams(layoutParams);
-                    alertDialog.setView(editText);
-
-                    //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
-                    alertDialog.setPositiveButton(getResources().getString(R.string.share), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                String phoneNumber = "+963" + editText.getText().toString();
-                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + "\t" + whatsapp_url + "\t" + getString(R.string.and_enter_your_patient_id) + "\t" + idView.getText().toString();
-
-                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, whatsappMessage))));
-
-                                // isreturningWhatsapp = true;
-
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        }
-                    });
-                    AlertDialog dialog = alertDialog.show();
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-                    alertDialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = alertDialog.show();
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-
-                }
-
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                    partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrlArabic();
+                String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + "\t" + whatsapp_url + "\t" + getString(R.string.and_enter_your_patient_id) + "\t" + idView.getText().toString();
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?text=%s", whatsappMessage))));
+            } else {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
+                alertDialog.setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = alertDialog.show();
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
             }
+
+
         });
 
 
