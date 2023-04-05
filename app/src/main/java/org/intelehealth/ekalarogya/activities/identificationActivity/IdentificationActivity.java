@@ -1188,6 +1188,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String education = switch_bn_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    String education = switch_kn_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
@@ -1232,6 +1235,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String caste = switch_bn_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    String caste = switch_kn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String caste = switch_gu_caste_edit(patient1.getCaste());
@@ -1282,6 +1288,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[বর্ণনা]"));
+                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[ವಿವರಿಸಿ]"));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------------change gujrati language---------------
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[વર્ણન કરો]"));
@@ -1312,6 +1320,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     bankacc_Transl = StringUtils.switch_bn_bankaccount_edit(patient1.getBank_account());
+                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    bankacc_Transl = StringUtils.switch_kn_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     bankacc_Transl = StringUtils.switch_gu_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
@@ -1440,6 +1450,26 @@ public class IdentificationActivity extends AppCompatActivity implements
                             radioNo.setChecked(false);
                         } else {
                             vaccination_Transl = StringUtils.switch_bn_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
+                    }
+                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        } else {
+                            vaccination_Transl = StringUtils.switch_kn_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
@@ -1629,6 +1659,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String economic = switch_bn_economic_edit(patient1.getEconomic_status());
                         mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                        String economic = switch_kn_economic_edit(patient1.getEconomic_status());
+                        mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                         mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
@@ -1799,6 +1832,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                         toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         toiletfacility_Transl = StringUtils.switch_bn_toiletfacil_edit(patient1.getToilet_facility());
+                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                        toiletfacility_Transl = StringUtils.switch_kn_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         toiletfacility_Transl = StringUtils.switch_gu_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
@@ -1822,6 +1857,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                             toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                             toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("অন্যান্য [এন্টার]"));
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                            toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ಇತರೆ[ನಮೂದಿಸಿ]"));
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                             //-------replace with gujrati
                             toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("અન્ય [દાખલ કરો]"));
@@ -1847,6 +1884,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                         housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         housestruct_Transl = StringUtils.switch_bn_housestructure_edit(patient1.getStructure_house());
+                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                        housestruct_Transl = StringUtils.switch_kn_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         housestruct_Transl = StringUtils.switch_gu_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
@@ -2119,8 +2158,11 @@ public class IdentificationActivity extends AppCompatActivity implements
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 String dob_text = en__bn_dob(dob); //to show text of English into bengali...
+                mDOB.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String dob_text = en__kn_dob(dob); //to show text of English into kannada...
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujrati...
