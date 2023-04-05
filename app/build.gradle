@@ -18,14 +18,14 @@ android {
         applicationId "syriana.intelehealth.org"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 6
+        versionCode 7
         buildToolsVersion('29.0.2')
-        versionName "1.0.5"
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Syriana " + versionName + " - " + getDateTime()
+        archivesBaseName = "Sila " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = '1.8'
