@@ -197,6 +197,7 @@
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
+
                                     <ImageView
                                         android:id="@+id/icons8_edit"
                                         android:layout_width="wrap_content"
@@ -1118,7 +1119,8 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginStart="@dimen/margin_10"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
 
                                     <ImageButton
                                         android:id="@+id/no_btn"

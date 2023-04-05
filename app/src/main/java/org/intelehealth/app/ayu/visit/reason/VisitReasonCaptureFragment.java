@@ -113,10 +113,12 @@ public class VisitReasonCaptureFragment extends Fragment {
         String[] mindmapsNames = getVisitReasonFilesNamesOnly();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), R.layout.ui2_select_dialog_item, mindmapsNames);
+                (getActivity(), R.layout.ui2_custome_dropdown_item_view, mindmapsNames);
 
         mVisitReasonAutoCompleteTextView.setThreshold(2);
         mVisitReasonAutoCompleteTextView.setAdapter(adapter);
+        mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
+
         mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

@@ -561,7 +561,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         stateAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, stateList);
+                R.layout.simple_spinner_item_1, stateList);
         stateAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mStateNameSpinner.setAdapter(stateAdapter);
@@ -587,7 +587,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         districtAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, distList);
+                R.layout.simple_spinner_item_1, distList);
         districtAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mDistrictNameSpinner.setAdapter(districtAdapter);

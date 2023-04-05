@@ -524,7 +524,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
                 vs_add_notes.setVisibility(View.GONE);
-                addnotes_vd_card.setVisibility(View.VISIBLE);
+                //addnotes_vd_card.setVisibility(View.VISIBLE);
 
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {

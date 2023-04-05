@@ -17,6 +17,14 @@ public class Constants {
     public static final String ICE_SERVER_4_USER = "ihuser";
     public static final String ICE_SERVER_4_PASSWORD = "keepitsecrect";
 
+    /*T2*/
+   /* public static final String ICE_SERVER_1_URL = "stun:stun.l.google.com:19302";
+    public static final String ICE_SERVER_2_URL = "stun:stun1.l.google.com:19302";
+
+    public static final String ICE_SERVER_3_URL = "turn:uiux.intelehealth.org:3478";
+    public static final String ICE_SERVER_3_USER = "uiux";
+    public static final String ICE_SERVER_3_PASSWORD = "uiux";*/
+    /*T2 END*/
     /*TEXTING*/
     /*public static final String ICE_SERVER_1_URL = "stun:bn-turn1.xirsys.com";
 

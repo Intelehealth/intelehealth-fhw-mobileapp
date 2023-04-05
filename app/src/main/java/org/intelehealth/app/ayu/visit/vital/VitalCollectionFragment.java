@@ -253,7 +253,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
 
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, data);
+                R.layout.simple_spinner_item_1, data);
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mHeightTextView.setAdapter(adaptador);
@@ -286,7 +286,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " kg";
         }
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, data);
+                R.layout.simple_spinner_item_1, data);
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mWeightTextView.setAdapter(adaptador);

@@ -829,13 +829,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         int i = 0;
         int max = 100;
         final String[] data = new String[max + 1];
-        data[0] = "Select number";
+        data[0] = "Number";
         for (i = 1; i < max; i++) {
             data[i] = String.valueOf(i - 1);
         }
 
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_spinner_item, data);
+                R.layout.simple_spinner_item_1, data);
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
@@ -854,13 +854,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         // add a list
-        final String[] data1 = new String[]{"Select Duration Type",
+        final String[] data1 = new String[]{"Duration Type",
                 mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
                 mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
                 mContext.getString(R.string.Years)};
 
         ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_spinner_item, data1);
+                R.layout.simple_spinner_item_1, data1);
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);

@@ -508,7 +508,8 @@
                 android:layout_below="@+id/add_notes_relative"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_40dp"
-                android:layout_marginEnd="@dimen/toolbar_margin_left">
+                android:layout_marginEnd="@dimen/toolbar_margin_left"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/add_docs_title"
@@ -568,7 +569,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/add_doc_relative"
-                android:layout_marginTop="@dimen/margin_40dp">
+                android:layout_marginTop="@dimen/margin_16">
 
 
                 <androidx.cardview.widget.CardView
@@ -663,8 +664,7 @@
                     android:id="@+id/doc_speciality_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_doc_relative"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:layout_marginBottom="@dimen/margin_10"
@@ -884,8 +884,8 @@
         android:layout_marginBottom="92dip"
         android:contentDescription="@string/chat_fab"
         android:onClick="startVideoChat"
-        android:visibility="gone"
-        android:src="@drawable/icons8_video_call" />
+        android:src="@drawable/icons8_video_call"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat"

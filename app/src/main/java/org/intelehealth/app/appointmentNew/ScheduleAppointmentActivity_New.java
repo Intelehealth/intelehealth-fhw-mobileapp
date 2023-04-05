@@ -218,13 +218,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             }
         });
 
-        rvMorningSlots.setHasFixedSize(true);
+        //rvMorningSlots.setHasFixedSize(true);
         rvMorningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-        rvAfternoonSlots.setHasFixedSize(true);
+        //rvAfternoonSlots.setHasFixedSize(true);
         rvAfternoonSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-        rvEveningSlots.setHasFixedSize(true);
+        //rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);

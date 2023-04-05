@@ -25,7 +25,9 @@
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
                 android:dropDownVerticalOffset="56dp"
-                android:padding="@dimen/padding_10" />
+                android:paddingVertical="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_5"
+                android:paddingEnd="@dimen/padding_12" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -40,7 +42,7 @@
         <FrameLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/hamburger_margin_start"
             android:layout_weight="1">
 
@@ -50,7 +52,9 @@
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
                 android:dropDownVerticalOffset="56dp"
-                android:padding="@dimen/padding_10" />
+                android:paddingVertical="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_5"
+                android:paddingEnd="@dimen/padding_12" />
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -418,8 +418,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followupDate_txt.setText("Follow up on " + followupDate);
             followup_info.setText("Please take " + patientName + "'s follow-up visit.");
 
-            followup_accept_text.setText("The doctor suggested a follow-up visit on " +
-                    followUpDate_format + ". Does the patient want to take a follow-up visit?");
+            followup_accept_text.setText("The doctor suggested a follow-up visit on\n" +
+                    followUpDate_format + ".");
             Log.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);

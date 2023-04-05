@@ -46,6 +46,8 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +63,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -163,7 +166,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     private boolean returning;
-    private ImageButton refresh, cancelbtn;
+    private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
 
     @Override
@@ -316,6 +319,31 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 }
             }
         });
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+//                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Sync Done!");
+                /*refresh.clearAnimation();
+                syncAnimator.cancel();*/
+                recreate();
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        registerReceiver(mBroadcastReceiver, filterSend);
+
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1000);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
+    }
+
+    private BroadcastReceiver mBroadcastReceiver;
+    private ObjectAnimator syncAnimator;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -1306,6 +1334,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
             Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            refresh.clearAnimation();
+            syncAnimator.start();
         }
     }
 

@@ -1476,8 +1476,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
                 followup_date_txt.setText(followUpDate_format);
-                followup_subtext.setText("The doctor suggested a follow-up visit on " +
-                        followUpDate_format + ". Does the patient want to take a follow-up visit?");
+                followup_subtext.setText("The doctor suggested a follow-up visit on\n" +
+                        followUpDate_format + ".");
                 //checkForDoctor();
                 break;
             }
