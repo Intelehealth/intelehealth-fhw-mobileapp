@@ -16,7 +16,15 @@
 
     <string-array name="speciality_values">
         <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>Physician</item>
+        <item>Surgery</item>
+        <item>Admin</item>
+        <item>Doctor (General Consult)</item>
+        <item>Pulmonary</item>
+        <item>GI</item>
+        <item>Endocrinology</item>
+        <item>Pediatrics</item>
+        <item>Gyn</item>
     </string-array>
 
     <string-array name="pref_example_list_titles">

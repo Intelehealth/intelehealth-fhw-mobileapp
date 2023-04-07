@@ -12,6 +12,7 @@ import java.util.List;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.Uuid_Value;
 import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -80,7 +81,7 @@ public class ProviderAttributeLIstDAO {
         return isCreated;
     }
 
-    public List<String> getAllValues() {
+    public List<String> getAllValues(String appLanguage) {
         List<String> listDTOArrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
@@ -92,7 +93,11 @@ public class ProviderAttributeLIstDAO {
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 dto = new ProviderAttributeListDTO();
-                dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                if (appLanguage.equalsIgnoreCase("ar")) {
+                    dto.setValue(StringUtils.getProviderNameInArabic(idCursor.getString(idCursor.getColumnIndexOrThrow("value"))));
+                } else {
+                    dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                }
                 listDTOArrayList.add(dto.getValue());
             }
         }

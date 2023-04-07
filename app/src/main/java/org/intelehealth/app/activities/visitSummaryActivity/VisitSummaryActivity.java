@@ -803,7 +803,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
-        List<String> items = providerAttributeLIstDAO.getAllValues();
+        List<String> items = providerAttributeLIstDAO.getAllValues(sessionManager1.getAppLanguage());
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
@@ -820,7 +820,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
 
         if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            int spinner_position = 0;
+            if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
+                spinner_position = stringArrayAdapter.getPosition(org.intelehealth.app.utilities.StringUtils.getProviderNameInArabic(special_value));
+            } else {
+                spinner_position = stringArrayAdapter.getPosition(special_value);
+            }
             speciality_spinner.setSelection(spinner_position);
         } else {
 
@@ -831,7 +836,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
+                speciality_selected = org.intelehealth.app.utilities.StringUtils.getProviderNameInEnglish(adapterView.getItemAtPosition(i).toString());
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
 
 

@@ -7802,4 +7802,32 @@ public final class StringUtils {
             return string;
         }
     }
+
+    public static String getProviderNameInArabic(String providerName) {
+        if (providerName.equalsIgnoreCase("Physician")) return "طبيب";
+        if (providerName.equalsIgnoreCase("Cardiology")) return "قلبية";
+        if (providerName.equalsIgnoreCase("Surgery")) return "جراحة";
+        if (providerName.equalsIgnoreCase("Admin")) return "إداري";
+        if (providerName.equalsIgnoreCase("Doctor (General Consult)")) return "طبيب (استشارة عامة)";
+        if (providerName.equalsIgnoreCase("Pulmonary")) return "صدرية";
+        if (providerName.equalsIgnoreCase("GI")) return "هضمية";
+        if (providerName.equalsIgnoreCase("Endocrinology")) return "غدد";
+        if (providerName.equalsIgnoreCase("Pediatrics")) return "أطفال";
+        if (providerName.equalsIgnoreCase("Gyn")) return "نسائية";
+        return providerName;
+    }
+
+    public static String getProviderNameInEnglish(String providerName) {
+        if (providerName.equalsIgnoreCase("طبيب")) return "Physician";
+        if (providerName.equalsIgnoreCase("قلبية")) return "Cardiology";
+        if (providerName.equalsIgnoreCase("جراحة")) return "Surgery";
+        if (providerName.equalsIgnoreCase("إداري")) return "Admin";
+        if (providerName.equalsIgnoreCase("طبيب (استشارة عامة)")) return "Doctor (General Consult)";
+        if (providerName.equalsIgnoreCase("صدرية")) return "Pulmonary";
+        if (providerName.equalsIgnoreCase("هضمية")) return "GI";
+        if (providerName.equalsIgnoreCase("غدد")) return "Endocrinology";
+        if (providerName.equalsIgnoreCase("أطفال")) return "Pediatrics";
+        if (providerName.equalsIgnoreCase("نسائية")) return "Gyn";
+        return providerName;
+    }
 }

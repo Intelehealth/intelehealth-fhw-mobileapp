@@ -15,8 +15,16 @@
     </string-array>
 
     <string-array name="speciality_values">
-        <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>حدد التخصص</item>
+        <item>طبيب</item>
+        <item>جراحة</item>
+        <item>إداري</item>
+        <item>طبيب (استشارة عامة)</item>
+        <item>صدرية</item>
+        <item>هضمية</item>
+        <item>غدد</item>
+        <item>أطفال</item>
+        <item>نسائية</item>
     </string-array>
 
     <string-array name="pref_example_list_titles">
