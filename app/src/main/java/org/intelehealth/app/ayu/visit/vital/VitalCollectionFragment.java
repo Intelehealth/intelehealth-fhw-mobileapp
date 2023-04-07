@@ -53,7 +53,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String encounterVitals;
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    private Spinner mHeightTextView, mWeightTextView;
+    private Spinner mHeightSpinner, mWeightSpinner;
     TextView mBMITextView, mBmiStatusTextView;
     TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView;
     EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
@@ -74,9 +74,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
 
-    public static VitalCollectionFragment newInstance(Intent intent) {
+    public static VitalCollectionFragment newInstance(Intent intent, VitalsObject vitalsObject) {
         VitalCollectionFragment fragment = new VitalCollectionFragment();
 
+
+        fragment.results = vitalsObject;
 
         fragment.patientUuid = intent.getStringExtra("patientUuid");
         fragment.visitUuid = intent.getStringExtra("visitUuid");
@@ -127,8 +129,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection, container, false);
 
-        mHeightTextView = view.findViewById(R.id.sp_height);
-        mWeightTextView = view.findViewById(R.id.sp_weight);
+        mHeightSpinner = view.findViewById(R.id.sp_height);
+        mWeightSpinner = view.findViewById(R.id.sp_weight);
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
 
@@ -243,6 +245,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    private ArrayAdapter<String> mHeightArrayAdapter;
 
     private void showHeightListing() {
         // add a list
@@ -252,20 +255,20 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             data[i] = String.valueOf(mHeightMasterList.get(i - 1)) + " cm";
         }
 
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
+        mHeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, data);
-        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+        mHeightArrayAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
-        mHeightTextView.setAdapter(adaptador);
-        mHeightTextView.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mHeightTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mHeightSpinner.setAdapter(mHeightArrayAdapter);
+        mHeightSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mHeightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
                 if (which != 0) {
                     heightvalue = data[which].split(" ")[0];
                     calculateBMI();
                     mHeightErrorTextView.setVisibility(View.GONE);
-                    mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
+                    mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
                 }
             }
 
@@ -277,6 +280,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     }
 
+    private ArrayAdapter<String> mWeightArrayAdapter;
+
     private void showWeightListing() {
 
         // add a list
@@ -285,21 +290,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         for (int i = 1; i < data.length; i++) {
             data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " kg";
         }
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(),
+        mWeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, data);
-        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+        mWeightArrayAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
-        mWeightTextView.setAdapter(adaptador);
-        mWeightTextView.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mWeightSpinner.setAdapter(mWeightArrayAdapter);
+        mWeightSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
 
-        mWeightTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mWeightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
                 if (which != 0) {
                     weightvalue = data[which].split(" ")[0];
                     calculateBMI();
                     mWeightErrorTextView.setVisibility(View.GONE);
-                    mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
+                    mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
                 }
             }
 
@@ -310,6 +315,55 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         });
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
+    private void initData() {
+        // set existing data
+        if (results != null) {
+            if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
+                Log.v(TAG, "getHeight - "+results.getHeight());
+                Log.v(TAG, "getPosition - "+mHeightArrayAdapter.getPosition(results.getHeight()));
+                mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight()+ " cm"), true);
+            }
+
+
+            if (results.getWeight() != null && !results.getWeight().isEmpty())
+                mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(results.getWeight() +" kg"), true);
+
+            /*if (results.getBmi() != null && !results.getBmi().isEmpty())
+              pass*/
+
+
+            if (results.getBpsys() != null && !results.getBpsys().isEmpty())
+                mBpSysEditText.setText(results.getBpsys());
+
+            if (results.getBpdia() != null && !results.getBpdia().isEmpty())
+                mBpDiaEditText.setText(results.getBpdia());
+
+
+            if (results.getPulse() != null && !results.getPulse().isEmpty())
+                mPulseEditText.setText(results.getPulse());
+
+            if (results.getTemperature() != null && !results.getTemperature().isEmpty()) {
+                if (new ConfigUtils(getActivity()).fahrenheit()) {
+                    mTemperatureEditText.setText(convertCtoF(results.getTemperature()));
+                } else {
+                    mTemperatureEditText.setText(results.getTemperature());
+                }
+            }
+            if (results.getSpo2() != null && !results.getSpo2().isEmpty())
+                mSpo2EditText.setText(results.getSpo2());
+
+            if (results.getResp() != null && !results.getResp().isEmpty())
+                mRespEditText.setText(results.getResp());
+
+        }
     }
 
 
@@ -449,21 +503,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (!weight.isEmpty() && height.isEmpty()) {
             mHeightErrorTextView.setVisibility(View.VISIBLE);
             mHeightErrorTextView.setText(getString(R.string.error_field_required));
-            mHeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             return false;
         } else {
             mHeightErrorTextView.setVisibility(View.GONE);
-            mHeightTextView.setBackgroundResource(R.drawable.edittext_border);
+            mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
         }
 
         if (!height.isEmpty() && weight.isEmpty()) {
             mWeightErrorTextView.setVisibility(View.VISIBLE);
             mWeightErrorTextView.setText(getString(R.string.error_field_required));
-            mWeightTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             return false;
         } else {
             mWeightErrorTextView.setVisibility(View.GONE);
-            mWeightTextView.setBackgroundResource(R.drawable.edittext_border);
+            mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
         }
 
         /*//BP vaidations added by Prajwal.
@@ -673,6 +727,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
 
         try {
+            if (results == null) {
+                results = new VitalsObject();
+            }
             if (!height.equals("")) {
                 results.setHeight(height);
             } else {

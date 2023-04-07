@@ -271,9 +271,12 @@ public class Fragment_SecondScreen extends Fragment {
         Resources res = getResources();
 
         // country
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.countries));
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.countries));
+        countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 //        country_spinner.setSelection(countryAdapter.getPosition(country1));
         mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+        mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
         mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
        /* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.states_india, android.R.layout.simple_spinner_dropdown_item);

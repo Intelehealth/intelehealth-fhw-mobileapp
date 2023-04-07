@@ -2531,8 +2531,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "Okay");
 
 
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);
+                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
                             //
                             showVisitID();

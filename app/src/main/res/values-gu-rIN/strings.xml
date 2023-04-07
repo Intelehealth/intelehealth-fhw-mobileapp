@@ -847,5 +847,6 @@
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
     <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
     <string name="loading_slots">Loading slots...</string>
+    <string name="alert_txt">Alert!</string>
 
 </resources>

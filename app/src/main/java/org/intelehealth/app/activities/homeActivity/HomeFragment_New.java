@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
@@ -287,10 +288,12 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         int totalUpcomingApps = 0;
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        //SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
+        String endDate = dateFormat1.format(DateUtils.addYears(new Date(), 1));
 
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday("", currentDate);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersV1(currentDate, endDate, "");
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
         try {

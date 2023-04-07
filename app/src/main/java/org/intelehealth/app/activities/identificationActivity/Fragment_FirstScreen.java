@@ -420,9 +420,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             public void onClick(View v) {
 //                mDOBPicker.show();
                 CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    customCalendarViewUI2.showDatePicker(getActivity(), "");
-                }
+                customCalendarViewUI2.showDatePicker(getActivity(), null);
             }
         });
         // DOB - end

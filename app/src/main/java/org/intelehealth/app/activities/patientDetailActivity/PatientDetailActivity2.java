@@ -322,10 +322,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-//                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "Sync Done!");
-                /*refresh.clearAnimation();
-                syncAnimator.cancel();*/
+                refresh.clearAnimation();
+                syncAnimator.cancel();
                 recreate();
             }
         };
@@ -333,7 +333,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
         registerReceiver(mBroadcastReceiver, filterSend);
 
-        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1000);
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
     }
@@ -1332,10 +1332,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
-            new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
             refresh.clearAnimation();
             syncAnimator.start();
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 

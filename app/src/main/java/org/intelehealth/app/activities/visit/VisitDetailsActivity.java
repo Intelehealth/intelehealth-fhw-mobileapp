@@ -11,19 +11,23 @@ import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDate
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,7 +46,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -56,15 +59,16 @@ import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -449,8 +453,28 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         initForPastVisit();
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Sync Done!");
+                refresh.clearAnimation();
+                syncAnimator.cancel();
+                recreate();
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        registerReceiver(mBroadcastReceiver, filterSend);
+
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
     }
 
+    private BroadcastReceiver mBroadcastReceiver;
+    private ObjectAnimator syncAnimator;
     private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
 
     private void initForPastVisit() {
@@ -535,7 +559,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG,new Gson().toJson(mPastVisitDataList));
+                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -570,7 +594,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 } while (visitCursor.moveToPrevious());
             }
 
-            if(!mPastVisitDataList.isEmpty()){
+            if (!mPastVisitDataList.isEmpty()) {
                 PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mPastVisitsRecyclerView, VisitDetailsActivity.this, mPastVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                     @Override
                     public void onItemSelected(PastVisitData pastVisitData) {
@@ -804,5 +828,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         args.putSerializable("patientDTO", (Serializable) patientDTO);
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            refresh.clearAnimation();
+            syncAnimator.start();
+            new SyncUtils().syncBackground();
+            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+        }
     }
 }

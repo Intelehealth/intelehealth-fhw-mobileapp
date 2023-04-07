@@ -96,6 +96,13 @@ public class VisitReasonCaptureFragment extends Fragment {
                 showConfirmDialog();
             }
         });
+
+        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, null);
+            }
+        });
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mVisitReasonItemList = getVisitReasonList();

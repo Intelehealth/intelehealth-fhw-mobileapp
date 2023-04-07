@@ -70,7 +70,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -203,7 +202,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         bundle.putString("encounterUuidVitals", encounterVitals);
 
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent()), VITAL_FRAGMENT).
+                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), null), VITAL_FRAGMENT).
                 commit();
     }
 
@@ -211,22 +210,30 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         finish();
     }
 
+    private VitalsObject mVitalsObject;
+
     @Override
     public void onFormSubmitted(int nextAction, Object object) {
         mCurrentStep = nextAction;
         switch (nextAction) {
             case STEP_1_VITAL_SUMMARY:
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                mSummaryFrameLayout.setVisibility(View.VISIBLE);
-                mStep1ProgressBar.setProgress(100);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance((VitalsObject) object), VITAL_SUMMARY_FRAGMENT).
-                        commit();
+                if (object != null)
+                    mVitalsObject = (VitalsObject) object;
+                if (mVitalsObject != null) {
+                    //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                    mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                    mStep1ProgressBar.setProgress(100);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject), VITAL_SUMMARY_FRAGMENT).
+                            commit();
+                }
                 break;
             case STEP_1_VITAL:
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 mSummaryFrameLayout.setVisibility(View.GONE);
-
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mVitalsObject), VITAL_FRAGMENT).
+                        commit();
                 break;
             case STEP_2_VISIT_REASON:
                 mStep2ProgressBar.setProgress(20);

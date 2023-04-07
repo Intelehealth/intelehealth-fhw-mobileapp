@@ -95,20 +95,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
         //temporary commented
-       // initFirebaseRemoteConfig();
+        // initFirebaseRemoteConfig();
 
-        if (sessionManager.isFirstTimeLaunch()) {
+        /*if (sessionManager.isFirstTimeLaunch()) {
             animateViews();
             populatingLanguages();
-        } else {
-           new Handler().postDelayed(new Runnable() {
-               @Override
-               public void run() {
-                   nextActivity();
-               }
-           }, 3000);
-        }
-
+        } else {*/
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                nextActivity();
+            }
+        }, 3000);
+        // }
+        sessionManager.setAppLanguage("en");
         saveLanguage();
 
     }
@@ -179,7 +179,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         alertDialogBuilder.show();
                     } else {
                         //temporary commented in new UI2.0
-                       // checkPerm();
+                        // checkPerm();
                     }
                 } else {
                     //temporary commented in new UI2.0
@@ -308,7 +308,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     finish();
                 }*/
 
-                if(sessionManager.isEnableAppLock())
+                if (sessionManager.isEnableAppLock())
                     fingerPrintAuthenticate();
                 else
                     navigateToNextActivity();
@@ -492,8 +492,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void fingerPrintAuthenticate() {
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch(biometricManager.canAuthenticate())
-        {
+        switch (biometricManager.canAuthenticate()) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_fingerprint_sensor), Toast.LENGTH_SHORT).show();
                 break;

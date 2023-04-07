@@ -43,6 +43,7 @@ public class VisitActivity extends FragmentActivity implements
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class VisitActivity extends FragmentActivity implements
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-//                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();
@@ -78,7 +79,7 @@ public class VisitActivity extends FragmentActivity implements
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
         registerReceiver(mBroadcastReceiver, filterSend);
 
-        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1000);
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
     }
@@ -99,9 +100,9 @@ public class VisitActivity extends FragmentActivity implements
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)
-                        tab.setText("Received (" + 0 + ")").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Received").setIcon(R.drawable.presc_tablayout_icon);
                     else
-                        tab.setText("Pending (" + 0 + ")").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText("Pending").setIcon(R.drawable.presc_tablayout_icon);
 
                 }
         ).attach();
@@ -161,12 +162,13 @@ public class VisitActivity extends FragmentActivity implements
 
     @Override
     public void receivedCount(int count) {
-        Log.v("ccount", "received_count: " + count);
+        Log.v(TAG, "receivedCount: " + count);
         tabLayout.getTabAt(0).setText("Received (" + count + ")");
     }
 
     @Override
     public void pendingCount(int count) {
+        Log.v(TAG, "pendingCount: " + count);
         tabLayout.getTabAt(1).setText("Pending (" + count + ")");
     }
 

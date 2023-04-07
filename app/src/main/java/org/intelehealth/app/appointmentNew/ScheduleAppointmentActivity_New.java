@@ -283,7 +283,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
         //findViewById(R.id.empty_tv).setVisibility(View.GONE);
         findViewById(R.id.tv_time_slot_title).setVisibility(View.GONE);
-        ((TextView)findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
+        ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
@@ -361,7 +361,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 if (isSlotNotAvailable)
                     isSlotNotAvailable = slotInfoEveningList.isEmpty();
 
-                ((TextView)findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
+                ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
                 findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
                 findViewById(R.id.tv_time_slot_title).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
 
@@ -507,6 +507,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private void getPreviousMonthDates() {
         calendarInstance.add(Calendar.MONTH, -1);
+        Calendar nowCalendar = Calendar.getInstance();
+        if (nowCalendar.get(Calendar.YEAR) <= calendarInstance.get(Calendar.YEAR) && nowCalendar.get(Calendar.MONTH) > calendarInstance.get(Calendar.MONTH)) {
+            calendarInstance.add(Calendar.MONTH, 1);
+            enableDisablePreviousButton(false);
+            return;
+        }
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
         SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
@@ -523,7 +529,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
-                if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
+                if (calendarInstance.get(Calendar.MONTH)+1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
 
                     getAllDatesOfSelectedMonth(calendarInstance, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
@@ -564,12 +570,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 String[] dateSplit = formateDate.split("/");
 
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
-                if (selectedNextMonth.equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
-                    getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);
-                } else {
-                    getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear, dateSplit[1]);
-
-                }
+                getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
             }
 
         } catch (ParseException e) {
@@ -631,7 +632,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
-            request.setReason("reason");
+            request.setReason(rescheduleReason);
         }
 
         request.setUuid(new UuidGenerator().UuidGenerator());
@@ -674,7 +675,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                     finish();
                     startActivity(intent);
                 }
-            }, 4000);
+            }, 100);
         } else {
 
         }

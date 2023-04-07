@@ -453,7 +453,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         }
 
         MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, monthsList);
+        adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+        spinnerMonths.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
         spinnerMonths.setAdapter(adapter);
+
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -541,7 +544,11 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
 
         YearSpinnerAdapter adapter = new YearSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, yearsList);
+        adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+        spinnerYear.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
+
         spinnerYear.setAdapter(adapter);
+
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -697,9 +704,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         calendarInstanceDefault = Calendar.getInstance();
-        currentMonth = calendarInstanceDefault.getActualMaximum(Calendar.MONTH) + 1;
+        currentMonth = calendarInstanceDefault.get(Calendar.MONTH) + 1;
         currentYear = calendarInstanceDefault.get(Calendar.YEAR);
         monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
+        Log.v(TAG, "currentMonth - "+currentMonth);
+        Log.v(TAG, "currentYear - "+currentYear);
+        Log.v(TAG, "monthTotalDays - "+monthTotalDays);
 
 
         spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);

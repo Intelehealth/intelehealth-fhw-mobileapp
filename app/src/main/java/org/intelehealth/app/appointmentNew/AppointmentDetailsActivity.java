@@ -9,6 +9,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -59,6 +60,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -119,12 +121,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         initUI();
     }
-
+    private ObjectAnimator syncAnimator;
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-
+        ivIsInternet.setOnClickListener(v -> {
+            SyncUtils.syncNow(AppointmentDetailsActivity.this, ivIsInternet, syncAnimator);
+        });
         tvTitle.setText(getResources().getString(R.string.appointment_details));
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(v -> {
