@@ -290,9 +290,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         ivIntuitiveScroll = findViewById(R.id.iv_intuitive_scroll);
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null));
+            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_swipe, null));
+            ivIntuitiveScroll.setRotationY(180);
         } else {
-            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_forward, null));
+            ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_swipe, null));
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
