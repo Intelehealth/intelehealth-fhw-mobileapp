@@ -234,6 +234,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
+                boolean hasPrescription = hasPrescription(cursor);
                 do {
                     try {
                         TodayPatientModel model = new TodayPatientModel(
@@ -247,10 +248,10 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription);
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        todayPatientList.add(model
-                        );
+                        todayPatientList.add(model);
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }
@@ -323,55 +324,44 @@ public class TodayPatientActivity extends AppCompatActivity {
         visitCursor.close();
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
-        if (hasPrescription) {
-            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.end_visit_msg));
-            alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            String finalFollowupdate = followupdate;
-            String finalEncounterVitalslocal = encounterVitalslocal;
-            String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-            alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    VisitUtils.endVisit(TodayPatientActivity.this,
-                            visitUuid,
-                            todayPatientModel.getPatientuuid(),
-                            finalFollowupdate,
-                            finalEncounterVitalslocal,
-                            finalEncounterAdultIntialslocal,
-                            null,
-                            String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
-                            "",
-                            sessionManager.getAppLanguage()
-                    );
-                    AppointmentDAO appointmentDAO = new AppointmentDAO();
-                    //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                    //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+        alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.visit_data_loss_message));
 
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+        alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-        } else {
-            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.error_no_data));
-            alertDialogBuilder.setNeutralButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
-        }
+        String finalFollowupdate = followupdate;
+        String finalEncounterVitalslocal = encounterVitalslocal;
+        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+
+        alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                VisitUtils.endVisit(TodayPatientActivity.this,
+                        visitUuid,
+                        todayPatientModel.getPatientuuid(),
+                        finalFollowupdate,
+                        finalEncounterVitalslocal,
+                        finalEncounterAdultIntialslocal,
+                        null,
+                        String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
+                        "",
+                        sessionManager.getAppLanguage()
+                );
+                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
     }
 
     @Override
@@ -478,6 +468,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    boolean hasPrescription = hasPrescription(cursor);
                     try {
                         TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
@@ -490,7 +481,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription);
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         todayPatientList.add(model
                         );
@@ -597,8 +589,16 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return phone;
     }
+
+    private boolean hasPrescription(Cursor cursor) {
+        boolean hasPrescription = false;
+        String query = "SELECT COUNT(*) FROM tbl_encounter WHERE encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND visituuid = ?";
+        Cursor countCursor = db.rawQuery(query, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
+        countCursor.moveToFirst();
+        int count = countCursor.getInt(0);
+        countCursor.close();
+        if (count == 1)
+            hasPrescription = true;
+        return hasPrescription;
+    }
 }
-
-
-
-

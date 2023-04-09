@@ -341,6 +341,7 @@ public class SyncDAO {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    Boolean hasPrescription = hasPrescription(cursor);
                     activePatientList.add(new ActivePatientModel(
                             cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
                             cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
@@ -352,7 +353,8 @@ public class SyncDAO {
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                             "",
-                            ""
+                            "",
+                            hasPrescription
                     ));
                 } while (cursor.moveToNext());
             }
@@ -471,5 +473,17 @@ public class SyncDAO {
         finalTime = time + " " + context.getString(R.string.ago);
 
         sessionManager.setLastTimeAgo(finalTime);
+    }
+
+    private boolean hasPrescription(Cursor cursor) {
+        boolean hasPrescription = false;
+        String query = "SELECT COUNT(*) FROM tbl_encounter WHERE encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND visituuid = ?";
+        Cursor countCursor = db.rawQuery(query, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
+        countCursor.moveToFirst();
+        int count = countCursor.getInt(0);
+        countCursor.close();
+        if (count == 1)
+            hasPrescription = true;
+        return hasPrescription;
     }
 }

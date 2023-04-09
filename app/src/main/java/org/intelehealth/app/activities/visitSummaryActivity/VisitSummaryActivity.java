@@ -455,56 +455,28 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private void onEndVisit() {
-        //meera
-        if (hasPrescription.equalsIgnoreCase("true")) {
-            if (downloaded) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
-                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        endVisit();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.show();
-                //alertDialog.show();
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        // As discussed with Programs Team, from now on, we will simply show a dialog with the new message in all cases - visit not uploaded, prescription not given, prescription given, etc.
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
-            } else {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
-                alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.show();
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-            }
-        } else {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-            alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-        }
+        // the new message provided by Programs Team
+        alertDialogBuilder.setMessage(R.string.visit_data_loss_message);
+
+        // Positive button option
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, (dialog, which) -> {
+            dialog.dismiss();
+            endVisit();
+            AppointmentDAO appointmentDAO = new AppointmentDAO();
+            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+        });
+
+        // Negative button option
+        alertDialogBuilder.setNegativeButton(R.string.generic_no, (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
     }
 
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";

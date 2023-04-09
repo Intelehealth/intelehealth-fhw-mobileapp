@@ -15,7 +15,7 @@
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
     <string name="action_sms">Sms</string>
-    <string name="action_home">Home</string>
+    <string name="action_home">Home Page</string>
     <string name="action_settings">Settings</string>
     <string name="generic_warning">Warning!</string>
     <string name="generic_update">Update</string>
@@ -1620,5 +1620,6 @@
 
     <string name="details_required">Please add the details</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
+    <string name="visit_data_loss_message">If wanted to exit the visit without losing the data, please select \"no\" and then choose \"return to patient details or home page\". Continuing with this step will end the visit and prevent entering any additional information. If the data has not been uploaded to the server, then the visit will not be recorded in the patient\'s chart.</string>
 
 </resources>

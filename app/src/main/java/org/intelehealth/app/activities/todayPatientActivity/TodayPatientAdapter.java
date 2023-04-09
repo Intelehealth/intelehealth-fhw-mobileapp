@@ -89,7 +89,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
 
         holder.getHeadTextView().setText(String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()));
-        if(isArabicText(String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name())))
+        if (isArabicText(String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name())))
             holder.getHeadTextView().setGravity(Gravity.END);
         holder.getBodyTextView().setText(todayPatientModel.getOpenmrs_id());
         holder.tvAgeGender.setText(body);
@@ -218,7 +218,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (todayPatientModelList.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (todayPatientModelList.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
                 enableEndVisit = true;

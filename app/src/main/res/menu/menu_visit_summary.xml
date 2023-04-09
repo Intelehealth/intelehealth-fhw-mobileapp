@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/summary_endVisit"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         android:title="@string/action_end_visit"
         app:showAsAction="never">
 
@@ -31,7 +31,7 @@
 
     <item
         android:id="@+id/summary_home"
-        android:orderInCategory="500"
+        android:orderInCategory="300"
         android:title="@string/action_home"
         app:showAsAction="never">
 
@@ -47,7 +47,7 @@
 
     <item
         android:id="@+id/summary_patient_detail"
-        android:orderInCategory="400"
+        android:orderInCategory="500"
         android:title="@string/title_activity_patient_detail"
         app:showAsAction="never" />
 
