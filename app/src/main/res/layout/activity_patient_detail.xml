@@ -939,14 +939,15 @@
                 app:cardCornerRadius="10dp">
 
                 <Button
-                    android:id="@+id/generalaid_btn"
+                    android:id="@+id/button_new_visit"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/green"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/general_aid_survey"
-                    tools:foreground="?android:attr/selectableItemBackground" />
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/button_new_visit"
+                    tools:background="@color/colorPrimary" />
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -958,15 +959,14 @@
                 app:cardCornerRadius="10dp">
 
                 <Button
-                    android:id="@+id/button_new_visit"
+                    android:id="@+id/generalaid_btn"
                     style="@style/SelectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/green"
                     android:fontFamily="@font/lato_bold"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:text="@string/button_new_visit"
-                    tools:background="@color/colorPrimary" />
-
+                    android:text="@string/general_aid_survey"
+                    tools:foreground="?android:attr/selectableItemBackground" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

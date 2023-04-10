@@ -362,7 +362,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                         else if (aidType.equalsIgnoreCase("Student Aid"))
                             Toast.makeText(context, " نقييم حاجات طالب الطلابية!", Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Emergency Need Evaluation"))
-                            Toast.makeText(context,"تقييم انساني لحالة طبية اسعافية الطلابية!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,"تقييم انساني لحالة طبية اسعافية!",Toast.LENGTH_SHORT).show();
                         else if (aidType.equalsIgnoreCase("Community General Need Survey"))
                             Toast.makeText(context,"استبيان الحاجات المحلية الطلابية!",Toast.LENGTH_SHORT).show();
                     } else {

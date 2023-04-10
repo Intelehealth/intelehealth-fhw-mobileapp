@@ -1379,7 +1379,7 @@
     //Occupation
     <string-array name="occupation_identification_en">
         <item>Select</item>
-        <item>Housewife unable to work</item>
+        <item>Unable to work</item>
         <item>Small Business</item>
         <item>Employee in the government sector</item>
         <item>Employee in the private sector</item>

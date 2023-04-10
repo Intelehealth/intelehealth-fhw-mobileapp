@@ -105,8 +105,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvQuery"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:paddingVertical="8dip"
-            android:paddingHorizontal="8dip" />
+            android:layout_height="match_parent"
+            android:paddingHorizontal="8dip"
+            android:paddingVertical="8dip"
+            android:scrollbars="vertical" />
     </LinearLayout>
 
 </RelativeLayout>

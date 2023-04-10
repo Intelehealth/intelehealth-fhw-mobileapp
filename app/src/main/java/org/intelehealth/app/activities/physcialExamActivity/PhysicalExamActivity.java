@@ -414,15 +414,17 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node nodeOne = physicalExamMap.getExamNode(physExamPos).getOption(1);
             Node nodeTwo = physicalExamMap.getExamNode(physExamPos).getOption(2);
             Node nodeThree = physicalExamMap.getExamNode(physExamPos).getOption(3);
+            Node nodeFour = physicalExamMap.getExamNode(physExamPos).getOption(4);
 
             if (nodeOne.isSelected()) nodeOne.setSelected(false);
             if (nodeTwo.isSelected()) nodeTwo.setSelected(false);
             if (nodeThree.isSelected()) nodeThree.setSelected(false);
+            if (nodeFour.isSelected()) nodeFour.setSelected(false);
 
             deletePreviouslyClickedImages();
         }
 
-        if (childPos == 1 || childPos == 2 || childPos == 3) {
+        if (childPos == 1 || childPos == 2 || childPos == 3 || childPos == 4) {
             Node nodeZero = physicalExamMap.getExamNode(physExamPos).getOption(0);
             if (nodeZero.isSelected()) nodeZero.setSelected(false);
         }
