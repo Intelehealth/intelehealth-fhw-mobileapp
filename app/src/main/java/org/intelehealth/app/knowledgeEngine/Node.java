@@ -2934,11 +2934,9 @@ public class Node implements Serializable {
                                 if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
-                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    stringsList.add(mOptions.get(i).getDisplay_arabic()); //here be hindi case handled....
                                 }
-
                             }
-
                         }
                     }
 
