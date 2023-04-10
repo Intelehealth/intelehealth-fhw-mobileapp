@@ -296,9 +296,12 @@ public class Fragment_ThirdScreen extends Fragment {
             int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (castes != 0) {
                 casteAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        castes, android.R.layout.simple_spinner_dropdown_item);
+                        castes, R.layout.simple_spinner_item_1);
+                casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCasteSpinner.setAdapter(casteAdapter);
+            mCasteSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -310,9 +313,11 @@ public class Fragment_ThirdScreen extends Fragment {
             int educations = res.getIdentifier(educationLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        educations, android.R.layout.simple_spinner_dropdown_item);
+                        educations, R.layout.simple_spinner_item_1);
+                educationAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEducationSpinner.setAdapter(educationAdapter);
+            mEducationSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -324,9 +329,11 @@ public class Fragment_ThirdScreen extends Fragment {
             int economics = res.getIdentifier(economicLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        economics, android.R.layout.simple_spinner_dropdown_item);
+                        economics, R.layout.simple_spinner_item_1);
+                economicStatusAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
+            mEconomicstatusSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -586,13 +593,15 @@ public class Fragment_ThirdScreen extends Fragment {
 
         String uuid = patientDTO.getUuid();
 
-        // mobile no adding in patient attributes.
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-        patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+        if (patientDTO.getPhonenumber() != null && !patientDTO.getPhonenumber().isEmpty()) {
+            // mobile no adding in patient attributes.
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
 
         // son/daughter/wife of
         patientAttributesDTO = new PatientAttributesDTO();

@@ -457,7 +457,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();

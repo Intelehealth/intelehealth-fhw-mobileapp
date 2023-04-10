@@ -715,6 +715,7 @@
     <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
     <string name="loading_slots">Loading slots...</string>
     <string name="alert_txt">Alert!</string>
+    <string name="valid_dob_msg">Please select valid DOB!</string>
 
 </resources>
 

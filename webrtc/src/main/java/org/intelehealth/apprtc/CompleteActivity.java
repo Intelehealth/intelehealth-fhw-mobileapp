@@ -309,7 +309,7 @@ public class CompleteActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(CompleteActivity.this, LinearLayoutManager.VERTICAL, true);
         binding.chatsRcv.setLayoutManager(mLayoutManager);
 
-        binding.callerNameTv.setText(mDoctorName);
+        binding.callerNameTv.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

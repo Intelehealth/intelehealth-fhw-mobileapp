@@ -286,7 +286,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         // add a list
         final String[] data = new String[mWeightMasterList.size() + 1];
-        data[0] = "Select Wight";
+        data[0] = "Select Weight";
         for (int i = 1; i < data.length; i++) {
             data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " kg";
         }

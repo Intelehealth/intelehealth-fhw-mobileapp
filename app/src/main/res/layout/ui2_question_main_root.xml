@@ -116,6 +116,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_question"
                         android:layout_marginStart="@dimen/margin_24"
+                        android:drawableEnd="@drawable/info_blue_svg"
+                        android:drawablePadding="@dimen/margin_8"
                         android:lineSpacingExtra="1sp"
                         android:text="@string/know_more_txt"
                         android:textColor="@color/colorPrimary"

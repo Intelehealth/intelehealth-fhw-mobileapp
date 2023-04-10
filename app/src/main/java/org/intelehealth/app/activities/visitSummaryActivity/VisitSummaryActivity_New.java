@@ -523,7 +523,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
-                vs_add_notes.setVisibility(View.GONE);
+               // vs_add_notes.setVisibility(View.GONE);
                 //addnotes_vd_card.setVisibility(View.VISIBLE);
 
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
@@ -549,7 +549,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
-                vs_add_notes.setVisibility(View.VISIBLE);
+               // vs_add_notes.setVisibility(View.VISIBLE);
                 addnotes_vd_card.setVisibility(View.GONE);
             }
             // Edit btn visibility based on user coming from Visit Details screen - End
@@ -573,6 +573,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
+
+            add_additional_doc.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+        }else{
+            add_additional_doc.setVisibility(View.VISIBLE);
+            editAddDocs.setVisibility(View.VISIBLE);
         }
     }
 
@@ -2439,7 +2445,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        if (speciality_spinner.getSelectedItemPosition() != 0) {
+        if (speciality_selected !=null && !speciality_selected.isEmpty() ) {
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {

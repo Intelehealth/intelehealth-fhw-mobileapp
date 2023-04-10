@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -27,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,9 +57,11 @@ import org.joda.time.PeriodType;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -262,6 +264,20 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
         Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        if (selectedDate != null) {
+            try {
+                Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
+                Date nowDate = new Date();
+                if (sourceDate.after(nowDate)) {
+                    mAgeEditText.setText("");
+                    mDOBEditText.setText("");
+                    Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
         if (!selectedDate.isEmpty()) {
             dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);

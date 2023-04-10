@@ -1285,7 +1285,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
             int mAgeYears = Integer.valueOf(ymdData[0]);
-            dr_age_gender.setText("("+providerDTO.getGender() + ", " + mAgeYears+")");
+            dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -1909,15 +1909,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             sharebtn.setOnClickListener(v -> {
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                            + whatsapp_url + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString();
-
+                    String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)
+                                    + openmrsID_txt.getText().toString());
+                    Log.v("whatsappMessage", whatsappMessage);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(
-                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
+                            Uri.parse(whatsappMessage)));
 
                     // isreturningWhatsapp = true;
 
@@ -2711,6 +2710,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         resultVal = nf.format(roundOff);
         return resultVal;
     }
+
     public void editPatientInfo(View view) {
         PatientDTO patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
