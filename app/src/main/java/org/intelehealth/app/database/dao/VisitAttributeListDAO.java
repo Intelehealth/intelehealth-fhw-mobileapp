@@ -61,7 +61,7 @@ public class VisitAttributeListDAO {
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"))
+            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("7d3c899e-7913-4aac-ad0c-b097bfa7e96d"))
             {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
@@ -87,15 +87,15 @@ public class VisitAttributeListDAO {
         return isCreated;
     }
 
-    public String getVisitAttributesList_specificVisit(String VISITUUID)
+    public String getVisitAttributesList_specificVisit(String VISITUUID, String attribute_uuid)
     {
         String isValue = "";
         Log.d("specc", "spec_fun: "+ VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{VISITUUID});
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ?",
+                new String[]{VISITUUID, attribute_uuid});
 
         if(cursor.getCount() != 0)
         {
@@ -118,12 +118,12 @@ public class VisitAttributeListDAO {
         return  isValue;
     }
 
-    public boolean insertVisitAttributes(String visitUuid, String speciality_selected) throws
+    public boolean insertVisitAttributes(String visitUuid, String value, String visit_attribute_uuid) throws
             DAOException {
         boolean isInserted = false;
 
         Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: "+ visitUuid);
-        Log.d("SPINNER", "SPINNER_Selected_value_logs: "+ speciality_selected);
+        Log.d("SPINNER", "SPINNER_Selected_value_logs: "+ value);
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -132,8 +132,8 @@ public class VisitAttributeListDAO {
         {
             values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
             values.put("visit_uuid", visitUuid);
-            values.put("value", speciality_selected);
-            values.put("visit_attribute_type_uuid", "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+            values.put("value", value);
+            values.put("visit_attribute_type_uuid", visit_attribute_uuid);
             values.put("voided", "0");
             values.put("sync", "0");
 

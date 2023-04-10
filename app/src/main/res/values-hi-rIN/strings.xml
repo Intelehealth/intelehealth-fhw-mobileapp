@@ -679,12 +679,12 @@
     <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
     <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
 
-<!--    Strings for special Check-->
+    <!--    Strings for special Check-->
     <string name="str_check_Odisha">Odisha</string>
     <string name="str_check_Bukidnon">Bukidnon</string>
-   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_India">इंडिया</string>
     <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
-     <string name="str_check_Philippines">फिलीपींस</string>
+    <string name="str_check_Philippines">फिलीपींस</string>
 
     //Follow-up Visits
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
@@ -742,51 +742,51 @@
     <string name="medication">दवा</string>
     <string name="strength">ताकत</string>
     <string name="units">इकाइयाँ (जैसे: मिलीग्राम)</string>
-<!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
-<!--    <string name="for_duration">For Duration</string>-->
-<!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
-<!--    <string name="additional_instruction">Additional Instruction</string>-->
-<!--    <string name="recommended_tests">Recommended Tests</string>-->
+    <!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
+    <!--    <string name="for_duration">For Duration</string>-->
+    <!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
+    <!--    <string name="additional_instruction">Additional Instruction</string>-->
+    <!--    <string name="recommended_tests">Recommended Tests</string>-->
     <string name="test">परीक्षा</string>
-<!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
+    <!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
     <string name="notes">नोट्स</string>
-<!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
-<!--    <string name="follow_up">Follow Up</string>-->
-<!--    <string name="sign_and_submit">Sign and Submit</string>-->
-<!--    <string name="add_test">Add Test</string>-->
-<!--    <string name="add_advice">Add Advice</string>-->
-<!--    <string name="add_note">Add Note</string>-->
-<!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
-<!--    <string name="submit">Submit</string>-->
-<!--    <string name="add_meds">Add Meds</string>-->
-<!--    <string name="add_diagnosis">Add Diagnosis</string>-->
-<!--    <string name="startVisitNote">Start Visit Note</string>-->
-<!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
-<!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
+    <!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
+    <!--    <string name="follow_up">Follow Up</string>-->
+    <!--    <string name="sign_and_submit">Sign and Submit</string>-->
+    <!--    <string name="add_test">Add Test</string>-->
+    <!--    <string name="add_advice">Add Advice</string>-->
+    <!--    <string name="add_note">Add Note</string>-->
+    <!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
+    <!--    <string name="submit">Submit</string>-->
+    <!--    <string name="add_meds">Add Meds</string>-->
+    <!--    <string name="add_diagnosis">Add Diagnosis</string>-->
+    <!--    <string name="startVisitNote">Start Visit Note</string>-->
+    <!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
+    <!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
     <string name="amount">राशि</string>
     <string name="frequency">फ़्रीक्वेंसी</string>
 
 
-<string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
-<string name = "for_duration">अवधि के लिए</string>
-<string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
-<string name = "additional_instruction">अतिरिक्त निर्देश</string>
-<string name="recommended_tests">अनुशंसित परीक्षण</string>
-<string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
+    <string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
+    <string name = "for_duration">अवधि के लिए</string>
+    <string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
+    <string name = "additional_instruction">अतिरिक्त निर्देश</string>
+    <string name="recommended_tests">अनुशंसित परीक्षण</string>
+    <string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
 
-<string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
-<string name = "follow_up">फ़ॉलो अप करें</string>
-<string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
-<string name = "add_test">परीक्षा जोड़ें</string>
-<string name = "add_advice">सलाह जोड़ें</string>
-<string name = "add_note">नोट जोड़ें</string>
-<string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
-<string name = "submit">सबमिट करें</string>
-<string name = "add_meds">मेड्स जोड़ें</string>
-<string name="add_diagnosis">निदान जोड़ें</string>
-<string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
-<string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
-<string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
+    <string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
+    <string name = "follow_up">फ़ॉलो अप करें</string>
+    <string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
+    <string name = "add_test">परीक्षा जोड़ें</string>
+    <string name = "add_advice">सलाह जोड़ें</string>
+    <string name = "add_note">नोट जोड़ें</string>
+    <string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
+    <string name = "submit">सबमिट करें</string>
+    <string name = "add_meds">मेड्स जोड़ें</string>
+    <string name="add_diagnosis">निदान जोड़ें</string>
+    <string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
+    <string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
+    <string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
 
 
     <string name = "prescription_age">आयु</string>
@@ -963,9 +963,9 @@
     <string name="uric_acid_calibration">यूरिक एसिड अंशांकन</string>
     <string name="total_cholesterol_calibration">कुल कोलेस्ट्रॉल अंशांकन</string>
     <string name="blood_glucose_non_fasting">रक्त ग्लूकोज (गैर-उपवास)</string>
-<!--    <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <!--    <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>-->
     <string name="blood_glucose_random">रक्त ग्लूकोज (उपवास)</string>
-<!--    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <!--    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>-->
     <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (उपवास)</string>
     <string name="blood_glucose_post_prandial">रक्त ग्लूकोज (पोस्ट-प्रांडियल)</string>
     <string name="blood_glucose_fasting">रक्त ग्लूकोज (उपवास)</string>
@@ -1038,6 +1038,19 @@
     <string name="arm_girth">आर्म गर्थ</string>
     <string name="temperature">तापमान</string>
     <string name="general_physician">सामान्य चिकित्सक</string>
-
+    <string name="vitals_complaint">महत्वपूर्ण शिकायत</string>
+    <string name="hrv_visit_summary">एचआरवी:</string>
+    <string name="hr_visit_summary">हृदय दर:</string>
+    <string name="rr_visit_summary">श्वसन दर:</string>
+    <string name="ecg_visit_summary">ईसीजी:</string>
+    <string name="screening">स्क्रीनिंग</string>
+    <string name="setup_select_state_str">राज्य चुनें</string>
+    <string name="setup_select_dropdown_state_msg">ड्रॉपडाउन से राज्य का चयन करें</string>
+    <string name="setup_select_district_str">जिला चुनें</string>
+    <string name="setup_select_dropdown_district_msg">ड्रॉपडाउन से जिले का चयन करें</string>
+    <string name="setup_select_village_str">गांव चुनें</string>
+    <string name="setup_select_dropdown_village_msg">ड्रॉपडाउन से गांव का चयन करें</string>
+    <string name="locations">स्थान</string>
+    <string name="doctor_not_needed">डॉक्टर परामर्श नहीं चाहिए</string>
 
 </resources>

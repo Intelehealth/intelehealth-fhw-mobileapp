@@ -176,8 +176,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
-        } catch (ParseException e) {
+            encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -226,11 +226,29 @@ public class PatientSurveyActivity extends AppCompatActivity {
         return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
     }
 
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
+    }
+
+    public String fiveMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
+    }
+
     private void endVisit() {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-        } catch (DAOException e) {
+            visitsDAO.updateVisitEnddate(visitUuid, fiveMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+        } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 

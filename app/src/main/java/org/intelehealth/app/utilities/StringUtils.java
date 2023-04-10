@@ -3933,6 +3933,9 @@ public final class StringUtils {
                 case "त्वचा रोग विशेषज्ञ":
                     val = "Dermatologist";
                     break;
+                case "डॉक्टर परामर्श नहीं चाहिए":
+                    val = "Doctor consult not needed";
+                    break;
                 default:
                     return val;
             }
@@ -3964,6 +3967,9 @@ public final class StringUtils {
                     break;
                 case "त्वचारोगतज्ज्ञ":
                     val = "Dermatologist";
+                    break;
+                case "डॉक्टरांचा सल्ला आवश्यक नाही":
+                    val = "Doctor consult not needed";
                     break;
                 default:
                     return val;
@@ -4004,6 +4010,9 @@ public final class StringUtils {
                 case "Dermatologist":
                     val = "त्वचा रोग विशेषज्ञ";
                     break;
+                case "Doctor consult not needed":
+                    val = "डॉक्टर परामर्श नहीं चाहिए";
+                    break;
                 default:
                     return val;
             }
@@ -4035,6 +4044,9 @@ public final class StringUtils {
                     break;
                 case "Dermatologist":
                     val = "त्वचारोगतज्ज्ञ";
+                    break;
+                case "Doctor consult not needed":
+                    val = "डॉक्टरांचा सल्ला आवश्यक नाही";
                     break;
                 default:
                     return val;

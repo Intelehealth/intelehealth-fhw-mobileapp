@@ -934,9 +934,9 @@
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose\n (Non-Fasting)</string>
-<!--    <string name="blood_glucose_random">Blood Glucose \n(Random)</string>-->
+    <!--    <string name="blood_glucose_random">Blood Glucose \n(Random)</string>-->
     <string name="blood_glucose_random">Blood Glucose \n(Fasting)</string>
-<!--    <string name="blood_glucose_random_vitals">Blood Glucose (Random)</string>-->
+    <!--    <string name="blood_glucose_random_vitals">Blood Glucose (Random)</string>-->
     <string name="blood_glucose_random_vitals">Blood Glucose (Fasting)</string>
     <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
     <string name="blood_glucose_fasting">Blood Glucose\n (Fasting)</string>
@@ -1009,6 +1009,14 @@
     <string name="robust_heart_rate">Robust heart rate: %s</string>
     <string name="heart_beat">Heart beat: %s</string>
     <string name="heart_age">Heart age: %s</string>
+    <string name="hrv_visit_summary">HRV:</string>
+    <string name="hr_visit_summary">Heart rate:</string>
+    <string name="rr_visit_summary">Respiratory rate:</string>
+    <string name="ecg_visit_summary">ECG:</string>
+    <string name="rr_value_visit_summary"> %1$s ms</string>
+    <string name="hrv_value_visit_summary"> %1$s ms</string>
+    <string name="hr_value_visit_summary"> %1$s BPM</string>
+    <string name="doctor_not_needed">Doctor consult not needed</string>
 
     <string name="mood_desc_calm">Calm</string>
     <string name="mood_desc_relaxed">Relaxed</string>
@@ -1030,4 +1038,13 @@
     <string name="arm_girth">Arm Girth</string>
     <string name="temperature">Temperature</string>
     <string name="general_physician">General Physician</string>
+    <string name="vitals_complaint">Vitals Complaint</string>
+    <string name="screening">Screening</string>
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="locations">Locations</string>
 </resources>

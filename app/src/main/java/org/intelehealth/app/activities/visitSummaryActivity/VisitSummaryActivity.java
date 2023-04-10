@@ -324,7 +324,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
-    CardView complaintCV, physExamCV, patHistCV, famHistCV;
+    CardView complaintCV, physExamCV, patHistCV, famHistCV, priorityFlagCV;
 
     //generate bill feature
     String patientOpenMRSID = "";
@@ -335,6 +335,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button generateBillBtn;
     String receiptNum, receiptDate, patientFName, patientLName;
     String receiptPaymentStatus = "NA";
+    String special_value = "";
+
 
 
     @Override
@@ -686,6 +688,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physExamCV = findViewById(R.id.cardView_physexam);
         patHistCV = findViewById(R.id.cardView_pathist);
         famHistCV = findViewById(R.id.cardView_famhist);
+        priorityFlagCV = findViewById(R.id.flageddetails);
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -824,9 +827,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit
-                (visitUuid), sessionManager.getAppLanguage());
-
+        special_value = getSpecialityTranslated_Edit(visitAttributeListDAO.getVisitAttributesList_specificVisit
+                (visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"), sessionManager.getAppLanguage());
 
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
@@ -843,7 +845,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
 //                speciality_spinner.setSelection(9); // wrong implementation
                 speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.general_physician)));
-                speciality_spinner.setEnabled(false);
+                if (isVisitSpecialityExists)
+                    speciality_spinner.setEnabled(false);
+            } else {
+                if (!isVisitSpecialityExists)
+                    speciality_spinner.setEnabled(true);
             }
 
         } else {
@@ -857,8 +863,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (special_value != null && !special_value.equalsIgnoreCase("EMPTY")) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
-        } else {
+        }
 
+        if (special_value != null && !special_value.equalsIgnoreCase("EMPTY") && special_value.equalsIgnoreCase(getString(R.string.doctor_not_needed))) {
+            mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+            priorityFlagCV.setVisibility(View.GONE);
         }
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -870,6 +879,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 speciality_selected = getSpecialityTranslated(speciality_selected, sessionManager.getAppLanguage());
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
 
+                if (adapterView.getItemAtPosition(i).toString().equalsIgnoreCase(getString(R.string.doctor_not_needed))) {
+                    mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+                    priorityFlagCV.setVisibility(View.GONE);
+                } else {
+                    mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                    priorityFlagCV.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -1000,7 +1016,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
-                                    .insertVisitAttributes(visitUuid, speciality_selected);
+                                    .insertVisitAttributes(visitUuid, speciality_selected, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
@@ -1957,6 +1973,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 int i = items.indexOf("Dermatologist");
                 items.set(i, "त्वचा रोग विशेषज्ञ");
             }
+            if (items.contains("Doctor consult not needed")) {
+                int i = items.indexOf("Doctor consult not needed");
+                items.set(i, "डॉक्टर परामर्श नहीं चाहिए");
+            }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             if (items.contains("General Physician")) {
                 int i = items.indexOf("General Physician");
@@ -1994,6 +2014,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 int i = items.indexOf("Dermatologist");
                 items.set(i, "त्वचारोगतज्ज्ञ");
             }
+            if (items.contains("Doctor consult not needed")) {
+                int i = items.indexOf("Doctor consult not needed");
+                items.set(i, "डॉक्टरांचा सल्ला आवश्यक नाही");
+            }
         }
     }
 
@@ -2005,8 +2029,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                new String[]{uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND visit_attribute_type_uuid = ?",
+                new String[]{uuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -4720,7 +4744,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (mAppointmentDetailsResponse.getData() == null) {
                             mCancelAppointmentBookingTextView.setVisibility(View.GONE);
                             mInfoAppointmentBookingTextView.setVisibility(View.GONE);
-                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            if (!special_value.equalsIgnoreCase(getString(R.string.doctor_not_needed)))
+                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
                             mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
                             mAppointmentId = 0;
                         } else {
@@ -4730,15 +4755,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 appointmentDAO.insert(mAppointmentDetailsResponse.getData());
                                 mAppointmentId = mAppointmentDetailsResponse.getData().getId();
 
-                                mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                                mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                                mDoctorAppointmentBookingTextView.setText(getResources().getString(R.string.reschedule_appointment));
-                                mInfoAppointmentBookingTextView.setText(getResources().getString(R.string.appointment_booked) + ":\n\n" +
-                                        org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
-                                        mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
-                                        mAppointmentDetailsResponse.getData().getSlotTime()
-                                );
+                                if (!special_value.equalsIgnoreCase(getString(R.string.doctor_not_needed))) {
+                                    mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                    mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                    mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                    mDoctorAppointmentBookingTextView.setText(getResources().getString(R.string.reschedule_appointment));
+                                    mInfoAppointmentBookingTextView.setText(getResources().getString(R.string.appointment_booked) + ":\n\n" +
+                                            org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
+                                            mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
+                                            mAppointmentDetailsResponse.getData().getSlotTime()
+                                    );
+                                }
 
                             } catch (Exception e) {
                                 e.printStackTrace();

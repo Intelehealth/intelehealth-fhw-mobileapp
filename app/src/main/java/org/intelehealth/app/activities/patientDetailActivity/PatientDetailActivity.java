@@ -52,12 +52,14 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -306,8 +308,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO = new EncounterDTO();
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
+                try {
+                    encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }                encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
                 encounterDTO.setProvideruuid(sessionManager.getProviderID());
                 Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
@@ -378,8 +383,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
                 VisitsDAO visitsDAO = new VisitsDAO();
 
+                VisitAttributeListDAO visitAttribute = new VisitAttributeListDAO();
+
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
+                    visitAttribute.insertVisitAttributes(uuid, sessionManager.getStateName(), "7d3c899e-7913-4aac-ad0c-b097bfa7e96d");
+
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -403,6 +412,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         LoadFamilyMembers();
 
+    }
+
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
     }
 
     private void LoadFamilyMembers() {
@@ -1321,7 +1339,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
-                        Log.e("Check", "No complaint");
+                        complaintxt1.setText(getString(R.string.screening));
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     //complaintxt1.setLayoutParams(layoutParams);
@@ -1368,6 +1386,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
+                        complaintxt1.setText(getString(R.string.screening));
                         Log.e("Check", "No complaint");
                     }
                     layoutParams.setMargins(5, 10, 5, 0);

@@ -765,10 +765,10 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_RANDOM) ||
-                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_RANDOM)) {
-                        bloodGlucose_Fasting_editText.setError(getString(R.string.glucose_random_validation,
-                                AppConstants.MINIMUM_GLUCOSE_RANDOM, AppConstants.MAXIMUM_GLUCOSE_RANDOM));
+                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING) ||
+                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING)) {
+                        bloodGlucose_Fasting_editText.setError(getString(R.string.glucose_fasting_validation,
+                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
                     } else {
                         bloodGlucose_Fasting_editText.setError(null);
                     }
@@ -1299,7 +1299,7 @@ public class VitalsActivity extends AppCompatActivity implements /*MonitorDataTr
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
                         et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MAXIMUM_GLUCOSE_FASTING, AppConstants.MINIMUM_GLUCOSE_FASTING));
+                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
                         focusView = et;
                         cancel = true;
                         break;

@@ -29,6 +29,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_weight="1">
 
             <LinearLayout
@@ -58,6 +59,7 @@
                         android:id="@+id/wave_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@color/white"
                         app:largeGridColor="@color/colorECGLargeGrid"
                         app:smallGridColor="@color/colorECGSmallGrid" />
 

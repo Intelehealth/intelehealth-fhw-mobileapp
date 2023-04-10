@@ -92,6 +92,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -579,7 +581,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounter_uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Visit Billing Details"));
-        encounterDTO.setEncounterTime(thisDate);
+        try {
+            encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         encounterDTO.setVisituuid(patientVisitID);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
@@ -592,6 +598,15 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         return success;
+    }
+
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
     }
 
     private void shareFile() {

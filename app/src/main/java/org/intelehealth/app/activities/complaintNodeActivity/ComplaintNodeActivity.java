@@ -39,7 +39,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -120,8 +124,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setVisituuid(visitUuid);
+        try {
+            encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }        encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
         Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
@@ -305,6 +312,15 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         tv_selectComplaint.setVisibility(View.VISIBLE);
         list_recyclerView.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
+    }
+
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
     }
 
     private void confirmSkipDialog() {

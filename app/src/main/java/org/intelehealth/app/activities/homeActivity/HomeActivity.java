@@ -13,6 +13,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
+import org.intelehealth.app.BuildConfig;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
@@ -82,8 +83,6 @@ import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.whealthService.BleDevManager;
 import com.linktop.whealthService.OnBLEService;
-
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
@@ -955,6 +954,10 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
     @Override
     protected void onResume() {
+        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -"))
+            mIsFirstTimeSyncDone = true;
+
+
         if (mIsFirstTimeSyncDone && mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
         }
@@ -1286,7 +1289,11 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             //CallListenerBackgroundService.getInstance().stopForegroundService();
-            context.startService(serviceIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
