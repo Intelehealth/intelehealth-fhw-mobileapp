@@ -1551,7 +1551,7 @@
     <string name="patient_aid_type">Select Patient\'s aid type*</string>
     <string name="previous">Previous</string>
     <string name="select_for">Select for : %1$s</string>
-    <string name="enter_value">Enter Value</string>
+    <string name="enter_value">Enter response</string>
     <string name="household_survey_saved">Needs Assessment submitted!</string>
     <string name="triage_survey_saved">Triage survey submitted!</string>
 
