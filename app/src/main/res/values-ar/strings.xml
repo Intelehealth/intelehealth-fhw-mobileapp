@@ -85,7 +85,7 @@
     <string name="identification_screen_prompt_last_name">الكنية*</string>
     <string name="identification_screen_prompt_address">العنوان السطر 1*</string>
     <string name="identification_screen_prompt_address2">العنوان السطر 2</string>
-    <string name="identification_screen_prompt_phone_number">رقم الهاتف *</string>
+    <string name="identification_screen_prompt_phone_number">رقم الهاتف (واتس آب) *</string>
     <string name="admin_password_dialog_heading">أدخل كلمة مرور المسؤول</string>
     <string name="identification_screen_prompt_gender">الجنس *</string>
     <string name="identification_screen_checkbox_male">ذكر</string>
