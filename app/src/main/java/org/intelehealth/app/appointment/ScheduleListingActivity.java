@@ -28,6 +28,7 @@ import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.utils.MyDatePicker;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -76,9 +77,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         specialityTextView.setText(speciality);
 
         if (sessionManager.getAppLanguage().equals("ar")) {
-            if (speciality.equalsIgnoreCase("General Physician")) {
-                specialityTextView.setText("طبيب عام");
-            }
+            specialityTextView.setText(StringUtils.getProviderNameInArabic(speciality));
         }
 
         rvSlots = findViewById(R.id.rvSlots);
@@ -210,29 +209,29 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
-                        if(slotInfoResponse ==null){
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        }else{
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
-                                ScheduleListingActivity.this,
-                                slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
-                            @Override
-                            public void onSelect(SlotInfo slotInfo) {
-                                //------before reschedule need to cancel appointment----
-                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                bookAppointment(slotInfo);
-
-                            }
-                        });
-                        rvSlots.setAdapter(slotListingAdapter);
-
-                        if (slotListingAdapter.getItemCount() == 0) {
+                        if (slotInfoResponse == null) {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
                         } else {
                             findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }
+                            SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
+                                    ScheduleListingActivity.this,
+                                    slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
+                                @Override
+                                public void onSelect(SlotInfo slotInfo) {
+                                    //------before reschedule need to cancel appointment----
+                                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                    bookAppointment(slotInfo);
+
+                                }
+                            });
+                            rvSlots.setAdapter(slotListingAdapter);
+
+                            if (slotListingAdapter.getItemCount() == 0) {
+                                findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
+                            } else {
+                                findViewById(R.id.llEmptyView).setVisibility(View.GONE);
+                            }
                         }
                     }
 

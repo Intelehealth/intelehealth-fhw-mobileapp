@@ -459,10 +459,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
         // the new message provided by Programs Team
-        alertDialogBuilder.setMessage(R.string.visit_data_loss_message);
+        alertDialogBuilder.setMessage(getString(R.string.visit_data_loss_message));
 
         // Positive button option
-        alertDialogBuilder.setPositiveButton(R.string.generic_yes, (dialog, which) -> {
+        alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), (dialog, which) -> {
             dialog.dismiss();
             endVisit();
             AppointmentDAO appointmentDAO = new AppointmentDAO();
@@ -470,7 +470,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
 
         // Negative button option
-        alertDialogBuilder.setNegativeButton(R.string.generic_no, (dialog, which) -> {
+        alertDialogBuilder.setNegativeButton(getString(R.string.generic_no), (dialog, which) -> {
             dialog.dismiss();
         });
 

@@ -234,8 +234,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                boolean hasPrescription = hasPrescription(cursor);
                 do {
+                    boolean hasPrescription = hasPrescription(cursor);
                     try {
                         TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
