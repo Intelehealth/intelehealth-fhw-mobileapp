@@ -100,6 +100,8 @@ public class AppConstants {
     public static final int SYNC_FAILED = 0;
     public static final int SYNC_PULL_DATA_DONE = 1;
     public static final int SYNC_PUSH_DATA_DONE = 2;
+    public static final int SYNC_APPOINTMENT_PULL_DATA_DONE = 22;
+    public static final int SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE = 25;
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
 
@@ -136,6 +138,11 @@ public class AppConstants {
     public static final int TERMS_CONDITIONS_DECLINE = 2;
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
+
+
+    public static final int EVENT_FLAG_START = 0;
+    public static final int EVENT_FLAG_SUCCESS = 1;
+    public static final int EVENT_FLAG_FAILED = 2;
 
 
 

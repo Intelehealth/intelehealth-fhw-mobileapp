@@ -10,6 +10,7 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +26,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -34,6 +34,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,6 +113,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     //ImageButton ibEdit;
     private PatientDTO patientDTO;
     String patientPhoneNo = "";
+    private TextView mScheduleAppointmentTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +126,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         initUI();
     }
+
     private ObjectAnimator syncAnimator;
+
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
@@ -154,6 +161,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
 
         //ibEdit = findViewById(R.id.edit_patient_appointment);
+
+        mScheduleAppointmentTextView = findViewById(R.id.btn_schedule_appointment);
 
         stateAppointmentStarted = findViewById(R.id.state_appointment_started);
         stateAppointmentPrescription = findViewById(R.id.state_prescription_appointment);
@@ -439,12 +448,36 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         //if appointment is cancelled
         if (appointmentStatus != null && !appointmentStatus.isEmpty() && appointmentStatus.equalsIgnoreCase("cancelled")) {
-            layoutSummaryBtns.setVisibility(View.GONE);
+            //layoutSummaryBtns.setVisibility(View.GONE);
+            btnCancelAppointment.setVisibility(View.GONE);
+            btnRescheduleAppointment.setVisibility(View.GONE);
+
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.GONE);
 
+            mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
+        }else{
+            btnCancelAppointment.setVisibility(View.VISIBLE);
+            btnRescheduleAppointment.setVisibility(View.VISIBLE);
+            mScheduleAppointmentTextView.setVisibility(View.GONE);
         }
+
+        mScheduleAppointmentTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(AppointmentDetailsActivity.this, ScheduleAppointmentActivity_New.class);
+                in.putExtra("visitUuid", visitID);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patientName", patientName);
+                in.putExtra("appointmentId", 0);
+                in.putExtra("actionTag", "new_schedule");
+                in.putExtra("openMrsId", openmrsID);
+                in.putExtra("speciality", visit_speciality);
+                mStartForScheduleAppointment.launch(in);
+
+            }
+        });
 
     }
 
@@ -656,8 +689,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                             Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
                             //   getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
-                            Intent intent = new Intent(AppointmentDetailsActivity.this, HomeScreenActivity_New.class);
-                            startActivity(intent);
+                            //Intent intent = new Intent(AppointmentDetailsActivity.this, HomeScreenActivity_New.class);
+                            //startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
 
@@ -783,20 +817,21 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                     Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    startActivityForResult(new Intent(context, ScheduleAppointmentActivity_New.class)
-                            .putExtra("actionTag", "rescheduleAppointment")
-                            .putExtra("visitUuid", visitID)
-                            .putExtra("patientUuid", patientUuid)
-                            .putExtra("patientName", patientName)
-                            .putExtra("appointmentId", appointment_id)
-                            .putExtra("openMrsId", openmrsID)
-                            .putExtra("app_start_date", app_start_date)
-                            .putExtra("app_start_time", app_start_time)
-                            .putExtra("app_start_day", app_start_day)
-                            .putExtra("rescheduleReason", mEngReason)
-                            .putExtra("speciality", visit_speciality), SCHEDULE_LISTING_INTENT);
+                    Intent in = new Intent(context, ScheduleAppointmentActivity_New.class);
+                    in.putExtra("actionTag", "rescheduleAppointment");
+                    in.putExtra("visitUuid", visitID);
+                    in.putExtra("patientUuid", patientUuid);
+                    in.putExtra("patientName", patientName);
+                    in.putExtra("appointmentId", appointment_id);
+                    in.putExtra("openMrsId", openmrsID);
+                    in.putExtra("app_start_date", app_start_date);
+                    in.putExtra("app_start_time", app_start_time);
+                    in.putExtra("app_start_day", app_start_day);
+                    in.putExtra("rescheduleReason", mEngReason);
+                    in.putExtra("speciality", visit_speciality);
 
                     Log.d(TAG, "onClick: speciality : " + visit_speciality);
+                    mStartForScheduleAppointment.launch(in);
                 }
 
             }
@@ -811,6 +846,20 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         alertDialog.show();
 
     }
+
+    private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
+                        startActivity(in);
+                        finish();
+
+                    }
+                }
+            });
 
     private void askReason(Context context) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -955,6 +1004,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         networkUtils.callBroadcastReceiver();
 
     }
+
     public void editPatientInfo(View view) {
         PatientDTO patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";

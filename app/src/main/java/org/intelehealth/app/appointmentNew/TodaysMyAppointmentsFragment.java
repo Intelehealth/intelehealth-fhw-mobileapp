@@ -22,8 +22,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -34,7 +37,6 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -43,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,12 +70,36 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private UpdateAppointmentsCount listener;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0,new UpdateFragmentOnEvent() {
+            @Override
+            public void onStart(int eventFlag) {
+                Log.v(TAG, "onStart");
+            }
+
+            @Override
+            public void onFinished(int eventFlag) {
+                Log.v(TAG, "onFinished");
+                getAppointments();
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_todays_appointments_ui2, container, false);
         initUI();
         clickListeners();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getAppointments();
     }
 
     private void initUI() {
@@ -143,8 +168,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutUpcoming.setLayoutParams(params);
 
         searchPatient();
-        getSlots();
-        getAppointments();
+        //getSlots();
+
 
     }
 
@@ -268,6 +293,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
         try {
+            Log.v(TAG, "appointmentInfoList - " + appointmentInfoList.size());
             if (appointmentInfoList.size() > 0) {
                 rvUpcomingApp.setVisibility(View.VISIBLE);
                 noDataFoundForUpcoming.setVisibility(View.GONE);
@@ -284,8 +310,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     long minutes = second / 60;
                     String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                     appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-
-                    if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                    Log.v(TAG, new Gson().toJson(appointmentInfo));
+                    if (appointmentInfo.getStatus()!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
@@ -507,7 +533,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
+                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
                             if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
                                 for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
                                     try {
@@ -519,7 +545,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                                 }
                             }
                         } else {
-                        }
+                        }*/
 
 
                         getAppointments();

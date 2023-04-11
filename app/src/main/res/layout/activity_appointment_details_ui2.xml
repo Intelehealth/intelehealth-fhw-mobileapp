@@ -64,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/card_profile_details_margin_start"
+                    android:layout_toStartOf="@+id/call_chat_action_ll"
                     android:layout_toEndOf="@+id/profile"
                     android:orientation="vertical">
 
@@ -81,7 +82,7 @@
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
-                            android:maxLines="1"
+                            android:maxLines="1" android:maxLength="15"
                             android:text="@string/fu_visit_name"
                             android:textAppearance="@style/label_16sp"
                             android:textColor="@null"
@@ -128,10 +129,12 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/call_chat_action_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true" android:gravity="center"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -616,6 +619,18 @@
                 android:orientation="horizontal"
                 android:visibility="gone"
                 android:weightSum="1">
+
+                <Button
+                    android:id="@+id/btn_schedule_appointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/btn_visit_margin_bottom"
+                    android:background="@drawable/common_button_bg_primary_new_ui2"
+                    android:letterSpacing="0.02"
+                    android:text="@string/schedule_appointment"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/btn_visit_text_size"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btn_cancel_appointment"
