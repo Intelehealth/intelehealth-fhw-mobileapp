@@ -3510,7 +3510,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case UuidDictionary.FOOD_ALLERGY: {
-                if (!foodAllergyReturned.isEmpty()) {
+                if (!foodAllergyReturned.isEmpty() && !foodAllergyReturned.contains(value)) {
+                    // Note: !foodAllergyReturned.contains(value) -> this is added to avoid concating duplicate values... MHM-230 issue.
                     foodAllergyReturned = foodAllergyReturned + "\n" + Node.bullet + " " + value;
                 } else {
                     foodAllergyReturned = Node.bullet + " " + value;
