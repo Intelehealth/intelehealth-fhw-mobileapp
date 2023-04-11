@@ -136,7 +136,7 @@
     </array>
 
     <string-array name="location_state">
-        <item>Select State</item>
+        <item>Select Governorate</item>
     </string-array>
 
     <string-array name="location_district">

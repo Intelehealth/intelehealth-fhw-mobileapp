@@ -92,13 +92,28 @@ public class ProviderAttributeLIstDAO {
         ProviderAttributeListDTO dto = new ProviderAttributeListDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
+                boolean isDoctorConsultSpecialty = false;
+
                 dto = new ProviderAttributeListDTO();
+                String specialtyValue = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                // Checks if the specialty is Doctor (General Consult) or not.
+                // If it is - we'll mark the isDoctorConsultSpecialty as true;
+                if (specialtyValue.trim().equalsIgnoreCase("Doctor (General Consult)"))
+                    isDoctorConsultSpecialty = true;
+
                 if (appLanguage.equalsIgnoreCase("ar")) {
-                    dto.setValue(StringUtils.getProviderNameInArabic(idCursor.getString(idCursor.getColumnIndexOrThrow("value"))));
+                    dto.setValue(StringUtils.getProviderNameInArabic(specialtyValue));
                 } else {
-                    dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                    dto.setValue(specialtyValue);
                 }
-                listDTOArrayList.add(dto.getValue());
+
+                // If isDoctorConsultSpecialty is true, we'll simply add the elements at the top of the Arraylist - requirement as per Programs Team - Added by Arpan Sircar
+                if (isDoctorConsultSpecialty) {
+                    listDTOArrayList.add(0, dto.getValue());
+                } else {
+                    listDTOArrayList.add(dto.getValue());
+                }
             }
         }
         idCursor.close();

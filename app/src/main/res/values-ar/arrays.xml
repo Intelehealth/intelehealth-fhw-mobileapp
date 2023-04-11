@@ -279,7 +279,7 @@
     </array>
 
     <string-array name="location_state">
-        <item>اختر ولايه</item>
+        <item>اختر محافظة</item>
     </string-array>
 
     <string-array name="location_district">

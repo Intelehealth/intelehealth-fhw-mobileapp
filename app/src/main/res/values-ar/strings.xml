@@ -549,7 +549,7 @@
     <string name="failed_synced">#VALUE!</string>
     <string name="visit_not_uploaded">زيارة لم يتم تحميلها</string>
     <string name="upload_started">تحميل ...</string>
-    <string name="visit_uploaded_successfully">زيارة تم تحميلها بنجاح</string>
+    <string name="visit_uploaded_successfully">تم تحميل الزيار بنجاح</string>
     <string name="visit_uploaded_failed">سيتم تحميلها عند توفر الإنترنت</string>
     <string name="visitID">بطاقة زيارة تعريفية</string>
 
@@ -1550,7 +1550,7 @@
 
 
     //-------setup Location string-----
-    <string name="setup_select_state_str">اختر ولايه</string>
+    <string name="setup_select_state_str">اختر محافظة</string>
     <string name="setup_select_dropdown_state_msg">حدد الولاية من القائمة المنسدلة</string>
     <string name="setup_select_district_str">حدد المنطقة</string>
     <string name="setup_select_dropdown_district_msg">حدد المنطقة من القائمة المنسدلة</string>
@@ -1578,7 +1578,7 @@
     <string name="comm_general_need_survey">استبيان الحاجات المحلية</string>
     <string name="earthquake_victim">ضحية زلزال</string>
     <string name="incorrect_healthworker_disclaimer">هذه المعلومات شخصية و لا يمكن الوصول إليها من اذن صاحب  العلاقة. الرجاء ادخال الرقم الشخصي المزود لصاحب العلاقة للمتابعة</string>
-    <string name="request_patient_pin_string">لحماية المعلومات الشخصية للمريض الرجاء الطلب من المريض انتقاء و حفظ رقم من أ{بع أرقام كرمز شخصي. سيطلب هذا الرمز من أي مقدم للصحة المجتمعية لمراجعة هذه المعلومات</string>
+    <string name="request_patient_pin_string">لحماية المعلومات الشخصية للمريض الرجاء الطلب من المريض انتقاء و حفظ رقم من أربع أرقام كرمز شخصي. سيطلب هذا الرمز من أي مقدم للصحة المجتمعية لمراجعة هذه المعلومات</string>
     <string name="empty_pin_error">يجب ملء هذا الحقل</string>
     <string name="please_enter_four_digit_pin">من فضلك، . ادخل رقمك الشخصي من اربع خانات</string>
     <string name="incorrect_pin_entered">الرمز الشخصي غير صحيح</string>

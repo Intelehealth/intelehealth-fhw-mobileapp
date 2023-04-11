@@ -1556,7 +1556,7 @@
     <string name="triage_survey_saved">Triage survey submitted!</string>
 
     //-------setup Location string-----
-    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_state_str">Select Governorate</string>
     <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
     <string name="setup_select_district_str">Select District</string>
     <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
