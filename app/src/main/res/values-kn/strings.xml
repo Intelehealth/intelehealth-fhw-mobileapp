@@ -1130,15 +1130,15 @@
     <string name="hundred_two_hundred_fifty_ml">100 – 250 ಮಿಲಿ</string>
     <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ಮಿಲಿ</string>
     <string name="more_than_five_hundred_ml">500 ಮಿಲಿಗಿಂತ ಹೆಚ್ಚು</string>
-    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
+    <string name="answer_following_questions">ಕೆಳಗಿನವುಗಳು ಕಡ್ಡಾಯ ಪ್ರಶ್ನೆಗಳಾಗಿವೆ, ದಯವಿಟ್ಟು ಅವುಗಳಿಗೆ ಉತ್ತರಿಸಿ.</string>
 
-    <string name="dr_specility_generalphysician">General Physician</string>
-    <string name="update_hw_profile">Updated Succussfully</string>
-    <string name="enter_valid_email">Enter valid email address</string>
-    <string name="enter_valid_gender">Enter gender male or female</string>
+    <string name="dr_specility_generalphysician">ಸಾಮಾನ್ಯ ವೈದ್ಯ</string>
+    <string name="update_hw_profile">ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ</string>
+    <string name="enter_valid_email">ಮಾನ್ಯ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_valid_gender">ಲಿಂಗವನ್ನು ಪುರುಷ ಅಥವಾ ಮಹಿಳೆ ನಮೂದಿಸಿ</string>
     <string name="does_person_chew_tobacco">ವ್ಯಕ್ತಿಯು ತಂಬಾಕು ಅಗಿಯುತ್ತಾರೆಯೇ?</string>
-    <string name="history_of_tobacco_consumption">History of Tobacco Consumption</string>
-    <string name="tobacco_consumption_cannot_empty">Tobacco Consumption History Cannot Be Empty</string>
+    <string name="history_of_tobacco_consumption">ತಂಬಾಕು ಬಳಕೆಯ ಇತಿಹಾಸ</string>
+    <string name="tobacco_consumption_cannot_empty">ತಂಬಾಕು ಬಳಕೆಯ ಇತಿಹಾಸ, ಖಾಲಿ ಬಿಡಬೇಡಿ</string>
     <string name="not_sure">ಖಚಿತವಿಲ್ಲ</string>
     <string name="handmade_purifier">ಕೈಯಿಂದ ಮಾಡಿದ ಪ್ಯೂರಿಫೈಯರ್</string>
     <string name="do_nothing">ಏನನ್ನೂ ಮಾಡಬೇಡ</string>
