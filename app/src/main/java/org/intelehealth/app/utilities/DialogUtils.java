@@ -225,4 +225,37 @@ public class DialogUtils {
 
         return builder;
     }
+
+    public AlertDialog showCommonLoadingDialog(Context context, String title, String message) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_common_loading_message, null);
+        alertdialogBuilder.setView(convertView);
+        //ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        //Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        //Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        //if (iconResource == 0) icon.setVisibility(View.GONE);
+        //icon.setImageResource(iconResource);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(message);
+        // positive_btn.setText(positiveBtnText);
+        // negative_btn.setText(negativeBtnText);
+
+        //if (isSingleButton) {
+        //    negative_btn.setVisibility(View.GONE);
+        //}
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        alertDialog.show();
+        return alertDialog;
+    }
 }

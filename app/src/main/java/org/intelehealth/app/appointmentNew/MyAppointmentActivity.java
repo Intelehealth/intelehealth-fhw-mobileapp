@@ -1,18 +1,15 @@
 package org.intelehealth.app.appointmentNew;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +19,25 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.HashMap;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MyAppointmentActivity extends AppCompatActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAppointmentActivity";
@@ -41,6 +49,13 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
     private ObjectAnimator syncAnimator;
+    private boolean mIsInternetAvailable;
+    private HashMap<Integer, UpdateFragmentOnEvent> mUpdateFragmentOnEventHashMap = new HashMap<>();
+
+    public void initUpdateFragmentOnEvent(int tab, UpdateFragmentOnEvent listener) {
+        Log.v(TAG, "initUpdateFragmentOnEvent");
+        mUpdateFragmentOnEventHashMap.put(tab, listener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +67,74 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loaAllAppointments();
+    }
+
+    private void loaAllAppointments() {
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        int tabIndex = tabLayout.getSelectedTabPosition();
+        if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
+            Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                        new SessionManager(this).getLocationUuid())
+
+                .enqueue(new Callback<AppointmentListingResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
+                        AppointmentListingResponse slotInfoResponse = response.body();
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAllAppointments();
+
+
+                        if (slotInfoResponse.getData().size() > 0) {
+                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+
+                                try {
+                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
+
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
+                            if (slotInfoResponse.getCancelledAppointments().size() > 0) {
+
+                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+
+                                    try {
+                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                    } catch (DAOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }*/
+
+                        //getAppointments();
+                        Log.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
+                        Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_FAILED);
+                    }
+                });
+
+
+    }
+
 
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_my_appointments);
@@ -119,6 +202,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
                     }
 
                 }*/
+                loaAllAppointments();
             }
 
             @Override
@@ -214,6 +298,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     //update ui as per internet availability
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        mIsInternetAvailable = isInternetAvailable;
         if (isInternetAvailable) {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
 

@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -30,6 +32,7 @@ public class AppointmentDAO {
 
 
     public void insert(AppointmentInfo appointmentInfo) throws DAOException {
+
         AppointmentInfo checkAppointmentInfo = getAppointmentByVisitId(appointmentInfo.getVisitUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -74,6 +77,7 @@ public class AppointmentDAO {
     }
 
     public void updateAppointmentSync(String uuid, String synced) throws DAOException {
+        Log.v(TAG, "updateAppointmentSync uuid- " + uuid + "\t synced - " + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         String whereClause = "visit_uuid=?";
@@ -88,6 +92,8 @@ public class AppointmentDAO {
     }
 
     public void insertAppointmentToDb(BookAppointmentRequest bookAppointmentRequest) throws DAOException {
+        Log.v(TAG, "insertAppointmentToDb bookAppointmentRequest - " + new Gson().toJson(bookAppointmentRequest));
+
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         try {
@@ -199,7 +205,7 @@ public class AppointmentDAO {
 //    }
 
     public void deleteAppointmentByVisitId(String visitUuid) {
-        Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUuid);
+        Log.v(TAG, "deleteAppointmentByVisitId - visitUUID - " + visitUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         db.delete("tbl_appointments", "visit_uuid=?", new String[]{visitUuid});
@@ -503,7 +509,7 @@ public class AppointmentDAO {
     }
 
     public AppointmentInfo getDetailsOfRescheduledAppointment(String visitUUID, String appointmentId) {
-        Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUUID);
+        Log.v(TAG, "getDetailsOfRescheduledAppointment - visitUUID - " + visitUUID);
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
