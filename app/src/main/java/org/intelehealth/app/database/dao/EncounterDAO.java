@@ -461,6 +461,33 @@ public class EncounterDAO {
         return false;
     }
 
+    public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
+            //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
+
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",
+                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            EncounterDTO encounterDTO = new EncounterDTO();
+            if (idCursor.getCount() != 0) {
+                return true;
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return false;
+    }
+
     /**
      * Chief Complaint for this visituuid
      */

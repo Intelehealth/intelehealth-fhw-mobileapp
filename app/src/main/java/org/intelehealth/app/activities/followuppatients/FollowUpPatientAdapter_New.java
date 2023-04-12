@@ -2,6 +2,8 @@ package org.intelehealth.app.activities.followuppatients;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -30,6 +33,10 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -64,100 +71,128 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     @Override
     public FollowUpPatientAdapter_New.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.followup_list_item, parent, false);
+        View row = inflater.inflate(R.layout.followup_list_item_1, parent, false);
         return new FollowUpPatientAdapter_New.Myholder(row);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FollowUpPatientAdapter_New.Myholder holder, int position) {
         if (patients != null) {
-        final FollowUpModel model = patients.get(position);
-        holder.setIsRecyclable(false);
+            final FollowUpModel model = patients.get(position);
+            holder.setIsRecyclable(false);
 
-        if (model != null) {
+            if (model != null) {
 
-            // Patient Photo
-            //1.
-            try {
-                profileImage = imagesDAO.getPatientProfileChangeTime(model.getPatientuuid());
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-            //2.
-            if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
-                if (NetworkConnection.isOnline(context)) {
-                    profilePicDownloaded(model, holder);
+                // Patient Photo
+                //1.
+                try {
+                    profileImage = imagesDAO.getPatientProfileChangeTime(model.getPatientuuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            }
-            //3.
-            if (!profileImage.equalsIgnoreCase(profileImage1)) {
-                if (NetworkConnection.isOnline(context)) {
-                    profilePicDownloaded(model, holder);
+                //2.
+                if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+                    if (NetworkConnection.isOnline(context)) {
+                        profilePicDownloaded(model, holder);
+                    }
                 }
+                //3.
+                if (!profileImage.equalsIgnoreCase(profileImage1)) {
+                    if (NetworkConnection.isOnline(context)) {
+                        profilePicDownloaded(model, holder);
+                    }
+                }
+
+                if (model.getPatient_photo() != null) {
+                    Glide.with(context)
+                            .load(model.getPatient_photo())
+                            .thumbnail(0.3f)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(holder.profile_image);
+                } else {
+                    holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                }
+                // photo - end
+
+                // Patient Name section
+                String fullName = model.getFirst_name() + " " + model.getLast_name();
+                if (model.getOpenmrs_id() != null) {
+                    holder.fu_patname_txtview.setText(fullName.substring(0, 10) + ", " + model.getOpenmrs_id());
+                } else {
+                    holder.fu_patname_txtview.setText(fullName.substring(0, 10));
+                }
+
+                // Followup Date section
+                if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
+                    try {
+                        Log.v("getFollowup_date", model.getFollowup_date());
+                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        String followupDateTime = followupDateTimeRaw.replace(", Time:", "");
+                        Log.v("getFollowup_date", followupDateTime);
+
+                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(followupDateTime);
+                        Date nowDate = new Date();
+                        if (fDate.getTime() >= nowDate.getTime()) {
+                            holder.fu_date_txtview.setTextColor(context.getColor(R.color.gray_3));
+                        }else{
+                            holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
+                        }
+                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM,hh:mm a");
+                        holder.fu_date_txtview.setText(String.format("Follow up on %s", followupDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Emergency/Priority tag code.
+                if (model.isEmergency())
+                    holder.fu_priority_tag.setVisibility(View.VISIBLE);
+                else
+                    holder.fu_priority_tag.setVisibility(View.GONE);
             }
 
-            if (model.getPatient_photo() != null) {
-                Glide.with(context)
-                        .load(model.getPatient_photo())
-                        .thumbnail(0.3f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(holder.profile_image);
-            } else {
-                holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
-            }
-            // photo - end
+            // Patient Age
+            String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
 
-            // Patient Name section
-            if (model.getOpenmrs_id() != null) {
-                holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name() + ", " + model.getOpenmrs_id());
-            } else {
-                holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name());
-            }
+            holder.cardView.setOnClickListener(v -> {
+                /*Intent i = new Intent(context, VisitDetailsActivity.class);
+                i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
+                i.putExtra("gender", model.getGender());
+                i.putExtra("patientUuid", model.getPatientuuid());
+                i.putExtra("age", age);
+                i.putExtra("openmrsID", model.getOpenmrs_id());
+                i.putExtra("priority_tag", model.isEmergency());
+                i.putExtra("visit_ID", model.getUuid());
+                i.putExtra("visit_startDate", model.getVisit_start_date());
+                i.putExtra("visit_speciality", model.getVisit_speciality());
+                i.putExtra("followup_date", model.getFollowup_date());
+                i.putExtra("patient_photo", model.getPatient_photo());
+                i.putExtra("chief_complaint", model.getChiefComplaint());
+                i.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                i.putExtra("hasPrescription", true);    // True since without presc there cannot be No Follow up Given so...
+                context.startActivity(i);*/
 
-            // Followup Date section
-            if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
-                String followupDate = model.getFollowup_date();
-                followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
-                holder.fu_date_txtview.setText("Follow up on " + followupDate);
-            }
 
-            // Emergency/Priority tag code.
-            if (model.isEmergency())
-                holder.fu_priority_tag.setVisibility(View.VISIBLE);
-            else
-                holder.fu_priority_tag.setVisibility(View.GONE);
+                Intent intent = new Intent(context, PatientDetailActivity2.class);
+                intent.putExtra("patientUuid", model.getPatientuuid());
+                intent.putExtra("patientName", model.getFirst_name() + " " + model.getLast_name());
+                intent.putExtra("tag", "newPatient");
+                intent.putExtra("hasPrescription", "false");
+                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
+                //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                
+                context.startActivity(intent);
+            });
         }
-
-        // Patient Age
-        String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
-
-        holder.cardView.setOnClickListener(v -> {
-            Intent i = new Intent(context, VisitDetailsActivity.class);
-            i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
-            i.putExtra("gender", model.getGender());
-            i.putExtra("patientUuid", model.getPatientuuid());
-            i.putExtra("age", age);
-            i.putExtra("openmrsID", model.getOpenmrs_id());
-            i.putExtra("priority_tag", model.isEmergency());
-            i.putExtra("visit_ID", model.getUuid());
-            i.putExtra("visit_startDate", model.getVisit_start_date());
-            i.putExtra("visit_speciality", model.getVisit_speciality());
-            i.putExtra("followup_date", model.getFollowup_date());
-            i.putExtra("patient_photo", model.getPatient_photo());
-            i.putExtra("chief_complaint", model.getChiefComplaint());
-            i.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
-            i.putExtra("hasPrescription", true);    // True since without presc there cannot be No Follow up Given so...
-            context.startActivity(i);
-        });
-    }
     }
 
     @Override
     public int getItemCount() {
         return patients.size(); // todo: uncomment
-     //   return 2;   // todo: testing
+        //   return 2;   // todo: testing
     }
 
     class Myholder extends RecyclerView.ViewHolder {
