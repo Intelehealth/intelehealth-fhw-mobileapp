@@ -111,6 +111,36 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/national_ID_other_details"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/national_ID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Not provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
                         android:text="  Son/Daughter/ \n  Wife of"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
@@ -141,7 +171,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Occupation"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/occupation"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -169,9 +200,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
+                        android:drawablePadding="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Caste"
+                        android:text="@string/social_category"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -201,7 +233,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Education"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/education"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -231,7 +264,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Economic status"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/economic_category"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />

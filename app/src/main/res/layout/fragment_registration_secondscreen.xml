@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="Postal code*"
+                        android:text="Postal code"
                         android:textAppearance="@style/blur_txtview"
 
                         android:textSize="@null" />
@@ -340,7 +340,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="Corresponding Address 1*"
+                    android:text="Corresponding Address 1"
                     android:textAppearance="@style/blur_txtview"
 
                     android:textSize="@null" />

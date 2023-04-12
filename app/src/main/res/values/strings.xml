@@ -1837,6 +1837,13 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="loading_slots">Loading slots...</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
+    <string name="social_category">Social Category</string>
+    <string name="economic_category">Economic Category</string>
+    <string name="select_social_category">Select Social Category</string>
+    <string name="select_economic_category">Select Economic Category</string>
+    <string name="national_ID">National ID (Citizenship ID, Aadhar No., etc.)</string>
+    <string name="national_ID_other_details">National ID</string>
+    <string name="enter_national_ID">Enter National ID</string>
     <!--END-->
 
 </resources>

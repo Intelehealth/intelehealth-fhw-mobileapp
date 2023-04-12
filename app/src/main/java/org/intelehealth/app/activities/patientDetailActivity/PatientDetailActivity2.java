@@ -136,7 +136,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus;
+            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -483,6 +483,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         address1 = findViewById(R.id.address1);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
+        patientNationalID = findViewById(R.id.national_ID);
         patientoccupation = findViewById(R.id.occupation);
         patientcaste = findViewById(R.id.caste);
         patienteducation = findViewById(R.id.education);
@@ -704,6 +705,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patientDTO.setSon_dau_wife(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("NationalID")) {
+                    patientDTO.setNationalID( idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -1263,6 +1267,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             son_daughter_wife.setText(patientDTO.getSon_dau_wife());
         } else {
             son_daughter_wife.setVisibility(View.GONE);
+        }
+
+        // setting national ID value
+        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
+            patientNationalID.setText(patientDTO.getNationalID());
+        } else {
+            patientNationalID.setText("Not Provided");
         }
 
         // setting occupation value

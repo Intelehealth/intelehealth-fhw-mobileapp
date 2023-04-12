@@ -177,19 +177,19 @@ public class Fragment_SecondScreen extends Fragment {
             String val = editable.toString().trim();
             if (this.editText.getId() == R.id.postalcode_edittext) {
                 if (val.isEmpty()) {
-                    mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
+                    /*mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                     mPostalCodeErrorTextView.setText(getString(R.string.error_field_required));
                     mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase("India") && val.length() != 6) {
+                 else if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase("India") && val.length() != 6) {
                     mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                     mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
                     mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
-                } else {
+                } else {*/
                     mPostalCodeErrorTextView.setVisibility(View.GONE);
                     mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.address1_edittext) {
+            } /*else if (this.editText.getId() == R.id.address1_edittext) {
                 if (val.isEmpty()) {
                     mAddress1ErrorTextView.setVisibility(View.VISIBLE);
                     mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
@@ -198,7 +198,7 @@ public class Fragment_SecondScreen extends Fragment {
                     mAddress1ErrorTextView.setVisibility(View.GONE);
                     mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.state_edittext) {
+            } else*/ if (this.editText.getId() == R.id.state_edittext) {
                 if (val.isEmpty()) {
                     mStateNameErrorTextView.setVisibility(View.VISIBLE);
                     mStateNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -397,6 +397,8 @@ public class Fragment_SecondScreen extends Fragment {
                     mDistName = adapterView.getItemAtPosition(i).toString();
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                    mCityNameErrorTextView.setVisibility(View.GONE);
+                    mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
                     //   if (!fromThirdScreen || fromFirstScreen) {
                     /*if (district.matches("Navi Mumbai")) {
@@ -632,22 +634,30 @@ public class Fragment_SecondScreen extends Fragment {
         View focusView = null;
 
         // validation - start
-        if (mPostalCodeEditText.getText().toString().equals("")) {
+        /*if (mPostalCodeEditText.getText().toString().equals("")) {
             mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
             mPostalCodeErrorTextView.setText(getString(R.string.error_field_required));
             mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             mPostalCodeEditText.requestFocus();
             return;
-        } else if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase("India") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
-            mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
-            mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
-            mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mPostalCodeEditText.requestFocus();
-            return;
-        } else {
+        } else*/
+        if (!mPostalCodeEditText.getText().toString().equals("")) {
+            if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase("India") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
+                mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
+                mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
+                mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mPostalCodeEditText.requestFocus();
+                return;
+            } else {
+                mPostalCodeErrorTextView.setVisibility(View.GONE);
+                mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+        else {
             mPostalCodeErrorTextView.setVisibility(View.GONE);
             mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
+
 
         if (mCountryNameSpinner.getSelectedItemPosition() == 0) {
             mCountryNameErrorTextView.setVisibility(View.VISIBLE);
@@ -717,7 +727,7 @@ public class Fragment_SecondScreen extends Fragment {
             mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }*/
 
-        if (mAddress1EditText.getText().toString().equals("")) {
+        /*if (mAddress1EditText.getText().toString().equals("")) {
             mAddress1ErrorTextView.setVisibility(View.VISIBLE);
             mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
             mAddress1EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -726,7 +736,7 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             mAddress1ErrorTextView.setVisibility(View.GONE);
             mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+        }*/
 
         /*if (mAddress2EditText.getText().toString().equals("")) {
             mAddress2ErrorTextView.setVisibility(View.VISIBLE);

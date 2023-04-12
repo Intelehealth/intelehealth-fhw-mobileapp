@@ -363,7 +363,7 @@
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:background="@null"
                     android:onClick="openAll"
-                    android:src="@drawable/open_all_btn" />
+                    android:src="@drawable/close_all_btn" />
 
                 <include layout="@layout/visit_summary_itemscard" />
 
