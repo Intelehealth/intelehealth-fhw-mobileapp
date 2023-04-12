@@ -2428,7 +2428,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
-        String advice_doctor__ = medicalAdviceTextView.getText().toString().replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_").replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
+        String advice_doctor__ = medicalAdviceTextView.getText().toString()
+                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
 
         if (advice_doctor__.indexOf("Start") != -1 || advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
 
@@ -2441,7 +2443,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             //lastIndexOf("User") will give index of U of User
             //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
 
-            String advice_split = new StringBuilder(advice_doctor__).delete(advice_doctor__.indexOf("Start"), advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
+            String advice_split = new StringBuilder(advice_doctor__).delete(advice_doctor__.indexOf("Start"),
+                    advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
             //lastIndexOf("Doctor_") will give index of D of Doctor_
             //so the char this will return is D...here Doctor_ + 9 will return W eg: Doctor_\n\nWatch as +9 will give W
 
@@ -5008,8 +5011,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
-        String advice_web = stringToWeb_sms(medicalAdvice_string.trim().replace("\n\n", "\n"));
-        Log.d("Hyperlink", "hyper_print: " + advice_web);
+      /*  String advice_web = stringToWeb_sms(medicalAdvice_string.trim().replace("\n\n", "\n"));
+        Log.d("Hyperlink", "hyper_print: " + advice_web);*/
+
+        // start
+        String advice_web = "";
+        String advice_doctor__ = medicalAdviceTextView.getText().toString()
+                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
+
+        if (advice_doctor__.indexOf("Start") != -1 || advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
+            String advice_split = new StringBuilder(advice_doctor__).delete(advice_doctor__.indexOf("Start"), advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
+           advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
+            advice_web = advice_web.replace(Node.big_bullet, "- ");
+            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+        }
+        else {
+            advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
+            advice_web = advice_web.replace(Node.big_bullet, "- ");
+            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+        }
+        // end
 
         String diagnosis_web = stringToWeb_sms(diagnosisReturned);
 
