@@ -32,14 +32,25 @@
                 android:elevation="0dp"
                 app:cardCornerRadius="30dp">
 
+
                 <ImageView
                     android:id="@+id/patient_imgview"
                     android:layout_width="@dimen/patregist_profileimg_icon"
                     android:layout_height="@dimen/patregist_profileimg_icon"
                     android:src="@drawable/avatar1" />
 
+
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:id="@+id/patient_camera_imgview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/img_profile"
+                android:layout_marginStart="-20dip"
+                android:layout_toEndOf="@+id/img_profile"
+                android:elevation="8dip"
+                android:src="@drawable/lense_with_camera_icon" />
 
             <TextView
                 android:id="@+id/add_picture"
@@ -171,7 +182,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/last_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
@@ -181,7 +191,7 @@
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
-                    android:hint="Enter surname"
+                    android:hint="@string/enter_last_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
@@ -228,7 +238,7 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -410,7 +420,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/phone_number_mandatory"
+                    android:text="@string/phone_number"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -439,9 +449,9 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
+                        android:digits="1234567890"
                         android:hint="Phone Number"
-                        android:inputType="phone"
-                        android:maxLength="15"
+                        android:inputType="number"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"
@@ -462,7 +472,7 @@
                     android:textColor="@color/red"
                     android:textSize="@null"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
 
             </LinearLayout>

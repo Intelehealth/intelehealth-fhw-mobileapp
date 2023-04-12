@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/home_frag_parent_padding_all"
-        android:paddingRight="@dimen/home_frag_parent_padding_all"
         android:paddingTop="@dimen/home_frag_parent_padding_all"
+        android:paddingRight="@dimen/home_frag_parent_padding_all"
         android:paddingBottom="@dimen/home_frag_parent_padding_bottom">
 
         <TextView
@@ -18,19 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/find_patient_margin_start_new"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/find_patient_margin_end_new"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableStart="@drawable/ui2_ic_search_icon_home"
             android:drawablePadding="@dimen/find_patient_icon_padding"
-            android:layout_marginEnd="@dimen/find_patient_margin_end_new"
             android:drawableTint="@color/colorPrimary"
-            android:text="@string/find_patient"
-            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
-            android:textColor="@color/textColorGray"
             android:importantForAutofill="no"
             android:maxLines="1"
             android:padding="@dimen/find_patient_padding"
             android:singleLine="true"
+            android:text="@string/find_patient"
+            android:textColor="@color/textColorGray"
             android:textSize="@dimen/find_patient_hint_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,13 +41,13 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/addpatient_cardview"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_height="@dimen/card_add_patient_home_height"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/cardTintDarkBlue"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -108,12 +108,12 @@
             android:id="@+id/card_prescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/cardTintLightGreen"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,13 +164,26 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
+                    android:id="@+id/imageview_prescription_img_temp"
+                    android:layout_width="@dimen/card_prescription_image_width"
+                    android:layout_height="72dip"
+                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ui2_image_prescription_green_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
+
+                <ImageView
+                    android:id="@+id/imageview_prescription_img"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_below="@+id/textview_prescriptions"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ui2_image_prescription_green_bg"
-                    android:padding="@dimen/home_card_images_padding"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ui2_image_prescription_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
@@ -180,28 +193,27 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/closedVisitsCardView"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/colorAccentCloseVisit"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_prescription">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
-                android:layout_marginEnd="@dimen/card_prescriptions_margin_end"
                 android:background="@color/colorAccentCloseVisit"
                 android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
-                    android:id="@+id/textview_prescriptions"
+                    android:id="@+id/textview_close_visit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/close_visits"
@@ -211,19 +223,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textview_received_no"
+                    android:id="@+id/textview_close_visit_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_below="@+id/textview_close_visit"
                     android:layout_marginTop="@dimen/common_info_margin_top"
                     android:text="12 unclosed visits"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
+                    android:id="@+id/imageview_close_visit_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
@@ -238,12 +250,11 @@
                     android:id="@+id/imageview_prescription_next2"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
-                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_below="@+id/textview_close_visit"
                     android:layout_alignParentEnd="true"
-                    android:padding="@dimen/home_card_images_padding"
                     android:src="@drawable/ui2_ic_close_visit"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit_no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -251,11 +262,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/options_cards_start_margin"
-            android:layout_marginEnd="@dimen/options_cards_end_margin"
-
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/options_cards_start_margin"
+
             android:layout_marginTop="@dimen/options_card_margin_top"
+            android:layout_marginEnd="@dimen/options_cards_end_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
@@ -268,6 +279,7 @@
                 android:background="@drawable/ui2_card_bg_gray_border"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardElevation="@dimen/card_appointment_card_elevation"
+                app:cardMaxElevation="8dp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/followup_cardview"
@@ -275,7 +287,6 @@
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:cardMaxElevation="8dp"
                 app:strokeWidth="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -325,13 +336,13 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/followup_cardview"
-                app:cardMaxElevation="8dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card_followup_margin_start"
                 android:backgroundTint="@color/backgroundWhite"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardElevation="@dimen/card_appointment_card_elevation"
+                app:cardMaxElevation="8dp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -372,7 +383,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
                         android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="12 Pending"
+                        android:text="0 Pending"
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

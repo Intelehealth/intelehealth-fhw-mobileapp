@@ -14,10 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -27,6 +29,7 @@ import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.IOException;
@@ -90,7 +93,14 @@ public class VisitReasonCaptureFragment extends Fragment {
                     Toast.makeText(getActivity(), "Please select at least one complain!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
+                showConfirmDialog();
+            }
+        });
+
+        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, null);
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
@@ -110,10 +120,12 @@ public class VisitReasonCaptureFragment extends Fragment {
         String[] mindmapsNames = getVisitReasonFilesNamesOnly();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), R.layout.ui2_select_dialog_item, mindmapsNames);
+                (getActivity(), R.layout.ui2_custome_dropdown_item_view, mindmapsNames);
 
         mVisitReasonAutoCompleteTextView.setThreshold(2);
         mVisitReasonAutoCompleteTextView.setAdapter(adapter);
+        mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
+
         mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -139,6 +151,18 @@ public class VisitReasonCaptureFragment extends Fragment {
         return view;
     }
 
+    private void showConfirmDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialogWithChipsGrid(getActivity(), mSelectedComplains, R.drawable.ui2_visit_reason_summary_icon, getResources().getString(R.string.confirm_visit_reason), getResources().getString(R.string.are_you_sure_the_patient_has_the_following_reasons_for_a_visit), false, getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
+                }
+            }
+        });
+    }
+
     private void showSelectedComplains() {
         if (mSelectedComplains.isEmpty()) {
             mEmptyReasonLabelTextView.setVisibility(View.VISIBLE);
@@ -151,7 +175,11 @@ public class VisitReasonCaptureFragment extends Fragment {
         }
 
 
-        mSelectedComplainRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+        mSelectedComplainRecyclerView.setLayoutManager(layoutManager);
         SelectedChipsGridAdapter reasonChipsGridAdapter = new SelectedChipsGridAdapter(mSelectedComplainRecyclerView, getActivity(), mSelectedComplains, new SelectedChipsGridAdapter.OnItemSelection() {
             @Override
             public void onSelect(String data) {
@@ -160,6 +188,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
             @Override
             public void onRemoved(String data) {
+                mSelectedComplains.remove(data);
                 for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                     List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
                     for (int j = 0; j < reasonDataList.size(); j++) {
@@ -171,6 +200,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                     }
                 }
                 mReasonListingAdapter.refresh(mVisitReasonItemList);
+                showSelectedComplains();
             }
         });
         mSelectedComplainRecyclerView.setAdapter(reasonChipsGridAdapter);

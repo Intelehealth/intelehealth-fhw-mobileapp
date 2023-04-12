@@ -125,7 +125,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_recently_search_lbl"
+                android:id="@+id/tv_selected_reason_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
@@ -133,22 +133,24 @@
                 android:text="Selected reasons"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:visibility="visible" />
 
             <RelativeLayout
+                android:id="@+id/selected_reason_ll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
 
                 <TextView
                     android:id="@+id/tv_empty_reason_lbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:lineSpacingExtra="1sp"
-                    android:text="Not selected anything yet!"
-                    android:textColor="@color/ui2_black_text_color"
+                    android:text="..."
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
@@ -168,12 +170,15 @@
                 android:text="Recently searched"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/recently_search_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_empty_recent_search_lbl"
@@ -188,7 +193,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_recently_search_lbl"
+                android:id="@+id/tv_most_common_search_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
@@ -196,15 +201,18 @@
                 android:text="Most common reasons"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/most_common_search_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/tv_empty_recent_search_lbl"
+                    android:id="@+id/tv_empty_most_common_lbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
@@ -216,7 +224,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_recently_search_lbl"
+                android:id="@+id/tv_all_reason_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"

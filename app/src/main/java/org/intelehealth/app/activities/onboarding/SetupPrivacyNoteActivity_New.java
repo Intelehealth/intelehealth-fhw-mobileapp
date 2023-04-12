@@ -207,7 +207,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         }
 
         public void showDialog1() {
-            AlertDialog.Builder builder
+            /*AlertDialog.Builder builder
                     = new AlertDialog.Builder(context);
             builder.setCancelable(false);
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -230,7 +230,10 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                     context.startActivity(intent);
                     finish();
                 }
-            });
+            });*/
+            Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SetupActivityNew.class);
+            context.startActivity(intent);
+            finish();
         }
     }
 

@@ -285,6 +285,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".services.CameraOpenRequestReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"
@@ -370,12 +379,6 @@
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity"
             android:configChanges="uiMode"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.cameraActivity.CameraActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

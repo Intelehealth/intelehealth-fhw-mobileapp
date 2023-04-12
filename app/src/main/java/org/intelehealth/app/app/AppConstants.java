@@ -137,5 +137,7 @@ public class AppConstants {
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
 
+
+
 }
 

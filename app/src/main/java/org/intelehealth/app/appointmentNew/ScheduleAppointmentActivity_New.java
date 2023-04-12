@@ -4,14 +4,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
-import org.intelehealth.app.appointment.sync.AppointmentSync;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -59,6 +48,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -227,13 +218,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             }
         });
 
-        rvMorningSlots.setHasFixedSize(true);
+        //rvMorningSlots.setHasFixedSize(true);
         rvMorningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-        rvAfternoonSlots.setHasFixedSize(true);
+        //rvAfternoonSlots.setHasFixedSize(true);
         rvAfternoonSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-        rvEveningSlots.setHasFixedSize(true);
+        //rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
@@ -280,6 +271,19 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
 
     private void getSlots() {
+
+        findViewById(R.id.tv_morning_label).setVisibility(View.GONE);
+        findViewById(R.id.rv_morning_time_slots).setVisibility(View.GONE);
+
+        findViewById(R.id.tv_afternoon_label).setVisibility(View.GONE);
+        findViewById(R.id.rv_afternoon_time_slots).setVisibility(View.GONE);
+
+        findViewById(R.id.tv_evening_label).setVisibility(View.GONE);
+        findViewById(R.id.rv_evening_time_slots).setVisibility(View.GONE);
+
+        //findViewById(R.id.empty_tv).setVisibility(View.GONE);
+        findViewById(R.id.tv_time_slot_title).setVisibility(View.GONE);
+        ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
@@ -332,9 +336,34 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                     }
 
                 }
+
+                // sort data
+                sortByTime(slotInfoMorningList);
+                sortByTime(slotInfoAfternoonList);
+                sortByTime(slotInfoAfternoonList);
+
+                boolean isSlotNotAvailable = true;
+
+                findViewById(R.id.tv_morning_label).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rv_morning_time_slots).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForMorningAppointments(slotInfoMorningList);
+                isSlotNotAvailable = slotInfoMorningList.isEmpty();
+
+                findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
+                if (isSlotNotAvailable)
+                    isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
+
+                findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForEveningAppointments(slotInfoEveningList);
+                if (isSlotNotAvailable)
+                    isSlotNotAvailable = slotInfoEveningList.isEmpty();
+
+                ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
+                findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
+                findViewById(R.id.tv_time_slot_title).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
 
             }
 
@@ -344,6 +373,25 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             }
         });
 
+    }
+
+    private void sortByTime(List<SlotInfo> slotInfoList) {
+        Collections.sort(slotInfoList, new Comparator<SlotInfo>() {
+            @Override
+            public int compare(SlotInfo t1, SlotInfo t2) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+                Date x = null;
+                Date y = null;
+                try {
+                    x = simpleDateFormat.parse(t1.getSlotTime());
+                    y = simpleDateFormat.parse(t2.getSlotTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return x.compareTo(y);
+            }
+        });
     }
 
     private void setDataForAfternoonAppointments(List<SlotInfo> slotInfoList) {
@@ -459,6 +507,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private void getPreviousMonthDates() {
         calendarInstance.add(Calendar.MONTH, -1);
+        Calendar nowCalendar = Calendar.getInstance();
+        if (nowCalendar.get(Calendar.YEAR) <= calendarInstance.get(Calendar.YEAR) && nowCalendar.get(Calendar.MONTH) > calendarInstance.get(Calendar.MONTH)) {
+            calendarInstance.add(Calendar.MONTH, 1);
+            enableDisablePreviousButton(false);
+            return;
+        }
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
         SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
@@ -475,7 +529,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
-                if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
+                if (calendarInstance.get(Calendar.MONTH)+1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
 
                     getAllDatesOfSelectedMonth(calendarInstance, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
@@ -516,12 +570,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 String[] dateSplit = formateDate.split("/");
 
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
-                if (selectedNextMonth.equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
-                    getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);
-                } else {
-                    getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear, dateSplit[1]);
-
-                }
+                getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
             }
 
         } catch (ParseException e) {
@@ -555,7 +604,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
-        String infoText = getResources().getString(R.string.sure_to_book_appointment) + "<b>" + selectedDateTime + "?</b>";
+        String infoText = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + selectedDateTime + "?</b>";
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();
@@ -583,7 +632,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
-            request.setReason("reason");
+            request.setReason(rescheduleReason);
         }
 
         request.setUuid(new UuidGenerator().UuidGenerator());
@@ -626,7 +675,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                     finish();
                     startActivity(intent);
                 }
-            }, 4000);
+            }, 100);
         } else {
 
         }

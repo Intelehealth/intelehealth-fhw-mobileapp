@@ -33,7 +33,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -64,6 +63,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -202,7 +202,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         bundle.putString("encounterUuidVitals", encounterVitals);
 
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent()), VITAL_FRAGMENT).
+                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), null), VITAL_FRAGMENT).
                 commit();
     }
 
@@ -210,22 +210,30 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         finish();
     }
 
+    private VitalsObject mVitalsObject;
+
     @Override
     public void onFormSubmitted(int nextAction, Object object) {
         mCurrentStep = nextAction;
         switch (nextAction) {
             case STEP_1_VITAL_SUMMARY:
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                mSummaryFrameLayout.setVisibility(View.VISIBLE);
-                mStep1ProgressBar.setProgress(100);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance((VitalsObject) object), VITAL_SUMMARY_FRAGMENT).
-                        commit();
+                if (object != null)
+                    mVitalsObject = (VitalsObject) object;
+                if (mVitalsObject != null) {
+                    //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                    mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                    mStep1ProgressBar.setProgress(100);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject), VITAL_SUMMARY_FRAGMENT).
+                            commit();
+                }
                 break;
             case STEP_1_VITAL:
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 mSummaryFrameLayout.setVisibility(View.GONE);
-
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mVitalsObject), VITAL_FRAGMENT).
+                        commit();
                 break;
             case STEP_2_VISIT_REASON:
                 mStep2ProgressBar.setProgress(20);
@@ -393,9 +401,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), null);
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
-            if (i == 0) {
+            /*if (i == 0) {
                 optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
-            }
+            }*/
             if (map.containsKey(filterNode.getOptionsList().get(i).getText())) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));
@@ -423,6 +431,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private Node loadFileToNode(String fileLocation) {
         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
         Node mainNode = new Node(currentFile);
+        mainNode.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
         return mainNode;
     }
 
@@ -432,21 +441,43 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
+            Node associateSymptoms = null;
 
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
                 if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
-                    mAssociateSymptomsNodeList.add(mainNode.getOptionsList().get(j));
+                    associateSymptoms = mainNode.getOptionsList().get(j);
+
                 } else {
-                    optionList.add(mainNode.getOptionsList().get(j));
+                    if (checkNodeValidByGender(mainNode.getOptionsList().get(j).getGender()))
+                        optionList.add(mainNode.getOptionsList().get(j));
                 }
             }
-            if (mAssociateSymptomsNodeList.size() > 0)
-                optionList.add(mAssociateSymptomsNodeList.get(i));
+            if (associateSymptoms != null) {
+
+                associateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
+
+                optionList.add(associateSymptoms);
+            }
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
 
         }
 
+    }
+
+    private boolean checkNodeValidByGender(String nodeGender) {
+        Log.v(TAG, "nodeGender = " + nodeGender);
+        boolean isValidByGender = true;
+        if (patientGender.equalsIgnoreCase("M") &&
+                nodeGender.equalsIgnoreCase("0")) {
+
+            isValidByGender = false;
+        } else if (patientGender.equalsIgnoreCase("F") &&
+                nodeGender.equalsIgnoreCase("1")) {
+            isValidByGender = false;
+        }
+        Log.v(TAG, "isValidByGender = " + isValidByGender);
+        return isValidByGender;
     }
 
     public void setTitle(String text) {
@@ -494,6 +525,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     @Override
     public void onCameraOpenRequest() {
         openCamera();
+    }
+
+    @Override
+    public void onImageRemoved(int index, String image) {
+        deleteImageFromDatabase(index, image);
     }
 
     @Override
@@ -711,6 +747,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     PhysicalExam physicalExamMap;
 
     private boolean savePhysicalExamData() {
+        Log.v(TAG, "savePhysicalExamData");
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
@@ -718,7 +755,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             physicalString = physicalExamMap.generateFindings();
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
-
+            Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
                     updateImageDatabase(imagePath);
@@ -858,6 +895,19 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
+
+    private void deleteImageFromDatabase(int index, String imageName) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
+            imagesDAO.deleteImageFromDatabase(obsUUID);
+            imageUtilsListener.onImageReadyForDelete(index, imageName);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
     ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -869,7 +919,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                         Bundle bundle = new Bundle();
                         bundle.putString("image", mCurrentPhotoPath);
-                        selectedBundle.onBundleSelect(bundle);
+                        imageUtilsListener.onImageReady(bundle);
 
                         //physicalExamMap.setImagePath(mCurrentPhotoPath);
                         Log.i(TAG, mCurrentPhotoPath);
@@ -897,8 +947,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                             Log.v("path", picturePath + "");
 
                             // copy & rename the file
-                            String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                            mLastSelectedImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
                             // Handle the Intent
@@ -906,7 +956,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                             Bundle bundle = new Bundle();
                             bundle.putString("image", currentPhotoPath);
-                            selectedBundle.onBundleSelect(bundle);
+                            imageUtilsListener.onImageReady(bundle);
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
@@ -995,10 +1045,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
     }
 
-    SelectedBundle selectedBundle;
+    ImageUtilsListener imageUtilsListener;
 
-    public void setOnBundleSelected(SelectedBundle selectedBundle) {
-        this.selectedBundle = selectedBundle;
+    public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
+        this.imageUtilsListener = imageUtilsListener;
     }
 
     public void syncNow(View view) {
@@ -1011,8 +1061,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void showInfo(View view) {
     }
 
-    public interface SelectedBundle {
-        void onBundleSelect(Bundle bundle);
+    public interface ImageUtilsListener {
+        void onImageReady(Bundle bundle);
+
+        void onImageReadyForDelete(int index, String image);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

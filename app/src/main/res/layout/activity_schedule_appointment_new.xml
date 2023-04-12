@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,13 +13,73 @@
         android:id="@+id/toolbar_schedule_appointments"
         layout="@layout/toolbar_common_new2_ui2" />
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/layout_cal_view"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_schedule_appointments"
         android:layout_marginTop="@dimen/schedule_app_margin_top"
-        android:layout_marginBottom="@dimen/schedule_app_margin_bottom">
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_date_selector"
+            android:layout_width="@dimen/iv_time_height_width"
+            android:layout_height="@dimen/iv_time_height_width"
+            android:src="@drawable/ui2_ic_calendar" />
+
+        <TextView
+            android:id="@+id/tv_selected_month_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hor_calview_month_margin_start"
+            android:layout_marginTop="@dimen/hor_calview_month_margin_top"
+            android:layout_toEndOf="@+id/iv_date_selector"
+            android:hint="November, 2022"
+            android:lineHeight="@dimen/hor_calview_month_line_height"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/hor_calview_month_text_size"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_prev_month1"
+                android:layout_width="@dimen/iv_time_height_width"
+                android:layout_height="@dimen/iv_time_height_width"
+                android:layout_marginEnd="@dimen/iv_prev_month_margin_end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ui2_ic_chevron_left" />
+
+            <ImageView
+                android:id="@+id/iv_next_month1"
+                android:layout_width="@dimen/iv_time_height_width"
+                android:layout_height="@dimen/iv_time_height_width"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ui2_ic_chevron_right"
+                app:tint="@color/colorPrimary" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_horizontal_cal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_cal_view"
+        android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rv_horizontal_cal"
+
+        android:layout_marginBottom="@dimen/schedule_app_margin_bottom"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,68 +87,10 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/schedule_app_margin_bottom1">
 
-            <RelativeLayout
-                android:id="@+id/layout_cal_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/iv_date_selector"
-                    android:layout_width="@dimen/iv_time_height_width"
-                    android:layout_height="@dimen/iv_time_height_width"
-                    android:src="@drawable/ui2_ic_calendar" />
-
-                <TextView
-                    android:id="@+id/tv_selected_month_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/hor_calview_month_margin_start"
-                    android:layout_marginTop="@dimen/hor_calview_month_margin_top"
-                    android:layout_toEndOf="@+id/iv_date_selector"
-                    android:hint="November, 2022"
-                    android:lineHeight="@dimen/hor_calview_month_line_height"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/hor_calview_month_text_size"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv_prev_month1"
-                        android:layout_width="@dimen/iv_time_height_width"
-                        android:layout_height="@dimen/iv_time_height_width"
-                        android:layout_marginEnd="@dimen/iv_prev_month_margin_end"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ui2_ic_chevron_left" />
-
-                    <ImageView
-                        android:id="@+id/iv_next_month1"
-                        android:layout_width="@dimen/iv_time_height_width"
-                        android:layout_height="@dimen/iv_time_height_width"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ui2_ic_chevron_right"
-                        android:tint="@color/colorPrimary" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_horizontal_cal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_cal_view"
-                android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rv_horizontal_cal"
                 android:orientation="vertical">
 
                 <TextView
@@ -95,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_reschedule_margin_top"
-                    android:text="Previously scheduled appointment details"
+                    android:text="@string/previously_scheduled_appointment_details"
                     android:textColor="@color/textColorGray"
                     android:visibility="gone" />
 
@@ -110,13 +113,13 @@
                     android:id="@+id/tv_time_slot_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/tv_pick_slot_text_size"
                     android:layout_marginTop="@dimen/tv_pick_slot_margin_top"
                     android:text="@string/pick_time_slot"
-                    android:textColor="@color/textColorGray" />
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/tv_pick_slot_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_appointment_time"
+                    android:id="@+id/tv_morning_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_margin_top"
@@ -137,6 +140,7 @@
                     android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
                 <TextView
+                    android:id="@+id/tv_afternoon_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_noon_margin_top"
@@ -157,6 +161,7 @@
                     android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
                 <TextView
+                    android:id="@+id/tv_evening_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_margin_top"
@@ -180,13 +185,12 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_book_appointment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_privacy_notice_link"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/button_setup1_margin_top"
         android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
@@ -197,4 +201,16 @@
         android:paddingBottom="@dimen/common_button_padding_bottom"
         android:text="@string/book_appointment"
         android:textSize="@dimen/common_button_text_size" />
+
+    <TextView
+        android:id="@+id/empty_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:paddingHorizontal="24dip"
+        android:text="@string/slot_empty_message"
+        android:textColor="@color/gray_4_1"
+        android:textSize="16sp" />
+
 </RelativeLayout>

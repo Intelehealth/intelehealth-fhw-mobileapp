@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_16dp"
+    app:cardElevation="@dimen/hamburger_margin_start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dialog_icon"
+            android:layout_width="@dimen/patregist_profileimg_icon"
+            android:layout_height="@dimen/patregist_profileimg_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_32dp"
+            android:src="@drawable/close_patient_svg" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/confirm_visit_reason"
+                android:textAppearance="@style/dialog_title"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dialog_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dialog_title"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/are_you_sure_the_patient_has_the_following_reasons_for_a_visit"
+                android:textAppearance="@style/dialog_subtitle"
+                android:textColor="@null"
+                android:textSize="@null" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_selected_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dialog_subtitle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_16" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rcv_selected_container"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_32dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/negative_btn"
+                    style="@style/positive_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_common_input_bg"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32dp"
+                    android:paddingVertical="@dimen/margin_20dp"
+                    android:text="No"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+                <Button
+                    android:id="@+id/positive_btn"
+                    style="@style/negative_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:background="@drawable/primary_bg_rounded_corners"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32dp"
+                    android:paddingVertical="@dimen/margin_20dp"
+                    android:text="Yes"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

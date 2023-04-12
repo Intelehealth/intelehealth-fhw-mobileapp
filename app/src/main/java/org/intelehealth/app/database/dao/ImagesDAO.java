@@ -7,26 +7,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
+import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
-import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
-import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
-import org.intelehealth.app.utilities.exception.DAOException;
-
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
     public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid) throws DAOException {
+        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\n" + conceptUuid);
         boolean isInserted = false;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
@@ -411,7 +411,7 @@ public class ImagesDAO {
 
     //added for push provider profile image to the server
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
-        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : "+imagepath);
+        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : " + imagepath);
         boolean isUpdated = false;
         long isupdate = 0;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

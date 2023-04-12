@@ -21,6 +21,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,12 +59,17 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.apprtc.adapter.ChatListingAdapter;
 import org.intelehealth.apprtc.data.Constants;
 import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
+import org.intelehealth.apprtc.utils.AwsS3Utils;
 import org.intelehealth.apprtc.utils.BitmapUtils;
+import org.intelehealth.apprtc.utils.RealPathUtil;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +92,11 @@ import org.webrtc.VideoRenderer;
 import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,6 +105,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -127,6 +140,7 @@ public class CompleteActivity extends AppCompatActivity {
     public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 3;
     public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 3;
     public static final int FPS = 24;
+    public static final String CALL_END_FROM_WEB_INTENT_ACTION = "org.intelehealth.app.CALL_END_FROM_WEB_INTENT_ACTION";
 
     private Socket socket;
     private boolean isInitiator;
@@ -179,13 +193,15 @@ public class CompleteActivity extends AppCompatActivity {
     private Ringtone mRingtone;
 
     BroadcastReceiver broadcastReceiver;
+
     boolean mMicrophonePluggedIn = false;
     private JSONObject mRoomJsonObject = new JSONObject();
     private static final int WAIT_TIMER = 6 * 60 * 60 * 1000; // expecting max 6 hour call
     private TextView mTimerTextView;
 
     private boolean mIsChatWindowOpened = false;
-
+    private BroadcastReceiver mCallEndBroadcastReceiver;
+    private BroadcastReceiver mImageUrlFormatBroadcastReceiver;
 
     private CountDownTimer mCountDownTimer = new CountDownTimer(WAIT_TIMER, 1000) {
 
@@ -212,10 +228,14 @@ public class CompleteActivity extends AppCompatActivity {
         }
     };
 
+    private String mLastS3FormattedUrl = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sample_peer_connection);
+        mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
+
         mRoomId = getIntent().getStringExtra("roomId");
         mIsInComingRequest = getIntent().getBooleanExtra("isInComingRequest", false);
         if (getIntent().hasExtra("doctorname"))
@@ -231,6 +251,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorId"))
             mDoctorUUID = getIntent().getStringExtra("doctorId");
 
+        binding.tvDoctorName.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
         mFromUUId = mNurseId;
         mToUUId = mDoctorUUID;
         mPatientUUid = mRoomId;
@@ -240,6 +261,38 @@ public class CompleteActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mCallEndBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
+        registerReceiver(mCallEndBroadcastReceiver, filterSend);
+
+        mImageUrlFormatBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String url = intent.getStringExtra("fileUrl");
+                if (url.equals(mLastS3FormattedUrl)) {
+                    return;
+                }
+                mLastS3FormattedUrl = url;
+                postMessages(mFromUUId, mToUUId, mPatientUUid, url, "attachment");
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
+        registerReceiver(mImageUrlFormatBroadcastReceiver, intentFilter);
+
+
         mRequestQueue = Volley.newRequestQueue(this);
         // Instantiate the cache
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -256,15 +309,14 @@ public class CompleteActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(CompleteActivity.this, LinearLayoutManager.VERTICAL, true);
         binding.chatsRcv.setLayoutManager(mLayoutManager);
 
-        binding.callerNameTv.setText(mDoctorName);
+        binding.callerNameTv.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId); // incoming
-                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
+
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -274,6 +326,9 @@ public class CompleteActivity extends AppCompatActivity {
                     initializePeerConnections();
 
                     startStreamingVideo();
+
+                    socket.emit("create or join", mRoomId); // incoming
+                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
                 }
                 stopRinging();
             }
@@ -502,6 +557,8 @@ public class CompleteActivity extends AppCompatActivity {
         disconnectAll();
         try {
             unregisterReceiver(mPhoneStateBroadcastReceiver);
+            unregisterReceiver(mCallEndBroadcastReceiver);
+            unregisterReceiver(mImageUrlFormatBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -512,38 +569,39 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
-        if (socket != null) {
-            socket.disconnect();
-            socket = null;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        if (peerConnection != null) {
-            peerConnection.dispose();
-            peerConnection = null;
-        }
-        if (videoSource != null) {
-            videoSource.dispose();
-            videoSource = null;
-        }
-        if (localVideoTrack != null) {
-            localVideoTrack.dispose();
-            localVideoTrack = null;
-        }
-        if (surfaceTextureHelper != null) {
-            surfaceTextureHelper.dispose();
-            surfaceTextureHelper = null;
-        }
-
-        stopRinging();
         try {
+            if (socket != null) {
+                socket.disconnect();
+                socket = null;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            if (peerConnection != null) {
+                peerConnection.dispose();
+                peerConnection = null;
+            }
+            if (videoSource != null) {
+                videoSource.dispose();
+                videoSource = null;
+            }
+            if (localVideoTrack != null) {
+                localVideoTrack.dispose();
+                localVideoTrack = null;
+            }
+            if (surfaceTextureHelper != null) {
+                surfaceTextureHelper.dispose();
+                surfaceTextureHelper = null;
+            }
+
+            stopRinging();
+
             unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             e.printStackTrace();
         }
         finish();
@@ -614,6 +672,7 @@ public class CompleteActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 binding.remoteVideoOffLl.setVisibility(View.GONE);
+                                binding.tvDoctorName.setTextColor(getResources().getColor(R.color.white));
                             }
                         });
 
@@ -633,6 +692,7 @@ public class CompleteActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 binding.remoteVideoOffLl.setVisibility(View.VISIBLE);
+                                binding.tvDoctorName.setTextColor(getResources().getColor(R.color.gray_4));
                             }
                         });
 
@@ -995,10 +1055,29 @@ public class CompleteActivity extends AppCompatActivity {
 
     private PeerConnection createPeerConnection(PeerConnectionFactory factory) {
         ArrayList<PeerConnection.IceServer> iceServers = new ArrayList<>();
+        /*LIVE*/
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
+
+        /*T2*/
+        /*iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
+*/
+        /*T2 End*/
+
+        /*Testing*/
+        /*iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
+        //iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_5_URL, Constants.ICE_SERVER_5_USER, Constants.ICE_SERVER_5_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_6_URL, Constants.ICE_SERVER_6_USER, Constants.ICE_SERVER_6_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_7_URL, Constants.ICE_SERVER_7_USER, Constants.ICE_SERVER_7_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_8_URL, Constants.ICE_SERVER_8_USER, Constants.ICE_SERVER_8_PASSWORD));*/
+
 
         PeerConnection.RTCConfiguration rtcConfig = new PeerConnection.RTCConfiguration(iceServers);
         MediaConstraints pcConstraints = new MediaConstraints();
@@ -1184,7 +1263,7 @@ public class CompleteActivity extends AppCompatActivity {
         }
         String message = binding.textEtv.getText().toString().trim();
         if (!message.isEmpty()) {
-            postMessages(mFromUUId, mToUUId, mPatientUUid, message);
+            postMessages(mFromUUId, mToUUId, mPatientUUid, message, "text");
         } else {
             Toast.makeText(this, getString(R.string.empty_message_txt), Toast.LENGTH_SHORT).show();
         }
@@ -1198,11 +1277,11 @@ public class CompleteActivity extends AppCompatActivity {
 
 
     private void cameraStart() {
-        /*File file = new File(AppConstants.IMAGE_PATH);
+        File file = new File(mImagePathRoot);
         final String imagePath = file.getAbsolutePath();
         final String imageName = UUID.randomUUID().toString();
         mLastSelectedImageName = imageName;
-        Intent cameraIntent = new Intent(VisitCreationActivity.this, CameraActivity.class);
+        Intent cameraIntent = new Intent(CompleteActivity.this, CameraActivity.class);
         File filePath = new File(imagePath);
         if (!filePath.exists()) {
             boolean res = filePath.mkdirs();
@@ -1210,29 +1289,88 @@ public class CompleteActivity extends AppCompatActivity {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
         //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
-        mStartForCameraResult.launch(cameraIntent);*/
+        mStartForCameraResult.launch(cameraIntent);
+       /* Intent broadcast = new Intent();
+        broadcast.setAction(Constants.IMAGE_CAPTURE_REQUEST_INTENT_ACTION);
+        sendBroadcast(broadcast);*/
     }
+
+    ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // Handle the Intent
+                        String currentPhotoPath = data.getStringExtra("RESULT");
+
+                        Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                        if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                            Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            JSONObject inputJsonObject = new JSONObject();
+                            inputJsonObject.put("fromUser", mFromUUId);
+                            inputJsonObject.put("toUser", mToUUId);
+                            inputJsonObject.put("patientId", mPatientUUid);
+                            inputJsonObject.put("message", ".jpg");
+                            inputJsonObject.put("type", "attachment");
+                            inputJsonObject.put("isLoading", true);
+
+                            addNewMessage(inputJsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
+                    }
+                }
+            });
+
 
     private void galleryStart() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         mStartForGalleryResult.launch(intent);
     }
 
+    private void browseStartForPdf() {
+        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+        chooseFile.setType("application/pdf");
+        mStartForPDFResult.launch(chooseFile);
+    }
+
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), getString(R.string.cancel_lbl)};
+        final CharSequence[] options = {/*getString(R.string.take_photo_lbl),*/ getString(R.string.choose_from_gallery_lbl), "Choose Documents", getString(R.string.cancel_lbl)};
         AlertDialog.Builder builder = new AlertDialog.Builder(CompleteActivity.this);
-        builder.setTitle("Add Image by");
+        builder.setTitle("Select");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
+               /* if (item == 0) {
+                    if (mImageCount >= 5) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     cameraStart();
 
-                } else if (item == 1) {
+                } else*/
+                if (item == 0) {
+                    if (mImageCount >= 5) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     galleryStart();
+
+                } else if (item == 1) {
+                    if (mPDFCount >= 2) {
+                        Toast.makeText(CompleteActivity.this, "Maximum 2 documents you can send per one case", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    browseStartForPdf();
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -1301,29 +1439,31 @@ public class CompleteActivity extends AppCompatActivity {
 
                             // copy & rename the file
                             String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = mImagePath + finalImageName + ".jpg";
+                            currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
                             // Handle the Intent
 
 
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
-
+                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                                Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             try {
                                 JSONObject inputJsonObject = new JSONObject();
                                 inputJsonObject.put("fromUser", mFromUUId);
                                 inputJsonObject.put("toUser", mToUUId);
                                 inputJsonObject.put("patientId", mPatientUUid);
-                                inputJsonObject.put("message", "New Image Sent!");
-                                inputJsonObject.put("ContentType", "IMAGE");
-                                inputJsonObject.put("filePath", currentPhotoPath);
+                                inputJsonObject.put("message", ".jpg");
+                                inputJsonObject.put("type", "attachment");
+                                inputJsonObject.put("isLoading", true);
 
                                 addNewMessage(inputJsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
+                            AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
                         } else {
                             Toast.makeText(CompleteActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
                         }
@@ -1331,7 +1471,61 @@ public class CompleteActivity extends AppCompatActivity {
                     }
                 }
             });
-    public String mImagePath = "";
+    ActivityResultLauncher<Intent> mStartForPDFResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPDFPath = "";
+                        try {
+                            Uri uri = data.getData();
+                            FileInputStream fileInputStream = (FileInputStream) getContentResolver().openInputStream(uri);
+                            if (fileInputStream != null) {
+                                byte[] fileBytesArray = new byte[fileInputStream.available()];
+                                fileInputStream.read(fileBytesArray);
+                                fileInputStream.close();
+
+                                //TODO: Remove below code
+                                //Below code is to test the above fileBytesArray is correct or not.
+                                //Below we are creating a MainTest file in your internal storage (For that You need write Storage permission) and checking the content same as original file
+                                //In-case of file type change .pdf to .txt or whatever type of file you are choosing
+                                File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" +
+                                        UUID.randomUUID().toString() + ".pdf");
+                                OutputStream fileOutputStream = new FileOutputStream(mFile);
+                                fileOutputStream.write(fileBytesArray);
+                                fileOutputStream.close();
+                                //End
+                                currentPDFPath = mFile.getPath();
+                                if (!RealPathUtil.isFileLessThan1MB(mFile)) {
+                                    Toast.makeText(CompleteActivity.this, "Max doc size is 1MB", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                Log.v(TAG, "currentPDFPath" + currentPDFPath);
+                                try {
+                                    JSONObject inputJsonObject = new JSONObject();
+                                    inputJsonObject.put("fromUser", mFromUUId);
+                                    inputJsonObject.put("toUser", mToUUId);
+                                    inputJsonObject.put("patientId", mPatientUUid);
+                                    inputJsonObject.put("message", ".pdf");
+                                    inputJsonObject.put("LayoutType", "attachment");
+                                    inputJsonObject.put("isLoading", true);
+
+                                    addNewMessage(inputJsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPDFPath);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }
+            });
+    public String mImagePathRoot = "";
 
     public void hideSoftKeyboard() {
         try {
@@ -1343,6 +1537,9 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
     private void getAllMessages(boolean isAlreadySetReadStatus) {
+        Log.v(TAG, "getAllMessages -mFromUUId - " + mFromUUId);
+        Log.v(TAG, "getAllMessages -mToUUId - " + mToUUId);
+        Log.v(TAG, "getAllMessages -mPatientUUid - " + mPatientUUid);
         if (mFromUUId.isEmpty() || mToUUId.isEmpty() || mPatientUUid.isEmpty()) {
             return;
         }
@@ -1366,18 +1563,30 @@ public class CompleteActivity extends AppCompatActivity {
         mRequestQueue.add(jsonObjectRequest);
     }
 
+    private int mPDFCount = 0;
+    private int mImageCount = 0;
+
     private void showChat(JSONObject response, boolean isAlreadySetReadStatus) {
         try {
             mChatList.clear();
+            mPDFCount = 0;
+            mImageCount = 0;
             if (response.getBoolean("success")) {
                 JSONArray jsonArray = response.getJSONArray("data");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject chatJsonObject = jsonArray.getJSONObject(i);
                     //Log.v(TAG, "showChat - " + chatJsonObject);
                     if (chatJsonObject.getString("fromUser").equals(mFromUUId)) {
-                        chatJsonObject.put("type", Constants.RIGHT_ITEM_HW); // HW
+                        chatJsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW); // HW
+                        if (chatJsonObject.getString("type").equalsIgnoreCase("attachment")) {
+                            if (chatJsonObject.getString("message").endsWith(".pdf")) {
+                                mPDFCount += 1;
+                            } else {
+                                mImageCount += 1;
+                            }
+                        }
                     } else {
-                        chatJsonObject.put("type", Constants.LEFT_ITEM_DOCT); // DOCTOR
+                        chatJsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT); // DOCTOR
                     }
                     mChatList.add(chatJsonObject);
                 }
@@ -1389,7 +1598,12 @@ public class CompleteActivity extends AppCompatActivity {
 
                 sortList();
 
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
+                    @Override
+                    public void onClick(String url) {
+                        showImageOrPdf(url);
+                    }
+                });
                 binding.chatsRcv.setAdapter(mChatListingAdapter);
 
                 if (!mChatList.isEmpty()) {
@@ -1417,7 +1631,7 @@ public class CompleteActivity extends AppCompatActivity {
                 if (!isAlreadySetReadStatus)
                     for (int i = 0; i < mChatList.size(); i++) {
                         //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
-                        if (mChatList.get(i).getInt("type") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
+                        if (mChatList.get(i).getInt("LayoutType") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
                             setReadStatus(mChatList.get(i).getString("id"));
                             break;
                         }
@@ -1450,7 +1664,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     }
 
-    private void postMessages(String fromUUId, String toUUId, String patientUUId, String message) {
+    private void postMessages(String fromUUId, String toUUId, String patientUUId, String message, String type) {
         try {
 
             JSONObject inputJsonObject = new JSONObject();
@@ -1464,7 +1678,9 @@ public class CompleteActivity extends AppCompatActivity {
             inputJsonObject.put("hwPic", "");
             inputJsonObject.put("visitId", mVisitUUID);
             inputJsonObject.put("isRead", false);
+            inputJsonObject.put("type", type);
             binding.loadingLayout.setVisibility(View.VISIBLE);
+            Log.v(TAG, "postMessages - inputJsonObject - " + inputJsonObject.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -1509,9 +1725,9 @@ public class CompleteActivity extends AppCompatActivity {
     private void addNewMessage(JSONObject jsonObject) {
         try {
             if (jsonObject.getString("fromUser").equals(mFromUUId)) {
-                jsonObject.put("type", Constants.RIGHT_ITEM_HW);
+                jsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW);
             } else {
-                jsonObject.put("type", Constants.LEFT_ITEM_DOCT);
+                jsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT);
             }
             if (!jsonObject.has("createdAt")) {
                 SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
@@ -1524,7 +1740,12 @@ public class CompleteActivity extends AppCompatActivity {
             sortList();
 
             if (mChatListingAdapter == null) {
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList);
+                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
+                    @Override
+                    public void onClick(String url) {
+                        showImageOrPdf(url);
+                    }
+                });
                 binding.chatsRcv.setAdapter(mChatListingAdapter);
             } else {
                 mChatListingAdapter.refresh(mChatList);
@@ -1550,4 +1771,22 @@ public class CompleteActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
 
     /*88888888888888888888888888888888888888888888888888888888888*/
+
+    private void showImageOrPdf(String url) {
+        if (url.endsWith(".pdf")) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } else {
+            Glide.with(this)
+                    .load(url)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .thumbnail(0.1f)
+                    .into((ImageView) findViewById(R.id.preview_img));
+            findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void closePreview(View view) {
+        findViewById(R.id.image_preview_ll).setVisibility(View.GONE);
+    }
 }

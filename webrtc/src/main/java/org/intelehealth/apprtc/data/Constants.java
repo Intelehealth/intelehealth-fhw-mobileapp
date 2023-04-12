@@ -17,6 +17,42 @@ public class Constants {
     public static final String ICE_SERVER_4_USER = "ihuser";
     public static final String ICE_SERVER_4_PASSWORD = "keepitsecrect";
 
+    /*T2*/
+   /* public static final String ICE_SERVER_1_URL = "stun:stun.l.google.com:19302";
+    public static final String ICE_SERVER_2_URL = "stun:stun1.l.google.com:19302";
+
+    public static final String ICE_SERVER_3_URL = "turn:uiux.intelehealth.org:3478";
+    public static final String ICE_SERVER_3_USER = "uiux";
+    public static final String ICE_SERVER_3_PASSWORD = "uiux";*/
+    /*T2 END*/
+    /*TEXTING*/
+    /*public static final String ICE_SERVER_1_URL = "stun:bn-turn1.xirsys.com";
+
+    public static final String ICE_SERVER_3_URL = "turn:bn-turn1.xirsys.com:80?transport=udp";
+    public static final String ICE_SERVER_3_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_3_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";
+
+    public static final String ICE_SERVER_4_URL = "turn:bn-turn1.xirsys.com:3478?transport=udp";
+    public static final String ICE_SERVER_4_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_4_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";
+
+    public static final String ICE_SERVER_5_URL = "turn:bn-turn1.xirsys.com:80?transport=tcp";
+    public static final String ICE_SERVER_5_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_5_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";
+
+    public static final String ICE_SERVER_6_URL = "turn:bn-turn1.xirsys.com:3478?transport=tcp";
+    public static final String ICE_SERVER_6_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_6_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";
+
+    public static final String ICE_SERVER_7_URL = "turns:bn-turn1.xirsys.com:443?transport=tcp";
+    public static final String ICE_SERVER_7_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_7_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";
+
+    public static final String ICE_SERVER_8_URL = "turns:bn-turn1.xirsys.com:5349?transport=tcp";
+    public static final String ICE_SERVER_8_USER = "MvoeAGyQkHfadBQK3FYv4DVKig4Njm3MgwbfwHAP111_l3xfDHcWqQX969ZkI0lDAAAAAGQr_wlhbnVyYWc=";
+    public static final String ICE_SERVER_8_PASSWORD = "5e5a5a28-d2d5-11ed-b3dc-0242ac140004";*/
+
+
     public static final String SEND_MESSAGE_URL = BASE_URL + "/api/messages/sendMessage";
     //@GET('https://testing.intelehealth.org:3004/messages/${fromUser}/${toUser}/${patientId}')
     public static final String GET_ALL_MESSAGE_URL = BASE_URL + "/api/messages/";
@@ -25,6 +61,10 @@ public class Constants {
 
     public static final int LEFT_ITEM_DOCT = 1;
     public static final int RIGHT_ITEM_HW = 2;
+
+
+    public static final String IMAGE_CAPTURE_DONE_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_DONE_INTENT_ACTION";
+    public static final String IMAGE_CAPTURE_REQUEST_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION";
 
 
 }

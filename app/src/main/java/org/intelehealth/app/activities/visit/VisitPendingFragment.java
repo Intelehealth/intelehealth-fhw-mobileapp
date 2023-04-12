@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,26 +21,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -92,6 +85,20 @@ public class VisitPendingFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
+        ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+
+        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
 
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);
@@ -118,13 +125,17 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        todays_Visits();
-        thisWeeks_Visits();
+        // loaded month data 1st for showing the count in main ui
         thisMonths_Visits();
-        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-
         if (mlistener != null)
             mlistener.pendingCount(totalCounts_month);   // To avoid duplicate counts.
+
+        todays_Visits();
+        thisWeeks_Visits();
+
+        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+
+
     }
 
     private void visitData() {
@@ -197,7 +208,7 @@ public class VisitPendingFragment extends Fragment {
                 prio_todays.add(todayList.get(i));
         }
         totalCounts_today = prio_todays.size();
-        if(totalCounts_today == 0 || totalCounts_today < 0)
+        if (totalCounts_today == 0 || totalCounts_today < 0)
             today_nodata.setVisibility(View.VISIBLE);
         else
             today_nodata.setVisibility(View.GONE);
@@ -213,7 +224,7 @@ public class VisitPendingFragment extends Fragment {
                 prio_weeks.add(weeksList.get(i));
         }
         totalCounts_week = prio_weeks.size();
-        if(totalCounts_week == 0 || totalCounts_week < 0)
+        if (totalCounts_week == 0 || totalCounts_week < 0)
             week_nodata.setVisibility(View.VISIBLE);
         else
             week_nodata.setVisibility(View.GONE);
@@ -229,7 +240,7 @@ public class VisitPendingFragment extends Fragment {
                 prio_months.add(monthsList.get(i));
         }
         totalCounts_month = prio_months.size();
-        if(totalCounts_month == 0 || totalCounts_month < 0)
+        if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
         else
             month_nodata.setVisibility(View.GONE);
@@ -246,16 +257,16 @@ public class VisitPendingFragment extends Fragment {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid," +
-                " o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
-                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now')  group by p.openmrs_id except" +
-                " select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid," +
-                " o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
-                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now')" +
-                " and e.encounter_type_uuid = ?"
+                        " o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now')  group by p.openmrs_id except" +
+                        " select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid," +
+                        " o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now')" +
+                        " and e.encounter_type_uuid = ?"
                 , new String[]{ENCOUNTER_VISIT_NOTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -298,7 +309,7 @@ public class VisitPendingFragment extends Fragment {
 
         totalCounts_today = todayList.size();
 
-        if(totalCounts_today == 0 || totalCounts_today < 0)
+        if (totalCounts_today == 0 || totalCounts_today < 0)
             today_nodata.setVisibility(View.VISIBLE);
         else
             today_nodata.setVisibility(View.GONE);
@@ -402,12 +413,12 @@ public class VisitPendingFragment extends Fragment {
         });
 */
 
-        }
+    }
 
 
     private void thisWeeks_Visits() {
-       // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
-      //  recycler_week.setAdapter(adapter_new);
+        // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
+        //  recycler_week.setAdapter(adapter_new);
 
         //new
         // new
@@ -469,7 +480,7 @@ public class VisitPendingFragment extends Fragment {
 
         totalCounts_week = weeksList.size();
 
-        if(totalCounts_week == 0 || totalCounts_week < 0)
+        if (totalCounts_week == 0 || totalCounts_week < 0)
             week_nodata.setVisibility(View.VISIBLE);
         else
             week_nodata.setVisibility(View.GONE);
@@ -478,7 +489,7 @@ public class VisitPendingFragment extends Fragment {
         recycler_week.setNestedScrollingEnabled(false);
         recycler_week.setAdapter(weeks_adapter);
 
-      //  thisMonths_Visits();
+        //  thisMonths_Visits();
 
         // new
 
@@ -582,7 +593,6 @@ public class VisitPendingFragment extends Fragment {
 */
 
 
-
     }
 
     private void thisMonths_Visits() {
@@ -647,7 +657,7 @@ public class VisitPendingFragment extends Fragment {
 
         totalCounts_month = monthsList.size();
 
-        if(totalCounts_month == 0 || totalCounts_month < 0)
+        if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
         else
             month_nodata.setVisibility(View.GONE);
@@ -662,8 +672,8 @@ public class VisitPendingFragment extends Fragment {
         // new
 
 
-     //   VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
-     //   recycler_month.setAdapter(adapter_new);
+        //   VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
+        //   recycler_month.setAdapter(adapter_new);
 
       /*  monthsList = new ArrayList<>();
         Date cDate = new Date();
@@ -762,6 +772,7 @@ public class VisitPendingFragment extends Fragment {
 
     /**
      * This function will perform the search operation.
+     *
      * @param query
      */
     private void searchOperation(String query) {
@@ -782,13 +793,12 @@ public class VisitPendingFragment extends Fragment {
             for (PrescriptionModel model : todayList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     today.add(model);
-                }
-                else {
+                } else {
                     // dont add in list value.
                 }
 
                 totalCounts_today = today.size();
-                if(totalCounts_today == 0 || totalCounts_today < 0)
+                if (totalCounts_today == 0 || totalCounts_today < 0)
                     today_nodata.setVisibility(View.VISIBLE);
                 else
                     today_nodata.setVisibility(View.GONE);
@@ -803,13 +813,12 @@ public class VisitPendingFragment extends Fragment {
             for (PrescriptionModel model : weeksList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     week.add(model);
-                }
-                else {
+                } else {
                     // do nothing
                 }
 
                 totalCounts_week = week.size();
-                if(totalCounts_week == 0 || totalCounts_week < 0)
+                if (totalCounts_week == 0 || totalCounts_week < 0)
                     week_nodata.setVisibility(View.VISIBLE);
                 else
                     week_nodata.setVisibility(View.GONE);
@@ -824,13 +833,12 @@ public class VisitPendingFragment extends Fragment {
             for (PrescriptionModel model : monthsList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     month.add(model);
-                }
-                else {
+                } else {
                     // do nothing
                 }
 
                 totalCounts_month = month.size();
-                if(totalCounts_month == 0 || totalCounts_month < 0)
+                if (totalCounts_month == 0 || totalCounts_month < 0)
                     month_nodata.setVisibility(View.VISIBLE);
                 else
                     month_nodata.setVisibility(View.GONE);
@@ -848,8 +856,7 @@ public class VisitPendingFragment extends Fragment {
             if (totalCounts <= 0) {
                 no_patient_found_block.setVisibility(View.VISIBLE);
                 main_block.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 no_patient_found_block.setVisibility(View.GONE);
                 main_block.setVisibility(View.VISIBLE);
             }

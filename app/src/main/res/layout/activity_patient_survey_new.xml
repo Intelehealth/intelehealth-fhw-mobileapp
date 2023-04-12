@@ -109,8 +109,7 @@
                 android:isIndicator="false"
                 android:numStars="5"
                 android:progressDrawable="@drawable/custom_ratingbar"
-                android:rating="4"
-                />
+                android:rating="0" />
         </RelativeLayout>
         <!--Main block - end-->
 

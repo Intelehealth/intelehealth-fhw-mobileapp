@@ -15,9 +15,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,6 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
@@ -61,6 +65,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     String appLanguage;
     SessionManager sessionManager = null;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    String LOG_TAG = "SplashActivity";
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +95,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
         //temporary commented
-       // initFirebaseRemoteConfig();
+        // initFirebaseRemoteConfig();
 
-        if (sessionManager.isFirstTimeLaunch()) {
+        /*if (sessionManager.isFirstTimeLaunch()) {
             animateViews();
             populatingLanguages();
-        } else {
-           new Handler().postDelayed(new Runnable() {
-               @Override
-               public void run() {
-                   nextActivity();
-               }
-           }, 3000);
-        }
-
+        } else {*/
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                nextActivity();
+            }
+        }, 3000);
+        // }
+        sessionManager.setAppLanguage("en");
         saveLanguage();
 
     }
@@ -172,7 +179,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         alertDialogBuilder.show();
                     } else {
                         //temporary commented in new UI2.0
-                       // checkPerm();
+                        // checkPerm();
                     }
                 } else {
                     //temporary commented in new UI2.0
@@ -286,7 +293,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         } else {
             if (setup) {
 
-                if (sessionManager.isLogout()) {
+                /*if (sessionManager.isLogout()) {
                     Logger.logD(LOG_TAG, "Starting login");
                     Intent intent = new Intent(this, LoginActivityNew.class);
                     startActivity(intent);
@@ -299,7 +306,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent.putExtra("password", "");
                     startActivity(intent);
                     finish();
-                }
+                }*/
+
+                if (sessionManager.isEnableAppLock())
+                    fingerPrintAuthenticate();
+                else
+                    navigateToNextActivity();
 
             } else {
                 Logger.logD(LOG_TAG, "Starting setup");
@@ -307,6 +319,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+
         }
     }
 
@@ -323,7 +336,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 translateAnim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-
                     }
 
                     @Override
@@ -477,4 +489,68 @@ public class SplashScreenActivity extends AppCompatActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
+
+    private void fingerPrintAuthenticate() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_fingerprint_sensor), Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.fingerprint_not_working), Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_fingerprint_assigned), Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(SplashScreenActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_successfully), Toast.LENGTH_SHORT).show();
+                navigateToNextActivity();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getResources().getString(R.string.intelehealth_login))
+                .setSubtitle(getResources().getString(R.string.touch_fingerprint))
+                .setDeviceCredentialAllowed(true)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
+    }
+
+    private void navigateToNextActivity() {
+        if (sessionManager.isLogout()) {
+            Logger.logD(TAG, "Starting login");
+            Intent intent = new Intent(this, LoginActivityNew.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Logger.logD(TAG, "Starting home");
+            Intent intent = new Intent(this, HomeScreenActivity_New.class);
+            intent.putExtra("from", "splash");
+            intent.putExtra("username", "");
+            intent.putExtra("password", "");
+            startActivity(intent);
+            finish();
+        }
+    }
+
 }

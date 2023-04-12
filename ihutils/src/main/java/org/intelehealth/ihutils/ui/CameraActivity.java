@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.cameraActivity;
+package org.intelehealth.ihutils.ui;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -9,26 +9,26 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.ihutils.R;
+import org.intelehealth.ihutils.utils.BitmapUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,10 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.utilities.BitmapUtils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -49,6 +45,7 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class CameraActivity extends AppCompatActivity {
+
 
     public static final int TAKE_IMAGE = 205;
     /**
@@ -66,24 +63,25 @@ public class CameraActivity extends AppCompatActivity {
      * message before starting the camera.
      */
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
+    public static final String SEND_BROADCAST_AFTER_CAPTURE = "SEND_BROADCAST_AFTER_CAPTURE";
     private static final int[] FLASH_OPTIONS = {
             CameraView.FLASH_AUTO,
             CameraView.FLASH_OFF,
             CameraView.FLASH_ON,
     };
     private static final int[] FLASH_ICONS = {
-            R.drawable.ic_flash_auto,
-            R.drawable.ic_flash_off,
+            R.drawable.utils_ic_flash_auto,
+            R.drawable.utils_ic_flash_off,
             R.drawable.ic_flash_on,
     };
     private static final int[] FLASH_TITLES = {
-            R.string.flash_auto,
-            R.string.flash_off,
-            R.string.flash_on,
+            R.string.util_flash_auto,
+            R.string.util_flash_off,
+            R.string.util_flash_on,
     };
     private final String TAG = CameraActivity.class.getSimpleName();
     private CameraView mCameraView;
-    private FloatingActionButton mFab;
+
     private int mCurrentFlash;
 
     private Handler mBackgroundHandler;
@@ -94,7 +92,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
-    private boolean fabClickFlag=true;
+    private boolean fabClickFlag = true;
 
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
@@ -112,7 +110,7 @@ public class CameraActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(CameraView cameraView, final byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
-            Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
+            Toast.makeText(cameraView.getContext(), R.string.util_picture_taken, Toast.LENGTH_SHORT)
                     .show();
             //compressImageAndSave(data);
             // check and correct the image rotation
@@ -137,13 +135,13 @@ public class CameraActivity extends AppCompatActivity {
                 }
 
 
-                String filePath = AppConstants.IMAGE_PATH + mImageName + ".jpg";
+                String filePath = mImagePathRoot + mImageName + ".jpg";
 
                 File file;
                 if (mFilePath == null) {
-                    file = new File(AppConstants.IMAGE_PATH + mImageName + ".jpg");
+                    file = new File(mImagePathRoot + mImageName + ".jpg");
                 } else {
-                    file = new File(AppConstants.IMAGE_PATH + mImageName + ".jpg");
+                    file = new File(mImagePathRoot + mImageName + ".jpg");
                 }
                 OutputStream os = null;
                 try {
@@ -269,7 +267,7 @@ public class CameraActivity extends AppCompatActivity {
                         try {
                             os.close();
                         } catch (IOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
+                            //FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
                 }
@@ -293,10 +291,12 @@ public class CameraActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
+    public String mImagePathRoot = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey(SET_IMAGE_NAME))
@@ -307,30 +307,15 @@ public class CameraActivity extends AppCompatActivity {
                 mFilePath = extras.getString(SET_IMAGE_PATH);
         }
 
-        setContentView(R.layout.activity_camera);
-        mCameraView = findViewById(R.id.camera_surface_CameraView);
-        mFab = findViewById(R.id.take_picture);
+        setContentView(R.layout.utils_activity_camera);
+        mCameraView = findViewById(R.id.utils_camera_surface_CameraView);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-
-        }
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
-        if (mFab != null) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCameraView != null && fabClickFlag==true) {
-                        fabClickFlag=false;
-                        mCameraView.takePicture();
-                    }
-                }
-            });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         }
     }
 
@@ -347,26 +332,25 @@ public class CameraActivity extends AppCompatActivity {
         if (mCameraView != null) mCameraView.stop();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.camera, menu);
+        getMenuInflater().inflate(R.menu.util_camera, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.switch_flash:
-                if (mCameraView != null) {
-                    mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
-                    item.setTitle(FLASH_TITLES[mCurrentFlash]);
-                    item.setIcon(FLASH_ICONS[mCurrentFlash]);
-                    mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
-                }
-                return true;
+        if (item.getItemId() == R.id.switch_flash) {
+            if (mCameraView != null) {
+                mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+                item.setTitle(FLASH_TITLES[mCurrentFlash]);
+                item.setIcon(FLASH_ICONS[mCurrentFlash]);
+                mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -380,47 +364,48 @@ public class CameraActivity extends AppCompatActivity {
         if (mDialogMessage != null) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                     .setMessage(mDialogMessage)
-                    .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                    .setNeutralButton(getString(R.string.util_button_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
             AlertDialog dialog = builder.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
+            //IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
         }
         if (mCameraView != null)
             mCameraView.start();
     }
 
+
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setMessage(getString(R.string.permission_camera_rationale))
-                .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
+                .setMessage(getString(R.string.util_permission_camera_rationale))
+                .setPositiveButton(getString(R.string.util_button_allow), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.proceed();
                     }
                 })
-                .setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.util_button_deny), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.cancel();
                     }
                 });
         AlertDialog dialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
+        //IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
-        Toast.makeText(this, getString(R.string.permission_camera_denied), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.util_permission_camera_denied), Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     void showNeverAskForCamera() {
-        Toast.makeText(this, getString(R.string.permission_camera_never_askagain), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.util_permission_camera_never_askagain), Toast.LENGTH_SHORT).show();
     }
 
     private Handler getBackgroundHandler() {
@@ -437,5 +422,34 @@ public class CameraActivity extends AppCompatActivity {
         //do nothing
         finish();
 
+    }
+
+    public void endCameraSession(View view) {
+        finish();
+    }
+
+    public void flipCamera(View view) {
+        if (mCameraView != null) {
+            int facing = mCameraView.getFacing();
+            mCameraView.setFacing(facing == CameraView.FACING_FRONT ? CameraView.FACING_BACK : CameraView.FACING_FRONT);
+        }
+    }
+
+    public void takeImage(View view) {
+        if (mCameraView != null && fabClickFlag == true) {
+            fabClickFlag = false;
+            mCameraView.takePicture();
+        }
+    }
+
+    public void switchFlash(View view) {
+        Log.v(TAG, "switchFlash");
+        if (mCameraView != null) {
+            mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+            //item.setTitle(FLASH_TITLES[mCurrentFlash]);
+            Toast.makeText(this, FLASH_TITLES[mCurrentFlash], Toast.LENGTH_SHORT).show();
+            ((ImageView) view).setImageResource(FLASH_ICONS[mCurrentFlash]);
+            mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+        }
     }
 }

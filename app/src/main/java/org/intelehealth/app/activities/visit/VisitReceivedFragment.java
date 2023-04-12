@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,35 +17,25 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.progressindicator.BaseProgressIndicator;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -96,6 +84,18 @@ public class VisitReceivedFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
+        ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);
@@ -108,9 +108,9 @@ public class VisitReceivedFragment extends Fragment {
         week_nodata = view.findViewById(R.id.week_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
-         recycler_today = view.findViewById(R.id.recycler_today);
-         recycler_week = view.findViewById(R.id.rv_thisweek);
-         recycler_month = view.findViewById(R.id.rv_thismonth);
+        recycler_today = view.findViewById(R.id.recycler_today);
+        recycler_week = view.findViewById(R.id.rv_thisweek);
+        recycler_month = view.findViewById(R.id.rv_thismonth);
         received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
 
         filter_icon = view.findViewById(R.id.filter_icon);
@@ -127,14 +127,17 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void defaultData() {
+        // loaded month data 1st for showing the count in main ui
+        thisMonths_Visits();
+        if (mlistener != null)
+            mlistener.receivedCount(totalCounts_month); // To avoid duplicate counts.
+
         todays_Visits();
         thisWeeks_Visits();
-        thisMonths_Visits();
+
 
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
 
-        if (mlistener != null)
-            mlistener.receivedCount(totalCounts_month); // To avoid duplicate counts.
 
     }
 
@@ -153,12 +156,12 @@ public class VisitReceivedFragment extends Fragment {
                 filter_menu.setVisibility(View.VISIBLE);
         });
 
-            priority_visits_txt.setOnClickListener(v -> {
-                filter_relative.setVisibility(View.VISIBLE);    // display filter that is set tag.
-                filter_menu.setVisibility(View.GONE);   // hide filter menu
+        priority_visits_txt.setOnClickListener(v -> {
+            filter_relative.setVisibility(View.VISIBLE);    // display filter that is set tag.
+            filter_menu.setVisibility(View.GONE);   // hide filter menu
 
-                showOnlyPriorityVisits();
-            });
+            showOnlyPriorityVisits();
+        });
 
         priority_cancel.setOnClickListener(v -> {
             filter_relative.setVisibility(View.GONE);   // on clicking on cancel for Priority remove the filter tag as well as reset the data as default one.
@@ -178,8 +181,7 @@ public class VisitReceivedFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
                     searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
-                }
-                else {
+                } else {
                     searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
                 }
                 return false;
@@ -199,6 +201,7 @@ public class VisitReceivedFragment extends Fragment {
 
     /**
      * This function will perform the search operation.
+     *
      * @param query
      */
     private void searchOperation(String query) {
@@ -219,13 +222,12 @@ public class VisitReceivedFragment extends Fragment {
             for (PrescriptionModel model : todayList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     today.add(model);
-                }
-                else {
+                } else {
                     // dont add in list value.
                 }
 
                 totalCounts_today = today.size();
-                if(totalCounts_today == 0 || totalCounts_today < 0)
+                if (totalCounts_today == 0 || totalCounts_today < 0)
                     today_nodata.setVisibility(View.VISIBLE);
                 else
                     today_nodata.setVisibility(View.GONE);
@@ -240,13 +242,12 @@ public class VisitReceivedFragment extends Fragment {
             for (PrescriptionModel model : weeksList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     week.add(model);
-                }
-                else {
+                } else {
                     // do nothing
                 }
 
                 totalCounts_week = week.size();
-                if(totalCounts_week == 0 || totalCounts_week < 0)
+                if (totalCounts_week == 0 || totalCounts_week < 0)
                     week_nodata.setVisibility(View.VISIBLE);
                 else
                     week_nodata.setVisibility(View.GONE);
@@ -261,13 +262,12 @@ public class VisitReceivedFragment extends Fragment {
             for (PrescriptionModel model : monthsList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
                     month.add(model);
-                }
-                else {
+                } else {
                     // do nothing
                 }
 
                 totalCounts_month = month.size();
-                if(totalCounts_month == 0 || totalCounts_month < 0)
+                if (totalCounts_month == 0 || totalCounts_month < 0)
                     month_nodata.setVisibility(View.VISIBLE);
                 else
                     month_nodata.setVisibility(View.GONE);
@@ -285,8 +285,7 @@ public class VisitReceivedFragment extends Fragment {
             if (totalCounts <= 0) {
                 no_patient_found_block.setVisibility(View.VISIBLE);
                 main_block.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 no_patient_found_block.setVisibility(View.GONE);
                 main_block.setVisibility(View.VISIBLE);
             }
@@ -305,7 +304,7 @@ public class VisitReceivedFragment extends Fragment {
                 prio_todays.add(todayList.get(i));
         }
         totalCounts_today = prio_todays.size();
-        if(totalCounts_today == 0 || totalCounts_today < 0)
+        if (totalCounts_today == 0 || totalCounts_today < 0)
             today_nodata.setVisibility(View.VISIBLE);
         else
             today_nodata.setVisibility(View.GONE);
@@ -321,7 +320,7 @@ public class VisitReceivedFragment extends Fragment {
                 prio_weeks.add(weeksList.get(i));
         }
         totalCounts_week = prio_weeks.size();
-        if(totalCounts_week == 0 || totalCounts_week < 0)
+        if (totalCounts_week == 0 || totalCounts_week < 0)
             week_nodata.setVisibility(View.VISIBLE);
         else
             week_nodata.setVisibility(View.GONE);
@@ -337,7 +336,7 @@ public class VisitReceivedFragment extends Fragment {
                 prio_months.add(monthsList.get(i));
         }
         totalCounts_month = prio_months.size();
-        if(totalCounts_month == 0 || totalCounts_month < 0)
+        if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
         else
             month_nodata.setVisibility(View.GONE);
@@ -353,12 +352,12 @@ public class VisitReceivedFragment extends Fragment {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                " e.encounter_type_uuid = ? and" +
-                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                " o.conceptuuid = ? and " +
-                " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " o.conceptuuid = ? and " +
+                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -404,7 +403,7 @@ public class VisitReceivedFragment extends Fragment {
         db.endTransaction();
 
         totalCounts_today = todayList.size();
-        if(totalCounts_today == 0 || totalCounts_today < 0)
+        if (totalCounts_today == 0 || totalCounts_today < 0)
             today_nodata.setVisibility(View.VISIBLE);
         else
             today_nodata.setVisibility(View.GONE);
@@ -413,13 +412,10 @@ public class VisitReceivedFragment extends Fragment {
         recycler_today.setNestedScrollingEnabled(false);
         recycler_today.setAdapter(todays_adapter);
 
-      //  thisWeeks_Visits();
+        //  thisWeeks_Visits();
         //new
-        
-        
-        
-        
-        
+
+
 //        ExecutorService executor = Executors.newSingleThreadExecutor();
 //        Handler handler = new Handler(Looper.getMainLooper());
 
@@ -528,14 +524,14 @@ public class VisitReceivedFragment extends Fragment {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                "  e.encounter_type_uuid = ? and" +
-                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                " o.conceptuuid = ? and" +
-                " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
-                " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                " group by p.openmrs_id"
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        "  e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " o.conceptuuid = ? and" +
+                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
+                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
+                        " group by p.openmrs_id"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -581,7 +577,7 @@ public class VisitReceivedFragment extends Fragment {
         db.endTransaction();
 
         totalCounts_week = weeksList.size();
-        if(totalCounts_week == 0 || totalCounts_week < 0)
+        if (totalCounts_week == 0 || totalCounts_week < 0)
             week_nodata.setVisibility(View.VISIBLE);
         else
             week_nodata.setVisibility(View.GONE);
@@ -753,7 +749,7 @@ public class VisitReceivedFragment extends Fragment {
         db.endTransaction();
 
         totalCounts_month = monthsList.size();
-        if(totalCounts_month == 0 || totalCounts_month < 0)
+        if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
         else
             month_nodata.setVisibility(View.GONE);

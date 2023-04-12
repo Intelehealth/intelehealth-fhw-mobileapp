@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/achievements_badge_margin_start"
         android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
-        android:layout_marginEnd="@dimen/achievements_badge_margin_start">
+        android:layout_marginEnd="@dimen/achievements_badge_margin_start"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_achievements_title"
@@ -94,6 +95,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_achievements"
         android:layout_alignBottom="@id/app_bar"
+        android:layout_marginBottom="45dp"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

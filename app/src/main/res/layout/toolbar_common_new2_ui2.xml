@@ -33,7 +33,7 @@
         android:layout_height="@dimen/image_home_toolbar_icon_height"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
-        android:layout_toStartOf="@+id/imageview_notifications_common"
+        android:onClick="syncNow"
         android:foregroundGravity="center_horizontal"
         android:tooltipText="Tooltip"
         android:visibility="visible" />

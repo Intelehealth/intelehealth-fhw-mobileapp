@@ -11,9 +11,9 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/intro_image_height"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ui2_ic_intro_image1" />
+            android:src="@drawable/first" />
 
         <TextView
             android:layout_width="match_parent"

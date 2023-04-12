@@ -53,6 +53,8 @@ public class SessionManager {
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     public static final String PREVIOUS_SEARCH_QUERY = "PREVIOUS_SEARCH_QUERY";
     public static final String FIRST_PROVIDER_LOGIN_TIME = "FIRST_LOGIN_TIME";
+    private static final String ENABLE_APP_LOCK = "ENABLE_APP_LOCK";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -106,6 +108,15 @@ public class SessionManager {
     public void setEncoded(String encoded) {
         editor.putString(ENCODED, encoded);
         editor.commit();
+    }
+
+    public void setEnableAppLock(boolean isFirstTime) {
+        editor.putBoolean(ENABLE_APP_LOCK, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isEnableAppLock() {
+        return pref.getBoolean(ENABLE_APP_LOCK, false);
     }
 
     public String getPullExcutedTime() {

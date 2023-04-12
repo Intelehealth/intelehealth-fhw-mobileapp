@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Intelehealth</string>
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">Intelehealth</string>
+    <string name="notification_title_1">Application is active!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>
@@ -52,6 +53,7 @@
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
+    <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
     <string name="error_location_not_selected">Please select a value form the location dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
@@ -500,7 +502,7 @@
     <string name="image_upload">ImageUpload</string>
     <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
-    <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="sure_to_logout">Are you sure you want to log out from the app?</string>
     <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
@@ -559,7 +561,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To download your prescription click here  "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -634,6 +636,7 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_15_digits">Enter 15 digits</string>
     <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
@@ -695,13 +698,14 @@
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
     <string name="app_reset_toast">App Reset is done!</string>
-    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="resetting_app_dialog">Resetting app</string>
     <string name="sure_to_reset_app">Are you sure you want to reset the app?</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+    <string name="app_sync_dialog_title">Syncing app</string>
 
     <string name="saving_captured_image">Saving Captured Image...</string>
     <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
@@ -879,7 +883,7 @@
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is an innovative open source telemedicine platform connecting the last mile population for health services.</string>
+    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with doctors so that they can provide high-quality health services for their patients</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -893,8 +897,8 @@
     <string name="share_prescriptions">Share the prescription</string>
 
     <string name="provide_prescriptions_intro">Telemedicine doctor will provide a prescription. Prescription can be shared with the patient digitally or in print.</string>
-    <string name="hello_i_am_ayu">Hello, I am AYU!</string>
-    <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
+    <string name="hello_i_am_ayu">Hello, I am AYU,</string>
+    <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
@@ -908,12 +912,14 @@
     <string name="okay">Okay</string>
     <string name="my_achievements">My achievements</string>
     <string name="my_profile">My profile</string>
-
+    <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="no_network_tooltip">No network!</string>
     <string name="educational_videos">Educational videos</string>
     <string name="change_lang">Change language &amp; protocol</string>
     <string name="about_us">About us</string>
     <string name="log_out">Log-out</string>
     <string name="reset_app_new">Reset app</string>
+    <string name="reset_app_new_title">Reset app?</string>
     <string name="snack_policy">Please agree to terms &amp; conditions and Privacy policy</string>
 
 
@@ -922,8 +928,9 @@
     <string name="enter_following_details">Please enter the following details</string>
     <string name="location_new">Location</string>
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
+    <string name="please_wait_refresh">Please wait a moment,\nthe app is refreshing.</string>
     <string name="login_success">Login successful</string>
-    <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
+    <string name="login_success_note">Hurry! You have successfully logged in</string>
     <string name="start_typing_location">Start typing or select location</string>
     <string name="patients_added">Patients added by\nyou</string>
     <string name="visits_completed_by_you">Visits completed\nby you</string>
@@ -1605,9 +1612,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="first_name">First name</string>
     <string name="middle_name">Middle name</string>
     <string name="last_name">Last name</string>
-    <string name="enter_first_name">Enter your first name</string>
-    <string name="enter_middle_name">Enter your middle name</string>
-    <string name="enter_last_name">Enter your last name</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_middle_name">Enter middle name</string>
+    <string name="enter_last_name">Enter last name</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -1615,9 +1622,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="age">Age</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="phone_number">Phone number</string>
-    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="enter_phone_number">Enter phone number</string>
     <string name="email">Email</string>
-    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_email">Enter email ID</string>
     <string name="select_profile_image">Select profile image</string>
     <string name="select_location">Please select location</string>
 
@@ -1628,8 +1635,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm_new_password_1">Confirm new password</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
-    <string name="password_match">New password and confirm password must be equal</string>
+    <string name="password_match">New password and confirm password must be same.</string>
     <string name="password_changed_successfully">Password changed successfully</string>
+    <string name="the_password_has_been_successfully_changed">The password has been successfully changed!</string>
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>
     <string name="password_validation">Password length must be greater or equal to 8 and with combination of small, capital characters and digits</string>
@@ -1658,9 +1666,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="more_videos">More Videos</string>
 
     <!-- Appointment  -->
-    <string name="my_appointments">My appointments</string>
+    <string name="my_appointments">My Appointments</string>
     <string name="todays">Today\'s</string>
-    <string name="all_appointments">All appointments</string>
+    <string name="all_appointments">All</string>
     <string name="search_patient">Search patient</string>
     <string name="upcoming">Upcoming</string>
     <string name="cancelled">Cancelled</string>
@@ -1737,8 +1745,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
-    <string name="height_cm">Height (cm)*</string>
-    <string name="weight_kg">Weight (kg)*</string>
+    <string name="height_cm">Height (cm)</string>
+    <string name="weight_kg">Weight (kg)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
     <string name="bp_sys">BP Sys</string>
@@ -1754,7 +1762,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
-    <string name="please_wait_sync_progress">Please wait a moment while sync is in progress</string>
+    <string name="please_wait_sync_progress">Please wait a moment while the app is being synced</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -1780,9 +1788,62 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="add_a_picture">Add a picture</string>
     <string name="sync_completed">Sync done!</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
+    <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
     <string name="permissions_required">Permissions Required</string>
+    <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
+    <string name="sanity_alert_title">Please wash/sanitize your hands</string>
+    <string name="slider_desc">range slider</string>
+    <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
+    <string name="chw_id">CHW ID:</string>
+    <string name="sync_successful">Sync successful</string>
+    <string name="app_reset_successfully">App Reset Successfully</string>
+    <string name="please_open_the_app_again">Please open the app again.</string>
+    <string name="network_failure">Network failure!</string>
+    <string name="reset_app_requires_internet_message">Resting app requires data syncing with strong connection so check your internet connection.</string>
+    <string name="try_again">Try again</string>
 
+
+    //fingerprint IDA_613
+    <string name="fingerprint_lock">Fingerprint Lock</string>
+    <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
+    <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
+    <string name="intelehealth_login">Intelehealth Login</string>
+    <string name="touch_fingerprint">Touch fingerprint sensor to login</string>
+    <string name="login_failed">Log in failed, please try again later.</string>
+    <string name="login_successfully">Successfully logged in!</string>
+    <string name="no_fingerprint_assigned">Device fingerprint sensor has no fingerprint assigned.</string>
+    <string name="fingerprint_not_working">Device fingerprint sensor is not working.</string>
+    <string name="no_fingerprint_sensor">Device doesn\'t have a fingerprint sensor.</string>
+    <string name="ui2_no_information">No information</string>
+    <string name="confirm_visit_reason">Confirm visit reason?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+    <string name="check_up_reason">Check-up reason</string>
+    <string name="know_more_txt">Know more</string>
+    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
+    <string name="follow_up_visits_not_found">Follow up visits not found!</string>
+    <string name="enter_occupation_txt">Enter Occupation</string>
+    <string name="education">Education</string>
+    <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
+    <string name="end_visits">End Visits</string>
+    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
+    <string name="confirm_end_visit_reason">End this visit?</string>
+    <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
+    <string name="support_mobile_no_1">919503692181</string>
+    <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
+    <string name="update_app_protocol">Update app protocol!</string>
+    <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
+    <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
+    <string name="loading_slots">Loading slots...</string>
+    <string name="alert_txt">Alert!</string>
+    <string name="valid_dob_msg">Please select valid DOB!</string>
+    <string name="social_category">Social Category</string>
+    <string name="economic_category">Economic Category</string>
+    <string name="select_social_category">Select Social Category</string>
+    <string name="select_economic_category">Select Economic Category</string>
+    <string name="national_ID">National ID (Citizenship ID, Aadhar No., etc.)</string>
+    <string name="national_ID_other_details">National ID</string>
+    <string name="enter_national_ID">Enter National ID</string>
     <!--END-->
 
 </resources>

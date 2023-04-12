@@ -1,10 +1,14 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +24,26 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
-import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeFragment_New";
@@ -43,6 +53,13 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     TextView textlayout_find_patient;
     NetworkUtils networkUtils;
     ImageView ivInternet;
+    private TextView mUpcomingAppointmentCountTextView;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +68,65 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         networkUtils = new NetworkUtils(getActivity(), this);
 
         return view;
+    }
+
+    private static SQLiteDatabase db;
+
+    private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
+        // new
+        int count = 0;
+        db.beginTransaction();
+
+        Cursor cursor = null;
+        if (isForReceivedPrescription)
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                            "  e.encounter_type_uuid = ? and" +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                            " o.conceptuuid = ? and" +
+                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
+                            " group by p.openmrs_id"
+                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+        else
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                            " e.encounter_type_uuid = ?  and " +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                            " " +
+                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
+                            "  group by p.openmrs_id"
+                    , new String[]{ENCOUNTER_VISIT_NOTE});
+        count = cursor.getCount();
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return count;
+    }
+
+    private int getThisMonthsNotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+                "STRFTIME('%m',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%m',DATE('now')) AND " +
+                "v.enddate IS NULL", new String[]{});
+
+        count = cursor.getCount();
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return count;
     }
 
     private void initUI() {
@@ -83,11 +159,12 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         } else {
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
+        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
+        tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
-        tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
@@ -127,7 +204,16 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
 
+        //
+        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        int countTotalVisits = getCurrentMonthsVisits(false);
+        int countForReceivedPrescription = getCurrentMonthsVisits(true);
+        prescriptionCountTextView.setText(String.format("%d out of %d", countForReceivedPrescription, countTotalVisits));
 
+        int countPendingCloseVisits = getThisMonthsNotEndedVisits();
+        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
+        countPendingCloseVisitsTextView.setText(String.format("%d unclosed visits", countPendingCloseVisits));
+        getUpcomingAppointments();
     }
 
     @Override
@@ -197,6 +283,49 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+    }
+
+    private void getUpcomingAppointments() {
+        //recyclerview for upcoming appointments
+        int totalUpcomingApps = 0;
+        //SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDate = dateFormat1.format(new Date());
+        String endDate = dateFormat1.format(DateUtils.addYears(new Date(), 1));
+
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersV1(currentDate, endDate, "");
+        List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+
+        try {
+            if (appointmentInfoList.size() > 0) {
+                for (int i = 0; i < appointmentInfoList.size(); i++) {
+                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime = dateFormat.format(new Date());
+                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+
+                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+
+                    long second = diff / 1000;
+                    long minutes = second / 60;
+                    if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                        upcomingAppointmentsList.add(appointmentInfo);
+                    }
+                }
+                totalUpcomingApps = upcomingAppointmentsList.size();
+
+
+            } else {
+                totalUpcomingApps = 0;
+            }
+            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " upcoming");
+
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
 

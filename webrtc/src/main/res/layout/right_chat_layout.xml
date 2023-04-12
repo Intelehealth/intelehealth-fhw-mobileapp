@@ -35,14 +35,36 @@
         android:text="@string/dummy_text_1"
         android:textColor="@color/gray_7"
         android:textSize="13sp" />
-    <ImageView
-        android:id="@+id/image_iv"
-        android:layout_width="124dip"
-        android:layout_height="124dip"
-        android:background="@drawable/chat_right_bg"
-        android:padding="8dip"
-        android:scaleType="centerCrop"
-        android:src="@drawable/doctor_ioc" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_iv"
+            android:layout_width="124dip"
+            android:layout_height="124dip"
+            android:background="@drawable/chat_right_bg"
+            android:padding="8dip"
+            android:scaleType="centerCrop"
+            android:src="@drawable/doctor_ioc" />
+
+        <RelativeLayout
+            android:id="@+id/rl_loader"
+            android:layout_width="124dip"
+            android:layout_height="124dip"
+            android:alpha="0.9"
+            android:background="@drawable/chat_right_bg"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

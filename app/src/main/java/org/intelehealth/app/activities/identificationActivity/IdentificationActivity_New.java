@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -55,7 +54,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     Intent i_privacy;
     String privacy_value;
     Patient patient1 = new Patient();
-    String patientID_edit, patient_detail;
+    String patientID_edit, screenName;
     TextView label;
     private Fragment_FirstScreen firstScreen;
     private Fragment_SecondScreen secondScreen;
@@ -101,17 +100,17 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
             if (intent.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
                 patientID_edit = intent.getStringExtra("patientUuid");
-                patient_detail = intent.getStringExtra("ScreenEdit");
+                screenName = intent.getStringExtra("ScreenEdit");
                 patient1.setUuid(patientID_edit);
 
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientdto = (PatientDTO) args.getSerializable("patientDTO");
 
-                if (patient_detail.equalsIgnoreCase("personal_edit")) {
+                if (screenName.equalsIgnoreCase("personal_edit")) {
                     setscreen(firstScreen);
-                } else if (patient_detail.equalsIgnoreCase("address_edit")) {
+                } else if (screenName.equalsIgnoreCase("address_edit")) {
                     setscreen(secondScreen);
-                } else if (patient_detail.equalsIgnoreCase("others_edit")) {
+                } else if (screenName.equalsIgnoreCase("others_edit")) {
                     setscreen(thirdScreen);
                 }
 
@@ -180,7 +179,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 

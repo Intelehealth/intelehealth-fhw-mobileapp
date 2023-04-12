@@ -10,7 +10,7 @@ public class ClsDoctorDetails{
 	@SerializedName("whatsapp")
 	private String whatsapp;
 
-	@SerializedName("qualification")
+	@SerializedName(value = "qualification", alternate = {"typeOfProfession"})
 	private String qualification;
 
 	@SerializedName("phoneNumber")

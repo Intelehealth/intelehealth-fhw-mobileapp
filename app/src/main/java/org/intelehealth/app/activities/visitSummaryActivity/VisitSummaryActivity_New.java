@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
 import android.Manifest;
@@ -81,8 +82,8 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -94,6 +95,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -101,9 +103,13 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -116,10 +122,13 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -291,6 +300,67 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private FrameLayout filter_framelayout;
     private View hl_2;
 
+    public void startTextChat(View view) {
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, ChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitUUID);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        if (rtcConnectionDTO != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                } else {
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    startActivity(chatIntent);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void startVideoChat(View view) {
+        Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
+        /*EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+        Intent in = new Intent(VisitDetailsActivity.this, CompleteActivity.class);
+        String roomId = patientUuid;
+        String doctorName = "";
+        String nurseId = encounterDTO.getProvideruuid();
+        in.putExtra("roomId", roomId);
+        in.putExtra("isInComingRequest", false);
+        in.putExtra("doctorname", doctorName);
+        in.putExtra("nurseId", nurseId);
+        in.putExtra("startNewCall", true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+            startActivity(in);
+        }*/
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -453,8 +523,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
-                vs_add_notes.setVisibility(View.GONE);
-                addnotes_vd_card.setVisibility(View.VISIBLE);
+               // vs_add_notes.setVisibility(View.GONE);
+                //addnotes_vd_card.setVisibility(View.VISIBLE);
 
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
@@ -479,13 +549,37 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
-                vs_add_notes.setVisibility(View.VISIBLE);
+               // vs_add_notes.setVisibility(View.VISIBLE);
                 addnotes_vd_card.setVisibility(View.GONE);
             }
             // Edit btn visibility based on user coming from Visit Details screen - End
 
         }
 
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
+        if (!isVisitSpecialityExists) {
+            doc_speciality_card.setVisibility(View.VISIBLE);
+            special_vd_card.setVisibility(View.GONE);
+
+
+        }
+        btn_bottom_printshare.setVisibility(View.GONE);
+        btn_bottom_vs.setVisibility(View.VISIBLE);
+
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            doc_speciality_card.setVisibility(View.GONE);
+            special_vd_card.setVisibility(View.VISIBLE);
+
+            btn_bottom_printshare.setVisibility(View.VISIBLE);
+            btn_bottom_vs.setVisibility(View.GONE);
+
+            add_additional_doc.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+        }else{
+            add_additional_doc.setVisibility(View.VISIBLE);
+            editAddDocs.setVisibility(View.VISIBLE);
+        }
     }
 
     private int mOpenCount = 0;
@@ -535,7 +629,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_vitals_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -557,7 +651,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -579,7 +673,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -601,7 +695,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -623,7 +717,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vd_special_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_special_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -645,7 +739,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
-                if(mOpenCount==0){
+                if (mOpenCount == 0) {
                     openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
                 }
             } else {
@@ -963,6 +1057,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //            speciality_spinner.setSelection(spinner_position);
 
             vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            speciality_selected = special_value;
         } else {
 
         }
@@ -2091,16 +2186,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class)
-                        .putExtra("visitUuid", visitUuid)
-                        .putExtra("patientUuid", patientUuid)
-                        .putExtra("patientName", patientName)
-                        .putExtra("appointmentId", 0)
-                        .putExtra("actionTag", "visitSummary")
-                        .putExtra("openMrsId", patient.getOpenmrs_id())
-                        .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
-                );
-                finish();
+                if (isVisitSpecialityExists) {
+                    startActivityForResult(new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class)
+                            .putExtra("visitUuid", visitUuid)
+                            .putExtra("patientUuid", patientUuid)
+                            .putExtra("patientName", patientName)
+                            .putExtra("appointmentId", 0)
+                            .putExtra("actionTag", "visitSummary")
+                            .putExtra("openMrsId", patient.getOpenmrs_id())
+                            .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
+                    );
+                    finish();
+                } else
+                    Toast.makeText(VisitSummaryActivity_New.this, "Please upload the visit first!", Toast.LENGTH_SHORT).show();
+                //finish();
 
             }
         });
@@ -2128,7 +2227,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             };*/
 
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-            String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+            String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
+            String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
 
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
@@ -2150,7 +2250,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                            phoneNumber, whatsappMessage))));
+                                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
 
                     // isreturningWhatsapp = true;
 
@@ -2344,7 +2445,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        if (speciality_spinner.getSelectedItemPosition() != 0) {
+        if (speciality_selected !=null && !speciality_selected.isEmpty() ) {
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {
@@ -2436,8 +2537,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "Okay");
 
 
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);
+                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
                             //
                             showVisitID();
@@ -4619,6 +4720,92 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 
     }
+    public void editPatientInfo(View view) {
+        PatientDTO patientDTO = new PatientDTO();
+        String patientSelection = "uuid = ?";
+        String[] patientArgs = {patientUuid};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "country", "phone_number", "gender", "sdw",
+                "patient_photo"};
+        SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
 
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = new PatientsDAO().getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("caste")) {
+                    patientDTO.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patientDTO.setPhonenumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patientDTO.setEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patientDTO.setEconomic(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patientDTO.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patientDTO.setSon_dau_wife(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+
+                }
+                if (name.equalsIgnoreCase("createdDate")) {
+                    patientDTO.setCreatedDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("providerUUID")) {
+                    patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
+        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
+        intent2.putExtra("patientUuid", patientDTO.getUuid());
+        intent2.putExtra("ScreenEdit", "personal_edit");
+        intent2.putExtra("patient_detail", true);
+
+        Bundle args = new Bundle();
+        args.putSerializable("patientDTO", (Serializable) patientDTO);
+        intent2.putExtra("BUNDLE", args);
+        startActivity(intent2);
+    }
 
 }

@@ -43,11 +43,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <RelativeLayout android:visibility="gone"
+                <RelativeLayout
                     android:id="@+id/remote_video_off_ll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="128dip"
@@ -71,6 +72,7 @@
                         android:layout_marginBottom="16dp"
                         android:text="Dr. Roshan Jha"
                         android:textColor="#fff"
+                        android:textStyle="bold"
                         android:visibility="visible" />
 
                     <TextView
@@ -162,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:padding="16dip"
-                android:weightSum="5">
+                android:weightSum="4">
 
                 <RelativeLayout
                     android:layout_width="0dip"
@@ -215,7 +217,8 @@
                 <RelativeLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/chat_imv"
@@ -549,6 +552,37 @@
                     android:textColor="@color/gray_3"
                     android:textSize="12sp" />
             </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/image_preview_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c1_transaprent_1"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dip"
+                android:onClick="closePreview"
+                android:src="@drawable/ic_baseline_cancel_24" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminateTint="@color/white" />
+
+            <ImageView
+                android:id="@+id/preview_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -26,6 +26,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -119,7 +120,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
         String[] spt = str.split("•");
         String[] spt1 = str1.split("•");
         List<String> list = new ArrayList<>();
-        TreeMap<String, List<String>> mapData = new TreeMap<>();
+        TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
         mapData.put("Patient history", new ArrayList<>());
         mapData.put("Family history", new ArrayList<>());
         for (String s : spt) {
@@ -138,9 +139,10 @@ public class MedicalHistorySummaryFragment extends Fragment {
         }
 
         System.out.println(mapData);
-        for (Map.Entry<String, List<String>> entry : mapData.entrySet()) {
-            String _complain = entry.getKey();
-            List<String> _list = entry.getValue();
+        for(String key : mapData.keySet()){
+
+            String _complain = key;
+            List<String> _list = mapData.get(key);
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);

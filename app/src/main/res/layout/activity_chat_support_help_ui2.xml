@@ -48,7 +48,7 @@
             android:layout_toStartOf="@+id/iv_call_support"
             android:foregroundGravity="center_horizontal"
             android:tooltipText="Tooltip"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_call_support"

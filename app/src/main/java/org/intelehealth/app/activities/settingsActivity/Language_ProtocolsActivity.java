@@ -44,6 +44,7 @@ import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -130,7 +131,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
                     String message = "Are you sure you want to change language to " + selected_language + "?";
-                    dialog(context, getResources().getDrawable(R.drawable.close_patient_svg), "Change language?",
+                    dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), "Change language?",
                             message, "Yes", "No", false);
 
                 }
@@ -164,9 +165,13 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     private void updateProtocols() {
         if (NetworkConnection.isOnline(Language_ProtocolsActivity.this)) {
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Language_ProtocolsActivity.this);
+            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(Language_ProtocolsActivity.this);
             LayoutInflater li = LayoutInflater.from(Language_ProtocolsActivity.this);
             View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+            alertdialogBuilder.setView(promptsView);
+            Button positive_btn = promptsView.findViewById(R.id.positive_btn);
+            Button negative_btn = promptsView.findViewById(R.id.negative_btn);
+
             text = promptsView.findViewById(R.id.licensekey);
             url = promptsView.findViewById(R.id.licenseurl);
 
@@ -180,104 +185,90 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 text.setText("");
             }
 
-            dialog.setTitle(getString(R.string.enter_license_key))
-                    .setView(promptsView)
-                    .setPositiveButton(getString(R.string.button_ok), null)
-                    .setNegativeButton(getString(R.string.button_cancel), null);
-
-            AlertDialog alertDialog = dialog.create();
-            alertDialog.setView(promptsView, 20, 0, 20, 0);
-            alertDialog.show();
-            alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
 
-            // Get the alert dialog buttons reference
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            AlertDialog alertDialog = alertdialogBuilder.create();
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            // Change the alert dialog buttons text and background color
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positive_btn.setOnClickListener(v -> {
 
-            positiveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
                                 /* text = promptsView.findViewById(R.id.licensekey);
                                  url = promptsView.findViewById(R.id.licenseurl);*/
 
-                    url.setError(null);
-                    text.setError(null);
+                url.setError(null);
+                text.setError(null);
 
-                    //If both are not entered...
-                    if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                        url.requestFocus();
-                        url.setError(getResources().getString(R.string.enter_server_url));
-                        text.setError(getResources().getString(R.string.enter_license_key));
-                        return;
-                    }
+                //If both are not entered...
+                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                    url.requestFocus();
+                    url.setError(getResources().getString(R.string.enter_server_url));
+                    text.setError(getResources().getString(R.string.enter_license_key));
+                    return;
+                }
 
-                    //If Url is empty...key is not empty...
-                    if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-                        url.requestFocus();
-                        url.setError(getResources().getString(R.string.enter_server_url));
-                        return;
-                    }
+                //If Url is empty...key is not empty...
+                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                    url.requestFocus();
+                    url.setError(getResources().getString(R.string.enter_server_url));
+                    return;
+                }
 
-                    //If Url is not empty...key is empty...
-                    if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                        text.requestFocus();
-                        text.setError(getResources().getString(R.string.enter_license_key));
-                        return;
-                    }
+                //If Url is not empty...key is empty...
+                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                    text.requestFocus();
+                    text.setError(getResources().getString(R.string.enter_license_key));
+                    return;
+                }
 
-                    //If Url has : in it...
-                    if (url.getText().toString().trim().contains(":")) {
-                        url.requestFocus();
-                        url.setError(getResources().getString(R.string.invalid_url));
-                        return;
-                    }
+                //If Url has : in it...
+                if (url.getText().toString().trim().contains(":")) {
+                    url.requestFocus();
+                    url.setError(getResources().getString(R.string.invalid_url));
+                    return;
+                }
 
-                    //If url entered is Invalid...
-                    if (!url.getText().toString().trim().isEmpty()) {
-                        if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-                            String url_field = "https://" + url.getText().toString() + ":3004/";
-                            if (URLUtil.isValidUrl(url_field)) {
-                                key = text.getText().toString().trim();
-                                licenseUrl = url.getText().toString().trim();
+                //If url entered is Invalid...
+                if (!url.getText().toString().trim().isEmpty()) {
+                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                        String url_field = "https://" + url.getText().toString() + ":3004/";
+                        if (URLUtil.isValidUrl(url_field)) {
+                            alertDialog.dismiss();
+                            key = text.getText().toString().trim();
+                            licenseUrl = url.getText().toString().trim();
 
-                                sessionManager.setMindMapServerUrl(licenseUrl);
+                            sessionManager.setMindMapServerUrl(licenseUrl);
 
-                                sessionManager.setLicenseKey(key);
+                            sessionManager.setLicenseKey(key);
 
-                                if (keyVerified(key)) {
-                                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
-                                    alertDialog.dismiss();
-                                }
-                            } else {
-                                Toast.makeText(Language_ProtocolsActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            if (keyVerified(key)) {
+                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                alertDialog.dismiss();
                             }
-
                         } else {
-                            //invalid url || invalid url and key.
-                            Toast.makeText(Language_ProtocolsActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Language_ProtocolsActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                         }
+
                     } else {
-                        Toast.makeText(Language_ProtocolsActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                        //invalid url || invalid url and key.
+                        Toast.makeText(Language_ProtocolsActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(Language_ProtocolsActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                 }
+
             });
 
-            negativeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                }
+            negative_btn.setOnClickListener(v -> {
+                alertDialog.dismiss();
+
             });
 
-            IntelehealthApplication.setAlertDialogCustomTheme(Language_ProtocolsActivity.this, alertDialog);
+            alertDialog.show();
 
-//                      }
 
         } else {
             Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();

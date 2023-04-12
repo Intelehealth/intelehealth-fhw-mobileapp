@@ -26,7 +26,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<String> mItemList = new ArrayList<String>();
 
     public interface OnImageAction {
-        void onImageRemoved(int index);
+        void onImageRemoved(int index, String image);
 
         void onNewImageRequest();
     }
@@ -68,11 +68,17 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         .load(genericViewHolder.image)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                        .thumbnail(0.1f)
                         .into(genericViewHolder.mainImageView);
                 genericViewHolder.addImageView.setVisibility(View.GONE);
+                genericViewHolder.crossImageView.setVisibility(View.VISIBLE);
+                genericViewHolder.mainImageView.setBackgroundResource(R.drawable.edittext_border_blue);
             } else {
                 genericViewHolder.addImageView.setVisibility(View.VISIBLE);
+                genericViewHolder.crossImageView.setVisibility(View.GONE);
+                Glide.with(mContext)
+                        .load(R.drawable.edittext_border_blue_dotted)
+                        .skipMemoryCache(true)
+                        .into(genericViewHolder.mainImageView);
             }
 
         }
@@ -80,7 +86,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return mItemList.size()+1;
+        return mItemList.size() + 1;
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
@@ -104,7 +110,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View view) {
                     // start image capture activity
-                    mOnImageAction.onImageRemoved(index);
+                    mOnImageAction.onImageRemoved(index, image);
                 }
             });
 

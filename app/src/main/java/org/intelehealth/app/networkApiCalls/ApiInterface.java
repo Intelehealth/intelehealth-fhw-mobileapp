@@ -9,6 +9,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.Location;
+import org.intelehealth.app.models.OTPVerificationParamsModel_New;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
@@ -27,6 +28,7 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
+import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -146,16 +148,20 @@ public interface ApiInterface {
     Observable<ResponseBody> CHANGE_PASSWORD_OBSERVABLE(@Body ChangePasswordModel_New changePasswordParamsModel_new,
                                                         @Header("Authorization") String authHeader);
 
-    @POST("/api/openmrs/forgetPassword/requestOtp?")
+    @Headers({"Accept: application/json"})
+    @POST("/api/auth/requestOtp")
     Observable<ForgotPasswordApiResponseModel_New> REQUEST_OTP_OBSERVABLE(@Body RequestOTPParamsModel_New requestOTPParamsModel_new);
 
+    @Headers({"Accept: application/json"})
+    @POST("/api/auth/verifyOtp")
+    Observable<ForgotPasswordApiResponseModel_New> VERFIY_OTP_OBSERVABLE(@Body OTPVerificationParamsModel_New OTPVerificationParamsModel_new);
 
     @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
     Call<ResetPasswordResModel_New> resetPassword(@Path("userUuid") String userUuid,
                                                   @Body ChangePasswordParamsModel_New changePasswordParamsModel_new,
                                                   @Header("Authorization") String authHeader);
 
-    @POST("api/openmrs/forgetPassword/resetPassword/{userUuid}")
+    @POST("/api/auth/resetPassword/{userUuid}")
     Observable<ResetPasswordResModel_New> RESET_PASSWORD_OBSERVABLE(@Path("userUuid") String userUuid,
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 

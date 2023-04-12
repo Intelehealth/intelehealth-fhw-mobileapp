@@ -93,7 +93,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
-    private EditText mRelationNameEditText, mOccupationEditText;
+    private EditText mRelationNameEditText, mOccupationEditText, mNationalIDEditText;
     private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
@@ -126,6 +126,7 @@ public class Fragment_ThirdScreen extends Fragment {
         frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
 
         mRelationNameEditText = view.findViewById(R.id.relation_edittext);
+        mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
         mOccupationEditText = view.findViewById(R.id.occupation_editText);
         mCasteSpinner = view.findViewById(R.id.caste_spinner);
         mEducationSpinner = view.findViewById(R.id.education_spinner);
@@ -140,6 +141,9 @@ public class Fragment_ThirdScreen extends Fragment {
 
         mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
         mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
+        /*mNationalIDEditText.addTextChangedListener(new MyTextWatcher(mNationalIDEditText));
+        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18), inputFilter_Others});*/ //maxlength 25
 
         mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
         mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
@@ -296,9 +300,12 @@ public class Fragment_ThirdScreen extends Fragment {
             int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (castes != 0) {
                 casteAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        castes, android.R.layout.simple_spinner_dropdown_item);
+                        castes, R.layout.simple_spinner_item_1);
+                casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCasteSpinner.setAdapter(casteAdapter);
+            mCasteSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -310,9 +317,11 @@ public class Fragment_ThirdScreen extends Fragment {
             int educations = res.getIdentifier(educationLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        educations, android.R.layout.simple_spinner_dropdown_item);
+                        educations, R.layout.simple_spinner_item_1);
+                educationAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEducationSpinner.setAdapter(educationAdapter);
+            mEducationSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -324,9 +333,11 @@ public class Fragment_ThirdScreen extends Fragment {
             int economics = res.getIdentifier(economicLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        economics, android.R.layout.simple_spinner_dropdown_item);
+                        economics, R.layout.simple_spinner_item_1);
+                economicStatusAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
+            mEconomicstatusSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -338,6 +349,9 @@ public class Fragment_ThirdScreen extends Fragment {
 
         if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().isEmpty())
             mOccupationEditText.setText(patientDTO.getOccupation());
+
+        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
+            mNationalIDEditText.setText(patientDTO.getNationalID());
 
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
@@ -491,6 +505,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private void onBackInsertIntoPatientDTO() {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
+        patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
@@ -510,6 +525,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private void onPatientCreateClicked() {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
+        patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
@@ -586,13 +602,15 @@ public class Fragment_ThirdScreen extends Fragment {
 
         String uuid = patientDTO.getUuid();
 
-        // mobile no adding in patient attributes.
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-        patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+        if (patientDTO.getPhonenumber() != null && !patientDTO.getPhonenumber().isEmpty()) {
+            // mobile no adding in patient attributes.
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
 
         // son/daughter/wife of
         patientAttributesDTO = new PatientAttributesDTO();
@@ -600,6 +618,13 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
         patientAttributesDTO.setValue(StringUtils.getValue(mRelationNameEditText.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NationalID"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mNationalIDEditText.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // occupation

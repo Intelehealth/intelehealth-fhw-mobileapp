@@ -5,6 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/layout_toolbar_achievements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/achievements_badge_margin_start"
+        android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
+        android:layout_marginEnd="@dimen/achievements_badge_margin_start"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_help_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help center"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_header_text_size"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/iv_help_internet"
+            android:layout_width="@dimen/image_home_toolbar_icon_width"
+            android:layout_height="@dimen/image_home_toolbar_icon_height"
+            android:layout_alignParentEnd="true"
+            android:foregroundGravity="center_horizontal"
+            android:tooltipText="Tooltip"
+            android:visibility="visible" />
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,7 +77,8 @@
 
             <include
                 android:id="@+id/layout_buttons_options_help"
-                layout="@layout/ui2_button_help_options" />
+                layout="@layout/ui2_button_help_options"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -78,7 +108,8 @@
                     android:paddingBottom="@dimen/tv_searched_more_padding_top"
                     android:text="@string/more"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/common_sub_info_text_size" />
+                    android:textSize="@dimen/common_sub_info_text_size"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -115,7 +146,8 @@
                     android:paddingBottom="2dp"
                     android:text="@string/more"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/common_sub_info_text_size" />
+                    android:textSize="@dimen/common_sub_info_text_size"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView

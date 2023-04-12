@@ -2,26 +2,23 @@ package org.intelehealth.app.activities.followuppatients;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -38,7 +35,6 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -92,7 +88,17 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         });
     }
 
+    private RelativeLayout mTodayRelativeLayout, mWeekRelativeLayout, mMonthRelativeLayout;
+    private NestedScrollView mBodyNestedScrollView;
+    private TextView mEmptyTextView;
+
     private void initViews() {
+        mTodayRelativeLayout = findViewById(R.id.rl_today);
+        mWeekRelativeLayout = findViewById(R.id.rl_week);
+        mMonthRelativeLayout = findViewById(R.id.rl_month);
+        mBodyNestedScrollView = findViewById(R.id.nestedscrollview);
+        mEmptyTextView = findViewById(R.id.empty_view_tv);
+
         toolbar_title = findViewById(R.id.toolbar_title);
         today_nodata = findViewById(R.id.today_nodata);
         week_nodata = findViewById(R.id.week_nodata);
@@ -114,7 +120,16 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         thisWeeks_FollowupVisits();
         thisMonths_FollowupVisits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-        toolbar_title.setText("Follow-up visits(" + totalCounts + ")"); // eg. Follow-up visits(6)
+        if (totalCounts == 0) {
+            mBodyNestedScrollView.setVisibility(View.GONE);
+            mEmptyTextView.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Follow-up visits");
+        } else {
+            mBodyNestedScrollView.setVisibility(View.VISIBLE);
+            mEmptyTextView.setVisibility(View.GONE);
+            toolbar_title.setText("Follow-up visits(" + totalCounts + ")"); // eg. Follow-up visits(6)
+
+        }
     }
 
     private void todays_FollowupVisits() {
@@ -124,10 +139,11 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_Today(offset, currentDate);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_today = followUpModels.size();
-            if (totalCounts_today == 0 || totalCounts_today < 0)
-                today_nodata.setVisibility(View.VISIBLE);
-            else
-                today_nodata.setVisibility(View.GONE);
+            if (totalCounts_today <= 0) {
+                mTodayRelativeLayout.setVisibility(View.VISIBLE);
+            } else {
+                mTodayRelativeLayout.setVisibility(View.GONE);
+            }
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_today.setNestedScrollingEnabled(false);
             rv_today.setAdapter(adapter_new);
@@ -170,10 +186,10 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisWeek(offset);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_week = followUpModels.size();
-            if (totalCounts_week == 0 || totalCounts_week < 0)
-                week_nodata.setVisibility(View.VISIBLE);
+            if (totalCounts_week <= 0)
+                mWeekRelativeLayout.setVisibility(View.VISIBLE);
             else
-                week_nodata.setVisibility(View.GONE);
+                mWeekRelativeLayout.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_week.setNestedScrollingEnabled(false);
             rv_week.setAdapter(adapter_new);
@@ -188,10 +204,10 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisMonth(offset);
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_month = followUpModels.size();
-            if (totalCounts_month == 0 || totalCounts_month < 0)
-                month_nodata.setVisibility(View.VISIBLE);
+            if (totalCounts_month <= 0)
+                mMonthRelativeLayout.setVisibility(View.VISIBLE);
             else
-                month_nodata.setVisibility(View.GONE);
+                mMonthRelativeLayout.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_month.setNestedScrollingEnabled(false);
             rv_month.setAdapter(adapter_new);
@@ -365,7 +381,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } while (cursor.moveToNext());
         }
@@ -454,7 +470,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } while (cursor.moveToNext());
         }

@@ -20,6 +20,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +53,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -72,6 +75,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -113,6 +117,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private ObjectAnimator syncAnimator;
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
+    Switch fingerprintSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +155,27 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         refresh = toolbar.findViewById(R.id.imageview_is_internet_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
+
+        if(sessionManager.isEnableAppLock())
+            fingerprintSwitch.setChecked(true);
+        else
+            fingerprintSwitch.setChecked(false);
+
+        fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    sessionManager.setEnableAppLock(true);
+                    Toast.makeText(MyProfileActivity.this,getResources().getString(R.string.fingerprint_lock_enabled), Toast.LENGTH_LONG).show();
+                }
+                else {
+                    sessionManager.setEnableAppLock(false);
+                    Toast.makeText(MyProfileActivity.this, getResources().getString(R.string.fingerprint_lock_disabled), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +213,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
         countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
-
+        countryCodePicker.setNumberAutoFormattingEnabled(false);
 
         ivProfileImage = findViewById(R.id.iv_profilePic);
         tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
@@ -262,6 +288,26 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         // fetch user details if added
         fetchUserDetailsIfAdded();
         manageListeners();
+        setMobileNumberLimit();
+    }
+
+    private int mSelectedMobileNumberValidationLength = 0;
+    private String mSelectedCountryCode = "";
+
+    private void setMobileNumberLimit() {
+        mSelectedCountryCode = countryCodePicker.getSelectedCountryCode();
+        if (mSelectedCountryCode.equals("91")) {
+            mSelectedMobileNumberValidationLength = 10;
+        }
+        etMobileNo.setInputType(InputType.TYPE_CLASS_PHONE);
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                return null;
+            }
+        };
+
+        etMobileNo.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
     }
 
     private void fetchUserDetailsIfAdded() {
@@ -504,7 +550,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         .skipMemoryCache(true)
                         .into(ivProfileImage);
 
-                saveImage(mCurrentPhotoPath);            }
+                saveImage(mCurrentPhotoPath);
+            }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (data != null) {
                 try {

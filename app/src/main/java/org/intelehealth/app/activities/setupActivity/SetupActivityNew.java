@@ -58,6 +58,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
@@ -99,38 +100,33 @@ public class SetupActivityNew extends AppCompatActivity {
     ProgressDialog mProgressDialog;
     private String mindmapURL = "";
     ///   AlertDialog dialogLoggingIn;
-
+    ImageView questionIV;
     private TextView mLocationErrorTextView, mUserNameErrorTextView, mPasswordErrorTextView;
-
+    TooltipWindow tipWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_new_ui2);
-
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
-
+        questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
-
-
         autotvLocations = findViewById(R.id.autotv_select_location);
         Button btnSetup = findViewById(R.id.btn_setup);
         TextView tvForgotPassword = findViewById(R.id.tv_forgot_password1);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         etAdminPassword = findViewById(R.id.admin_password);
-
         mLocationErrorTextView = findViewById(R.id.tv_location_error);
         mUserNameErrorTextView = findViewById(R.id.tv_username_error);
         mPasswordErrorTextView = findViewById(R.id.tv_password_error);
-
         mLocationErrorTextView.setVisibility(View.GONE);
         mUserNameErrorTextView.setVisibility(View.GONE);
         mPasswordErrorTextView.setVisibility(View.GONE);
-
         etUsername.addTextChangedListener(new MyTextWatcher(etUsername));
         etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
+        tipWindow = new TooltipWindow(SetupActivityNew.this);
 
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +140,13 @@ public class SetupActivityNew extends AppCompatActivity {
         r1 = findViewById(R.id.demoMindmap);
         r2 = findViewById(R.id.downloadMindmap);
 
+        questionIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!tipWindow.isTooltipShown())
+                    tipWindow.showToolTip(questionIV, getResources().getString(R.string.setup_tooltip_text));
+            }
+        });
 
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +190,7 @@ public class SetupActivityNew extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     class MyTextWatcher implements TextWatcher {

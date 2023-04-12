@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent_otp"
     android:layout_width="match_parent"
@@ -37,7 +36,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_forgot_password"
+                android:id="@+id/tv_forgot_password_help"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/iv_help_info_otp"
@@ -182,9 +181,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/pinview_otp"
                         android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
-                        android:layout_marginTop="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:text="@string/resend_otp_in"
-                        android:textColor="@color/textColorGray"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/common_label_text_size" />
 
                 </LinearLayout>

@@ -1,41 +1,57 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.RangeSlider;
+import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +74,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
 
+    public void removeImageInLastNode(int index, String image) {
+        mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
+        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+    }
+
     public interface OnItemSelection {
         void onSelect(Node node, int index);
 
@@ -66,6 +87,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         void onAllAnswered(boolean isAllAnswered);
 
         void onCameraRequest();
+
+        void onImageRemoved(int index, String image);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -88,6 +111,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList.add(node);
         notifyItemInserted(mItemList.size() - 1);
     }
+
     public void addItemAll(List<Node> nodes) {
         mItemList = nodes;
         notifyDataSetChanged();
@@ -111,16 +135,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
+            genericViewHolder.index = position;
 
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
 
+            if (genericViewHolder.node.getPop_up() != null && !genericViewHolder.node.getPop_up().isEmpty()) {
+                genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
+
+            } else {
+                genericViewHolder.knowMoreTextView.setVisibility(View.GONE);
+            }
             if (mIsForPhysicalExam) {
 
                 Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
@@ -205,11 +236,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         break;
                     case "range":
                         // askRange(questionNode, context, adapter);
-                        addNumberView(mItemList.get(position), genericViewHolder, position);
+                        addRangeView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "frequency":
                         //askFrequency(questionNode, context, adapter);
-                        addNumberView(mItemList.get(position), genericViewHolder, position);
+                        addFrequencyView(mItemList.get(position), genericViewHolder, position);
                         break;
                     case "camera":
                         // openCamera(context, imagePath, imageName);
@@ -241,6 +272,285 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Log.v("showCameraView", "onBindViewHolder 1");
                 showCameraView(mItemList.get(position), genericViewHolder, position);
             }
+        }
+    }
+
+    private void addRangeView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
+        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
+                && node.getLanguage().equalsIgnoreCase(" to ")) {
+            String[] vals = node.getLanguage().split(" to ");
+            rangeTextView.setText(String.format("%s to %s", vals[0], vals[1]));
+            List<Float> list = new ArrayList<>();
+            list.add(Float.valueOf(vals[0]));
+            list.add(Float.valueOf(vals[1]));
+            rangeSlider.setValues(list);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, "Please select the range!", Toast.LENGTH_SHORT).show();
+                } else {
+                    List<Float> values = rangeSlider.getValues();
+                    int x = values.get(0).intValue();
+                    int y = values.get(1).intValue();
+                    String durationString = x + " to " + y;
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, index);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = rangeSlider.getValues();
+                int x = values.get(0).intValue();
+                int y = values.get(1).intValue();
+                rangeTextView.setText(String.format("%d to %d", x, y));
+            }
+        });
+
+
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addFrequencyView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
+        Slider rangeSlider = view.findViewById(R.id.number_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
+            int i = Integer.parseInt(node.getLanguage());
+            rangeTextView.setText(String.format("Level %d ", i));
+            rangeSlider.setValue(i);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, "Please drag to select!", Toast.LENGTH_SHORT).show();
+                } else {
+                    int x = (int) rangeSlider.getValue();
+                    String durationString = String.valueOf(x);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, index);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int x = (int) rangeSlider.getValue();
+                rangeTextView.setText(String.format("Level %d ", x));
+                updateCustomEmojiSliderUI(view, x);
+            }
+        });
+
+        updateCustomEmojiSliderUI(view, 0);
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void updateCustomEmojiSliderUI(View view, int range) {
+        TextView tv0 = view.findViewById(R.id.n0_tv);
+        TextView tv1 = view.findViewById(R.id.n1_tv);
+        TextView tv2 = view.findViewById(R.id.n2_tv);
+        TextView tv3 = view.findViewById(R.id.n3_tv);
+        TextView tv4 = view.findViewById(R.id.n4_tv);
+        TextView tv5 = view.findViewById(R.id.n5_tv);
+        TextView tv6 = view.findViewById(R.id.n6_tv);
+        TextView tv7 = view.findViewById(R.id.n7_tv);
+        TextView tv8 = view.findViewById(R.id.n8_tv);
+        TextView tv9 = view.findViewById(R.id.n9_tv);
+        TextView tv10 = view.findViewById(R.id.n10_tv);
+
+        ImageView i0 = view.findViewById(R.id.n0_imv);
+        ImageView i1 = view.findViewById(R.id.n1_imv);
+        ImageView i2 = view.findViewById(R.id.n2_imv);
+        ImageView i3 = view.findViewById(R.id.n3_imv);
+        ImageView i4 = view.findViewById(R.id.n4_imv);
+        ImageView i5 = view.findViewById(R.id.n5_imv);
+        ImageView i6 = view.findViewById(R.id.n6_imv);
+        ImageView i7 = view.findViewById(R.id.n7_imv);
+        ImageView i8 = view.findViewById(R.id.n8_imv);
+        ImageView i9 = view.findViewById(R.id.n9_imv);
+        ImageView i10 = view.findViewById(R.id.n10_imv);
+
+        // set default values
+        tv0.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv0.setTextSize(14);
+        tv0.setTypeface(tv0.getTypeface(), Typeface.NORMAL);
+
+        tv1.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv1.setTextSize(14);
+        tv1.setTypeface(tv1.getTypeface(), Typeface.NORMAL);
+
+        tv2.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv2.setTextSize(14);
+        tv2.setTypeface(tv2.getTypeface(), Typeface.NORMAL);
+
+        tv3.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv3.setTextSize(14);
+        tv3.setTypeface(tv3.getTypeface(), Typeface.NORMAL);
+
+        tv4.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv4.setTextSize(14);
+        tv4.setTypeface(tv4.getTypeface(), Typeface.NORMAL);
+
+        tv5.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv5.setTextSize(14);
+        tv5.setTypeface(tv5.getTypeface(), Typeface.NORMAL);
+
+        tv6.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv6.setTextSize(14);
+        tv6.setTypeface(tv6.getTypeface(), Typeface.NORMAL);
+
+        tv7.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv7.setTextSize(14);
+        tv7.setTypeface(tv7.getTypeface(), Typeface.NORMAL);
+
+        tv8.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv8.setTextSize(14);
+        tv8.setTypeface(tv8.getTypeface(), Typeface.NORMAL);
+
+        tv9.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv9.setTextSize(14);
+        tv9.setTypeface(tv9.getTypeface(), Typeface.NORMAL);
+
+        tv10.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv10.setTextSize(14);
+        tv10.setTypeface(tv10.getTypeface(), Typeface.NORMAL);
+
+        i0.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i1.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i2.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i3.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i4.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i5.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i6.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i7.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i8.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i9.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i10.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+
+        if (range == 0) {
+            tv0.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv0.setTextSize(16);
+            tv0.setTypeface(tv0.getTypeface(), Typeface.BOLD);
+
+            i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+
+        } else if (range == 1) {
+            tv1.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv1.setTextSize(16);
+            tv1.setTypeface(tv1.getTypeface(), Typeface.BOLD);
+
+            i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 2) {
+            tv2.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv2.setTextSize(16);
+            tv2.setTypeface(tv2.getTypeface(), Typeface.BOLD);
+
+            i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 3) {
+            tv3.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv3.setTextSize(16);
+            tv3.setTypeface(tv3.getTypeface(), Typeface.BOLD);
+
+            i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 4) {
+            tv4.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv4.setTextSize(16);
+            tv4.setTypeface(tv4.getTypeface(), Typeface.BOLD);
+
+            i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 5) {
+            tv5.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv5.setTextSize(16);
+            tv5.setTypeface(tv5.getTypeface(), Typeface.BOLD);
+
+            i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 6) {
+            tv6.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv6.setTextSize(16);
+            tv6.setTypeface(tv6.getTypeface(), Typeface.BOLD);
+
+            i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 7) {
+            tv7.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv7.setTextSize(16);
+            tv7.setTypeface(tv7.getTypeface(), Typeface.BOLD);
+
+            i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 8) {
+            tv8.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv8.setTextSize(16);
+            tv8.setTypeface(tv8.getTypeface(), Typeface.BOLD);
+
+            i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 9) {
+            tv9.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv9.setTextSize(16);
+            tv9.setTypeface(tv9.getTypeface(), Typeface.BOLD);
+
+            i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 10) {
+            tv10.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv10.setTextSize(16);
+            tv10.setTypeface(tv10.getTypeface(), Typeface.BOLD);
+
+            i10.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         }
     }
 
@@ -318,11 +628,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "range":
                     // askRange(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addRangeView(options.get(0), holder, index);
                     break;
                 case "frequency":
                     //askFrequency(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addFrequencyView(options.get(0), holder, index);
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
@@ -335,16 +645,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
                     break;
             }
+            holder.submitButton.setVisibility(View.GONE);
         } else {
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
+
             if (mItemList.get(index).isMultiChoice()) {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                holder.submitButton.setVisibility(View.VISIBLE);
             } else {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                holder.submitButton.setVisibility(View.GONE);
 
             }
-            holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            holder.recyclerView.setLayoutManager(layoutManager);
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {
@@ -363,7 +681,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!type.isEmpty()) {
                         holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
-                        mOnItemSelection.onSelect(node, index);
+                        if (!mItemList.get(index).isMultiChoice()) {
+                            mOnItemSelection.onSelect(node, index);
+                        }
                     }
                     Log.v("Node", "Type - " + type);
                     switch (type) {
@@ -391,11 +711,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             break;
                         case "range":
                             // askRange(questionNode, context, adapter);
-                            addNumberView(node, holder, index);
+                            addRangeView(node, holder, index);
                             break;
                         case "frequency":
                             //askFrequency(questionNode, context, adapter);
-                            addNumberView(node, holder, index);
+                            addFrequencyView(node, holder, index);
                             break;
                         case "camera":
                             // openCamera(context, imagePath, imageName);
@@ -412,18 +732,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             holder.recyclerView.setAdapter(optionsChipsGridAdapter);
-            /*for (int i = 0; i < options.size(); i++) {
+            for (int i = 0; i < options.size(); i++) {
                 String type = options.get(i).getInputType();
-
-                if (type == null || type.isEmpty() && (options.get(i).getOptionsList() != null && !options.get(i).getOptionsList().isEmpty())) {
-                    type = "options";
-                }
-
-                if (type.equalsIgnoreCase("camera")) {
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
                     // openCamera(context, imagePath, imageName);
                     showCameraView(options.get(i), holder, index);
                 }
-            }*/
+            }
         }
 
     }
@@ -434,6 +749,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -465,8 +781,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
             @Override
-            public void onImageRemoved(int index) {
-
+            public void onImageRemoved(int index, String image) {
+                mOnItemSelection.onImageRemoved(index, image);
             }
 
             @Override
@@ -503,29 +819,84 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
      */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
         Log.v("addDurationView", new Gson().toJson(node));
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
-        final TextView numberRangeTextView = view.findViewById(R.id.tv_number_range);
-        final TextView durationTypeTextView = view.findViewById(R.id.tv_duration_type);
+        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
+        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
+
+        // add a list
+        int i = 0;
+        int max = 100;
+        final String[] data = new String[max + 1];
+        data[0] = "Number";
+        for (i = 1; i < max; i++) {
+            data[i] = String.valueOf(i - 1);
+        }
+
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data);
+        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        numberRangeSpinner.setAdapter(adaptador);
+        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // add a list
+        final String[] data1 = new String[]{"Duration Type",
+                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
+                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
+                mContext.getString(R.string.Years)};
+
+        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data1);
+        adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        durationTypeSpinner.setAdapter(adaptador1);
+        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         if (!node.getLanguage().isEmpty()) {
             String[] val = node.getLanguage().trim().split(" ");
             if (val.length == 2) {
-                numberRangeTextView.setText(val[0]);
-                durationTypeTextView.setText(val[1]);
+                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(val[0]));
+                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(val[1]));
             }
         }
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberRangeTextView.getText().toString().isEmpty()) {
+                if (numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(mContext, "Please select the duration number", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (durationTypeTextView.getText().toString().isEmpty()) {
+                } else if (durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(mContext, "Please select the duration type", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String durationString = numberRangeTextView.getText() + " " + durationTypeTextView.getText();
+                String durationString = numberRangeSpinner.getSelectedItem().toString() + " " + durationTypeSpinner.getSelectedItem().toString();
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -539,18 +910,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mOnItemSelection.onSelect(node, index);
             }
         });
-        numberRangeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showNumberListing(numberRangeTextView, "Select duration number", 0, 100);
-            }
-        });
-        durationTypeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDurationTypes(durationTypeTextView);
-            }
-        });
+
 
         holder.singleComponentContainer.addView(view);
     }
@@ -604,6 +964,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
@@ -647,6 +1008,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
@@ -682,12 +1044,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setMinLines(5);
+        editText.setLines(5);
+        editText.setHorizontallyScrolling(false);
         editText.setHint(node.getText());
+        editText.setMinHeight(320);
         holder.singleComponentContainer.addView(view);
     }
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
@@ -751,14 +1118,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestion, tvQuestionDesc, tvQuestionCounter, tvReferenceDesc;
         Node node;
+        int index;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
+        Button submitButton;
+        TextView knowMoreTextView;
+
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
+            knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            knowMoreTextView.setVisibility(View.GONE);
+
+            submitButton = itemView.findViewById(R.id.btn_submit);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
             referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
@@ -773,12 +1149,36 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
             tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
 
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemList.get(index).isSelected())
+                        mOnItemSelection.onSelect(node, index);
+                    else
+                        Toast.makeText(mContext, "Please select at least one option!", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+            knowMoreTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showKnowMoreDialog(node.getDisplay(), node.getPop_up());
+                }
+            });
         }
 
 
     }
 
+    private void showKnowMoreDialog(String title, String message) {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(mContext, 0, title, message, true, mContext.getResources().getString(R.string.okay), mContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
+    }
 
 }
 

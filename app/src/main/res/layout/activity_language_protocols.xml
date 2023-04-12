@@ -182,7 +182,8 @@
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
-                        android:paddingBottom="@dimen/margin_10" />
+                        android:paddingBottom="@dimen/margin_10"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <RelativeLayout

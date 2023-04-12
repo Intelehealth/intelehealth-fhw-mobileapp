@@ -19,6 +19,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.utilities.DialogUtils;
 
 
 /**
@@ -44,10 +45,15 @@ public class PhysicalExaminationFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         //sessionManager = new SessionManager(context);
-        ((VisitCreationActivity) context).setOnBundleSelected(new VisitCreationActivity.SelectedBundle() {
+        ((VisitCreationActivity) context).setImageUtilsListener(new VisitCreationActivity.ImageUtilsListener() {
             @Override
-            public void onBundleSelect(Bundle bundle) {
+            public void onImageReady(Bundle bundle) {
                 mQuestionsListingAdapter.addImageInLastNode(bundle.getString("image"));
+            }
+
+            @Override
+            public void onImageReadyForDelete(int index, String image) {
+                mQuestionsListingAdapter.removeImageInLastNode(index, image);
             }
         });
     }
@@ -82,31 +88,31 @@ public class PhysicalExaminationFragment extends Fragment {
             @Override
             public void onSelect(Node node, int index) {
                 // avoid the scroll for old data change
-                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
                 }
                 Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams()-1) {
+                if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                     //if (mCurrentChildComplainNodeOptionsIndex < physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size()) {
-                        //if (mCurrentChildComplainNodeOptionsIndex == physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size() - 1) {
-                        //    mCurrentChildComplainNodeOptionsIndex = 0;
-                            mCurrentComplainNodeOptionsIndex++;
-                       // } else {
-                        //    mCurrentChildComplainNodeOptionsIndex++;
+                    //if (mCurrentChildComplainNodeOptionsIndex == physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size() - 1) {
+                    //    mCurrentChildComplainNodeOptionsIndex = 0;
+                    mCurrentComplainNodeOptionsIndex++;
+                    // } else {
+                    //    mCurrentChildComplainNodeOptionsIndex++;
 
-                        //}
+                    //}
 
 
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                            }
-                        }, 100);
+                    mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        }
+                    }, 100);
 
-                        mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
-                   // }
+                    mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
+                    // }
                 } else {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, null);
                 }
@@ -127,12 +133,28 @@ public class PhysicalExaminationFragment extends Fragment {
             public void onCameraRequest() {
                 mActionListener.onCameraOpenRequest();
             }
+
+            @Override
+            public void onImageRemoved(int index, String image) {
+                mActionListener.onImageRemoved(index, image);
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
         mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).
 
                 getOption(0));
+        showSanityDialog();
         return view;
+    }
+
+    private void showSanityDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(getActivity(), R.drawable.ui2_ic_warning_sanity, getResources().getString(R.string.sanity_alert_title), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
     }
 }

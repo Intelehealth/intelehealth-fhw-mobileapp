@@ -42,9 +42,9 @@ import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.ihutils.ui.CameraActivity;
 
 public class AdditionalDocumentsActivity extends AppCompatActivity implements AdapterInterface {
 

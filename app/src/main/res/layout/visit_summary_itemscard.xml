@@ -53,9 +53,9 @@
                 android:id="@+id/btn_up_vitals_header"
                 android:layout_width="@dimen/fu_icon_width"
                 android:layout_height="@dimen/fu_icon_height"
-                android:background="@null"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:background="@null"
                 android:src="@drawable/ui2_ic_chevron_down" />
         </RelativeLayout>
 
@@ -64,9 +64,7 @@
                 android:id="@+id/vs_vitals_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vitals_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/vitals_header_relative">
 
                 <View
                     android:id="@+id/divider"
@@ -424,7 +422,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_toEndOf="@+id/vs_icon"
-                    android:text="Visit reason" />
+                    android:text="@string/complaint_dialog_title" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/btn_up_visitreason_header"
@@ -441,9 +439,7 @@
                 android:id="@+id/vs_visitreason_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/chiefcomplaint_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/chiefcomplaint_header_relative">
 
                 <View
                     android:id="@+id/divider"
@@ -716,9 +712,7 @@
                 android:id="@+id/vs_phyexam_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/physExam_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/physExam_header_relative">
 
                 <View
                     android:id="@+id/divider"
@@ -860,9 +854,7 @@
                 android:id="@+id/vs_medhist_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pathistory_header_relative"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_below="@+id/pathistory_header_relative">
 
                 <View
                     android:id="@+id/divider"

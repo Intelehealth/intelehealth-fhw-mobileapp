@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
+            android:layout_marginBottom="@dimen/padding_32"
             android:gravity="center"
             android:text="@string/login_success"
             android:textColor="@color/textColorBlack"
@@ -35,7 +36,8 @@
             android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
             android:text="@string/login_success_note"
             android:textColor="@color/textColorGray"
-            android:textSize="@dimen/internet_warning_note" />
+            android:textSize="@dimen/internet_warning_note"
+            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

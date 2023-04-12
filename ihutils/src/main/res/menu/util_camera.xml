@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/switch_flash"
-        android:icon="@drawable/ic_flash_auto"
-        android:title="@string/flash_auto"
+        android:icon="@drawable/utils_ic_flash_auto"
+        android:title="@string/util_flash_auto"
         app:showAsAction="ifRoom" />
 
 </menu>

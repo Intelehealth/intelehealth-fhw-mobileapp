@@ -28,6 +28,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.apprtc.CompleteActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,12 +86,13 @@ public class CallListenerBackgroundService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))
-                //.setContentText(getText(R.string.notification_message))
+                .setContentText(getText(R.string.notification_title_1))
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false)
                 .setNotificationSilent()
-                //.setTicker(getText(R.string.ticker_text))
+                .setOngoing(true)
+                //.setTicker(getText(R.string.notification_title_1))
                 .build();
 
         // Notification ID cannot be 0.
@@ -116,6 +118,7 @@ public class CallListenerBackgroundService extends Service {
                     //{doctorName=Demo doctor1, nurseId=8d61869b-14d7-4c16-9c7a-a6f1aaaa3c0d, roomId=df412e7e-9020-49ed-9712-1937ad46af9b, timestamp=1628564570611}
                     Log.d(TAG, "Value is: " + value);
                     if(new SessionManager(getApplicationContext()).isLogout()){
+
                         return;
                     }
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -128,6 +131,9 @@ public class CallListenerBackgroundService extends Service {
                 }*/
                     if (value == null) return;
                     if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+                        Intent broadcast = new Intent();
+                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        sendBroadcast(broadcast);
                         return;
                     }
                     String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";

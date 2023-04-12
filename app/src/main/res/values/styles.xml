@@ -6,23 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--
-                <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        -->
         <item name="android:textViewStyle">@style/DefaultTextviewStyle</item>
-
         <item name="android:textColor">@color/primary_text</item>
-        <!--
-                <item name="buttonStyle">@style/RobotoButtonStyle</item>
-        -->
         <item name="buttonStyle">@style/DefaultButtonStyle</item>
-
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="colorSurface">#FFFFFF</item>
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
         <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -440,6 +433,18 @@
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_bg</item>
         <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
+        <item name="android:textColor">@color/gray_5</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+
+    <style name="SpinnerTheme1" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@color/red</item>
+        <item name="android:paddingHorizontal">10dip</item>
+
+    </style>
+    <style name="myListPopupWindow" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
     </style>
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
@@ -494,5 +499,29 @@
 
     </style>
 
+    <style name="DropDownListViewStyle" parent="@style/Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/bg_spinner</item>
+        <item name="android:divider">@color/gray_0</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+
+    <style name="slider_tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="shapeAppearanceOverlay">@style/tooltipShOverylay</item>
+        <!-- <item name="android:textAppearance">@style/tooltipShOverylay</item>-->
+        <item name="backgroundTint">@color/colorPrimary1</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="tooltipShOverylay">
+        <item name="cornerSize">50%</item>
+
+    </style>
+
+    <style name="slider_scrollbar" parent="Widget.MaterialComponents.Slider">
+        <item name="trackColorActive">@color/colorPrimary1</item>
+        <item name="trackColorInactive">@color/gray_1</item>
+
+    </style>
 
 </resources>

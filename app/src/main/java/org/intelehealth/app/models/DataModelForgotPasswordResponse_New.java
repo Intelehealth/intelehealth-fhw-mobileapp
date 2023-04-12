@@ -5,20 +5,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class DataModelForgotPasswordResponse_New {
 
-    @SerializedName("username")
+    /*@SerializedName("username")
     @Expose
     private String username;
     @SerializedName("system_id")
     @Expose
-    private String systemId;
-    @SerializedName("uuid")
+    private String systemId;*/
+    @SerializedName("userUuid")
     @Expose
     private String uuid;
-    @SerializedName("person_id")
+    @SerializedName("providerUuid")
     @Expose
-    private Integer personId;
+    private String personId;
 
-    public String getUsername() {
+    /*public String getUsername() {
         return username;
     }
 
@@ -32,7 +32,7 @@ public class DataModelForgotPasswordResponse_New {
 
     public void setSystemId(String systemId) {
         this.systemId = systemId;
-    }
+    }*/
 
     public String getUuid() {
         return uuid;
@@ -42,11 +42,11 @@ public class DataModelForgotPasswordResponse_New {
         this.uuid = uuid;
     }
 
-    public Integer getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(Integer personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 

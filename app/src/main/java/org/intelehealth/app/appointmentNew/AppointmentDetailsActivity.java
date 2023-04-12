@@ -9,6 +9,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -41,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -58,6 +60,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -103,7 +106,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     String dr_WhatsappNo = "";
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
-    ImageButton ibEdit;
+    //ImageButton ibEdit;
     private PatientDTO patientDTO;
     String patientPhoneNo = "";
 
@@ -118,12 +121,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         initUI();
     }
-
+    private ObjectAnimator syncAnimator;
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-
+        ivIsInternet.setOnClickListener(v -> {
+            SyncUtils.syncNow(AppointmentDetailsActivity.this, ivIsInternet, syncAnimator);
+        });
         tvTitle.setText(getResources().getString(R.string.appointment_details));
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(v -> {
@@ -148,7 +153,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         }
 
 
-        ibEdit = findViewById(R.id.edit_patient_appointment);
+        //ibEdit = findViewById(R.id.edit_patient_appointment);
 
         stateAppointmentStarted = findViewById(R.id.state_appointment_started);
         stateAppointmentPrescription = findViewById(R.id.state_prescription_appointment);
@@ -277,12 +282,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
 
             btnRescheduleAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment) + "<b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment) + " <b>" + patientName + "?</b>";
                 rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, "Yes", "No");
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + "<b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + " <b>" + patientName + "?</b>";
                 cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, "Yes", "No");
 
             });
@@ -405,7 +410,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         handleWhatsappAndCall();
 
         //edit patient details - Redirect to Identification activity
-        ibEdit.setOnClickListener(v -> {
+        /*ibEdit.setOnClickListener(v -> {
             PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
             patientDTO.setPatientPhoto(patient_photo_path);
             patientDTO.setOpenmrsId(openmrsID);
@@ -420,7 +425,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
-        });
+        });*/
 
         //if appointment is rescheduled and prescription is pending then hide layout summary buttons i.e. cancel and reschedule
         if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null &&
@@ -950,5 +955,91 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         networkUtils.callBroadcastReceiver();
 
     }
+    public void editPatientInfo(View view) {
+        PatientDTO patientDTO = new PatientDTO();
+        String patientSelection = "uuid = ?";
+        String[] patientArgs = {patientUuid};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "country", "phone_number", "gender", "sdw",
+                "patient_photo"};
+        SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
 
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = new PatientsDAO().getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("caste")) {
+                    patientDTO.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patientDTO.setPhonenumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patientDTO.setEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patientDTO.setEconomic(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patientDTO.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patientDTO.setSon_dau_wife(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+
+                }
+                if (name.equalsIgnoreCase("createdDate")) {
+                    patientDTO.setCreatedDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("providerUUID")) {
+                    patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
+        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
+        intent2.putExtra("patientUuid", patientDTO.getUuid());
+        intent2.putExtra("ScreenEdit", "personal_edit");
+        intent2.putExtra("patient_detail", true);
+
+        Bundle args = new Bundle();
+        args.putSerializable("patientDTO", (Serializable) patientDTO);
+        intent2.putExtra("BUNDLE", args);
+        startActivity(intent2);
+    }
 }

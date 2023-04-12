@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone"
-    tools:visibility="gone"
     android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:visibility="gone"
+    tools:visibility="gone">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,16 +54,16 @@
                 android:translationY="-1.58sp" />
 
             <TextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10007"
+                android:id="@+id/add_new_patientTV"
                 android:layout_width="@dimen/search_addbtn_width"
                 android:layout_height="@dimen/search_add_btn_height"
-                android:layout_marginTop="@dimen/toolbar_margin_right"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/margin_20dp"
                 android:layout_below="@id/search_pat_hint_txt"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/toolbar_margin_right"
+                android:layout_marginBottom="@dimen/margin_20dp"
                 android:background="@drawable/ic_add_patient_svg"
-                />
+                android:clickable="true"
+                android:elevation="8dip" />
 
         </RelativeLayout>
     </FrameLayout>

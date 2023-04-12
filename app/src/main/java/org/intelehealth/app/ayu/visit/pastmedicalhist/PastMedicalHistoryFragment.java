@@ -115,6 +115,11 @@ public class PastMedicalHistoryFragment extends Fragment {
             public void onCameraRequest() {
 
             }
+
+            @Override
+            public void onImageRemoved(int index,String image) {
+
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);

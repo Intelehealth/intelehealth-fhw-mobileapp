@@ -22,4 +22,4 @@ salt.env
 /webrtc/build/
 /app/release/
 /app/src/main/assets
-/webrtc/build/
+/webrtc/src/main/assets/config.properties

@@ -67,16 +67,17 @@ public class DailyAchievementsFragment extends Fragment {
     }
 
     private void initUI() {
-        View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
-        ivBackArrow.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_arrow_back_new));
+        //View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        //ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+        /*ivBackArrow.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_arrow_back_new));
         ivBackArrow.setOnClickListener(v -> {
 
-          /*  FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-            fm.popBackStack();*/
-            Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
-            startActivity(intent);
-        });
+          *//*  FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
+            fm.popBackStack();*//*
+            //Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
+            //startActivity(intent);
+            getActivity().onBackPressed();
+        });*/
 
         todaysDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy");
         todaysDateInYYYYMMDD = DateAndTimeUtils.getTodaysDateInRequiredFormat("yyyy-MM-dd");
