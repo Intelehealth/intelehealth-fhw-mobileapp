@@ -35,6 +35,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -129,6 +130,23 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         return count;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
+            @Override
+            public void onStart(int eventFlag) {
+                Log.v(TAG, "onStart");
+            }
+
+            @Override
+            public void onFinished(int eventFlag) {
+                Log.v(TAG, "onFinished");
+                initUI();
+            }
+        });
+    }
+
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
@@ -181,8 +199,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
                 startActivity(intent);
-               /* Intent intent = new Intent(getActivity(), ScheduleAppointmentActivity_New.class);
-                startActivity(intent);*/
+
             }
         });
 

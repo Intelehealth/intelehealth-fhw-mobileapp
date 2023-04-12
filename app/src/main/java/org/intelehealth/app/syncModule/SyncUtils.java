@@ -48,6 +48,7 @@ public class SyncUtils {
         syncDAO.pushDataApi();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
+
         //  imagesPushDAO.patientProfileImagesPush();
         //ui2.0
         imagesPushDAO.loggedInUserProfileImagesPush();
@@ -64,11 +65,12 @@ public class SyncUtils {
         handler_background.postDelayed(new Runnable() {
             @Override
             public void run() {
+                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Background Image Push Started");
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Background Image Pull ended");
             }
-        }, 3000);
+        }, 4000);
 
         imagesPushDAO.deleteObsImage();
 
@@ -99,9 +101,10 @@ public class SyncUtils {
             public void run() {
                 Logger.logD(TAG, "Pull Started");
                 syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }
-        }, 3000);
+        }, 4000);
 
         imagesPushDAO.patientProfileImagesPush();
         //ui2.0
@@ -159,7 +162,7 @@ public class SyncUtils {
                     .postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_SHORT).show();
                         }
                     }, 1200);
 

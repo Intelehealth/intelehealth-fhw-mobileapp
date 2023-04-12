@@ -16,7 +16,6 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -74,6 +73,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.BuildConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
@@ -84,10 +84,9 @@ import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
@@ -271,6 +270,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
+    private UpdateFragmentOnEvent mUpdateFragmentOnEvent;
+
+    public void initUpdateFragmentOnEvent(UpdateFragmentOnEvent listener) {
+        Log.v(TAG, "initUpdateFragmentOnEvent");
+        mUpdateFragmentOnEvent = listener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1044,25 +1049,23 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
 
-            if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+            if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                if (sessionManager.isFirstTimeLaunched()) {
-                    if (flagType == AppConstants.SYNC_FAILED) {
+                mTempSyncHelperList.add(flagType);
+                if (flagType == AppConstants.SYNC_FAILED) {
+                    if (sessionManager.isFirstTimeLaunched()) {
                         hideSyncProgressBar(false);
                         showRefreshFailedDialog();
                         //finish();
-                    } else {
-                        mTempSyncHelperList.add(flagType);
-                        if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
-//                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
-                                /*&& mTempSyncHelperList.contains(AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
-                                && mTempSyncHelperList.contains(AppConstants.SYNC_OBS_IMAGE_PUSH_DONE)*/) {
-                            hideSyncProgressBar(true);
-                        }
                     }
-                    // showBadge();
+                }
+
+                Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
+                if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
+                        mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
+                    hideSyncProgressBar(true);
                 }
             }
 
@@ -1110,6 +1113,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             stopService(serviceIntent);
         }
         startService(serviceIntent);
+
+        mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
     }
 
 
