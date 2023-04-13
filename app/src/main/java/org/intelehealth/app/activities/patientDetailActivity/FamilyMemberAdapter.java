@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +36,21 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FamilyMemberAdapter.FamilyMemberViewHolder holder, int position) {
-
         holder.tvFamilyName.setText(listPatientNames.get(position).getName());
         holder.tvOpenMRSID.setText(listPatientNames.get(position).getOpenMRSID());
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listPatientNames.get(position);
+                Intent intent = new Intent(context, PatientDetailActivity.class);
+                intent.putExtra("patientUuid", listPatientNames.get(position).getPatientUUID());
+                intent.putExtra("patientName", listPatientNames.get(position).getName());
+                intent.putExtra("status", "returning");
+                intent.putExtra("tag", "patient detail");
+                intent.putExtra("hasPrescription", "false");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -53,6 +66,8 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
             super(itemView);
             tvFamilyName = itemView.findViewById(R.id.tv_name);
             tvOpenMRSID = itemView.findViewById(R.id.tv_openMRSID);
+            tvOpenMRSID.setPaintFlags(tvOpenMRSID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tvOpenMRSID.setTextColor(context.getColor(R.color.deepBlue3));
         }
     }
 }

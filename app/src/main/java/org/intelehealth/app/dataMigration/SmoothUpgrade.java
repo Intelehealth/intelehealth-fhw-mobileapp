@@ -16,7 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -265,7 +269,11 @@ public class SmoothUpgrade {
                     encounterDTO.setUuid(UUID.randomUUID().toString());
                     encounterDTO.setVisituuid(visituuid);
                     encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(cursor.getString(cursor.getColumnIndexOrThrow("encounter_type"))));
-                    encounterDTO.setEncounterTime(time);
+                    try {
+                        encounterDTO.setEncounterTime(OneMinutesLate(time));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
                     encounterDTO.setVoided(0);
                     encounterDTO.setSyncd(false);
@@ -287,6 +295,15 @@ public class SmoothUpgrade {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         return encounterDTO;
+    }
+
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
     }
 
     private ObsDTO getEncounterId(String id, String encounterUuid) {
@@ -363,7 +380,7 @@ public class SmoothUpgrade {
             encounterDTO.setUuid(uuid);
             encounterDTO.setVisituuid(visituuid);
             encounterDTO.setEncounterTypeUuid(getEncounterTypebasedonConcept(encounterType));
-            encounterDTO.setEncounterTime(time);
+            encounterDTO.setEncounterTime(OneMinutesLate(time));
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
             encounterDTO.setVoided(0);

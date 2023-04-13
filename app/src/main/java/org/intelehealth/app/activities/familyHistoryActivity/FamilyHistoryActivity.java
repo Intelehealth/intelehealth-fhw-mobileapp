@@ -104,7 +104,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(FamilyHistoryActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {

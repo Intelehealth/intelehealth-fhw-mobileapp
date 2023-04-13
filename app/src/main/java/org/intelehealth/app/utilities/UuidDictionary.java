@@ -19,12 +19,17 @@ public class UuidDictionary {
     public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String BLOOD_GLUCOSE_ID = "8df25ddf-ff39-4fa3-bd13-5dfbec8cb5ee";
-    public static final String BLOOD_GLUCOSE_FASTING_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";
+    public static final String BLOOD_GLUCOSE_NON_FASTING_FINAL_ID = "c20f12cc-3858-4db8-a9b7-ce446b86f038";   // Shared on 20th March 2023.
+    public static final String BLOOD_GLUCOSE_FASTING_FINAL_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";   // Shared on 20th March 2023.
+    public static final String HBA1C = "1f5ff880-f113-49cf-8c34-ee1f9d1468fc";   // Shared on 20th March 2023. // Final
+
+//    public static final String BLOOD_GLUCOSE_FASTING_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";
     public static final String BLOOD_GLUCOSE_RANDOM_ID = "dab6dfb4-0560-42d6-a5f6-af04085c3358";
     public static final String BLOOD_GLUCOSE_POST_PRANDIAL_ID = "b0a7d2b6-64ba-4597-bde3-63623c8237ef";
     public static final String HEMOGLOBIN_ID = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
     public static final String URIC_ACID_ID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
     public static final String TOTAL_CHOLESTEROL_ID = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
+    public static final String ECG_READINGS = "503fcb05-e580-4017-8d94-4777c6740374";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
@@ -83,6 +88,9 @@ public class UuidDictionary {
     public static final String BILL_PAYMENT_STATUS = "ba8b1ed9-ec2f-4bab-9e0e-c60fcb44c918";
     public static final String BILL_PRICE_BLOOD_GLUCOSE_ID = "ff82d253-877a-4970-a03f-3da16bee2a4a";
     public static final String BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID = "f6763c8d-c5e5-4e51-945c-c3d991b12fe2";
+    public static final String BILL_PRICE_SPO2_ID = "83d2e919-eeea-497b-b77b-69bed2770f37";
+    public static final String BILL_PRICE_TEMPERATURE_ID = "a77a921a-585f-4aba-9cc8-644bc8131947";
+    public static final String BILL_PRICE_ECG_ID = "29d36454-439d-4c53-b5eb-88f540cf6511";
     public static final String BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID = "d7670f6a-377f-4807-92c8-26dc339fb0fe";
     public static final String BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID = "790cbe32-4a85-4953-a3a6-4f6b0e26336e";
     public static final String BILL_PRICE_HEMOGLOBIN_ID = "71f0aadf-2a15-420f-897a-145dfc87fcd1";
@@ -93,4 +101,5 @@ public class UuidDictionary {
 
     //Abdominal Girth
     public static final String ABDOMINAL_GIRTH = "4a49bacc-3510-4700-9099-2b7aa788688e";
+    public static final String ARM_GIRTH = "052dd06f-b71f-404b-a851-e9c7f74d982d";
 }

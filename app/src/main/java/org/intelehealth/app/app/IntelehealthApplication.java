@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -17,9 +18,11 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.linktop.MonitorDataTransmissionManager;
 import com.parse.Parse;
 import com.rt.printerlibrary.printer.RTPrinter;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
@@ -32,7 +35,10 @@ import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
 public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
-
+    //If you are using your own custom Bluetooth connection code，set this parameter to true；
+    //If you are using Bluetooth connection code had been built in SDK library,set this parameter to false;
+    //You can see in this demo project separately how to build the code when this boolean parameter value is true or false.
+    public final static boolean isUseCustomBleDevService = false;
     @BaseEnum.CmdType
     private static int currentCmdType = BaseEnum.CMD_PIN;
     private static RTPrinter rtPrinter;
@@ -53,6 +59,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
+    public String webrtcTempCallId = "";
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -105,6 +112,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
+
+        // Remos
+        //true: enable SDK logs,false :disable SDK logs
+        MonitorDataTransmissionManager.isDebug(true);
     }
 
     private void configureCrashReporting() {
@@ -113,7 +124,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
     }
 

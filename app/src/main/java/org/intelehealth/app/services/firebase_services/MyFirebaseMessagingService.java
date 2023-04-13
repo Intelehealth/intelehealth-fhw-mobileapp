@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -95,19 +97,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     chatIntent.putExtra("patientUuid", patientUUid);
                     chatIntent.putExtra("fromUuid", fromUUId);
                     chatIntent.putExtra("toUuid", toUUId);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = null;  // after s+ version it is needed to set IMMUTABLE.
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    } else {
+                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    }
+
                     sendNotification(remoteMessage, pendingIntent);
 
+
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String packageName = pInfo.packageName;
 
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
@@ -144,10 +157,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String messageBody = remoteMessage.getNotification().getBody();
 
         if (pendingIntent == null) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            Intent notificationIntent = new Intent(this, HomeActivity.class);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
         }
         String channelId = "CHANNEL_ID";
 

@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -46,7 +50,8 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
-            //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
+            String dob = patinet.getDateofbirth();
+            String body_Date = context.getString(R.string.identification_screen_prompt_dob) + " " + changeDateFormat(dob);
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
             if (patinet.getOpenmrsId() != null)
@@ -55,6 +60,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             else
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
+            holder.bodyDateTextView.setText(body_Date);
             holder.bodyTextView.setText(body);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -81,14 +87,29 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     class Myholder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
         private TextView headTextView;
+        private TextView bodyDateTextView;
         private TextView bodyTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
+            bodyDateTextView = itemView.findViewById(R.id.list_item_body_date);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
+    }
+
+    private String changeDateFormat(String dob){
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = format1.parse(dob);
+            dob = format2.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dob;
     }
 
 }

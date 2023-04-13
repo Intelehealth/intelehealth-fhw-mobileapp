@@ -50,12 +50,14 @@ public class ChooseLanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_language);
+
         initViews();
 
         appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
+
         /*if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
             BackImage.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +110,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         mToolbar.setTitleTextColor(Color.WHITE);
-
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -116,6 +117,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         BackImage = findViewById(R.id.backButton);
         intent = getIntent();
         intentType = intent.getStringExtra("intentType");
+        setTitle(R.string.title_activity_login);
 
         if(intentType.equalsIgnoreCase("home")) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -138,6 +140,12 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("name", "English");
             jsonObject.put("code", "en");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("en"));
+            itemList.add(jsonObject);
+
+            jsonObject = new JSONObject();
+            jsonObject.put("name", "मराठी");
+            jsonObject.put("code", "mr");
+            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("mr"));
             itemList.add(jsonObject);
 
             //Commenting out additional languages as not required for release 1.

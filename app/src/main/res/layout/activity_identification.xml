@@ -58,18 +58,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_person_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/personal_information"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -233,7 +232,6 @@
                             <RadioButton
                                 android:id="@+id/identification_gender_other"
                                 android:layout_width="wrap_content"
-                                android:visibility="gone"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/female_icon"
@@ -313,6 +311,8 @@
                                 android:drawableLeft="@drawable/phone_icon"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
@@ -322,9 +322,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -346,18 +344,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_location">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_location"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/address_details"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -456,8 +453,8 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:paddingBottom="2dp"
-                                        android:orientation="vertical">
+                                        android:orientation="vertical"
+                                        android:paddingBottom="2dp">
 
                                         <EditText
                                             android:id="@+id/identification_state"
@@ -604,18 +601,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_other_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/txt_others"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -655,7 +651,8 @@
                                 android:freezesText="true"
                                 android:hint="@string/aadhar_number_details"
                                 android:imeOptions="actionUnspecified"
-                                android:maxLength="25"
+                                android:inputType="phone"
+                                android:maxLength="12"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -836,6 +833,68 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
+<!--                new card view added as the UI change for the ticket SCD-85-->
+                <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/additional_document_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/padding_card"
+                    app:cardCornerRadius="5dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_additional_document_images"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingVertical="12dp"
+                            android:paddingStart="20dp"
+                            android:text="@string/title_activity_additional_documents"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                        <ImageButton
+                            android:id="@+id/imagebutton_edit_additional_document"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@id/textView_additional_document_images"
+                            android:background="@null"
+                            android:contentDescription="TODO"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/ic_add_24dp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recy_additional_documents"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textView_additional_document_images"
+                            android:padding="@dimen/padding_card"></androidx.recyclerview.widget.RecyclerView>
+
+                        <TextView
+                            android:id="@+id/additional_documents_download"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/recy_additional_documents"
+                            android:backgroundTint="@color/cardview_dark_background"
+                            android:fontFamily="@font/lato_medium"
+                            android:padding="@dimen/padding_card"
+                            android:text="@string/click_to_download_the_images"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton

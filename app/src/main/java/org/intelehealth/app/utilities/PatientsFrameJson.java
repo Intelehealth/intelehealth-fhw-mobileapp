@@ -200,8 +200,9 @@ public class PatientsFrameJson {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                new String[]{uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND visit_attribute_type_uuid = ?",
+                new String[]{uuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
+
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {

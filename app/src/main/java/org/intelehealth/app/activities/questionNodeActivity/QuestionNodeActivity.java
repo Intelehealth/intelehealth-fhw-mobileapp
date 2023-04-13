@@ -121,9 +121,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
         context = QuestionNodeActivity.this;
+        sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -288,7 +288,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+            /*if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
@@ -315,7 +315,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         }
                     }
                 }
-            }
+            }*/
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -461,6 +461,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
+
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 

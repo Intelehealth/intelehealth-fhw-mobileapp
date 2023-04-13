@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartCareDoc</string>
+    <string name="app_name">MySmartCareDoc</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">SmartCareDoc</string>
+    <string name="title_activity_login">MySmartCareDoc</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -90,6 +90,7 @@
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_checkbox_other">Other</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_dob">DOB:</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
@@ -374,6 +375,7 @@
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+    <string name="hba1c_validation">HbA1c should be in between %1$s and %2$s</string>
     <string name="glucose_random_validation">Blood Glucose (Random) should be in between %1$s and %2$s</string>
     <string name="glucose_post_prandial_validation">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
@@ -567,7 +569,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using SmartCareDoc. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using MySmartCareDoc. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -586,7 +588,7 @@
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
     <string name="Whatsapp_Help_Cardview">Help</string>
-    <string name="skip">skip</string>
+    <string name="skip">Skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
     <string name="custom_setup">Setup</string>
@@ -608,8 +610,8 @@
     <string name="caste_values_missing">Caste values are missing</string>
     <string name="state_values_missing">State values are missing</string>
     <string name="country_values_missing">Country values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">SmartCareDoc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">SmartCareDoc</string>
+    <string name="intelehealth_a_telemedicine_platform">MySmartCareDoc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">MySmartCareDoc</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -932,15 +934,117 @@
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose\n (Non-Fasting)</string>
-    <string name="blood_glucose_random">Blood Glucose\n (Random)</string>
+    <!--    <string name="blood_glucose_random">Blood Glucose \n(Random)</string>-->
+    <string name="blood_glucose_random">Blood Glucose \n(Fasting)</string>
+    <!--    <string name="blood_glucose_random_vitals">Blood Glucose (Random)</string>-->
+    <string name="blood_glucose_random_vitals">Blood Glucose (Fasting)</string>
     <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
     <string name="blood_glucose_fasting">Blood Glucose\n (Fasting)</string>
     <string name="haemoglobin">Haemoglobin (mg/dL)</string>
     <string name="diagnostics">Diagnostics</string>
+    <string name="hba1c">HbA1c (%)</string>
 
     //new feature
     <string name="aadhar_issue">Enter valid aadhar number.</string>
     <string name="aadhar_number_details">Aadhar Card Number</string>
     <string name="abdominal_girth_vitals">Abdominal Girth (inches)</string>
     <string name="make_payment">Make Payment</string>
+    <string name="successfully_pdf_created">PDF Successfully Created!!</string>
+    <string name="confirm_skip_complaint">Are you sure you want to skip complaint registration? \n\nNote:- This action cannot be undone.</string>
+
+    <!--Remos Device-->
+    <string name="leak_and_check">There is a leak. Please check the gas path.</string>
+    <string name="measurement_void">Please keep quiet during the measurement.This measurement is invalid.</string>
+    <string name="devices">Devices</string>
+    <string name="test_paper_inserted">Test strip inserted.</string>
+    <string name="test_paper_ready">" Please drop the blood sample into the test paper."</string>
+    <string name="test_paper_value_calculating">A blood sample has been collected and the value is being calculated. Please wait.</string>
+    <string name="test_paper_result">Result :</string>
+    <string name="test_paper_is_not_inserted">The test paper is not inserted.</string>
+    <string name="test_paper_is_used">The test paper has been used, please replace it with a new one.</string>
+    <string name="test_paper_out">" The test paper was pulled out during the test."</string>
+    <string name="calculate_bg_value_timeout">" Calculate sample value timeout"</string>
+    <string name="rhemos_device">Rhemos</string>
+    <string name="rhemos_device_info">Rhemos Device Info</string>
+    <string name="rhemos_bloog_glucose_calibration">Blood Glucose Calibration</string>
+    <string name="test_paper_measurement_steps_dsc">Please follow the steps below to make a measurement!</string>
+    <string name="blood_glucose_measurement_step1">Step1. Please select the manufacturer of the test paper.</string>
+    <string name="blood_glucose_measurement_step2">Step2. Please select the check code of the test paper.</string>
+    <string name="manufacturer_iquego">Iquego</string>
+    <string name="manufacturer_bene_check">Bene Check</string>
+    <string name="manufacturer_yi_cheng">Yi Cheng</string>
+    <string name="STOP">Stop</string>
+    <string name="test_stopped">"Test Stopped "</string>
+    <string name="test_started">Test Started...</string>
+    <string name="no_finger_detected">No finger was detected on the SpO₂ sensor.</string>
+    <string name="blood_result_error">Blood result error. Try again!</string>
+    <string name="test_successful">Test Successful</string>
+    <string name="measuring">Measuring...</string>
+    <string name="spo2_test_successful">SPO2 Test Successful</string>
+    <string name="bp_test_successful">BP Test Successful</string>
+    <string name="body_temp_test_successful">Body Temperature Test Successful</string>
+    <string name="blood_glucose_test_successful">Blood Glucose Test Successful</string>
+    <string name="please_connect_to_device">Please connect to device</string>
+    <string name="is_charging_please_wait">Is Charging. Please wait!</string>
+    <string name="start_measuring">Start measuring</string>
+
+    <string name="mood_value">Mood: %1$s</string>
+    <string name="click_here_to_see_the_full_ecg">Click here to see the full ECG.</string>
+    <string name="ecg_settings">ECG Settings</string>
+    <string name="paper_speed_value">Paper Speed: %1$s</string>
+    <string name="gain_value">Gain: %1$s</string>
+    <string name="finger_detection">Finger detection: %s</string>
+    <string name="ecg_sq">Signal quality: %s</string>
+    <string name="rr_interval_value">R-R interval: %1$s ms</string>
+    <string name="rr_max_value">R-R max: %1$s ms</string>
+    <string name="rr_min_value">R-R min: %1$s ms</string>
+    <string name="hrv_value">HRV: %1$s ms</string>
+    <string name="hr_value">Heart rate: %1$s BPM</string>
+    <string name="rr_value">Respiratory rate: %1$s</string>
+    <string name="finger_detection_ok">Fingers detected by ECG sensor</string>
+    <string name="finger_detection_fail">Make sure your fingers are on the sensor</string>
+    <string name="paper_speed">Paper Speed</string>
+    <string name="gain">Gain</string>
+    <string name="stress_level">Stress level: %s</string>
+    <string name="robust_heart_rate">Robust heart rate: %s</string>
+    <string name="heart_beat">Heart beat: %s</string>
+    <string name="heart_age">Heart age: %s</string>
+    <string name="hrv_visit_summary">HRV:</string>
+    <string name="hr_visit_summary">Heart rate:</string>
+    <string name="rr_visit_summary">Respiratory rate:</string>
+    <string name="ecg_visit_summary">ECG:</string>
+    <string name="rr_value_visit_summary"> %1$s ms</string>
+    <string name="hrv_value_visit_summary"> %1$s ms</string>
+    <string name="hr_value_visit_summary"> %1$s BPM</string>
+    <string name="doctor_not_needed">Doctor consult not needed</string>
+
+    <string name="mood_desc_calm">Calm</string>
+    <string name="mood_desc_relaxed">Relaxed</string>
+    <string name="mood_desc_balanced">Balanced</string>
+    <string name="mood_desc_motivated">Motivated</string>
+    <string name="mood_desc_agitated">Agitated/Anxiety/Excited</string>
+    <string name="ecg">ECG</string>
+    <string name="max_four_images">You can add max 4 images.</string>
+    <string name="blood_glucose_calibration_success">Blood Glucose calibration successful!</string>
+    <string name="connecting_toast">Connecting...</string>
+    <string name="device_connected">Device Connected</string>
+    <string name="ecg_test_completed">ECG Test Completed</string>
+    <string name="power_too_low_pls_charge">The power of the device is too low, please charge it.</string>
+    <string name="image_deleted_successfully">Image Deleted Successfully</string>
+    <string name="abdominal_girth_warning">Abdominal Girth is exceeding %1$s, Be careful for health related issues.</string>
+    <string name="abdominal_girth">Abdominal Girth</string>
+    <string name="arm_girth_inches">Arm Girth (inches)</string>
+    <string name="arm_girth_shouldbe_lessthan">Arm girth should be less than %1$s inches</string>
+    <string name="arm_girth">Arm Girth</string>
+    <string name="temperature">Temperature</string>
+    <string name="general_physician">General Physician</string>
+    <string name="vitals_complaint">Vitals Complaint</string>
+    <string name="screening">Screening</string>
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="locations">Locations</string>
 </resources>

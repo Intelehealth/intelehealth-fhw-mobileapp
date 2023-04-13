@@ -50,15 +50,22 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -131,6 +138,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_state_india_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
@@ -187,11 +195,12 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+   // RecyclerView additionalDocRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(PatientDetailActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -217,7 +226,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-
+      //  additionalDocRV = findViewById(R.id.recy_additional_documents);
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -257,7 +266,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String houseHoldValue = "";
                 try {
-                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+                    houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -267,6 +276,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.setHouseholdUuid(houseHoldValue);
                 Intent i = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 i.putExtra("privacy", "Accept");
+                i.putExtra("newMember", "newMemberYes");
+                i.putExtra("address1", patient_new.getAddress1());
+                i.putExtra("postalCode", patient_new.getPostal_code());
                 startActivity(i);
             }
         });
@@ -296,8 +308,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO = new EncounterDTO();
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
+                try {
+                    encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }                encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
                 encounterDTO.setProvideruuid(sessionManager.getProviderID());
                 Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
@@ -368,8 +383,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
                 VisitsDAO visitsDAO = new VisitsDAO();
 
+                VisitAttributeListDAO visitAttribute = new VisitAttributeListDAO();
+
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
+                    visitAttribute.insertVisitAttributes(uuid, sessionManager.getStateName(), "7d3c899e-7913-4aac-ad0c-b097bfa7e96d");
+
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -395,11 +414,20 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
+    }
+
     private void LoadFamilyMembers() {
 
         String houseHoldValue = "";
         try {
-            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+            houseHoldValue = patientsDAO.getAttributeValue(patientUuid, "3d2de264-9c8f-4fcc-bd97-660b74f8ffb0");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -525,6 +553,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Aadhar details")) {
                     patient_new.setAadhar_details(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Patient Additional Documents")) {
+                    patient_new.setAdditionalDocPath(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
@@ -614,6 +645,20 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientFName = patient_new.getFirst_name();
         }
 
+      /*  if (patient_new.getAdditionalDocPath() != null && !patient_new.getAdditionalDocPath().trim().isEmpty()) {
+            String additionalDocPathVal = patient_new.getAdditionalDocPath();
+            ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
+            ArrayList<File> files = new ArrayList<>();
+            if (additionalDocPaths.size()>0) {
+                for(int i = 0; i<additionalDocPaths.size();i++)
+                    files.add(new File(additionalDocPaths.get(i).trim()));
+            }
+            additionalDocRV.setHasFixedSize(true);
+            additionalDocRV.setLayoutManager(new LinearLayoutManager(PatientDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(files, this);
+            additionalDocRV.setAdapter(horizontalAdapter);
+        }*/
+
 //        setTitle(patientName);
         patinetName.setText(patientName);
         try {
@@ -631,6 +676,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
+        Log.v("ADP", "ADP: " + "pd_image: " + patient_new.getPatient_photo());
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
@@ -837,23 +883,50 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        if (patient_new.getPostal_code() != null) {
-            String addrFinalLine;
-            if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String country = "भारत";
+            String state_india = switch_mr_state_india_edit(patient_new.getState_province());
+
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, state_india,
+                            patient_new.getPostal_code(), country);
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, state_india,
+                            country);
+                }
+                addrFinalView.setText(addrFinalLine);
             } else {
-                addrFinalLine = String.format("%s, %s, %s",
+                String addrFinalLine = String.format("%s, %s, %s",
+                        city_village, state_india,
+                        country);
+                addrFinalView.setText(addrFinalLine);
+            }
+        }
+        else {
+            if (patient_new.getPostal_code() != null) {
+                String addrFinalLine;
+
+                if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                    addrFinalLine = String.format("%s, %s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getPostal_code(), patient_new.getCountry());
+                } else {
+                    addrFinalLine = String.format("%s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getCountry());
+                }
+                addrFinalView.setText(addrFinalLine);
+            } else {
+                String addrFinalLine = String.format("%s, %s, %s",
                         city_village, patient_new.getState_province(),
                         patient_new.getCountry());
+                addrFinalView.setText(addrFinalLine);
             }
-            addrFinalView.setText(addrFinalLine);
-        } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
         }
 
         phoneView.setText(patient_new.getPhone_number());
@@ -1173,7 +1246,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<ResponseBody>() {
@@ -1211,7 +1285,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
                         try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages
+                                    (AppConstants.IMAGE_PATH + patientUuid + ".jpg", "PP", patientUuid);
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
@@ -1264,7 +1339,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
-                        Log.e("Check", "No complaint");
+                        complaintxt1.setText(getString(R.string.screening));
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     //complaintxt1.setLayoutParams(layoutParams);
@@ -1311,6 +1386,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
+                        complaintxt1.setText(getString(R.string.screening));
                         Log.e("Check", "No complaint");
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
@@ -1595,9 +1671,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                             String colon = ":";
                             if (complaints != null) {
                                 for (String comp : complaints) {
-                                    if (!comp.trim().isEmpty()) {
+                                    if (!comp.trim().isEmpty() && comp.contains(colon)) {
                                         visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {

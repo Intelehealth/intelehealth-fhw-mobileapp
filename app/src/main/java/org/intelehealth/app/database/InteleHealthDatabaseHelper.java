@@ -258,11 +258,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('dd51ab03-12ef-43cb-9aef-2ec93a989816','BP Test', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('cb07c951-2cb5-41ca-b816-8cb104c9ae8b','Aadhar details', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('4a49bacc-3510-4700-9099-2b7aa788688e','Abdominal Girth', null, 0)");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('243dd7eb-e216-40bf-83fb-439723b22d8b','Patient Additional Documents', null, 0)");
 
-
-
-
-
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('83d2e919-eeea-497b-b77b-69bed2770f37','SpO2_Bill', null, 0)");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('a77a921a-585f-4aba-9cc8-644bc8131947','Temperature_Bill', null, 0)");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('29d36454-439d-4c53-b5eb-88f540cf6511','ECG_Bill', null, 0)");
         }
     }
 
@@ -283,6 +283,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
+        db.execSQL(CREATE_LOCATION_NEW);
+
         uuidInsert(db);
         database = db;
 
@@ -313,4 +315,22 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         else
             return getWritableDatabase();
     }
+
+    public static final String CREATE_LOCATION_NEW = "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+            "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "country TEXT," +
+            "state TEXT," +
+            "district TEXT," +
+            "tehsil TEXT," +
+            "village TEXT," +
+            "latitude TEXT," +
+            "longitude TEXT," +
+            "parent_location integer(11)," +
+            "locationuuid TEXT," +
+            "modified_date TEXT," +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
+            ")";
+
 }

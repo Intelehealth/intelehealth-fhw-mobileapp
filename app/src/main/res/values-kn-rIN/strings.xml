@@ -794,5 +794,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">ಪ್ರೊಟೋಕಾಲ್ ಲಭ್ಯವಿದೆ ನಂತರ ಡೌನ್ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ। ಪ್ರೊಟೋಕಾಲ್ ಡೌನ್ ಲೋಡ್ ಅನ್ನು ಮರುಸತ್ಯಗೊಳಿಸಲು \'ಹೌದು\' ಒತ್ತಿ। ಡೆಮೋ ಪ್ರೊಟೋಕಾಲ್ ನೊಂದಿಗೆ ನಿರಂತರತೆಗಾಗಿ \'ಇಲ್ಲ\' ಒತ್ತಿ।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="choose_bluetooth_device">ब्लूटूथ डिव्हाइस निवडा</string>
 
 </resources>

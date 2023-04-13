@@ -7,7 +7,7 @@
 <!--        <item>ଓଡିଆ</item>-->
 <!--        <item>తెలుగు</item>-->
 <!--        <item>ગુજરાતી</item>-->
-<!--        <item>मराठी</item>-->
+        <item>मराठी</item>
 <!--        <item>ಕನ್ನಡ</item>-->
 <!--        <item>অসমীয়া</item>-->
 <!--        <item>മലയാളം</item>-->
@@ -24,7 +24,7 @@
 <!--        <item>or</item>-->
 <!--        <item>te</item>-->
 <!--        <item>gu</item>-->
-<!--        <item>mr</item>-->
+        <item>mr</item>
 <!--        <item>kn</item>-->
 <!--        <item>as</item>-->
 <!--        <item>ml</item>-->
@@ -39,6 +39,7 @@
         <item>Select Specialization</item>
         <item>General Physician</item>
     </string-array>
+
 
     <string-array name="speciality_value_hindi">
         <item>स्पेशलाइज़ेशन चुनिए</item>
@@ -73,7 +74,14 @@
 
     <string-array name="countries_hi">
         <item>देश चुनें</item>
-        <item>India</item>
+        <item>भारत</item>
+        <!--        <item>United States</item>-->
+        <!--        <item>Philippines</item>-->
+    </string-array>
+
+    <string-array name="countries_mr">
+        <item>देश निवडा</item>
+        <item>भारत</item>
         <!--        <item>United States</item>-->
         <!--        <item>Philippines</item>-->
     </string-array>
@@ -447,6 +455,39 @@
         <item>West Bengal</item>
     </string-array>
 
+    <string-array name="states_india_mr">
+        <item>राज्य निवडा</item>
+        <item>आंध्र प्रदेश</item>
+        <item>अरुणाचल प्रदेश</item>
+        <item>आसाम</item>
+        <item>बिहार</item>
+        <item>छत्तीसगड</item>
+        <item>गोवा</item>
+        <item>गुजरात</item>
+        <item>हरियाणा</item>
+        <item>हिमाचल प्रदेश</item>
+        <item>जम्मू आणि काश्मीर</item>
+        <item>झारखंड</item>
+        <item>कर्नाटक</item>
+        <item>केरळा</item>
+        <item>मध्य प्रदेश</item>
+        <item>महाराष्ट्र</item>
+        <item>मणिपूर</item>
+        <item>मेघालय</item>
+        <item>मिझोराम</item>
+        <item>नागालँड</item>
+        <item>ओडिशा</item>
+        <item>पंजाब</item>
+        <item>राजस्थान</item>
+        <item>सिक्कीम</item>
+        <item>तामिळनाडू</item>
+        <item>तेलंगणा</item>
+        <item>त्रिपुरा</item>
+        <item>उत्तर प्रदेश</item>
+        <item>उत्तराखंड</item>
+        <item>पश्चिम बंगाल</item>
+    </string-array>
+
     <string-array name="states_philippines">
         <item>Select State</item>
         <item>Bukidnon</item>
@@ -630,11 +671,11 @@
     </array>
 
     <string-array name="location_state">
-        <item>Select State</item>
+        <item>@string/setup_select_state_str</item>
     </string-array>
 
     <string-array name="location_district">
-        <item>Select District</item>
+        <item>@string/setup_select_district_str</item>
     </string-array>
 
     <string-array name="location_sanch">
@@ -642,7 +683,7 @@
     </string-array>
 
     <string-array name="location_village">
-        <item>Select Village</item>
+        <item>@string/setup_select_village_str</item>
     </string-array>
 
 

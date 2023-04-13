@@ -17,13 +17,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     compileSdkVersion 30
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '29.0.2'
     dataBinding {
         enabled true
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

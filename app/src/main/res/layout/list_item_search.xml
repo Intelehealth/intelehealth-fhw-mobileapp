@@ -34,6 +34,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/list_item_body_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular" />
+
+            <TextView
                 android:id="@+id/list_item_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

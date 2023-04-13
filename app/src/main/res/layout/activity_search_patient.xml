@@ -26,14 +26,14 @@
                     android:layout_margin="10dp">
 
 
-                    <!--<EditText
+                    <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/type_to_search"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:background="@null"
-                        android:id="@+id/toolbar_ET" />-->
+                        android:id="@+id/toolbar_ET" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -41,7 +41,6 @@
                         app:srcCompat="@drawable/ic_baseline_clear_24"
                         android:layout_marginHorizontal="5dp"
                         android:id="@+id/toolbar_clear"
-                        android:visibility="gone"
                          />
 
                     <ImageView
@@ -51,7 +50,6 @@
                         android:layout_marginHorizontal="5dp"
                         android:id="@+id/toolbar_search"
                         android:paddingHorizontal="5dp"
-                        android:visibility="gone"
                          />
 
                     <ImageView
@@ -102,5 +100,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_24dp"
+        android:visibility="gone"
         />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

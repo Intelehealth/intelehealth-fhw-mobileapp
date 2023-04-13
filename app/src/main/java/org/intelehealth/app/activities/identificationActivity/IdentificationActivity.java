@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -18,7 +19,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -30,6 +36,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -44,6 +51,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.checkerframework.checker.units.qual.A;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
+import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -53,7 +70,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -119,6 +138,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_state_india_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
@@ -136,6 +156,11 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
@@ -145,7 +170,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
-    private String patientUuid = "", mGender, patientID_edit, country1, state, privacy_value, uuid = "", mCurrentPhotoPath;
+    private String patientUuid = "", mGender, patientID_edit, country1, state, privacy_value, uuid = "", mCurrentPhotoPath, mAdditionalPhotoPath;
     private int mDOBYear, mDOBMonth, mDOBDay, retainPickerYear, retainPickerMonth, retainPickerDate;
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
@@ -168,10 +193,20 @@ public class IdentificationActivity extends AppCompatActivity {
     Intent i_privacy;
     Toolbar toolbar;
 
+    //added for the additional document changes: SCD-85
+    ImageButton addDoc_IB;
+    private Handler mBackgroundHandler;
+    private static final int PICK_IMAGE_FROM_GALLERY = 2002;
+    ArrayList<String> additionalDocPath;
+    ArrayList<File> fileList, adpFilesList;
+    RecyclerView addDocRV;
+
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     int dob_indexValue = 15;
+  //  private HorizontalAdapter horizontalAdapter;
+    private HorizontalADP_Adapter horizontalAdapter;
 
 
     @Override
@@ -194,9 +229,31 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+                fetchAdditionalDocImages(patient1.getUuid());
             }
         }
 
+        addDoc_IB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+/*
+                if (horizontalAdapter != null) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                        additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+                    }
+                }
+*/
+                if (adpFilesList != null && additionalDocPath != null)
+                    Log.v("ADP", "addPath: " + additionalDocPath.size() + "\n" + "adpList: " + adpFilesList.size());
+
+                if (additionalDocPath.size() < 4)
+                    selectImage();
+                else
+                    Toast.makeText(IdentificationActivity.this, R.string.max_four_images, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //this code piece not required for this project as in SCD city spinner is not present.
         /*mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -347,7 +404,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -502,6 +559,34 @@ public class IdentificationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Open dialog to Select douments from Image and Camera as Per the Choices: SCD-85
+     */
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(IdentificationActivity.this);
+        builder.setTitle(R.string.additional_doc_image_picker_title);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
+                    String imageName = UUID.randomUUID().toString();
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE_AD);
+
+                } else if (item == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
     private void populateSpinners() {
         Resources res = getResources();
 
@@ -515,6 +600,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             mCountry.setAdapter(countryAdapter);
+        //    mCountry.setSelection(countryAdapter.getPosition("India"));
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr") ||
+                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                mCountry.setSelection(countryAdapter.getPosition("भारत"));
+            }
+            else {
+                mCountry.setSelection(countryAdapter.getPosition("India"));
+            }
+
         } catch (Exception e) {
             Toast.makeText(this, R.string.country_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -708,7 +802,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //changes done for the ticket SCD-63: Nishita Goyal
 //            state = obj.getString("mState");
 
-            if (country1.equalsIgnoreCase("India")) {
+            if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("भारत")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
                 EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
@@ -736,7 +830,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(IdentificationActivity.this);
         toolbar = findViewById(R.id.toolbar);
 
         mFirstName = findViewById(R.id.identification_first_name);
@@ -789,6 +883,13 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
+        addDoc_IB = findViewById(R.id.imagebutton_edit_additional_document);
+
+        additionalDocPath = new ArrayList<>();
+
+        fileList = new ArrayList<File>();
+        adpFilesList = new ArrayList<File>();
+        addDocRV = findViewById(R.id.recy_additional_documents);
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -815,7 +916,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
             case R.id.identification_gender_other:
                 if (checked)
-                    mGender = "Other";
+                    mGender = "O";
                 Log.v(TAG, "gender: " + mGender);
                 break;
         }
@@ -910,6 +1011,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Aadhar details")) {
                     patient1.setAadhar_details(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Patient Additional Documents")) {
+                    patient1.setAdditionalDocPath(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
 
             } while (idCursor1.moveToNext());
         }
@@ -919,13 +1023,13 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void setFieldsForUpdate() {
-        if (mGenderM.isChecked()) {
+        /*if (mGenderM.isChecked()) {
             mGender = "M";
         } else if (mGenderF.isChecked()) {
             mGender = "F";
         } else {
             mGender = "O";
-        }
+        }*/
 
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
@@ -940,6 +1044,55 @@ public class IdentificationActivity extends AppCompatActivity {
         aadharNumET.setText(patient1.getAadhar_details());
         mOccupation.setText(patient1.getOccupation());
 
+        //For Edit -> This takes up the additional doc path from the local db and populate the spinners
+        if (patient1.getAdditionalDocPath() != null && !patient1.getAdditionalDocPath().trim().isEmpty()) {
+            String additionalDocPathVal = patient1.getAdditionalDocPath();
+            ArrayList<String> additionalDocPaths = new ArrayList<>(Arrays.asList(additionalDocPathVal.split(",")));
+            ArrayList<File> files = new ArrayList<>();
+
+            File file = null;
+            boolean isFileExists = false;
+
+            if (additionalDocPaths.size()>0) {
+                for (int i = 0; i < additionalDocPaths.size(); i++) {
+                    file = new File(additionalDocPaths.get(i).trim());
+                    files.add(file);
+                    if (file.exists()) {    // path from tbl_pat_attribute exists in local mobile storage...
+                       // files.add(file);
+                        adpFilesList.add(file);
+                        isFileExists = true;
+                    } else {
+                        isFileExists = false;
+                    }
+
+                }
+            }
+
+            additionalDocPath.clear();
+            for (int i = 0; i < adpFilesList.size(); i++) {
+                additionalDocPath.add(adpFilesList.get(i).getPath());
+            }
+
+            if (isFileExists) {
+                addDocRV.setHasFixedSize(true);
+                addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+              //  horizontalAdapter = new HorizontalAdapter(adpFilesList, this);
+                horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this, additionalDocPath);
+                addDocRV.setAdapter(horizontalAdapter);
+                horizontalAdapter.notifyDataSetChanged();
+            }
+            else {
+                /** if file not exists ie. its from other user than considering offline case as well...
+                 * Check if online than -> call getApi from Satyadeep end provided....
+                 */
+                if (NetworkConnection.isOnline(getApplication())) {
+                    getADPImagesFromAPI(patient1.getUuid(), files);
+                }
+            }
+
+
+        }
+
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
@@ -949,6 +1102,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (patientID_edit != null) {
             if (patient1.getGender().equals("M")) {
+                mGender = "M";
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
@@ -956,6 +1110,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else if (patient1.getGender().equals("F")) {
+                mGender = "F";
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
@@ -963,6 +1118,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
+                mGender = "O";
                 mGenderO.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
@@ -972,6 +1128,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+
+            // Edit part...
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                mCountry.setSelection(countryAdapter.getPosition("भारत"));
+
+                String state_india = switch_mr_state_india_edit(patient1.getState_province());
+                mState.setSelection(stateAdapter != null ? stateAdapter.getPosition(state_india) : 0);
+            }
+            else {
+                mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+            }
 
             if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
@@ -1220,6 +1388,119 @@ public class IdentificationActivity extends AppCompatActivity {
                         .into(mImageView);
             }
         }
+        if (requestCode == CameraActivity.TAKE_IMAGE_AD) {
+            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE_AD);
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Result OK");
+                mAdditionalPhotoPath = data.getStringExtra("RESULT");
+                Log.v("IdentificationActivity", mAdditionalPhotoPath);
+
+/*
+                if (horizontalAdapter != null) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                        additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+                    }
+                }
+*/
+
+                if (additionalDocPath.size() < 4) {
+                    additionalDocPath.add(mAdditionalPhotoPath);
+                    if (new File(mAdditionalPhotoPath).exists()) {
+                        fileList.add(new File(mAdditionalPhotoPath));
+                        adpFilesList.add(new File(mAdditionalPhotoPath));
+                    }
+                    addDocRV.setHasFixedSize(true);
+                    addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                  //  horizontalAdapter = new HorizontalAdapter(fileList, this);
+                    horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, this, additionalDocPath);
+                    addDocRV.setAdapter(horizontalAdapter);
+                    horizontalAdapter.notifyDataSetChanged();
+                }
+            }
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            if (data != null) {
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Log.v("path", picturePath + "");
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            }
+        }
+    }
+
+    /**
+     * @param filePath Final Image path to compress.
+     */
+    void compressImageAndSave(final String filePath) {
+        getBackgroundHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = BitmapUtils.fileCompressed(filePath);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (flag) {
+                            saveImage(filePath, adpFilesList);
+                        } else
+                            Toast.makeText(IdentificationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void saveImage(String picturePath, ArrayList<File> fileList) {
+        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+/*
+        if (horizontalAdapter != null) {
+            additionalDocPath.clear();
+            for (int i = 0; i < horizontalAdapter.getADPList().size(); i++) {
+                additionalDocPath.add(horizontalAdapter.getADPList().get(i).getPath());
+                Log.v("ADP", "ADP: " + "adapter_getList_1: " + horizontalAdapter.getADPList().get(i).getPath());
+            }
+        }
+*/
+
+        if (additionalDocPath.size() < 4) {
+            additionalDocPath.add(picturePath);
+            if (new File(picturePath).exists()) {
+                fileList.add(new File(picturePath));
+            }
+            addDocRV.setHasFixedSize(true);
+            addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+//            horizontalAdapter = new HorizontalAdapter(fileList, this);
+            horizontalAdapter = new HorizontalADP_Adapter(fileList, this, additionalDocPath);
+            addDocRV.setAdapter(horizontalAdapter);
+            horizontalAdapter.notifyDataSetChanged();
+        }
+        File photo = new File(picturePath);
+        if (photo.exists()) {
+            try {
+                long length = photo.length();
+                length = length / 1024;
+                Log.e("------->>>>", length + "");
+            } catch (Exception e) {
+                System.out.println("File not found : " + e.getMessage() + e);
+            }
+        }
+    }
+
+    private Handler getBackgroundHandler() {
+        if (mBackgroundHandler == null) {
+            HandlerThread thread = new HandlerThread("background");
+            thread.start();
+            mBackgroundHandler = new Handler(thread.getLooper());
+        }
+        return mBackgroundHandler;
     }
 
     public void onPatientCreateClicked() {
@@ -1374,11 +1655,31 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(null);
         }
 
+/*
         if (!aadharNumET.getText().toString().isEmpty() && !aadharNumET.getText().toString().equalsIgnoreCase("")
                 && !aadharNumET.getText().toString().equalsIgnoreCase(" ")) {
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(aadharNumET.getText().toString());
             if (!m.matches()) {
+                aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+                cancel = true;
+                return;
+            }
+        }
+*/
+
+/*
+        if (aadharNumET.getText().toString().trim().length() < 0) {
+            aadharNumET.requestFocus();
+            aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+            cancel = true;
+            return;
+        }
+*/
+
+        if (aadharNumET.getText().toString().trim().length() > 0) {
+            if (aadharNumET.getText().toString().trim().length() < 12) {
+                aadharNumET.requestFocus();
                 aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
                 cancel = true;
                 return;
@@ -1418,15 +1719,39 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+            patientdto.setCountry(StringUtils.getValue(
+                    (mCountry.getSelectedItem().toString().equalsIgnoreCase("India") ||
+                            mCountry.getSelectedItem().toString().equalsIgnoreCase("भारत")) ?
+                            "India" : "Not Provided"));
+            patientdto.setStateprovince(StringUtils.getProvided(mState));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (horizontalAdapter != null) {
+                List<File> fileAdapterList = horizontalAdapter.getADPList();
+                if (fileAdapterList != null && fileAdapterList.size() > 0) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < fileAdapterList.size(); i++) {
+                        additionalDocPath.add(fileAdapterList.get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+                    }
+                }
+            }
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Patient Additional Documents"));
+            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1)
+                    .replaceAll(" ", ""));
+            Log.v("ADP", "ADP: " + "patattr: " + patientAttributesDTO.getValue());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1509,12 +1834,18 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             Logger.logD(TAG, "insertpatinet ");
             boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
-            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, "PP", uuid);
+
+            //this insert all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
+            for (int i = 0; i < additionalDocPath.size(); i++)
+                imagesDAO.insertPatientProfileImages(additionalDocPath.get(i), "ADP", uuid);
+
             if (NetworkConnection.isOnline(getApplication())) {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushADPImage = imagesPushDAO.patientADPImagesPush();
             }
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
@@ -1647,6 +1978,7 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(null);
         }
 
+/*
         if (!aadharNumET.getText().toString().isEmpty() && !aadharNumET.getText().toString().equalsIgnoreCase("")
                 && !aadharNumET.getText().toString().equalsIgnoreCase(" ")) {
             Pattern p = Pattern.compile(regex);
@@ -1657,12 +1989,33 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+*/
+
+/*
+        if (aadharNumET.getText().toString().trim().length() < 0) {
+            aadharNumET.requestFocus();
+            aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+            cancel = true;
+            return;
+        }
+*/
+
+        if (aadharNumET.getText().toString().trim().length() > 0) {
+            if (aadharNumET.getText().toString().trim().length() < 12) {
+                aadharNumET.requestFocus();
+                aadharNumET.setError(getResources().getString(R.string.aadhar_issue));
+                cancel = true;
+                return;
+            }
+        }
 
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if (mCurrentPhotoPath == null)
+            if (mCurrentPhotoPath == null) // If profile image path empty than get from local db.
                 mCurrentPhotoPath = patientdto.getPatient_photo();
+
+         //   fetchAdditionalDocImages(patientdto.getUuid());
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -1695,15 +2048,39 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
-            patientdto.setState_province(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+            patientdto.setCountry(StringUtils.getValue(
+                    (mCountry.getSelectedItem().toString().equalsIgnoreCase("India") ||
+                            mCountry.getSelectedItem().toString().equalsIgnoreCase("भारत")) ?
+                            "India" : "Not Provided"));
+            patientdto.setState_province(StringUtils.getProvided(mState));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (horizontalAdapter != null) {
+                List<File> fileAdapterList = horizontalAdapter.getADPList();
+                if (fileAdapterList != null && fileAdapterList.size() > 0) {
+                    additionalDocPath.clear();
+                    for (int i = 0; i < fileAdapterList.size(); i++) {
+                        additionalDocPath.add(fileAdapterList.get(i).getPath());
+                        Log.v("ADP", "ADP: " + "adapter_getList: " + fileAdapterList.get(i).getPath());
+                    }
+                }
+            }
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Patient Additional Documents"));
+            patientAttributesDTO.setValue(additionalDocPath.toString().substring(1, additionalDocPath.toString().length()-1)
+                    .replaceAll(" ", ""));
+            Log.v("ADP", "ADP: " + "update_patattr: " + patientAttributesDTO.getValue());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1756,7 +2133,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
+            Log.v("HH", "HH: "  + "on edit: " + sessionManager.getHouseholdUuid());
+            /**
+             * As per the process, we generally push the fields that are as well not updated during the edit part. However,
+             * for this we can avoid it as sending a patient attribute is not required on edit part as it will generated duplicates unnecessarily.
+             * Or if we can also use a HashMap in the recycler on Patient detail. So better is comment this below code.
+             */
+           /* if (sessionManager.getHouseholdUuid().equals("")) {
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -1773,7 +2156,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdID"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
             }
-
+*/
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
@@ -1782,13 +2165,18 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             Logger.logD(TAG, "update ");
             boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
-            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
+            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid, "PP");
+
+            //this will update all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
+            for (int i = 0; i < additionalDocPath.size(); i++)
+                imagesDAO.updatePatientProfileImages(additionalDocPath.get(i), uuid, "ADP");
 
             if (NetworkConnection.isOnline(getApplication())) {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean ispush = syncDAO.pushDataApi();
                 boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushADPImage = imagesPushDAO.patientADPImagesPush();
             }
 
             if (isPatientUpdated && isPatientImageUpdated) {
@@ -1807,6 +2195,94 @@ public class IdentificationActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
+
+    private void fetchAdditionalDocImages(String patientUUID) {
+        ArrayList<String> tempList = new ArrayList<>();
+        if (additionalDocPath.size() == 0) {
+            try {
+                String[] adp_array = patientsDAO.getAttributeValue(patientUUID, "243dd7eb-e216-40bf-83fb-439723b22d8b")
+                        .replaceAll(" ", "").split(",");
+                Collections.addAll(tempList, adp_array);
+                
+                for (int i = 0; i < tempList.size(); i++) {
+                    if (tempList.get(i).equalsIgnoreCase(""))
+                        tempList.remove(i);
+                }
+
+                additionalDocPath = tempList;
+
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+
+            fileList.clear();
+            adpFilesList.clear();
+            for (int i = 0; i < additionalDocPath.size(); i++) {
+                if (new File(additionalDocPath.get(i)).exists()) {
+                    fileList.add(new File(additionalDocPath.get(i)));
+                    adpFilesList.add(new File(additionalDocPath.get(i)));
+                }
+            }
+
+        }
+
+
+    }
+
+    /**
+     * Get API: To download the patient adp images
+     */
+    private void getADPImagesFromAPI(String patUUID, ArrayList<File> fileList) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        adpFilesList.clear();
+        additionalDocPath.clear();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getADPImageUrl(patUUID);
+        Logger.logD(TAG, "profileimage url" + url);
+        Observable<PatientADPImageDownloadResponse> adpPicDownload = AppConstants.apiInterface.ADP_IMAGE_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
+        adpPicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<PatientADPImageDownloadResponse>() {
+                    @Override
+                    public void onNext(PatientADPImageDownloadResponse response) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        Log.v("ADP", "response: "  + response.getPersonimages().size() + "\n" + "addPath_response: " + additionalDocPath.size());
+                        for (int i = 0; i < response.getPersonimages().size(); i++) {
+                            adpFilesList.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()));
+                        //    additionalDocPath.add(downloadFilesUtils.saveADPToDisk(response.getPersonimages().get(i), fileList.get(i).getName()).getPath());
+                            addDocRV.setHasFixedSize(true);
+                            addDocRV.setLayoutManager(new LinearLayoutManager(IdentificationActivity.this, LinearLayoutManager.HORIZONTAL, false));
+//                            horizontalAdapter = new HorizontalAdapter(adpFilesList, IdentificationActivity.this);
+                            horizontalAdapter = new HorizontalADP_Adapter(adpFilesList, IdentificationActivity.this, additionalDocPath);
+                            addDocRV.setAdapter(horizontalAdapter);
+                            horizontalAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // on Complete add all these images into tbl_image_records...
+                        //this insert all the image path in the tbl_image_records with tag "ADP" to distinguish between with the profile image.
+                        for (int i = 0; i < adpFilesList.size(); i++) {
+                            try {
+                                imagesDAO.pullSaveADPImages(adpFilesList.get(i).getPath(), "ADP", patUUID);
+                            } catch (DAOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        fetchAdditionalDocImages(patUUID);
+                    }
+                });
+    }
+
 }
 
 

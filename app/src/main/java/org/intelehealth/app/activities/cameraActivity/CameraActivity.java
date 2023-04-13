@@ -51,6 +51,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class CameraActivity extends AppCompatActivity {
 
     public static final int TAKE_IMAGE = 205;
+    public static final int TAKE_IMAGE_AD = 206;
     /**
      * Bundle key used for the {@link String} setting custom Image Name
      * for the file generated
@@ -437,5 +438,17 @@ public class CameraActivity extends AppCompatActivity {
         //do nothing
         finish();
 
+    }
+
+    /** Prajwal -
+     * This function is called from camera xml directly. It is used to Flip the camera in case user wants
+     * front camera and vice-versa.
+     * @param view
+     */
+    public void flipCamera(View view) {
+        if (mCameraView != null) {
+            int facing = mCameraView.getFacing();
+            mCameraView.setFacing(facing == CameraView.FACING_FRONT ? CameraView.FACING_BACK : CameraView.FACING_FRONT);
+        }
     }
 }

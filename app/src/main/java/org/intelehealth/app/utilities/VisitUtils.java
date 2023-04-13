@@ -16,7 +16,7 @@ public class VisitUtils {
     public static void endVisit(Context activityContext, String visitUUID, String patientUuid, String followUpDate, String encounterVitals, String encounterUuidAdultIntial, String state, String patientName, String intentTag) {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            if (followUpDate != null && !followUpDate.isEmpty()) {
+            if (followUpDate != null && !followUpDate.isEmpty()  && !followUpDate.equalsIgnoreCase("No follow up")) {
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
                 followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
