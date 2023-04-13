@@ -82,11 +82,10 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:inputType="textUri"
                                     android:focusable="true"
-                                    android:text="demo.intelehealth.org"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <Space
+                            <android.widget.Space
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp" />
 
@@ -96,12 +95,14 @@
                                 android:ems="10"
                                 android:includeFontPadding="false"
                                 android:textSize="16sp"
+                                android:visibility="gone"
                                 android:text="@string/choose_a_location_to_login"
                                 android:fontFamily="@font/lato_bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:layout_marginBottom="5dp">
 
                                 <Spinner
@@ -115,113 +116,82 @@
 
                     </androidx.cardview.widget.CardView>
 
-<!--                    <androidx.cardview.widget.CardView-->
-<!--                        android:id="@+id/cardview_locations"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginHorizontal="10dp"-->
-<!--                        org:cardCornerRadius="10sp"-->
-<!--                        android:layout_marginTop="15dp"-->
-<!--                        org:cardElevation="5sp"-->
-<!--                        org:cardPreventCornerOverlap="false">-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview_locations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginTop="15dp"
+                        app:cardElevation="5sp"
+                        app:cardPreventCornerOverlap="false">
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:orientation="vertical"-->
-<!--                            android:padding="10dp">-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp">
 
-<!--                            <TextView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:ems="10"-->
-<!--                                android:includeFontPadding="false"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:text="Locations"-->
-<!--                                android:fontFamily="@font/lato_bold" />-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:includeFontPadding="false"
+                                android:textSize="16sp"
+                                android:text="@string/locations"
+                                android:fontFamily="@font/lato_bold" />
 
-<!--                            <android.widget.Space-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="10dp"/>-->
+                            <android.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
 
-<!--                            <Spinner-->
-<!--                                android:id="@+id/spinner_location"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:nextFocusForward="@+id/demoMindmap"-->
-<!--                                android:entries="@array/location"-->
-<!--                                android:focusable="true"-->
-<!--                                android:alpha="0.4"-->
-<!--                                />-->
+                            <Spinner
+                                android:id="@+id/spinner_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:nextFocusForward="@+id/spinner_district"
+                                android:entries="@array/location_state"
+                                android:alpha="0.4"
+                                android:focusable="true"
+                                />
 
-<!--                            <android.widget.Space-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="10dp"/>-->
+                            <android.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
 
-<!--                            <Space-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="10dp" />-->
+                            <Spinner
+                                android:id="@+id/spinner_district"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:nextFocusForward="@+id/spinner_sanch"
+                                android:entries="@array/location_district"
+                                android:focusable="true"
+                                android:alpha="0.4"
+                                />
 
-<!--                                <Spinner-->
-<!--                                    android:id="@+id/spinner_state"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:nextFocusForward="@+id/spinner_district"-->
-<!--                                    android:entries="@array/location_state"-->
-<!--                                    android:alpha="0.4"-->
-<!--                                    android:focusable="true"-->
-<!--                                    />-->
-
-<!--                                <android.widget.Space-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="10dp"/>-->
-
-<!--                                <Spinner-->
-<!--                                    android:id="@+id/spinner_district"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:nextFocusForward="@+id/spinner_sanch"-->
-<!--                                    android:entries="@array/location_district"-->
-<!--                                    android:focusable="true"-->
-<!--                                    android:alpha="0.4"-->
-<!--                                    />-->
-
-<!--                                <android.widget.Space-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="10dp"/>-->
-
-<!--                                <Spinner-->
-<!--                                    android:id="@+id/spinner_sanch"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:nextFocusForward="@+id/spinner_village"-->
-<!--                                    android:entries="@array/location_sanch"-->
-<!--                                    android:focusable="true"-->
-<!--                                    android:alpha="0.4"-->
-<!--                                    />-->
-
-<!--                                <android.widget.Space-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="10dp"/>-->
-
-<!--                                <Spinner-->
-<!--                                    android:id="@+id/spinner_village"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:nextFocusForward="@+id/demoMindmap"-->
-<!--                                    android:entries="@array/location_village"-->
-<!--                                    android:focusable="true"-->
-<!--                                    android:alpha="0.4"-->
-<!--                                    />-->
-
-<!--                                <android.widget.Space-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="10dp"/>-->
+                            <android.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
 
 
-<!--                        </LinearLayout>-->
+                            <Spinner
+                                android:id="@+id/spinner_village"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:nextFocusForward="@+id/demoMindmap"
+                                android:entries="@array/location_village"
+                                android:focusable="true"
+                                android:alpha="0.4"
+                                />
 
-<!--                    </androidx.cardview.widget.CardView>-->
+                            <android.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview2"
@@ -249,7 +219,7 @@
                                 android:text="@string/choose_an_option_for_protocols"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                            <Space
+                            <android.widget.Space
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp" />
 
@@ -392,7 +362,7 @@
                         style="@style/SelectableItemBackground"
                         android:foreground="?android:attr/selectableItemBackground"/>
 
-                    <Space
+                    <android.widget.Space
                         android:layout_width="match_parent"
                         android:layout_height="15sp" />
 

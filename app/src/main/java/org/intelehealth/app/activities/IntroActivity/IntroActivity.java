@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -32,16 +33,21 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.NewLocationDao;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.AdminPassword;
@@ -51,6 +57,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.data.Manager;
 
 import io.reactivex.Observable;
@@ -70,7 +77,7 @@ public class IntroActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnSkip,btnNext;
     private List<Location> mLocations = new ArrayList<>();
     Location location = null;
     ProgressDialog progress;
@@ -80,6 +87,9 @@ public class IntroActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     String BASE_URL = "";
     private long createdRecordsCount = 0;
+    Map.Entry<String, String> village_name;
+    private String selectedState = "", selectedDistrict = "", selectedVillage = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +97,18 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         context = IntroActivity.this;
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
-        BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
+        BASE_URL = "https://development.mysmartcaredoc.com:3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -224,14 +243,14 @@ public class IntroActivity extends AppCompatActivity {
             //Highlighting Text
             String introOne = getString(R.string.intelehealth_a_telemedicine_platform);
             String textToHighlightOne = getString(R.string.intelehealth_name);
-            String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
+            String newString = introOne.replaceAll(textToHighlightOne, "<font color='#503096'>" + textToHighlightOne + "</font>");
             tvIntroOne.setText(Html.fromHtml(newString));
 
             if (position == 1) {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
                 String textHighlight = getString(R.string.Ayu_name);
                 String newhighlight = two.replaceAll(textHighlight,
-                        "<font color='blue'>" + textHighlight + "</font>")
+                        "<font color='#503096'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
 
@@ -285,22 +304,43 @@ public class IntroActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+            Observable<Setup_LocationModel> resultsObservable = apiService.SETUP_LOCATIONOBSERVABLE();
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<Results<Location>>() {
+                    .subscribe(new DisposableObserver<Setup_LocationModel>() {
                         @Override
-                        public void onNext(Results<Location> locationResults) {
-                            if (locationResults.getResults() != null) {
-                                Results<Location> locationList = locationResults;
-                                mLocations = locationList.getResults();
-                                if (mLocations.size() > 1)
-                                    location = mLocations.get(1);
-                                else
-                                    location = mLocations.get(0);
+                        public void onNext(Setup_LocationModel location) {
+                            if (location.getStates() != null) {
+                                try {
+                                    NewLocationDao newLocationDao = new NewLocationDao();
+                                    newLocationDao.insertSetupLocations(location);
+                                    List<String> state_locations = newLocationDao.getStateList(context);
+                                    if (state_locations.size() != 0 && state_locations.size() > 1) {
+                                        selectedState = state_locations.get(1);
+                                        List<String> district_locations = newLocationDao.getDistrictList(state_locations.get(1), context);
+                                        if (district_locations.size() != 0 && district_locations.size() > 1) {
+                                            selectedDistrict = district_locations.get(1);
+                                            List<String> village_locations = newLocationDao.getVillageList(state_locations.get(1), district_locations.get(1), context);
+                                            if (village_locations.size() != 0 && village_locations.size() > 1) {
+                                                selectedVillage = village_locations.get(1);
+                                                HashMap<String, String> hashMap4;
+                                                String village_uuid = newLocationDao.getVillageUuid(state_locations.get(1), district_locations.get(1), village_locations.get(1));
+                                                hashMap4 = new HashMap<>();
+                                                hashMap4.put(village_uuid, village_locations.get(1));
+                                                for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
+                                                    village_name = entry;
+                                                }
+                                                TestSetup("development.mysmartcaredoc.com", "nurse", "Nurse123", "", village_name);
 
-                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
+                                            }
+                                        }
+                                    } else {
+                                    }
+
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                }
 
                             } else {
                                 progress.dismiss();
@@ -333,12 +373,13 @@ public class IntroActivity extends AppCompatActivity {
         return list;
     }
 
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
 
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -375,16 +416,20 @@ public class IntroActivity extends AppCompatActivity {
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                            sessionManager.setLocationName(location.getDisplay());
-                                            sessionManager.setLocationUuid(location.getUuid());
-                                            sessionManager.setLocationDescription(location.getDescription());
+                                            sessionManager.setLocationName(location.getValue());
+                                            sessionManager.setLocationUuid(location.getKey());
+                                            //  sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
-                                            // keeping the base url in one singleton object for using in apprtc module
-                                            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+
+                                            //Storing State Name
+                                            sessionManager.setCountryName("India");
+                                            sessionManager.setStateName(selectedState);
+                                            sessionManager.setDistrictName(selectedDistrict);
+                                            sessionManager.setVillageName(selectedVillage);
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -466,8 +511,6 @@ public class IntroActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(IntroActivity.this,  getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password),  getResources().getString(R.string.ok));
             }
 
             @Override

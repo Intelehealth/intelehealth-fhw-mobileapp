@@ -71,7 +71,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String patientUuid;
     String visitUuid;
     String state;
-    String patientName;
+    String patientName, patientFName, patientLName;
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
@@ -104,7 +104,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(FamilyHistoryActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -129,6 +129,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
@@ -197,6 +199,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("patientFirstName",patientFName);
+                    intent.putExtra("patientLastName", patientLName);
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
@@ -383,6 +387,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
@@ -411,6 +417,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);

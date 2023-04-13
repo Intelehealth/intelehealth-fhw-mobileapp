@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.physcialExamActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +39,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     static String patientUuid;
     static String visitUuid;
     String state;
-    String patientName;
+    String patientName, patientFName, patientLName;
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
@@ -116,7 +117,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(PhysicalExamActivity.this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -126,7 +127,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
@@ -162,6 +163,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
@@ -206,7 +209,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -216,7 +219,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -262,10 +265,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -301,13 +303,19 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void fabClickedAtEnd() {
+        if (!physicalExamMap.areRequiredAnswered()) {
+            fabClicked();
+            return;
+        }
+        triggerConfirmation();
+    }
+
+    public void fabClicked() {
 
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
-
             physicalString = physicalExamMap.generateFindings();
-
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
             if (imagePathList != null) {
@@ -321,12 +329,14 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("gender",mgender);
+                intent.putExtra("gender", mgender);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName", patientFName);
+                intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
@@ -347,6 +357,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("tag", intentTag);
                 intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -394,7 +406,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
-
 
 
     /**
@@ -653,6 +664,84 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     }
 
+    private void triggerConfirmation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PhysicalExamActivity.this);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String marathiPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("mr")));
+            if (marathiPhysicalExam != null && !marathiPhysicalExam.isEmpty()) {
+                marathiPhysicalExam = marathiPhysicalExam
+                        .replace("Eyes: Pallor", "डोळे: फिकटपणा")
+                        .replace("Arm", "हात")
+                        .replace("Head", "डोके")
+                        .replace("Mouth", "तोंड")
+                        .replace("Abdomen", "पोट")
+                        .replace("Joint", "सांधा")
+                        .replace("Any Location", "आणखी कोणते स्थान")
+                        .replace("Nail abnormality", "नखे विकृती")
+                        .replace("Nail anemia", "नखे फिकट आहेत का")
+                        .replace("Ankle", "घोटा")
+                        .replace("Skin Rash", "त्वचेवर पुरळ")
+                        .replace("Eyes: Jaundice", "डोळे: कावीळ")
+                        .replace("Boils", "फोड")
+                        .replace("Lumps", "गाठ")
+                        .replace("Injury discolouration", "जखमे चा रंग उडणे")
+                        .replace("Skin Bruise", "त्वचेवर जखम")
+                        .replace("Discharge","स्त्राव")
+                        .replace("Strength", "ताकद")
+                        .replace("Nails cyanosis", "नखांचा निळसरपणा")
+                        .replace("Holding a paper tightly between thumb and curled fingers", "अंगठा आणि कुरळे बोटांमध्ये कागद घट्ट धरून ठेवा")
+                        .replace("Gripping two fingers tightly", "दोन बोटे घट्ट पकडणे")
+                        .replace("Ability to spread 4 fingers apart when they are held together", "जेव्हा ते एकत्र धरले जातात तेव्हा 4 बोटांनी वेगळे पसरण्याची क्षमता");
+            }
+            alertDialogBuilder.setMessage(marathiPhysicalExam);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String hindiPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("hi")));
+            if (hindiPhysicalExam != null && !hindiPhysicalExam.isEmpty()) {
+                hindiPhysicalExam = hindiPhysicalExam
+                        .replace("Eyes: Pallor", "आँखेंः पेलर (पांडुता)")
+                        .replace("Arm", "बांह")
+                        .replace("Head", "सिर (हेड)")
+                        .replace("Mouth", "मुँह")
+                        .replace("Abdomen", "पेट")
+                        .replace("Joint", "जोड़")
+                        .replace("Any Location", "कोई स्थान")
+                        .replace("Nail abnormality", "नाखून में विकृति")
+                        .replace("Nail anemia", "नेल एनीमिया")
+                        .replace("Ankle", "एड़ी")
+                        .replace("Skin Rash", "चकत्ता")
+                        .replace("Eyes: Jaundice", "आंखें: पीलिया रोग")
+                        .replace("Ulcer", "अल्सर")
+                        .replace("Thyroid swelling", "थायराइड की सूजन")
+                        .replace("SLR leg function test", "गतिविधि")
+                        .replace("Lying BP", "लेटकर ब्लड प्रेशर")
+                        .replace("Boils", "फोड़ा-फुन्सी (बॉईल्स)")
+                        .replace("Lumps", "गाँठ (लंप्स)")
+                        .replace("Injury discolouration", "चोट के कारण रंगहीन हो जाना")
+                        .replace("Skin Bruise", "त्वचा पर घाव या खरोंच (स्किन ब्रूज़)")
+                        .replace("Discharge","शारीरिक बल")
+                        .replace("Strength", "ताकद")
+                        .replace("Nails cyanosis", "नाखूनों का सियानोसिस (नेल्स सियानोसिस)")
+                        .replace("Holding a paper tightly between thumb and curled fingers", "कागज को अंगूठे और मुड़ी हुई उंगलियों के बीच कसकर पकड़ना")
+                        .replace("Gripping two fingers tightly", "दो अंगुलियों को कसकर पकड़ना")
+                        .replace("Ability to spread 4 fingers apart when they are held together", "एक साथ पकड़े जाने पर 4 अंगुलियों को अलग-अलग फैलाने की क्षमता");
+
+            }
+            alertDialogBuilder.setMessage(hindiPhysicalExam);
+        } else {
+            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        }
+
+        // Handle positive button click
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, ((dialog, which) -> {
+            dialog.dismiss();
+            fabClicked();
+        }));
+
+        // Handle negative button click
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, (dialog, which) -> dialog.dismiss());
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
 }
 
 

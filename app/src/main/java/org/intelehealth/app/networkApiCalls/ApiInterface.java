@@ -10,6 +10,8 @@ import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.app.models.patientImageModelRequest.PatientADPImageDownloadResponse;
+import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
@@ -18,6 +20,7 @@ import org.intelehealth.app.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
+import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.models.statewise_location.State;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -51,6 +54,10 @@ public interface ApiInterface {
     @GET("location?tag=Login%20Location")
     Observable<Results<Location>> LOCATION_OBSERVABLE(@Query("v") String representation);
 
+    //-SetupLocation
+    @GET("getLocations")
+    Observable<Setup_LocationModel> SETUP_LOCATIONOBSERVABLE();
+
 
     @DELETE
     Call<Void> DELETE_ENCOUNTER(@Url String url,
@@ -79,10 +86,19 @@ public interface ApiInterface {
     Observable<ResponseBody> PERSON_PROFILE_PIC_DOWNLOAD(@Url String url,
                                                          @Header("Authorization") String authHeader);
 
+    @GET
+    Observable<PatientADPImageDownloadResponse> ADP_IMAGE_DOWNLOAD(@Url String url,
+                                                                   @Header("Authorization") String authHeader);
+
     @POST
     Single<ResponseBody> PERSON_PROFILE_PIC_UPLOAD(@Url String url,
                                                    @Header("Authorization") String authHeader,
                                                    @Body PatientProfile patientProfile);
+
+    @POST
+    Single<ResponseBody> PERSON_ADP_PIC_UPLOAD(@Url String url,
+                                                   @Header("Authorization") String authHeader,
+                                                   @Body PatientAdditionalDocModel patientAdditionalDocModel);
 
     @GET
     Observable<ResponseBody> OBS_IMAGE_DOWNLOAD(@Url String url,

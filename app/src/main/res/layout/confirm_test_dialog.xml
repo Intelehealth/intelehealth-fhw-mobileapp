@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        android:text="@string/confirm_tests"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/bp_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/visit_summary_bp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/glucose_nf_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:visibility="visible"
+        android:text="@string/blood_glucose_non_fasting" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/glucose_f_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/blood_glucose_random" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/glucose_ppn_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:visibility="gone"
+        android:text="@string/blood_glucose_post_prandial" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/glucose_ran_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:visibility="gone"
+        android:text="@string/blood_glucose_random" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/uric_acid_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:visibility="gone"
+        android:text="@string/uric_acid" />
+
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cholesterol_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/total_cholestrol" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/haemoglobin_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/haemoglobin" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/spo2_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/table_spo2" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/temperature_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/temperature" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/ecg_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:enabled="false"
+        android:text="@string/ecg" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="end">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:padding="8dp"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/dialog_ok_button"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:padding="8dp"
+            android:textSize="15sp"
+            android:fontFamily="@font/lato_regular"
+            android:layout_marginEnd="25dp"
+            android:layout_toStartOf="@id/dialog_ok_button"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/dialog_cancel_button"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

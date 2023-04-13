@@ -46,7 +46,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
@@ -71,44 +71,127 @@
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textSize="@dimen/card_content_text_size" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <!--Height & Weight-->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/table_height"
+                            <TableLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_height"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="10dp"
+                                android:stretchColumns="0,2">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/table_weight"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_weight"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                        <EditText
+                                            android:id="@+id/table_height"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_height"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <TextView
+                                        android:id="@+id/textView_splash"
+                                        android:layout_width="22dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:text="/"
+                                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_weight"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_weight"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </TableRow>
+                            </TableLayout>
+
+                            <!--
+                            <ImageButton
+                                android:id="@+id/height_weight_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_margin="10dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_add_24dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent" />
+-->
+
+                        </LinearLayout>
+
+                        <!--   <com.google.android.material.textfield.TextInputLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content">
+                               <EditText
+                                   android:id="@+id/table_height"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:fontFamily="@font/lato_regular"
+                                   android:hint="@string/table_height"
+                                   android:imeOptions="actionUnspecified"
+                                   android:inputType="numberDecimal"
+                                   android:maxLines="1"
+                                   android:singleLine="true"
+                                   android:tag="@string/tag_optional"
+                                   android:textSize="@dimen/card_content_sub_text_size" />
+                           </com.google.android.material.textfield.TextInputLayout>
+                           <com.google.android.material.textfield.TextInputLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content">
+                               <EditText
+                                   android:id="@+id/table_weight"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:fontFamily="@font/lato_regular"
+                                   android:hint="@string/table_weight"
+                                   android:imeOptions="actionUnspecified"
+                                   android:includeFontPadding="false"
+                                   android:inputType="numberDecimal"
+                                   android:maxLines="1"
+                                   android:singleLine="true"
+                                   android:tag="@string/tag_optional"
+                                   android:textSize="@dimen/card_content_sub_text_size" />
+                           </com.google.android.material.textfield.TextInputLayout>-->
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -131,10 +214,421 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_abdominal_girth"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/abdominal_girth_vitals"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/abdominal_warning_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/abdominal_girth_warning"
+                            android:paddingStart="10dp"
+                            android:paddingVertical="5dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:background="@drawable/bg_end_visit"
+                             />
+
+                        <!--Arm Girth - Start -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_arm_girth"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/arm_girth_inches"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <!--Arm Girth - End-->
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/textview_vitals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:tag="@string/tag_optional"
+                            android:text="@string/table_bp"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TableLayout
+                                android:id="@+id/bp_table"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="3"
+                                android:stretchColumns="0,2">
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_bpsys"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_bpsys"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <TextView
+                                        android:id="@+id/textView"
+                                        android:layout_width="22dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:text="/"
+                                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_bpdia"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_bpdia"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </TableRow>
+                            </TableLayout>
+
+                            <ImageButton
+                                android:id="@+id/bp_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:visibility="visible"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </LinearLayout>
+
+                        <!--SPO2 and BPM-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <TableLayout
+                                android:id="@+id/spo2_table"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="3"
+                                android:stretchColumns="0,2">
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/tinput_spo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_spo2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_spo2"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <TextView
+                                        android:id="@+id/textView_1"
+                                        android:layout_width="22dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:text="/"
+                                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/tinput_bpm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_pulse"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_pulse"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </TableRow>
+                            </TableLayout>
+
+                            <ImageButton
+                                android:id="@+id/spo2_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:visibility="visible"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </LinearLayout>
+
+                        <!--<com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/tinput_spo"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/table_spo2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_spo2"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/tinput_bpm"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/table_pulse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_pulse"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>-->
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tinput_rr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_respiratory"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/respiratory_rate"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tinput_c"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="4">
+
+                            <EditText
+                                android:id="@+id/table_temp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_temp"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/tempc_Btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/circle"
+                            android:visibility="visible"
+                            android:backgroundTint="@color/colorAccent"
+                            android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tinput_f"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="4">
+
+                            <EditText
+                                android:id="@+id/table_temp_faren"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/temperature_f"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="numberDecimal"
+                                android:maxLength="6"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <ImageButton
+                            android:id="@+id/tempf_Btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/circle"
+                            android:visibility="visible"
+                            android:backgroundTint="@color/colorAccent"
+                            android:src="@drawable/ic_add_24dp" />
+                    </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Diagnostics-->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,7 +647,7 @@
                         android:padding="10dp">
 
                         <TextView
-                            android:id="@+id/textview_bp"
+                            android:id="@+id/textview_diagnostics"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -161,197 +655,369 @@
                             android:fontFamily="@font/lato_bold"
                             android:includeFontPadding="false"
                             android:tag="@string/tag_optional"
-                            android:text="@string/table_bp"
+                            android:text="@string/diagnostics"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textSize="@dimen/card_content_text_size" />
 
-                        <TableLayout
+                        <!--Blood Glucose (Non-Fasting) -->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:stretchColumns="0,2">
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal"
+                            tools:visibility="visible"
+                            android:visibility="visible">
 
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bloodGlucose_nonfasting"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                                <com.google.android.material.textfield.TextInputLayout
+                                <EditText
+                                    android:id="@+id/bloodGlucose_nonfasting_editText"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/blood_glucose_non_fasting"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="5"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
-                                    <EditText
-                                        android:id="@+id/table_bpsys"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:focusable="true"
-                                        android:focusableInTouchMode="true"
-                                        android:fontFamily="@font/lato_regular"
-                                        android:hint="@string/table_bpsys"
-                                        android:imeOptions="actionUnspecified"
-                                        android:includeFontPadding="false"
-                                        android:inputType="numberDecimal"
-                                        android:maxLines="1"
-                                        android:singleLine="true"
-                                        android:tag="@string/tag_optional"
-                                        android:textSize="@dimen/card_content_sub_text_size" />
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                                </com.google.android.material.textfield.TextInputLayout>
+                            <ImageButton
+                                android:id="@+id/bg_nonfasting_btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:focusable="true"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/textView"
-                                    android:layout_width="22dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:gravity="center_vertical|center_horizontal"
-                                    android:text="/"
-                                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <!-- Blood Glucose (Fasting)-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
 
-                                <com.google.android.material.textfield.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bloodGlucoseFasting"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
+
+                                <EditText
+                                    android:id="@+id/bloodGlucose_Fasting_editText"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/blood_glucose_random_vitals"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="5"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
-                                    <EditText
-                                        android:id="@+id/table_bpdia"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:focusable="true"
-                                        android:focusableInTouchMode="true"
-                                        android:fontFamily="@font/lato_regular"
-                                        android:hint="@string/table_bpdia"
-                                        android:imeOptions="actionUnspecified"
-                                        android:includeFontPadding="false"
-                                        android:inputType="numberDecimal"
-                                        android:maxLines="1"
-                                        android:singleLine="true"
-                                        android:tag="@string/tag_optional"
-                                        android:textSize="@dimen/card_content_sub_text_size" />
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                                </com.google.android.material.textfield.TextInputLayout>
-                            </TableRow>
-                        </TableLayout>
+                            <ImageButton
+                                android:id="@+id/bloodGlucose_Fasting_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <!-- Blood Glucose (Post-Prandial)-->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/tinput_spo"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
-                            <EditText
-                                android:id="@+id/table_spo2"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bloodGlucosePostPrandial"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_spo2"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <EditText
+                                    android:id="@+id/bloodGlucosePostPrandial_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/blood_glucose_post_prandial"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/bloodGlucosePostPrandial_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:visibility="gone"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <!-- HbA1c (%) - start -->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/tinput_bpm"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/table_pulse"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/hba1c_layout"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_pulse"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <EditText
+                                    android:id="@+id/hba1c_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/hba1c"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="4"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/bloodGlucose_Btn_fasting"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:visibility="gone"
+                                tools:visibility="visible"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+                        <!-- HbA1c (%) - end -->
+
+                        <!--Haemoglobin Test-->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/tinput_rr"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/table_respiratory"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/haemoglobin"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/respiratory_rate"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <EditText
+                                    android:id="@+id/haemoglobin_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/haemoglobin"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/haemoglobin_btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:visibility="gone"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <!--UricAcid Test-->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/tinput_c"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
-                            <EditText
-                                android:id="@+id/table_temp"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/uricAcid"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_temp"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <EditText
+                                    android:id="@+id/uricAcid_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/uric_acid"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
+                            <ImageButton
+                                android:id="@+id/uricAcid_btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:visibility="gone"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <!--Total Cholestrol-->
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:id="@+id/tinput_f"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/table_temp_faren"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/totalCholestrol"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/temperature_f"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <EditText
+                                    android:id="@+id/totalCholestrol_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/total_cholestrol"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="6"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/totalCholestrol_btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:visibility="gone"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                        
+                            <TextView
+                                android:id="@+id/ecg_txtview"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:paddingStart="5dp"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/ecg" />
+
+                            <ImageButton
+                                android:id="@+id/ecg_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="end|center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_keyboard_arrow_right_12dp" />
 
 
+                        </LinearLayout>
+                        
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/fab"
+                    style="@style/SelectableItemBackground_Orange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@color/orange3"
+                    android:elevation="5dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_18sp" />
 
             </LinearLayout>
         </ScrollView>
 
-
     </RelativeLayout>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_done_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

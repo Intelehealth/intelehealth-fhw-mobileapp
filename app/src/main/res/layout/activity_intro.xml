@@ -34,16 +34,17 @@
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@null"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
-        android:text="@string/next"
-        android:gravity="center"
-        android:fontFamily="@fonts/Lato_Regular"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right"
-        android:textColor="@color/intro_next" />
+        android:drawablePadding="1dp"
+        android:fontFamily="@fonts/Lato_Regular"
+        android:gravity="center"
+        android:text="@string/next"
+        android:textColor="@color/colorPrimary" />
 
     <Button
         android:id="@+id/btn_skip"

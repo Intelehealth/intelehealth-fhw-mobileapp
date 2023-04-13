@@ -98,8 +98,8 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
-    private boolean isMultiChoice = false;
-    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
+    /*private boolean isMultiChoice = true;
+    private boolean isExcludedFromMultiChoice = false;*/ //exclude-from-multi-choice
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -163,9 +163,9 @@ public class Node implements Serializable {
         try {
             this.id = jsonNode.getString("id");
 
-            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+            /*this.isMultiChoice = jsonNode.optBoolean("multi-choice");
 
-            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");*/
 
 
             this.text = jsonNode.getString("text");
@@ -316,7 +316,7 @@ public class Node implements Serializable {
 
             this.choiceType = jsonNode.optString("choice-type");
 
-//            this.required = false;
+            this.required = false;
 
             this.positiveCondition = jsonNode.optString("pos-condition");
             this.negativeCondition = jsonNode.optString("neg-condition");
@@ -352,8 +352,8 @@ public class Node implements Serializable {
      */
     public Node(Node source) {
         this.id = source.id;
-        this.isMultiChoice = source.isMultiChoice;
-        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
+        /*this.isMultiChoice = source.isMultiChoice;
+        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;*/
         this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
@@ -388,7 +388,7 @@ public class Node implements Serializable {
         this.selected = false;
         this.isNoSelected = false;
         this.associated_symptoms = 0;
-        this.required = source.required;
+//        this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
     }
@@ -426,7 +426,7 @@ public class Node implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
-                Node currentNode = node.getOption(position);
+                /*Node currentNode = node.getOption(position);
                 if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
                     for (int i = 0; i < node.optionsList.size(); i++) {
                         Node innerNode = node.optionsList.get(i);
@@ -458,7 +458,7 @@ public class Node implements Serializable {
                         }
                     }
 
-                }
+                }*/
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
@@ -530,6 +530,42 @@ public class Node implements Serializable {
         } else {
             language = newText;
             //Log.d("Node", language);
+        }
+    }
+
+    public String findDisplay(String language) {
+        switch (language) {
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+
+            }
+            case "hi": {
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+
+            }
+            default: {
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
+            }
         }
     }
 
@@ -1048,6 +1084,7 @@ public class Node implements Serializable {
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
@@ -1729,6 +1766,7 @@ public class Node implements Serializable {
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // To avoid showing Future dates.
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
@@ -2131,6 +2169,105 @@ public class Node implements Serializable {
         return mLanguage;
     }
 
+    public String formLanguage(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+
+                    if (language.equalsIgnoreCase("hi"))
+                        test = mOptions.get(i).getDisplay_hindi();
+
+                    if (language.equalsIgnoreCase("mr"))
+                        test = mOptions.get(i).getDisplay_marathi();
+
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    if (language.equalsIgnoreCase("mr") || language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    if (language.equalsIgnoreCase("mr") && !mOptions.get(i).getDisplay_marathi().startsWith("["))
+                                        stringsList.add(mOptions.get(i).getDisplay_marathi());
+                                    else if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("["))
+                                        stringsList.add(mOptions.get(i).getDisplay_hindi());
+                                    else
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageDiffLang(language));
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्न का उत्तर नहीं दिया");
+        return mLanguage;
+    }
+
     public AlertDialog displayImage(final Activity context, final String path, final String name) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
@@ -2429,7 +2566,7 @@ public class Node implements Serializable {
         }
     }
 
-    public boolean isMultiChoice() {
+    /*public boolean isMultiChoice() {
         return isMultiChoice;
     }
     public void setMultiChoice(boolean multiChoice) {
@@ -2441,7 +2578,7 @@ public class Node implements Serializable {
     }
     public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
-    }
+    }*/
 
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
@@ -3029,5 +3166,178 @@ public class Node implements Serializable {
         return allAnswered;
     }
 
+    public String formLanguageDiffLang(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    if (language.equalsIgnoreCase("mr") || language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageDiffLang());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्न का उत्तर नहीं दिया");
+        return mLanguage;
+    }
+
+    public String formLanguageDiffLang() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageDiffLang());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्न का उत्तर नहीं दिया");
+        return mLanguage;
+    }
 }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
+    <string name="app_name" translatable="false">माईस्मार्टकेयरडॉक</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
@@ -39,10 +39,10 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">इंटेलीहेल्थ</string>
-    <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
-    <string name="prompt_password" translatable="false">कुंजिका</string>
-    <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
+    <string name="title_activity_login">माईस्मार्टकेयरडॉक</string>
+    <string name="prompt_email">उपयोगकर्ता नाम</string>
+    <string name="prompt_password">कुंजिका</string>
+    <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
     <string name="action_sign_in" translatable="false">लॉग इन करें</string>
     <string name="action_sign_in_short" translatable="false">शाइन ईन करें</string>
     <string name="url_invalid" translatable="false">अपना यूआरएल चेक करें</string>
@@ -60,7 +60,7 @@
 
 
     <string name="cant_login_user" translatable="false">लॉग इन नहीं कर सकते?</string>
-    <string name="email_link" translatable="false">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
+    <string name="email_link">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
     <string name="contact_whatsapp">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें</string>
 
     //Home Screen (after login)
@@ -89,6 +89,7 @@
     <string name="identification_screen_checkbox_female">महिला</string>
     <string name="identification_screen_checkbox_other">अन्य</string>
     <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>
+    <string name="identification_screen_prompt_dob">जन्म की तारीख:</string>
     <string name="identification_screen_prompt_age">उम्र:</string>
     <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
     <string name="identification_screen_prompt_state">राज्य *</string>
@@ -586,15 +587,15 @@
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">हेलो आयु, एक डिजिटल स्वस्थ्य सहायक| आयें शुरु करें!</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">हेलो आयु, एक डिजिटल स्वस्थ्य सहायक| आयें शुरु करें!</string>
     <string name="hello_my_name_is">हेलो ! मेरा नाम है</string>
-    <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
+    <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है| यहाँ मेरा विवरण है</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">इंटेलेहेल्थ एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
-    <string name="intelehealth_name">इंटेलेहेल्थ</string>
+    <string name="intelehealth_a_telemedicine_platform">माईस्मार्टकेयरडॉक एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_name">माईस्मार्टकेयरडॉक</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
-    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
+    <string name="associated_symptoms_patientDetail">संबद्ध लक्षण</string>
     <string name="device_ID">डिवाइस की पहचान:</string>
     <string name="enter_valid_license_url">वैध लाइसेंस यूआरएल दर्ज करें</string>
     <string name="please_enter_url_and_key">कृपया URL और कुंजी दर्ज करें</string>
@@ -678,12 +679,12 @@
     <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
     <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
 
-<!--    Strings for special Check-->
+    <!--    Strings for special Check-->
     <string name="str_check_Odisha">Odisha</string>
     <string name="str_check_Bukidnon">Bukidnon</string>
-   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_India">इंडिया</string>
     <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
-     <string name="str_check_Philippines">फिलीपींस</string>
+    <string name="str_check_Philippines">फिलीपींस</string>
 
     //Follow-up Visits
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
@@ -741,51 +742,51 @@
     <string name="medication">दवा</string>
     <string name="strength">ताकत</string>
     <string name="units">इकाइयाँ (जैसे: मिलीग्राम)</string>
-<!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
-<!--    <string name="for_duration">For Duration</string>-->
-<!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
-<!--    <string name="additional_instruction">Additional Instruction</string>-->
-<!--    <string name="recommended_tests">Recommended Tests</string>-->
+    <!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
+    <!--    <string name="for_duration">For Duration</string>-->
+    <!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
+    <!--    <string name="additional_instruction">Additional Instruction</string>-->
+    <!--    <string name="recommended_tests">Recommended Tests</string>-->
     <string name="test">परीक्षा</string>
-<!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
+    <!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
     <string name="notes">नोट्स</string>
-<!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
-<!--    <string name="follow_up">Follow Up</string>-->
-<!--    <string name="sign_and_submit">Sign and Submit</string>-->
-<!--    <string name="add_test">Add Test</string>-->
-<!--    <string name="add_advice">Add Advice</string>-->
-<!--    <string name="add_note">Add Note</string>-->
-<!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
-<!--    <string name="submit">Submit</string>-->
-<!--    <string name="add_meds">Add Meds</string>-->
-<!--    <string name="add_diagnosis">Add Diagnosis</string>-->
-<!--    <string name="startVisitNote">Start Visit Note</string>-->
-<!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
-<!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
+    <!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
+    <!--    <string name="follow_up">Follow Up</string>-->
+    <!--    <string name="sign_and_submit">Sign and Submit</string>-->
+    <!--    <string name="add_test">Add Test</string>-->
+    <!--    <string name="add_advice">Add Advice</string>-->
+    <!--    <string name="add_note">Add Note</string>-->
+    <!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
+    <!--    <string name="submit">Submit</string>-->
+    <!--    <string name="add_meds">Add Meds</string>-->
+    <!--    <string name="add_diagnosis">Add Diagnosis</string>-->
+    <!--    <string name="startVisitNote">Start Visit Note</string>-->
+    <!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
+    <!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
     <string name="amount">राशि</string>
     <string name="frequency">फ़्रीक्वेंसी</string>
 
 
-<string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
-<string name = "for_duration">अवधि के लिए</string>
-<string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
-<string name = "additional_instruction">अतिरिक्त निर्देश</string>
-<string name="recommended_tests">अनुशंसित परीक्षण</string>
-<string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
+    <string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
+    <string name = "for_duration">अवधि के लिए</string>
+    <string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
+    <string name = "additional_instruction">अतिरिक्त निर्देश</string>
+    <string name="recommended_tests">अनुशंसित परीक्षण</string>
+    <string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
 
-<string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
-<string name = "follow_up">फ़ॉलो अप करें</string>
-<string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
-<string name = "add_test">परीक्षा जोड़ें</string>
-<string name = "add_advice">सलाह जोड़ें</string>
-<string name = "add_note">नोट जोड़ें</string>
-<string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
-<string name = "submit">सबमिट करें</string>
-<string name = "add_meds">मेड्स जोड़ें</string>
-<string name="add_diagnosis">निदान जोड़ें</string>
-<string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
-<string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
-<string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
+    <string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
+    <string name = "follow_up">फ़ॉलो अप करें</string>
+    <string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
+    <string name = "add_test">परीक्षा जोड़ें</string>
+    <string name = "add_advice">सलाह जोड़ें</string>
+    <string name = "add_note">नोट जोड़ें</string>
+    <string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
+    <string name = "submit">सबमिट करें</string>
+    <string name = "add_meds">मेड्स जोड़ें</string>
+    <string name="add_diagnosis">निदान जोड़ें</string>
+    <string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
+    <string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
+    <string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
 
 
     <string name = "prescription_age">आयु</string>
@@ -816,7 +817,7 @@
     <string name = "visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
 
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें -"</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, इंटेलहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, माईस्मार्टकेयरडॉक का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
 
 
     <string name="yes">हां</string>
@@ -827,5 +828,229 @@
     <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ हैं। प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\' दबाएं।</string>
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="and">और</string>
+    <string name="app_version_string">ऐप संस्करण - %1$s</string>
+
+    //addtional strings
+    <string name="hello_my_name_is1">नमस्ते मेरा नाम है \"</string>
+    <string name="please_help">\" और मैं लॉगिन नहीं कर पा रहा हूँ, कृपया मदद करें।</string>
+
+    <!-- Thermal Printers -->
+    <string name="please_connect">उपलब्ध डिवाइस का चयन करें</string>
+    <string name="disconnect">डिस्कनेक्ट</string>
+    <string name="connect">जुडिये</string>
+    <string name="choose_bluetooth_device">ब्लूटूथ डिवाइस चुनें</string>
+    <string name="paired_devices">युग्मित</string>
+    <string name="tip_have_no_paired_device">कोई युग्मित उपकरण नहीं</string>
+    <string name="tip_have_no_found_bluetooth_device">उपकरण नहीं</string>
+    <string name="search_device">खोज</string>
+    <string name="dialog_cancel">रद्द करें</string>
+    <string name="dialog_ok">ठीक है</string>
+    <string name="dialog_tip">टिप</string>
+    <string name="main_pls_choose_device">कृपया एक उपकरण चुनें</string>
+    <string name="dialog_back">पीछे</string>
+    <string name="main_discon_click_repeatedly">डिवाइस काट दिया गया है, बार-बार क्लिक करने की आवश्यकता नहीं है</string>
+    <string name="_main_connected">- कनेक्ट सफलता</string>
+    <string name="_main_connected_fail">कनेक्ट विफल</string>
+    <string name="_main_disconnect">डिस्कनेक्ट किया गया</string>
+
+    <!--<string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="please_enter_text">Please enter text.</string>
+    <string name="small_font">Small Font</string>
+    <string name="anti_white">Anti white</string>
+    <string name="double_width">Double Width</string>
+    <string name="double_height">Double Height</string>
+    <string name="bold">Bold</string>
+    <string name="underline">Underline</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
+    <string name="text_encode">Text Encode:</string>
+    <string name="dialog_title_chartset_setting">Chartset name settings</string>
+    <string name="spin_default_esc_font">Please choose a Font</string>
+    <string name="tv_font_select">Font Choose：</string>
+    <string name="btn_clk_sel_font">Click to choose the printed font</string>
+    <string name="label_setting">Label Setting</string>-->
+    <string name="bluetooth_notsupported_device">इस डिवाइस पर ब्लूटूथ समर्थित नहीं है</string>
+    <string name="turn_on_bluetooth">कृपया ब्लूटूथ चालू करें</string>
+    <string name="no_presc_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है</string>
+    <string name="identification_screen_prompt_time">समय:</string>
+    <string name="identification_screen_picker_hours">घंटे</string>
+    <string name="identification_screen_picker_minute">मिनट</string>
+    <string name="glucose_non_fasting_validation">ब्लड ग्लूकोज (नॉन फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="glucose_fasting_validation">ब्लड ग्लूकोज (फास्टिंग) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="hba1c_validation">HbA1c %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="glucose_random_validation">ब्लड ग्लूकोज़ (यादृच्छिक) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="glucose_post_prandial_validation">ब्लड ग्लूकोज़ (पोस्ट-प्रैंडिअल) %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="hemoglobin_validation">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="uric_acid_validation">यूरिक एसिड %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="total_cholesterol_validation">कुल कोलेस्ट्रॉल %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="abdominal_girth_male_error">पेट का घेरा %1$s इंच से कम होना चाहिए</string>
+    <string name="i_need_assistance1">\"और मुझे कुछ सहायता की आवश्यकता है, यहाँ मेरा विवरण है\"</string>
+    <string name="caste_values_missing">जातिगत मूल्य गायब हैं</string>
+    <string name="state_values_missing">राज्य मूल्य गायब हैं</string>
+    <string name="country_values_missing">देश के मूल्य गायब हैं</string>
+    <string name="enter_9_digits">9 अंक दर्ज करें</string>
+    <string name="setup_internet_available">सेटअप के लिए मजबूत इंटरनेट कनेक्शन की आवश्यकता है।</string>
+    <string name="setup_internet_not_available">आप इंटरनेट से कनेक्ट नहीं हैं।</string>
+    <string name="generic_info">जानकारी!</string>
+    <string name="saving_captured_image">कैप्चर की गई छवि सहेजी जा रही है...</string>
+    <string name="alert_message_for_discard_visit">नई शुरू की गई विज़िट सेव नहीं की जाएगी!</string>
+    <string name="choose_lang_title">अपनी भाषा चुनिए</string>
+    <string name="save_button">सहेजें</string>
+    <string name="selectLanguageToast">कृपया भाषा चुनें</string>
+    <string name="config_not_found_alert_message">कोई कॉन्फ़िगरेशन विशेषता नहीं मिली</string>
+    <string name="config_file_error">कॉन्फ़िग फ़ाइल त्रुटि</string>
+    <string name="internet_connected_txt">इंटरनेट से जुड़ा!</string>
+    <string name="not_connected_txt">इंटरनेट से कनेक्ट नहीं!</string>
+    <string name="config_error">कॉन्फिग त्रुटि</string>
+    <string name="intro_text_1">टेलीमेडिसिन ऐप प्राथमिक स्वास्थ्य सेवा के लिए आने वाली ग्रामीण आबादी के लिए विशेषज्ञ चिकित्सक परामर्श उपलब्ध कराता है। यह रोगियों को स्वास्थ्य सेवा के लिए मीलों की यात्रा करने से बचाने में मदद करता है। टेलीमेडिसिन ऐप स्वास्थ्य अधिकारियों को विस्तृत रोगी शिकायतों और लक्षणों को एकत्र करने की अनुमति देता है और एक व्यापक नैदानिक ​​मामले का इतिहास उत्पन्न करता है। ऐप उन्हें पिछली दवाओं, डायग्नोस्टिक्स, नुस्खे और उपचार के विवरण को कैप्चर करने की भी अनुमति देता है।</string>
+    <string name="have_you_spoken_with_the_patient_directly">क्या आपने मरीज से सीधे बात की है?</string>
+    <string name="patient_interaction">रोगी सहभागिता</string>
+    <string name="route_optional">मार्ग (वैकल्पिक)</string>
+    <string name="reason_optional">कारण (वैकल्पिक)</string>
+    <string name="barcode_print">बारकोड प्रिंट</string>
+    <string name="headbar_back">पीछे</string>
+    <string name="title_barcode">बारकोड</string>
+    <string name="title_activity_barcode_print">बारकोड</string>
+    <string name="please_enter_text">कृपया पाठ दर्ज करें</string>
+    <string name="small_font">छोटा फ़ॉन्ट</string>
+    <string name="anti_white">विरोधी सफेद</string>
+    <string name="double_width">डबल चौड़ाई</string>
+    <string name="double_height">डबल ऊंचाई</string>
+    <string name="bold">बोल्ड</string>
+    <string name="underline">रेखांकन</string>
+    <string name="left">बाएं</string>
+    <string name="center">केंद्र</string>
+    <string name="right">दाएं</string>
+    <string name="text_encode">टेक्स्ट एनकोड:</string>
+    <string name="dialog_title_chartset_setting">चार्टसेट नाम सेटिंग</string>
+    <string name="spin_default_esc_font">कृपया एक फ़ॉन्ट चुनें</string>
+    <string name="tv_font_select">फ़ॉन्ट चुनें:</string>
+    <string name="btn_clk_sel_font">मुद्रित फ़ॉन्ट चुनने के लिए क्लिक करें</string>
+    <string name="label_setting">लेबल सेटिंग</string>
+    <string name="printing">मुद्रण...</string>
+    <string name="generate_bill">बिल जनरेट करें</string>
+    <string name="confirm_tests">कृपया परीक्षण की पुष्टि करें</string>
+    <string name="intelehealth_address">टेलीहेल्थ इनोवेशन फाउंडेशन 14ए, श्रीजी आर्केड,\\nनितिन कंपनी के सामने, पंचपखाड़ी ठाणे, 400602, महाराष्ट्र, भारत।</string>
+    <string name="consultation_charges">परामर्श शुल्क</string>
+    <string name="follow_up_charges">अनुवर्ती शुल्क</string>
+    <string name="total_amount">कुल राशि</string>
+    <string name="patient_paying">क्या रोगी बिल का भुगतान कर रहा है?</string>
+    <string name="confirm_button">पुष्टि करें</string>
+    <string name="enter_reason">कारण दर्ज करें</string>
+    <string name="print_button">छाप</string>
+    <string name="enter_reason_toast">बिल न चुकाने का कारण दर्ज करें।</string>
+    <string name="bill_generated_success">बिल सफलतापूर्वक जनरेट किया गया!</string>
+    <string name="select_payment_information">भुगतान जानकारी चयनित नहीं है।</string>
+    <string name="download_bill">साझा करने के लिए पहले बिल डाउनलोड करें।</string>
+    <string name="intelehealth">इंटेलीहेल्थ</string>
+    <string name="receipt">रसीद</string>
+    <string name="paid">चुकाया गया</string>
+    <string name="receipt_no">रसीद संख्या:</string>
+    <string name="client_name">क्लाइंट का नाम:</string>
+    <string name="client_id">क्लाइंट आईडी</string>
+    <string name="visit_id">विज़िट आईडी:</string>
+    <string name="contact_no">संपर्क संख्या:</string>
+    <string name="client_village_name">क्लाइंट के गांव का नाम:</string>
+    <string name="date">दिनांक:</string>
+    <string name="unpaid">अवैतनिक</string>
+    <string name="uric_acid">यूरिक एसिड</string>
+    <string name="total_cholestrol">कुल कोलेस्ट्रॉल</string>
+    <string name="uric_acid_calibration">यूरिक एसिड अंशांकन</string>
+    <string name="total_cholesterol_calibration">कुल कोलेस्ट्रॉल अंशांकन</string>
+    <string name="blood_glucose_non_fasting">रक्त ग्लूकोज (गैर-उपवास)</string>
+    <!--    <string name="blood_glucose_random">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <string name="blood_glucose_random">रक्त ग्लूकोज (उपवास)</string>
+    <!--    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (यादृच्छिक)</string>-->
+    <string name="blood_glucose_random_vitals">रक्त ग्लूकोज (उपवास)</string>
+    <string name="blood_glucose_post_prandial">रक्त ग्लूकोज (पोस्ट-प्रांडियल)</string>
+    <string name="blood_glucose_fasting">रक्त ग्लूकोज (उपवास)</string>
+    <string name="haemoglobin">हीमोग्लोबिन (मिलीग्राम / डीएल)</string>
+    <string name="diagnostics">निदान</string>
+    <string name="aadhar_issue">मान्य आधार नंबर दर्ज करें।</string>
+    <string name="aadhar_number_details">आधार कार्ड नंबर</string>
+    <string name="abdominal_girth_vitals">पेट की परिधि (इंच)</string>
+    <string name="make_payment">भुगतान करें</string>
+    <string name="scd_address">माईस्मार्टकेयरडॉक प्राइवेट लिमिटेड \n6-3-1192/1/1,\n सुइट नंबर 813, व्हाइट हाउस,\n ब्लॉक- III, कुंदनबाग, बेगमपेट,\n हैदराबाद, टीएस, भारत - 500016</string>
+    <string name="successfully_pdf_created">पीडीएफ सफलतापूर्वक बनाया गया !!</string>
+    <string name="hba1c">एचबीए1सी (%)</string>
+    <string name="confirm_skip_complaint">क्या आप सुनिश्चित हैं कि आप शिकायत पंजीकरण छोड़ना चाहते हैं? \n\nनोट:- यह क्रिया पूर्ववत नहीं की जा सकती है।</string>
+    <string name="leak_and_check">एक रिसाव है। कृपया गैस पथ की जाँच करें।</string>
+    <string name="measurement_void">कृपया माप के दौरान शांत रहें। यह माप अमान्य है।</string>
+    <string name="devices">उपकरण</string>
+    <string name="test_paper_inserted">टेस्ट स्ट्रिप डाली गई।</string>
+    <string name="test_paper_ready">कृपया रक्त के नमूने को टेस्ट पेपर में डालें।</string>
+    <string name="test_paper_value_calculating">एक रक्त का नमूना एकत्र किया गया है और मूल्य की गणना की जा रही है। कृपया प्रतीक्षा करें।</string>
+    <string name="test_paper_result">परिणाम :</string>
+    <string name="test_paper_is_not_inserted">टेस्ट पेपर नहीं डाला गया है।</string>
+    <string name="test_paper_is_used">टेस्ट पेपर का उपयोग किया गया है, कृपया इसे एक नए से बदलें।</string>
+    <string name="test_paper_out">परीक्षा के दौरान परीक्षा पत्र निकाल लिया गया।</string>
+    <string name="calculate_bg_value_timeout">नमूना मान टाइमआउट की गणना करें</string>
+    <string name="rhemos_device">रेमोस</string>
+    <string name="rhemos_device_info">रेमोस डिवाइस की जानकारी</string>
+    <string name="rhemos_bloog_glucose_calibration">रक्त ग्लूकोज अंशांकन</string>
+    <string name="test_paper_measurement_steps_dsc">माप करने के लिए कृपया नीचे दिए गए चरणों का पालन करें!</string>
+    <string name="blood_glucose_measurement_step1">स्टेप 1. कृपया टेस्ट पेपर के निर्माता का चयन करें।</string>
+    <string name="blood_glucose_measurement_step2">स्टेप 2. कृपया टेस्ट पेपर के चेक कोड का चयन करें।</string>
+    <string name="manufacturer_iquego">Iquego</string>
+    <string name="manufacturer_bene_check">Bene Check</string>
+    <string name="manufacturer_yi_cheng">Yi Cheng</string>
+    <string name="STOP">रुकना</string>
+    <string name="test_stopped">परीक्षण रोका गया</string>
+    <string name="test_started">परीक्षण प्रारंभ...</string>
+    <string name="no_finger_detected">SpO₂ सेंसर पर कोई अंगुली नहीं पाई गई।</string>
+    <string name="blood_result_error">रक्त परिणाम त्रुटि। पुनः प्रयास करें!</string>
+    <string name="test_successful">परीक्षण सफल</string>
+    <string name="measuring">नाप रहा है...</string>
+    <string name="spo2_test_successful">SpO₂ परीक्षण सफल</string>
+    <string name="bp_test_successful">बीपी टेस्ट सफल</string>
+    <string name="body_temp_test_successful">शरीर का तापमान परीक्षण सफल रहा</string>
+    <string name="blood_glucose_test_successful">ब्लड ग्लूकोज टेस्ट सफल रहा</string>
+    <string name="please_connect_to_device">कृपया डिवाइस से कनेक्ट करें</string>
+    <string name="is_charging_please_wait">चार्ज हो रहा है। कृपया प्रतीक्षा करें!</string>
+    <string name="start_measuring">मापना शुरू करें</string>
+    <string name="mood_value">मनोदशा: %1$s</string>
+    <string name="stress_level">तनाव का स्तर: %s</string>
+    <string name="robust_heart_rate">मजबूत हृदय गति: %s</string>
+    <string name="heart_beat">दिल की धड़कन: %s</string>
+    <string name="heart_age">हृदय आयु: %s</string>
+    <string name="max_four_images">आप अधिकतम 4 चित्र जोड़ सकते हैं।</string>
+    <string name="mood_desc_calm">शांत</string>
+    <string name="mood_desc_relaxed">ढील</string>
+    <string name="mood_desc_balanced">संतुलित</string>
+    <string name="mood_desc_motivated">प्रेरित</string>
+    <string name="mood_desc_agitated">उत्तेजित/चिंता/उत्साहित</string>
+    <string name="ecg">ईसीजी</string>
+    <string name="blood_glucose_calibration_success">रक्त ग्लूकोज अंशांकन सफल!</string>
+    <string name="connecting_toast">कनेक्ट हो रहा है...</string>
+    <string name="device_connected">डिवाइस कनेक्ट किया गया</string>
+    <string name="ecg_test_completed">ईसीजी टेस्ट पूरा हुआ</string>
+    <string name="power_too_low_pls_charge">डिवाइस की शक्ति बहुत कम है, कृपया इसे चार्ज करें।</string>
+    <string name="image_deleted_successfully">छवि सफलतापूर्वक हटाई गई</string>
+    <string name="abdominal_girth_warning">पेट की परिधि %1$s से अधिक है, स्वास्थ्य संबंधी समस्याओं के लिए सावधान रहें।</string>
+    <string name="abdominal_girth">कमर की नाप</string>
+    <string name="arm_girth_inches">आर्म गर्थ (इंच)</string>
+    <string name="arm_girth_shouldbe_lessthan">बांह का घेरा %1$s इंच से कम होना चाहिए</string>
+    <string name="arm_girth">आर्म गर्थ</string>
+    <string name="temperature">तापमान</string>
+    <string name="general_physician">सामान्य चिकित्सक</string>
+    <string name="vitals_complaint">महत्वपूर्ण शिकायत</string>
+    <string name="hrv_visit_summary">एचआरवी:</string>
+    <string name="hr_visit_summary">हृदय दर:</string>
+    <string name="rr_visit_summary">श्वसन दर:</string>
+    <string name="ecg_visit_summary">ईसीजी:</string>
+    <string name="screening">स्क्रीनिंग</string>
+    <string name="setup_select_state_str">राज्य चुनें</string>
+    <string name="setup_select_dropdown_state_msg">ड्रॉपडाउन से राज्य का चयन करें</string>
+    <string name="setup_select_district_str">जिला चुनें</string>
+    <string name="setup_select_dropdown_district_msg">ड्रॉपडाउन से जिले का चयन करें</string>
+    <string name="setup_select_village_str">गांव चुनें</string>
+    <string name="setup_select_dropdown_village_msg">ड्रॉपडाउन से गांव का चयन करें</string>
+    <string name="locations">स्थान</string>
+    <string name="doctor_not_needed">डॉक्टर परामर्श नहीं चाहिए</string>
+
 </resources>

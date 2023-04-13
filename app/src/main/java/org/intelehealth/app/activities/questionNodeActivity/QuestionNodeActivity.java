@@ -75,7 +75,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String patientUuid;
     String visitUuid;
     String state;
-    String patientName;
+    String patientName, patientFName, patientLName;
     String patientGender;
     String intentTag;
     String mgender;
@@ -121,9 +121,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
         context = QuestionNodeActivity.this;
+        sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -145,6 +145,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -286,7 +288,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+            /*if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
@@ -313,7 +315,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         }
                     }
                 }
-            }
+            }*/
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -433,6 +435,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("patientFirstName",patientFName);
+                    intent.putExtra("patientLastName", patientLName);
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("tag", intentTag);
 
@@ -452,9 +456,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("patientFirstName",patientFName);
+                    intent.putExtra("patientLastName", patientLName);
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
+
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 

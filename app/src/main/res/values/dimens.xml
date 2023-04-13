@@ -38,8 +38,52 @@
     <dimen name="edit_icon_width">28dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
-    <dimen name="physical_exam_img_max_height">125dp</dimen>
+    <dimen name="pageMargin">20dp</dimen>
+    <dimen name="offset">30dp</dimen>
+    <dimen name="pageMarginAndOffset">50dp</dimen>
 
+    <dimen name="physical_exam_img_max_height">125dp</dimen>
     <dimen name="text_18sp">18sp</dimen>
+
+    <!-- Thermal Printer -->
+    <dimen name="zero">0dp</dimen>
+    <dimen name="one">1dp</dimen>
+    <dimen name="two">2dp</dimen>
+    <dimen name="three">3dp</dimen>
+    <dimen name="four">4dp</dimen>
+    <dimen name="five">5dp</dimen>
+    <dimen name="six">6dp</dimen>
+    <dimen name="seven">7dp</dimen>
+    <dimen name="eight">8dp</dimen>
+    <dimen name="nine">9dp</dimen>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="eleven">11dp</dimen>
+    <dimen name="twelve">12dp</dimen>
+    <dimen name="thirteen">13dp</dimen>
+    <dimen name="fourteen">14dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
+    <dimen name="sixteen">16dp</dimen>
+    <dimen name="seventeen">17dp</dimen>
+    <dimen name="eighteen">18dp</dimen>
+    <dimen name="nineteen">19dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="eighty">80dp</dimen>
+    <dimen name="one_hundred">100dp</dimen>
+    <dimen name="two_hundred">200dp</dimen>
+    <dimen name="nav_header">42dp</dimen>
+    <dimen name="fourty">40dp</dimen>
+    <dimen name="fifty">50dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="twentyfive">25dp</dimen>
+    <dimen name="fifty_five">55dp</dimen>
+
+    <dimen name="title_height">56dp</dimen>
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="text_size_extra_large">32sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_tiny">10sp</dimen>
+    <dimen name="text_size_annotation">12sp</dimen>
 
 </resources>

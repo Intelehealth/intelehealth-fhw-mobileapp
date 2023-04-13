@@ -21,7 +21,11 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -265,8 +269,11 @@ public class EncounterDAO {
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setVoided(0);
             encounterDTO.setEncounterTypeUuid(emergency_uuid);
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-            encounterDTO.setSyncd(false);
+            try {
+                encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }            encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
             Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
@@ -282,6 +289,15 @@ public class EncounterDAO {
             obsDAO.insertObs(obsDTO);
         }
         return isExecuted;
+    }
+
+    public String OneMinutesLate(String timeStamp) throws ParseException {
+
+        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time + FIVE_MINS_IN_MILLIS));
     }
 
     public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {

@@ -11,6 +11,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.models.patientImageModelRequest.ADPImageModel;
+import org.intelehealth.app.models.patientImageModelRequest.PatientAdditionalDocModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -34,6 +36,7 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
+    PatientAdditionalDocModel patientADP = new PatientAdditionalDocModel();
 
 
 
@@ -73,6 +76,62 @@ public class ImagesPushDAO {
                         }
                     });
         }
+        sessionManager.setPullSyncFinished(true);
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+//        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+        return true;
+    }
+
+    public boolean patientADPImagesPush() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ImagesDAO imagesDAO = new ImagesDAO();
+        String url = urlModifiers.setPatientADPImageUrl();
+
+        try {
+            List<ADPImageModel> adpImageModels = imagesDAO.getPatientADPUnsyncedImages();
+            patientADP.setImages(adpImageModels);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+    //    for (PatientAdditionalDocModel p : patientProfiles) {
+            Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_ADP_PIC_UPLOAD
+                    (url, "Basic " + encoded, patientADP);
+
+            personProfilePicUpload.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                        @Override
+                        public void onSuccess(ResponseBody responseBody) {
+                            Logger.logD(TAG, "success" + responseBody);
+                            Log.v("ADP", "ADP: " + "success_insert: " + responseBody.contentLength());
+
+                            for (int i = 0; i < patientADP.getImages().size(); i++) {
+                                try {
+                                  //  imagesDAO.updateUnsyncedPatientProfile(patientADP.getImages().get(i).getPatientuuid(), "ADP");
+                                    imagesDAO.updateUnsyncedPatientADP(
+                                            patientADP.getImages().get(i).getPatientuuid(),
+                                            patientADP.getImages().get(i).getFilePath(),"ADP");
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
+                            }
+
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            Log.v("ADP", "ADP: " + "error_insert: " + e.getMessage());
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+                        }
+                    });
+    //    }
         sessionManager.setPullSyncFinished(true);
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));

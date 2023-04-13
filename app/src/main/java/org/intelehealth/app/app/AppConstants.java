@@ -8,20 +8,19 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.LastSyncWork;
+import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidGenerator;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.syncModule.SyncWorkManager;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -37,6 +36,10 @@ public class AppConstants {
 
 
     //App vitals constants
+    public static final String MAXIMUM_ABDOMINAL_GIRTH_MALE = "40";
+    public static final String MAXIMUM_ABDOMINAL_GIRTH_FEMALE = "36";
+    public static final String MAXIMUM_ABDOMINAL_GIRTH = "100";
+    public static final String MAXIMUM_ARM_GIRTH = "100";
     public static final String MAXIMUM_BP_SYS = "250";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
@@ -50,10 +53,37 @@ public class AppConstants {
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
     public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";
+
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
+
+    public static final String MINIMUM_GLUCOSE_NON_FASTING = "60";
+    public static final String MAXIMUM_GLUCOSE_NON_FASTING = "600";
+
+    public static final String MINIMUM_GLUCOSE_FASTING = "30";
+    public static final String MAXIMUM_GLUCOSE_FASTING = "300";
+
+    public static final String MINIMUM_GLUCOSE_RANDOM = "30";
+    public static final String MAXIMUM_GLUCOSE_RANDOM = "500";
+
+    public static final String MINIMUM_GLUCOSE_POST_PRANDIAL = "70";
+    public static final String MAXIMUM_GLUCOSE_POST_PRANDIAL = "400";
+
+    public static final String MINIMUM_HEMOGLOBIN = "4";
+    public static final String MAXIMUM_HEMOGLOBIN = "18";
+
+    public static final String MINIMUM_URIC_ACID = "2";
+    public static final String MAXIMUM_URIC_ACID = "12";
+
+    public static final String MINIMUM_HbA1c = "0";
+    public static final String MAXIMUM_HbA1c = "25";
+
+    public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
+    public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
+
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
@@ -82,7 +112,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
@@ -103,9 +132,12 @@ public class AppConstants {
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
 
-    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-3-0-default-rtdb.firebaseio.com/";
+    //  public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-3-0-default-rtdb.firebaseio.com/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://smartcaredoc-f7646-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_REF_TEXT_CHAT_CONN_INFO = "TEXT_CHAT/";
 
 
     public static String getFirebaseRTDBUrl() {
@@ -114,11 +146,15 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+    }
 
-    }public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+    public static String getFirebaseRTDBRootRefForTextChatConnInfo() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_TEXT_CHAT_CONN_INFO;
+    }
 
+    public static String getFirebaseRTDBRootRefForDeviceInfo() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
 }
 

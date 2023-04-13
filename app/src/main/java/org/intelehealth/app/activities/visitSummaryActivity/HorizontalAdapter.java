@@ -69,7 +69,6 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         if (list.get(position).exists()) {
-
             Glide.with(context)
                     .load(list.get(position))
                     .skipMemoryCache(true)

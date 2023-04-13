@@ -29,6 +29,7 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.apprtc.CompleteActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,9 +82,12 @@ public class CallListenerBackgroundService extends Service {
         Log.v(TAG, "onStartCommand");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeActivity.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))
                 //.setContentText(getText(R.string.notification_message))
@@ -95,7 +99,7 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-//        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
         //do heavy work on a background thread
 
         // Write a message to the database
@@ -121,6 +125,22 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
+                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+                        Intent broadcast = new Intent();
+                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        sendBroadcast(broadcast);
+                        return;
+                    }
+
+                    String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";
+                    Log.d(TAG, "callID is: " + callID);
+                    Log.d(TAG, "webrtcTempCallId is: " + IntelehealthApplication.getInstance().webrtcTempCallId);
+                    if (!callID.isEmpty() && callID.equals(IntelehealthApplication.getInstance().webrtcTempCallId)) {
+                        return;
+                    } else {
+                        IntelehealthApplication.getInstance().webrtcTempCallId = callID;
+                    }
+
                     String device_token = String.valueOf(value.get("device_token"));
                     if (!device_token.equals(refreshedFCMTokenID)) return;
                     Bundle bundle = new Bundle();

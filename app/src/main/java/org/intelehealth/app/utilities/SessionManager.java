@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.linktop.constant.TestPaper;
+
 import java.util.Set;
 
 public class SessionManager {
@@ -49,8 +51,15 @@ public class SessionManager {
     private static final String OFFLINE_OPENMRSID = "OFFLINE_OPENMRSID";
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
+    private static final String TEST_MANUFACTURER = "TEST_MANUFACTURER";
+    private static final String TEST_PAPER_CODE = "TEST_PAPER_CODE";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    private static final String COUNTRYNAME = "COUNTRYNAME";
+    private static final String STATENAME = "STATENAME";
+    private static final String DISTRICTNAME = "DISTRICTNAME";
+    private static final String VILLAGENAME = "VILLAGENAME";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -66,6 +75,59 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public String getCountryName() {
+        return pref.getString(COUNTRYNAME, "");
+    }
+
+    public void setCountryName(String countryName) {
+        editor.putString(COUNTRYNAME, countryName);
+        editor.commit();
+    }
+
+    public String getStateName() {
+        return pref.getString(STATENAME, "");
+    }
+
+    public void setStateName(String stateName) {
+        editor.putString(STATENAME, stateName);
+        editor.commit();
+    }
+
+    public String getDistrictName() {
+        return pref.getString(DISTRICTNAME, "");
+    }
+
+    public void setDistrictName(String districtName) {
+        editor.putString(DISTRICTNAME, districtName);
+        editor.commit();
+    }
+
+    public String getVillageName() {
+        return pref.getString(VILLAGENAME, "");
+    }
+
+    public void setVillageName(String villageName) {
+        editor.putString(VILLAGENAME, villageName);
+        editor.commit();
+    }
+
+    public String getTestManufacturer() {
+        return pref.getString(TEST_MANUFACTURER, TestPaper.Manufacturer.YI_CHENG);
+    }
+
+    public String getTestPaperCode() {
+        return pref.getString(TEST_PAPER_CODE, TestPaper.Code.C21);
+    }
+
+    public void setTestManufacturer(String manufacturer) {
+        editor.putString(TEST_MANUFACTURER, manufacturer);
+        editor.commit();
+    }
+
+    public void setTestPaperCode(String paperCode) {
+        editor.putString(TEST_PAPER_CODE, paperCode);
+        editor.commit();
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");

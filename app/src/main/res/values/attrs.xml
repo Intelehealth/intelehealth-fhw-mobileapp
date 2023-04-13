@@ -61,4 +61,15 @@
         </attr>
     </declare-styleable>
 
+    <attr name="scrollable" format="boolean" />
+
+    <declare-styleable name="EcgBackgroundView">
+        <attr name="smallGridColor" format="color" />
+        <attr name="largeGridColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="WaveView">
+        <attr name="scrollable" />
+    </declare-styleable>
+
 </resources>

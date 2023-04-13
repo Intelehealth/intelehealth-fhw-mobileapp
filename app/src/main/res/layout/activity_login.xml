@@ -5,7 +5,7 @@
     android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/sign_in_bg_2"
     tools:context=".activities.loginActivity.LoginActivity">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:layout_above="@+id/ll_center"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:src="@drawable/intelehealth_i_icon_only" />
+        android:src="@drawable/scd_logo_1" />
 
     <LinearLayout
         android:id="@+id/ll_center"
@@ -40,16 +40,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_avatar" />
+                android:src="@drawable/ic_baseline_person_outline_24" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etUsernameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textColorHint="@color/font_black_5"
-                app:passwordToggleTint="@color/white"
+                app:passwordToggleTint="@color/colorPrimaryDark"
                 android:theme="@style/MyEditTextTheme">
 
             <EditText
@@ -63,7 +63,7 @@
                 android:fontFamily="@font/lato_regular"
                 android:maxLength="100"
                 android:theme="@style/MyEditTextTheme"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -83,16 +83,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_lock" />
+                android:src="@drawable/ic_baseline_lock_24" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textColorHint="@color/font_black_5"
-                app:passwordToggleTint="@color/white"
+                app:passwordToggleTint="@color/colorPrimaryDark"
                 android:theme="@style/MyEditTextTheme"
                 app:passwordToggleEnabled="true">
 
@@ -107,7 +107,7 @@
                 android:maxLength="50"
                 android:maxLines="1"
                 android:fontFamily="@font/lato_regular"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:singleLine="true"
                 android:textSize="16sp" />
 
@@ -125,7 +125,7 @@
             android:background="@drawable/button_bg_rounded_corners"
             android:text="@string/action_sign_in"
             android:fontFamily="@font/lato_bold"
-            android:textColor="@color/button_text_color"
+            android:textColor="#ffffff"
             android:textSize="16sp"
              />
 
@@ -140,7 +140,7 @@
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:text="@string/cant_login_user"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:fontFamily="@font/lato_bold"
              />

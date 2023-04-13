@@ -59,28 +59,19 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/what_is_the_reason_for_your_visit"
                 android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
         </LinearLayout>
 
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/fab"
+        android:layout_above="@+id/bottomBar"
         android:layout_below="@+id/header_view"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
@@ -90,6 +81,45 @@
         android:fadeScrollbars="false"
         android:scrollbarFadeDuration="0"
         android:scrollbarThumbVertical="@color/colorAccent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/bottomBar">
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:background="@null"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_12dp"
+            android:text="@string/skip"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_done_24dp"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

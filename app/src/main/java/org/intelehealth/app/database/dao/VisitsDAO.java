@@ -276,32 +276,30 @@ public class VisitsDAO {
     }
 
     private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
-        List<VisitAttribute_Speciality> list = new ArrayList<>();
-        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+
+        List<VisitAttribute_Speciality> Specialtylist = new ArrayList<>();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-//        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
-//                new String[] {"0", visit_uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 3", new String[]{/*"0", */visit_uuid});
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
-                new String[]{/*"0", */visit_uuid});
+        VisitAttribute_Speciality data = new VisitAttribute_Speciality();
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-
-                speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                speciality.setAttributeType(cursor.getString
+                data = new VisitAttribute_Speciality();
+                data.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                data.setAttributeType(cursor.getString
                         (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
-                speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
-                list.add(speciality);
+                data.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                Specialtylist.add(data);
             }
-            }
+        }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        return list;
+        return Specialtylist;
     }
 
     public List<VisitDTO> getAllVisits() {

@@ -13,11 +13,15 @@ import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
+import org.intelehealth.app.BuildConfig;
+
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,18 +29,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -56,22 +63,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import org.intelehealth.app.BuildConfig;
+import com.linktop.DeviceType;
+import com.linktop.MonitorDataTransmissionManager;
+import com.linktop.constant.BluetoothState;
+import com.linktop.constant.DeviceInfo;
+import com.linktop.constant.WareType;
+import com.linktop.infs.OnBatteryListener;
+import com.linktop.infs.OnBleConnectListener;
+import com.linktop.infs.OnDeviceInfoListener;
+import com.linktop.infs.OnDeviceVersionListener;
+import com.linktop.whealthService.BleDevManager;
+import com.linktop.whealthService.OnBLEService;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
+import org.intelehealth.app.activities.homeActivity.devicesActivity.DataBindingAdapter;
+import org.intelehealth.app.activities.homeActivity.devicesActivity.DevicesActivity;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
@@ -80,17 +105,21 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
+import org.intelehealth.app.models.rhemos_device.DeviceInfoModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.services.HcService;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.PermissionManager;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.apprtc.ChatActivity;
@@ -123,9 +152,19 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MonitorDataTransmissionManager.OnServiceBindListener,
+        ServiceConnection, OnDeviceVersionListener, OnBleConnectListener, OnBatteryListener, OnDeviceInfoListener, DataBindingAdapter.ItemClickListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    public HcService mHcService;
+    private static final int REQUEST_OPEN_BT = 0x23;
+    MenuItem bluetooth_icon;
+    //  private BleDeviceListDialogFragment mBleDeviceListDialogFragment;
+    private MaterialAlertDialogBuilder dialog;
+    private AlertDialog alertDialog;
+    private DataBindingAdapter adapter;
+    private DeviceInfoModel infoModel = new DeviceInfoModel();
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
@@ -141,7 +180,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -155,7 +194,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge, newPatient_textview;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
@@ -189,10 +228,13 @@ public class HomeActivity extends AppCompatActivity {
                     connectionInfoObject.put("toUUID", toUUId);
                     connectionInfoObject.put("patientUUID", patientUUid);
 
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String packageName = pInfo.packageName;
+
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -251,6 +293,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -259,7 +303,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(HomeActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -298,7 +342,7 @@ public class HomeActivity extends AppCompatActivity {
         manualSyncButton = findViewById(R.id.manualsyncbutton);
         appVersionTextView = findViewById(R.id.app_version_text_view);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-//        c1 = findViewById(R.id.cardview_newpat);
+        c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
         c4 = findViewById(R.id.cardview_active_patients);
@@ -316,8 +360,8 @@ public class HomeActivity extends AppCompatActivity {
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         //card textview referrenced to fix bug of localization not working in some cases...
-        /*newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);*/
+        newPatient_textview = findViewById(R.id.newPatients_textview);
+        newPatient_textview.setText(R.string.new_patient);
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
@@ -347,13 +391,13 @@ public class HomeActivity extends AppCompatActivity {
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+919503692181";
+                String phoneNumberWithCountryCode = "+918008301208";
                 String message =
-                        getString(R.string.hello_my_name_is1) +""+ sessionManager.getChwname() + " "
-                                +/*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance1)
-                                +sessionManager.getMindMapServerUrl()
-                                +" "+getString(R.string.and)
-                                +""+ sessionManager.getLocationName()+"\"";
+                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " "
+                                +/*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance) + " "
+                                + sessionManager.getServerUrl()
+                                + " " + getString(R.string.and)
+                                + " " + sessionManager.getLocationName() + "\"";
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
@@ -362,7 +406,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        /*c1.setOnClickListener(new View.OnClickListener() {
+        c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Loads the config file values and check for the boolean value of privacy key.
@@ -378,7 +422,7 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });*/
+        });
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -462,14 +506,14 @@ public class HomeActivity extends AppCompatActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+
         }
         /*sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }*/
-
+        requestPermission();
         showProgressbar();
     }
 
@@ -559,7 +603,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
@@ -567,6 +610,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        bluetooth_icon = menu.findItem(R.id.bluetoothOption);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -577,8 +621,32 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
-                settings();
+//            case R.id.settingsOption:
+//                settings();
+//                return true;
+
+            case R.id.bluetoothOption: {
+                clickConnect();
+                return true;
+            }
+
+            case R.id.devicesOption: {
+                Intent intent = new Intent(this, DevicesActivity.class);
+                intent.putExtra("device_info", infoModel);
+               /* intent.putExtra("power_level", infoModel.getPower_level());
+                intent.putExtra("device_id", infoModel.getDevice_id());
+                intent.putExtra("device_key", infoModel.getDevice_key());
+                intent.putExtra("software_version", infoModel.getSoftware_version());
+                intent.putExtra("hardware_version", infoModel.getHardware_version());
+                intent.putExtra("firmware_version", infoModel.getFirmware_version());*/
+                startActivity(intent);
+                return true;
+            }
+
+            case R.id.languageOptions:
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                intent.putExtra("intentType", "home");
+                startActivity(intent);
                 return true;
             case R.id.updateProtocolsOption: {
 
@@ -640,118 +708,118 @@ public class HomeActivity extends AppCompatActivity {
 //                        Dialog builderDialog = dialog.show();
 //                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 
-                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                        LayoutInflater li = LayoutInflater.from(this);
-                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                        text = promptsView.findViewById(R.id.licensekey);
-                        url = promptsView.findViewById(R.id.licenseurl);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    text = promptsView.findViewById(R.id.licensekey);
+                    url = promptsView.findViewById(R.id.licenseurl);
 
-                        if (!sessionManager.getLicenseKey().isEmpty()) {
+                    if (!sessionManager.getLicenseKey().isEmpty()) {
 
-                            text.setText(sessionManager.getLicenseKey());
-                            url.setText(sessionManager.getMindMapServerUrl());
+                        text.setText(sessionManager.getLicenseKey());
+                        url.setText(sessionManager.getMindMapServerUrl());
 
-                        } else {
-                            url.setText("");
-                            text.setText("");
-                        }
+                    } else {
+                        url.setText("");
+                        text.setText("");
+                    }
 
-                        dialog.setTitle(getString(R.string.enter_license_key))
-                                .setView(promptsView)
-                                .setPositiveButton(getString(R.string.button_ok), null)
-                                .setNegativeButton(getString(R.string.button_cancel), null);
+                    dialog.setTitle(getString(R.string.enter_license_key))
+                            .setView(promptsView)
+                            .setPositiveButton(getString(R.string.button_ok), null)
+                            .setNegativeButton(getString(R.string.button_cancel), null);
 
-                        AlertDialog alertDialog = dialog.create();
-                        alertDialog.setView(promptsView, 20, 0, 20, 0);
-                        alertDialog.show();
-                        alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.setView(promptsView, 20, 0, 20, 0);
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
 
-                        // Get the alert dialog buttons reference
-                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    // Get the alert dialog buttons reference
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                        // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    // Change the alert dialog buttons text and background color
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                        positiveButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
                                 /* text = promptsView.findViewById(R.id.licensekey);
                                  url = promptsView.findViewById(R.id.licenseurl);*/
 
-                                url.setError(null);
-                                text.setError(null);
+                            url.setError(null);
+                            text.setError(null);
 
-                                //If both are not entered...
-                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
+                            //If both are not entered...
+                            if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.enter_server_url));
+                                text.setError(getResources().getString(R.string.enter_license_key));
+                                return;
+                            }
 
-                                //If Url is empty...key is not empty...
-                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    return;
-                                }
+                            //If Url is empty...key is not empty...
+                            if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.enter_server_url));
+                                return;
+                            }
 
-                                //If Url is not empty...key is empty...
-                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    text.requestFocus();
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
+                            //If Url is not empty...key is empty...
+                            if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                text.requestFocus();
+                                text.setError(getResources().getString(R.string.enter_license_key));
+                                return;
+                            }
 
-                                //If Url has : in it...
-                                if (url.getText().toString().trim().contains(":")) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.invalid_url));
-                                    return;
-                                }
+                            //If Url has : in it...
+                            if (url.getText().toString().trim().contains(":")) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.invalid_url));
+                                return;
+                            }
 
-                                //If url entered is Invalid...
-                                if (!url.getText().toString().trim().isEmpty()) {
-                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-                                        String url_field = "https://" + url.getText().toString() + ":3004/";
-                                        if (URLUtil.isValidUrl(url_field)) {
-                                            key = text.getText().toString().trim();
-                                            licenseUrl = url.getText().toString().trim();
+                            //If url entered is Invalid...
+                            if (!url.getText().toString().trim().isEmpty()) {
+                                if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                                    String url_field = "https://" + url.getText().toString() + ":3004/";
+                                    if (URLUtil.isValidUrl(url_field)) {
+                                        key = text.getText().toString().trim();
+                                        licenseUrl = url.getText().toString().trim();
 
-                                            sessionManager.setMindMapServerUrl(licenseUrl);
+                                        sessionManager.setMindMapServerUrl(licenseUrl);
 
-                                            sessionManager.setLicenseKey(key);
+                                        sessionManager.setLicenseKey(key);
 
-                                            if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
-                                                alertDialog.dismiss();
-                                            }
-                                        } else {
-                                            Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                                        if (keyVerified(key)) {
+                                            getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                            alertDialog.dismiss();
                                         }
-
                                     } else {
-                                        //invalid url || invalid url and key.
-                                        Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                                     }
+
                                 } else {
-                                    Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                    //invalid url || invalid url and key.
+                                    Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
                                 }
+                            } else {
+                                Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    });
 
-                        negativeButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss();
-                            }
-                        });
+                    negativeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
 
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
 //                      }
 
@@ -889,6 +957,13 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -"))
+            mIsFirstTimeSyncDone = true;
+
+
+        if (mIsFirstTimeSyncDone && mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+        }
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -896,7 +971,6 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
-
 
         super.onResume();
     }
@@ -1003,7 +1077,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
+                                mTask = new DownloadMindMaps(context, mProgressDialog, "home");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -1139,6 +1213,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
+    private boolean mIsFirstTimeSyncDone = false;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1187,6 +1262,7 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        mIsFirstTimeSyncDone = true;
         saveToken();
         requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
@@ -1216,7 +1292,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             //CallListenerBackgroundService.getInstance().stopForegroundService();
-            context.startService(serviceIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -1369,6 +1449,412 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initRemosDevice() {
+        //Bind service about Bluetooth connection.
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            Intent serviceIntent = new Intent(this, HcService.class);
+            bindService(serviceIntent, this, BIND_AUTO_CREATE);
+        } else {
+            //绑定服务，
+            // 类型是 HealthMonitor（HealthMonitor健康检测仪），
+            MonitorDataTransmissionManager.getInstance().unBind();
+            MonitorDataTransmissionManager.getInstance().bind(DeviceType.HealthMonitor, getApplicationContext(), this);
+        }
+    }
+
+    public void clickConnect() {
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+        }
+        initRemosDevice();
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+            }
+        }
+
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
+            }
+            else
+                Toast.makeText(HomeActivity.this, "Permission not granted!", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder service) {
+        mHcService = ((HcService.LocalBinder) service).getService();
+        mHcService.setHandler(mHandler);
+        mHcService.initBluetooth();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        mHcService = null;
+    }
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == HcService.BLE_STATE) {
+                final int state = (int) msg.obj;
+                Log.e("Message", "receive state:" + state);
+                if (state == BluetoothState.BLE_NOTIFICATION_ENABLED) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_SOFTWARE_VER);
+                } else {
+                    onBleState(state);
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onServiceBind() {
+        if (!IntelehealthApplication.isUseCustomBleDevService) {
+            onBleState(MonitorDataTransmissionManager.getInstance().getBleState());
+        }
+
+        if (IntelehealthApplication.isUseCustomBleDevService) {
+            BleDevManager bleDevManager = mHcService.getBleDevManager();
+            mHcService.setOnDeviceVersionListener(this);
+            bleDevManager.getBatteryTask().setBatteryStateListener(this);
+            bleDevManager.getDeviceTask().setOnDeviceInfoListener(this);
+        } else {
+            MonitorDataTransmissionManager.getInstance().setOnBleConnectListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnBatteryListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDevIdAndKeyListener(this);
+            MonitorDataTransmissionManager.getInstance().setOnDeviceVersionListener(this);
+        }
+    }
+
+    @Override
+    public void onServiceUnbind() {
+
+    }
+
+    @Override
+    public void onBatteryCharging() {
+        infoModel.setPower_level("Charging...");
+    }
+
+    @Override
+    public void onBatteryQuery(int batteryValue) {
+        infoModel.setPower_level(batteryValue + "%");
+    }
+
+    @Override
+    public void onBatteryFull() {
+        infoModel.setPower_level("100%");
+    }
+
+    @Override
+    public void onBLENoSupported() {
+
+    }
+
+    @Override
+    public void onOpenBLE() {
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+                mSyncProgressDialog.dismiss();
+            }
+            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setProgress(i);
+            mSyncProgressDialog.show();
+
+            syncUtils.initialSync("home");
+        } else if (requestCode == REQUEST_OPEN_BT) {//蓝牙启动结果
+            //蓝牙启动结果
+            //  Toast.makeText(HomeActivity.this, resultCode == Activity.RESULT_OK ? "bluetooth is on" : "Bluetooth open failed", Toast.LENGTH_SHORT).show();
+
+            if (IntelehealthApplication.isUseCustomBleDevService) {
+                if (!PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                        , PermissionManager.requestCode_location)) {
+                    return;
+                } else {
+                    if (!PermissionManager.canScanBluetoothDevice(HomeActivity.this)) {
+                        new AlertDialog.Builder(HomeActivity.this)
+                                .setTitle("hint")
+                                .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton("open position switch"
+                                        , (dialog, which) -> PermissionManager.openGPS(HomeActivity.this)).create().show();
+                        return;
+                    }
+                }
+                if (mHcService.isConnected) {
+                    //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                    mHcService.disConnect();
+                } else {
+                    //  bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                    final int bluetoothEnable = mHcService.isBluetoothEnable();
+                    if (bluetoothEnable == -1) {
+                        onBLENoSupported();
+                    } else if (bluetoothEnable == 0) {
+                        onOpenBLE();
+                    } else {
+                        mHcService.quicklyConnect();
+                    }
+                }
+            } else {
+                final int bleState = MonitorDataTransmissionManager.getInstance().getBleState();
+                Log.e("clickConnect", "bleState:" + bleState);
+                switch (bleState) {
+                    case BluetoothState.BLE_CLOSED:
+                        MonitorDataTransmissionManager.getInstance().bleCheckOpen();
+                        break;
+                    case BluetoothState.BLE_OPENED_AND_DISCONNECT:
+                        if (MonitorDataTransmissionManager.getInstance().isScanning()) {
+                            new AlertDialog.Builder(HomeActivity.this)
+                                    .setTitle("hint")
+                                    .setMessage("Scanning devices, please wait...")
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .setPositiveButton("stop scanning"
+                                            , (dialogInterface, i) ->
+                                                    MonitorDataTransmissionManager.getInstance().scan(false)).create().show();
+                        } else {
+                            if (PermissionManager.isObtain(this, PermissionManager.PERMISSION_LOCATION
+                                    , PermissionManager.requestCode_location)) {
+                                if (PermissionManager.canScanBluetoothDevice(getApplicationContext())) {
+                                    showBluetoothDeviceChooseDialog();
+                                    //  MonitorDataTransmissionManager.getInstance().scan(true);    // direct connect.
+                              /*  if (showScanList) {   // todo: handle later
+                                    connectByDeviceList();
+                                } else {
+                                    MonitorDataTransmissionManager.getInstance().scan(true);
+                                }*/
+                                } else {
+                                    new AlertDialog.Builder(HomeActivity.this)
+                                            .setTitle("hint")
+                                            .setMessage("Android 6.0 And above systems need to turn on the location switch to scan for Bluetooth devices.")
+                                            .setNegativeButton(android.R.string.cancel, null)
+                                            .setPositiveButton("Turn on location", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    PermissionManager.openGPS(HomeActivity.this);
+                                                    //  clickConnect();
+                                                }
+                                            }).create().show();
+
+                                }
+                            }
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTING_DEVICE:
+//                    Toast.makeText(mActivity, "蓝牙连接中...", Toast.LENGTH_SHORT).show();
+                        MonitorDataTransmissionManager.getInstance().disConnectBle();
+                        break;
+                    case BluetoothState.BLE_CONNECTED_DEVICE:
+
+                    case BluetoothState.BLE_NOTIFICATION_DISABLED:
+                    case BluetoothState.BLE_NOTIFICATION_ENABLED:
+                        MonitorDataTransmissionManager.getInstance().disConnectBle();
+                        break;
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBleState(int bleState) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (bleState) {
+                    case BluetoothState.BLE_CLOSED: // Rhemos Device is OFF
+                        //  btnText.set(getString(R.string.turn_on_bluetooth));
+                        //  Toast.makeText(VitalsActivity.this, "Please turn on device", Toast.LENGTH_SHORT).show();
+                        //  reset();
+                        break;
+                    case BluetoothState.BLE_OPENED_AND_DISCONNECT:  // Rhemos device is ON but not Connected via Bluetooth
+                        try {
+                            bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_white));
+                            //  Toast.makeText(VitalsActivity.this, "Please connect to device", Toast.LENGTH_SHORT).show();
+                            //   btnText.set(getString(R.string.connect));
+                            //  reset();
+                        } catch (Exception ignored) {
+                            //  Toast.makeText(HomeActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTING_DEVICE:  // Rhemos device is connecting...
+                        try {
+                            //  btnText.set(getString(R.string.connecting));
+                            Toast.makeText(HomeActivity.this, R.string.connecting_toast, Toast.LENGTH_SHORT).show();
+                        } catch (Exception ignored) {
+                            //  Toast.makeText(HomeActivity.this, ignored.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                        break;
+                    case BluetoothState.BLE_CONNECTED_DEVICE:   // Rhemos device is connected.
+                        bluetooth_icon.setIcon(getResources().getDrawable(R.drawable.bluetooth_connected));
+                        Toast.makeText(HomeActivity.this, R.string.device_connected, Toast.LENGTH_SHORT).show();
+
+                        //  btnText.set(getString(R.string.disconnect));
+                        break;
+                }
+
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onItemClick(OnBLEService.DeviceSort deviceSort) {
+        MonitorDataTransmissionManager.getInstance().autoScan(false);
+        BluetoothDevice bleDevice = deviceSort.bleDevice;
+        alertDialog.dismiss();
+        MonitorDataTransmissionManager.getInstance().connectToBle(bleDevice);
+    }
+
+    @Override
+    public void onUpdateDialogBleList() {
+        runOnUiThread(() -> {
+            adapter.setItems(MonitorDataTransmissionManager.getInstance().getDeviceList());
+        });
+    }
+
+    public void showBluetoothDeviceChooseDialog() {
+        if (MonitorDataTransmissionManager.getInstance().isConnected())
+            MonitorDataTransmissionManager.getInstance().disConnectBle();
+
+        // show dialog
+        MonitorDataTransmissionManager.getInstance().autoScan(true);
+
+        dialog = new MaterialAlertDialogBuilder(this);
+        View layoutInflater = LayoutInflater.from(HomeActivity.this)
+                .inflate(R.layout.recyclerview_custom_dialog, null);
+        RecyclerView re_view = layoutInflater.findViewById(R.id.re_view);
+//        progress_view = layoutInflater.findViewById(R.id.progress_view);
+//        progress_view.setVisibility(View.VISIBLE);
+        re_view.setLayoutManager(new LinearLayoutManager(this));
+       /* btAdapter = new BTAdapter(HomeActivity.this, new ArrayList<BluetoothDevice>());
+        btAdapter.setClickListener(this);
+        re_view.setAdapter(btAdapter);*/
+
+        adapter = new DataBindingAdapter(HomeActivity.this, new ArrayList<OnBLEService.DeviceSort>());
+        adapter.setClickListener(this);
+        re_view.setAdapter(adapter);
+
+        dialog.setView(layoutInflater);
+
+        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+               /* if (mService != null)
+                    mService.stopScan();*/  // todo later
+                MonitorDataTransmissionManager.getInstance().autoScan(false);
+                dialogInterface.cancel();
+            }
+        });
+
+        alertDialog = dialog.create();
+        alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        // end
+    }
+
+    private void connectByDeviceList() {
+        //  mBleDeviceListDialogFragment = new BleDeviceListDialogFragment();
+        // mBleDeviceListDialogFragment.show(HomeActivity.this.getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void onDeviceInfo(DeviceInfo device) {
+        Log.e("onDeviceInfo", device.toString());
+        String deviceId = device.getDeviceId();
+        String deviceKey = device.getDeviceKey();
+
+        deviceId = deviceId.toLowerCase();
+        deviceKey = deviceKey.toLowerCase();
+
+        infoModel.setDevice_id(deviceId);
+        infoModel.setDevice_key(deviceKey);
+
+        if (mHcService != null) {
+            mHcService.dataQuery(HcService.DATA_QUERY_BATTERY_INFO);
+        }
+    }
+
+    @Override
+    public void onReadDeviceInfoFailed() {
+        infoModel.setDevice_id("Unable to read the device ID.");
+        infoModel.setDevice_key("Unable to read the device key.");
+        if (mHcService != null) {
+            mHcService.dataQuery(HcService.DATA_QUERY_BATTERY_INFO);
+        }
+    }
+
+    @Override
+    public void onDeviceVersion(@WareType int wareType, String version) {
+        switch (wareType) {
+            case WareType.VER_SOFTWARE:
+                infoModel.setSoftware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_HARDWARE_VER);
+                }
+                break;
+            case WareType.VER_HARDWARE:
+                infoModel.setHardware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_FIRMWARE_VER);
+                }
+                break;
+            case WareType.VER_FIRMWARE:
+                infoModel.setFirmware_version(version);
+                if (mHcService != null) {
+                    mHcService.dataQuery(HcService.DATA_QUERY_CONFIRM_ECG_MODULE_EXIST);
+                }
+                break;
+        }
+
     }
 
 }
