@@ -1149,6 +1149,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     exception.printStackTrace();
                 }
 
+                // Chief Complaint Title - start
+                String mComplaint = complaint.getValue();
+
+                //Show only the headers of the complaints in the printed prescription
+                String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
+                mComplaint = "";
+                String colon = ":";
+                String mComplaint_new = "";
+                if (complaints != null) {
+                    for (String comp : complaints) {
+                        if (!comp.isEmpty() && !comp.trim().isEmpty()) {
+                            mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                        }
+                    }
+                    if (!mComplaint.isEmpty()) {
+                        mComplaint = mComplaint.substring(0, mComplaint.length() - 2); ///
+                        mComplaint = mComplaint.replaceAll("<b>", "");
+                        mComplaint = mComplaint.replaceAll("</b>", "");
+                    }
+
+                    if (mComplaint.contains("Associated symptoms")) {
+                        String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+                        for (String compla : cc) {
+                            mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 1);
+                        }
+                    }
+
+                    if (mComplaint.contains("जुड़े लक्षण")) {
+                        String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+                        for (String compla : cc) {
+                            mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+                        }
+                    }
+
+                    mComplaint = mComplaint.replace(Node.big_bullet, "").replace("<br/>", ",");
+                    Log.v("Chief Complaint", "cc_title: " + mComplaint);
+                }
+
+                VisitAttributeListDAO cc_title_attributes = new VisitAttributeListDAO();
+                boolean isChiefComplaintTitleUploadDone = false;
+                try {
+                    if (!isVisitSpecialityExists) {
+                        isChiefComplaintTitleUploadDone = cc_title_attributes
+                                .insertVisitAttributesChiefComplaintTitle(visitUUID, mComplaint);
+                    }
+                } catch (DAOException exception) {
+                    exception.printStackTrace();
+                }
+                // Chief Complaint Title - end
+
                 if (flag.isChecked()) {
                     try {
                         EncounterDAO encounterDAO = new EncounterDAO();

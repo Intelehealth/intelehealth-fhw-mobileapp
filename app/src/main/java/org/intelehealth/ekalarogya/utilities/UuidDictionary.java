@@ -69,6 +69,7 @@ public class UuidDictionary {
 
     // Visit Attribute Types
     public static final String ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK = "bde879f6-5622-4c2b-82cf-a37f26033e2b";
+    public static final String VISIT_ATTRIBUTE_CHIEF_COMPLAINT_TITLE = "02188e18-2bd0-497f-8198-f111878d478f";
 
     //Survey Types
     public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
