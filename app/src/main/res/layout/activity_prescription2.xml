@@ -716,10 +716,65 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/divider1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:background="@color/notifi_divider_color" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/ll_medicine_column"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16dp">
+
+                            <TextView
+                                android:id="@+id/tv_drug_name_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_weight="2.5"
+                                android:text="@string/prescribed_medication_drug_name"
+                                android:textColor="@color/hint_text_color" />
+
+                            <TextView
+                                android:id="@+id/tv_dosage_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_weight="0.5"
+                                android:text="@string/prescribed_medication_dosage"
+                                android:textColor="@color/hint_text_color" />
+
+                            <TextView
+                                android:id="@+id/tv_days_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_weight="0.5"
+                                android:text="@string/prescribed_medication_days"
+                                android:textColor="@color/hint_text_color" />
+
+                            <TextView
+                                android:id="@+id/tv_remarks_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_weight="0.5"
+                                android:text="@string/prescribed_medication_remarks"
+                                android:textColor="@color/hint_text_color" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@id/ll_medicine_column"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:background="@color/notifi_divider_color" />
 
@@ -728,7 +783,7 @@
                             android:id="@+id/medication_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/divider2"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"

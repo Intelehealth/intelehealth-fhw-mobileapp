@@ -340,6 +340,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -707,7 +708,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     patientDTO.setSon_dau_wife(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("NationalID")) {
-                    patientDTO.setNationalID( idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patientDTO.setNationalID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -815,7 +816,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         int mAgeYears = Integer.parseInt(ymdData[0]);
         int mAgeMonths = Integer.parseInt(ymdData[1]);
         int mAgeDays = Integer.parseInt(ymdData[2]);
-        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays);
+        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
         patientage.setText(age);
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
 
