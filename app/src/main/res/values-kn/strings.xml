@@ -112,7 +112,7 @@
     <string name="identification_screen_picker_years" translatable="false">ವರ್ಷಗಳು</string>
     <string name="identification_screen_picker_hours" translatable="false">ಗಂಟೆಗಳು</string>
     <string name="identification_screen_picker_months" translatable="false">ತಿಂಗಳುಗಳು</string>
-    <string name="identification_screen_picker_minute" translatable="false">ನಿಮಿಷ</string>
+    <string name="identification_screen_picker_minute" translatable="false">ನಿಮಿಷಗಳು</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient" translatable="false">ಸಕ್ರಿಯ ಭೇಟಿಗಳು</string>
@@ -555,9 +555,9 @@
     <string name="last_synced">ಕೊನೆಯದಾಗಿ ರಿಫ್ರೆಶ್ ಮಾಡಲಾಗಿದೆ - </string>
     <string name="today_visits">ಇಂದಿನ ಭೇಟಿಗಳು</string>
     <string name="active_visits">ಸಕ್ರಿಯ ಭೇಟಿಗಳು</string>
-    <string name="day">ದಿನ</string>
+    <string name="day">ದಿನಗಳು</string>
     <string name="hour">ಗಂಟೆ</string>
-    <string name="minute">ನಿಮಿಷ</string>
+    <string name="minute">ನಿಮಿಷಗಳು</string>
     <string name="s"> ಗಳು</string>
     <string name="ago">ಹಿಂದೆ</string>
     <string name="successfully_synced">ಯಶಸ್ವಿಯಾಗಿ ರಿಫ್ರೆಶ್ ಮಾಡಲಾಗಿದೆ</string>
@@ -674,7 +674,7 @@
     <string name="enter_answer">ಉತ್ತರವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="enter_occupation">ಉದ್ಯೋಗವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="select">ಆಯ್ಕೆ ಮಾಡಿ</string>
-    <string name="Minute">Minutes</string>
+    <string name="Minute">ನಿಮಿಷಗಳು</string>
     <string name="Hours">ಗಂಟೆಗಳು</string>
     <string name="Days">ದಿನಗಳು</string>
     <string name="Weeks">ವಾರಗಳು</string>

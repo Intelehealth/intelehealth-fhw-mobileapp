@@ -982,6 +982,8 @@ public class Node implements Serializable {
                                     raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
                                 } else if (language.equalsIgnoreCase("bn")) {
                                     raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("kn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
                                 } else {
                                     raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
                                 }
@@ -1044,6 +1046,8 @@ public class Node implements Serializable {
                         test = mOptions.get(i).getDisplay_assamese();
                     }else if (language.equalsIgnoreCase("bn")) {
                         test = mOptions.get(i).getDisplay_bengali();
+                    }else if (language.equalsIgnoreCase("kn")) {
+                        test = mOptions.get(i).getDisplay_kannada();
                     }
 
                     if (!test.isEmpty()) {
@@ -1067,6 +1071,8 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("bn")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
@@ -1086,6 +1092,8 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).getDisplay_assamese());
                                     } else if (language.equalsIgnoreCase("bn") && !mOptions.get(i).getDisplay_bengali().startsWith("[")) {
                                         stringsList.add(mOptions.get(i).getDisplay_bengali());
+                                    } else if (language.equalsIgnoreCase("kn") && !mOptions.get(i).getDisplay_kannada().startsWith("[")) {
+                                        stringsList.add(mOptions.get(i).getDisplay_kannada());
                                     } else {
                                         stringsList.add(mOptions.get(i).getLanguage());
                                     }
@@ -1145,8 +1153,10 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
         }
         return mLanguage;
     }
@@ -1180,6 +1190,8 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("bn")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
@@ -1201,6 +1213,8 @@ public class Node implements Serializable {
                                     } else if (language.equalsIgnoreCase("as")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("bn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
@@ -1260,6 +1274,8 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
         }
         return mLanguage;
     }
@@ -1455,8 +1471,10 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
         }
         return mLanguage;
     }
@@ -3741,7 +3759,7 @@ public class Node implements Serializable {
                     .replaceAll("ଅକ୍ଟୋବର", "Oct")
                     .replaceAll("ନଭେମ୍ବର", "Nov")
                     .replaceAll("ଡିସେମ୍ବର", "Dec");
-        }        else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
             displayStr = displayStr.replaceAll("মিনিট", "Minutes")
                     .replaceAll("ঘন্টার", "Hours")
                     .replaceAll("দিন", "Days")
@@ -3761,7 +3779,28 @@ public class Node implements Serializable {
                     .replaceAll("অক্টো", "Oct")
                     .replaceAll("নভেম্বর", "Nov")
                     .replaceAll("ডিসেম্বর", "Dec");
-        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+            displayStr = displayStr.replaceAll("ನಿಮಿಷಗಳು", "Minutes")
+                    .replaceAll("ಗಂಟೆಗಳು", "Hours")
+                    .replaceAll("ದಿನಗಳು", "Days")
+                    .replaceAll("ವಾರಗಳು", "Weeks")
+                    .replaceAll("ತಿಂಗಳುಗಳು", "Months")
+                    .replaceAll("ವರ್ಷಗಳು", "Years")
+
+                    .replaceAll("ಜನವರಿ", "Jan")
+                    .replaceAll("ಫೆಬ್ರವರಿ", "Feb")
+                    .replaceAll("ಮಾರ್", "Mar")
+                    .replaceAll("ಎಪ್ರಿಲ್", "Apr")
+                    .replaceAll("ಮೇ", "May")
+                    .replaceAll("ಜೂನ್", "Jun")
+                    .replaceAll("ಜುಲೈ", "Jul")
+                    .replaceAll("ಆಗಸ್ಟ್", "Aug")
+                    .replaceAll("ಸೆ", "Sep")
+                    .replaceAll("ಅಕ್ಟೋಬರ್", "Oct")
+                    .replaceAll("ನವೆಂಬರ್", "Nov")
+                    .replaceAll("ಡಿಸೆಂಬರ್", "Dec");
+        }
+        else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
             displayStr = displayStr.replaceAll("મિનિટ", "Minutes")
                     .replaceAll("કલાકો", "Hours")
                     .replaceAll("દિવસ", "Days")

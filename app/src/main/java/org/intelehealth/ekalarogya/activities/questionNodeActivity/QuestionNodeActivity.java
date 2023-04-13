@@ -668,6 +668,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-kn", "ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");
                 finalAssoSympObj.put("perform-physical-exam", "");
