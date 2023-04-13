@@ -1847,4 +1847,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enter_national_ID">Enter National ID</string>
     <!--END-->
 
+    <string name="prescribed_medication_drug_name">Drug name</string>
+    <string name="prescribed_medication_dosage">Dos.</string>
+    <string name="prescribed_medication_days">Days</string>
+    <string name="prescribed_medication_remarks">Remarks</string>
+
 </resources>

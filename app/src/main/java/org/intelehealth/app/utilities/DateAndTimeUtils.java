@@ -195,6 +195,17 @@ public class DateAndTimeUtils {
         return age;
     }
 
+    public static String formatAgeInYearsMonthsDate(Context context, int year, int month, int day) {
+        String age = "";
+        if (year < 1) {
+            age = month + " " + context.getResources().getString(R.string.identification_screen_text_months) + " - " + day + " " + context.getResources().getString(R.string.days);
+        } else if (year < 3) {
+            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years) + " - " + month + " " + context.getResources().getString(R.string.identification_screen_text_months);
+        } else {
+            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years);
+        }
+        return age;
+    }
 
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";
