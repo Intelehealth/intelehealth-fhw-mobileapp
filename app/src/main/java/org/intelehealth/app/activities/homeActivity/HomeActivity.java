@@ -14,6 +14,8 @@ import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import org.intelehealth.app.BuildConfig;
+
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
@@ -61,10 +63,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -159,8 +164,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     private AlertDialog alertDialog;
     private DataBindingAdapter adapter;
     private DeviceInfoModel infoModel = new DeviceInfoModel();
-
-
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
@@ -387,7 +391,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+919503692181";
+                String phoneNumberWithCountryCode = "+918008301208";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " "
                                 +/*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance) + " "
@@ -599,7 +603,6 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
@@ -1462,9 +1465,49 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     }
 
     public void clickConnect() {
-        //  if (mHcService.isBluetoothEnable())
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+        }
         initRemosDevice();
-        startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+            }
+        }
+
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
+            }
+            else
+                Toast.makeText(HomeActivity.this, "Permission not granted!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
