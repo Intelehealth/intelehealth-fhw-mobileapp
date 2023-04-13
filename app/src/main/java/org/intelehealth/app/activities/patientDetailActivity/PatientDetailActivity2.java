@@ -811,7 +811,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
         // setting age
-        String age = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), context);
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+        int mAgeYears = Integer.parseInt(ymdData[0]);
+        int mAgeMonths = Integer.parseInt(ymdData[1]);
+        int mAgeDays = Integer.parseInt(ymdData[2]);
+        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays);
         patientage.setText(age);
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
 
