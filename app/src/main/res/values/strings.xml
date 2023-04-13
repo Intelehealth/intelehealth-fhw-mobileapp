@@ -562,7 +562,7 @@
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To download your prescription click here  "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="and_enter_your_patient_id">" . To view the prescription, enter your registered mobile number or enter your Patient ID - "</string>
 
 
     <!--New Ayu Related Changes-->
