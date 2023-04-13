@@ -7,6 +7,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -119,7 +120,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
     private void showConfirmDialog(final PrescriptionModel model) {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message) + " " + model.getFirst_name() + " " + model.getLast_name() + " ?", false, context.getResources().getString(R.string.yes), context.getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
@@ -140,7 +141,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     }
 
     public class Myholder extends RecyclerView.ViewHolder {
-        ImageButton end_visit_btn;
+        Button end_visit_btn;
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview;
         private ImageView profile_image;
