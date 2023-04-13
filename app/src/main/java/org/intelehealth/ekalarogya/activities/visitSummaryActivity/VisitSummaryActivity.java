@@ -3203,7 +3203,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()) {
+                Log.v("followupDate", "followupDate: " + followUpDate);
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+                    followUpDate = followUpDate.replace("Remark", "ಟೀಕೆ");
+
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override

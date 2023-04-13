@@ -4134,6 +4134,65 @@ public final class StringUtils {
             }
 
         }
+        if (locale.equalsIgnoreCase("kn")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "ಭಾನುವಾರ";
+                    break;
+                case "Monday":
+                    val = "ಸೋಮವಾರ";
+                    break;
+                case "Tuesday":
+                    val = "ಮಂಗಳವಾರ";
+                    break;
+                case "Wednesday":
+                    val = "ಬುಧವಾರ";
+                    break;
+                case "Thursday":
+                    val = "ಗುರುವಾರ";
+                    break;
+                case "Friday":
+                    val = "ಶುಕ್ರವಾರ";
+                    break;
+                case "Saturday":
+                    val = "ಶನಿವಾರ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        if (locale.equalsIgnoreCase("bn")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "রবিবার";
+                    break;
+                case "Monday":
+                    val = "সোমবার";
+                    break;
+                case "Tuesday":
+                    val = "মঙ্গলবার";
+                    break;
+                case "Wednesday":
+                    val = "বুধবার";
+                    break;
+                case "Thursday":
+                    val = "বৃহস্পতিবার";
+                    break;
+                case "Friday":
+                    val = "শুক্রবার";
+                    break;
+                case "Saturday":
+                    val = "শনিবার";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
         if (locale.equalsIgnoreCase("or")) {
 
             switch (val) {
