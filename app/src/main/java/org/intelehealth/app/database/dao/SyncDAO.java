@@ -252,11 +252,11 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();

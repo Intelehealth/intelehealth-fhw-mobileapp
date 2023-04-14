@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
@@ -117,11 +118,13 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // photo - end
 
                 // Patient Name section
+                Log.v("Followup", new Gson().toJson(model));
                 String fullName = model.getFirst_name() + " " + model.getLast_name();
+                String displayName = fullName.length()>10 ? fullName.substring(0, 10) : fullName;
                 if (model.getOpenmrs_id() != null) {
-                    holder.fu_patname_txtview.setText(fullName.substring(0, 10) + ", " + model.getOpenmrs_id());
+                    holder.fu_patname_txtview.setText(String.format("%s, %s", displayName, model.getOpenmrs_id()));
                 } else {
-                    holder.fu_patname_txtview.setText(fullName.substring(0, 10));
+                    holder.fu_patname_txtview.setText(displayName);
                 }
 
                 // Followup Date section

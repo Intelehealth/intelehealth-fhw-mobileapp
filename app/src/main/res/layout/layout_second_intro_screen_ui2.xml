@@ -33,6 +33,7 @@
             android:layout_marginTop="@dimen/intro_description_margin_top"
             android:layout_marginEnd="@dimen/intro_description_margin_end"
             android:gravity="center"
+            android:justificationMode="inter_word"
             android:lineHeight="@dimen/intro_description_line_height"
             android:text="@string/take_patient_visits_intro"
             android:textColor="@color/textColorGray"

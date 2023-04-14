@@ -15,9 +15,9 @@
         android:hint="Enter value"
         android:inputType="textMultiLine"
         android:maxLength="150"
-        android:scrollHorizontally="false"
-        android:scrollbars="vertical"
         android:padding="@dimen/padding_10"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
         android:textColorHint="@color/edittext_hint_color"
         android:textSize="@dimen/common_label_text_size" />
 
@@ -36,4 +36,22 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/common_button_text_size" />
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actv_reasons"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_toStartOf="@+id/btn_submit"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingHorizontal="@dimen/padding_7"
+        android:paddingVertical="@dimen/padding_7"
+        android:text="Skip"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size"
+        android:visibility="gone" />
 </RelativeLayout>
