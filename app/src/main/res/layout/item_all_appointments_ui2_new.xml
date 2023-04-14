@@ -11,9 +11,9 @@
     app:cardElevation="@dimen/item_ta_card_elevation">
 
     <RelativeLayout
-        android:padding="@dimen/item_ta_card_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/item_ta_card_padding">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_member_image_all"
@@ -41,12 +41,13 @@
             android:text="Sarrah Paul"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/item_ta_tv_name_text_size" />
+
         <TextView
             android:id="@+id/tv_dr_name_todays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_patient_name_all"
-            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_marginStart="@dimen/margin_8"
             android:layout_toEndOf="@+id/card_member_image_all"
             android:drawableStart="@drawable/ic_baseline_account_circle_14"
             android:drawablePadding="@dimen/margin_8"
@@ -65,29 +66,52 @@
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image_all"
             android:src="@drawable/ui2_ic_calendar"
-            android:tint="@color/iconTintGray" />
+            android:tint="@color/iconTintGray"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_date_appointment_all"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_dr_name_todays"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/iv_time_all"
-            android:gravity="center_vertical"
-            android:lineHeight="@dimen/presc_rec_line_ht"
-            android:lineSpacingExtra="@dimen/presc_rec_line_spacing"
-            android:text="Received 3 hours ago new"
-            android:textAppearance="@style/caption"
-            android:textColor="@color/textColorGray"
-            android:textSize="@dimen/presc_rec_text_size" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_appointment_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/margin_8"
+                android:gravity="center_vertical"
+                android:lineHeight="@dimen/presc_rec_line_ht"
+                android:lineSpacingExtra="@dimen/presc_rec_line_spacing"
+                android:text="Received 3 hours ago new"
+                android:textAppearance="@style/caption"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/presc_rec_text_size"
+                app:drawableStartCompat="@drawable/ui2_ic_calendar" />
+
+            <TextView
+                android:id="@+id/tv_prescription_states_all"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/ui2_ic_presc_received"
+                android:gravity="center_vertical"
+                android:lineHeight="@dimen/presc_rec_line_ht"
+                android:lineSpacingExtra="@dimen/presc_rec_line_spacing"
+                android:padding="@dimen/presc_states_padding"
+                android:textAppearance="@style/caption"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/presc_states_text_size"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_priority_tag1_all"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/item_ta_priority_tag_height"
-            android:visibility="gone"
             android:layout_alignParentEnd="true"
             android:layout_gravity="top|end|center"
             android:layout_marginTop="@dimen/item_ta_priority_tag_margin_top"
@@ -95,24 +119,9 @@
             android:layout_weight="0.5"
             android:gravity="center"
             android:lineSpacingExtra="0sp"
-            android:src="@drawable/ui2_frame_priority" />
+            android:src="@drawable/ui2_frame_priority"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_prescription_states_all"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@+id/tv_date_appointment_all"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:visibility="visible"
-            android:background="@drawable/ui2_ic_presc_received"
-            android:layout_toEndOf="@+id/card_member_image_all"
-            android:gravity="center_vertical"
-            android:lineHeight="@dimen/presc_rec_line_ht"
-            android:lineSpacingExtra="@dimen/presc_rec_line_spacing"
-            android:padding="@dimen/presc_states_padding"
-            android:textAppearance="@style/caption"
-            android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/presc_states_text_size" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

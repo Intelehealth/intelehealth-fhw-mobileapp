@@ -1061,6 +1061,9 @@ public class CompleteActivity extends AppCompatActivity {
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
 
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_5_URL, Constants.ICE_SERVER_5_USER, Constants.ICE_SERVER_5_PASSWORD));
+        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_6_URL, Constants.ICE_SERVER_6_USER, Constants.ICE_SERVER_6_PASSWORD));
+
         /*T2*/
         /*iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
