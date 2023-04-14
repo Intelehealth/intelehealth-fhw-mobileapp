@@ -45,6 +45,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -81,6 +82,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -296,7 +298,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow, priority_hint, refresh, filter;
+    private ImageButton backArrow, priority_hint, refresh, homeBtn;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
@@ -526,6 +528,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
+                setHeightForFab();
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
@@ -552,6 +555,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 btn_bottom_printshare.setVisibility(View.GONE);
                 btn_bottom_vs.setVisibility(View.VISIBLE);
+                setHeightForFab();
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
@@ -572,6 +576,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
+        setHeightForFab();
 
         if (hasPrescription.equalsIgnoreCase("true")) {
             doc_speciality_card.setVisibility(View.GONE);
@@ -579,6 +584,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
+            setHeightForFab();
 
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
@@ -1725,12 +1731,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             checkPerm();
         });
 
-        filter.setOnClickListener(v -> {
-            // filter options
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+        homeBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
         });
 
         reminder.setOnClickListener(v -> {
@@ -2024,7 +2027,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void initUI() {
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
-        filter = findViewById(R.id.filter);
+        homeBtn = findViewById(R.id.home_btn);
 
         reminder = findViewById(R.id.reminder);
         reminder.setText(getResources().getString(R.string.action_home));
@@ -4828,4 +4831,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         startActivity(intent2);
     }
 
+    private void setHeightForFab() {
+        FloatingActionButton fabChat = findViewById(R.id.fab_chat);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabChat.getLayoutParams();
+
+        if (btn_bottom_vs.getVisibility() == View.GONE) {
+            params.bottomMargin = 200;
+        } else {
+            params.bottomMargin = 350;
+        }
+
+        fabChat.setLayoutParams(params);
+    }
 }

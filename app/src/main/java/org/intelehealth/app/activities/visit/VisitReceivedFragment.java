@@ -43,17 +43,17 @@ import java.util.List;
  * Email: prajwalwaingankar@gmail.com
  */
 public class VisitReceivedFragment extends Fragment {
-    private RecyclerView recycler_today, recycler_week, recycler_month;
+    private RecyclerView recycler_recent, recycler_older, recycler_month;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
     private TextView received_endvisit_no, allvisits_txt, priority_visits_txt;
-    int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
+    int totalCounts = 0, totalCounts_recent = 0, totalCounts_older = 0, totalCounts_month = 0;
     private ImageButton filter_icon, priority_cancel;
     private CardView filter_menu;
     private RelativeLayout filter_relative, no_patient_found_block, main_block;
-    private List<PrescriptionModel> todayList, weeksList, monthsList;
-    private VisitAdapter todays_adapter, weeks_adapter, months_adapter;
-    TextView today_nodata, week_nodata, month_nodata;
+    private List<PrescriptionModel> recentList, olderList, monthsList;
+    private VisitAdapter recent_adapter, older_adapter, months_adapter;
+    TextView recent_nodata, older_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
     private ProgressBar progress;
@@ -104,12 +104,12 @@ public class VisitReceivedFragment extends Fragment {
         searchview_received = view.findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
 
-        today_nodata = view.findViewById(R.id.today_nodata);
-        week_nodata = view.findViewById(R.id.week_nodata);
+        recent_nodata = view.findViewById(R.id.recent_nodata);
+        older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
-        recycler_today = view.findViewById(R.id.recycler_today);
-        recycler_week = view.findViewById(R.id.rv_thisweek);
+        recycler_recent = view.findViewById(R.id.recycler_recent);
+        recycler_older = view.findViewById(R.id.rv_older);
         recycler_month = view.findViewById(R.id.rv_thismonth);
         received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
 
@@ -120,32 +120,28 @@ public class VisitReceivedFragment extends Fragment {
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
 
-        visit_received_card_header.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
-            startActivity(intent);
-        });
+//        visit_received_card_header.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     private void defaultData() {
-        // loaded month data 1st for showing the count in main ui
-        thisMonths_Visits();
+        recentVisits();
+        olderVisits();
+        int totalCounts = totalCounts_recent + totalCounts_older;
+
+//        thisMonths_Visits();
         if (mlistener != null)
-            mlistener.receivedCount(totalCounts_month); // To avoid duplicate counts.
-
-        todays_Visits();
-        thisWeeks_Visits();
-
-
-        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-
-
+            mlistener.receivedCount(totalCounts);
+        progress.setVisibility(View.GONE);
     }
 
     private void visitData() {
 
         // Total no. of End visits.
         int total = getTotalCounts_EndVisit();
-        String htmlvalue = "<b>" + total + " Patients </b> visits are waiting for closure, please end the visit.";
+        String htmlvalue = "<b>" + total + " Patients </b> are awaiting their prescriptions. Please send";
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
 
         // Filter - start
@@ -207,81 +203,81 @@ public class VisitReceivedFragment extends Fragment {
     private void searchOperation(String query) {
         Log.v("Search", "Search Word: " + query);
 
-        List<PrescriptionModel> today = new ArrayList<>();
-        List<PrescriptionModel> week = new ArrayList<>();
-        List<PrescriptionModel> month = new ArrayList<>();
+        List<PrescriptionModel> recent = new ArrayList<>();
+        List<PrescriptionModel> older = new ArrayList<>();
+//        List<PrescriptionModel> month = new ArrayList<>();
 
-        today.addAll(todayList);
-        week.addAll(weeksList);
-        month.addAll(monthsList);
+        recent.addAll(recentList);
+        older.addAll(olderList);
+//        month.addAll(monthsList);
 
         if (!query.isEmpty()) {
 
             // todays - start
-            today.clear();
-            for (PrescriptionModel model : todayList) {
+            recent.clear();
+            for (PrescriptionModel model : recentList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-                    today.add(model);
+                    recent.add(model);
                 } else {
                     // dont add in list value.
                 }
 
-                totalCounts_today = today.size();
-                if (totalCounts_today == 0 || totalCounts_today < 0)
-                    today_nodata.setVisibility(View.VISIBLE);
+                totalCounts_recent = recent.size();
+                if (totalCounts_recent == 0 || totalCounts_recent < 0)
+                    recent_nodata.setVisibility(View.VISIBLE);
                 else
-                    today_nodata.setVisibility(View.GONE);
-                todays_adapter = new VisitAdapter(getActivity(), today);
-                recycler_today.setNestedScrollingEnabled(false);
-                recycler_today.setAdapter(todays_adapter);
+                    recent_nodata.setVisibility(View.GONE);
+                recent_adapter = new VisitAdapter(getActivity(), recent);
+                recycler_recent.setNestedScrollingEnabled(false);
+                recycler_recent.setAdapter(recent_adapter);
             }
             // todays - end
 
             // weeks - start
-            week.clear();
-            for (PrescriptionModel model : weeksList) {
+            older.clear();
+            for (PrescriptionModel model : olderList) {
                 if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-                    week.add(model);
+                    older.add(model);
                 } else {
                     // do nothing
                 }
 
-                totalCounts_week = week.size();
-                if (totalCounts_week == 0 || totalCounts_week < 0)
-                    week_nodata.setVisibility(View.VISIBLE);
+                totalCounts_older = older.size();
+                if (totalCounts_older == 0 || totalCounts_older < 0)
+                    older_nodata.setVisibility(View.VISIBLE);
                 else
-                    week_nodata.setVisibility(View.GONE);
-                weeks_adapter = new VisitAdapter(getActivity(), week);
-                recycler_week.setNestedScrollingEnabled(false);
-                recycler_week.setAdapter(weeks_adapter);
+                    older_nodata.setVisibility(View.GONE);
+                older_adapter = new VisitAdapter(getActivity(), older);
+                recycler_older.setNestedScrollingEnabled(false);
+                recycler_older.setAdapter(older_adapter);
             }
             // weeks - end
 
             // months - start
-            month.clear();
-            for (PrescriptionModel model : monthsList) {
-                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-                    month.add(model);
-                } else {
-                    // do nothing
-                }
-
-                totalCounts_month = month.size();
-                if (totalCounts_month == 0 || totalCounts_month < 0)
-                    month_nodata.setVisibility(View.VISIBLE);
-                else
-                    month_nodata.setVisibility(View.GONE);
-                months_adapter = new VisitAdapter(getActivity(), month);
-                recycler_month.setNestedScrollingEnabled(false);
-                recycler_month.setAdapter(months_adapter);
-            }
+//            month.clear();
+//            for (PrescriptionModel model : monthsList) {
+//                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+//                    month.add(model);
+//                } else {
+//                    // do nothing
+//                }
+//
+//                totalCounts_month = month.size();
+//                if (totalCounts_month == 0 || totalCounts_month < 0)
+//                    month_nodata.setVisibility(View.VISIBLE);
+//                else
+//                    month_nodata.setVisibility(View.GONE);
+//                months_adapter = new VisitAdapter(getActivity(), month);
+//                recycler_month.setNestedScrollingEnabled(false);
+//                recycler_month.setAdapter(months_adapter);
+//            }
             // months - end
 
             /**
              * Checking here the query that is entered and it is not empty so check the size of all of these
              * arraylists; if there size is 0 than show the no patient found view.
              */
-            totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+            totalCounts = totalCounts_recent + totalCounts_older + totalCounts_month;
             if (totalCounts <= 0) {
                 no_patient_found_block.setVisibility(View.VISIBLE);
                 main_block.setVisibility(View.GONE);
@@ -299,34 +295,34 @@ public class VisitReceivedFragment extends Fragment {
     private void showOnlyPriorityVisits() {
         // todays - start
         List<PrescriptionModel> prio_todays = new ArrayList<>();
-        for (int i = 0; i < todayList.size(); i++) {
-            if (todayList.get(i).isEmergency())
-                prio_todays.add(todayList.get(i));
+        for (int i = 0; i < recentList.size(); i++) {
+            if (recentList.get(i).isEmergency())
+                prio_todays.add(recentList.get(i));
         }
-        totalCounts_today = prio_todays.size();
-        if (totalCounts_today == 0 || totalCounts_today < 0)
-            today_nodata.setVisibility(View.VISIBLE);
+        totalCounts_recent = prio_todays.size();
+        if (totalCounts_recent == 0 || totalCounts_recent < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
         else
-            today_nodata.setVisibility(View.GONE);
-        todays_adapter = new VisitAdapter(getActivity(), prio_todays);
-        recycler_today.setNestedScrollingEnabled(false);
-        recycler_today.setAdapter(todays_adapter);
+            recent_nodata.setVisibility(View.GONE);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
         // todays - end
 
         // weeks - start
         List<PrescriptionModel> prio_weeks = new ArrayList<>();
-        for (int i = 0; i < weeksList.size(); i++) {
-            if (weeksList.get(i).isEmergency())
-                prio_weeks.add(weeksList.get(i));
+        for (int i = 0; i < olderList.size(); i++) {
+            if (olderList.get(i).isEmergency())
+                prio_weeks.add(olderList.get(i));
         }
-        totalCounts_week = prio_weeks.size();
-        if (totalCounts_week == 0 || totalCounts_week < 0)
-            week_nodata.setVisibility(View.VISIBLE);
+        totalCounts_older = prio_weeks.size();
+        if (totalCounts_older == 0 || totalCounts_older < 0)
+            older_nodata.setVisibility(View.VISIBLE);
         else
-            week_nodata.setVisibility(View.GONE);
-        weeks_adapter = new VisitAdapter(getActivity(), prio_weeks);
-        recycler_week.setNestedScrollingEnabled(false);
-        recycler_week.setAdapter(weeks_adapter);
+            older_nodata.setVisibility(View.GONE);
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
         // weeks - end
 
         // months - start
@@ -346,9 +342,9 @@ public class VisitReceivedFragment extends Fragment {
         // months - end
     }
 
-    private void todays_Visits() {
+    private void recentVisits() {
         // new 
-        todayList = new ArrayList<>();
+        recentList = new ArrayList<>();
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -357,7 +353,8 @@ public class VisitReceivedFragment extends Fragment {
                         " e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " o.conceptuuid = ? and " +
-                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
+//                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id " +
+                        "o.obsservermodifieddate > DATETIME('now', '-4 day') ORDER BY o.obsservermodifieddate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -393,7 +390,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                todayList.add(model);
+                recentList.add(model);
 
             }
             while (cursor.moveToNext());
@@ -402,15 +399,15 @@ public class VisitReceivedFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        totalCounts_today = todayList.size();
-        if (totalCounts_today == 0 || totalCounts_today < 0)
-            today_nodata.setVisibility(View.VISIBLE);
+        totalCounts_recent = recentList.size();
+        if (totalCounts_recent == 0 || totalCounts_recent < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
         else
-            today_nodata.setVisibility(View.GONE);
+            recent_nodata.setVisibility(View.GONE);
 
-        todays_adapter = new VisitAdapter(getActivity(), todayList);
-        recycler_today.setNestedScrollingEnabled(false);
-        recycler_today.setAdapter(todays_adapter);
+        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
 
         //  thisWeeks_Visits();
         //new
@@ -518,9 +515,9 @@ public class VisitReceivedFragment extends Fragment {
     }
 
 
-    private void thisWeeks_Visits() {
+    private void olderVisits() {
         // new
-        weeksList = new ArrayList<>();
+        olderList = new ArrayList<>();
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -529,9 +526,10 @@ public class VisitReceivedFragment extends Fragment {
                         "  e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " o.conceptuuid = ? and" +
-                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
-                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                        " group by p.openmrs_id"
+//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
+//                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
+                        " o.obsservermodifieddate < DATETIME('now', '-4 day') " +
+                        "group by p.openmrs_id ORDER BY o.obsservermodifieddate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -567,7 +565,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                weeksList.add(model);
+                olderList.add(model);
 
             }
             while (cursor.moveToNext());
@@ -576,15 +574,15 @@ public class VisitReceivedFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        totalCounts_week = weeksList.size();
-        if (totalCounts_week == 0 || totalCounts_week < 0)
-            week_nodata.setVisibility(View.VISIBLE);
+        totalCounts_older = olderList.size();
+        if (totalCounts_older == 0 || totalCounts_older < 0)
+            older_nodata.setVisibility(View.VISIBLE);
         else
-            week_nodata.setVisibility(View.GONE);
+            older_nodata.setVisibility(View.GONE);
 
-        weeks_adapter = new VisitAdapter(getActivity(), weeksList);
-        recycler_week.setNestedScrollingEnabled(false);
-        recycler_week.setAdapter(weeks_adapter);
+        older_adapter = new VisitAdapter(getActivity(), olderList);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
 
         //  thisWeeks_Visits();
         //new

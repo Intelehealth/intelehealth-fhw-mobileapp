@@ -96,12 +96,12 @@
                     android:src="@drawable/download_icon_toolbar" />
 
                 <ImageButton
-                    android:id="@+id/filter"
+                    android:id="@+id/home_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:src="@drawable/three_dots_menu" />
+                    android:src="@drawable/ui2_selector_home_nav" />
 
             </LinearLayout>
         </LinearLayout>
@@ -818,48 +818,74 @@
         <!--Visit Details - end -->
 
         <LinearLayout
-            android:id="@+id/btn_bottom_vs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2"
-            tools:visibility="visible">
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/btn_bottom_vs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="2"
+                tools:visibility="visible">
+
+                <Button
+                    android:id="@+id/btn_vs_appointment"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="Appointment"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_vs_sendvisit"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/common_edittext_margin_top"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="Send visit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/btn_vs_appointment"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="Appointment"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_vs_sendvisit"
-                android:layout_width="0dp"
+                android:id="@+id/btn_end_visit"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
+                android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="Send visit"
+                android:text="@string/end_visit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </RelativeLayout>
 
     <FrameLayout
@@ -895,7 +921,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dip"
+        android:layout_marginBottom="130dip"
         android:contentDescription="@string/chat_fab"
         android:onClick="startTextChat"
         android:src="@drawable/icons8_chat_new" />

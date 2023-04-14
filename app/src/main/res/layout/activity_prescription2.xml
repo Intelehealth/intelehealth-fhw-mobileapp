@@ -1221,51 +1221,77 @@
     <!--ScrollView - End-->
 
     <!--Button - start -->
+
     <LinearLayout
-        android:id="@+id/btn_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/fu_margin_start"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/fu_margin_start"
-        android:weightSum="2">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/fu_margin_start">
+
+        <LinearLayout
+            android:id="@+id/btn_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btn_vs_print"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:backgroundTint="@color/grey_button_bg"
+                android:lineHeight="@dimen/button_line_height"
+                android:padding="@dimen/fu_margin_start"
+                android:text="Print"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_vs_share"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/common_edittext_margin_top"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:lineHeight="@dimen/button_line_height"
+                android:padding="@dimen/fu_margin_start"
+                android:text="Share"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btn_vs_print"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/fu_btn_size"
+            android:id="@+id/btn_end_visit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:backgroundTint="@color/grey_button_bg"
-            android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/fu_margin_start"
-            android:text="Print"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_vs_share"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/fu_btn_size"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/common_edittext_margin_top"
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/fu_margin_start"
-            android:text="Share"
+            android:text="@string/end_visit"
             android:textColor="@color/white"
             android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
     </LinearLayout>
+
     <!--Button - end -->
 
     <FrameLayout
