@@ -343,7 +343,10 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void recentVisits() {
-        // new 
+        // new
+        List<PrescriptionModel> priorityRecentList = new ArrayList<>();
+        List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
+
         recentList = new ArrayList<>();
         db.beginTransaction();
 
@@ -354,7 +357,7 @@ public class VisitReceivedFragment extends Fragment {
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " o.conceptuuid = ? and " +
 //                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id " +
-                        "o.obsservermodifieddate > DATETIME('now', '-4 day') ORDER BY o.obsservermodifieddate DESC"
+                        "v.startdate > DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -390,14 +393,21 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                recentList.add(model);
 
+                if (model.isEmergency()) {
+                    priorityRecentList.add(model);
+                } else {
+                    nonPriorityRecentList.add(model);
+                }
             }
             while (cursor.moveToNext());
         }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
+
+        recentList.addAll(priorityRecentList);
+        recentList.addAll(nonPriorityRecentList);
 
         totalCounts_recent = recentList.size();
         if (totalCounts_recent == 0 || totalCounts_recent < 0)
@@ -517,6 +527,9 @@ public class VisitReceivedFragment extends Fragment {
 
     private void olderVisits() {
         // new
+        List<PrescriptionModel> priorityRecentList = new ArrayList<>();
+        List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
+
         olderList = new ArrayList<>();
         db.beginTransaction();
 
@@ -528,8 +541,8 @@ public class VisitReceivedFragment extends Fragment {
                         " o.conceptuuid = ? and" +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                        " o.obsservermodifieddate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY o.obsservermodifieddate DESC"
+                        " v.startdate < DATETIME('now', '-4 day') " +
+                        "group by p.openmrs_id ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -565,14 +578,21 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                olderList.add(model);
 
+                if (model.isEmergency()) {
+                    priorityRecentList.add(model);
+                } else {
+                    nonPriorityRecentList.add(model);
+                }
             }
             while (cursor.moveToNext());
         }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
+
+        olderList.addAll(priorityRecentList);
+        olderList.addAll(nonPriorityRecentList);
 
         totalCounts_older = olderList.size();
         if (totalCounts_older == 0 || totalCounts_older < 0)

@@ -260,7 +260,7 @@ public class VisitPendingFragment extends Fragment {
                         " o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.obsservermodifieddate > DATETIME('now', '-4 day') group by p.openmrs_id " +
+                        " v.startdate > DATETIME('now', '-4 day') group by p.openmrs_id " +
                         " except" +
                         " select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid," +
                         " o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
@@ -268,8 +268,8 @@ public class VisitPendingFragment extends Fragment {
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " e.encounter_type_uuid = ? AND" +
 //                        " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now')" +
-                        " o.obsservermodifieddate > DATETIME('now', '-4 day') " +
-                        " ORDER BY o.obsservermodifieddate DESC"
+                        " v.startdate > DATETIME('now', '-4 day') " +
+                        " ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -434,7 +434,7 @@ public class VisitPendingFragment extends Fragment {
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))  " +
-                        " o.obsservermodifieddate < DATETIME('now', '-4 day') " +
+                        " v.startdate < DATETIME('now', '-4 day') " +
                         "group by p.openmrs_id except" +
                         " select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid," +
                         " o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
@@ -443,7 +443,7 @@ public class VisitPendingFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " and e.encounter_type_uuid = ? " +
-                        " AND o.obsservermodifieddate < DATETIME('now', '-4 day') ORDER BY o.obsservermodifieddate DESC"
+                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
 
                 , new String[]{ENCOUNTER_VISIT_NOTE});
 
