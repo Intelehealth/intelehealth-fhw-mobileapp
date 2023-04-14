@@ -882,7 +882,8 @@
                 android:text="@string/end_visit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
 

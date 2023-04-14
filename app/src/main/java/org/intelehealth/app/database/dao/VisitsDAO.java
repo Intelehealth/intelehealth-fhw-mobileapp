@@ -684,4 +684,21 @@ public class VisitsDAO {
         return total;
     }
 
+    public static boolean isVisitUploaded(String visitUUID) {
+        boolean isUploaded = false;
+        String query = "SELECT sync FROM tbl_visit WHERE uuid = ? LIMIT 1";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+        cursor.moveToFirst();
+
+        String syncValue = cursor.getString(cursor.getColumnIndexOrThrow("sync"));
+        if (syncValue.equalsIgnoreCase("1"))
+            isUploaded = true;
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return isUploaded;
+    }
 }

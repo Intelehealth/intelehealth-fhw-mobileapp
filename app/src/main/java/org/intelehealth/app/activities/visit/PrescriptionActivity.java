@@ -86,6 +86,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -189,16 +190,21 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     }
 
     private void showHideEndVisitButton() {
+        Context presContext = PrescriptionActivity.this;
         if (hasPrescription.equalsIgnoreCase("true")) {
             btnEndVisit.setVisibility(View.VISIBLE);
             CardView followUpCardView = findViewById(R.id.followupCard);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) followUpCardView.getLayoutParams();
             params.bottomMargin = 400;
             followUpCardView.setLayoutParams(params);
+
             btnEndVisit.setOnClickListener(v -> {
-                String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
-                String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
-                VisitUtils.endVisit(this, visitID, patientUuid, followUpDate, vitalsUUID, adultInitialUUID, "state", patientName, "");
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(presContext, R.drawable.dialog_close_visit_icon, presContext.getResources().getString(R.string.confirm_end_visit_reason), presContext.getResources().getString(R.string.confirm_end_visit_reason_message), false, presContext.getResources().getString(R.string.confirm), presContext.getResources().getString(R.string.cancel), action -> {
+                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+                    VisitUtils.endVisit(PrescriptionActivity.this, visitID, patientUuid, followUpDate, vitalsUUID, adultInitialUUID, "state", patientName, "");
+                });
             });
         }
     }
@@ -457,7 +463,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == GROUP_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
@@ -1079,7 +1086,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
     // presc pdf downlaod - end
 
-    private void followupScheduledSuccess(Context context, Drawable drawable, String title, String subTitle, String neutral) {
+    private void followupScheduledSuccess(Context context, Drawable drawable, String
+            title, String subTitle, String neutral) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
