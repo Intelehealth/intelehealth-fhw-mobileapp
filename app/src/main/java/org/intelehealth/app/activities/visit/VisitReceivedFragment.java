@@ -202,6 +202,8 @@ public class VisitReceivedFragment extends Fragment {
      */
     private void searchOperation(String query) {
         Log.v("Search", "Search Word: " + query);
+        query = query.toLowerCase().trim();
+        query = query.replaceAll(" {2}", " ");
 
         List<PrescriptionModel> recent = new ArrayList<>();
         List<PrescriptionModel> older = new ArrayList<>();
@@ -216,7 +218,12 @@ public class VisitReceivedFragment extends Fragment {
             // todays - start
             recent.clear();
             for (PrescriptionModel model : recentList) {
-                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+                String firstName = model.getFirst_name().toLowerCase();
+                String lastName = model.getLast_name().toLowerCase();
+                String fullName = firstName + " " + lastName;
+
+
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
                     recent.add(model);
                 } else {
                     // dont add in list value.
@@ -236,7 +243,11 @@ public class VisitReceivedFragment extends Fragment {
             // weeks - start
             older.clear();
             for (PrescriptionModel model : olderList) {
-                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
+                String firstName = model.getFirst_name().toLowerCase();
+                String lastName = model.getLast_name().toLowerCase();
+                String fullName = firstName + " " + lastName;
+
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
                     older.add(model);
                 } else {
                     // do nothing

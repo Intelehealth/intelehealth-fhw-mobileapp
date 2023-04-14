@@ -783,52 +783,62 @@ public class VisitPendingFragment extends Fragment {
      */
     private void searchOperation(String query) {
         Log.v("Search", "Search Word: " + query);
+        query = query.toLowerCase().trim();
+        query = query.replaceAll(" {2}", " ");
 
-        List<PrescriptionModel> today = new ArrayList<>();
-        List<PrescriptionModel> week = new ArrayList<>();
+        List<PrescriptionModel> recent = new ArrayList<>();
+        List<PrescriptionModel> older = new ArrayList<>();
 //        List<PrescriptionModel> month = new ArrayList<>();
 
-        today.addAll(recentList);
-        week.addAll(olderList);
+        recent.addAll(recentList);
+        older.addAll(olderList);
 //        month.addAll(monthsList);
 
         if (!query.isEmpty()) {
 
             // todays - start
-            today.clear();
+            recent.clear();
             for (PrescriptionModel model : recentList) {
-                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-                    today.add(model);
+                String firstName = model.getFirst_name().toLowerCase();
+                String lastName = model.getLast_name().toLowerCase();
+                String fullName = firstName + " " + lastName;
+
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                    recent.add(model);
                 } else {
                     // dont add in list value.
                 }
 
-                totalCounts_recent = today.size();
+                totalCounts_recent = recent.size();
                 if (totalCounts_recent == 0 || totalCounts_recent < 0)
                     recent_nodata.setVisibility(View.VISIBLE);
                 else
                     recent_nodata.setVisibility(View.GONE);
-                recent_adapter = new VisitAdapter(getActivity(), today);
+                recent_adapter = new VisitAdapter(getActivity(), recent);
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
             }
             // todays - end
 
             // weeks - start
-            week.clear();
+            older.clear();
             for (PrescriptionModel model : olderList) {
-                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-                    week.add(model);
+                String firstName = model.getFirst_name().toLowerCase();
+                String lastName = model.getLast_name().toLowerCase();
+                String fullName = firstName + " " + lastName;
+
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                    older.add(model);
                 } else {
                     // do nothing
                 }
 
-                totalCounts_older = week.size();
+                totalCounts_older = older.size();
                 if (totalCounts_older == 0 || totalCounts_older < 0)
                     older_nodata.setVisibility(View.VISIBLE);
                 else
                     older_nodata.setVisibility(View.GONE);
-                older_adapter = new VisitAdapter(getActivity(), week);
+                older_adapter = new VisitAdapter(getActivity(), older);
                 recycler_older.setNestedScrollingEnabled(false);
                 recycler_older.setAdapter(older_adapter);
             }
