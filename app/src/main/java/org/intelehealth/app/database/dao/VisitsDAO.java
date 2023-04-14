@@ -701,4 +701,22 @@ public class VisitsDAO {
         db.endTransaction();
         return isUploaded;
     }
+
+    public static boolean isVisitEnded(String visitUUID) {
+        boolean isVisitEnded = false;
+        String query = "SELECT enddate FROM tbl_visit WHERE uuid = ? LIMIT 1";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+        cursor.moveToFirst();
+
+        String endVisitValue = cursor.getString(cursor.getColumnIndexOrThrow("enddate"));
+        if (endVisitValue == null)
+            isVisitEnded = true;
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return isVisitEnded;
+    }
 }

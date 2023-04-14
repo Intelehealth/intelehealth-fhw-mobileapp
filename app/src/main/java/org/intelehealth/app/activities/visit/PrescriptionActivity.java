@@ -207,6 +207,14 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 });
             });
         }
+
+        if (VisitsDAO.isVisitEnded(visitID)) {
+            btnEndVisit.setVisibility(View.GONE);
+            CardView followUpCardView = findViewById(R.id.followupCard);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) followUpCardView.getLayoutParams();
+            params.bottomMargin = 300;
+            followUpCardView.setLayoutParams(params);
+        }
     }
 
     private void initUI() {

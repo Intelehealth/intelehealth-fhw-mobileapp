@@ -774,7 +774,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         physicalDoumentsUpdates();
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            if (visitUUID != null && VisitsDAO.isVisitUploaded(visitUUID)) {
+            if (visitUUID != null && VisitsDAO.isVisitUploaded(visitUUID) && !VisitsDAO.isVisitEnded(visitUUID)) {
                 runOnUiThread(() -> btnEndVisit.setVisibility(View.VISIBLE));
             } else {
                 runOnUiThread(() -> btnEndVisit.setVisibility(View.GONE));
