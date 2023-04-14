@@ -207,8 +207,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         Intent intent = getIntent();
         if (intent != null) {
-            Bundle args = intent.getBundleExtra("BUNDLE");
-            patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+            if(intent.hasExtra("BUNDLE")) {
+                Bundle args = intent.getBundleExtra("BUNDLE");
+                patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+            }else{
+                patientDTO = new PatientDTO();
+                patientDTO.setUuid(intent.getStringExtra("patientUuid"));
+            }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
         }
 

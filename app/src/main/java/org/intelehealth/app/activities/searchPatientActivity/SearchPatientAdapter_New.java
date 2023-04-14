@@ -147,6 +147,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         TextView search_gender, search_name, search_date_relative;
         ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview, profile_imgview;
         PatientDTO patientDTO;
+
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
@@ -174,7 +175,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     args.putSerializable("patientDTO", (Serializable) patientDTO);
                     intent.putExtra("BUNDLE", args);
                     intent.putExtra("patientUuid", patientDTO.getUuid());
-                   context.startActivity(intent);
+                    context.startActivity(intent);
                 }
             });
         }

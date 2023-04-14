@@ -893,7 +893,7 @@
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
+    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant). Share the information with the telemedicine doctor</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
     <string name="share_prescriptions">Share the prescription</string>
 

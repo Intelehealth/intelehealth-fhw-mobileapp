@@ -64,6 +64,7 @@ import java.util.Locale;
  */
 public class Node implements Serializable {
 
+    private boolean optional;
     private String id;
     private String text;
     private String display;
@@ -336,6 +337,7 @@ public class Node implements Serializable {
             }
 
             this.required = jsonNode.optBoolean("isRequired");
+            this.optional = jsonNode.optBoolean("optional");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -388,6 +390,7 @@ public class Node implements Serializable {
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
+        this.optional = source.optional;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -3029,5 +3032,12 @@ public class Node implements Serializable {
         return allAnswered;
     }
 
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
+    }
 }
 

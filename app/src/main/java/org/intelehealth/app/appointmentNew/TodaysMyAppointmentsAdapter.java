@@ -3,7 +3,6 @@ package org.intelehealth.app.appointmentNew;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.media.Image;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +30,6 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -93,6 +91,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             } else {
                 holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
+            holder.doctNameTextView.setText("Dr. " + appointmentInfoModel.getDrName());
             if (whichAppointments.equalsIgnoreCase("upcoming")) {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -164,7 +163,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
-                Log.d(TAG, "onBindViewHolder:time :  "+appointmentInfoModel.getPresc_received_time());
+                Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
                 } else {
@@ -181,8 +180,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPatientId.setVisibility(View.GONE);
 
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
-                Log.d(TAG, "onBindViewHolder: time : "+appointmentInfoModel.getSlotDate());
-                Log.d(TAG, "onBindViewHolder: time : "+appointmentInfoModel.getSlotTime());
+                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotDate());
+                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotTime());
 
             }
 
@@ -234,7 +233,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent;
-        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus;
+        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView;
         ImageView ivProfileImage, ivTime, IvPriorityTag;
 
 
@@ -248,6 +247,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_todays);
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
             tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
+            doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
 
 
         }

@@ -586,7 +586,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
         recyclerView.setAdapter(associateSymptomsQueryAdapter);
         holder.singleComponentContainer.addView(view);
-        mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
+        //recyclerView.scrollToPosition(0);
     }
 
 
@@ -1011,7 +1011,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        Button skipButton = view.findViewById(R.id.btn_skip);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        if (holder.node.isOptional()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
