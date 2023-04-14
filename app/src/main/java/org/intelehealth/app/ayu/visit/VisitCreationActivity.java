@@ -1061,7 +1061,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 

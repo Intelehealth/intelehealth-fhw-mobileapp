@@ -2302,7 +2302,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link
+                                                    + getString(R.string.and_enter_your_patient_id)+ idView.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 
