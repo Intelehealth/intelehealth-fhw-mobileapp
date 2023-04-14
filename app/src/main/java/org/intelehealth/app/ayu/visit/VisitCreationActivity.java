@@ -167,6 +167,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
             Log.v(TAG, "Intent Tag: " + intentTag);
+            Log.v(TAG, "Intent float_ageYear_Month: " + float_ageYear_Month);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
             if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
@@ -431,7 +432,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private Node loadFileToNode(String fileLocation) {
         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
         Node mainNode = new Node(currentFile);
-        mainNode.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
+        mainNode.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
         return mainNode;
     }
 
@@ -448,13 +449,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     associateSymptoms = mainNode.getOptionsList().get(j);
 
                 } else {
-                    if (checkNodeValidByGender(mainNode.getOptionsList().get(j).getGender()))
+                    if (checkNodeValidByGenderAndAge(mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age()))
                         optionList.add(mainNode.getOptionsList().get(j));
                 }
             }
             if (associateSymptoms != null) {
 
-                associateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGender(node.getGender()));
+                associateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
 
                 optionList.add(associateSymptoms);
             }
@@ -465,8 +466,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     }
 
-    private boolean checkNodeValidByGender(String nodeGender) {
+    private boolean checkNodeValidByGenderAndAge(String nodeGender, String minAge, String maxAge) {
         Log.v(TAG, "nodeGender = " + nodeGender);
+        float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
+        float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
         boolean isValidByGender = true;
         if (patientGender.equalsIgnoreCase("M") &&
                 nodeGender.equalsIgnoreCase("0")) {
@@ -477,6 +480,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             isValidByGender = false;
         }
         Log.v(TAG, "isValidByGender = " + isValidByGender);
+
+        if (minAgeF != 0f && maxAgeF != 0f) {
+            isValidByGender = minAgeF <= float_ageYear_Month && float_ageYear_Month <= maxAgeF;
+        }
         return isValidByGender;
     }
 

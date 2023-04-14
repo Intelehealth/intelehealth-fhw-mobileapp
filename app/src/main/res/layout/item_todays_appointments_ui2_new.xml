@@ -43,6 +43,21 @@
             android:textSize="@dimen/item_ta_tv_name_text_size1" />
 
         <TextView
+            android:id="@+id/tv_dr_name_todays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name_todays"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:drawableStart="@drawable/ic_baseline_account_circle_14"
+            android:drawablePadding="@dimen/margin_8"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="3sp"
+            android:text="Dr. Lincon"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/txtsize_patdetail_14sp" />
+
+        <TextView
             android:id="@+id/tv_patient_id_todays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +77,7 @@
             android:id="@+id/iv_time_todays"
             android:layout_width="@dimen/cal_size_new"
             android:layout_height="@dimen/cal_size_new"
-            android:layout_below="@+id/tv_patient_id_todays"
+            android:layout_below="@+id/tv_dr_name_todays"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image"
@@ -73,8 +88,8 @@
             android:id="@+id/tv_date_appointment_todays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_patient_id_todays"
-            android:layout_marginStart="@dimen/item_ta_tv_date_margin_start"
+            android:layout_below="@+id/tv_dr_name_todays"
+            android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="@dimen/item_ta_tv_date_margin_top"
             android:layout_toEndOf="@+id/iv_time_todays"
             android:gravity="center_vertical"

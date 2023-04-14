@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.Context;
@@ -23,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
@@ -35,9 +37,15 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -129,6 +137,23 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         return count;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
+            @Override
+            public void onStart(int eventFlag) {
+                Log.v(TAG, "onStart");
+            }
+
+            @Override
+            public void onFinished(int eventFlag) {
+                Log.v(TAG, "onFinished");
+                initUI();
+            }
+        });
+    }
+
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
@@ -181,8 +206,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
                 startActivity(intent);
-               /* Intent intent = new Intent(getActivity(), ScheduleAppointmentActivity_New.class);
-                startActivity(intent);*/
+
             }
         });
 
@@ -214,6 +238,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(String.format("%d unclosed visits", countPendingCloseVisits));
         getUpcomingAppointments();
+        int count  = countPendingFollowupVisits();
+        TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
+        countPendingFollowupVisitsTextView.setText(String.format("%d pending", count));
     }
 
     @Override
@@ -326,6 +353,43 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         }
 
 
+    }
+
+    public int countPendingFollowupVisits() {
+        int count = 0;
+
+        // TODO: end date is removed later add it again. --> Added...
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " +
+                "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info," +
+                "b.patient_photo, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
+                "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
+                "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
+                "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+                "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND " +
+                "o.value is NOT NULL GROUP BY a.patientuuid";
+
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    // Fetch encounters who have emergency set and udpate modelist.
+                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                    boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                    if (isCompletedExitedSurvey) {
+                        count += 1;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return count;
     }
 }
 

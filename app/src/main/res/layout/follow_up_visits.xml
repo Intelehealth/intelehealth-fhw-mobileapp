@@ -106,7 +106,8 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/you_can_add"
                     android:textAppearance="@style/you_can_add"
-                    android:textSize="@dimen/fu_male_textsize" />
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
 
                 <!-- Frame 100314 -->
                 <TextView
@@ -127,12 +128,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/you_can_add"
-                    android:layout_marginTop="@dimen/text_margin"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
-                    android:padding="@dimen/card_padding"
+                    android:paddingTop="@dimen/card_padding"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
-                    tools:listitem="@layout/followup_list_item" />
+                    tools:listitem="@layout/followup_list_item_1" />
             </RelativeLayout>
 
 
@@ -150,7 +151,8 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/this_week"
                     android:textAppearance="@style/you_can_add"
-                    android:textSize="@dimen/fu_male_textsize" />
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/week_nodata"
@@ -170,12 +172,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/this_week"
-                    android:layout_marginTop="@dimen/text_margin"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
-                    android:padding="@dimen/margin_5"
+                    android:paddingVertical="@dimen/margin_5"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
-                    tools:listitem="@layout/followup_list_item" />
+                    tools:listitem="@layout/followup_list_item_1" />
             </RelativeLayout>
 
             <!-- This month -->
@@ -193,7 +195,8 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/this_month"
                     android:textAppearance="@style/you_can_add"
-                    android:textSize="@dimen/fu_male_textsize" />
+                    android:textSize="@dimen/fu_male_textsize"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/month_nodata"
@@ -213,12 +216,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/this_month"
-                    android:layout_marginTop="@dimen/text_margin"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
-                    android:padding="@dimen/margin_5"
+                    android:paddingVertical="@dimen/margin_5"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
-                    tools:listitem="@layout/followup_list_item" />
+                    tools:listitem="@layout/followup_list_item_1" />
             </RelativeLayout>
 
         </LinearLayout>

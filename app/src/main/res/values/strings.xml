@@ -562,7 +562,7 @@
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To download your prescription click here  "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="and_enter_your_patient_id">" . To view the prescription, enter your registered mobile number or enter your Patient ID - "</string>
 
 
     <!--New Ayu Related Changes-->
@@ -882,6 +882,7 @@
     <string name="forgot_password_link"><u>Forgot password?</u></string>
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
+    <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
     <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with doctors so that they can provide high-quality health services for their patients</string>
     <string name="who_we_are">Who are we?</string>
@@ -892,7 +893,7 @@
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
+    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant). Share the information with the telemedicine doctor</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
     <string name="share_prescriptions">Share the prescription</string>
 
@@ -1827,8 +1828,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
-    <string name="confirm_end_visit_reason">End this visit?</string>
-    <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
+    <string name="confirm_end_visit_reason">Close this visit?</string>
+    <string name="confirm_end_visit_reason_message">Prescription should be shared before closing visit,are you sure you want to close the visit?</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
     <string name="update_app_protocol">Update app protocol!</string>
@@ -1845,5 +1846,10 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="national_ID_other_details">National ID</string>
     <string name="enter_national_ID">Enter National ID</string>
     <!--END-->
+
+    <string name="prescribed_medication_drug_name">Drug name</string>
+    <string name="prescribed_medication_dosage">Dos.</string>
+    <string name="prescribed_medication_days">Days</string>
+    <string name="prescribed_medication_remarks">Remarks</string>
 
 </resources>

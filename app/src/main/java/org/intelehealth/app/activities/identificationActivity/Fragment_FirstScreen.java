@@ -5,6 +5,7 @@ import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -180,10 +181,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth(), getActivity());
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth()).split(" ");
-            mAgeYears = Integer.valueOf(ymdData[0]);
-            mAgeMonths = Integer.valueOf(ymdData[1]);
-            mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
+            mAgeYears = Integer.parseInt(ymdData[0]);
+            mAgeMonths = Integer.parseInt(ymdData[1]);
+            mAgeDays = Integer.parseInt(ymdData[2]);
+            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
             mAgeEditText.setText(age);
 
             mCountryCodePicker.setFullNumber(patientdto.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
@@ -284,10 +285,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 //            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
             //for age
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-            mAgeYears = Integer.valueOf(ymdData[0]);
-            mAgeMonths = Integer.valueOf(ymdData[1]);
-            mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " + mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " + mAgeDays + getResources().getString(R.string.days);
+            mAgeYears = Integer.parseInt(ymdData[0]);
+            mAgeMonths = Integer.parseInt(ymdData[1]);
+            mAgeDays = Integer.parseInt(ymdData[2]);
+
+            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
             String[] splitedDate = selectedDate.split("/");
             if (age != null && !age.isEmpty()) {
                 mAgeEditText.setText(age);
@@ -515,9 +517,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                                mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                                mAgeDays + getString(R.string.days);
+                        String ageString = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                         mAgeEditText.setText(ageString);
 
                         mDOBErrorTextView.setVisibility(View.GONE);
@@ -831,7 +831,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //get unformatted number with prefix "+" i.e "+14696641766"
         //   patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
-        patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+        if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
+            patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+        else
+            patientdto.setPhonenumber("");
         patientdto.setDateofbirth(dobToDb);
         /*String[] dob_array = mDOBEditText.getText().toString().split(" ");
         Log.d("dob_array", "0: " + dob_array[0]);

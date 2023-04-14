@@ -2,8 +2,11 @@ package org.intelehealth.app.appointmentNew;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
@@ -38,6 +42,7 @@ import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -94,6 +99,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     private SessionManager sessionManager;
     String patientAge, patientGender, patientPic;
     String hwName, hwAge, hwGender;
+    private BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +144,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
             String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " at " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
-        } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("visitsummary")) {
+        } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("new_schedule")) {
 
             visitUuid = getIntent().getStringExtra("visitUuid");
             patientUuid = getIntent().getStringExtra("patientUuid");
@@ -157,6 +163,39 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
 
 //        fetchDataFromDB();
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "onReceive  flag=  " + mIsPendingForAppointmentSave);
+                Log.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
+                if (mIsPendingForAppointmentSave) {
+                    mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
+                    if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
+                        if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
+                            mSyncAlertDialog.dismiss();
+                        ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+                        finish();
+                    }
+
+                } else {
+                    Log.v(TAG, "Sync Done!");
+                    recreate();
+                }
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        registerReceiver(mBroadcastReceiver, filterSend);
+    }
+
+    private int mStatusCount = 0;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
 //    private void fetchDataFromDB() {
@@ -529,7 +568,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
-                if (calendarInstance.get(Calendar.MONTH)+1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
+                if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
 
                     getAllDatesOfSelectedMonth(calendarInstance, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
@@ -663,24 +702,22 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
 
         if (NetworkConnection.isOnline(getApplication())) {
-
+            mSyncAlertDialog = new DialogUtils().showCommonLoadingDialog(this, "Booking Appointment!", "Please wait...");
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("scheduleAppointment");
 
-                if (isSynced) {
-                    Toast.makeText(this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, MyAppointmentActivity.class);
-                    finish();
-                    startActivity(intent);
-                }
+                mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
-
+            ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+            finish();
         }
     }
 
+    private AlertDialog mSyncAlertDialog;
+    private boolean mIsPendingForAppointmentSave = false;
 
 //        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
 //        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");

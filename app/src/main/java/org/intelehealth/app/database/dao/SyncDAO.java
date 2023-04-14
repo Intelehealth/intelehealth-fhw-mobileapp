@@ -128,6 +128,7 @@ public class SyncDAO {
                     }
                     if (sync) {
                         Intent broadcast = new Intent();
+                        broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
@@ -226,6 +227,7 @@ public class SyncDAO {
                     }
                     if (sync) {
                         Intent broadcast = new Intent();
+                        broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
@@ -250,11 +252,11 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -394,7 +396,12 @@ public class SyncDAO {
         Logger.logD(TAG, "push request encoded - " + encoded);
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
-        if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty() || !pushRequestApiCall.getProviders().isEmpty() || !pushRequestApiCall.getAppointments().isEmpty()) {
+        if (!pushRequestApiCall.getVisits().isEmpty()
+                || !pushRequestApiCall.getPersons().isEmpty()
+                || !pushRequestApiCall.getPatients().isEmpty()
+                || !pushRequestApiCall.getEncounters().isEmpty()
+                || !pushRequestApiCall.getProviders().isEmpty()
+                || !pushRequestApiCall.getAppointments().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
             pushResponseApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -443,22 +450,27 @@ public class SyncDAO {
                                 //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
 
                                 //ui2.0 for provider profile details
-                                Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
-                                for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
-                                    try {
-                                        providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");
-                                        Log.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                if(pushResponseApiCall.getData().getProviderlist()!=null) {
+                                    Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
+                                    for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
+                                        try {
+                                            providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");
+                                            Log.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                        }
                                     }
                                 }
 
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
+
                                 Intent broadcast = new Intent();
+                                broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
                                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
