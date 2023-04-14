@@ -9,18 +9,28 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/rv_videos_item_card_width"
         android:layout_height="@dimen/rv_videos_item_card_height"
+        android:layout_margin="5dp"
         app:cardCornerRadius="@dimen/common_card_corner_radius"
-        app:cardElevation="0dp"
-        android:elevation="0dp"
+        app:cardElevation="8dp"
+        android:id="@+id/videoCV"
         android:background="@color/textColorGray"
-        android:backgroundTint="@color/iconTintGrayBottomNav" />
+        android:backgroundTint="@color/iconTintGrayBottomNav">
+
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/youtubeVideo_WV"/>
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/videoDesc"
         android:layout_marginTop="@dimen/rv_videos_item_tv_margin_top"
         android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
         android:text="How to register new a patient?"
+        android:textAlignment="center"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/common_label_text_size" />
 
