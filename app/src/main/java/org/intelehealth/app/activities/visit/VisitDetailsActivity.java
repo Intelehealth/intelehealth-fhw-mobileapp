@@ -496,77 +496,85 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                    String encounterlocalAdultintial = "";
-                    String encountervitalsLocal = null;
-                    String encounterIDSelection = "visituuid = ?";
-
-                    String[] encounterIDArgs = {visit_id};
-
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
+                    boolean isCompletedExitedSurvey = false;
+                    try {
+                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
                     }
-                    encounterCursor.close();
+                    if (isCompletedExitedSurvey) {
 
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                    if (previsitCursor != null && previsitCursor.moveToLast()) {
+                        String encounterlocalAdultintial = "";
+                        String encountervitalsLocal = null;
+                        String encounterIDSelection = "visituuid = ?";
 
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                        if (visitValue != null && !visitValue.isEmpty()) {
+                        String[] encounterIDArgs = {visit_id};
 
-                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+                        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                            do {
+                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                    encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                                }
+                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                                }
 
-                            String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+                            } while (encounterCursor.moveToNext());
+                        }
+                        encounterCursor.close();
 
-                            visitValue = "";
-                            String colon = ":";
-                            if (complaints != null) {
-                                for (String comp : complaints) {
-                                    if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                        String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                        Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                        if (previsitCursor != null && previsitCursor.moveToLast()) {
 
+                            String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            if (visitValue != null && !visitValue.isEmpty()) {
+
+                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                                visitValue = "";
+                                String colon = ":";
+                                if (complaints != null) {
+                                    for (String comp : complaints) {
+                                        if (!comp.trim().isEmpty()) {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                        }
+                                    }
+                                    if (!visitValue.isEmpty()) {
+                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                        visitValue = visitValue.replaceAll("<br/>", "");
+                                        visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                        visitValue = visitValue.replaceAll("<b>", "");
+                                        visitValue = visitValue.replaceAll("</b>", "");
+                                    }
+                                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                    try {
+
+                                        Date formatted = currentDate.parse(date);
+                                        String visitDate = currentDate.format(formatted);
+                                        //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                        PastVisitData pastVisitData = new PastVisitData();
+                                        pastVisitData.setVisitDate(visitDate);
+                                        pastVisitData.setVisitUUID(visit_id);
+                                        pastVisitData.setChiefComplain(visitValue);
+                                        pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                        pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                        mPastVisitDataList.add(pastVisitData);
+                                        Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+
+                                    } catch (ParseException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
                                     }
                                 }
-                                if (!visitValue.isEmpty()) {
-                                    visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                    visitValue = visitValue.replaceAll("<br/>", "");
-                                    visitValue = visitValue.replaceAll("Associated symptoms", "");
-                                    //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                    visitValue = visitValue.replaceAll("<b>", "");
-                                    visitValue = visitValue.replaceAll("</b>", "");
-                                }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                try {
-
-                                    Date formatted = currentDate.parse(date);
-                                    String visitDate = currentDate.format(formatted);
-                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                    PastVisitData pastVisitData = new PastVisitData();
-                                    pastVisitData.setVisitDate(visitDate);
-                                    pastVisitData.setVisitUUID(visit_id);
-                                    pastVisitData.setChiefComplain(visitValue);
-                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                    mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
-
-                                } catch (ParseException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
                             }
-                        }
-                        // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
+                            // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
                         /*else {
                             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             try {
@@ -578,8 +586,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }*/
-                    }
-                    // Called when we close org on vitals screen and Didn't select any complaints
+                        }
+                        // Called when we close org on vitals screen and Didn't select any complaints
                     /*else {
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                         try {
@@ -591,6 +599,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }*/
+                    }
                 } while (visitCursor.moveToPrevious());
             }
 
