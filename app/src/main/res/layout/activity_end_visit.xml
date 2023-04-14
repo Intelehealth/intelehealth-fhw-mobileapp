@@ -111,14 +111,14 @@
                 android:layout_below="@+id/visit_card_header"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="@string/today_visits"
+                android:text="@string/recent_visit"
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize"
                 android:textStyle="bold" />
 
             <!-- Frame 100314 -->
             <TextView
-                android:id="@+id/today_nodata"
+                android:id="@+id/recent_nodata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/you_can_add"
@@ -131,7 +131,7 @@
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_today"
+                android:id="@+id/recycler_recent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/you_can_add"
@@ -147,7 +147,7 @@
                 android:id="@+id/this_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_today"
+                android:layout_below="@+id/recycler_recent"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/this_weeks_visits"
@@ -156,7 +156,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/week_nodata"
+                android:id="@+id/older_nodata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/this_week"
@@ -169,7 +169,7 @@
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_week"
+                android:id="@+id/recycler_older"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/this_week"
@@ -185,14 +185,15 @@
                 android:id="@+id/this_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_week"
+                android:layout_below="@+id/recycler_older"
                 android:layout_marginTop="@dimen/text_margin"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/this_months_visits"
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/month_nodata"
@@ -215,6 +216,7 @@
                 android:layout_marginTop="@dimen/text_margin"
                 android:nestedScrollingEnabled="false"
                 android:padding="@dimen/margin_5"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
                 tools:listitem="@layout/followup_list_item" />

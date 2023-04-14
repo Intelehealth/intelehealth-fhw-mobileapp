@@ -47,6 +47,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -83,6 +84,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -105,6 +107,7 @@ import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -150,6 +153,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -169,18 +173,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     Button btn_vs_sendvisit;
     private Context context;
-    private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
-            btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
-    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
-            pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
-            vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
-            vs_add_notes, parentLayout;
+    private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
-    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
-            medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
+    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
@@ -197,7 +196,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     boolean hasLicense = false;
     private String hasPrescription = "";
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
-    Button uploadButton, btn_vs_print, btn_vs_share;
+    Button uploadButton, btn_vs_print, btn_vs_share, btnEndVisit;
     ImageView ivPrescription;   // todo: not needed here
 
     Patient patient = new Patient();
@@ -299,7 +298,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow, priority_hint, refresh, filter;
+    private ImageButton backArrow, priority_hint, refresh, homeBtn;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
@@ -420,8 +419,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-            mSharedPreference = this.getSharedPreferences(
-                    "visit_summary", Context.MODE_PRIVATE);
+            mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
@@ -487,8 +485,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // receiver
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
         // past visit checking based on intent - start
         if (isPastVisit) {
@@ -523,7 +520,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
         // past visit checking based on intent - end
 
-        showVisitID();  // display visit ID.
+        showVisitID();  // display visit ID.`
 
         if (intentTag != null && !intentTag.isEmpty()) {
             // Edit btn visibility based on user coming from Visit Details screen - Start
@@ -540,6 +537,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
+                setHeightForFab();
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
@@ -566,6 +564,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 btn_bottom_printshare.setVisibility(View.GONE);
                 btn_bottom_vs.setVisibility(View.VISIBLE);
+                setHeightForFab();
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
@@ -586,6 +585,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
+        setHeightForFab();
 
         if (hasPrescription.equalsIgnoreCase("true")) {
             doc_speciality_card.setVisibility(View.GONE);
@@ -593,6 +593,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
+            setHeightForFab();
 
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
@@ -633,8 +634,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btn_up_header.setOnClickListener(v -> {
             if (vs_header_expandview.getVisibility() == View.VISIBLE)
                 vs_header_expandview.setVisibility(View.GONE);
-            else
-                vs_header_expandview.setVisibility(View.VISIBLE);
+            else vs_header_expandview.setVisibility(View.VISIBLE);
         });
 
 /*
@@ -773,6 +773,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void setViewsData() {
         physicalDoumentsUpdates();
 
+        Executors.newSingleThreadExecutor().execute(() -> {
+            if (visitUUID != null && VisitsDAO.isVisitUploaded(visitUUID)) {
+                runOnUiThread(() -> btnEndVisit.setVisibility(View.VISIBLE));
+            } else {
+                runOnUiThread(() -> btnEndVisit.setVisibility(View.GONE));
+            }
+        });
+
         if (patientUuid != null && patientUuid.isEmpty()) {
             queryData(String.valueOf(patientUuid));
 
@@ -799,13 +807,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         if (patient.getPatient_photo() != null) {
-            Glide.with(context)
-                    .load(patient.getPatient_photo())
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(profile_image);
+            Glide.with(context).load(patient.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
         }
@@ -871,9 +873,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
             }
@@ -933,12 +933,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
             if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
-                        .split("• Patient denies -<br/>");
+                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
 
                 // index 0 - Reports
-                String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
-                        .split("• Patient reports -<br/>");
+                String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
                 patientReports = reports[1];
                 patientDenies = assoValueBlock[1];
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
@@ -963,8 +961,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
-            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
-                    .split("<b>General exams: </b><br/>");
+            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
             physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
         }
         //image download for physcialExamination documents
@@ -1014,11 +1011,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
             if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                        AppConstants.IMAGE_PATH, this, true);
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
             } else {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                        AppConstants.IMAGE_PATH, this, false);
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
             }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
@@ -1045,8 +1040,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
-            speciality_spinner.setEnabled(false);
+        if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -1060,15 +1054,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (items != null) {
             items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
         } else {
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item,
-                                    getResources().getStringArray(R.array.speciality_values));
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
 
@@ -1319,8 +1308,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                         if (phyExam.getValue() != null)
                             dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
-                        else
-                            dialogEditText.setText("");
+                        else dialogEditText.setText("");
                         //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -1462,8 +1450,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                         if (patHistory.getValue() != null)
                             dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
-                        else
-                            dialogEditText.setText("");
+                        else dialogEditText.setText("");
                         //    textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -1604,8 +1591,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                         if (famHistory.getValue() != null)
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
-                        else
-                            dialogEditText.setText("");
+                        else dialogEditText.setText("");
                         //    textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -1724,9 +1710,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
-                        "Are you sure you want to send the visit to the doctor?",
-                        "Yes", "No");
+                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?", "Are you sure you want to send the visit to the doctor?", "Yes", "No");
             }
         });
         // upload btn click - end
@@ -1739,12 +1723,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             checkPerm();
         });
 
-        filter.setOnClickListener(v -> {
-            // filter options
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+        homeBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
         });
 
         reminder.setOnClickListener(v -> {
@@ -1753,8 +1734,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
 
         incomplete_act.setOnClickListener(v -> {
@@ -1788,8 +1768,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             // filter options
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else
-                filter_framelayout.setVisibility(View.VISIBLE);
+            else filter_framelayout.setVisibility(View.VISIBLE);
         });
     }
 
@@ -1855,12 +1834,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (id == 2)
-                    checkPerm();
-                else if (id == 0)
-                    checkPerm(0);
-                else if (id == 1)
-                    checkPerm(1);
+                if (id == 2) checkPerm();
+                else if (id == 0) checkPerm(0);
+                else if (id == 1) checkPerm(1);
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
@@ -1893,8 +1869,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         if (!listPermissionsNeeded.isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(listPermissionsNeeded.toArray
-                        (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             }
             return false;
         }
@@ -1912,8 +1887,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!listPermissionsNeeded.isEmpty()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray
-                            (new String[listPermissionsNeeded.size()]), DIALOG_CAMERA_PERMISSION_REQUEST);
+                    requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_CAMERA_PERMISSION_REQUEST);
                 }
                 return false;
             }
@@ -1929,8 +1903,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!listPermissionsNeeded.isEmpty()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray
-                            (new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
+                    requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
                 }
                 return false;
             }
@@ -1947,9 +1920,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
@@ -1983,16 +1954,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         t.setError(getString(R.string.please_select_specialization_msg));
         t.setTextColor(Color.RED);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this)
-                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.generic_ok),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this).setMessage(getResources().getString(R.string.please_select_specialization_msg)).setCancelable(false).setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -2055,7 +2022,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void initUI() {
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
-        filter = findViewById(R.id.filter);
+        homeBtn = findViewById(R.id.home_btn);
 
         reminder = findViewById(R.id.reminder);
         reminder.setText(getResources().getString(R.string.action_home));
@@ -2197,6 +2164,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
         uploadButton = findViewById(R.id.btn_vs_sendvisit);
+        btnEndVisit = findViewById(R.id.btn_end_visit);
+
+        btnEndVisit.setOnClickListener(v -> {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+                    VisitUtils.endVisit(context, visitUUID, patientUuid, followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name(), "VisitDetailsActivity");
+                }
+            });
+        });
 
         btn_vs_print.setOnClickListener(v -> {
             try {
@@ -2206,20 +2186,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
 
-        btn_vs_share.setOnClickListener(v -> {
+        btn_vs_share.setOnClickListener(v ->
+
+        {
             sharePresc();
         });
         // Bottom Buttons - end
 
 
         // file set
-        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        obsImgdir = new File(AppConstants.IMAGE_PATH);
+        baseDir =
 
-        add_additional_doc = findViewById(R.id.add_additional_doc);
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES).
+
+                        getAbsolutePath();
+
+        obsImgdir = new
+
+                File(AppConstants.IMAGE_PATH);
+
+        add_additional_doc =
+
+                findViewById(R.id.add_additional_doc);
 
         // navigation for book appointmnet
-        btnAppointment = findViewById(R.id.btn_vs_appointment);
+        btnAppointment =
+
+                findViewById(R.id.btn_vs_appointment);
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2242,19 +2235,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     }
 
-    private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-                        Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
-                        startActivity(in);
-                        finish();
+    private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+                Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
+                startActivity(in);
+                finish();
 
-                    }
-                }
-            });
+            }
+        }
+    });
 
     private void sharePresc() {
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -2294,21 +2286,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             sharebtn.setOnClickListener(v -> {
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                            + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(
-                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                            phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
 
                     // isreturningWhatsapp = true;
 
                 } else {
-                    Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
                 }
 
             });
@@ -2455,8 +2441,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
-                                 String positiveBtnTxt, String negativeBtnTxt) {
+    private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -2523,8 +2508,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
             // Additional Notes - End
 
-            if (isVisitSpecialityExists)
-                speciality_spinner.setEnabled(false);
+            if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
 
             if (flag.isChecked()) {
                 try {
@@ -2559,8 +2543,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                     visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
                 }
-                if (visitIDCursor != null)
-                    visitIDCursor.close();
+                if (visitIDCursor != null) visitIDCursor.close();
             }
 
             if (!flag.isChecked()) {
@@ -2582,24 +2565,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
                             // ie. visit is uploded successfully.
-                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
-                                    "Visit successfully sent!",
-                                    "Patient's visit has been successfully sent to the doctor.",
-                                    "Okay");
-
+                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), "Visit successfully sent!", "Patient's visit has been successfully sent to the doctor.", "Okay");
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
+                            setHeightForFab();
+                            btnEndVisit.setVisibility(View.VISIBLE);
                             //
                             showVisitID();
                             Log.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                            if (isVisitSpecialityExists)
-                                speciality_spinner.setEnabled(false);
+                            if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
                         } else {
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " +
-                                    getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
 
                         }
                         uploaded = true;
@@ -2613,8 +2592,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle,
-                                        String neutral) {
+    private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -2731,8 +2709,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public class DownloadPrescriptionService extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss")
-                    .format(Calendar.getInstance().getTime()));
+            Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
             downloadPrescriptionDefault();
             downloadDoctorDetails();
         }
@@ -3000,19 +2977,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  frameLayout_doctor.setVisibility(View.VISIBLE);   // todo: handle later.
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ?
-                    getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
-                            objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
-                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
-                    objClsDoctorDetails.getRegistrationNumber() : "") +
-                    "</div>";
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:0px;\">" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" + "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") + "</div>";
 
             //    mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim()); // todo: handle later
         }
@@ -3031,9 +2998,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String[] patientArgs = {dataString};
 
         String table = "tbl_patient";
-        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -3199,8 +3164,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 for (String images : imageList) {
                     if (imagesDAO.isLocalImageUuidExists(images))
                         physcialExaminationDownloadText.setVisibility(View.GONE);
-                    else
-                        physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+                    else physcialExaminationDownloadText.setVisibility(View.VISIBLE);
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -3325,11 +3289,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
             if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                        AppConstants.IMAGE_PATH, this, true);
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
             } else {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem,
-                        AppConstants.IMAGE_PATH, this, false);
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
             }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
@@ -3356,6 +3318,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         public void onReceive(Context context, Intent intent) {
             isNetworkAvailable(context);
         }
+
     }
 
     // handle message
@@ -3451,8 +3414,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (uuid != null) {
             SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
-            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                    new String[]{uuid});
+            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
@@ -3543,8 +3505,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         if (flag) {
                             saveImage(filePath);
                         } else
-                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -3604,53 +3565,42 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientModel.getUuid());
         Logger.logD("TAG", "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientModel.getUuid());
-                        Logger.logD("TAG", file.toString());
-                    }
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, patientModel.getUuid());
+                Logger.logD("TAG", file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD("TAG", e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD("TAG", "complete" + patientModel.getPatient_photo());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientModel.getUuid(),
-                                    AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(profile_image);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg", patientModel.getUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                Logger.logD("TAG", "complete" + patientModel.getPatient_photo());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(patientModel.getUuid(), AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg", patientModel.getUuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
     }
 
     // Print - start
@@ -3676,8 +3626,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
-        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
-                ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
+        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") + ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
         String mCityState = patient.getCity_village();
         String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
         String mState = patient.getState_province();
@@ -3716,9 +3665,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -3800,8 +3747,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         String rx_web = stringToWeb(rxReturned);
 
-        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
-                .replace(Node.bullet, ""));
+        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
         String advice_web = stringToWeb(adviceReturned);
         //    String advice_web = "";
@@ -3900,12 +3846,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
-        String font_face = "<style>" +
-                "                @font-face {" +
-                "                    font-family: \"MyFont\";" +
-                fontFamilyFile +
-                "                }" +
-                "            </style>";
+        String font_face = "<style>" + "                @font-face {" + "                    font-family: \"MyFont\";" + fontFamilyFile + "                }" + "            </style>";
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
@@ -3928,97 +3869,29 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //                    "</div>";
 
 
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;\">" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
-                    (objClsDoctorDetails.getQualification() == null ||
-                            objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" :
-                            objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-                    "</div>";
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + "</div>";
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
 
         if (isRespiratory) {
-            String htmlDocument =
-                    String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                                    /* doctorDetailStr +*/
-                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
-                                    doctorDetailStr +
-                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
-                            (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "",
-                            (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
+            String htmlDocument = String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                    /* doctorDetailStr +*/
+                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
+                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    doctorDetailStr +
-                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
-                                    "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
+                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                    /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
@@ -4054,8 +3927,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String jobName = getString(R.string.app_name) + " Visit Summary";
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+            PrintJob printJob = printManager.print(jobName, printAdapter, pBuilder.build());
 
 
         } else if (contentHeight == 0) {
@@ -4068,8 +3940,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String jobName = getString(R.string.app_name) + " Visit Summary";
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+            PrintJob printJob = printManager.print(jobName, printAdapter, pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
 
@@ -4083,8 +3954,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String jobName = getString(R.string.app_name) + " Visit Summary";
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+            PrintJob printJob = printManager.print(jobName, printAdapter, pBuilder.build());
         } else {
             String jobName = getString(R.string.app_name) + " Visit Summary";
 
@@ -4095,8 +3965,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+            PrintJob printJob = printManager.print(jobName, printAdapter, pBuilder.build());
             //end...
         }
     }
@@ -4108,9 +3977,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
-            formatted = para_open + Node.big_bullet +
-                    input.replaceAll("\n", para_close + para_open + Node.big_bullet)
-                    + para_close;
+            formatted = para_open + Node.big_bullet + input.replaceAll("\n", para_close + para_open + Node.big_bullet) + para_close;
         }
 
         return formatted;
@@ -4149,8 +4016,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
-        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
-                ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
+        String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") + ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
         String mCityState = patient.getCity_village();
         String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
         String mState = patient.getState_province();
@@ -4189,9 +4055,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -4273,8 +4137,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         String rx_web = stringToWeb(rxReturned);
 
-        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
-                .replace(Node.bullet, ""));
+        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
         String advice_web = stringToWeb(adviceReturned);
         //    String advice_web = "";
@@ -4373,12 +4236,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
-        String font_face = "<style>" +
-                "                @font-face {" +
-                "                    font-family: \"MyFont\";" +
-                fontFamilyFile +
-                "                }" +
-                "            </style>";
+        String font_face = "<style>" + "                @font-face {" + "                    font-family: \"MyFont\";" + fontFamilyFile + "                }" + "            </style>";
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
@@ -4401,97 +4259,29 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //                    "</div>";
 
 
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;\">" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " +
-                    (objClsDoctorDetails.getQualification() == null ||
-                            objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" :
-                            objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-                    "</div>";
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + "</div>";
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
 
         if (isRespiratory) {
-            String htmlDocument =
-                    String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                                    /* doctorDetailStr +*/
-                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
-                                    doctorDetailStr +
-                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
-                            (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "",
-                            (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
+            String htmlDocument = String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                    /* doctorDetailStr +*/
+                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                    "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
+                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    doctorDetailStr +
-                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
-                                    "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
+                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                    /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
@@ -4532,8 +4322,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
-            if (!dir.exists())
-                dir.mkdirs();
+            if (!dir.exists()) dir.mkdirs();
 
             File directory = new File(dir, fileName);
 
@@ -4544,35 +4333,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
-                        fileName, new PdfPrint.CallbackPrint() {
-                            @Override
-                            public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                            }
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                            @Override
-                            public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                        });
+                });
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir,
-                            fileName, new PdfPrint.CallbackPrint() {
-                                @Override
-                                public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                                }
+                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                        @Override
+                        public void success(String path) {
+                            Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                        }
 
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                                }
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
 
-                            });
+                    });
                 }
             }
 
@@ -4595,8 +4382,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             File dir = new File(path);
             Log.v(TAG, "dir.exists() : " + dir.exists());
-            if (!dir.exists())
-                dir.mkdirs();
+            if (!dir.exists()) dir.mkdirs();
 
 
             //To display the preview window to user...
@@ -4606,35 +4392,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
-                        fileName, new PdfPrint.CallbackPrint() {
-                            @Override
-                            public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                            }
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                            @Override
-                            public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                        });
+                });
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir,
-                            fileName, new PdfPrint.CallbackPrint() {
-                                @Override
-                                public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                                }
+                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                        @Override
+                        public void success(String path) {
+                            Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                        }
 
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                                }
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
 
-                            });
+                    });
                 }
             }
 
@@ -4656,8 +4440,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
-            if (!dir.exists())
-                dir.mkdirs();
+            if (!dir.exists()) dir.mkdirs();
 
             File directory = new File(dir, fileName);
 
@@ -4668,35 +4451,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
-                        fileName, new PdfPrint.CallbackPrint() {
-                            @Override
-                            public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                            }
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                            @Override
-                            public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                        });
+                });
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir,
-                            fileName, new PdfPrint.CallbackPrint() {
-                                @Override
-                                public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                                }
+                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                        @Override
+                        public void success(String path) {
+                            Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                        }
 
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                                }
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
 
-                            });
+                    });
                 }
             }
 
@@ -4719,8 +4500,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
-            if (!dir.exists())
-                dir.mkdirs();
+            if (!dir.exists()) dir.mkdirs();
 
             File directory = new File(dir, fileName);
 
@@ -4733,35 +4513,33 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
-                        fileName, new PdfPrint.CallbackPrint() {
-                            @Override
-                            public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                            }
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                            @Override
-                            public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                        });
+                });
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir,
-                            fileName, new PdfPrint.CallbackPrint() {
-                                @Override
-                                public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
-                                }
+                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                        @Override
+                        public void success(String path) {
+                            Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                        }
 
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                                }
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
 
-                            });
+                    });
                 }
             }
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -4776,10 +4554,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         PatientDTO patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -4860,4 +4635,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         startActivity(intent2);
     }
 
+    private void setHeightForFab() {
+        FloatingActionButton fabChat = findViewById(R.id.fab_chat);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabChat.getLayoutParams();
+
+        if (btn_bottom_vs.getVisibility() == View.GONE || btnEndVisit.getVisibility() == View.GONE) {
+            params.bottomMargin = 200;
+        } else {
+            params.bottomMargin = 350;
+        }
+
+        fabChat.setLayoutParams(params);
+    }
 }

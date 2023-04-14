@@ -1851,5 +1851,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="prescribed_medication_dosage">Dos.</string>
     <string name="prescribed_medication_days">Days</string>
     <string name="prescribed_medication_remarks">Remarks</string>
+    <string name="recent_visit">Recent Visits</string>
+    <string name="older_visits">Older Visits</string>
 
 </resources>
