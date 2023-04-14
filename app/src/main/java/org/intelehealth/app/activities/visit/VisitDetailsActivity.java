@@ -835,7 +835,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             refresh.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 }
