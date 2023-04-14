@@ -85,9 +85,9 @@ public class VisitReasonQuestionsFragment extends Fragment {
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
-                Log.v("onSelect", "index - "+index+" \t mCurrentComplainNodeOptionsIndex - "+mCurrentComplainNodeOptionsIndex);
+                Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                 // avoid the scroll for old data change
-                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
                 }
                 //Log.v("onSelect", "node - " + node.getText());
@@ -101,7 +101,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                       recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount())
+                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        else
+                            recyclerView.smoothScrollBy(0,1600);
                     }
                 }, 100);
 

@@ -831,7 +831,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //get unformatted number with prefix "+" i.e "+14696641766"
         //   patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
-        patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+        if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
+            patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+        else
+            patientdto.setPhonenumber("");
         patientdto.setDateofbirth(dobToDb);
         /*String[] dob_array = mDOBEditText.getText().toString().split(" ");
         Log.d("dob_array", "0: " + dob_array[0]);

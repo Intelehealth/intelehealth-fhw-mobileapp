@@ -94,7 +94,6 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
@@ -389,6 +388,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
+
+        try {
+            boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+            incomplete_act.setVisibility(isCompletedExitedSurvey ? View.GONE : View.VISIBLE);
+            TextView titleTextView = findViewById(R.id.toolbar_title);
+            if (isCompletedExitedSurvey)
+                titleTextView.setText(titleTextView.getText() + " (Closed)");
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -1729,11 +1739,29 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
+           /* Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
             startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
-            else filter_framelayout.setVisibility(View.VISIBLE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);*/
+
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message) + " " + patientName + " ?", false, context.getResources().getString(R.string.yes), context.getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
+                        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+                        VisitUtils.endVisit(context, visitUUID, patientUuid, followUpDate,
+                                vitalsUUID, adultInitialUUID, "state",
+                                patientName, "VisitDetailsActivity");
+
+                    }
+                }
+            });
+
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -2204,6 +2232,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
+
     }
 
     private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
