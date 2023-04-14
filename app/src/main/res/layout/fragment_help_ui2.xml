@@ -50,6 +50,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layoutLocation"
                 android:layout_width="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView

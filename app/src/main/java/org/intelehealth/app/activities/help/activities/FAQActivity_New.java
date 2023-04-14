@@ -71,11 +71,17 @@ public class FAQActivity_New extends AppCompatActivity {
     public List<QuestionModel> getQuestionsList() {
         String[] namesArr = {"How intelehealth works?","Why Intelehealth exists?", "How intelehealth help patients?", "How to register new patient?",
                 "How to add a new visit?", "How to book an appointment?"};
-        String[] descArr = {"Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare..Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment."};
+        String[] descArr = {"Intelehealth has developed a comprehensive technology platform that Governments, NGO’s and Hospitals can use to deliver telemedicine-based care to their beneficiaries. Built with powerful features like a digital assistant with 80+ care protocols makes it easy for any organization to use and adapt it to meet their needs!",
+                "Team at Intelehealth has a vision of \"Health for all\". Thus, Intelehealth exists to keep this vision of universal health coverage alive. It strive to achieve that every single citizen in this world should be able to receive the health services they need, when and where they need them, without facing any financial hardship.",
+                "Our Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare. Using app, the HWs are able to capture details of patient\'s medication history, diagnostics, prescriptions and treatment. All these details our then shared with the remote doctors to provide consultation. It helps in saving patients from traveling miles for healthcare.",
+        "To register a patient, click on the \"Add Patient\" tab on the home scree. Read out the privacy policy to the patient. If they accept, fill out all the details to successfully register a patient. ",
+        "Once the patient is registered, on patient details screen, click \"Start Visit\" button to create a new visit for the patient.",
+        "Once the patient is registered and the visit is created, on visit summary screen, click \"Appointment\" button. Select the date and time (from available slots) which is suitable to the patient. Click on \"Book Appointment\" to complete booking an appointment with the specialist doctor."};
+
 
         List<QuestionModel> questionsList = new ArrayList<>();
         for (int i = 0; i < namesArr.length; i++) {
-            QuestionModel questionModel = new QuestionModel(namesArr[i], descArr[0]);
+            QuestionModel questionModel = new QuestionModel(namesArr[i], descArr[i]);
             questionsList.add(questionModel);
         }
 
