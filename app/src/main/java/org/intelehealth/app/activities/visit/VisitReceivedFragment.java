@@ -129,18 +129,18 @@ public class VisitReceivedFragment extends Fragment {
     private void defaultData() {
         recentVisits();
         olderVisits();
-        int totalCounts = totalCounts_recent + totalCounts_older;
+//        int totalCounts = totalCounts_recent + totalCounts_older;
 
 //        thisMonths_Visits();
-        if (mlistener != null)
-            mlistener.receivedCount(totalCounts);
+//        if (mlistener != null)
+//            mlistener.receivedCount(totalCounts);
         progress.setVisibility(View.GONE);
     }
 
     private void visitData() {
 
         // Total no. of End visits.
-        int total = getTotalCounts_EndVisit();
+        int total = totalCounts_recent + totalCounts_older;
         String htmlvalue = "<b>" + total + " Patients </b> are awaiting their prescriptions. Please send";
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
 

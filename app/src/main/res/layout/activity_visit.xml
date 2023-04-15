@@ -60,7 +60,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
-                    android:text="My visits"
+                    android:text="My Visits"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
                     android:textAppearance="@style/label"
