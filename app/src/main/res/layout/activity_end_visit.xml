@@ -150,7 +150,7 @@
                 android:layout_below="@+id/recycler_recent"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
-                android:text="@string/this_weeks_visits"
+                android:text="@string/older_visits"
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize"
                 android:textStyle="bold" />

@@ -775,11 +775,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         Executors.newSingleThreadExecutor().execute(() -> {
             if (visitUUID != null && VisitsDAO.isVisitUploaded(visitUUID) && !VisitsDAO.isVisitEnded(visitUUID)) {
-                runOnUiThread(() -> btnEndVisit.setVisibility(View.VISIBLE));
+                runOnUiThread(() -> {
+                    btnEndVisit.setVisibility(View.VISIBLE);
+                    setHeightForFab();
+                });
             } else {
-                runOnUiThread(() -> btnEndVisit.setVisibility(View.GONE));
+                runOnUiThread(() -> {
+                    btnEndVisit.setVisibility(View.GONE);
+                    setHeightForFab();
+                });
             }
         });
+        setHeightForFab();
 
         if (patientUuid != null && patientUuid.isEmpty()) {
             queryData(String.valueOf(patientUuid));
@@ -2294,7 +2301,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                                     + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link
-                                                    + getString(R.string.and_enter_your_patient_id)+ idView.getText().toString()))));
+                                                    + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 
@@ -2575,8 +2582,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
-                            setHeightForFab();
                             btnEndVisit.setVisibility(View.VISIBLE);
+                            setHeightForFab();
+
                             //
                             showVisitID();
                             Log.d("visitUUID", "showVisitID: " + visitUUID);
@@ -4644,12 +4652,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         FloatingActionButton fabChat = findViewById(R.id.fab_chat);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabChat.getLayoutParams();
 
-        if (btn_bottom_vs.getVisibility() == View.GONE || btnEndVisit.getVisibility() == View.GONE) {
-            params.bottomMargin = 200;
+        if (btnEndVisit.getVisibility() == View.VISIBLE) {
+            if (btn_bottom_vs.getVisibility() == View.VISIBLE) {
+                params.bottomMargin = 375;
+            }
+            if (btn_bottom_printshare.getVisibility() == View.VISIBLE) {
+                params.bottomMargin = 375;
+            }
         } else {
-            params.bottomMargin = 350;
+            params.bottomMargin = 200;
         }
-
         fabChat.setLayoutParams(params);
     }
 }

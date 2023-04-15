@@ -84,10 +84,12 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/relative_firstscreen_nxt_btn"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="@dimen/margin_16">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -175,6 +177,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/other_card"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:orientation="vertical">
 
 
@@ -182,10 +186,9 @@
                     android:id="@+id/cv_open_visits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="@dimen/margin_20"
                     app:cardCornerRadius="@dimen/margin_8"
                     app:cardElevation="@dimen/margin_5">
 
@@ -216,7 +219,7 @@
                                 android:layout_marginStart="@dimen/margin_8"
                                 android:gravity="center_vertical"
                                 android:lineSpacingExtra="3sp"
-                                android:text="Open Visits"
+                                android:text="@string/open_visit"
                                 android:textAppearance="@style/patdetail_header1" />
                         </LinearLayout>
 
@@ -236,14 +239,15 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_past_visits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:layout_marginEnd="24dp" android:layout_marginBottom="@dimen/margin_24"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="@dimen/margin_24"
                     app:cardCornerRadius="@dimen/margin_8"
                     app:cardElevation="@dimen/margin_5">
 
@@ -306,7 +310,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/margin_16"
         android:visibility="visible">
 
         <Button
@@ -314,7 +317,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_24"

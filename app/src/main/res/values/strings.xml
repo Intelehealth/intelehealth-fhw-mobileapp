@@ -884,7 +884,7 @@
     <string name="close_visits">Close visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with doctors so that they can provide high-quality health services for their patients</string>
+    <string name="who_we_are_intro">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -893,11 +893,11 @@
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant). Share the information with the telemedicine doctor</string>
+    <string name="take_patient_visits_intro">The platform is powered by Ayu, a programmable digital assistant that supports frontline health workers with evidence-based protocols for primary healthcare in regional languages</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
     <string name="share_prescriptions">Share the prescription</string>
 
-    <string name="provide_prescriptions_intro">Telemedicine doctor will provide a prescription. Prescription can be shared with the patient digitally or in print.</string>
+    <string name="provide_prescriptions_intro">The cloud-based open-source platform designed for a low-resource environment combined with a customized implementation strategy creates a digital health solution for impactful health outcomes</string>
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
     <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
@@ -1853,5 +1853,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="prescribed_medication_remarks">Remarks</string>
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
+    <string name="open_visit">Open Visit</string>
 
 </resources>

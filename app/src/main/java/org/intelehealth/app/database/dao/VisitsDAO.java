@@ -711,7 +711,7 @@ public class VisitsDAO {
         cursor.moveToFirst();
 
         String endVisitValue = cursor.getString(cursor.getColumnIndexOrThrow("enddate"));
-        if (endVisitValue == null)
+        if (endVisitValue != null)
             isVisitEnded = true;
 
         cursor.close();

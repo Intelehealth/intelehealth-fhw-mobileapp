@@ -230,15 +230,15 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        int countTotalVisits = getCurrentMonthsVisits(false);
+//        int countTotalVisits = getCurrentMonthsVisits(false);
         int countForReceivedPrescription = getCurrentMonthsVisits(true);
-        prescriptionCountTextView.setText(String.format("%d out of %d", countForReceivedPrescription, countTotalVisits));
+        prescriptionCountTextView.setText(String.format("%d prescriptions received", countForReceivedPrescription));
 
         int countPendingCloseVisits = getThisMonthsNotEndedVisits();
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(String.format("%d unclosed visits", countPendingCloseVisits));
         getUpcomingAppointments();
-        int count  = countPendingFollowupVisits();
+        int count = countPendingFollowupVisits();
         TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
         countPendingFollowupVisitsTextView.setText(String.format("%d pending", count));
     }

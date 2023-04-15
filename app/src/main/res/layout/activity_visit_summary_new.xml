@@ -101,6 +101,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:tint="#0FD197"
                     android:src="@drawable/ui2_selector_home_nav" />
 
             </LinearLayout>
@@ -375,8 +376,7 @@
                 android:id="@+id/add_notes_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vitalsRelativeLayout"
-                android:layout_marginTop="@dimen/margin_40dp">
+                android:layout_below="@+id/vitalsRelativeLayout">
 
                 <!--Visit Summary-->
                 <RelativeLayout
@@ -508,7 +508,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/add_notes_relative"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginTop="@dimen/margin_20"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
                 android:visibility="visible">
 
@@ -873,8 +873,8 @@
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
@@ -883,7 +883,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
