@@ -482,7 +482,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String visitSelection = "uuid != ? and patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {visitID, patientUuid};
-        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String[] visitColumns = {"uuid", "startdate", "enddate"};
         String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         if (visitCursor == null || visitCursor.getCount() <= 0) {

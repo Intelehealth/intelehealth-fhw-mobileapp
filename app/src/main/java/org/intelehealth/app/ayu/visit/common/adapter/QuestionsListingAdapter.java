@@ -282,6 +282,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
         TextView rangeTextView = view.findViewById(R.id.btn_values);
         TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
+
         if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
                 && node.getLanguage().equalsIgnoreCase(" to ")) {
             String[] vals = node.getLanguage().split(" to ");
@@ -349,6 +361,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
         TextView rangeTextView = view.findViewById(R.id.btn_values);
         TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
+
+
         if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
             int i = Integer.parseInt(node.getLanguage());
             rangeTextView.setText(String.format("Level %d ", i));
@@ -558,6 +583,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         holder.tvQuestionDesc.setVisibility(View.VISIBLE);
         holder.recyclerView.setVisibility(View.GONE);
+        holder.submitButton.setVisibility(View.GONE);
+        holder.skipButton.setVisibility(View.GONE);
         holder.tvQuestionDesc.setText("Select yes or no");
 
         View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
@@ -579,7 +606,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 for (int i = 0; i < node.getOptionsList().size(); i++) {
                     if (node.getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
                         mItemList.get(position).setSelected(true);
-
+                        Log.v("data", "updated associate symptoms selected status");
                     }
                 }
             }
@@ -592,12 +619,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void showOptionsData(final GenericViewHolder holder, List<Node> options, int index) {
         if (options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+            holder.submitButton.setVisibility(View.GONE);
+            holder.skipButton.setVisibility(View.GONE);
             // it seems that inside the options only one view and its simple component like text,date, number, area, duration, range, frequency, camera, etc
             // we we have add same in linear layout dynamically instead of adding in to recyclerView
             holder.singleComponentContainer.setVisibility(View.VISIBLE);
             holder.tvQuestionDesc.setVisibility(View.GONE);
             Node node = options.get(0);
-            String type = node.getInputType();
+            String type = node.getInputType() == null ? "" : node.getInputType();
 
             if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
                 type = "options";
@@ -644,8 +673,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     // openCamera(context, imagePath, imageName);
                     //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
                     break;
+                default:
+                    holder.submitButton.setVisibility(View.VISIBLE);
+                    break;
             }
-            holder.submitButton.setVisibility(View.GONE);
+
         } else {
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
@@ -657,6 +689,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                 holder.submitButton.setVisibility(View.GONE);
 
+            }
+
+            if (mItemList.get(index).isRequired()) {
+                holder.skipButton.setVisibility(View.GONE);
+            } else {
+                holder.skipButton.setVisibility(View.VISIBLE);
             }
             //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
@@ -688,10 +726,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v("Node", "Type - " + type);
                     switch (type) {
                         case "text":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             // askText(questionNode, context, adapter);
                             addTextEnterView(node, holder, index);
                             break;
                         case "date":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             //askDate(questionNode, context, adapter);
                             addDateView(node, holder, index);
                             break;
@@ -699,6 +741,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             //askLocation(questionNode, context, adapter);
                             break;
                         case "number":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             // askNumber(questionNode, context, adapter);
                             addNumberView(node, holder, index);
                             break;
@@ -706,18 +750,26 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             // askArea(questionNode, context, adapter);
                             break;
                         case "duration":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             // askDuration(questionNode, context, adapter);
                             addDurationView(node, holder, index);
                             break;
                         case "range":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             // askRange(questionNode, context, adapter);
                             addRangeView(node, holder, index);
                             break;
                         case "frequency":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             //askFrequency(questionNode, context, adapter);
                             addFrequencyView(node, holder, index);
                             break;
                         case "camera":
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
                             // openCamera(context, imagePath, imageName);
                             Log.v("showCameraView", "showOptionsData 2");
                             showCameraView(node, holder, index);
@@ -825,6 +877,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
 
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
+
         // add a list
         int i = 0;
         int max = 100;
@@ -906,6 +969,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
                 node.setSelected(true);
+                holder.node.setSelected(true);
                 notifyDataSetChanged();
                 mOnItemSelection.onSelect(node, index);
             }
@@ -970,6 +1034,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
 
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -984,9 +1059,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
+                        holder.node.setSelected(true);
                     } else {
                         //if (node.isRequired()) {
                         node.setSelected(false);
+                        holder.node.setSelected(false);
                         //} else {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
@@ -1011,9 +1088,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+
         final EditText editText = view.findViewById(R.id.actv_reasons);
-        if (holder.node.isOptional()) skipButton.setVisibility(View.VISIBLE);
+        if (node.isSelected() && node.getLanguage() != null && !node.getLanguage().equalsIgnoreCase("%")) {
+            editText.setText(node.getLanguage());
+        }
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1022,6 +1103,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mOnItemSelection.onSelect(node, index);
             }
         });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1036,9 +1118,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
+                        holder.node.setSelected(true);
                     } else {
                         //if (node.isRequired()) {
                         node.setSelected(false);
+                        holder.node.setSelected(false);
                         //} else {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
@@ -1076,6 +1160,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 submitButton.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
             }
         });
+        holder.skipButton.setVisibility(View.GONE);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index);
+            }
+        });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1098,6 +1193,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
+                        holder.node.setSelected(true);
                     } else {
                         if (node.isRequired()) {
                             node.setSelected(false);
@@ -1134,7 +1230,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
-        Button submitButton;
+        Button submitButton, skipButton;
         TextView knowMoreTextView;
 
 
@@ -1144,6 +1240,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             knowMoreTextView.setVisibility(View.GONE);
 
+            skipButton = itemView.findViewById(R.id.btn_skip);
             submitButton = itemView.findViewById(R.id.btn_submit);
             recyclerView = itemView.findViewById(R.id.rcv_container);
             singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
@@ -1166,6 +1263,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         mOnItemSelection.onSelect(node, index);
                     else
                         Toast.makeText(mContext, "Please select at least one option!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            skipButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mItemList.get(index).setSelected(false);
+                    mOnItemSelection.onSelect(node, index);
+
                 }
             });
 

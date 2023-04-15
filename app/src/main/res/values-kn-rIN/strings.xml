@@ -841,5 +841,6 @@
     <string name="loading_slots">Loading slots...</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
+    <string name="all_patients_txt">All Patients</string>
 
 </resources>

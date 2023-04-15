@@ -1854,5 +1854,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
+    <string name="all_patients_txt">All Patients</string>
 
 </resources>
