@@ -1074,9 +1074,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                if (i != 0) {
+                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                } else {
+                    speciality_selected = "";
+                }
+
             }
 
             @Override
@@ -2294,7 +2299,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                                     + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link
-                                                    + getString(R.string.and_enter_your_patient_id)+ idView.getText().toString()))));
+                                                    + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 
@@ -2448,6 +2453,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
 
+        if (speciality_selected == null || speciality_selected.isEmpty()) {
+            showSelectSpeciliatyErrorDialog();
+            return;
+        }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);

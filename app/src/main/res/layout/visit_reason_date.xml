@@ -26,12 +26,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/cav_date"
         android:layout_alignParentEnd="true"
-        android:layout_marginVertical="@dimen/padding_12"
+        android:layout_marginVertical="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:minWidth="100dip"
         android:text="Select Date"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cav_date"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_toStartOf="@+id/btn_submit"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingHorizontal="@dimen/padding_7"
+        android:paddingVertical="@dimen/padding_7"
+        android:text="Skip"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size"
+        android:visibility="visible" />
 
 </RelativeLayout>

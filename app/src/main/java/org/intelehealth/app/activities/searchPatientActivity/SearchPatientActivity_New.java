@@ -4,11 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
@@ -17,16 +13,22 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -35,7 +37,6 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ import java.util.List;
 public class SearchPatientActivity_New extends AppCompatActivity {
     RecyclerView search_recycelview;
     SearchPatientAdapter_New adapter;
-    EditText search_txt_enter;
+    EditText mSearchEditText;
     TextView search_hint_text, allPatientsTV, addPatientTV;
     String query;
     boolean fullyLoaded = false;
@@ -63,6 +64,8 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     View dividerView;
     ImageView iconSearch;
 
+    private RecyclerView mSearchHistoryRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
-        search_txt_enter = findViewById(R.id.search_txt_enter);
+        mSearchEditText = findViewById(R.id.search_txt_enter);
         search_hint_text = findViewById(R.id.search_hint_text);
         view_nopatientfound = findViewById(R.id.view_nopatientfound);
         backbtn = findViewById(R.id.backbtn);
@@ -78,6 +81,14 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         allPatientsTV = findViewById(R.id.all_patients_tv);
         addPatientTV = findViewById(R.id.add_new_patientTV);
         iconSearch = findViewById(R.id.icon_search);
+
+
+        mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+        mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
         previous_SearchResults();
         queryAllPatients();
@@ -95,38 +106,64 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         iconSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!search_txt_enter.getText().toString().isEmpty()) {
-                    dividerView.setVisibility(View.GONE);
-                    allPatientsTV.setVisibility(View.GONE);
-                    String text = search_txt_enter.getText().toString();
-                    search_hint_text.setText("Results for \"" + text + "\"");
-                    search_txt_enter.setTextColor(getResources().getColor(R.color.white));
+                if (!mSearchEditText.getText().toString().isEmpty()) {
+                    //dividerView.setVisibility(View.GONE);
+                    //allPatientsTV.setVisibility(View.GONE);
+                    String text = mSearchEditText.getText().toString();
+                    allPatientsTV.setText("Results for \"" + text + "\"");
+                    mSearchEditText.setTextColor(getResources().getColor(R.color.white));
                     managePreviousSearchStorage(text);
-//                    sessionManager.setPreviousSearchQuery(text); // previous search feature.
+//                  sessionManager.setPreviousSearchQuery(text); // previous search feature.
                     query = text;
                     doQuery(text);
+
+                } else {
+                    allPatientsTV.setText(getString(R.string.all_patients_txt));
+                    query = "";
+                    doQuery(query);
+
                 }
             }
         });
         backbtn.setOnClickListener(v -> {
             finish();
         });
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty()) {
+                    allPatientsTV.setText(getString(R.string.all_patients_txt));
+                    query = "";
+                    doQuery(query);
+                }
+            }
+        });
     }
 
     private void managePreviousSearchStorage(String text) {
         String retrievedPreviousData = sessionManager.getPreviousSearchQuery();
         List<String> retrievedPreviousSearchList = new ArrayList<>();
-        if (retrievedPreviousData != null && !retrievedPreviousData.isEmpty() && !retrievedPreviousData.equalsIgnoreCase("")) {
+        if (retrievedPreviousData != null && !retrievedPreviousData.isEmpty()) {
             if (retrievedPreviousData.contains(",")) {
                 retrievedPreviousSearchList = new ArrayList<String>(Arrays.asList(retrievedPreviousData.split(",")));
             } else
                 retrievedPreviousSearchList.add(retrievedPreviousData);
 
-            if (retrievedPreviousSearchList.size() == 3) {
+            if (retrievedPreviousSearchList.size() == 5) {
                 retrievedPreviousSearchList.remove(0);
             }
-            retrievedPreviousSearchList.add(text);
+            if (!retrievedPreviousSearchList.contains(text))
+                retrievedPreviousSearchList.add(text);
             StringBuffer sb = new StringBuffer();
             for (String s : retrievedPreviousSearchList) {
                 sb.append(s);
@@ -137,10 +174,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         } else {
             sessionManager.setPreviousSearchQuery(text);
         }
+        previous_SearchResults();
     }
 
     private void queryAllPatients() {
-        List<PatientDTO> patientDTOList = PatientsDAO.getAllPatientsFromDB();
+        List<PatientDTO> patientDTOList = PatientsDAO.getAllPatientsFromDB(500, 0);
         if (patientDTOList.size() > 0) { // ie. the entered text is present in db
             patientDTOList = fetchDataforTags(patientDTOList);
             Log.v(TAG, "size: " + patientDTOList.size());
@@ -160,30 +198,45 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void previous_SearchResults() {
-        if (search_txt_enter.getText().toString().isEmpty() ||
-                search_txt_enter.getText().toString().equalsIgnoreCase("")) {
-            String previousSearchText = sessionManager.getPreviousSearchQuery();
-            List<String> retrievedPreviousSearchList = new ArrayList<>();
 
-            if (previousSearchText.equalsIgnoreCase("") || previousSearchText.isEmpty()) {
-                search_hint_text.setVisibility(View.GONE);
-                dividerView.setVisibility(View.GONE);
-            } else {
-                if (previousSearchText.contains(",")) {
-                    retrievedPreviousSearchList = new ArrayList<String>(Arrays.asList(previousSearchText.split(",")));
-                } else
-                    retrievedPreviousSearchList.add(previousSearchText);
+        String previousSearchText = sessionManager.getPreviousSearchQuery();
+        List<String> raWPreviousSearchList = new ArrayList<>();
+        List<String> retrievedPreviousSearchList = new ArrayList<>();
 
-                String value = "";
-                for (int i = retrievedPreviousSearchList.size()-1; i >=0; i--) {
-                    value = value +  "\"" + retrievedPreviousSearchList.get(i) + "\"" + "\n";
-                }
+        if (previousSearchText.isEmpty()) {
+            search_hint_text.setVisibility(View.GONE);
+            dividerView.setVisibility(View.GONE);
+        } else {
+            allPatientsTV.setVisibility(View.VISIBLE);
+            if (previousSearchText.contains(",")) {
+                raWPreviousSearchList = new ArrayList<String>(Arrays.asList(previousSearchText.split(",")));
+            } else
+                raWPreviousSearchList.add(previousSearchText);
 
-                search_hint_text.setVisibility(View.VISIBLE);
-                search_hint_text.setText("Previously Searched..\n" + value);
+            String value = "";
+            for (int i = raWPreviousSearchList.size() - 1; i >= 0; i--) {
+                //value = value + "\"" + retrievedPreviousSearchList.get(i) + "\"" + "\n";
+                retrievedPreviousSearchList.add(raWPreviousSearchList.get(i));
             }
 
+            search_hint_text.setVisibility(View.VISIBLE);
+            //search_hint_text.setText("Previously Searched..\n" + value);
         }
+        SearchChipsPreviewGridAdapter searchChipsPreviewGridAdapter = new SearchChipsPreviewGridAdapter(this, mSearchHistoryRecyclerView, retrievedPreviousSearchList, new SearchChipsPreviewGridAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(String data) {
+                mSearchEditText.setText(data);
+                iconSearch.performClick();
+            }
+
+            @Override
+            public void onRemoved(String data) {
+
+            }
+        });
+        mSearchHistoryRecyclerView.setAdapter(searchChipsPreviewGridAdapter);
+
+
     }
 
     private void doQuery(String query) {
@@ -263,6 +316,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void searchData_Available() {
+        mSearchHistoryRecyclerView.setVisibility(View.VISIBLE);
         search_hint_text.setVisibility(View.VISIBLE);
         view_nopatientfound.setVisibility(View.GONE);
         search_recycelview.setVisibility(View.VISIBLE);
@@ -271,14 +325,21 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             allPatientsTV.setVisibility(View.VISIBLE);
             dividerView.setVisibility(View.GONE);
         }
+        findViewById(R.id.search_clear_tv).setVisibility(View.VISIBLE);
     }
 
     private void searchData_Unavailable() {
+        mSearchHistoryRecyclerView.setVisibility(View.GONE);
         search_hint_text.setVisibility(View.GONE);
         view_nopatientfound.setVisibility(View.VISIBLE);
         search_recycelview.setVisibility(View.GONE);
         dividerView.setVisibility(View.GONE);
         allPatientsTV.setVisibility(View.GONE);
+        findViewById(R.id.search_clear_tv).setVisibility(View.GONE);
     }
 
+    public void clearSearch(View view) {
+        mSearchEditText.setText("");
+        view.setVisibility(View.GONE);
+    }
 }

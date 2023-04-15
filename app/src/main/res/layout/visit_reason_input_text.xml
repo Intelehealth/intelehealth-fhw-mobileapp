@@ -53,5 +53,5 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/common_button_text_size"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </RelativeLayout>

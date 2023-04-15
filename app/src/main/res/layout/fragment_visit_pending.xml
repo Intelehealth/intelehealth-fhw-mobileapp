@@ -298,7 +298,8 @@
                     android:text="@string/older_visits"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/older_nodata"
@@ -321,6 +322,7 @@
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
                     tools:listitem="@layout/followup_list_item" />

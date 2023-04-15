@@ -19,33 +19,6 @@ public class VisitPagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
     }
 
-/*
-    public VisitPagerAdapter(FragmentManager fm, int numberOfTabs, Context context) {
-        super(fm);
-        this.tabCount = numberOfTabs;
-        this.context = context;
-    }
-*/
-
-/*    @NonNull
-    @Override
-    public Fragment getItem(int position) {
-        switch (position) {
-            case 1:
-                return new VisitPendingFragment();
-
-            case 0:
-
-            default:
-                return new VisitReceivedFragment();
-        }
-    }*/
-
-    /*@Override
-    public int getCount() {
-        return tabCount;
-    }*/
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {

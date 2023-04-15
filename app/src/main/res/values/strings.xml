@@ -1853,5 +1853,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="prescribed_medication_remarks">Remarks</string>
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
+    <string name="all_patients_txt">All Patients</string>
 
 </resources>

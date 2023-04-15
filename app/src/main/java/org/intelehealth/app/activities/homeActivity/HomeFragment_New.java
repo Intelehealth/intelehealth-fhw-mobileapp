@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.homeActivity;
 
-import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.Context;
@@ -24,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
@@ -39,11 +37,9 @@ import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -81,9 +77,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     private static SQLiteDatabase db;
 
     private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
-        // new
         int count = 0;
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
 
         Cursor cursor = null;
         if (isForReceivedPrescription)
@@ -93,25 +88,52 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                             "  e.encounter_type_uuid = ? and" +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                             " o.conceptuuid = ? and" +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
-                            " group by p.openmrs_id"
+                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
+                            " group by e.visituuid"
                     , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         else
             cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                            " e.encounter_type_uuid = ?  and " +
+                            //" e.encounter_type_uuid = ?  and " +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                             " " +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
-                            "  group by p.openmrs_id"
-                    , new String[]{ENCOUNTER_VISIT_NOTE});
-        count = cursor.getCount();
-        cursor.close();
+                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
+                            "  group by e.visituuid"
+                    , new String[]{});
         db.setTransactionSuccessful();
         db.endTransaction();
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                //TODO: need more improvement in main query, this condition can be done by join query
+                if(isForReceivedPrescription) {
+                    if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                        count += 1;
+                    }
+                }else{
+                    if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                        count += 1;
+                    }
+                }
+            }
+            while (cursor.moveToNext());
+        }
+
+
+        cursor.close();
+
 
         return count;
     }
@@ -230,15 +252,15 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        int countTotalVisits = getCurrentMonthsVisits(false);
-        int countForReceivedPrescription = getCurrentMonthsVisits(true);
-        prescriptionCountTextView.setText(String.format("%d out of %d", countForReceivedPrescription, countTotalVisits));
+        int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+        int countReceivedPrescription = getCurrentMonthsVisits(true);
+        prescriptionCountTextView.setText(String.format("%d out of %d", countReceivedPrescription, pendingCountTotalVisits + countReceivedPrescription));
 
         int countPendingCloseVisits = getThisMonthsNotEndedVisits();
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(String.format("%d unclosed visits", countPendingCloseVisits));
         getUpcomingAppointments();
-        int count  = countPendingFollowupVisits();
+        int count = countPendingFollowupVisits();
         TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
         countPendingFollowupVisitsTextView.setText(String.format("%d pending", count));
     }
