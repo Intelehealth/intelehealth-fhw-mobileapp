@@ -86,30 +86,45 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         db.beginTransaction();
 
         Cursor cursor = null;
-        if (isForReceivedPrescription)
+        Cursor cursor1 = null;
+
+        if (isForReceivedPrescription) {
             cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                             "  e.encounter_type_uuid = ? and" +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                            " o.conceptuuid = ? and" +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
-                            " group by p.openmrs_id"
+                            " o.conceptuuid = ? " +
+//                            "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+//                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
+                            "and v.startdate > DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
                     , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
-        else
+
+            cursor1 = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                            "  e.encounter_type_uuid = ? and" +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                            " o.conceptuuid = ? and" +
+//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
+//                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
+                            " v.startdate < DATETIME('now', '-4 day') " +
+                            "group by p.openmrs_id ORDER BY v.startdate DESC"
+                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});
+        } else
             cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                             " e.encounter_type_uuid = ?  and " +
-                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                            " " +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +
+//                            "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
+//                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
                             "  group by p.openmrs_id"
                     , new String[]{ENCOUNTER_VISIT_NOTE});
         count = cursor.getCount();
+        count += cursor1.getCount();
         cursor.close();
+        cursor1.close();
         db.setTransactionSuccessful();
         db.endTransaction();
 
@@ -230,15 +245,15 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        int countTotalVisits = getCurrentMonthsVisits(false);
+//        int countTotalVisits = getCurrentMonthsVisits(false);
         int countForReceivedPrescription = getCurrentMonthsVisits(true);
-        prescriptionCountTextView.setText(String.format("%d out of %d", countForReceivedPrescription, countTotalVisits));
+        prescriptionCountTextView.setText(String.format("%d received", countForReceivedPrescription));
 
         int countPendingCloseVisits = getThisMonthsNotEndedVisits();
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(String.format("%d unclosed visits", countPendingCloseVisits));
         getUpcomingAppointments();
-        int count  = countPendingFollowupVisits();
+        int count = countPendingFollowupVisits();
         TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
         countPendingFollowupVisitsTextView.setText(String.format("%d pending", count));
     }
