@@ -116,8 +116,8 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(mReasonListingAdapter);
-
-        String[] mindmapsNames = getVisitReasonFilesNamesOnly();
+        // TODO: we are adding this below string array for keeping these two protocol enable for search also
+        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension", "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (getActivity(), R.layout.ui2_custome_dropdown_item_view, mindmapsNames);
@@ -260,6 +260,13 @@ public class VisitReasonCaptureFragment extends Fragment {
                 if (fileNames[i].toUpperCase().startsWith(String.valueOf(c))) {
                     ReasonData reasonData = new ReasonData();
                     reasonData.setReasonName(fileNames[i]);
+//                  // TODO: we are adding this below conditions for keeping these protocol enable for selection
+                    reasonData.setEnabled(fileNames[i].equalsIgnoreCase("Abdominal Pain")
+                            || fileNames[i].equalsIgnoreCase("Diarrhea")
+                            || fileNames[i].equalsIgnoreCase("Fever")
+                            || fileNames[i].equalsIgnoreCase("Hypertension")
+                            || fileNames[i].equalsIgnoreCase("Menstrual disorder")
+                    );
                     list.add(reasonData);
                 }
             }

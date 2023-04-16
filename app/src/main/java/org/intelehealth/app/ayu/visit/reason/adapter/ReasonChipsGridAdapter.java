@@ -63,10 +63,17 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             if (mItemList.get(position).isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_primary_bg);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
-            }else{
-                genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_1_bg);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+            } else {
+
+                if (mItemList.get(position).isEnabled()) {
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_1_bg);
+                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                } else {
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.gray_2));
+                }
             }
+
 
         }
     }
@@ -86,9 +93,11 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemSelection.onSelect(tvName.getText().toString());
-                    mItemList.get(index).setSelected(true);
-                    notifyItemChanged(index);
+                    if (mItemList.get(index).isEnabled()) {
+                        mOnItemSelection.onSelect(tvName.getText().toString());
+                        mItemList.get(index).setSelected(true);
+                        notifyItemChanged(index);
+                    }
                 }
             });
 

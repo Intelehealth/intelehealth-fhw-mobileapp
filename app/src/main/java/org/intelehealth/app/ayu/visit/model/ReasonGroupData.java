@@ -1,8 +1,9 @@
 package org.intelehealth.app.ayu.visit.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ReasonGroupData {
+public class ReasonGroupData implements Serializable {
     private String alphabet;
     private List<ReasonData> reasons;
 
