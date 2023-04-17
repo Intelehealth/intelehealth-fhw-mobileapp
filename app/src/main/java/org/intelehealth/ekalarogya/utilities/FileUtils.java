@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,7 +93,7 @@ public class FileUtils {
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException | NullPointerException e) {
-            Toast.makeText(context, "config file is missing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
