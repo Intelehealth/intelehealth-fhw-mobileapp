@@ -363,6 +363,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
             if (!familyHistoryMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {

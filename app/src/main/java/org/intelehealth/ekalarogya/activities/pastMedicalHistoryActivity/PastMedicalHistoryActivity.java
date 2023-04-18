@@ -383,6 +383,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
             if (!patientHistoryMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {

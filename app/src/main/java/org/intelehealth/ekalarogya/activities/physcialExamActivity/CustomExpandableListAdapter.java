@@ -110,7 +110,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         Node nodeGroup = (Node) getGroup(groupPosition);
-        if (nodeGroup.getText().equalsIgnoreCase("Associated symptoms") || nodeGroup.getText().equalsIgnoreCase("जुड़े लक्षण")) {
+        if (nodeGroup.getText().equalsIgnoreCase("Associated symptoms")
+                || nodeGroup.getText().equalsIgnoreCase("जुड़े लक्षण")
+                || nodeGroup.getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
             convertView = mInflater.inflate(R.layout.list_expandable_item_radio, null);
 
             final Node node = (Node) getChild(groupPosition, childPosition);

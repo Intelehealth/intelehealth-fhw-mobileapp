@@ -1183,6 +1183,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
                         }
                     }
+/*
+                    if (mComplaint.contains("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
+                        String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+                        for (String compla : cc) {
+                            mComplaint = mComplaint.substring(0, compla.indexOf("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು") - 3);
+                        }
+                    }
+*/
 
                     mComplaint = mComplaint.replace(Node.big_bullet, "").replace("<br/>", ",");
                     Log.v("Chief Complaint", "cc_title: " + mComplaint);

@@ -291,6 +291,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
@@ -605,7 +606,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("Associated symptoms"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                        .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("जुड़े लक्षण"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
