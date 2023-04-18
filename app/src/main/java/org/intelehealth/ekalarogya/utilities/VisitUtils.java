@@ -17,7 +17,8 @@ public class VisitUtils {
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()) {
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
-                followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
+                followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder)
+                        + followUpDate.replace("Remark", "ಟೀಕೆ"));
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
