@@ -82,7 +82,7 @@
     <string name="identification_screen_prompt_last_name">ಕೊನೆಯ ಹೆಸರು *</string>
     <string name="identification_screen_prompt_address">ವಿಳಾಸ ಸಾಲು 1</string>
     <string name="identification_screen_prompt_address2">ವಿಳಾಸ ಸಾಲು 2</string>
-    <string name="identification_screen_prompt_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="identification_screen_prompt_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ *</string>
     <string name="admin_password_dialog_heading" translatable="false">ನಿರ್ವಾಹಕ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="identification_screen_prompt_gender" translatable="false">ಲಿಂಗ *</string>
     <string name="identification_screen_checkbox_male">ಪುರುಷ</string>

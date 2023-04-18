@@ -83,7 +83,7 @@
     <string name="identification_screen_prompt_last_name">পদবি*</string>
     <string name="identification_screen_prompt_address">ঠিকানা লাইন 1</string>
     <string name="identification_screen_prompt_address2">ঠিকানা লাইন ২</string>
-    <string name="identification_screen_prompt_phone_number">ফোন নম্বর*</string>
+    <string name="identification_screen_prompt_phone_number">ফোন নম্বর *</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুরুষ</string>
