@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
 
@@ -78,9 +79,10 @@
 
                 <TextView
                     android:id="@+id/tv_not_uploaded"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:gravity="center"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/lato_regular"
                     android:paddingStart="5dp"
@@ -88,8 +90,11 @@
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp"
                     android:textColor="@color/white"
+                    android:text="@string/visit_not_uploaded"
+                    tools:background="@color/lite_red"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
             </LinearLayout>
 
