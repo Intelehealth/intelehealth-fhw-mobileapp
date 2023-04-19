@@ -59,7 +59,7 @@
                     android:layout_below="@+id/tv_please_continue"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/image_intelehealth_margin_top"
-                    android:src="@drawable/intelehealth_logo_white" />
+                    android:src="@drawable/ui2_ic_intelehealth_logo" />
 
             </RelativeLayout>
 

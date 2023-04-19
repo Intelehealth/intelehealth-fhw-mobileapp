@@ -169,10 +169,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Intent Tag: " + intentTag);
             Log.v(TAG, "Intent float_ageYear_Month: " + float_ageYear_Month);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
+            ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, String.valueOf((int) float_ageYear_Month)));
             if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
             }
-
         }
 
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
@@ -443,14 +443,16 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
             Node associateSymptoms = null;
-
+            Log.v(TAG, "optionList  mainNode- "+mainNode.getText());
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
                 if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
                     associateSymptoms = mainNode.getOptionsList().get(j);
 
                 } else {
-                    if (checkNodeValidByGenderAndAge(mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age()))
+                    if (checkNodeValidByGenderAndAge(mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
+                        mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
                         optionList.add(mainNode.getOptionsList().get(j));
+                    }
                 }
             }
             if (associateSymptoms != null) {
@@ -467,7 +469,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     private boolean checkNodeValidByGenderAndAge(String nodeGender, String minAge, String maxAge) {
-        Log.v(TAG, "nodeGender = " + nodeGender);
+
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
         float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
         boolean isValidByGender = true;
@@ -479,12 +481,17 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 nodeGender.equalsIgnoreCase("1")) {
             isValidByGender = false;
         }
-        Log.v(TAG, "isValidByGender = " + isValidByGender);
 
-        if (minAgeF != 0f && maxAgeF != 0f) {
-            isValidByGender = minAgeF <= float_ageYear_Month && float_ageYear_Month <= maxAgeF;
+        if(isValidByGender) {
+            if (minAgeF != 0f && maxAgeF != 0f) {
+                isValidByGender = minAgeF <= float_ageYear_Month && float_ageYear_Month <= maxAgeF;
+            } else if (minAgeF != 0f) {
+                isValidByGender = float_ageYear_Month >= minAgeF;
+            } else if (maxAgeF != 0f) {
+                isValidByGender = float_ageYear_Month <= maxAgeF;
+            }
         }
-        return isValidByGender;
+       return isValidByGender;
     }
 
     public void setTitle(String text) {
@@ -1061,7 +1068,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 

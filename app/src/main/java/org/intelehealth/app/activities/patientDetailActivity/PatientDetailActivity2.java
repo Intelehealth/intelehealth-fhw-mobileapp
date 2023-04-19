@@ -65,7 +65,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -207,10 +206,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         Intent intent = getIntent();
         if (intent != null) {
-            if(intent.hasExtra("BUNDLE")) {
+            if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
-            }else{
+            } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
             }
@@ -501,34 +500,50 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
 
+        mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
+        mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+        initForOpenVisit();
         initForPastVisit();
     }
 
     private RecyclerView mPastVisitsRecyclerView;
     private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
 
-    private void initForPastVisit() {
-        mPastVisitDataList.clear();
+    private RecyclerView mCurrentVisitsRecyclerView;
+    private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
+
+    private void initForOpenVisit() {
+        mCurrentVisitDataList.clear();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        String visitSelection = "patientuuid = ? and enddate IS NULL or enddate = ''";
+        String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientDTO.getUuid()};
-        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String[] visitColumns = {"uuid", "startdate", "enddate"};
         String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-        if (visitCursor == null || visitCursor.getCount() <= 0) {
-            findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
-            startVisitBtn.setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
-            startVisitBtn.setVisibility(View.GONE);
-            if (visitCursor.moveToLast()) {
-                do {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
-                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+        //if (visitCursor == null || visitCursor.getCount() <= 0) {
+        //     findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
+        //    startVisitBtn.setVisibility(View.VISIBLE);
+        //} else {
+        //   findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
+        //   startVisitBtn.setVisibility(View.GONE);
+        if (visitCursor.moveToLast()) {
+            do {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                boolean isCompletedExitedSurvey = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                if (!isCompletedExitedSurvey) {
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;
@@ -592,61 +607,55 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                                     pastVisitData.setChiefComplain(visitValue);
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                    mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    mCurrentVisitDataList.add(pastVisitData);
+                                    Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
                         }
-                        // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
-                        /*else {
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
 
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-                        }*/
                     }
-                    // Called when we close org on vitals screen and Didn't select any complaints
-                    /*else {
-                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        try {
 
-                            Date formatted = currentDate.parse(date);
-                            String visitDate = currentDate.format(formatted);
-                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                        } catch (ParseException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }*/
-                } while (visitCursor.moveToPrevious());
-            }
-
-            if (!mPastVisitDataList.isEmpty()) {
-                PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mPastVisitsRecyclerView, PatientDetailActivity2.this, mPastVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
-                    @Override
-                    public void onItemSelected(PastVisitData pastVisitData) {
-                        Intent in = new Intent(PatientDetailActivity2.this, VisitSummaryActivity_New.class);
-                        in.putExtra("patientUuid", patientDTO.getUuid());
-                        in.putExtra("visitUuid", pastVisitData.getVisitUUID());
-                        in.putExtra("gender", mGender);
-                        in.putExtra("name", patientName);
-                        in.putExtra("encounterUuidVitals", pastVisitData.getEncounterVitals());
-                        in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
-                        in.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        in.putExtra("tag", "VisitDetailsActivity");
-                        startActivity(in);
-                    }
-                });
-                mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
-            }
+                }
+            } while (visitCursor.moveToPrevious());
         }
+        Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+        if (!mCurrentVisitDataList.isEmpty()) {
+            PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
+                @Override
+                public void onItemSelected(PastVisitData pastVisitData) {
+                    intentForVisitDetails(pastVisitData);
+                }
+            });
+            mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
+        }
+
+        if (mCurrentVisitDataList.isEmpty()) {
+            findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
+            startVisitBtn.setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
+            startVisitBtn.setVisibility(View.GONE);
+        }
+        // }
+    }
+
+    /**
+     * @param pastVisitData
+     */
+    private void intentForVisitDetails(PastVisitData pastVisitData) {
+        Intent in = new Intent(PatientDetailActivity2.this, VisitSummaryActivity_New.class);
+        in.putExtra("patientUuid", patientDTO.getUuid());
+        in.putExtra("visitUuid", pastVisitData.getVisitUUID());
+        in.putExtra("gender", mGender);
+        in.putExtra("name", patientName);
+        in.putExtra("encounterUuidVitals", pastVisitData.getEncounterVitals());
+        in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
+        in.putExtra("float_ageYear_Month", float_ageYear_Month);
+        in.putExtra("tag", "VisitDetailsActivity");
+        startActivity(in);
     }
 
     public void setDisplay(String dataString) {
@@ -1356,7 +1365,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             refresh.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
-            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1554,4 +1563,124 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
     }
 
+    private void initForPastVisit() {
+        mPastVisitDataList.clear();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
+        String[] visitArgs = {patientDTO.getUuid()};
+        String[] visitColumns = {"uuid", "startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        if (visitCursor == null || visitCursor.getCount() <= 0) {
+            findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+            if (visitCursor.moveToLast()) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    boolean isCompletedExitedSurvey = false;
+                    try {
+                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                    if (isCompletedExitedSurvey) {
+
+                        String encounterlocalAdultintial = "";
+                        String encountervitalsLocal = null;
+                        String encounterIDSelection = "visituuid = ?";
+
+                        String[] encounterIDArgs = {visit_id};
+
+                        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                            do {
+                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                    encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                                }
+                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                                }
+
+                            } while (encounterCursor.moveToNext());
+                        }
+                        encounterCursor.close();
+
+                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                        String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                        Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                        if (previsitCursor != null && previsitCursor.moveToLast()) {
+
+                            String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            if (visitValue != null && !visitValue.isEmpty()) {
+
+                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                                visitValue = "";
+                                String colon = ":";
+                                if (complaints != null) {
+                                    for (String comp : complaints) {
+                                        if (!comp.trim().isEmpty()) {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                        }
+                                    }
+                                    if (!visitValue.isEmpty()) {
+                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                        visitValue = visitValue.replaceAll("<br/>", "");
+                                        visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                        visitValue = visitValue.replaceAll("<b>", "");
+                                        visitValue = visitValue.replaceAll("</b>", "");
+                                    }
+                                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                    try {
+
+                                        Date formatted = currentDate.parse(date);
+                                        String visitDate = currentDate.format(formatted);
+                                        //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                        PastVisitData pastVisitData = new PastVisitData();
+                                        pastVisitData.setVisitDate(visitDate);
+                                        pastVisitData.setVisitUUID(visit_id);
+                                        pastVisitData.setChiefComplain(visitValue);
+                                        pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                        pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                        mPastVisitDataList.add(pastVisitData);
+                                        Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+
+                                    } catch (ParseException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                while (visitCursor.moveToPrevious());
+            }
+
+            if (!mPastVisitDataList.isEmpty()) {
+                findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+                PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mPastVisitsRecyclerView, PatientDetailActivity2.this, mPastVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
+                    @Override
+                    public void onItemSelected(PastVisitData pastVisitData) {
+                        intentForVisitDetails(pastVisitData);
+                    }
+                });
+                mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
+            } else {
+                findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+            }
+
+
+        }
+    }
 }

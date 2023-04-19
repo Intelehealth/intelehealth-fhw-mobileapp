@@ -163,13 +163,15 @@ public class VisitActivity extends FragmentActivity implements
     @Override
     public void receivedCount(int count) {
         Log.v(TAG, "receivedCount: " + count);
-        tabLayout.getTabAt(0).setText("Received (" + count + ")");
+        tabLayout.getTabAt(0).setText("Received");
+//        tabLayout.getTabAt(0).setText("Received /*(" + count + ")");
     }
 
     @Override
     public void pendingCount(int count) {
         Log.v(TAG, "pendingCount: " + count);
-        tabLayout.getTabAt(1).setText("Pending (" + count + ")");
+        tabLayout.getTabAt(1).setText("Pending");
+//        tabLayout.getTabAt(1).setText("Pending (" + count + ")");
     }
 
     public void syncNow(View view) {

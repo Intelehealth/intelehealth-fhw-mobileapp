@@ -121,16 +121,16 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         thisWeeks_FollowupVisits();
         thisMonths_FollowupVisits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-        if (totalCounts == 0) {
-            mBodyNestedScrollView.setVisibility(View.GONE);
-            mEmptyTextView.setVisibility(View.VISIBLE);
-            toolbar_title.setText("Follow-up visits");
-        } else {
-            mBodyNestedScrollView.setVisibility(View.VISIBLE);
-            mEmptyTextView.setVisibility(View.GONE);
-            toolbar_title.setText("Follow-up visits(" + totalCounts_month + ")"); // eg. Follow-up visits(6)
-
-        }
+//        if (totalCounts == 0) {
+//            mBodyNestedScrollView.setVisibility(View.GONE);
+//            mEmptyTextView.setVisibility(View.VISIBLE);
+//            toolbar_title.setText("Follow-up visits");
+//        } else {
+//            mBodyNestedScrollView.setVisibility(View.VISIBLE);
+//            mEmptyTextView.setVisibility(View.GONE);
+//            toolbar_title.setText("Follow-up visits(" + totalCounts_month + ")"); // eg. Follow-up visits(6)
+//
+//        }
     }
 
     private void todays_FollowupVisits() {

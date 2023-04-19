@@ -190,7 +190,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         mItemList.get(index).setAssociated_symptoms(1);
                     }
                     notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node);
                 }
+
             });
 
             noTextView.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +215,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         mItemList.get(index).setAssociated_symptoms(-1);
                     }
                     notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node);
                 }
             });
 

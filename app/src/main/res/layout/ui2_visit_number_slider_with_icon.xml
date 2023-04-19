@@ -291,5 +291,21 @@
         android:textSize="@dimen/card_content_normal_text_size"
         android:textStyle="bold"
         tools:ignore="TextContrastCheck" />
-
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_range"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_toStartOf="@+id/btn_submit"
+        android:background="@drawable/ui2_common_button_bg_submit"
+        android:minWidth="100dip"
+        android:paddingHorizontal="@dimen/padding_7"
+        android:paddingVertical="@dimen/padding_7"
+        android:text="Skip"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size"
+        android:visibility="visible" />
 </RelativeLayout>

@@ -881,10 +881,10 @@
     <string name="please_reset_password">Please reset new password for \nyour account</string>
     <string name="forgot_password_link"><u>Forgot password?</u></string>
     <string name="prescriptions">Prescriptions</string>
-    <string name="close_visits">Close visits</string>
+    <string name="close_visits">Close Visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with doctors so that they can provide high-quality health services for their patients</string>
+    <string name="who_we_are_intro">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -893,11 +893,11 @@
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant). Share the information with the telemedicine doctor</string>
+    <string name="take_patient_visits_intro">The platform is powered by Ayu, a programmable digital assistant that supports frontline health workers with evidence-based protocols for primary healthcare in regional languages</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
     <string name="share_prescriptions">Share the prescription</string>
 
-    <string name="provide_prescriptions_intro">Telemedicine doctor will provide a prescription. Prescription can be shared with the patient digitally or in print.</string>
+    <string name="provide_prescriptions_intro">The cloud-based open-source platform designed for a low-resource environment combined with a customized implementation strategy creates a digital health solution for impactful health outcomes</string>
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
     <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
@@ -911,7 +911,7 @@
     <string name="next_new">Next</string>
     <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
     <string name="okay">Okay</string>
-    <string name="my_achievements">My achievements</string>
+    <string name="my_achievements">My Achievements</string>
     <string name="my_profile">My profile</string>
     <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
     <string name="no_network_tooltip">No network!</string>
@@ -1700,7 +1700,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
 
     <!--    Follow-up new screens -->
-    <string name="label">Follow-up visits(9)</string>
+    <string name="label">Follow-up Visits</string>
     <string name="you_can_add">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="this_week">This week</string>
@@ -1742,7 +1742,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="aboutus_termscondition">Check out our <a href="https://intelehealth.org/terms-of-use">terms and conditions</a></string>
     <string name="visit_intelehealth_for_more">For more visit our website intelehealth.org</string>
     <string name="aboutus_text">We are a tech-for-impact organisation : A team of engineers, clinicians, management and public health experts. We\'ve developed an innovative open source telemedicine platform connecting the last mile population. \n\nMission: We deliver quality healthcare where there is no doctor \n\nOur vision is Health for all. \n\nWe believe in the vision of universal health coverage - that you should be able to receive the health services you need, when and where you need them, without facing financial hardship. We believe in the vision of Universal Health Coverage - that you should be able to receive the health services you need, when and where you need them, without facing any financial hardship (WHO). But realizing this vision requires the collective efforts of an entire ecosystem. We aim to be a catalyst to empower existing health programs to deliver last-mile healthcare through well-designed user-centered telemedicine technology and implementation services. One thing that people don’t understand is that telemedicine is very empowering for women. For a woman living in rural India, health access is a privilege more than a right. Her access to health may be controlled by other people like her husband or in-laws. She has to rely on them for the permission, money, and transportation that she needs to get to a doctor in the nearby city. When I started working on Intelehealth, I was deeply touched by seeing how empowered women felt to be able to walk out of their house to a telemedicine clinic, talk to a doctor and get the care they needed on their own terms. I saw a woman beaten black and blue by her husband, whose in-laws would not give her any money to treat her injuries. The local health worker with the help of a remote doctor was able to assess her injuries, she gave her medicines to manage her pain, ointments to treat the scratches on her body and most important a kind and caring ear to soothe her soul. I met a woman whose husband refused to use any form of birth control and who wanted to speak with a doctor to understand what family planning options she could use. She discussed over teleconsultation various options and ultimately chose an IUD, which the local nurse was able to insert. I resonated deeply with the stories of these women. As a woman who has experienced abuse, I cannot express what it means to have this one thing - the ability to care for your own body - be in your control. I continue to be motivated by the power of telemedicine in creating easily accessible, safe spaces for women to get the care they rightfully deserve. \n\nNeha Verma \nCEO and Co-Founder, Intelehealth</string>
-    <string name="add_patient">Add patients</string>
+    <string name="add_patient">Add Patients</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
@@ -1777,7 +1777,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="appointments">Appointments</string>
-    <string name="follow_up_visits">Follow-up visits</string>
+    <string name="follow_up_visits">Follow-up Visits</string>
     <string name="first_name_mandatory">First Name*</string>
     <string name="middle_name_registration">Middle Name</string>
     <string name="last_name_mandatory">Last Name*</string>
@@ -1851,5 +1851,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="prescribed_medication_dosage">Dos.</string>
     <string name="prescribed_medication_days">Days</string>
     <string name="prescribed_medication_remarks">Remarks</string>
+    <string name="recent_visit">Recent Visits</string>
+    <string name="older_visits">Older Visits</string>
+    <string name="open_visit">Open Visit</string>
+    <string name="all_patients_txt">All Patients</string>
 
 </resources>

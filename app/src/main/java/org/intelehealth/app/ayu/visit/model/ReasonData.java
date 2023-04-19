@@ -1,11 +1,11 @@
 package org.intelehealth.app.ayu.visit.model;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class ReasonData {
+public class ReasonData implements Serializable {
     private String reasonName;
     private boolean isSelected;
-
+    private boolean isEnabled;
 
 
     public boolean isSelected() {
@@ -22,5 +22,13 @@ public class ReasonData {
 
     public void setReasonName(String reasonName) {
         this.reasonName = reasonName;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

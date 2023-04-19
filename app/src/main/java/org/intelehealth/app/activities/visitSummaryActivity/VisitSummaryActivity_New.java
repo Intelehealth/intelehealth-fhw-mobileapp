@@ -1,7 +1,5 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
@@ -92,6 +90,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
@@ -119,7 +118,6 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -129,7 +127,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -389,17 +386,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
-
-        try {
-            boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-            incomplete_act.setVisibility(isCompletedExitedSurvey ? View.GONE : View.VISIBLE);
-            TextView titleTextView = findViewById(R.id.toolbar_title);
-            if (isCompletedExitedSurvey)
-                titleTextView.setText(titleTextView.getText() + " (Closed)");
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-
 
     }
 
@@ -1085,9 +1071,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                if (i != 0) {
+                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                } else {
+                    speciality_selected = "";
+                }
+
             }
 
             @Override
@@ -1759,29 +1750,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-           /* Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
+            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
             startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else
-                filter_framelayout.setVisibility(View.VISIBLE);*/
-
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message) + " " + patientName + " ?", false, context.getResources().getString(R.string.yes), context.getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
-                @Override
-                public void onDialogActionDone(int action) {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
-                        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
-
-                        VisitUtils.endVisit(context, visitUUID, patientUuid, followUpDate,
-                                vitalsUUID, adultInitialUUID, "state",
-                                patientName, "VisitDetailsActivity");
-
-                    }
-                }
-            });
-
+                filter_framelayout.setVisibility(View.VISIBLE);
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -2239,7 +2213,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
-
     }
 
     private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -2302,7 +2275,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             Uri.parse(
                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                             phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id)))));
+                                                    + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link
+                                                    + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
                     // isreturningWhatsapp = true;
 
@@ -2458,6 +2432,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
                                  String positiveBtnTxt, String negativeBtnTxt) {
 
+        if (speciality_selected == null || speciality_selected.isEmpty()) {
+            showSelectSpeciliatyErrorDialog();
+            return;
+        }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);

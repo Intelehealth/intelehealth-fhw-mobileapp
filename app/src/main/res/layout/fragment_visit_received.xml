@@ -33,7 +33,7 @@
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchview_received"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/filter_icon"
@@ -53,7 +53,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:background="@null"
-                    android:src="@drawable/visit_filter_icon" />
+                    android:src="@drawable/visit_filter_icon"
+                    android:visibility="gone" />
 
 
             </RelativeLayout>
@@ -111,7 +112,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
-                        android:src="@drawable/arrow_right_icon8" />
+                        android:src="@drawable/arrow_right_icon8"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -143,7 +145,7 @@
                     android:id="@+id/filter_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                     android:layout_marginTop="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_24"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -250,14 +252,14 @@
                     android:layout_marginTop="@dimen/margin_24"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
-                    android:text="Today's visits"
+                    android:text="@string/recent_visit"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold" />
 
                 <!-- Frame 100314 -->
                 <TextView
-                    android:id="@+id/today_nodata"
+                    android:id="@+id/recent_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/you_can_add"
@@ -270,7 +272,7 @@
                     android:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_today"
+                    android:id="@+id/recycler_recent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/you_can_add"
@@ -283,22 +285,23 @@
 
                 <!--            This week-->
                 <TextView
-                    android:id="@+id/this_week"
+                    android:id="@+id/older"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/recycler_today"
+                    android:layout_below="@+id/recycler_recent"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
-                    android:text="This week's visits"
+                    android:text="@string/older_visits"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/week_nodata"
+                    android:id="@+id/older_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/older"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="No visits found"
@@ -308,13 +311,14 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_thisweek"
+                    android:id="@+id/rv_older"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/older"
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
                     tools:listitem="@layout/followup_list_item" />
@@ -324,13 +328,14 @@
                     android:id="@+id/this_month"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rv_thisweek"
+                    android:layout_below="@+id/rv_older"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
                     android:text="This month's visit"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/month_nodata"
@@ -353,6 +358,7 @@
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
                     tools:listitem="@layout/followup_list_item" />

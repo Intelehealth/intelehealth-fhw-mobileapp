@@ -375,8 +375,7 @@
                 android:id="@+id/add_notes_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vitalsRelativeLayout"
-                android:layout_marginTop="@dimen/margin_40dp">
+                android:layout_below="@+id/vitalsRelativeLayout">
 
                 <!--Visit Summary-->
                 <RelativeLayout
@@ -508,7 +507,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/add_notes_relative"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginTop="@dimen/margin_20"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
                 android:visibility="visible">
 
@@ -783,6 +782,7 @@
                 android:id="@+id/btn_vs_print"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
+                android:layout_alignParentBottom="true"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_8"
                 android:layout_marginBottom="@dimen/margin_5"
@@ -824,7 +824,7 @@
             android:orientation="horizontal"
             android:visibility="gone"
             android:weightSum="2"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <Button
                 android:id="@+id/btn_vs_appointment"

@@ -1,35 +1,37 @@
-package org.intelehealth.app.ayu.visit.reason.adapter;
+package org.intelehealth.app.activities.searchPatientActivity.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SearchChipsPreviewGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
-    private List<ReasonData> mItemList = new ArrayList<ReasonData>();
+    private List<String> mItemList = new ArrayList<String>();
 
     public interface OnItemSelection {
         public void onSelect(String data);
+
+        public void onRemoved(String data);
     }
 
     private OnItemSelection mOnItemSelection;
 
-    public ReasonChipsGridAdapter(RecyclerView recyclerView, Context context, List<ReasonData> itemList, OnItemSelection onItemSelection) {
+    public SearchChipsPreviewGridAdapter( Context context,RecyclerView recyclerView, List<String> itemList, OnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
@@ -45,7 +47,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ui2_chips_for_reason_item_view, parent, false);
+                .inflate(R.layout.ui2_selected_chips_preview_item_view, parent, false);
         /**
          * First item's entrance animations.
          */
@@ -59,20 +61,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.index = position;
-            genericViewHolder.tvName.setText(mItemList.get(position).getReasonName());
-            if (mItemList.get(position).isSelected()) {
-                genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_primary_bg);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
-            } else {
-
-                if (mItemList.get(position).isEnabled()) {
-                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_1_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
-                } else {
-                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.gray_2));
-                }
-            }
+            genericViewHolder.tvName.setText(mItemList.get(position));
 
 
         }
@@ -86,6 +75,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         int index;
+        ImageView removeImageView;
 
         GenericViewHolder(View itemView) {
             super(itemView);
@@ -93,11 +83,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mItemList.get(index).isEnabled()) {
-                        mOnItemSelection.onSelect(tvName.getText().toString());
-                        mItemList.get(index).setSelected(true);
-                        notifyItemChanged(index);
-                    }
+                    mOnItemSelection.onSelect(mItemList.get(index));
                 }
             });
 

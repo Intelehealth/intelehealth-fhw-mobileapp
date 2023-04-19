@@ -152,7 +152,7 @@ public class SyncUtils {
         syncAnimator.setInterpolator(new LinearInterpolator());
 
         if (NetworkConnection.isOnline(context)) {
-            Toast.makeText(context, context.getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, context.getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
             view.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
