@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "org.intelehealth.unicef"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 32
         buildToolsVersion('29.0.2')
         versionName "4.0.1"
@@ -53,6 +53,7 @@ android {
             enableSplit = true
         }
     }
+    namespace 'org.intelehealth.unicef'
 
 }
 
