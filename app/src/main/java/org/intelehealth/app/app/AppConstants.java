@@ -126,9 +126,9 @@ public class AppConstants {
     }
 
     //UI2.0 Constants
-    public static final String DEMO_URL = "uiux.intelehealth.org";
+//    public static final String DEMO_URL = "uiux.intelehealth.org";
 
-    //public static final String DEMO_URL = "demo.intelehealth.org";
+    public static final String DEMO_URL = "dev.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 
     public static final int INTENT_FROM_AYU_FOR_SETUP = 1;
@@ -143,7 +143,6 @@ public class AppConstants {
     public static final int EVENT_FLAG_START = 0;
     public static final int EVENT_FLAG_SUCCESS = 1;
     public static final int EVENT_FLAG_FAILED = 2;
-
 
 
 }

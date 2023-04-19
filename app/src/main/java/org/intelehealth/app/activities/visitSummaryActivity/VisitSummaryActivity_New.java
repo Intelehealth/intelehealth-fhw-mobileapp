@@ -3893,7 +3893,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://uiux.intelehealth.org/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -4366,7 +4366,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://uiux.intelehealth.org/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +

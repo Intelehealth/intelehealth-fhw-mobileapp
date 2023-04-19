@@ -1047,7 +1047,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://uiux.intelehealth.org/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
@@ -2302,7 +2302,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://uiux.intelehealth.org/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
