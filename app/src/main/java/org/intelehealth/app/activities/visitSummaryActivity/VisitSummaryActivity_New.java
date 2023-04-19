@@ -113,11 +113,13 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -1771,7 +1773,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
             try {
-                doWebViewPrint_downloadBtn();
+                if(hasPrescription.equalsIgnoreCase("true")) {
+                    doWebViewPrint_downloadBtn();
+                }
+                else
+                {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                        }
+                    });                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }

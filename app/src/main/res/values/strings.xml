@@ -1860,4 +1860,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="no_fingerprint_assigned_dialog">You cannot access this feature as your device fingerprint sensor has no fingerprint assigned.</string>
     <string name="fingerprint_not_working_dialog">You cannot access this feature as your device fingerprint sensor is not working.</string>
     <string name="no_fingerprint_sensor_dialog">You cannot access this feature as your device doesn\'t have a fingerprint sensor.</string>
+    <string name="no_prescription_available">No Prescription Available!</string>
+    <string name="no_prescription_title">Doctor has not given prescription for this visit.</string>
 </resources>
