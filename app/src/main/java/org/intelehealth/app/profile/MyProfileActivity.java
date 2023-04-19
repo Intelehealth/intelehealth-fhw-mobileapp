@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -67,6 +68,7 @@ import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -118,6 +120,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
     Switch fingerprintSwitch;
+    String errorMsg = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +169,23 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    sessionManager.setEnableAppLock(true);
-                    Toast.makeText(MyProfileActivity.this,getResources().getString(R.string.fingerprint_lock_enabled), Toast.LENGTH_LONG).show();
+                    boolean isAvailable = checkFingerprintSensor();
+                    if(isAvailable) {
+                        sessionManager.setEnableAppLock(true);
+                        Toast.makeText(MyProfileActivity.this, getResources().getString(R.string.fingerprint_lock_enabled), Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        DialogUtils dialogUtils = new DialogUtils();
+                        dialogUtils.showCommonDialog(MyProfileActivity.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_fingerprint_title), errorMsg, true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                            @Override
+                            public void onDialogActionDone(int action) {
+
+                            }
+                        });
+                        sessionManager.setEnableAppLock(false);
+                        fingerprintSwitch.setChecked(false);
+                    }
                 }
                 else {
                     sessionManager.setEnableAppLock(false);
@@ -289,6 +307,26 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         fetchUserDetailsIfAdded();
         manageListeners();
         setMobileNumberLimit();
+    }
+
+    private boolean checkFingerprintSensor() {
+        boolean isFingerPrintAvailable = true;
+        BiometricManager biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                errorMsg = getResources().getString(R.string.no_fingerprint_sensor_dialog);
+                isFingerPrintAvailable = false;
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                errorMsg = getResources().getString(R.string.fingerprint_not_working_dialog);
+                isFingerPrintAvailable = false;
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                errorMsg = getResources().getString(R.string.no_fingerprint_assigned_dialog);
+                isFingerPrintAvailable = false;
+                break;
+        }
+        return isFingerPrintAvailable;
     }
 
     private int mSelectedMobileNumberValidationLength = 0;
