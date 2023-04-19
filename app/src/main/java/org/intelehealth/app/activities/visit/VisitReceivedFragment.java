@@ -119,6 +119,7 @@ public class VisitReceivedFragment extends Fragment {
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
+        olderList = new ArrayList<>();
 
 //        visit_received_card_header.setOnClickListener(v -> {
 //            Intent intent = new Intent(getActivity(), EndVisitActivity.class);

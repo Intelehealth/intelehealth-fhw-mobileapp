@@ -1855,5 +1855,11 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
     <string name="all_patients_txt">All Patients</string>
-
+    <string name="no_fingerprint_support">You cannot access this feature as your device does not have a fingerprint support.</string>
+    <string name="no_fingerprint_title">Fingerprint not available!</string>
+    <string name="no_fingerprint_assigned_dialog">You cannot access this feature as your device fingerprint sensor has no fingerprint assigned.</string>
+    <string name="fingerprint_not_working_dialog">You cannot access this feature as your device fingerprint sensor is not working.</string>
+    <string name="no_fingerprint_sensor_dialog">You cannot access this feature as your device doesn\'t have a fingerprint sensor.</string>
+    <string name="no_prescription_available">No Prescription Available!</string>
+    <string name="no_prescription_title">Doctor has not given prescription for this visit.</string>
 </resources>
