@@ -16,9 +16,11 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,6 +62,7 @@ public class PastMedicalHistoryFragment extends Fragment {
         mActionListener = (VisitCreationActionListener) context;
         //sessionManager = new SessionManager(context);
     }
+    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,11 +78,18 @@ public class PastMedicalHistoryFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentRootOptionList.size(), new QuestionsListingAdapter.OnItemSelection() {
+        ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+        complainBasicInfo.setComplainName("Patient History");
+        complainBasicInfo.setOptionSize(mCurrentRootOptionList.size());
+        complainBasicInfo.setPatientHistory(true);
+        mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
+
+
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
                 // avoid the scroll for old data change
-                if(mCurrentComplainNodeOptionsIndex - index   >=1){
+                if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
                 }
                 //Log.v("onSelect", "node - " + node.getText());
@@ -96,7 +106,7 @@ public class PastMedicalHistoryFragment extends Fragment {
                     }, 100);
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
-                }else{
+                } else {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_FAMILY_HISTORY, null);
                 }
             }
@@ -117,16 +127,16 @@ public class PastMedicalHistoryFragment extends Fragment {
             }
 
             @Override
-            public void onImageRemoved(int index,String image) {
+            public void onImageRemoved(int index, String image) {
 
             }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
-        if(mIsEditMode){
+        if (mIsEditMode) {
             mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
-            mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size()-1;
-        }else{
+            mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
+        } else {
             mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
 
         }

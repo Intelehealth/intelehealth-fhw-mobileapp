@@ -17,9 +17,12 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.utilities.DialogUtils;
+
+import java.util.HashMap;
 
 
 /**
@@ -70,6 +73,8 @@ public class PhysicalExaminationFragment extends Fragment {
 
     }
 
+    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,8 +88,13 @@ public class PhysicalExaminationFragment extends Fragment {
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
+        ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+        complainBasicInfo.setComplainName("Physical Exam");
+        complainBasicInfo.setOptionSize(physicalExam.getTotalNumberOfExams());
+        complainBasicInfo.setPhysicalExam(true);
+        mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, physicalExam.getTotalNumberOfExams(), new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
                 // avoid the scroll for old data change
