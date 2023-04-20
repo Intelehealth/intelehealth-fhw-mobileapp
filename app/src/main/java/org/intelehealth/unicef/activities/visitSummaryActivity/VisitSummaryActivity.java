@@ -5,7 +5,9 @@ import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_ROLE
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.HOSPITAL_TYPE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS;
+import static org.intelehealth.unicef.utilities.UuidDictionary.SPECIALITY;
 
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -63,6 +65,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -95,6 +98,7 @@ import org.intelehealth.unicef.activities.additionalDocumentsActivity.Additional
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
+import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.unicef.activities.presription.PrescriptionActivity;
@@ -336,6 +340,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String visitnoteencounteruuid = "";
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
     private int mAppointmentId = 0;
+    private RadioButton secondaryType_rb, tertiaryType_rb;
+    private String mHospitalType = "";
+    private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -642,6 +650,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
+
+
+
+
         frameLayout_doctor.setVisibility(View.GONE);
 
         card_print = findViewById(R.id.card_print);
@@ -655,6 +667,76 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
         visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+
+        // Hospital Type - Start
+        secondaryType_rb = findViewById(R.id.secondaryType_rb);
+        tertiaryType_rb = findViewById(R.id.tertiaryType_rb);
+
+        // edit - start
+        if (mHospitalType.equalsIgnoreCase(""))
+            mHospitalType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, HOSPITAL_TYPE);
+
+        if (!mHospitalType.equalsIgnoreCase("")) {
+            // disable radio button to avoid edit.
+            secondaryType_rb.setEnabled(false);
+            tertiaryType_rb.setEnabled(false);
+
+            if (mHospitalType.equalsIgnoreCase("Secondary")) {
+                secondaryType_rb.setChecked(true);
+                if (tertiaryType_rb.isChecked())
+                    tertiaryType_rb.setChecked(false);
+                Log.v(TAG, "yes");
+            } else {
+                tertiaryType_rb.setChecked(true);
+                if (secondaryType_rb.isChecked())
+                    secondaryType_rb.setChecked(false);
+                Log.v(TAG, "yes");
+            }
+        }
+        // edit - end
+
+        if (secondaryType_rb.isChecked()) {
+            mHospitalType = "Secondary";
+        } else if (tertiaryType_rb.isChecked()) {
+            mHospitalType = "Tertiary";
+        }
+        else {
+            mHospitalType = "";
+        }
+
+        if (!secondaryType_rb.isChecked() && !tertiaryType_rb.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage("Select Hospital Type");
+
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+        }
+
+        secondaryType_rb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        tertiaryType_rb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+        // Hospital Type - End
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -776,12 +858,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         specialityList = providerAttributeLIstDAO.getAllValues();
 
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
+
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -948,18 +1030,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
-                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    VisitAttributeListDAO listDAO = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
                         if (!isVisitSpecialityExists) {
-                            isUpdateVisitDone = speciality_attributes
-                                    .insertVisitAttributes(visitUuid, speciality_selected);
+                            isUpdateVisitDone = listDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY); // Speciality
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
+
+                    // Upload Hospital Type visit attribute as well - start
+                    try {
+                        boolean hospitalValue_Added = listDAO.insertVisitAttributes(visitUuid, mHospitalType, HOSPITAL_TYPE);
+                        if (hospitalValue_Added)
+                        {
+                            secondaryType_rb.setEnabled(false);
+                            tertiaryType_rb.setEnabled(false);
+                        }
+                        else {
+                            secondaryType_rb.setEnabled(true);
+                            tertiaryType_rb.setEnabled(true);
+                        }
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        Log.v("hospitalType", "hospitalType: " + e.getMessage());
+                    }
+                    // Upload Hospital Type visit attribute as well - end
 
 
                     if (isVisitSpecialityExists)
@@ -4717,6 +4816,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
             downloadPrescriptionDefault();
             downloadDoctorDetails();
+        }
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
+            case R.id.secondaryType_rb:
+                if (checked)
+                    mHospitalType = "Secondary";
+                Log.v(TAG, "mHospitalType:" + mHospitalType);
+                break;
+            case R.id.tertiaryType_rb:
+                if (checked)
+                    mHospitalType = "Tertiary";
+                Log.v(TAG, "mHospitalType:" + mHospitalType);
+                break;
         }
     }
 
