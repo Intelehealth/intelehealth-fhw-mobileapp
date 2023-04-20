@@ -13,14 +13,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,7 +37,8 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private List<String> mSelectedComplains = new ArrayList<>();
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
-
+    private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
+    private int mCurrentComplainNodeIndex = 0;
     private Node mCurrentNode;
 
     public VisitReasonQuestionsFragment() {
@@ -41,9 +46,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
     }
 
 
-    public static VisitReasonQuestionsFragment newInstance(Intent intent, Node node) {
+    public static VisitReasonQuestionsFragment newInstance(Intent intent, List<Node> nodeList) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
-        fragment.mCurrentNode = node;
+        fragment.mChiefComplainRootNodeList = nodeList;
+        fragment.mCurrentNode = fragment.mChiefComplainRootNodeList.get(fragment.mCurrentComplainNodeIndex);
         return fragment;
     }
 
@@ -63,7 +69,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
     //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
-
+    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +88,16 @@ public class VisitReasonQuestionsFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentNode.getOptionsList().size(), new QuestionsListingAdapter.OnItemSelection() {
+        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+            Log.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
+            ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+            complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
+            complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
+            if(complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms"))
+                complainBasicInfo.setAssociateSymptom(true);
+            mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
+        }
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
                 Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
@@ -95,16 +110,22 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentComplainNodeOptionsIndex++;
                 else {
                     mCurrentComplainNodeOptionsIndex = 0;
-
+                    mCurrentComplainNodeIndex += 1;
+                    mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
+                    mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
-                mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
+                    mQuestionsListingAdapter.addItem(mCurrentNode);
+                } else {
+                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                }
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount())
+                        if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount() && !mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom())
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         else
-                            recyclerView.smoothScrollBy(0,1600);
+                            recyclerView.smoothScrollBy(0, 1600);
                     }
                 }, 100);
 

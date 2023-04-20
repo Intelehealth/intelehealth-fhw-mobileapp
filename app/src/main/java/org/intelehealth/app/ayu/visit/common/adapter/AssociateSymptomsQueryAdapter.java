@@ -21,10 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -106,10 +108,27 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                         genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                         genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 1, new QuestionsListingAdapter.OnItemSelection() {
+
+                        HashMap<Integer, ComplainBasicInfo> rootComplainBasicInfoHashMap = new HashMap<>();
+                        ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+                        complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
+                        rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
+                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
                             @Override
                             public void onSelect(Node node, int index) {
 
+                                if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
+                                    return;
+                                }
+                                //Log.v("onSelect", "node - " + node.getText());
+                                if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
+                                    genericViewHolder.currentComplainNodeOptionsIndex++;
+                                    genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+
+                                } else {
+                                    genericViewHolder.currentComplainNodeOptionsIndex = 0;
+
+                                }
                             }
 
                             @Override
@@ -135,7 +154,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
                         //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
                         // genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
-                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
+                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
 
                         //}
                     } else {
@@ -165,7 +184,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         int index;
         RecyclerView recyclerView;
         QuestionsListingAdapter questionsListingAdapter;
-        int currentComplainNodeOptionsIndex;
+        int currentComplainNodeOptionsIndex = 0;
         List<Node> currentRootOptionList = new ArrayList<>();
         LinearLayout singleComponentContainer;
 

@@ -971,6 +971,91 @@ public class Node implements Serializable {
         return null;
     }
 
+    public String generateLanguageSingleNode() {
+
+        String raw = "";
+        if (isSelected()) {
+            String associatedTest = getText();
+            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
+                    (associatedTest.trim().equals("H/o specific illness")) ||
+                    (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+
+                if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
+                        (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                        (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
+                        (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                        || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                        || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                        || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                    if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+                        //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        //raw = raw.substring(6);
+                        raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                        Log.e("FinalText= ", raw);
+                    } else {
+                        Log.e("FinalText= ", raw);
+
+                    }
+                } else {
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                }
+
+            } else {
+                if (!getLanguage().isEmpty()) {
+                    if (getLanguage().equals("%")) {
+                        raw = raw + bullet + " " + formLanguage() + next_line;
+                    } else if (getLanguage().substring(0, 1).equals("%")) {
+                        raw = raw + (bullet + " " + getLanguage().substring(1) + " - " + formLanguage()) + next_line;
+                    } else {
+                        raw = raw + (bullet + " " + getLanguage() + " - " + formLanguage()) + next_line;
+                    }
+                }
+            }
+            //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+
+        } else {
+            String associatedTest = getText();
+            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                    || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
+                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+                    //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                    //raw = raw.substring(6);
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                    Log.e("FinalText= ", raw);
+                } else {
+                    Log.e("FinalText= ", raw);
+                }
+            }
+        }
+        Log.v("node", raw);
+
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            Log.i(TAG, "generateLanguage: " + raw);
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
     //TODO: Check this, as associated complaints are not being triggered.
     public ArrayList<String> getSelectedAssociations() {
         ArrayList<String> selectedAssociations = new ArrayList<>();
