@@ -725,7 +725,6 @@
 
     <string name="diagnosis">Диагностика</string>
     <string name="primary">Начальный</string>
-    <string name="secondary">Вторичный</string>
     <string name="provisiona">Предварительный</string>
     <string name="confirmed">Подтвержденный</string>
     <string name="recommended_medication">Рекомендуемое лекарство</string>
@@ -797,4 +796,10 @@
     <string name="please_enter_reason_txt">Пожалуйста, укажите причину!</string>
 
     <string name="patientdetail_seen_on_str">Видел на</string>
+
+    <!--Hospital Type-->
+    <string name="hospital_type">Тип больницы</string>
+    <string name="secondary">Вторичный</string>
+    <string name="tertiary">третичный</string>
+
 </resources>
