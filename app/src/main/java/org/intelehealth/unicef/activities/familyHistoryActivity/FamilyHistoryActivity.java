@@ -14,6 +14,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -139,7 +140,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_FamHist == null)
+            if (edit_FamHist == null)
                 new_result = getFamilyHistoryVisitData();
         }
 
@@ -232,7 +233,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -244,7 +245,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         FloatingActionButton fab = findViewById(R.id.fab);
         family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         family_history_recyclerView.setLayoutManager(linearLayoutManager);
         family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -313,13 +314,33 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-        Log.i(TAG, "onChildClick: ");
         clickedNode.toggleSelected();
         if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
             familyHistoryMap.getOption(groupPosition).setSelected(true);
         } else {
             familyHistoryMap.getOption(groupPosition).setUnselected();
         }
+
+        Node rootNode = familyHistoryMap.getOption(groupPosition);
+        if (rootNode.isMultiChoice() && !clickedNode.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                    familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
+        Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+        if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && clickedNode.isExcludedFromMultiChoice() && clickedNode.isSelected())) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (!childNode.getId().equals(clickedNode.getId())) {
+                    familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+
+        }
+
         adapter.notifyDataSetChanged();
 
         if (clickedNode.getInputType() != null) {
@@ -499,7 +520,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
 
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -564,7 +584,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 int count = visitsDAO.deleteByVisitUUID(visitUuid);
-                                if(count!=0) {
+                                if (count != 0) {
 
                                     ObsDAO obsDAO = new ObsDAO();
                                     obsDAO.deleteByEncounterUud(encounterAdultIntials);
