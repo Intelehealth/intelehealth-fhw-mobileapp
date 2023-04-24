@@ -282,6 +282,7 @@ public class Node implements Serializable {
                 this.hasPopUp = true;
             }
 
+            this.required = jsonNode.optBoolean("isRequired");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
