@@ -20,7 +20,7 @@ public class LauncherActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.room_id_etc);
         String roomId = editText.getText().toString().trim();
         if (roomId.isEmpty()) {
-            Toast.makeText(this, "Please enter room-id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.enter_room_id), Toast.LENGTH_SHORT).show();
             return;
         }
         startActivity(new Intent(this, CompleteActivity.class).putExtra("roomId", roomId));

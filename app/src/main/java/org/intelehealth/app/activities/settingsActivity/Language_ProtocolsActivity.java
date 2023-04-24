@@ -130,9 +130,9 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 if (index >= 0) {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
-                    String message = "Are you sure you want to change language to " + selected_language + "?";
-                    dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), "Change language?",
-                            message, "Yes", "No", false);
+                    String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
+                    dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+                            message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
 
                 }
             }
@@ -348,7 +348,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
         // show snackbar view
-        showSnackBarAndRemoveLater("Language successfully changed to " + language + "!");
+        showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed) + " " + language + "!");
     }
 
     // show snackbar
@@ -372,8 +372,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
         dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
-                "Changing protocols", "Please wait while the protocols are being changed.",
-                "Yes", "No", true);
+                getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing) ,
+                getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
 
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -395,7 +395,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                                 /**
                                  * Showing snackbar custom view on success of Protocols udpated...
                                  */
-                                showSnackBarAndRemoveLater("Protocols have been successfully changed!");
+                                showSnackBarAndRemoveLater(getResources().getString(R.string.protocols_successfully_changed));
                                 checkExistingMindMaps();
                                 //  alertDialog.dismiss();
 

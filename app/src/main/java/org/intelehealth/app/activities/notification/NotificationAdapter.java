@@ -53,7 +53,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationAdapter.MyHolderView holder, int position) {
         NotificationModel model = patientDTOList.get(position);
         if (model != null) {
-            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
+            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + context.getString(R.string.prescription_received));
 
             holder.delete_imgview.setOnClickListener(v -> {
                 anInterface.deleteNotifi_Item(patientDTOList, holder.getLayoutPosition());

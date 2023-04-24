@@ -132,7 +132,7 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
             String month = calendarModel1.getSelectedMonthForDays();
             String year = calendarModel1.getSelectedYear();
 
-            Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.selected_date) + " : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();
         }));
 
     }

@@ -85,7 +85,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
         refresh.setOnClickListener(v -> {
             followup_data();
-            Toast.makeText(this, "Refreshed Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.refreshed_successfully), Toast.LENGTH_SHORT).show();
         });
     }
 

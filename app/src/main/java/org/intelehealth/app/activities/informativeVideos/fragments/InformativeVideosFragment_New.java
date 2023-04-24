@@ -70,9 +70,9 @@ public class InformativeVideosFragment_New extends Fragment {
     public void configureTabLayout() {
         TabLayout tabLayout = view.findViewById(R.id.tablayout_videos);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Health"));
-        tabLayout.addTab(tabLayout.newTab().setText("Training"));
-        tabLayout.addTab(tabLayout.newTab().setText("About App"));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.health)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.training)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.about_app)));
 
         ViewPager viewPager = view.findViewById(R.id.pager_videos);
         PagerAdapter adapter = new InformativeVideosPagerAdapter

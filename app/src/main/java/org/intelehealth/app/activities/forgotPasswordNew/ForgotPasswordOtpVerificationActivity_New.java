@@ -158,7 +158,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                     finish();
                 } else {
                     tvOtpError.setVisibility(View.VISIBLE);
-                    tvOtpError.setText("OTP is incorrect!");
+                    tvOtpError.setText(getResources().getString(R.string.otp_is_incorrect));
                     etPin6.requestFocus();
                     buttonVerifyOtp.setEnabled(true);
                 }
@@ -167,7 +167,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "OTP Verification Failed!");
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed));
                 etPin6.requestFocus();
                 buttonVerifyOtp.setEnabled(true);
 
@@ -202,7 +202,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                     snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
                     etPin1.requestFocus();
                 } else {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to send OTP");
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
                 }
                 tvResendOtp.setEnabled(true);
             }
@@ -210,7 +210,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to send OTP");
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
                 tvResendOtp.setEnabled(true);
             }
 

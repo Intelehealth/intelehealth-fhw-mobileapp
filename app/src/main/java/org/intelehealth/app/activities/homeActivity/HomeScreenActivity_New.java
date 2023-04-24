@@ -670,7 +670,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equalsIgnoreCase(TAG_HOME)) {
             // finish();
-            wantToExitApp(this, "Exit App", getResources().getString(R.string.sure_to_exit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+            wantToExitApp(this, getResources().getString(R.string.exit_app), getResources().getString(R.string.sure_to_exit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
         } else {
             //super.onBackPressed();
@@ -921,7 +921,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 startActivity(i);
                 break;
             case R.id.menu_logout:
-                wantToLogoutFromApp(this, "Logout", getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+                wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
                 break;
             default:
         }
@@ -949,7 +949,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Log.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
-        String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
+        String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -1070,7 +1070,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-            String lastSync = "Last sync: " + sessionManager.getLastSyncDateTime();
+            String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
             tvAppLastSync.setText(lastSync);
 
             //ui2.0 update user details in  nav header
@@ -1227,7 +1227,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     loadFragment(fragment, TAG_ACHIEVEMENT);
                     return true;
                 case R.id.bottom_nav_help:
-                    tvTitleHomeScreenCommon.setText("Help center");
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
@@ -1427,7 +1427,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         } else if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();
             bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
-            tvTitleHomeScreenCommon.setText("Help center");
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
