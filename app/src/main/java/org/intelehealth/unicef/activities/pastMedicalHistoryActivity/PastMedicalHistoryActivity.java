@@ -345,7 +345,25 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         } else {
             patientHistoryMap.getOption(groupPosition).setUnselected();
         }
-        adapter.notifyDataSetChanged();
+
+        Node rootNode = patientHistoryMap.getOption(groupPosition);
+        if (rootNode.isMultiChoice() && !rootNode.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                    patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
+
+        if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && clickedNode.isExcludedFromMultiChoice() && clickedNode.isSelected())) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (!childNode.getId().equals(clickedNode.getId())) {
+                    patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
 
         if (clickedNode.getInputType() != null) {
             if (!clickedNode.getInputType().equals("camera")) {
@@ -361,6 +379,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
         }
 
+        adapter.notifyDataSetChanged();
     }
 
 
