@@ -1862,4 +1862,19 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="no_fingerprint_sensor_dialog">You cannot access this feature as your device doesn\'t have a fingerprint sensor.</string>
     <string name="no_prescription_available">No Prescription Available!</string>
     <string name="no_prescription_title">Doctor has not given prescription for this visit.</string>
+
+    //new strings
+    <string name="doctor_annotation">Dr.</string>
+    <string name="at">at</string>
+    <string name="in">In</string>
+    <string name="hours_at">hours, at</string>
+    <string name="completed_0">Completed (0)</string>
+    <string name="cancelled_0">Cancelled (0)</string>
+    <string name="starts">Starts</string>
+    <string name="received">Received</string>
+    <string name="please_enter_the_value"> Please enter the value </string>
+    <string name="max_doc_size_toast">Max doc size is 512 KB</string>
+    <string name="choose_documents">Choose Documents</string>
+    <string name="read">Read</string>
+    <string name="sent">Sent</string>
 </resources>

@@ -2659,6 +2659,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     fileList.add(new File(filename));
                 }
             }
+            if(fileList.size()==0)
+            {
+                physcialExaminationDownloadText.setVisibility(View.GONE);
+            }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity_New.this, LinearLayoutManager.HORIZONTAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
@@ -3184,13 +3188,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         ImagesDAO imagesDAO = new ImagesDAO();
         if (encounterUuidAdultIntial != null) {
             try {
-
                 List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                for (String images : imageList) {
-                    if (imagesDAO.isLocalImageUuidExists(images))
-                        physcialExaminationDownloadText.setVisibility(View.GONE);
-                    else
-                        physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+                if(imageList.size()==0)
+                {
+                    physcialExaminationDownloadText.setVisibility(View.GONE);
+                }
+                else {
+                    for (String images : imageList) {
+                        if (imagesDAO.isLocalImageUuidExists(images))
+                            physcialExaminationDownloadText.setVisibility(View.GONE);
+                        else
+                            physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+                    }
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -3905,7 +3914,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -4378,7 +4387,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
