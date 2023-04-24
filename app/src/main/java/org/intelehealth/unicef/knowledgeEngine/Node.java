@@ -159,7 +159,7 @@ public class Node implements Serializable {
         try {
             this.id = jsonNode.getString("id");
 
-                        this.validation = jsonNode.optString("validation");
+            this.validation = jsonNode.optString("validation");
             this.isMultiChoice = jsonNode.optBoolean("multi-choice");
 
             this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
@@ -370,6 +370,28 @@ public class Node implements Serializable {
                         }
                     }
                 }
+
+                Node currentNode = node.getOption(position);
+                if (node.getOptionsList() != null && !node.optionsList.isEmpty() && node.isMultiChoice) {
+                    if (currentNode.isExcludedFromMultiChoice) {
+                        if (currentNode.isSelected()) {
+                            for (int i = 0; i < node.getOptionsList().size(); i++) {
+                                Node innerNode = node.getOptionsList().get(i);
+                                if (innerNode.isExcludedFromMultiChoice) {
+                                    innerNode.setUnselected();
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < node.optionsList.size(); i++) {
+                                Node innerNode = node.optionsList.get(i);
+                                if (innerNode.isExcludedFromMultiChoice) {
+                                    innerNode.setUnselected();
+                                }
+                            }
+                        }
+                    }
+                }
+
                 adapter.notifyDataSetChanged();
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
@@ -711,14 +733,14 @@ public class Node implements Serializable {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            ||associatedTest.trim().equals("сопутствующие симптомы")
+                            || associatedTest.trim().equals("сопутствующие симптомы")
                             || associatedTest.trim().equals("जुड़े लक्षण")
                             || (associatedTest.trim().equals("H/o specific illness"))
                             || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
                         if ((associatedTest.trim().equals("Associated symptoms"))
                                 || associatedTest.trim().equals("сопутствующие симптомы")
-                                ||associatedTest.trim().equals("जुड़े लक्षण")
+                                || associatedTest.trim().equals("जुड़े लक्षण")
                                 || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
@@ -2075,9 +2097,9 @@ public class Node implements Serializable {
         boolean flagPositive = false;
         boolean flagNegative = false;
 //        String mLanguagePositive = associatedSymptomNode.positiveCondition;
-        String mLanguagePositive = IntelehealthApplication.getAppContext().getString(R.string.patient_reports)+" -" + next_line;
+        String mLanguagePositive = IntelehealthApplication.getAppContext().getString(R.string.patient_reports) + " -" + next_line;
 //        String mLanguageNegative = associatedSymptomNode.negativeCondition;
-        String mLanguageNegative = IntelehealthApplication.getAppContext().getString(R.string.patient_denies)+" -" + next_line;
+        String mLanguageNegative = IntelehealthApplication.getAppContext().getString(R.string.patient_denies) + " -" + next_line;
 
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
@@ -2194,7 +2216,7 @@ public class Node implements Serializable {
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
-                        question = question + next_line + IntelehealthApplication.getAppContext().getString(R.string.patient_reports)+" -";
+                        question = question + next_line + IntelehealthApplication.getAppContext().getString(R.string.patient_reports) + " -";
                     }
                 } else {
                     question = bullet + " " + mOptions.get(i).findDisplay();
@@ -2255,7 +2277,7 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add(IntelehealthApplication.getAppContext().getString(R.string.patient_denies)+" -" + next_line);
+                    stringsListNoSelected.add(IntelehealthApplication.getAppContext().getString(R.string.patient_denies) + " -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e("List", "" + stringsListNoSelected);
@@ -2282,6 +2304,7 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
+
     public boolean isMultiChoice() {
         return isMultiChoice;
     }
