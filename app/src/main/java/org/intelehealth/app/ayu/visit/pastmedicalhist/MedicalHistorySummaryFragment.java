@@ -1,11 +1,15 @@
 package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
+
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummarySingleViewAdapter;
@@ -45,7 +50,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
     SessionManager sessionManager;
     private String mSummaryStringPastHistory, mSummaryStringFamilyHistory;
     private LinearLayout mSummaryLinearLayout;
-
+    private ObjectAnimator syncAnimator;
     public MedicalHistorySummaryFragment() {
         // Required empty public constructor
     }
@@ -95,12 +100,12 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
-        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+        ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {
-                    new SyncUtils().syncBackground();
-                   // Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                    syncNow(getActivity(), refresh, syncAnimator);
                 }
             }
         });

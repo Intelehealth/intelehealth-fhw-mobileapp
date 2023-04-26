@@ -95,8 +95,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
 
                 String type = genericViewHolder.node.getInputType();
-                Log.v("Node", "Type - " + type);
-                Log.v("Node", "Node - " + new Gson().toJson(genericViewHolder.node));
+                Log.v("Node", "AssociateSymptomsQueryAdapter onBindViewHolder Type - " + type);
+                Log.v("Node", "AssociateSymptomsQueryAdapter onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
                 if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                     type = "options";
                 }
@@ -104,27 +104,36 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     addTextEnterView(mItemList.get(position), genericViewHolder, position);
                 else {
                     genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
-                    Log.v("OptionList", new Gson().toJson(mItemList.get(position).getOptionsList()));
+                    Log.v("Node", "AssociateSymptomsQueryAdapter onBindViewHolder options" + new Gson().toJson(mItemList.get(position).getOptionsList()));
                     if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                         genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                         genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                        genericViewHolder.isHavingDirectOption = mItemList.get(position).getLanguage() != null && mItemList.get(position).getLanguage().equalsIgnoreCase("%");
 
                         HashMap<Integer, ComplainBasicInfo> rootComplainBasicInfoHashMap = new HashMap<>();
                         ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
-                        complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
+                        if (genericViewHolder.isHavingDirectOption)
+                            complainBasicInfo.setOptionSize(1);
+                        else
+                            complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
                         genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
                             @Override
                             public void onSelect(Node node, int index) {
 
+                                if (genericViewHolder.isHavingDirectOption)
+                                    return;
                                 if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
                                     return;
                                 }
                                 //Log.v("onSelect", "node - " + node.getText());
                                 if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
                                     genericViewHolder.currentComplainNodeOptionsIndex++;
-                                    genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
-
+                                    //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                                    if (genericViewHolder.isHavingDirectOption)
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
+                                    else
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
                                 } else {
                                     genericViewHolder.currentComplainNodeOptionsIndex = 0;
 
@@ -151,10 +160,14 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                             }
                         });
+                        genericViewHolder.questionsListingAdapter.setAssociateSymptomNestedQueryFlag(true);
                         genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
                         //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
                         // genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
-                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                        if (genericViewHolder.isHavingDirectOption)
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
+                        else
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
 
                         //}
                     } else {
@@ -182,6 +195,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         TextView questionTextView, yesTextView, noTextView;
         Node node;
         int index;
+        boolean isHavingDirectOption = false;
         RecyclerView recyclerView;
         QuestionsListingAdapter questionsListingAdapter;
         int currentComplainNodeOptionsIndex = 0;
@@ -209,7 +223,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         mItemList.get(index).setAssociated_symptoms(1);
                     }
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node);
+                    mOnItemSelection.onSelect(mItemList.get(index));
                 }
 
             });
@@ -217,14 +231,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             noTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mItemList.get(index).setSelected(true);
+                    //mItemList.get(index).setSelected(true);
 
-                    if (mItemList.get(index).isNoSelected()) {
-                        mItemList.get(index).setNoSelected(false);
-
-                    } else {
-                        mItemList.get(index).setNoSelected(true);
-                    }
+                    mItemList.get(index).setNoSelected(!mItemList.get(index).isNoSelected());
                     mItemList.get(index).setUnselected();
 
 
@@ -234,7 +243,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         mItemList.get(index).setAssociated_symptoms(-1);
                     }
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node);
+                    mOnItemSelection.onSelect(mItemList.get(index));
                 }
             });
 
@@ -248,8 +257,61 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
-        submitButton.setVisibility(View.GONE);
+        //submitButton.setVisibility(View.GONE);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            editText.setText(node.getLanguage());
+        }
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(node.getText().replace("[Describe]","") + " : " + editText.getText().toString());
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                        node.setDataCaptured(true);
+                    } else {
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+                        node.setDataCaptured(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+
+                }
+
+
+            }
+        });
+
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -263,32 +325,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else {
-                            node.addLanguage(editText.getText().toString());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        node.setSelected(true);
-                    } else {
-                        //if (node.isRequired()) {
-                        node.setSelected(false);
-                        //} else {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                        } else {
-                            node.addLanguage("Question not answered");
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        //   node.setSelected(true);
-                        //}
-                    }
 
-                }
             }
         });
 
@@ -297,7 +334,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);
-        editText.setHint(node.getText());
+        editText.setHint(mContext.getString(R.string.describe_hint_txt));
         editText.setMinHeight(320);
         holder.singleComponentContainer.addView(view);
     }

@@ -93,7 +93,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
             complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
             complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
-            if(complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms"))
+            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms"))
                 complainBasicInfo.setAssociateSymptom(true);
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
@@ -115,19 +115,21 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
-                    mQuestionsListingAdapter.addItem(mCurrentNode);
+                    if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
+                        mQuestionsListingAdapter.addItem(mCurrentNode);
+                    mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount() && !mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom())
+                        /*if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount() && !mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom())
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                        else
-                            recyclerView.smoothScrollBy(0, 1600);
+                        else*/
+                        recyclerView.smoothScrollBy(0, 1600);
                     }
-                }, 100);
+                }, 200);
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             }
@@ -154,6 +156,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
+        mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
         mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
         return view;
     }

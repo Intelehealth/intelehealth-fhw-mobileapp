@@ -64,6 +64,7 @@ import java.util.Locale;
  */
 public class Node implements Serializable {
 
+    private boolean isDataCaptured;
     private boolean optional;
     private String id;
     private String text;
@@ -391,6 +392,7 @@ public class Node implements Serializable {
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
         this.optional = source.optional;
+        this.isDataCaptured = source.isDataCaptured;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -3094,6 +3096,59 @@ public class Node implements Serializable {
         return answerResult;
     }
 
+    public AnswerResult checkAllRequiredAnsweredRootNode(Context context) {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(context);
+        String locale = sessionManager.getCurrentLang();
+
+        AnswerResult answerResult = new AnswerResult();
+        answerResult.totalCount = optionsList.size();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(context.getResources().getString(R.string.answer_following_questions));
+        stringBuilder.append("\n");
+        answerResult.result = true;
+
+        if (isRequired()) {
+            if (optionsList != null && !optionsList.isEmpty()) {
+                if (!isSelected() || (isSelected() && !isNestedMandatoryOptionsAnswered(this))) {
+                    switch (locale) {
+                        case "en":
+                            stringBuilder.append("\n").append(bullet + " ").append(display);
+                            break;
+                        case "hi":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
+                            break;
+                    }
+                    answerResult.result = false;
+                }
+            } else {
+                if (!isSelected()) {
+                    switch (locale) {
+                        case "en":
+                            stringBuilder.append("\n").append(bullet + " ").append(display);
+                            break;
+                        case "hi":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
+                            break;
+                    }
+                    answerResult.result = false;
+                }
+            }
+
+            Log.v(TAG, text);
+            Log.v(TAG, text);
+            Log.v(TAG, "isSelected - "+String.valueOf(isSelected()));
+            Log.v(TAG, "isNoSelected - "+String.valueOf(isNoSelected()));
+            Log.v(TAG, "anySubSelected - "+String.valueOf(anySubSelected()));
+            Log.v(TAG, "isNestedMandatoryOptionsAnswered - "+String.valueOf(isNestedMandatoryOptionsAnswered(this)));
+
+        }
+
+        answerResult.requiredStrings = stringBuilder.toString();
+        return answerResult;
+    }
+
     public boolean isNestedMandatoryOptionsAnswered(Node node) {
         Log.v("isNestedMandatory", new Gson().toJson(node).toString());
         boolean allAnswered = node.isSelected();
@@ -3123,6 +3178,14 @@ public class Node implements Serializable {
 
     public void setOptional(boolean optional) {
         this.optional = optional;
+    }
+
+    public boolean isDataCaptured() {
+        return isDataCaptured;
+    }
+
+    public void setDataCaptured(boolean dataCaptured) {
+        isDataCaptured = dataCaptured;
     }
 }
 

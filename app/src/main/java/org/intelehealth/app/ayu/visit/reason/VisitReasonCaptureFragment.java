@@ -25,12 +25,16 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +58,17 @@ public class VisitReasonCaptureFragment extends Fragment {
     private List<ReasonGroupData> mVisitReasonItemList;
     private ReasonListingAdapter mReasonListingAdapter;
 
+    private String patientName = "";
+    private String patientGender = "";
+    private String intentTag;
+    private String state;
+    private String patientUuid;
+    private String visitUuid;
+    private String encounterVitals;
+    private float float_ageYear_Month;
+    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
+    private List<String> mFinalEnabledMMList = new ArrayList<>();
+
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
     }
@@ -68,7 +83,17 @@ public class VisitReasonCaptureFragment extends Fragment {
 
     public static VisitReasonCaptureFragment newInstance(Intent intent) {
         VisitReasonCaptureFragment fragment = new VisitReasonCaptureFragment();
-
+        fragment.patientUuid = intent.getStringExtra("patientUuid");
+        fragment.visitUuid = intent.getStringExtra("visitUuid");
+        fragment.encounterVitals = intent.getStringExtra("encounterUuidVitals");
+        fragment.encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+        fragment.EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+        fragment.state = intent.getStringExtra("state");
+        fragment.patientName = intent.getStringExtra("name");
+        fragment.patientGender = intent.getStringExtra("gender");
+        fragment.intentTag = intent.getStringExtra("tag");
+        //fragment.mEditFor = intent.getIntExtra("edit_for", STEP_1_VITAL);
+        fragment.float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
         return fragment;
     }
 
@@ -103,24 +128,27 @@ public class VisitReasonCaptureFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, null);
             }
         });
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mVisitReasonItemList = getVisitReasonList();
-        mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(String name) {
-                if (!mSelectedComplains.contains(name)) {
-                    mSelectedComplains.add(name);
-                    showSelectedComplains();
-                }
-            }
-        });
-        recyclerView.setAdapter(mReasonListingAdapter);
+
         // TODO: we are adding this below string array for keeping these two protocol enable for search also
+        mFinalEnabledMMList.clear();
         String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension", "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
 
+        for (String mindmapsName : mindmapsNames) {
+            String fileLocation = "engines/" + mindmapsName + ".json";
+            JSONObject currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
+            Node mainNode = new Node(currentFile);
+            if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
+                mFinalEnabledMMList.add(mindmapsName);
+            }
+        }
+        String[] mindmapsNamesFinalArray = new String[mFinalEnabledMMList.size()];
+        for (int i = 0; i < mFinalEnabledMMList.size(); i++) {
+            mindmapsNamesFinalArray[i] = mFinalEnabledMMList.get(i);
+        }
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), R.layout.ui2_custome_dropdown_item_view, mindmapsNames);
+                (getActivity(), R.layout.ui2_custome_dropdown_item_view, mindmapsNamesFinalArray);
 
         mVisitReasonAutoCompleteTextView.setThreshold(2);
         mVisitReasonAutoCompleteTextView.setAdapter(adapter);
@@ -147,6 +175,20 @@ public class VisitReasonCaptureFragment extends Fragment {
                 Toast.makeText(getActivity(), "Selection clear!", Toast.LENGTH_SHORT).show();
             }
         });*/
+
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mVisitReasonItemList = getVisitReasonList();
+        mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(String name) {
+                if (!mSelectedComplains.contains(name)) {
+                    mSelectedComplains.add(name);
+                    showSelectedComplains();
+                }
+            }
+        });
+        recyclerView.setAdapter(mReasonListingAdapter);
 
         return view;
     }
@@ -255,18 +297,14 @@ public class VisitReasonCaptureFragment extends Fragment {
             ReasonGroupData reasonGroupData = new ReasonGroupData();
             reasonGroupData.setAlphabet(String.valueOf(c));
             List<ReasonData> list = new ArrayList<ReasonData>();
-            for (int i = 0; i < fileNames.length; i++) {
+            for (String fileName : fileNames) {
 
-                if (fileNames[i].toUpperCase().startsWith(String.valueOf(c))) {
+                if (fileName.toUpperCase().startsWith(String.valueOf(c))) {
                     ReasonData reasonData = new ReasonData();
-                    reasonData.setReasonName(fileNames[i]);
+                    reasonData.setReasonName(fileName);
 //                  // TODO: we are adding this below conditions for keeping these protocol enable for selection
-                    reasonData.setEnabled(fileNames[i].equalsIgnoreCase("Abdominal Pain")
-                            || fileNames[i].equalsIgnoreCase("Diarrhea")
-                            || fileNames[i].equalsIgnoreCase("Fever")
-                            || fileNames[i].equalsIgnoreCase("Hypertension")
-                            || fileNames[i].equalsIgnoreCase("Menstrual disorder")
-                    );
+                    reasonData.setEnabled(mFinalEnabledMMList.contains(fileName));
+
                     list.add(reasonData);
                 }
             }

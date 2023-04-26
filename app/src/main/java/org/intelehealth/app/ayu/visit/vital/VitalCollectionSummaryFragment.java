@@ -1,11 +1,15 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
+
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -162,15 +166,16 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
             }
         });
-        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+        ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {
-                    new SyncUtils().syncBackground();
-//                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                    syncNow(getActivity(), refresh, syncAnimator);
                 }
             }
         });
         return view;
     }
+    private ObjectAnimator syncAnimator;
 }

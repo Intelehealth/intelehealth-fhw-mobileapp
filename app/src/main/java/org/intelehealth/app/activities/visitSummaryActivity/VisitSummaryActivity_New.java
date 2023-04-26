@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
@@ -7,6 +8,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -307,6 +309,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     Button btnAppointment;
     private FrameLayout filter_framelayout;
     private View hl_2;
+
+    private ObjectAnimator syncAnimator;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -2196,7 +2200,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             sharePresc();
         });
         // Bottom Buttons - end
-
+        refresh.setOnClickListener(v -> {
+            syncNow(VisitSummaryActivity_New.this, refresh, syncAnimator);
+        });
 
         // file set
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
