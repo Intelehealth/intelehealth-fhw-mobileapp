@@ -167,7 +167,11 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
     private void getVisits() {
-
+        /**
+         * Note: NAS-172: Attempt to re-open issue was being caused here in getAllEncounters() becuase in the above function: getAllVisits()
+         * the db object was been closed after every transaction and so when it was trying to use the db instance in getAllEncoutners()
+         * it was giving an error: Attempt to reopen an already closed object - Prajwal.
+         */
         ArrayList<String> encounterVisitUUID = new ArrayList<String>();
         HashSet<String> hsPatientUUID = new HashSet<String>();
 
