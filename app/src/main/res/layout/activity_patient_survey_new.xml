@@ -28,7 +28,7 @@
                     android:layout_height="match_parent"
                     android:lineSpacingExtra="1sp"
                     android:gravity="center_vertical"
-                    android:text="Feedback"
+                    android:text="@string/feedback"
                     android:textStyle="bold"
                     android:textAppearance="@style/label"
                     android:textColor="@null"
@@ -81,7 +81,7 @@
                 android:textColor = "#1B163A"
                 android:paddingHorizontal="@dimen/margin_20"
                 android:fontFamily="@font/lato_bold"
-                android:text="Rate your experience"
+                android:text="@string/rate_your_experience"
                 android:textSize="@dimen/txtsize_20sp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_24" />
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/head_txt"
-                android:text="Rate us so we can improve the experience for you"
+                android:text="@string/how_we_can_improve_experience"
                 android:textColor="@color/hint_text_color"
                 android:textSize="@dimen/edittext_textsize_16sp"
                 android:layout_alignStart="@id/head_txt"
@@ -126,7 +126,7 @@
                 android:id="@+id/give_feedback_txtview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Give feedback"
+                android:text="@string/give_feedback"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:textColor="@color/hint_text_color"
@@ -160,7 +160,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:padding="@dimen/fu_margin_start"
             android:textStyle="bold"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textSize="@dimen/txtsize_patdetail_14sp" />
 
     </RelativeLayout>

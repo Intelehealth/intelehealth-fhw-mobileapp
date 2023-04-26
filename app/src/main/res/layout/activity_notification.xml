@@ -179,7 +179,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:padding="@dimen/card_padding"
-                android:text="No prescription"
+                android:text="@string/no_prescription"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -216,7 +216,7 @@
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/card_padding"
-                android:text="No prescription"
+                android:text="@string/no_prescription"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />

@@ -250,7 +250,7 @@
                     android:layout_toEndOf="@+id/fu_details_calendar"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                    android:text="Previously scheduled on"
+                    android:text="@string/previously_scheduled_on"
                     android:textAppearance="@style/fu_detiails_date"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/cp_male_textsize" />
@@ -319,7 +319,7 @@
                     android:layout_toEndOf="@+id/fu_details_calendar"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
-                    android:text="Rescheduled on"
+                    android:text="@string/rescheduled_on"
                     android:textAppearance="@style/fu_detiails_date"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/cp_male_textsize"

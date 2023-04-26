@@ -51,7 +51,7 @@
                 android:layout_marginStart="@dimen/margin_10"
                 android:gravity="top"
                 android:lineSpacingExtra="1sp"
-                android:text="Prescription"
+                android:text="@string/prescription"
                 android:textAppearance="@style/label"
                 android:textColor="@null"
                 android:textSize="@dimen/toolbar_text_size"
@@ -281,7 +281,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  CHW worker"
+                                    android:text="@string/chw_worker"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -311,7 +312,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  Visit ID"
+                                    android:text="@string/visitID"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -372,7 +374,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Consulted doctor details" />
+                            android:text="@string/consulted_doctor_details" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_drdetails_header"
@@ -416,7 +418,7 @@
                                 style="@style/vs_title_head_14sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Details"
+                                android:text="@string/details"
                                 android:textStyle="bold" />
 
                             <ImageButton
@@ -452,7 +454,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  Name"
+                                    android:text="@string/name"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -462,7 +465,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="No information"
+                                    android:text="@string/no_information"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/textview_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -494,7 +497,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="No information"
+                                    android:text="@string/no_information"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/textview_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -516,7 +519,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  Qualification"
+                                    android:text="@string/qualification"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -526,7 +530,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="No information"
+                                    android:text="@string/no_information"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/textview_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -546,7 +550,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  Speciality"
+                                    android:text="@string/speciality"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -556,7 +561,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="No information"
+                                    android:text="@string/no_information"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/textview_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -608,7 +613,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Diagnosis" />
+                            android:text="@string/diagnosis" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_diagnosis_header"
@@ -694,7 +699,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Prescribed medications" />
+                            android:text="@string/visit_summary_rx" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_medication_header"
@@ -788,7 +793,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="No information"
+                            android:text="@string/no_information"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -835,7 +840,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Advice" />
+                            android:text="@string/advice" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_advice_header"
@@ -1007,7 +1012,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Referred specialist" />
+                            android:text="@string/referred_specialist" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_speciality_header"
@@ -1046,7 +1051,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="No information"
+                            android:text="@string/no_information"
                             android:textColor="@color/hint_text_color"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
@@ -1095,7 +1100,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Follow up" />
+                            android:text="@string/follow_up" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_followup_header"
@@ -1135,7 +1140,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No follow up suggested"
+                            android:text="@string/no_follow_up_suggested"
                             android:textColor="@color/hint_text_color"
                             android:textSize="@dimen/find_patient_hint_size"
                             android:visibility="gone"
@@ -1243,7 +1248,7 @@
             android:backgroundTint="@color/grey_button_bg"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/fu_margin_start"
-            android:text="Print"
+            android:text="@string/action_print"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
             android:textStyle="bold" />
@@ -1260,7 +1265,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/fu_margin_start"
-            android:text="Share"
+            android:text="@string/share"
             android:textColor="@color/white"
             android:textSize="@dimen/common_button_text_size"
             android:textStyle="bold" />
