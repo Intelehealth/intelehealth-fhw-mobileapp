@@ -116,13 +116,13 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
                                 holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
-                                timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", at " + appointmentInfoModel.getSlotTime();
+                                timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", " + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
                                 holder.tvDate.setText(timeText);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                                 }
                             } else {
-                                timeText = "In " + hours + " hours, at " + appointmentInfoModel.getSlotTime();
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
                                 holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
@@ -133,7 +133,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 }
                             }
                         } else {
-                            timeText = "In " + minutes + " minutes";
+                            timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minute);
                             holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 

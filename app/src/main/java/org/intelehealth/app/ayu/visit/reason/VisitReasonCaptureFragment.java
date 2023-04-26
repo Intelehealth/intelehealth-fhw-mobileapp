@@ -90,7 +90,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mSelectedComplains.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please select at least one complain!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.please_select_at_least_one_complaint), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 showConfirmDialog();

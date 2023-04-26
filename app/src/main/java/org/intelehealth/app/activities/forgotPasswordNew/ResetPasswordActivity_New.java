@@ -162,7 +162,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, "Failed to change password");
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password));
 
             }
 

@@ -68,7 +68,7 @@ public class SyncWorkManager extends Worker {
                             long second = diff / 1000;
                             long minutes = second / 60;
                             if (minutes > 0 && minutes <= 45) {
-                                displayNotification("Appointment!", "Today at" + appointmentInfo.getSlotTime() + " " + appointmentInfo.getPatientName() + " has an appointment with " + appointmentInfo.getDrName());
+                                displayNotification(getApplicationContext().getString(R.string._appointment),getApplicationContext().getString(R.string.today_at)+ appointmentInfo.getSlotTime() + " " + appointmentInfo.getPatientName() + " " + getApplicationContext().getString(R.string.has_an_appointment_with) + " " + appointmentInfo.getDrName());
                             }
                             if (minutes <= 0) {
                                 appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());

@@ -396,9 +396,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // follow up - yes - start
         yes_btn.setOnClickListener(v -> {
             followupScheduledSuccess(PrescriptionActivity.this, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
-                    "Follow up scheduled!",
-                    "A follow up for this patient visit has been scheduled successfully.",
-                    "Okay");
+                    getResources().getString(R.string.follow_up_scheduled),
+                    getResources().getString(R.string.follow_up_scheduled_successfully),
+                    getResources().getString(R.string.okay));
         });
         // follow up - yes - end
 
@@ -538,7 +538,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
@@ -563,7 +563,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this,getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -579,7 +579,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -625,7 +625,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -641,7 +641,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -662,7 +662,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
@@ -687,7 +687,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -703,7 +703,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -720,7 +720,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         } else {
             //small size prescription...
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             Log.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
@@ -752,7 +752,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -768,7 +768,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(PrescriptionActivity.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -871,19 +871,19 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp =  getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -1476,7 +1476,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
                 followup_date_txt.setText(followUpDate_format);
-                followup_subtext.setText("The doctor suggested a follow-up visit on\n" +
+                followup_subtext.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) +
                         followUpDate_format + ".");
                 //checkForDoctor();
                 break;
@@ -1852,7 +1852,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitID, true);
-                        Toast.makeText(PrescriptionActivity.this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
@@ -1861,7 +1861,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 syncAnimator.end();
             } else {
                 syncAnimator.end();
-                Toast.makeText(PrescriptionActivity.this, "Prescription is up to date.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.prescription_up_to_date), Toast.LENGTH_SHORT).show();
             }
 
         } catch (DAOException e) {
@@ -2126,19 +2126,19 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -2439,7 +2439,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -2453,7 +2453,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -2468,13 +2468,13 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
         } else {
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
             Log.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();

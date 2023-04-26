@@ -110,7 +110,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     //dividerView.setVisibility(View.GONE);
                     //allPatientsTV.setVisibility(View.GONE);
                     String text = mSearchEditText.getText().toString();
-                    allPatientsTV.setText("Results for \"" + text + "\"");
+                    allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
                     mSearchEditText.setTextColor(getResources().getColor(R.color.white));
                     managePreviousSearchStorage(text);
 //                  sessionManager.setPreviousSearchQuery(text); // previous search feature.

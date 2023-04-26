@@ -142,7 +142,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             app_start_day = getIntent().getStringExtra("app_start_day");
             rescheduleReason = getIntent().getStringExtra("rescheduleReason");
 
-            String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " at " + app_start_time;
+            String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " " + getResources().getString(R.string.at) + " " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
         } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("new_schedule")) {
 
@@ -159,7 +159,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             getSlots();
 
         } else {
-            Toast.makeText(this, "Speciality must not be null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.speciality_must_not_null), Toast.LENGTH_SHORT).show();
         }
 
 //        fetchDataFromDB();
@@ -252,7 +252,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
 
             } else {
-                Toast.makeText(this, "Please select time slot", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.please_select_time_slot), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -438,7 +438,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " at " + slotInfo.getSlotTime();
+                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 slotInfoForBookApp = slotInfo;
                 setDataForMorningAppointments(slotInfoMorningList);
@@ -455,7 +455,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " at " + slotInfo.getSlotTime();
+                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 slotInfoForBookApp = slotInfo;
 
@@ -475,7 +475,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 slotInfoForBookApp = slotInfo;
 
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " at " + slotInfo.getSlotTime();
+                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
@@ -702,7 +702,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
 
         if (NetworkConnection.isOnline(getApplication())) {
-            mSyncAlertDialog = new DialogUtils().showCommonLoadingDialog(this, "Booking Appointment!", "Please wait...");
+            mSyncAlertDialog = new DialogUtils().showCommonLoadingDialog(this, getResources().getString(R.string.booking_appointment), getResources().getString(R.string.please_wait));
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SyncUtils syncUtils = new SyncUtils();

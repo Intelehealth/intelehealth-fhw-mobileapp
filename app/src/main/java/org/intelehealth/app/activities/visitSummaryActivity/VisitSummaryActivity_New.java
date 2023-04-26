@@ -327,7 +327,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             try {
                 JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
                 if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
                 } else {
                     chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
                     startActivity(chatIntent);
@@ -338,7 +338,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -1010,7 +1010,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
-            add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+            add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
 
             editAddDocs.setOnClickListener(new View.OnClickListener() {
@@ -1717,9 +1717,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
-                        "Are you sure you want to send the visit to the doctor?",
-                        "Yes", "No");
+                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit),
+                        getResources().getString(R.string.are_you_sure_you_want_to_send_visit),
+                        getResources().getString(R.string.yes), getResources().getString(R.string.no));
             }
         });
         // upload btn click - end
@@ -2220,7 +2220,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     in.putExtra("speciality", speciality_selected);
                     mStartForScheduleAppointment.launch(in);
                 } else
-                    Toast.makeText(VisitSummaryActivity_New.this, "Please upload the visit first!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                 //finish();
 
             }
@@ -2573,9 +2573,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         if (isSynced) {
                             // ie. visit is uploded successfully.
                             visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
-                                    "Visit successfully sent!",
-                                    "Patient's visit has been successfully sent to the doctor.",
-                                    "Okay");
+                                    getResources().getString(R.string.visit_successfully_sent),
+                                    getResources().getString(R.string.patient_visit_sent),
+                                    getResources().getString(R.string.okay));
 
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
@@ -2714,7 +2714,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     @Override
     public void deleteAddDoc_Item(List<DocumentObject> documentList, int position) {
         documentList.remove(position);
-        add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+        add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
     }
 
     public void openAll(View view) {
@@ -3332,7 +3332,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
-            add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+            add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
             if (recyclerViewAdapter != null) {
                 if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
@@ -3725,19 +3725,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -4050,7 +4050,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -4064,7 +4064,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -4079,13 +4079,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
         } else {
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             Log.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
@@ -4198,19 +4198,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -4522,7 +4522,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
@@ -4547,7 +4547,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4563,7 +4563,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -4585,7 +4585,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
@@ -4609,7 +4609,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4625,7 +4625,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -4646,7 +4646,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
@@ -4671,7 +4671,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4687,7 +4687,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -4704,7 +4704,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         } else {
             //small size prescription...
             // Create a print job with name and adapter instance
-            String jobName = getString(R.string.app_name) + " Visit Summary";
+            String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
             Log.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
@@ -4736,7 +4736,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4752,7 +4752,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, "Downloaded To: " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override

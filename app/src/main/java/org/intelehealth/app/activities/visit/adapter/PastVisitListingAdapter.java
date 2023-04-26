@@ -64,8 +64,8 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             String hideVisitUUID = genericViewHolder.pastVisitData.getVisitUUID();
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-            genericViewHolder.visitUUIDTextView.setText("Visit Id : XXXX" + hideVisitUUID);
-            genericViewHolder.visitDateTextView.setText("Visit Date :" + genericViewHolder.pastVisitData.getVisitDate());
+            genericViewHolder.visitUUIDTextView.setText(mContext.getString(R.string.visitID) + ": XXXX" + hideVisitUUID);
+            genericViewHolder.visitDateTextView.setText(mContext.getString(R.string.visit_date) + " :" + genericViewHolder.pastVisitData.getVisitDate());
             if (genericViewHolder.index == mItemList.size() - 1) {
                 genericViewHolder.separator.setVisibility(View.GONE);
             } else {

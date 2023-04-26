@@ -142,7 +142,7 @@ public class VisitReceivedFragment extends Fragment {
 
         // Total no. of End visits.
         int total = getTotalCounts_EndVisit();
-        String htmlvalue = "<b>" + total + " Patients </b> are awaiting their prescriptions. Please send";
+        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription) ;
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
 
         // Filter - start

@@ -186,7 +186,7 @@ public class VitalsActivity extends AppCompatActivity {
                 findViewById(R.id.tinput_rr).setVisibility(View.GONE);
             }
         } catch (JSONException e) {
-            Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.config_file_error), Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (intentTag != null && intentTag.equals("edit")) {

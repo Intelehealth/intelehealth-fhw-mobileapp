@@ -263,10 +263,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
                     getResources().getDrawable(R.drawable.dialog_icon_complete),
-                    "Patient Registered!",
-                    "Does the patient want to start the visit now?",
-                    "Continue",
-                    "Cancel", new DialogUtils.CustomDialogListener() {
+                    getResources().getString(R.string.patient_registered),
+                    getResources().getString(R.string.does_patient_start_visit_now),
+                    getResources().getString(R.string.button_continue),
+                    getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
@@ -996,7 +996,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         // setting address1
         if (patientDTO.getAddress1() == null || patientDTO.getAddress1().equals("")) {
             //  address1.setVisibility(View.GONE);
-            address1.setText("No address added");
+            address1.setText(getResources().getString(R.string.no_address_added));
         } else {
             address1.setText(patientDTO.getAddress1());
         }
@@ -1011,7 +1011,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getCountry() != null) {
             country = patientDTO.getCountry().trim();
         } else {
-            country = "No country added";
+            country = getResources().getString(R.string.no_country_added);
         }
         patientcountry.setText(country);
 
@@ -1020,7 +1020,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getStateprovince() != null) {
             state = patientDTO.getStateprovince().trim();
         } else {
-            state = "No state added";
+            state = getResources().getString(R.string.no_state_added);
         }
         patientstate.setText(state);
 
@@ -1036,13 +1036,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (district != null) {
             patientdistrict.setText(district);
         } else {
-            patientdistrict.setText("No district added");
+            patientdistrict.setText(getResources().getString(R.string.no_district_added));
         }
 
         if (city_village != null) {
             village.setText(city_village);
         } else {
-            village.setText("No city added");
+            village.setText(getResources().getString(R.string.no_city_added));
         }
         // end - city and district
 
@@ -1050,14 +1050,14 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getPostalcode() != null) {
             postalcode.setText(patientDTO.getPostalcode());
         } else {
-            postalcode.setText("No postal code added");
+            postalcode.setText(getResources().getString(R.string.no_postal_code_added));
         }
 
         // setting phone number
         if (patientDTO.getPhonenumber() != null && !patientDTO.getPhonenumber().isEmpty()) {
             phone.setText(patientDTO.getPhonenumber());
         } else {
-            phone.setText("No mobile number added");
+            phone.setText(getResources().getString(R.string.no_mobile_number_added));
         }
 
         // setting education status
