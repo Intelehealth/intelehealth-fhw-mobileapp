@@ -1433,6 +1433,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                 famHistText.setEnabled(false);
 
+/*
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1469,15 +1470,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                     }
                 });
+*/
 
-                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                famHistDialog.setNegativeButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 });
 
-                famHistDialog.setNegativeButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
+                famHistDialog.setPositiveButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -1539,6 +1541,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 complaintText.setEnabled(false);
 
+/*
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1576,8 +1579,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         dialogInterface.dismiss();
                     }
                 });
+*/
 
-                complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                complaintDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Deleting the old image in physcial examination
@@ -1612,7 +1616,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     }
                 });
 
-                complaintDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                complaintDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -1652,6 +1656,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
+/*
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1686,8 +1691,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         dialogInterface.dismiss();
                     }
                 });
+*/
 
-                physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                physicalDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (obsImgdir.exists()) {
@@ -1724,7 +1730,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     }
                 });
 
-                physicalDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                physicalDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -1763,6 +1769,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
 
+/*
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1798,8 +1805,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         dialogInterface.dismiss();
                     }
                 });
+*/
 
-                historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                historyDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PastMedicalHistoryActivity.class);
@@ -1827,7 +1835,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     }
                 });
 
-                historyDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                historyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
