@@ -41,6 +41,7 @@ import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,7 +66,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
-    private int mTotalQuery = 0;
+    //private int mTotalQuery = 0;
     RecyclerView mRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
 
@@ -94,15 +96,28 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private OnItemSelection mOnItemSelection;
     private boolean mIsForPhysicalExam;
     private PhysicalExam mPhysicalExam;
+    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
+    private int mRootIndex = 0;
+    private boolean mIsAssociateSymptoms = false;
 
-    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isPhyExam, PhysicalExam physicalExam, int totalQuery, OnItemSelection onItemSelection) {
+    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, OnItemSelection onItemSelection) {
         mContext = context;
         mIsForPhysicalExam = isPhyExam;
         mPhysicalExam = physicalExam;
         mRecyclerView = recyclerView;
         mOnItemSelection = onItemSelection;
-        mTotalQuery = totalQuery;
+        //mTotalQuery = totalQuery;
+        mRootIndex = rootIndex;
+        mRootComplainBasicInfoHashMap = complainBasicInfoHashMap;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
+    }
+
+    public void setRootNodeIndex(int rootIndex) {
+        mRootIndex = rootIndex;
+    }
+
+    public void setAssociateSymptomFlag(boolean isAssociateSymptom) {
+        mIsAssociateSymptoms = isAssociateSymptom;
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
@@ -134,12 +149,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         return new GenericViewHolder(itemView);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
+            genericViewHolder.rootIndex = mRootIndex;
 
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -193,16 +210,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             } else {
                 genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-                genericViewHolder.tvQuestionCounter.setText((position + 1) + " of " + mTotalQuery + " questions"); //"1 of 10 questions"
+                genericViewHolder.tvQuestionCounter.setText(String.format("%d of %d questions", getCount(genericViewHolder.index, genericViewHolder.rootIndex), mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize())); //"1 of 10 questions"
 
             }
-
+            mOnItemSelection.needTitleChange("2/4 Visit reason : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainName());
 
             if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
-                mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
+                //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
                 showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
+                genericViewHolder.tvQuestionCounter.setText("");
             } else {
-                mOnItemSelection.needTitleChange("");
+                //mOnItemSelection.needTitleChange("");
 
 
                 String type = genericViewHolder.node.getInputType();
@@ -273,6 +291,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 showCameraView(mItemList.get(position), genericViewHolder, position);
             }
         }
+    }
+
+    private int getCount(int adapterPosition, int rootIndex) {
+        int count = 0;
+        //> mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() ? position - mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() - 1 : position + 1)
+        if (rootIndex == 0) {
+            count = adapterPosition + 1;
+        } else {
+            int completedCount = 0;
+            for (int i = rootIndex - 1; i >= 0; i--) {
+                completedCount += mRootComplainBasicInfoHashMap.get(i).getOptionSize();
+            }
+            count = adapterPosition + 1 - completedCount;
+        }
+        return count;
     }
 
     private void addRangeView(Node node, GenericViewHolder holder, int index) {
@@ -1224,7 +1257,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestion, tvQuestionDesc, tvQuestionCounter, tvReferenceDesc;
         Node node;
-        int index;
+        int index, rootIndex;
         RecyclerView recyclerView;
         // this will contain independent view like, edittext, date, time, range, etc
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;

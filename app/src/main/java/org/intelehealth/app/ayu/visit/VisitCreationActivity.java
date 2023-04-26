@@ -69,8 +69,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 public class VisitCreationActivity extends AppCompatActivity implements VisitCreationActionListener {
@@ -255,7 +258,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT:
@@ -365,15 +368,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     private boolean isSavedVisitReason() {
-        Node node = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
-        List<Node> optionList = node.getOptionsList();
 
-        Node associateSymptomsNode = optionList.get(optionList.size() - 1);
-        //optionList.remove(optionList.size() - 1);
-        //node.setOptionsList(optionList);
         insertion = "";
-        formatComplainRecord(node);
-        //formatComplainRecord(associateSymptomsNode);
+        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+            Node node = mChiefComplainRootNodeList.get(i);
+            formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+        }
+        if(insertion.contains("►Associated symptoms: ► Associated symptoms:")){
+            insertion = insertion.replace("►Associated symptoms: ► Associated symptoms:", "►Associated symptoms: ");
+        }
         return insertChiefComplainToDb(insertion);
     }
 
@@ -436,6 +439,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         return mainNode;
     }
 
+    private Node mCommonAssociateSymptoms = null;
+
     private void loadChiefComplainNodeForSelectedNames(List<String> selectedComplains) {
         for (int i = 0; i < selectedComplains.size(); i++) {
             String fileLocation = "engines/" + selectedComplains.get(i) + ".json";
@@ -443,10 +448,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
             Node associateSymptoms = null;
-            Log.v(TAG, "optionList  mainNode- "+mainNode.getText());
+            Log.v(TAG, "optionList  mainNode- " + mainNode.getText());
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
                 if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
-                    associateSymptoms = mainNode.getOptionsList().get(j);
+                    if (mCommonAssociateSymptoms == null)
+                        mCommonAssociateSymptoms = mainNode.getOptionsList().get(j);
+                    else {
+                        mCommonAssociateSymptoms.getOptionsList().addAll(mainNode.getOptionsList().get(j).getOptionsList());
+                    }
 
                 } else {
                     if (checkNodeValidByGenderAndAge(mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
@@ -455,18 +464,44 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     }
                 }
             }
-            if (associateSymptoms != null) {
+            /*if (mCommonAssociateSymptoms != null) {
 
-                associateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
+                mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
 
-                optionList.add(associateSymptoms);
-            }
+                //optionList.add(associateSymptoms);
+            }*/
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
 
         }
+        if (mCommonAssociateSymptoms != null) {
+
+            mCommonAssociateSymptoms.setOptionsList(getNodeWithoutDuplicates(mCommonAssociateSymptoms.getOptionsList()));
+            mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
+
+            //optionList.add(associateSymptoms);
+            mChiefComplainRootNodeList.add(mCommonAssociateSymptoms);
+        }
+
 
     }
+
+    private static List<Node> getNodeWithoutDuplicates(final List<Node> nodes) {
+        Set<Node> nodeSet = new TreeSet<Node>(new NodeComparator());
+        nodeSet.addAll(nodes);
+        return new ArrayList<Node>(nodeSet);
+    }
+
+    static class NodeComparator implements Comparator<Node> {
+
+        @Override
+        public int compare(Node n1, Node n2) {
+            return n1.getText().compareToIgnoreCase(n2.getText());
+
+        }
+
+    }
+
 
     private boolean checkNodeValidByGenderAndAge(String nodeGender, String minAge, String maxAge) {
 
@@ -482,7 +517,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             isValidByGender = false;
         }
 
-        if(isValidByGender) {
+        if (isValidByGender) {
             if (minAgeF != 0f && maxAgeF != 0f) {
                 isValidByGender = minAgeF <= float_ageYear_Month && float_ageYear_Month <= maxAgeF;
             } else if (minAgeF != 0f) {
@@ -491,7 +526,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 isValidByGender = float_ageYear_Month <= maxAgeF;
             }
         }
-       return isValidByGender;
+        return isValidByGender;
     }
 
     public void setTitle(String text) {
@@ -560,7 +595,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     String insertion = "";
 
     //new code for the one by one complain data capture
-    public String formatComplainRecord(Node currentNode) {
+    public String formatComplainRecord(Node currentNode, boolean isAssociateSymptom) {
         // checking any question missing
         // can check also compulsory question
 
@@ -586,7 +621,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         // generate language from current node
 
-        String complaintString = currentNode.generateLanguage();
+        String complaintString = isAssociateSymptom ? currentNode.generateLanguageSingleNode() : currentNode.generateLanguage();
+
         Log.v("formatComplainRecord", "Value - " + complaintString);
         if (complaintString != null && !complaintString.isEmpty()) {
             //     String complaintFormatted = complaintString.replace("?,", "?:");
@@ -617,9 +653,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         setTitle("2/4 Visit reason : " + selectedComplains.get(mCurrentComplainNodeIndex));
         //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
         //mSummaryFrameLayout.setVisibility(View.GONE);
-        getSupportFragmentManager().beginTransaction().
+       /* getSupportFragmentManager().beginTransaction().
                 replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
-                commit();
+                commit();*/
     }
 
     /**
