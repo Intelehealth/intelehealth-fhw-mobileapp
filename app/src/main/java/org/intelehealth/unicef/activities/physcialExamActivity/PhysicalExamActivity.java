@@ -176,7 +176,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     Log.v(TAG, "mSelectedComplainName - " + mSelectedComplainName);
                     if (mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
                             mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича")) {
-                        mFileName = "physExam1.json";
+                        mFileName = "physExam.json";
 
                     }
                 }
