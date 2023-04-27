@@ -73,7 +73,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
-        Log.v("ImageCaptured", new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
+        Log.v("showCameraView", "ImageCaptured mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        Log.v("showCameraView", "ImageCaptured - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
 
@@ -169,6 +170,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int rawPosition) {
         if (holder instanceof GenericViewHolder) {
+            Log.v("showCameraView", "onBindViewHolder - " + rawPosition);
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(genericViewHolder.getAbsoluteAdapterPosition());
             genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
@@ -1021,6 +1023,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 String type = options.get(i).getInputType();
                 if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
                     // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
                     showCameraView(options.get(i), holder, index);
                 }
             }
@@ -1028,8 +1031,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     }
 
-    private void showCameraView(Node node, GenericViewHolder holder, int index) {
-        Log.v("showCameraView", new Gson().toJson(node));
+    private synchronized void showCameraView(Node node, GenericViewHolder holder, int index) {
+        Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
         Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
@@ -1064,23 +1067,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
         imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
 
-        ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
-            @Override
-            public void onImageRemoved(int index, String image) {
-                mOnItemSelection.onImageRemoved(index, image);
-            }
+        if (!node.getImagePathList().isEmpty()) {
+            ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+                @Override
+                public void onImageRemoved(int index, String image) {
+                    mOnItemSelection.onImageRemoved(index, image);
+                }
 
-            @Override
-            public void onNewImageRequest() {
-                mLastImageCaptureSelectedNodeIndex = index;
-                mOnItemSelection.onCameraRequest();
-            }
-        });
-        imagesRcv.setAdapter(imageGridAdapter);
-        Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+                @Override
+                public void onNewImageRequest() {
+                    mLastImageCaptureSelectedNodeIndex = index;
+                    mOnItemSelection.onCameraRequest();
+                }
+            });
+            imagesRcv.setAdapter(imageGridAdapter);
+            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+        }
 
 
-        if (node.getImagePathList().isEmpty()) {
+        if (imagesRcv.getAdapter() == null || imagesRcv.getAdapter().getItemCount() < 1) {
             newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.GONE);
             imagesRcv.setVisibility(View.GONE);
@@ -1091,7 +1096,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         holder.otherContainerLinearLayout.addView(view);
-
+        holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
+        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        Log.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
     }
 
 
@@ -1126,7 +1133,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         int max = 100;
         final String[] data = new String[max + 1];
         data[0] = "Number";
-        for (i = 1; i <=max; i++) {
+        for (i = 1; i <= max; i++) {
             data[i] = String.valueOf(i);
         }
 

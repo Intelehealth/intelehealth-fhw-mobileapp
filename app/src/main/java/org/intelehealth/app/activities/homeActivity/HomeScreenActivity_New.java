@@ -637,7 +637,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
 */
 
-        tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
+        tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
 
 
     }
