@@ -568,7 +568,7 @@
                                     android:layout_centerVertical="true"
                                     android:gravity="center_vertical"
                                     android:lineSpacingExtra="3sp"
-                                    android:text="Prescription"
+                                    android:text="@string/prescription"
                                     android:textAppearance="@style/visitDetails_text"
                                     android:textColor="@null"
                                     android:textSize="@dimen/fu_name_txt_size" />
@@ -638,7 +638,7 @@
                                     android:backgroundTint="@color/light_red"
                                     android:lineHeight="@dimen/button_line_height"
                                     android:padding="@dimen/fu_margin_start"
-                                    android:text="Cancel"
+                                    android:text="@string/cancel"
                                     android:textColor="@color/red"
                                     android:textSize="@dimen/txtsize_patdetail_14sp"
                                     android:textStyle="bold" />
@@ -654,7 +654,7 @@
                                     android:backgroundTint="@color/grey_button_bg"
                                     android:lineHeight="@dimen/button_line_height"
                                     android:padding="@dimen/hamburger_margin_top"
-                                    android:text="Remind doctor"
+                                    android:text="@string/remind_doctor"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="@dimen/txtsize_patdetail_14sp"
                                     android:textStyle="bold" />
@@ -772,7 +772,7 @@
                                     android:background="@drawable/button_white_border"
                                     android:lineHeight="@dimen/button_line_height"
                                     android:padding="@dimen/fu_margin_start"
-                                    android:text="No"
+                                    android:text="@string/no"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="@dimen/common_button_text_size"
                                     android:textStyle="bold" />
@@ -786,7 +786,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/ui2_common_primary_bg"
                                     android:padding="@dimen/fu_margin_start"
-                                    android:text="Yes"
+                                    android:text="@string/yes"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/common_button_text_size"
                                     android:textStyle="bold" />
@@ -829,7 +829,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/ui2_common_primary_bg"
                             android:padding="@dimen/fu_margin_start"
-                            android:text="End visit"
+                            android:text="@string/end_visit"
                             android:textColor="@color/white"
                             android:textSize="@dimen/txtsize_patdetail_14sp"
                             android:textStyle="bold" />
@@ -885,7 +885,7 @@
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
-                            android:text="Past Visits"
+                            android:text="@string/past_visits"
                             android:textAppearance="@style/details_head1"
                             android:textColor="@null"
                             android:textSize="@dimen/common_header_text_size"

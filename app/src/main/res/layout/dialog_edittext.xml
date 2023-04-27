@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="@dimen/text_18sp"
-            android:text="Please Enter Text"/>
+            android:text="@string/please_enter_text"/>
 
         <EditText
             android:id="@+id/editText_mobileno"
@@ -30,8 +30,7 @@
             android:gravity="center_vertical"
             android:textSize="@dimen/edittext_textsize_16sp"
             android:layout_marginTop="@dimen/margin_10"
-            android:text=""
-            android:hint="Enter data here"
+            android:hint="@string/enter_data_here"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingTop="@dimen/fu_margin_start"
             android:paddingEnd="@dimen/margin_16dp"
@@ -51,7 +50,7 @@
             android:layout_alignParentEnd="true"
             android:paddingHorizontal="@dimen/margin_32dp"
             android:layout_marginEnd="@dimen/margin_10"
-            android:text="Share" />
+            android:text="@string/share" />
 
 
 

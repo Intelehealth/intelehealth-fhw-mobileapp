@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:lineSpacingExtra="1sp"
-                    android:text="What is the reason for this visit?"
+                    android:text="@string/what_is_reason_for_this_visit"
                     android:textColor="@color/ui2_black_text_color"
                     android:textSize="@dimen/text_18sp" />
 
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_visit_reason_t1"
                     android:lineSpacingExtra="1sp"
-                    android:text="Select one or multiple reasons" />
+                    android:text="@string/select_one_or_multiple_reasons"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/actv_reasons"
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:lineSpacingExtra="1sp"
-                android:text="Selected reasons"
+                android:text="@string/selected_reasons"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal"
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:lineSpacingExtra="1sp"
-                android:text="Recently searched"
+                android:text="@string/recently_searched"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
                     android:lineSpacingExtra="1sp"
-                    android:text="Not searched anything yet!"
+                    android:text="@string/not_searched_anything_yet"
                     android:textColor="@color/ui2_black_text_color"
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
@@ -198,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:lineSpacingExtra="1sp"
-                android:text="Most common reasons"
+                android:text="@string/most_common_reasons"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal"
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
                     android:lineSpacingExtra="1sp"
-                    android:text="Not data found!"
+                    android:text="@string/no_data_found"
                     android:textColor="@color/ui2_black_text_color"
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
@@ -229,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:lineSpacingExtra="1sp"
-                android:text="All reasons"
+                android:text="@string/all_reasons"
                 android:textColor="@color/gray_3"
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal" />

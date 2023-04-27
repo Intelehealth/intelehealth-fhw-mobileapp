@@ -83,7 +83,7 @@
         android:drawablePadding="@dimen/common_tv_icon_padding"
         android:fontFamily="@font/lato_regular"
         android:lineHeight="@dimen/tv_login_edit_line_height"
-        android:text="Edit Profile"
+        android:text="@string/edit_profile"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/nav_header_edit_profile" />
 

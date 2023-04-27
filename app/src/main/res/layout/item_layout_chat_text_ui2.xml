@@ -118,7 +118,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="Sent"
+                android:text="@string/sent"
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/help_card_tv_msg_sent_text_size" />
 

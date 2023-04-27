@@ -35,7 +35,7 @@
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:textSize="@dimen/edittext_textsize_16sp"
                 android:layout_centerVertical="true"
-                android:text="Thank you for your feedback!" />
+                android:text="@string/thank_you_for_feedback" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

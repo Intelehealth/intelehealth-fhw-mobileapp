@@ -40,7 +40,7 @@
                 android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:text="Other details"
+                android:text="@string/other_details"
                 android:textAppearance="@style/patdetail_header1" />
 
             <ImageView android:id="@+id/iv_others_drop"
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
-                android:text="Details"
+                android:text="@string/details"
                 android:textAppearance="@style/patdetail_header1"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -122,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Not provided"
+                        android:text="@string/not_provided"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="14sp" />
@@ -141,7 +141,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Son/Daughter/ \n  Wife of"
+                        android:text="@string/son_daughter_wife_of"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -151,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Not mentioned"
+                        android:text="@string/not_provided"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="14sp" />
@@ -213,7 +214,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Not mentioned"
+                        android:text="@string/not_provided"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="14sp" />

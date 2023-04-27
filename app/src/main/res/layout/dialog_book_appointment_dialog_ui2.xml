@@ -38,7 +38,7 @@
             android:gravity="center"
             android:lineHeight="@dimen/tv_internet_desc_line_height"
             android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
-            android:text="info"
+            android:text="@string/info"
             android:textColor="@color/textColorGray"
             android:textSize="@dimen/internet_warning_note" />
 

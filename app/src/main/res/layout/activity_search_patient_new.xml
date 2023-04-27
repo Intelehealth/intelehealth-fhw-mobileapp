@@ -134,7 +134,7 @@
         android:onClick="clearSearch"
         android:paddingHorizontal="@dimen/margin_8"
         android:paddingVertical="4dip"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textAppearance="@style/label"
         android:textColor="@null"
         android:textSize="13sp"

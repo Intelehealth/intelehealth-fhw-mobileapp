@@ -79,7 +79,7 @@
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="No"
+                    android:text="@string/no"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/txtsize_patdetail_16sp" />
 
@@ -93,7 +93,7 @@
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="Yes"
+                    android:text="@string/yes"
                     android:textColor="@color/white"
                     android:textSize="@dimen/txtsize_patdetail_16sp" />
 

@@ -40,7 +40,7 @@
                 android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:text="Address"
+                android:text="@string/address_identification"
                 android:textColor="@color/textview_color"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
-                android:text="Details"
+                android:text="@string/details"
                 android:textColor="@color/textview_color"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
@@ -111,7 +111,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Postal Code"
+                        android:text="@string/identification_screen_prompt_postal_code"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -141,7 +142,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Country"
+                        android:text="@string/country"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -171,7 +173,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  State"
+                        android:text="@string/state"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -201,7 +204,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  District"
+                        android:text="@string/district"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -231,7 +235,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Village/Town/City"
+                        android:text="@string/village_town_city"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -261,7 +266,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="  Corresponding \n  Address 1"
+                        android:text="@string/_corresponding_address_1"
+                        android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />

@@ -25,10 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
-
             android:layout_toEndOf="@+id/iv_back_arrow_terms"
-
-            android:text="Terms &amp; Conditions"
+            android:text="@string/terms_conditions"
             android:textSize="@dimen/setup_privacy_screen_info" />
     </LinearLayout>
 

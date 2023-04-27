@@ -293,7 +293,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  CHW worker"
+                                    android:text="@string/chw_worker"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -323,7 +324,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="  Visit ID"
+                                    android:text="@string/visitID"
+                                    android:drawablePadding="5dp"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -391,7 +393,7 @@
                         style="@style/vs_title_head_14sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Additional notes"
+                        android:text="@string/additional_notes"
                         android:textStyle="bold" />
 
                     <EditText
@@ -402,7 +404,7 @@
                         android:layout_marginTop="@dimen/margin_8"
                         android:background="@drawable/edittext_border"
                         android:gravity="top"
-                        android:hint="Leave a note for doctor"
+                        android:hint="@string/leave_a_note_for_doctor"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/fu_margin_start"
                         android:textColorHint="@color/edittext_hint_color"
@@ -448,7 +450,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
                                 android:layout_toEndOf="@+id/vs_icon"
-                                android:text="Additional Notes" />
+                                android:text="@string/additional_notes" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                                 android:id="@+id/btn_up_addnotes_vd_header"
@@ -516,7 +518,7 @@
                     style="@style/vs_title_head_14sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add additional document (2)"
+                    android:text="@string/add_additional_document_2"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -554,7 +556,7 @@
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_toEndOf="@+id/imagebutton_edit_additional_document"
                         android:background="@null"
-                        android:text="Add additional documents like reports, prescriptions, etc.\u000D" />
+                        android:text="@string/add_additional_documents_like" />
 
                 </RelativeLayout>
 
@@ -611,7 +613,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
                                 android:layout_toEndOf="@+id/vs_icon"
-                                android:text="Doctor's Speciality" />
+                                android:text="@string/doctor_speciality" />
 
                             <ImageButton
                                 android:id="@+id/btn_up_special_vd_header"
@@ -682,7 +684,7 @@
                             style="@style/vs_title_head_14sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Doctor's specialty"
+                            android:text="@string/doctor_speciality"
                             android:textColor="@color/colorPrimary"
                             android:textStyle="bold" />
 
@@ -732,7 +734,7 @@
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
                         android:layout_marginTop="@dimen/fu_card_margin_sides"
                         android:layout_marginBottom="@dimen/fu_card_margin_sides"
-                        android:text="Priority Visit"
+                        android:text="@string/priority_visits"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold" />
 
@@ -791,7 +793,7 @@
                 android:backgroundTint="@color/grey_button_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="Print"
+                android:text="@string/action_print"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
@@ -808,7 +810,7 @@
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="Share"
+                android:text="@string/share"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
@@ -837,7 +839,7 @@
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="Appointment"
+                android:text="@string/appointment"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
@@ -854,7 +856,7 @@
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="Send visit"
+                android:text="@string/send_visit_button"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />

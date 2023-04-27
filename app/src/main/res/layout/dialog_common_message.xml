@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
                 android:lineSpacingExtra="4sp"
-                android:text="Patient Registered!"
+                android:text="@string/patient_registered"
                 android:textAppearance="@style/dialog_title"
                 android:textStyle="bold"
                 android:textColor="@null"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
-                android:text="Does the patient want to start the \n visit now?"
+                android:text="@string/does_patient_start_visit_now"
                 android:textAppearance="@style/dialog_subtitle"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -73,7 +73,7 @@
                     android:background="@drawable/ui2_common_input_bg"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="Yes" />
+                    android:text="@string/yes" />
 
                 <Button
                     android:id="@+id/positive_btn"
@@ -85,7 +85,7 @@
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="No" />
+                    android:text="@string/no" />
             </LinearLayout>
 
 

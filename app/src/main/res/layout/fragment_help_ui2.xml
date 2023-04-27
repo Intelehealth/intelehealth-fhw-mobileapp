@@ -18,7 +18,7 @@
             android:id="@+id/tv_help_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Help center"
+            android:text="@string/help_center"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/common_header_text_size"
             android:textStyle="bold" />

@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/custom_tool_title_margin_top"
         android:layout_toEndOf="@+id/iv_back_arrow_common"
-        android:text="Title"
+        android:text="@string/title"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/common_header_text_size"
         android:textStyle="bold" />

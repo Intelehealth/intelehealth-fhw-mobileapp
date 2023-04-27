@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="Agree to "
+                android:text="@string/agree_to"
                 android:textSize="@dimen/terms_link_text_size" />
 
             <TextView
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="terms &amp; conditions"
+                android:text="@string/terms_conditions"
                 android:textColor="@color/ui2_link"
                 android:onClick="openTermsConditions"
                 android:textSize="@dimen/terms_link_text_size" />
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text=" and "
+                android:text="@string/and_setup"
                 android:textSize="@dimen/terms_link_text_size" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:onClick="openPrivacyPolicy"
-                android:text="privacy policy"
+                android:text="@string/privacy_policy_setup"
                 android:textColor="@color/ui2_link"
                 android:textSize="@dimen/terms_link_text_size" />
 

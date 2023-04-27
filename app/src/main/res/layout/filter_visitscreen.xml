@@ -28,7 +28,7 @@
             android:id="@+id/allvisits_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="All visits"
+            android:text="@string/all_visits"
             android:layout_marginBottom="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
             android:visibility="gone"
@@ -44,7 +44,7 @@
             android:id="@+id/priority_visits_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Priority visits"
+            android:text="@string/priority_visits"
             android:textSize="@dimen/fu_name_txt_size"
             android:textColor="@color/header_title_color"/>
 

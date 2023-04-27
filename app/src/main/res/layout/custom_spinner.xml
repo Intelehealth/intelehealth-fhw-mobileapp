@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:maxLines="1"
-    android:text="Select"
+    android:text="@string/select"
     android:singleLine="true"
     android:textColor="@color/textview_color"
     android:textSize="@dimen/edittext_textsize_16sp"
