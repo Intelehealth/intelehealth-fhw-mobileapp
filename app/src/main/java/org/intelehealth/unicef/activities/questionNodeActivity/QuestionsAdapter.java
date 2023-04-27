@@ -150,10 +150,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         } else {
             _mNode = currentNode;
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-                holder.tvQuestion.setText(_mNode.getOptionsList().get(0).findDisplay());
+                Node tempNode = _mNode.getOptionsList().get(0);
+                holder.tvQuestion.setText(tempNode.findDisplay());
+                if (tempNode.isRequired()) holder.tvQuestion.append("*");
             } else {
-                holder.tvQuestion.setText(_mNode.getOptionsList().get(position).findDisplay());
+                Node tempNode = _mNode.getOptionsList().get(position);
+                holder.tvQuestion.setText(tempNode.findDisplay());
+                if (tempNode.isRequired()) holder.tvQuestion.append("*");
             }
+
             holder.physical_exam_image_view.setVisibility(View.GONE);
             holder.physical_exam_text_view.setVisibility(View.GONE);
         }
@@ -321,7 +326,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             - By Nishita Goyal on 26th April 2022
             */
 
-            if (groupNode.getText()==null) return;
+            if (groupNode.getText() == null) return;
             else {
                 if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
