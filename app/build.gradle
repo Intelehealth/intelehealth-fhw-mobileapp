@@ -10,20 +10,20 @@ static def getDateTime() {
     return df.format(new Date());
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "org.intelehealth.app"
         minSdkVersion 26
-        targetSdkVersion 30
-        versionCode 59
+        targetSdkVersion 31
+        versionCode 60
         buildToolsVersion('29.0.2')
         versionName '4.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth UIUX" + versionName + " - " + getDateTime()
+        archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = "1.8"
@@ -55,7 +55,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = true
+           enableSplit = false
         }
         abi {
             enableSplit = true
@@ -123,8 +123,8 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 
-    // (Java only)
-    implementation 'androidx.work:work-runtime:2.0.1'
+    // (Java only) Targeting S+ (version 31 and above)
+    implementation 'androidx.work:work-runtime:2.7.1'
     // optional - RxJava2 support
     implementation 'androidx.work:work-rxjava2:2.0.1'
     // optional - Test helpers
@@ -137,7 +137,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     implementation 'com.google.firebase:firebase-analytics:18.0.0'
     implementation "com.google.firebase:firebase-core:17.4.3"
-    implementation "com.google.firebase:firebase-messaging:20.2.1"
+    //Targeting S+ (version 31 and above)
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation "com.google.firebase:firebase-iid:21.1.0"
 //    implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-crashlytics'

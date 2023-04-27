@@ -38,7 +38,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -259,10 +258,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     in.putExtra("visitId", visitId);
                     in.putExtra("doctorId", doctorId);
 
-                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
-                        startActivity(in);
-                    }
+                    //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    //if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+                    startActivity(in);
+                    //}
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

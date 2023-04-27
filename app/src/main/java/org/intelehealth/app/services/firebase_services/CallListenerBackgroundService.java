@@ -81,8 +81,14 @@ public class CallListenerBackgroundService extends Service {
         Log.v(TAG, "onStartCommand");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeScreenActivity_New.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        /*PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);*/
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))

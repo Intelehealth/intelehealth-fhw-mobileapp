@@ -175,6 +175,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.rootIndex = mIndexMappingHashMap.get(genericViewHolder.index);
             int position = genericViewHolder.getAbsoluteAdapterPosition();
 
+            genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
+            genericViewHolder.bodyLayout.setVisibility(View.GONE);
+
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
@@ -307,15 +310,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     genericViewHolder.spinKitView.setVisibility(View.GONE);
                     genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
                     //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-                    if (!genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
-                        mRecyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                mRecyclerView.smoothScrollBy(0, 1600);
-                            }
-                        }, 200);
-                    }
                 }
             }, 1000);
 
@@ -1131,8 +1126,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         int max = 100;
         final String[] data = new String[max + 1];
         data[0] = "Number";
-        for (i = 1; i < max; i++) {
-            data[i] = String.valueOf(i - 1);
+        for (i = 1; i <=max; i++) {
+            data[i] = String.valueOf(i);
         }
 
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
@@ -1190,10 +1185,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberRangeSpinner.getSelectedItemPosition() != 0 && numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
+                if (numberRangeSpinner.getSelectedItemPosition() == 0 || numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.duration_validation_txt), Toast.LENGTH_SHORT).show();
                     return;
-                } else if (durationTypeSpinner.getSelectedItemPosition() != 0 && durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
+                } else if (durationTypeSpinner.getSelectedItemPosition() == 0 || durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.duration_type_validation_txt), Toast.LENGTH_SHORT).show();
                     return;
                 }

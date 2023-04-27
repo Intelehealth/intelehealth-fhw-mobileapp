@@ -751,5 +751,6 @@
     <string name="duration_validation_txt">Please select the duration number</string>
     <string name="duration_type_validation_txt">Please select the duration type</string>
     <string name="select_date_hint">Select date</string>
+    <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
 
 </resources>

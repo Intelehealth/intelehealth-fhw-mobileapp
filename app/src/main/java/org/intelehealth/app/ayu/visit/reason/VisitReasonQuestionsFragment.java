@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -103,6 +104,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                    VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
                     return;
                 }
                 //Log.v("onSelect", "node - " + node.getText());
@@ -121,15 +123,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 } else {
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        /*if (mCurrentNode.getOptionsList().size() > recyclerView.getAdapter().getItemCount() && !mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom())
-                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                        else*/
-                        recyclerView.smoothScrollBy(0, 1600);
-                    }
-                }, 200);
+
+                VisitUtils.scrollNow(recyclerView, 200, 0, 500);
+                VisitUtils.scrollNow(recyclerView, 1100, 0, 1100);
+
+
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             }
@@ -160,4 +158,5 @@ public class VisitReasonQuestionsFragment extends Fragment {
         mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
         return view;
     }
+
 }

@@ -1,7 +1,5 @@
 package org.intelehealth.app.ayu.visit;
 
-import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
-
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -790,7 +788,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            physicalString = physicalString.replaceAll("[Describe]","");
+            while (physicalString.contains("[Describe"))
+                physicalString = physicalString.replace("[Describe]", "");
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
             Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
@@ -815,7 +814,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private boolean savePastHistoryData() {
 
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
-
+        while (patientHistory.contains("[Describe"))
+            patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
         ArrayList<String> familyInsertionList = new ArrayList<>();
@@ -845,7 +845,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
 
         familyHistory = familyHistory.replaceAll("null.", "");
-
+        while (familyHistory.contains("[Describe"))
+            familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
 
         if (imagePathList != null) {
@@ -1096,7 +1097,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
         this.imageUtilsListener = imageUtilsListener;
     }
+
     private ObjectAnimator syncAnimator;
+
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             SyncUtils.syncNow(this, view, syncAnimator);
