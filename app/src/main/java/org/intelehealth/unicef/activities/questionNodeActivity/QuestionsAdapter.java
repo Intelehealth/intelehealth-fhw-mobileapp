@@ -146,7 +146,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             } else {
                 holder.physical_exam_image_view.setVisibility(View.GONE);
             }
-            holder.tvQuestion.setText(_mNode.findDisplay());
+
+            String physicalExamQuestion = _mNode.findDisplay();
+            holder.tvQuestion.setText(physicalExamQuestion);
+            if (_mNode.isRequired() && !(physicalExamQuestion.charAt(physicalExamQuestion.length() - 1) == '*'))
+                holder.tvQuestion.append("*");
         } else {
             _mNode = currentNode;
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
