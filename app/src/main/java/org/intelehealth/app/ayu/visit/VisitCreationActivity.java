@@ -1,8 +1,8 @@
 package org.intelehealth.app.ayu.visit;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -36,6 +35,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
@@ -57,6 +57,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -372,10 +373,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         insertion = "";
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
-            formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+            String val = formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+            if (val == null) {
+                return false;
+            }
         }
-        if(insertion.contains("►Associated symptoms: ► Associated symptoms:")){
-            insertion = insertion.replace("►Associated symptoms: ► Associated symptoms:", "►Associated symptoms: ");
+        if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
+            insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
         }
         return insertChiefComplainToDb(insertion);
     }
@@ -435,7 +439,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private Node loadFileToNode(String fileLocation) {
         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
         Node mainNode = new Node(currentFile);
-        mainNode.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
+        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
         return mainNode;
     }
 
@@ -458,8 +462,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     }
 
                 } else {
-                    if (checkNodeValidByGenderAndAge(mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
-                        mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
+                    if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
+                        mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
                         optionList.add(mainNode.getOptionsList().get(j));
                     }
                 }
@@ -477,7 +481,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (mCommonAssociateSymptoms != null) {
 
             mCommonAssociateSymptoms.setOptionsList(getNodeWithoutDuplicates(mCommonAssociateSymptoms.getOptionsList()));
-            mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
+            mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
 
             //optionList.add(associateSymptoms);
             mChiefComplainRootNodeList.add(mCommonAssociateSymptoms);
@@ -502,32 +506,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     }
 
-
-    private boolean checkNodeValidByGenderAndAge(String nodeGender, String minAge, String maxAge) {
-
-        float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
-        float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
-        boolean isValidByGender = true;
-        if (patientGender.equalsIgnoreCase("M") &&
-                nodeGender.equalsIgnoreCase("0")) {
-
-            isValidByGender = false;
-        } else if (patientGender.equalsIgnoreCase("F") &&
-                nodeGender.equalsIgnoreCase("1")) {
-            isValidByGender = false;
-        }
-
-        if (isValidByGender) {
-            if (minAgeF != 0f && maxAgeF != 0f) {
-                isValidByGender = minAgeF <= float_ageYear_Month && float_ageYear_Month <= maxAgeF;
-            } else if (minAgeF != 0f) {
-                isValidByGender = float_ageYear_Month >= minAgeF;
-            } else if (maxAgeF != 0f) {
-                isValidByGender = float_ageYear_Month <= maxAgeF;
-            }
-        }
-        return isValidByGender;
-    }
 
     public void setTitle(String text) {
         ((TextView) findViewById(R.id.tv_sub_title)).setText(text);
@@ -599,10 +577,17 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         // checking any question missing
         // can check also compulsory question
 
-        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(this);
+        AnswerResult answerResult = isAssociateSymptom ? currentNode.checkAllRequiredAnsweredRootNode(this) : currentNode.checkAllRequiredAnswered(this);
         if (!answerResult.result) {
             // show alert dialog
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), answerResult.requiredStrings, true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+
+                }
+            });
+            /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             alertDialogBuilder.setMessage(answerResult.requiredStrings);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -611,7 +596,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                 }
             });
-            Dialog alertDialog = alertDialogBuilder.show();
+            Dialog alertDialog = alertDialogBuilder.show();*/
             Log.v(TAG, answerResult.requiredStrings);
             return null;
         }
@@ -803,6 +788,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
+            while (physicalString.contains("[Describe"))
+                physicalString = physicalString.replace("[Describe]", "");
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
             Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
@@ -827,7 +814,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private boolean savePastHistoryData() {
 
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
-
+        while (patientHistory.contains("[Describe"))
+            patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
         ArrayList<String> familyInsertionList = new ArrayList<>();
@@ -857,7 +845,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
 
         familyHistory = familyHistory.replaceAll("null.", "");
-
+        while (familyHistory.contains("[Describe"))
+            familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
 
         if (imagePathList != null) {
@@ -921,7 +910,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     public void questionsMissing() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getResources().getString(R.string.question_answer_all_phy_exam), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
+
+        /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -932,7 +929,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
         //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
     private void updateImageDatabase(String imageName) {
@@ -1101,10 +1098,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         this.imageUtilsListener = imageUtilsListener;
     }
 
+    private ObjectAnimator syncAnimator;
+
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
-            new SyncUtils().syncBackground();
-            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            SyncUtils.syncNow(this, view, syncAnimator);
         }
     }
 

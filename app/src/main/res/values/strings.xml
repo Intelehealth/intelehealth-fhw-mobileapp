@@ -2098,4 +2098,10 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="temp_eg">E.g., 98F</string>
     <string name="spo2_eg">E.g., 98%</string>
     <string name="respiratory_eg">E.g., 24 breath/min</string>
+    <string name="alert_label_txt">Alert!</string>
+    <string name="describe_hint_txt">Describe...</string>
+    <string name="duration_validation_txt">Please select the duration number</string>
+    <string name="duration_type_validation_txt">Please select the duration type</string>
+    <string name="select_date_hint">Select date</string>
+    <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
 </resources>

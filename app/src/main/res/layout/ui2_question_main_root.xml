@@ -134,6 +134,13 @@
                     android:layout_marginTop="@dimen/margin_16" />
 
                 <LinearLayout
+                    android:id="@+id/ll_super_nested_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:orientation="vertical" />
+
+                <LinearLayout
                     android:id="@+id/ll_single_component_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -159,11 +166,9 @@
                         android:id="@+id/btn_skip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:background="@drawable/ui2_common_button_bg_submit"
-                        android:minWidth="100dip"
-                        android:paddingHorizontal="@dimen/padding_7"
-                        android:paddingVertical="@dimen/padding_7"
+                        android:drawablePadding="8dip"
+                        android:paddingHorizontal="@dimen/margin_16"
                         android:text="@string/skip"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
@@ -176,9 +181,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_24"
                         android:background="@drawable/ui2_common_button_bg_submit"
-                        android:minWidth="100dip"
-                        android:paddingHorizontal="@dimen/padding_7"
-                        android:paddingVertical="@dimen/padding_7"
+                        android:drawablePadding="8dip"
+                        android:paddingHorizontal="@dimen/margin_16"
                         android:text="@string/submit"
                         android:textAllCaps="false"
                         android:textColor="@color/white"

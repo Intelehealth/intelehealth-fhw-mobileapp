@@ -198,7 +198,8 @@ public class Fragment_SecondScreen extends Fragment {
                     mAddress1ErrorTextView.setVisibility(View.GONE);
                     mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else*/ if (this.editText.getId() == R.id.state_edittext) {
+            } else*/
+            if (this.editText.getId() == R.id.state_edittext) {
                 if (val.isEmpty()) {
                     mStateNameErrorTextView.setVisibility(View.VISIBLE);
                     mStateNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -652,8 +653,7 @@ public class Fragment_SecondScreen extends Fragment {
                 mPostalCodeErrorTextView.setVisibility(View.GONE);
                 mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
-        }
-        else {
+        } else {
             mPostalCodeErrorTextView.setVisibility(View.GONE);
             mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
@@ -706,6 +706,12 @@ public class Fragment_SecondScreen extends Fragment {
         if (mCityVillageET.getText().toString().isEmpty()) {
             mCityNameErrorTextView.setVisibility(View.VISIBLE);
             mCityNameErrorTextView.setText(getString(R.string.error_field_required));
+            mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mCityVillageET.requestFocus();
+            return;
+        } else if (mCityVillageET.getText().toString().length() < 3) {
+            mCityNameErrorTextView.setVisibility(View.VISIBLE);
+            mCityNameErrorTextView.setText(getString(R.string.error_field_valid_village_required));
             mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             mCityVillageET.requestFocus();
             return;

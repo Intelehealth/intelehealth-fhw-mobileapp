@@ -54,7 +54,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position1) {
+        int position = holder.getAbsoluteAdapterPosition();
         Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
@@ -86,7 +87,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return mItemList.size() + 1;
+        //return mItemList.size() + 1;
+        return mItemList.size();
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
