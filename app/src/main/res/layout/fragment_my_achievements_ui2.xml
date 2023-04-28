@@ -54,7 +54,7 @@
         android:layout_marginStart="@dimen/achievements_userlevel_margin_start"
         android:layout_marginTop="@dimen/achievements_userlevel_margin_top"
         android:layout_toEndOf="@+id/iv_badge"
-        android:text="level"
+        android:text="@string/level"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/title_text_size"
         android:textStyle="bold" />

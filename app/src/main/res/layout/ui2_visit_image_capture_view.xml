@@ -51,7 +51,7 @@
         android:background="@drawable/ui2_common_button_bg_submit"
         android:drawablePadding="8dip"
         android:paddingHorizontal="@dimen/margin_16"
-        android:text="Submit"
+        android:text="@string/submit"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/common_button_text_size"
