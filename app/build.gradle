@@ -1,13 +1,21 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+    return df.format(new Date());
+}
+
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     defaultConfig {
         applicationId "org.intelehealth.unicef"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 32
         buildToolsVersion('29.0.2')
         versionName "4.0.1"
@@ -15,6 +23,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        archivesBaseName = "app- " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -53,6 +62,7 @@ android {
             enableSplit = true
         }
     }
+    namespace 'org.intelehealth.unicef'
 
 }
 
@@ -63,13 +73,13 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13-beta-2'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
@@ -106,11 +116,11 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only)
-    implementation 'androidx.work:work-runtime:2.7.1'
+    implementation 'androidx.work:work-runtime:2.8.1'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.7.1'
+    implementation 'androidx.work:work-rxjava2:2.8.1'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.7.1'
+    androidTestImplementation 'androidx.work:work-testing:2.8.1'
 
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'

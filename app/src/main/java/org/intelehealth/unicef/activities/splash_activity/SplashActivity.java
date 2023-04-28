@@ -109,8 +109,7 @@ public class SplashActivity extends AppCompatActivity {
                     } else {
                         checkPerm();
                     }
-                }
-                else {
+                } else {
                     checkPerm();
                 }
             }
@@ -167,9 +166,7 @@ public class SplashActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_NETWORK_STATE,
                         Manifest.permission.GET_ACCOUNTS,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.CAMERA)
                 .check();
     }
 
@@ -196,7 +193,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }*/
-                if(sessionManager.isEnableAppLock())
+                if (sessionManager.isEnableAppLock())
                     fingerPrintAuthenticate();
                 else
                     navigateToNextActivity();
@@ -212,8 +209,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void fingerPrintAuthenticate() {
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch(biometricManager.canAuthenticate())
-        {
+        switch (biometricManager.canAuthenticate()) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Toast.makeText(getApplicationContext(), "Device doesn't have fingerprint sensor.", Toast.LENGTH_SHORT).show();
                 break;

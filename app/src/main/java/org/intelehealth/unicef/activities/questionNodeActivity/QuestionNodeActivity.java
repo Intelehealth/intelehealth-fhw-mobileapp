@@ -46,6 +46,7 @@ import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.database.dao.VisitsDAO;
 import org.intelehealth.unicef.knowledgeEngine.Node;
+import org.intelehealth.unicef.models.AnswerResult;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -338,6 +339,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      */
     private void fabClick() {
         nodeComplete = true;
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(QuestionNodeActivity.this);
+        if (!answerResult.result) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, (dialogInterface, i) -> dialogInterface.dismiss());
+            Dialog alertDialog = alertDialogBuilder.show();
+            return;
+        }
 
         if (!complaintConfirmed) {
             questionsMissing();
@@ -661,7 +671,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     currentNode.formQuestionAnswer(0)
                             .replace("Question not answered", getString(R.string.question_not_answered))
                             .replace("Patient reports", getString(R.string.patient_reports))
-                            .replace("Patient denies", getString(R.string.patient_denies) )
+                            .replace("Patient denies", getString(R.string.patient_denies))
                             .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
                             .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
                             .replace("Years", getString(R.string.years))
