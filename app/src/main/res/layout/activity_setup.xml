@@ -82,7 +82,6 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:inputType="textUri"
                                     android:focusable="true"
-                                    android:text="demo.intelehealth.org"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
