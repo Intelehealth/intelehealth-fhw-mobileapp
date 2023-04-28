@@ -64,7 +64,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="sent" />
+            android:text="@string/sent" />
 
         <ImageView
             android:layout_width="35dp"

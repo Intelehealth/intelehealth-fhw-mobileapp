@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">इंटेलेहेल्थ</string>
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
     <string name="hint_required" translatable="false">अपेक्षित</string>
@@ -882,4 +882,5 @@
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
     <string name="all_patients_txt">All Patients</string>
+    <string name="app_sync_dialog_title">ऐप सिंक किया जा रहा है</string>
 </resources>

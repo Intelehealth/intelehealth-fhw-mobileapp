@@ -116,7 +116,7 @@
                     android:background="@drawable/edittext_border_blue"
                     android:drawableStart="@drawable/ui2_ic_search_icon_home"
                     android:drawablePadding="@dimen/margin_8"
-                    android:hint="Type or select reason eg. Fever"
+                    android:hint="@string/type_or_select_reason"
                     android:inputType="textAutoComplete"
                     android:padding="@dimen/padding_10"
                     android:textColorHint="@color/edittext_hint_color"

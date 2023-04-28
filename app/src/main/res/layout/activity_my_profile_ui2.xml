@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
                     android:enabled="false"
-                    android:hint="Username"
+                    android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
                     android:paddingTop="@dimen/common_edittext_padding_top"

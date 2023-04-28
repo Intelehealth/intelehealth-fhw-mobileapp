@@ -43,7 +43,7 @@
                     android:textColorHint="@color/textColorLightGary"
                     android:textSize="@dimen/txtsize_patdetail_14sp"
                     app:iconifiedByDefault="false"
-                    app:queryHint="Search patient" />
+                    app:queryHint="@string/search_patient" />
 
                 <ImageButton
                     android:id="@+id/filter_icon"

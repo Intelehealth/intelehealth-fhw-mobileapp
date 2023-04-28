@@ -33,7 +33,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/lato_regular"
-                android:text="Enter the credentials given \nby Intelehealth team."
+                android:text="@string/enter_the_credentials"
                 android:textSize="12sp" />
 
         </RelativeLayout>

@@ -59,7 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:hint="Name"
+                        android:hint="@string/name"
                         android:padding="5dp"
                         android:textAllCaps="true"
                         android:textSize="14sp" />
@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/name1"
-                        android:hint="Address"
+                        android:hint="@string/address_identification"
                         android:paddingStart="5dp"
                         android:textAllCaps="true"
                         android:textSize="14sp" />

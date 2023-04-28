@@ -95,7 +95,7 @@
         android:minWidth="100dip"
         android:paddingHorizontal="@dimen/padding_7"
         android:paddingVertical="@dimen/padding_7"
-        android:text="Skip"
+        android:text="@string/skip"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/common_button_text_size"

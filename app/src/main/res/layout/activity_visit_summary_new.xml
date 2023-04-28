@@ -698,7 +698,7 @@
                             android:layout_marginBottom="@dimen/margin_16dp"
                             android:entries="@array/speciality_values"
                             android:gravity="center_vertical"
-                            android:hint="Select Speciality"
+                            android:hint="@string/select_speciality"
                             android:paddingStart="@dimen/fu_margin_start"
                             android:paddingTop="@dimen/margin_10"
                             android:paddingBottom="@dimen/margin_10" />

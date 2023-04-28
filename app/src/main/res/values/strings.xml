@@ -2068,7 +2068,34 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="_corresponding_address_1">Corresponding \nAddress 1</string>
     <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
     <string name="other_details">Other details</string>
-
-
-
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="document">Document</string>
+    <string name="enter_the_credentials">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="answer_information">Answer information....</string>
+    <string name="question">Question....</string>
+    <string name="upload_image_from_gallery">Upload an image from gallery or take a picture</string>
+    <string name="select_date">Select Date</string>
+    <string name="type_or_select_reason">Type or select reason eg. Fever</string>
+    <string name="enter_value">Enter value</string>
+    <string name="enter_state">Enter state</string>
+    <string name="enter_village_town_city">Enter village/town/city</string>
+    <string name="enter_patient_address">Enter patient address</string>
+    <string name="enter_district">Enter district</string>
+    <string name="select_education">Select Education</string>
+    <string name="select_speciality">Select Speciality</string>
+    <string name="select_time">Select Time</string>
+    <string name="chief_complaint">Chief complaint(s)</string>
+    <string name="physical_examination">Physical Examination</string>
+    <string name="general_exams">General Exams</string>
+    <string name="do_you_have_family_history">Do you have a family history of any of the following?</string>
+    <string name="enter_postal_code">Enter postal code</string>
+    <string name="type_here_patient_survey">Type here...</string>
+    <string name="enter_date_of_birth">Enter Date of Birth</string>
+    <string name="enter_age">Enter Age</string>
+    <string name="auto_calculate">Auto-Calculate</string>
+    <string name="bpm_eg">E.g., 72 bpm</string>
+    <string name="temp_eg">E.g., 98F</string>
+    <string name="spo2_eg">E.g., 98%</string>
+    <string name="respiratory_eg">E.g., 24 breath/min</string>
 </resources>

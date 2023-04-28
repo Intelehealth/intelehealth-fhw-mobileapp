@@ -138,7 +138,7 @@
                 android:layout_height="@dimen/icon_size_100dp"
                 android:layout_below="@+id/give_feedback_txtview"
                 android:layout_marginTop="@dimen/margin_8"
-                android:hint="Type here..."
+                android:hint="@string/type_here_patient_survey"
                 android:textColorHint="@color/edittext_hint_color"
                 android:gravity="top"
                 android:paddingTop="@dimen/fu_margin_start"
