@@ -29,7 +29,7 @@
         android:id="@+id/videoDesc"
         android:layout_marginTop="@dimen/rv_videos_item_tv_margin_top"
         android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
-        android:text="How to register new a patient?"
+        android:text="@string/how_to_register"
         android:textAlignment="center"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/common_label_text_size" />

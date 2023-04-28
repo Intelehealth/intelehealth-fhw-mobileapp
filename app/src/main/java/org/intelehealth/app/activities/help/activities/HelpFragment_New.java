@@ -135,7 +135,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/LCG6eJ0j-Cg\" frameborder=\"0\" allowfullscreen></iframe>",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/qbDHSwMOYg4\" frameborder=\"0\" allowfullscreen></iframe>",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/E0UAHVoqcm0\" frameborder=\"0\" allowfullscreen></iframe>"};
-        String[] descArr = {"Treat mild fever at home", "What is Anemia?","Treat cough at home","Benefits of walking"};
+        String[] descArr = { getResources().getString(R.string.treat_mild_fever), getResources().getString(R.string.what_is_anemia),getResources().getString(R.string.treat_cough_at_home),getResources().getString(R.string.benefits_of_walking)};
 
 
         List<YoutubeVideoList> videoList = new ArrayList<>();
@@ -148,13 +148,10 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     }
 
     public List<QuestionModel> getQuestionsList() {
-        String[] namesArr = {"How intelehealth works?", "How intelehealth help patients?", "How to register new patient?",
-                "How to add a new visit?", "How to book an appointment?"};
-        String[] descArr = {"Intelehealth has developed a comprehensive technology platform that Governments, NGO’s and Hospitals can use to deliver telemedicine-based care to their beneficiaries. Built with powerful features like a digital assistant with 80+ care protocols makes it easy for any organization to use and adapt it to meet their needs!",
-                "Our Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare. Using app, the HWs are able to capture details of patient\'s medication history, diagnostics, prescriptions and treatment. All these details are then shared with the remote doctors to provide consultation. It helps in saving patients from traveling miles for healthcare.",
-                "To register a patient, click on the \"Add Patient\" tab on the home scree. Read out the privacy policy to the patient. If they accept, fill out all the details to successfully register a patient. ",
-                "Once the patient is registered, on patient details screen, click \"Start Visit\" button to create a new visit for the patient.",
-                "Once the patient is registered and the visit is created, on visit summary screen, click \"Appointment\" button. Select the date and time (from available slots) which is suitable to the patient. Click on \"Book Appointment\" to complete booking an appointment with the specialist doctor."};
+        String[] namesArr = {getResources().getString(R.string.how_intelehealth_work),getResources().getString(R.string.why_intelehealth_exist), getResources().getString(R.string.how_intelehealth_help), getResources().getString(R.string.how_to_register),
+                getResources().getString(R.string.how_to_add_new_visit), getResources().getString(R.string.how_to_book_an_appointment)};
+        String[] descArr = {getResources().getString(R.string.how_intelehealth_work_ans), getResources().getString(R.string.why_intelehealth_exist_ans), getResources().getString(R.string.how_intelehealth_help_ans),
+                getResources().getString(R.string.how_to_register_ans), getResources().getString(R.string.how_to_add_new_visit_ans), getResources().getString(R.string.how_to_book_an_appointment_ans)};
 
 
         List<QuestionModel> questionsList = new ArrayList<>();

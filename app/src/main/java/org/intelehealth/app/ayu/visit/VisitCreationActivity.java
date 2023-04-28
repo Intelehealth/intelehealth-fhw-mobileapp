@@ -242,7 +242,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
             case STEP_2_VISIT_REASON:
                 mStep2ProgressBar.setProgress(20);
-                ((TextView) findViewById(R.id.tv_sub_title)).setText("2/4 Visit reason");
+                ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
 
                 getSupportFragmentManager().beginTransaction().
@@ -255,7 +255,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 selectedComplains = (List<String>) object;
                 loadChiefComplainNodeForSelectedNames(selectedComplains);
                 mStep2ProgressBar.setProgress(40);
-                setTitle("2/4 Visit reason : " + selectedComplains.get(0));
+                setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(0));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
@@ -284,7 +284,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
             case STEP_3_PHYSICAL_EXAMINATION:
                 mStep3ProgressBar.setProgress(10);
-                setTitle("3/4 Physical Examination");
+                setTitle(getResources().getString(R.string._phy_examination));
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 //mPhysicalExamNode =
                 loadPhysicalExam();
@@ -306,7 +306,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
             case STEP_5_FAMILY_HISTORY:
                 mStep4ProgressBar.setProgress(50);
-                setTitle("4/4. Medical history: Family history");
+                setTitle(getResources().getString(R.string._medical_family_history));
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 boolean isEditMode = true;
                 if (mFamilyHistoryNode == null) {
@@ -348,7 +348,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private void showPastMedicalHistoryFragment() {
         mStep4ProgressBar.setProgress(10);
-        setTitle("4/4. Medical history: Patient history");
+        setTitle(getResources().getString(R.string._medical_family_history));
         mSummaryFrameLayout.setVisibility(View.GONE);
         boolean isEditMode = true;
         if (mPastMedicalHistoryNode == null) {
@@ -528,7 +528,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         switch (mCurrentStep) {
             case STEP_2_VISIT_REASON_QUESTION:
                 if (title == null || title.isEmpty()) {
-                    setTitle("2/4 Visit reason : " + selectedComplains.get(0));
+                    setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(0));
                 } else {
                     setTitle(title);
                 }
@@ -635,7 +635,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private void showNextComplainQueries() {
         mCurrentComplainNodeIndex++;
         mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + 10);
-        setTitle("2/4 Visit reason : " + selectedComplains.get(mCurrentComplainNodeIndex));
+        setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(mCurrentComplainNodeIndex));
         //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
         //mSummaryFrameLayout.setVisibility(View.GONE);
        /* getSupportFragmentManager().beginTransaction().
@@ -1010,7 +1010,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                             //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
                             updateImageDatabase(mLastSelectedImageName);
                         } else {
-                            Toast.makeText(VisitCreationActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -1050,7 +1050,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitCreationActivity.this);
-        builder.setTitle("Add Image by");
+        builder.setTitle(getResources().getString(R.string.add_image_by));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -1087,7 +1087,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 //                cameraStart();
                 selectImage();
             } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.camera_permission_denied), Toast.LENGTH_LONG).show();
             }
         }
     }

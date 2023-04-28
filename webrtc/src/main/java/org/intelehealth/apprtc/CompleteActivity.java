@@ -251,7 +251,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("doctorId"))
             mDoctorUUID = getIntent().getStringExtra("doctorId");
 
-        binding.tvDoctorName.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
+        binding.tvDoctorName.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : (getResources().getString(R.string.doctor_annotation) + " " + mDoctorName));
         mFromUUId = mNurseId;
         mToUUId = mDoctorUUID;
         mPatientUUid = mRoomId;
@@ -309,7 +309,7 @@ public class CompleteActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(CompleteActivity.this, LinearLayoutManager.VERTICAL, true);
         binding.chatsRcv.setLayoutManager(mLayoutManager);
 
-        binding.callerNameTv.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : ("Dr. " + mDoctorName));
+        binding.callerNameTv.setText(mDoctorName.startsWith("Dr.") ? mDoctorName : (getResources().getString(R.string.doctor_annotation) + " " + mDoctorName));
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -912,7 +912,7 @@ public class CompleteActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(CompleteActivity.this, "Disconnected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CompleteActivity.this, getResources().getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1309,7 +1309,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                         Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
                         if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                            Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CompleteActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         try {
@@ -1347,9 +1347,9 @@ public class CompleteActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
     private void selectImage() {
-        final CharSequence[] options = {/*getString(R.string.take_photo_lbl),*/ getString(R.string.choose_from_gallery_lbl), "Choose Documents", getString(R.string.cancel_lbl)};
+        final CharSequence[] options = {/*getString(R.string.take_photo_lbl),*/ getString(R.string.choose_from_gallery_lbl), getResources().getString(R.string.choose_documents), getString(R.string.cancel_lbl)};
         AlertDialog.Builder builder = new AlertDialog.Builder(CompleteActivity.this);
-        builder.setTitle("Select");
+        builder.setTitle(getResources().getString(R.string.select));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -1363,14 +1363,14 @@ public class CompleteActivity extends AppCompatActivity {
                 } else*/
                 if (item == 0) {
                     if (mImageCount >= 5) {
-                        Toast.makeText(CompleteActivity.this, "Maximum 5 Images you can send per one case", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CompleteActivity.this, getResources().getString(R.string.max_5_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     galleryStart();
 
                 } else if (item == 1) {
                     if (mPDFCount >= 2) {
-                        Toast.makeText(CompleteActivity.this, "Maximum 2 documents you can send per one case", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CompleteActivity.this,  getResources().getString(R.string.max_2_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     browseStartForPdf();
@@ -1408,7 +1408,7 @@ public class CompleteActivity extends AppCompatActivity {
             if (allGranted) {
                 start();
             } else {
-                Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompleteActivity.this, getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
                 finish();
             }
 
@@ -1417,7 +1417,7 @@ public class CompleteActivity extends AppCompatActivity {
 //                cameraStart();
                 selectImage();
             } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.camera_permission_denied) , Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1450,7 +1450,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                             Log.i(TAG, currentPhotoPath);
                             if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                                Toast.makeText(CompleteActivity.this, "Max doc size is 512 KB", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CompleteActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             try {
@@ -1468,7 +1468,7 @@ public class CompleteActivity extends AppCompatActivity {
                             }
                             AwsS3Utils.saveFileToS3Cloud(CompleteActivity.this, mVisitUUID, currentPhotoPath);
                         } else {
-                            Toast.makeText(CompleteActivity.this, "Unable to pick the gallery data!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CompleteActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -1501,7 +1501,7 @@ public class CompleteActivity extends AppCompatActivity {
                                 //End
                                 currentPDFPath = mFile.getPath();
                                 if (!RealPathUtil.isFileLessThan1MB(mFile)) {
-                                    Toast.makeText(CompleteActivity.this, "Max doc size is 1MB", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CompleteActivity.this, getResources().getString(R.string.max_doc_size_toast_mb), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 Log.v(TAG, "currentPDFPath" + currentPDFPath);

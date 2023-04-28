@@ -298,7 +298,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             public void onClick(View view) {
 
                 if (editText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/rb_select_lang_padding"
-        android:text="language"
+        android:text="@string/language"
         android:button="@drawable/ui2_ic_circle"
         android:lineHeight="@dimen/rb_select_lang_line_height"
         android:textColor="@color/textColorBlack"

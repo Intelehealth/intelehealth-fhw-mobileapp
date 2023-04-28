@@ -251,7 +251,7 @@
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:gravity="center_vertical"
-                android:hint="Select Education"
+                android:hint="@string/select_education"
                 android:spinnerMode="dropdown"
                 android:popupBackground="@drawable/spinner_popup"
                 android:dropDownVerticalOffset="50dp"

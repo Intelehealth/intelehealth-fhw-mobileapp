@@ -120,7 +120,7 @@
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
                 android:paddingHorizontal="@dimen/toolbar_margin_left"
-                android:text="1/4. Vitals summary"
+                android:text="@string/_vitals_summary"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/toolbar_text_size"
                 android:textStyle="bold" />
@@ -139,7 +139,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
-                    android:text="Details" />
+                    android:text="@string/details" />
 
                 <TextView
                     android:id="@+id/tv_change"
@@ -154,7 +154,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:padding="@dimen/padding_5"
-                    android:text="Change" />
+                    android:text="@string/change" />
             </RelativeLayout>
 
             <LinearLayout
@@ -186,7 +186,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="Height(cm)" />
+                        android:text="@string/height_cm" />
 
                     <TextView
                         android:id="@+id/tv_height"
@@ -223,7 +223,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="Weight(kg)" />
+                        android:text="@string/weight_kg" />
 
                     <TextView
                         android:id="@+id/tv_weight"
@@ -260,7 +260,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="BMI" />
+                        android:text="@string/visit_summary_bmi" />
 
                     <TextView
                         android:id="@+id/tv_bmi"
@@ -297,7 +297,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="BP" />
+                        android:text="@string/visit_summary_bp" />
 
                     <TextView
                         android:id="@+id/tv_bp"
@@ -334,7 +334,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="Pulse" />
+                        android:text="@string/visit_summary_pulse" />
 
                     <TextView
                         android:id="@+id/tv_pulse"
@@ -371,7 +371,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="Temperature(F)" />
+                        android:text="@string/temperature_f" />
 
                     <TextView
                         android:id="@+id/tv_temperature"
@@ -408,7 +408,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="SpO2 (%)" />
+                        android:text="@string/table_spo2" />
 
                     <TextView
                         android:id="@+id/tv_spo2"
@@ -419,7 +419,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="No information" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -445,7 +445,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="Respiratory rate" />
+                        android:text="@string/respiratory_rate" />
 
                     <TextView
                         android:id="@+id/tv_respiratory_rate"
@@ -456,7 +456,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="No information" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

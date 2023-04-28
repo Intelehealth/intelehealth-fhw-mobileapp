@@ -97,17 +97,17 @@ public class VitalCollectionSummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection_summary, container, false);
         if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
-            ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " cm");
+            ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));
         else
             ((TextView) view.findViewById(R.id.tv_height)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getWeight() != null && !mVitalsObject.getWeight().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() + " kg");
+            ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() + " " + getResources().getString(R.string.kg));
         else
             ((TextView) view.findViewById(R.id.tv_weight)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getBmi() != null && !mVitalsObject.getBmi().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " kg/m");
+            ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " " + getResources().getString(R.string.kg_m));
         else
             ((TextView) view.findViewById(R.id.tv_bmi)).setText(getString(R.string.ui2_no_information));
 
@@ -117,7 +117,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         else
             ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
         if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " bpm");
+            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() +" " + getResources().getString(R.string.bpm));
         else
             ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
 
@@ -138,7 +138,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
             ((TextView) view.findViewById(R.id.tv_spo2)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getResp() != null && !mVitalsObject.getResp().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " breaths/min");
+            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " " + getResources().getString(R.string.breaths_min));
         else
             ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
 

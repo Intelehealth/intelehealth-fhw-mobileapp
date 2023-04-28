@@ -24,7 +24,7 @@
         android:layout_toEndOf="@+id/card_video1"
         android:layout_weight="1"
         android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
-        android:text="How to book an \nappointment with doctor"
+        android:text="@string/how_to_book_an_appointment"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/common_label_text_size" />
 

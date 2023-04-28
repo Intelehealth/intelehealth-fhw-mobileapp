@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:lineHeight="@dimen/card_apps_title_line_height"
                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
-                android:text="Camera"
+                android:text="@string/camera"
                 android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/card_apps_title_text_size"
                 android:textStyle="bold" />
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:lineHeight="@dimen/card_apps_title_line_height"
                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
-                android:text="Gallery"
+                android:text="@string/gallery"
                 android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/card_apps_title_text_size"
                 android:textStyle="bold" />
@@ -115,7 +115,7 @@
                 android:gravity="center"
                 android:lineHeight="@dimen/card_apps_title_line_height"
                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
-                android:text="Document"
+                android:text="@string/document"
                 android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/card_apps_media_title_text_size"
                 android:textStyle="bold" />

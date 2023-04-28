@@ -264,7 +264,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         tvOpenMrsID.setText(openmrsID);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-        tvVisitId.setText("Visit ID XXXX" + hideVisitUUID);
+        tvVisitId.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         String chief_complaint_value = getChiefComplaint(visitID);
         Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
@@ -286,18 +286,18 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             layoutContactAction.setVisibility(View.GONE);
             tvRescheduleOnTitle.setVisibility(View.GONE);
-            tvAppointmentTime.setText("Starts " + timeText);
+            tvAppointmentTime.setText(getResources().getString(R.string.starts) + " " + timeText);
             layoutSummaryBtns.setVisibility(View.VISIBLE);
 
 
             btnRescheduleAppointment.setOnClickListener(v -> {
                 String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment) + " <b>" + patientName + "?</b>";
-                rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, "Yes", "No");
+                rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
                 String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + " <b>" + patientName + "?</b>";
-                cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, "Yes", "No");
+                cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
 
@@ -346,7 +346,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary1));
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_prescription_green));
             fabHelp.setVisibility(View.GONE);
-            tvPrescStatus.setText("Received " + prescription_received_time);
+            tvPrescStatus.setText(getResources().getString(R.string.received) + " " + prescription_received_time);
 
             //redirection to PrescriptionActivity activity
             ivDrawerPrescription.setOnClickListener(v -> {
@@ -391,7 +391,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 // here show remind block as its pending from more than 1 day.
                 layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
             }
-            tvPrescStatus.setText("Pending since " + modifiedDate.replace("ago", ""));
+            tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
             tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
@@ -606,13 +606,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                     long hours = minutes / 60;
                     if (hours > 12) {
 
-                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", at " + slotTime;
+                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
                     } else {
-                        timeText = "In " + hours + " hours, at " + slotTime;
+                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
 
                     }
                 } else {
-                    timeText = "In " + minutes + " minutes";
+                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
                 }
             } else {
                 isVisitStartsIn = false;

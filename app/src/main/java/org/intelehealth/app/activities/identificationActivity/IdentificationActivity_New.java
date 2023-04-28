@@ -164,10 +164,10 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     public void cancelRegistration(View view) {
         patientRegistrationDialog(context,
                 getResources().getDrawable(R.drawable.close_patient_svg),
-                "Close patient registration?",
-                "Are you sure you want to close the patient registration?",
-                "Yes",
-                "No", new DialogUtils.CustomDialogListener() {
+                getResources().getString(R.string.close_patient_registration),
+                getResources().getString(R.string.sure_you_want_close_registration),
+                getResources().getString(R.string.yes),
+                getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
                     @Override
                     public void onDialogActionDone(int action) {
                         if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)

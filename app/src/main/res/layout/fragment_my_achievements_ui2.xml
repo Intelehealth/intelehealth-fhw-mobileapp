@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/iv_back_arrow_common"
-            android:text="Title"
+            android:text="@string/title"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/common_header_text_size"
             android:textStyle="bold" />
@@ -54,7 +54,7 @@
         android:layout_marginStart="@dimen/achievements_userlevel_margin_start"
         android:layout_marginTop="@dimen/achievements_userlevel_margin_top"
         android:layout_toEndOf="@+id/iv_badge"
-        android:text="Level1"
+        android:text="level"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/title_text_size"
         android:textStyle="bold" />

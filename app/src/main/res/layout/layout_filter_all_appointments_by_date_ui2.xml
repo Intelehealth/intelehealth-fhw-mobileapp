@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.02"
-                android:text="From"
+                android:text="@string/from"
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/date_frag_layout_text_size" />
 
@@ -41,7 +41,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:letterSpacing="0.02"
                 android:paddingEnd="@dimen/date_frag_date_padding_end"
-                android:hint="Select date"
+                android:hint="@string/select_date"
                 android:paddingStart="12dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/date_frag_date_text_size"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.02"
-                android:text="To"
+                android:text="@string/to"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/date_frag_layout_text_size" />
@@ -73,7 +73,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:letterSpacing="0.02"
                 android:paddingEnd="@dimen/date_frag_date_padding_end"
-                android:hint="Select date"
+                android:hint="@string/select_date"
                 android:paddingStart="12dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/date_frag_date_text_size"

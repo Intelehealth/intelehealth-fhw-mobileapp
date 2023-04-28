@@ -735,7 +735,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 //startActivity(intent);
                 //  getActivity().finish();
             } else {
-                Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

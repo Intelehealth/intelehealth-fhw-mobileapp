@@ -43,7 +43,7 @@
                     android:textColorHint="@color/textColorLightGary"
                     android:textSize="@dimen/txtsize_patdetail_14sp"
                     app:iconifiedByDefault="false"
-                    app:queryHint="Search patient" />
+                    app:queryHint="@string/search_patient" />
 
                 <ImageButton
                     android:id="@+id/filter_icon"
@@ -100,7 +100,7 @@
                         android:layout_toEndOf="@+id/icon_visit_details"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="3sp"
-                        android:text="3 Patients visits are waiting for closure, please end the visit."
+                        android:text="@string/patients_waiting_for_closure"
                         android:textAppearance="@style/visitDetails_text"
                         android:textColor="@null"
                         android:textSize="@dimen/fu_male_textsize" />
@@ -153,7 +153,7 @@
                         android:id="@+id/filter_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Results for"
+                        android:text="@string/results_for"
                         android:textAppearance="@style/caption"
                         android:textColor="@null"
                         android:textSize="@dimen/fu_male_textsize" />
@@ -183,7 +183,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/margin_4"
                                 android:background="@null"
-                                android:text="Priority visit's"
+                                android:text="@string/priority_visits"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="@dimen/notifi_subtitle_size" />
 
@@ -265,7 +265,7 @@
                     android:layout_below="@+id/you_can_add"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
-                    android:text="No visits found"
+                    android:text="@string/no_visit_found"
                     android:textAppearance="@style/caption"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize"
@@ -304,7 +304,7 @@
                     android:layout_below="@+id/older"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
-                    android:text="No visits found"
+                    android:text="@string/no_visit_found"
                     android:textAppearance="@style/caption"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize"
@@ -331,7 +331,7 @@
                     android:layout_below="@+id/rv_older"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
-                    android:text="This month's visit"
+                    android:text="@string/this_months_visits"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold"
@@ -344,7 +344,7 @@
                     android:layout_below="@+id/this_month"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
-                    android:text="No visits found"
+                    android:text="@string/no_visit_found"
                     android:textAppearance="@style/caption"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize"

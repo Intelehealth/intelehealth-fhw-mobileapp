@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
                 android:lineSpacingExtra="4sp"
-                android:text="Booking Appointment!"
+                android:text="@string/booking_appointment"
                 android:textAppearance="@style/dialog_title"
                 android:textColor="@null"
                 android:textSize="@null"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
-                android:text="Please wait..."
+                android:text="@string/please_wait"
                 android:textAppearance="@style/dialog_subtitle"
                 android:textColor="@null"
                 android:textSize="@null" />

@@ -213,7 +213,7 @@ public class LoginActivityNew extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Login");
+                    collapsingToolbarLayout.setTitle(getResources().getString(R.string.login));
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbarLayout.setTitle(" ");//careful there should a space between double quote otherwise it wont work

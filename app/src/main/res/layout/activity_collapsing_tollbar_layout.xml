@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_20"
                     android:lineSpacingExtra="@dimen/margin_10"
-                    android:text="Password"
+                    android:text="@string/password"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 

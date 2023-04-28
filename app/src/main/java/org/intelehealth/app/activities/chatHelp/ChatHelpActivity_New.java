@@ -568,7 +568,7 @@ public class ChatHelpActivity_New extends AppCompatActivity implements ClickList
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
         Date d = new Date();
         String dayOfTheWeek = sdf.format(d).substring(0, 3);
-        String formattedTime = dayOfTheWeek + " at " + localTime.format(dateTimeFormatter);
+        String formattedTime = dayOfTheWeek + " " + getResources().getString(R.string.at) + " " + localTime.format(dateTimeFormatter);
         return formattedTime;
     }
 

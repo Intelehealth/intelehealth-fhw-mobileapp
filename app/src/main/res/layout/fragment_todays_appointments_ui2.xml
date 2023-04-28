@@ -234,7 +234,7 @@
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Upcoming (0)"
+                    android:text="@string/upcoming_0"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
@@ -274,7 +274,7 @@
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Cancelled (0)"
+                    android:text="@string/cancelled_0"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
@@ -314,7 +314,7 @@
                     android:layout_marginTop="@dimen/title_lists_apps_margin_top"
                     android:lineHeight="@dimen/card_apps_title_line_height"
                     android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
-                    android:text="Completed (0)"
+                    android:text="@string/completed_0"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />

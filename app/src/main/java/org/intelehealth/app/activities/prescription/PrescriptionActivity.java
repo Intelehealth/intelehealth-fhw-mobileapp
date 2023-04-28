@@ -475,7 +475,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     // llFollowUpResult.removeAllViews();
                     String result = etFollowUpDate.getText().toString();
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
-                        result += ", Remarks: " + etFollowUpRemark.getText();
+                        result += ", " + getResources().getString(R.string.remarks) + etFollowUpRemark.getText();
 
                     if (followupPrescAdapter.getItemCount() > 0) {
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.morethanonefollowupnotallowed),

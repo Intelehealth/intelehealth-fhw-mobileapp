@@ -100,9 +100,9 @@ public class VisitActivity extends FragmentActivity implements
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
                     if (position == 0)
-                        tab.setText("Received").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText(getResources().getString(R.string.received)).setIcon(R.drawable.presc_tablayout_icon);
                     else
-                        tab.setText("Pending").setIcon(R.drawable.presc_tablayout_icon);
+                        tab.setText(getResources().getString(R.string.pending)).setIcon(R.drawable.presc_tablayout_icon);
 
                 }
         ).attach();
@@ -163,14 +163,14 @@ public class VisitActivity extends FragmentActivity implements
     @Override
     public void receivedCount(int count) {
         Log.v(TAG, "receivedCount: " + count);
-        tabLayout.getTabAt(0).setText("Received");
+        tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
 //        tabLayout.getTabAt(0).setText("Received /*(" + count + ")");
     }
 
     @Override
     public void pendingCount(int count) {
         Log.v(TAG, "pendingCount: " + count);
-        tabLayout.getTabAt(1).setText("Pending");
+        tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
 //        tabLayout.getTabAt(1).setText("Pending (" + count + ")");
     }
 

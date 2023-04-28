@@ -150,10 +150,10 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 if (rightViewHolder.jsonObject.has("isRead") && rightViewHolder.jsonObject.getInt("isRead") == 1) {
-                    rightViewHolder.statusTextView.setText("Read");
+                    rightViewHolder.statusTextView.setText(mContext.getString(R.string.read));
                     rightViewHolder.statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
                 } else {
-                    rightViewHolder.statusTextView.setText("Sent");
+                    rightViewHolder.statusTextView.setText(mContext.getString(R.string.sent));
                     rightViewHolder.statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
                 }
 

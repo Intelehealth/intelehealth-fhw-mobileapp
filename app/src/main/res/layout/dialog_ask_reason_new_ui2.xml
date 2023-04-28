@@ -158,7 +158,7 @@
                 android:paddingTop="16dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="16dp"
-                android:text="Save"
+                android:text="@string/save"
                 android:textSize="14sp" />
         </RelativeLayout>
     </LinearLayout>

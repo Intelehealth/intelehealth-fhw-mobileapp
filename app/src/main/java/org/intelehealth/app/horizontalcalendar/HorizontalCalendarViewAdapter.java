@@ -74,7 +74,7 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
 
     private void makeTodaysDateSelected(CalendarModel calendarModel, HorizontalCalendarViewAdapter.MyViewHolder holder, int currentMonth) {
         if (String.valueOf(currentMonth).trim().equals(calendarModel.getSelectedMonthForDays().trim()) && calendarModel.isCurrentDate) {
-            holder.tvDay.setText("Today");
+            holder.tvDay.setText(context.getString(R.string.today));
             holder.cardParent.setBackground(context.getResources().getDrawable(R.drawable.bg_horizontal_cal_view_selected));
             holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorWhite));
             holder.tvDay.setTextColor(context.getResources().getColor(R.color.textColorWhite));

@@ -322,7 +322,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 //presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
                 presc_remind_block.setVisibility(View.GONE); // For now
             }
-            presc_time.setText("Pending since " + modifiedDate.replace("ago", ""));
+            presc_time.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
             presc_time.setTextColor(getResources().getColor(R.color.red));
             icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
         }
@@ -368,7 +368,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-        visitID_txt.setText("Visit ID XXXX" + hideVisitUUID);
+        visitID_txt.setText(getResources() .getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         // Start Date and Time - start
         visit_startDate_txt = findViewById(R.id.visit_startDate);
@@ -419,10 +419,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
-            followupDate_txt.setText("Follow up on " + followupDate);
-            followup_info.setText("Please take " + patientName + "'s follow-up visit.");
+            followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
+            followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
-            followup_accept_text.setText("The doctor suggested a follow-up visit on\n" +
+            followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " +
                     followUpDate_format + ".");
             Log.v("vd", "vd: " + followup_info);
         } else {
@@ -635,7 +635,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(
                             String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneno, "Hello this is nurse1 from Telemedicine project. I am connecting with you regarding your recent visit."))));
+                                    phoneno, getResources().getString(R.string.nurse_whatsapp_message)))));
         } else {
             Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
         }
@@ -709,7 +709,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             try {
                 JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
                 if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
                 } else {
                     chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
                     startActivity(chatIntent);
@@ -720,7 +720,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, "Please wait for the doctor message!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
         }
 
     }

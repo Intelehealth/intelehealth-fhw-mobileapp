@@ -288,7 +288,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppointments.setText("0");
-        tvUpcomingAppointmentsTitle.setText("Upcoming (0)");
+        tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
@@ -326,7 +326,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             }
             Log.d(TAG, "getUpcomingAppointments:upcomingAppointmentsList size :  " + upcomingAppointmentsList.size());
             tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
-            tvUpcomingAppointmentsTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
+            tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentsList.size() + ")");
 
         } catch (
                 Exception e) {
@@ -338,7 +338,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void getCompletedAppointments() {
         tvCompletedAppointments.setText("0");
-        tvCompletedAppointmentsTitle.setText("Completed (0)");
+        tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed_0));
 
         //recyclerview for completed appointments
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
@@ -421,7 +421,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
         rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
         tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
-        tvCompletedAppointmentsTitle.setText("Completed (" + appointmentsDaoList.size() + ")");
+        tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed) + " (" + appointmentsDaoList.size() + ")");
 
 
     }
@@ -447,7 +447,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
-        tvCancelledAppsCountTitle.setText("Cancelled (0)");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFiltersForToday(searchPatientText, currentDate);
         List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
         try {
@@ -487,7 +487,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             }
 
             tvCancelledAppsCount.setText(cancelledAppointmentsList.size() + "");
-            tvCancelledAppsCountTitle.setText("Cancelled (" + cancelledAppointmentsList.size() + ")");
+            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentsList.size() + ")");
 
         } catch (Exception e) {
             Log.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());

@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:textSize="@dimen/edittext_textsize_16sp"
             android:layout_marginTop="@dimen/margin_10"
-            android:hint="Enter mobile number"
+            android:hint="@string/enter_mobile_no"
             android:paddingStart="@dimen/fu_margin_start"
             android:maxLength="15"
             android:inputType="phone"
@@ -49,7 +49,7 @@
             android:layout_alignParentEnd="true"
             android:paddingHorizontal="@dimen/margin_32dp"
             android:layout_marginEnd="@dimen/margin_10"
-            android:text="Share" />
+            android:text="@string/share" />
 
 
 

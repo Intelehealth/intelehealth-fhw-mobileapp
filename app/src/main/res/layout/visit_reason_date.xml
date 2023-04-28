@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/hamburger_margin_start"
         android:background="@color/white"
         android:drawablePadding="@dimen/margin_8"
-        android:hint="Type or select reason eg. Fever"
+        android:hint="@string/type_or_select_reason"
         android:inputType="textAutoComplete"
         android:padding="@dimen/padding_10"
         android:textColorHint="@color/edittext_hint_color"

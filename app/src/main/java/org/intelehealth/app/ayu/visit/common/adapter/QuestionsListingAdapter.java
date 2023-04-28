@@ -204,7 +204,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 String nodeText = parent_name + " : " + _mNode.findDisplay();
 
                 genericViewHolder.tvQuestion.setText(nodeText);
-                genericViewHolder.tvQuestionCounter.setText((position + 1) + " of " + mPhysicalExam.getTotalNumberOfExams() + " questions"); //"1 of 10 questions"
+                genericViewHolder.tvQuestionCounter.setText((position + 1) + " " + mContext.getString(R.string.of) + " " + mPhysicalExam.getTotalNumberOfExams() + " " +  mContext.getString(R.string.questions)); //"1 of 10 questions"
 
                 if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
                     genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -238,11 +238,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             } else {
                 genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-                genericViewHolder.tvQuestionCounter.setText(String.format("%d of %d questions",
-                        getCount(genericViewHolder.index, genericViewHolder.rootIndex), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize())); //"1 of 10 questions"
+                genericViewHolder.tvQuestionCounter.setText(getCount(genericViewHolder.index, genericViewHolder.rootIndex) + " " + mContext.getString(R.string.of) + " " + mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() + " " + mContext.getString(R.string.questions)); //"1 of 10 questions"
 
             }
-            mOnItemSelection.needTitleChange("2/4 Visit reason : " + mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getComplainName());
+            mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainName());
 
             if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
                 //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
@@ -360,7 +359,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
                 && node.getLanguage().equalsIgnoreCase(" to ")) {
             String[] vals = node.getLanguage().split(" to ");
-            rangeTextView.setText(String.format("%s to %s", vals[0], vals[1]));
+            rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
             List<Float> list = new ArrayList<>();
             list.add(Float.valueOf(vals[0]));
             list.add(Float.valueOf(vals[1]));
@@ -370,12 +369,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
-                    Toast.makeText(mContext, "Please select the range!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_range), Toast.LENGTH_SHORT).show();
                 } else {
                     List<Float> values = rangeSlider.getValues();
                     int x = values.get(0).intValue();
                     int y = values.get(1).intValue();
-                    String durationString = x + " to " + y;
+                    String durationString = x + " " + mContext.getString(R.string.to) + " " + y;
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", durationString));
                     } else {
@@ -409,7 +408,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 List<Float> values = rangeSlider.getValues();
                 int x = values.get(0).intValue();
                 int y = values.get(1).intValue();
-                rangeTextView.setText(String.format("%d to %d", x, y));
+                rangeTextView.setText(String.format(x + " " + mContext.getString(R.string.to) + " " + y));
             }
         });
 
@@ -439,14 +438,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
             int i = Integer.parseInt(node.getLanguage());
-            rangeTextView.setText(String.format("Level %d ", i));
+            rangeTextView.setText(mContext.getString(R.string.level) + " " + i);
             rangeSlider.setValue(i);
         }
         submitTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
-                    Toast.makeText(mContext, "Please drag to select!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.drag_to_select), Toast.LENGTH_SHORT).show();
                 } else {
                     int x = (int) rangeSlider.getValue();
                     String durationString = String.valueOf(x);
@@ -481,7 +480,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int x = (int) rangeSlider.getValue();
-                rangeTextView.setText(String.format("Level %d ", x));
+                rangeTextView.setText(mContext.getString(R.string.level) + " " + x);
                 updateCustomEmojiSliderUI(view, x);
             }
         });
@@ -650,7 +649,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.recyclerView.setVisibility(View.GONE);
         holder.submitButton.setVisibility(View.GONE);
         holder.skipButton.setVisibility(View.GONE);
-        holder.tvQuestionDesc.setText("Select yes or no");
+        holder.tvQuestionDesc.setText(mContext.getString(R.string.select_yes_or_no));
 
         View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1253,7 +1252,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void showDurationTypes(final TextView textView) {
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Select Duration Type");
+        builder.setTitle(mContext.getString(R.string.select_duration_type_title));
 
         // add a list
         final String[] data = new String[]{
@@ -1303,7 +1302,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 if (editText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
@@ -1380,7 +1379,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 if (editText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(mContext, "Please enter the value", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
@@ -1469,7 +1468,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 String d = displayDateButton.getText().toString().trim();
                 if (!d.contains("-")) {
-                    Toast.makeText(mContext, "Please select the date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(0);
@@ -1566,7 +1565,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (mItemList.get(index).isSelected())
                         mOnItemSelection.onSelect(node, index);
                     else
-                        Toast.makeText(mContext, "Please select at least one option!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
             });
 

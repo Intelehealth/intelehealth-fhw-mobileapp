@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE RelativeLayout [<!ELEMENT RelativeLayout (TextView)*><!ATTLIST RelativeLayoutxmlns:android CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:id CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:layout_marginBottom CDATA #REQUIRED><!ELEMENT TextView (#PCDATA)><!ATTLIST TextViewandroid:id CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:layout_centerInParent CDATA #REQUIREDandroid:gravity CDATA #REQUIREDandroid:text CDATA #REQUIREDandroid:textColor CDATA #REQUIREDandroid:textSize CDATA #REQUIRED>]>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="40dp"
     android:id="@+id/parent_calview"

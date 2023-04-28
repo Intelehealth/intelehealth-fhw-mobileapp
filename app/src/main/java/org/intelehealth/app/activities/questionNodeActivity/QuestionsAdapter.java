@@ -171,7 +171,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             @Override
             public void onClick(View view) {
                 if (showPopUp){
-                    Toast.makeText(context,"Select all the answers",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,context.getString(R.string.select_all_answers),Toast.LENGTH_LONG).show();
 
                 }else {
                     _mListener.fabClickedAtEnd();
@@ -410,7 +410,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
                     }
                     else {
-                        Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, context.getString(R.string.some_issue_with_mindmap), Toast.LENGTH_SHORT).show();
                     }
 
                 }

@@ -154,7 +154,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Mo"
+            android:text="@string/mo"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -164,7 +164,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Tu"
+            android:text="@string/tu"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -174,7 +174,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="We"
+            android:text="@string/we"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -184,7 +184,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Th"
+            android:text="@string/th"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -194,7 +194,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Fr"
+            android:text="@string/fr"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -204,7 +204,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Sa"
+            android:text="@string/sa"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -214,7 +214,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:lineHeight="24dp"
-            android:text="Su"
+            android:text="@string/su"
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>

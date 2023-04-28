@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_weight="1"
             android:lineSpacingExtra="1sp"
-            android:text="Question...." />
+            android:text="@string/question" />
 
         <TextView
             android:id="@+id/tv_answer_value"
@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_weight="1"
             android:lineSpacingExtra="1sp"
-            android:text="Answer information...." />
+            android:text="@string/answer_information" />
     </LinearLayout>
 
 

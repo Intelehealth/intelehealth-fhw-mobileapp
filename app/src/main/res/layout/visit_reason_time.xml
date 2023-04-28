@@ -30,7 +30,7 @@
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:text="Select Time"
+        android:text="@string/select_time"
         android:textAllCaps="false"
         android:textColor="@color/gray_3"
         android:textSize="@dimen/common_button_text_size" />

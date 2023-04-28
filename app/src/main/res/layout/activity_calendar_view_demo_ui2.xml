@@ -12,7 +12,7 @@
         android:id="@+id/tv_selected_date_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="date"
+        android:text="@string/date"
         android:textSize="20sp"
         android:textStyle="bold" />
     <!--  <LinearLayout

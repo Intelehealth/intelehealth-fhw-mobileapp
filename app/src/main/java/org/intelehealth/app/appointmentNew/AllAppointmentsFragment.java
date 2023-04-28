@@ -580,7 +580,7 @@ public class AllAppointmentsFragment extends Fragment {
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
-        tvUpcomingAppsCountTitle.setText("Completed (0)");
+        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
         try {
@@ -615,7 +615,7 @@ public class AllAppointmentsFragment extends Fragment {
             }
 
             tvUpcomingAppsCount.setText(upcomingAppointmentsList.size() + "");
-            tvUpcomingAppsCountTitle.setText("Upcoming (" + upcomingAppointmentsList.size() + ")");
+            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentsList.size() + ")");
 
         } catch (
                 Exception e) {
@@ -627,7 +627,7 @@ public class AllAppointmentsFragment extends Fragment {
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
-        tvCancelledAppsCountTitle.setText("Cancelled (0)");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
         try {
@@ -664,7 +664,7 @@ public class AllAppointmentsFragment extends Fragment {
             }
 
             tvCancelledAppsCount.setText(cancelledAppointmentsList.size() + "");
-            tvCancelledAppsCountTitle.setText("Cancelled (" + cancelledAppointmentsList.size() + ")");
+            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentsList.size() + ")");
 
         } catch (Exception e) {
         }
@@ -675,7 +675,7 @@ public class AllAppointmentsFragment extends Fragment {
     private void getCompletedAppointments() {
 
         tvCompletedAppsCount.setText("0");
-        tvCompletedAppsCountTitle.setText("Completed (0)");
+        tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
 
@@ -706,7 +706,7 @@ public class AllAppointmentsFragment extends Fragment {
                 noDataFoundForCompleted.setVisibility(View.GONE);
 
                 tvCompletedAppsCount.setText(completedAppointmentsList.size() + "");
-                tvCompletedAppsCountTitle.setText("Completed (" + completedAppointmentsList.size() + ")");
+                tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentsList.size() + ")");
                 getDataForCompletedAppointments(completedAppointmentsList);
             } else {
                 //no data found
@@ -714,7 +714,7 @@ public class AllAppointmentsFragment extends Fragment {
                 noDataFoundForCompleted.setVisibility(View.VISIBLE);
 
                 tvCompletedAppsCount.setText(completedAppointmentsList.size() + "");
-                tvCompletedAppsCountTitle.setText("Completed (" + completedAppointmentsList.size() + ")");
+                tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentsList.size() + ")");
             }
         } catch (Exception e) {
         }
