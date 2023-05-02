@@ -66,8 +66,8 @@ public class SessionManager {
     private static final String PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE";
     private static final String PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE";
     private static final String JAL_JEEVAN_YOJANA_SCHEME = "JAL_JEEVAN_YOJANA_SCHEME";
-
     private static final String USERDETAILS = "USERDETAILS";
+    private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     // LogCat tag
@@ -85,6 +85,14 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public void setJwtAuthToken(String token) {
+        editor.putString(JWT_AUTH_TOKEN, token);
+        editor.commit();
+    }
+
+    public String getJwtAuthToken() {
+        return pref.getString(JWT_AUTH_TOKEN, "");
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");

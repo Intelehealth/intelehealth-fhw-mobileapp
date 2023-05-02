@@ -1368,7 +1368,7 @@ public class SetupActivity extends AppCompatActivity {
                      * by passing the login creds entered during setup screen of HW and rememberMe: True status.
                      */
                     // Start
-                    ApiCallUtils.auth_login_jwt_token(CLEAN_URL, USERNAME, PASSWORD);
+                    ApiCallUtils.auth_login_jwt_token(context, CLEAN_URL, USERNAME, PASSWORD);
                     // End
 
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
@@ -1543,7 +1543,7 @@ public class SetupActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

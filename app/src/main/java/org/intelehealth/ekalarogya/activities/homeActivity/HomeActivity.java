@@ -515,7 +515,8 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                             sessionManager.setMindMapServerUrl(url);
-                            getMindmapDownloadURL("https://" + url + ":3004/", key);
+                            getMindmapDownloadURL("https://" + url + ":3030/", key);
+                            // as per new jwt implementation -> changing port from 3004 -> 3030 - Prajwal.
 
                         }
                     }).setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
@@ -791,8 +792,9 @@ public class HomeActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
                 @Override
                 public void onNext(DownloadMindMapRes res) {
                     customProgressDialog.dismiss();
@@ -813,6 +815,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onError(Throwable e) {
                     customProgressDialog.dismiss();
                     Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                    Log.v(TAG, "jwt_response: " + e.toString());
                 }
 
                 @Override

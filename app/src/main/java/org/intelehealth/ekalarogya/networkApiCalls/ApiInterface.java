@@ -108,8 +108,8 @@ public interface ApiInterface {
     Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
 
 
-    @GET("/api/mindmap/download")
-    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
+    @GET("/v2/node/api/mindmap/download")
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey, @Header("Authorization") String authHeader);
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();

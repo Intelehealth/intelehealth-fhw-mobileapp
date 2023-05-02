@@ -1,8 +1,10 @@
 package org.intelehealth.ekalarogya.utilities.authJWT_API;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 
 import io.reactivex.Observable;
@@ -13,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ApiCallUtils {
     public static final String TAG = ApiCallUtils.class.getName();
 
-    public static void auth_login_jwt_token(String BASE_URL, String username, String password) {
+    public static void auth_login_jwt_token(Context context, String BASE_URL, String username, String password) {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.auth_jwt_url(BASE_URL);
@@ -34,6 +36,10 @@ public class ApiCallUtils {
                     public void onNext(AuthJWTResponse authJWTResponse) {
                         // store the token provided in response in sessionmanager as a string...
                         Log.v(TAG, "onNext: " + authJWTResponse.toString());
+                        String token = authJWTResponse.getToken();
+                        SessionManager sessionManager = new SessionManager(context);
+                        sessionManager.setJwtAuthToken(token);
+                        Log.v(TAG, "token: " + sessionManager.getJwtAuthToken());
                     }
 
                     @Override
