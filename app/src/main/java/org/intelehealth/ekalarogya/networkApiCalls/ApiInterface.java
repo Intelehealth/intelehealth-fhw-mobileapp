@@ -22,6 +22,8 @@ import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCal
 import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.models.statewise_location.State;
+import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTBody;
+import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTResponse;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -131,4 +133,7 @@ public interface ApiInterface {
     Single<UserInfoUpdateModel> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
                                                                  @Header("Authorization") String authHeader,
                                                                  @Body UserAttributeModel obj);
+    @POST
+    Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(@Url String url,
+                                                   @Body AuthJWTBody authJWTBody);
 }

@@ -520,7 +520,8 @@ public class SyncDAO {
             String request = gson.toJson(userStatusUpdateApiCall);
             String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";
 
-            Single<ResponseBody> userStatusUpdateApiCallObservable = AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, "Basic " + encoded, userStatusUpdateApiCall);
+            Single<ResponseBody> userStatusUpdateApiCallObservable =
+                    AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, "Basic " + encoded, userStatusUpdateApiCall);
             userStatusUpdateApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<ResponseBody>() {

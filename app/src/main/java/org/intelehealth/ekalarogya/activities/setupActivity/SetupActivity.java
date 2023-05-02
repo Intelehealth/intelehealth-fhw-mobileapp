@@ -49,10 +49,8 @@ import com.parse.Parse;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +62,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.LocationDAO;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.models.Location;
@@ -77,6 +74,7 @@ import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalarogya.utilities.AdminPassword;
+import org.intelehealth.ekalarogya.utilities.authJWT_API.ApiCallUtils;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
@@ -84,7 +82,6 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
@@ -1363,7 +1360,17 @@ public class SetupActivity extends AppCompatActivity {
                 sessionManager.setHwID(loginModel.getUser().getPerson().getUuid());
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+
                 if (authencated) {
+
+                    /**
+                     * Here, the entered login creds is Authenticated so we will now call JWT authentication api
+                     * by passing the login creds entered during setup screen of HW and rememberMe: True status.
+                     */
+                    // Start
+                    ApiCallUtils.auth_login_jwt_token(CLEAN_URL, USERNAME, PASSWORD);
+                    // End
+
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
                             .subscribeOn(Schedulers.io())
