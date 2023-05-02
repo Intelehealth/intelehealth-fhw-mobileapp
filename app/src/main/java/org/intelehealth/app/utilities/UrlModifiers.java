@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class UrlModifiers {
@@ -97,4 +98,16 @@ public class UrlModifiers {
         return urlFinal;
     }
 
+    public String profileAgeUpdateUrl(String CLEAN_URL, String USER_UUID) {
+        String provider = "person/" + USER_UUID;
+        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        return BASE_URL + provider;
+    }
+
+    public String getHWProfileDetails(String USER_UUID)
+    {
+        String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
+        String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
+        return BASE_URL + provider;
+    }
 }

@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -64,6 +66,8 @@ import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.MyProfilePOJO;
 import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.models.hwprofile.PersonAttributes;
+import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -86,7 +90,9 @@ import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -94,33 +100,26 @@ import okhttp3.ResponseBody;
 public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
-    TextView tvDob, tvAge;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
     LinearLayout layoutParent;
-    TextView tvChangePhoto;
-    String selectedGender;
-    ImageView ivProfileImage;
-    private DatePickerDialog.OnDateSetListener mDateSetListener1;
-    String dobToDb, dobToShow;
+    String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
+    ImageView ivProfileImage, ivIsInternet, refresh;
     SessionManager sessionManager;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Handler mBackgroundHandler;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     RadioButton rbMale, rbFemale, rbOther;
-    String profileImagePAth = "";
     Button btnSave;
     SnackbarUtils snackbarUtils;
-    // View layoutToolbar;
-    private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     private CountryCodePicker countryCodePicker;
-    int MY_REQUEST_CODE = 5555;
-    TextView tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
     NetworkUtils networkUtils;
-    ImageView ivIsInternet, refresh;
-    private ObjectAnimator syncAnimator;
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
     Switch fingerprintSwitch;
-    String errorMsg = "";
+    private int mSelectedMobileNumberValidationLength = 0;
+    private ObjectAnimator syncAnimator;
+    String prevDOB = "", prevPhoneNum = "", prevEmail = "";
+    String encoded = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,12 +208,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         refresh.setOnClickListener(v -> {
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
             if (isSynced)
-                fetchUserDetailsIfAdded();
-            //  Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+                fetchUserDetails();
         });
 
         //initialize all input fields
-
         etUsername = findViewById(R.id.et_username_profile);
         etFirstName = findViewById(R.id.et_first_name_profile);
         etMiddleName = findViewById(R.id.et_middle_name_profile);
@@ -228,18 +225,14 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         rbMale = findViewById(R.id.rb_male);
         rbFemale = findViewById(R.id.rb_female);
         rbOther = findViewById(R.id.rb_other);
-
         countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
         countryCodePicker.setNumberAutoFormattingEnabled(false);
-
         ivProfileImage = findViewById(R.id.iv_profilePic);
         tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
-
         tvErrorFirstName = findViewById(R.id.tv_firstname_error);
         tvErrorLastName = findViewById(R.id.tv_lastname_error);
         tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
-
         RelativeLayout layoutChangePassword = findViewById(R.id.view_change_password);
 
         //all click listeners
@@ -259,7 +252,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                         rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                         rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-
                         break;
                     case "Female":
                         rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
@@ -286,13 +278,14 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
 
         btnSave.setOnClickListener(v -> {
-            try {
+            /*try {
                 updateProfileDetailsToLocalDb();
                 myProfilePOJO.updateProfileDetails();
                 btnSave.setEnabled(false);
             } catch (DAOException e) {
                 e.printStackTrace();
-            }
+            }*/
+            checkInternetAndUpdateProfile();
         });
 
         tvDob.setOnClickListener(v -> {
@@ -301,12 +294,70 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
             }
         });
+
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 
         // fetch user details if added
-        fetchUserDetailsIfAdded();
+        fetchUserDetails();
         manageListeners();
         setMobileNumberLimit();
+    }
+
+
+
+    private void checkInternetAndUpdateProfile() {
+        if (NetworkConnection.isOnline(MyProfileActivity.this)){
+            //allow update
+            btnSave.setEnabled(false);
+            updateDetails();
+        }
+        else
+        {
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            AlertDialog networkFailureDialog = builder.show();
+
+            networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            networkFailureDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = MyProfileActivity.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+            networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
+            if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
+                networkFailureDialog.dismiss();
+                checkInternetAndUpdateProfile();
+            });
+        }
+    }
+
+    private void updateDetails() {
+        String updatedDOB = tvDob.getText().toString();
+        String updatedPhoneNum = etMobileNo.getText().toString();
+        String updatedEmailID = etEmail.getText().toString();
+        if(!updatedDOB.equalsIgnoreCase(prevDOB))
+        {
+            updateDOB(updatedDOB);
+        }
+        if(prevPhoneNum.equals("NA") && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
+        {
+            //hit create attribute api
+        }
+        else
+        {
+            //hit update attribute api
+        }
+
+        if(prevEmail.equals("NA") && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail))
+        {
+            //hit create attribute api
+        }
+        else
+        {
+            //hit update attribute api
+        }
+    }
+
+    private void updateDOB(String updatedDOB) {
+
     }
 
     private boolean checkFingerprintSensor() {
@@ -329,9 +380,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         return isFingerPrintAvailable;
     }
 
-    private int mSelectedMobileNumberValidationLength = 0;
-    private String mSelectedCountryCode = "";
-
     private void setMobileNumberLimit() {
         mSelectedCountryCode = countryCodePicker.getSelectedCountryCode();
         if (mSelectedCountryCode.equals("91")) {
@@ -350,6 +398,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
     private void fetchUserDetailsIfAdded() {
         try {
+
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
 
@@ -387,18 +436,18 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             if (gender != null && !gender.isEmpty()) {
 
                 if (gender.equalsIgnoreCase("m")) {
-                    rbMale.setChecked(true);
-                    rbFemale.setChecked(false);
-                    rbOther.setChecked(false);
+                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
 
                 } else if (gender.equalsIgnoreCase("f")) {
-                    rbMale.setChecked(false);
-                    rbFemale.setChecked(true);
-                    rbOther.setChecked(false);
+                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                 } else if (gender.equalsIgnoreCase("o")) {
-                    rbMale.setChecked(false);
-                    rbFemale.setChecked(false);
-                    rbOther.setChecked(true);
+                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                 }
             }
 
@@ -423,7 +472,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             e.printStackTrace();
         }
     }
-
 
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -714,6 +762,81 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         return true;
     }
 
+    private void fetchUserDetails() {
+        String uuid = new SessionManager(MyProfileActivity.this).getCreatorID();
+        String url = new UrlModifiers().getHWProfileDetails(uuid);
+        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+
+        Observable<Profile> profileDetailsDownload = AppConstants.apiInterface.PROVIDER_PROFILE_DETAILS_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profileDetailsDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Profile>() {
+            @Override
+            public void onNext(Profile profile) {
+                if(profile!=null)
+                {
+                    if(profile.getResults().get(0).getPerson().getPreferredName().getGivenName()!=null)
+                        etFirstName.setText(profile.getResults().get(0).getPerson().getPreferredName().getGivenName());
+                    if(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName()!=null)
+                        etMiddleName.setText(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+                    if(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName()!=null)
+                        etLastName.setText(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName());
+                    if(sessionManager.getChwname()!=null)
+                        etUsername.setText(sessionManager.getChwname());
+                    String dob = profile.getResults().get(0).getPerson().getDateOfBirth();
+                    String[] split = dob.split("T");
+                    tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(split[0]));
+                    prevDOB = DateAndTimeUtils.getDisplayDateForApp(split[0]);
+                    String age = DateAndTimeUtils.getAge_FollowUp(split[0], MyProfileActivity.this);
+                    tvAge.setText(age);
+                    String gender = profile.getResults().get(0).getPerson().getGender();
+                    if ( gender!= null && !gender.isEmpty()) {
+                        if (gender.equalsIgnoreCase("m")) {
+                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+
+                        } else if (gender.equalsIgnoreCase("f")) {
+                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                        } else if (gender.equalsIgnoreCase("o")) {
+                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                        }
+                    }
+                    List<PersonAttributes> personAttributes = new ArrayList<>();
+                    personAttributes = profile.getResults().get(0).getAttributes();
+                    if(personAttributes!=null && personAttributes.size()>0)
+                    {
+                        for(int i=0;i<personAttributes.size();i++)
+                        {
+                            String attributeName = personAttributes.get(i).getAttributeTpe().getDisplay();
+                            if(attributeName.equalsIgnoreCase("phoneNumber")) {
+                                etMobileNo.setText(personAttributes.get(i).getValue().toString());
+                                prevPhoneNum = personAttributes.get(i).getValue().toString();
+                            }
+                            if(attributeName.equalsIgnoreCase("emailId")) {
+                                etEmail.setText(personAttributes.get(i).getValue().toString());
+                                prevEmail = personAttributes.get(i).getValue().toString();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "complete");
+            }
+        });
+
+    }
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
         Log.d(TAG, "profilePicDownloaded: ");
@@ -725,6 +848,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+
 
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
@@ -766,6 +890,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
     }
+
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
@@ -1012,5 +1137,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private void shouldActivateSaveButton() {
         boolean hasDataChanged = myProfilePOJO.hasDataChanged();
         btnSave.setEnabled(hasDataChanged);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

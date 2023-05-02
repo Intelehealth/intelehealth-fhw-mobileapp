@@ -16,6 +16,7 @@ import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
+import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
@@ -166,6 +167,8 @@ public interface ApiInterface {
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
 
+
+
     @POST
     Single<ResponseBody> PROVIDER_PROFILE_PIC_UPLOAD(@Url String url,
                                                    @Body ProviderProfile patientProfile,
@@ -175,4 +178,12 @@ public interface ApiInterface {
     @GET
     Observable<ResponseBody> PROVIDER_PROFILE_PIC_DOWNLOAD(@Url String url,
                                                          @Header("Authorization") String authHeader);
+
+    @GET
+    Observable<Profile> PROVIDER_PROFILE_DETAILS_DOWNLOAD(@Url String url,
+                                                          @Header("Authorization") String authHeader);
+
+    @POST("/person/{userUuid}")
+    Observable<ResetPasswordResModel_New> PROFILE_AGE_UPDATE(@Path("userUuid") String userUuid,
+                                                             @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 }
