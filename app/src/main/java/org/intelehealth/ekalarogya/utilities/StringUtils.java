@@ -21,6 +21,7 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ import java.util.Objects;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.json.JSONArray;
 
 public final class StringUtils {
@@ -5626,5 +5628,119 @@ public final class StringUtils {
         // Restore device-specific locale
         new Resources(assets, metrics, currentResources.getConfiguration());
         return string;
+    }
+
+    /***
+     * It will help in making code readable and reduce boiler-plate code.
+     * @param context Activity context.
+     * @param sessionManager This contains the application context.
+     * @param currentNode This is the node class object.
+     * @return It will return a localized string.
+     */
+    public static String node_fetch_local_language(Context context, SessionManager sessionManager, Node currentNode) {
+        String currentNodeVal = "";
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "सवाल का जवाब नहीं दिया")
+                    .replace("Patient reports -", "पेशेंट ने सूचित किया -")
+                    .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
+                    .replace("Minutes", "मिनट")
+                    .replace("Hours", "घंटे").replace("Days", "दिन")
+                    .replace("Weeks", "हफ्तों").replace("Months", "महीने")
+                    .replace("Years", "वर्ष")
+                    .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
+                    .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
+                    .replace("times per year", "प्रति वर्ष बार");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+            Log.d("tag", currentNodeVal);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
+                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
+                    .replace("Minutes", "ମିନିଟ୍ |")
+                    .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
+                    .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
+                    .replace("Years", "ବର୍ଷ")
+                    .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
+                    .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
+                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
+                    .replace("Patient reports -", "દર્દીના અહેવાલો -")
+                    .replace("Patient denies -", "દર્દી નકારે છે -")
+                    .replace("Minutes", "મિનિટ")
+                    .replace("Hours", "કલાકો").replace("Days", "દિવસ")
+                    .replace("Weeks", "અઠવાડિયા").replace("Months", "મહિનાઓ")
+                    .replace("Years", "વર્ષ")
+                    .replace("times per hour", "કલાક દીઠ વખત").replace("time per day", "દિવસ દીઠ વખત")
+                    .replace("times per week", "સપ્તાહ દીઠ વખત").replace("times per month", "દર મહિને વખત")
+                    .replace("times per year", "દર વર્ષે વખત");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট -")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
+                    .replace("Minutes", "মিনিট")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিন")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "প্রতি ঘন্টায় বার")
+                    .replace("time per day", "প্রতিদিন সময়")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ")
+                    .replace("Patient reports -", "ರೋಗಿಗಳ ವರದಿಗಳು -")
+                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -")
+                    .replace("Minutes", "ನಿಮಿಷಗಳು")
+                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
+                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
+                    .replace("Years", "ವರ್ಷಗಳು")
+                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ")
+                    .replace("time per day", "ದಿನಕ್ಕೆ ಸಮಯ")
+                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
+                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "પপ্ৰশ্নৰ উত্তৰ নাই")
+                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
+                    .replace("Patient denies -", "ৰোগীৰ ৰিপৰ্ট -")
+                    .replace("Minutes", "মিনিটবোৰ")
+                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনবোৰ")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহবোৰ")
+                    .replace("Years", "বছৰবোৰ")
+                    .replace("times per hour", "প্ৰতি ঘণ্টাত বাৰকৈ").replace("time per day", "প্ৰতিদিনে সময়")
+                    .replace("times per week", "প্ৰতি সপ্তাহত বাৰকৈ").replace("times per month", "প্ৰতিমাহে বাৰ")
+                    .replace("times per year", "বছৰি বাৰকৈ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else {
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        }
+
+        return currentNodeVal;
     }
 }
