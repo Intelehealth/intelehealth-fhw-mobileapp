@@ -284,7 +284,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (int j = 0; j < visitsDTOList.size(); j++) {
 
                 if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
-                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    listPatientUUID.add(visitsDTOList.get(j).getUuid());    // AEAT-456: get visitUUID instead of patientUUID.
                 }
             }
         }
@@ -306,7 +306,8 @@ public class ActivePatientActivity extends AppCompatActivity {
     private List<ActivePatientModel> doQuery(int offset) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";

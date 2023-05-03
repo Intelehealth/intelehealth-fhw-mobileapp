@@ -139,7 +139,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 }
                 idCursor.close();
 
-                String visitSelection = "patientuuid = ?";
+                String visitSelection = "patientuuid = ? AND (enddate IS NULL OR enddate = '')";
+                /***
+                 * added -> enddate query so that in case of multiple visits, only the visit that is not yet ended
+                 * to be redirected. AEAT-456: get visitUUID instead of patientUUID.
+                 */
                 String[] visitArgs = {patientUuid};
                 String[] visitColumns = {"uuid, startdate", "enddate"};
                 String visitOrderBy = "startdate";
@@ -219,7 +223,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (activePatientModels.get(position).getUuid().equalsIgnoreCase(listPatientUUID.get(i))) {  // AEAT-456: get visitUUID instead of patientUUID.
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
                 enableEndVisit = true;
