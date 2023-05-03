@@ -94,8 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
-        //temporary commented
-        // initFirebaseRemoteConfig();
+         initFirebaseRemoteConfig();
 
         /*if (sessionManager.isFirstTimeLaunch()) {
             animateViews();
@@ -178,13 +177,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                         });
                         alertDialogBuilder.show();
                     } else {
-                        //temporary commented in new UI2.0
-                        // checkPerm();
+//                         checkPerm();
                     }
                 } else {
-                    //temporary commented in new UI2.0
 
-                    //  checkPerm();
+//                      checkPerm();
                 }
             }
         });
