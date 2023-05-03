@@ -2105,4 +2105,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
     <string name="refreshed_successfully">Refreshed Successfully!</string>
+
+    //IDA-913
+    <string name="profile_update_requires_internet">Profile update requires a strong internet connection. You are not connected to internet, please try again later.</string>
 </resources>

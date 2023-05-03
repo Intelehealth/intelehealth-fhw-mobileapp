@@ -98,9 +98,9 @@ public class UrlModifiers {
         return urlFinal;
     }
 
-    public String profileAgeUpdateUrl(String CLEAN_URL, String USER_UUID) {
+    public String profileAgeUpdateUrl(String USER_UUID) {
         String provider = "person/" + USER_UUID;
-        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 

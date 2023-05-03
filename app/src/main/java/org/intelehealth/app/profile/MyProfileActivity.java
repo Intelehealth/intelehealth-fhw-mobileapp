@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -64,10 +65,17 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.MyProfilePOJO;
+import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.hwprofile.PersonAttributes;
 import org.intelehealth.app.models.hwprofile.Profile;
+import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
+import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
+import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -118,8 +126,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     Switch fingerprintSwitch;
     private int mSelectedMobileNumberValidationLength = 0;
     private ObjectAnimator syncAnimator;
-    String prevDOB = "", prevPhoneNum = "", prevEmail = "";
-    String encoded = null;
+    String prevDOB = "", prevPhoneNum = null, prevEmail = null, prevCountryCode = null;
+    String phoneAttributeUuid = null, emailAttributeUuid = null, countryCodeAttributeUuid = null;
+    String gender = "F", personUuid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,12 +317,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)){
             //allow update
-            btnSave.setEnabled(false);
+//            btnSave.setEnabled(false);
             updateDetails();
         }
         else
         {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -330,34 +339,133 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void updateDetails() {
+        Integer updatedAge = Integer.parseInt(tvAge.getText().toString());
         String updatedDOB = tvDob.getText().toString();
+        String formattedDOB = dobToDb + "T00:00:00.000+0530";
         String updatedPhoneNum = etMobileNo.getText().toString();
         String updatedEmailID = etEmail.getText().toString();
+        String updatedCountryCode = countryCodePicker.getSelectedCountryCode();
         if(!updatedDOB.equalsIgnoreCase(prevDOB))
         {
-            updateDOB(updatedDOB);
+            updateDOB(updatedAge, formattedDOB , gender);
         }
-        if(prevPhoneNum.equals("NA") && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
+        if(prevPhoneNum==null && phoneAttributeUuid==null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
         {
-            //hit create attribute api
+            createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
         }
-        else
+        else if(phoneAttributeUuid!=null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
         {
-            //hit update attribute api
+            updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
         }
 
-        if(prevEmail.equals("NA") && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail))
+        if(prevEmail==null && emailAttributeUuid==null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail))
         {
-            //hit create attribute api
+            createProfileAttribute("226c0494-d67e-47b4-b7ec-b368064844bd", updatedEmailID);
         }
-        else
+        else if(emailAttributeUuid!=null && !updatedEmailID.equalsIgnoreCase(prevEmail))
         {
-            //hit update attribute api
+            updateProfileAttribute(emailAttributeUuid, updatedEmailID);
+        }
+
+        if(prevCountryCode==null && countryCodeAttributeUuid==null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode))
+        {
+            createProfileAttribute("2d4d8e6d-21c4-4710-a3ad-4daf5c0dfbbb", updatedCountryCode);
+        }
+        else if(countryCodeAttributeUuid!=null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode))
+        {
+            updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
         }
     }
 
-    private void updateDOB(String updatedDOB) {
+    private void createProfileAttribute(String attributeTypeUuid, String newValue) {
+        String serverUrl = "https://" + AppConstants.DEMO_URL;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
+        ProfileCreateAttribute inputModel = new ProfileCreateAttribute(newValue, attributeTypeUuid);
+
+        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
+                inputModel, "Basic " + sessionManager.getEncoded());
+        profileAttributeCreateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Logger.logD(TAG, responseBody.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
+    }
+
+    private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
+        String serverUrl = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ProfileUpdateAttribute inputModel = new ProfileUpdateAttribute(newValue);
+
+        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<ResponseBody> profileAttributeUpdateRequest = apiService.PROFILE_ATTRIBUTE_UPDATE(attributeTypeUuid,
+                inputModel, "Basic " + sessionManager.getEncoded());
+        profileAttributeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Logger.logD(TAG, responseBody.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
+    }
+
+
+    private void updateDOB(Integer updatedAge, String updatedDOB, String gender) {
+        String serverUrl = "https://" + AppConstants.DEMO_URL;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge,updatedDOB, gender);
+
+        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
+                inputModel, "Basic " + sessionManager.getEncoded());
+        profileAgeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Logger.logD(TAG, responseBody.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Logger.logD(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
     }
 
     private boolean checkFingerprintSensor() {
@@ -773,6 +881,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             public void onNext(Profile profile) {
                 if(profile!=null)
                 {
+                    personUuid = profile.getResults().get(0).getPerson().getUuid();
                     if(profile.getResults().get(0).getPerson().getPreferredName().getGivenName()!=null)
                         etFirstName.setText(profile.getResults().get(0).getPerson().getPreferredName().getGivenName());
                     if(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName()!=null)
@@ -787,7 +896,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     prevDOB = DateAndTimeUtils.getDisplayDateForApp(split[0]);
                     String age = DateAndTimeUtils.getAge_FollowUp(split[0], MyProfileActivity.this);
                     tvAge.setText(age);
-                    String gender = profile.getResults().get(0).getPerson().getGender();
+                    gender = profile.getResults().get(0).getPerson().getGender();
                     if ( gender!= null && !gender.isEmpty()) {
                         if (gender.equalsIgnoreCase("m")) {
                             rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
@@ -814,10 +923,17 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                             if(attributeName.equalsIgnoreCase("phoneNumber")) {
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
+                                phoneAttributeUuid = personAttributes.get(i).getUuid();
                             }
                             if(attributeName.equalsIgnoreCase("emailId")) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());
                                 prevEmail = personAttributes.get(i).getValue().toString();
+                                emailAttributeUuid = personAttributes.get(i).getUuid();
+                            }
+                            if(attributeName.equalsIgnoreCase("countryCode")) {
+                                countryCodePicker.setCountryForPhoneCode(Integer.parseInt(personAttributes.get(i).getValue()));
+                                prevCountryCode = personAttributes.get(i).getValue().toString();
+                                countryCodeAttributeUuid = personAttributes.get(i).getUuid();
                             }
                         }
                     }
@@ -898,6 +1014,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
         if (!selectedDate.isEmpty()) {
             dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+
             String dateForAge = selectedDate;
             //dobToDb = dateForAge.replace("/","-");
             String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), this);
@@ -1135,8 +1252,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void shouldActivateSaveButton() {
-        boolean hasDataChanged = myProfilePOJO.hasDataChanged();
-        btnSave.setEnabled(hasDataChanged);
+//        boolean hasDataChanged = myProfilePOJO.hasDataChanged();
+        btnSave.setEnabled(true);
     }
 
     private boolean isNetworkConnected() {
