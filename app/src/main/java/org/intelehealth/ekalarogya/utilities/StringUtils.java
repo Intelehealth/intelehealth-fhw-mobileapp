@@ -5739,6 +5739,7 @@ public final class StringUtils {
 //            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else {
 //            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+            currentNodeVal = currentNode.formQuestionAnswer(0);
         }
 
         return currentNodeVal;
