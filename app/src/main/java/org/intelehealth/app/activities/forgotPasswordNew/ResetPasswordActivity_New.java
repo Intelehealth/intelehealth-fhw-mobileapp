@@ -149,6 +149,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                         public void run() {
                             Intent intent = new Intent(context, SetupActivityNew.class);
                             startActivity(intent);
+                            finish();
                         }
                     }, 2000);
 
