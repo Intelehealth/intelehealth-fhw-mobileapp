@@ -965,7 +965,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
+         //   editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
@@ -1294,7 +1294,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                             }
                             uploaded = true;
-                            editComplaint.setVisibility(View.GONE);
+                        //    editComplaint.setVisibility(View.GONE);
                         }
                     }, 4000);
                 } else {
@@ -1586,7 +1586,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitCursor != null && visitCursor.moveToFirst()) {
             String val = visitCursor.getString(visitCursor.getColumnIndexOrThrow("sync"));
             if (val.equalsIgnoreCase("1")) {
-                editComplaint.setVisibility(View.GONE);
+              //  editComplaint.setVisibility(View.GONE);
             }
         }
         if (visitCursor != null)
