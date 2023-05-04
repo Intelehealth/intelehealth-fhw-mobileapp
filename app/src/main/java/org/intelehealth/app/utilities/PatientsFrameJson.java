@@ -215,7 +215,11 @@ public class PatientsFrameJson {
                 provider.setCountryCode(providerDTO.getCountryCode());
                 provider.setMiddle_name(providerDTO.getMiddle_name());
 
-                providersList.add(provider);
+                /*provider info is not updating using the apis in MyProfileActivity
+                thus there is no need to attach any details in push request model.
+                Refer ticket IDA-913 for more details.*/
+
+                //providersList.add(provider);
                 //}
 
             }

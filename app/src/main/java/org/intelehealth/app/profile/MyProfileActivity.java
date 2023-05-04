@@ -4,6 +4,7 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -287,13 +289,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
 
         btnSave.setOnClickListener(v -> {
-            /*try {
-                updateProfileDetailsToLocalDb();
-                myProfilePOJO.updateProfileDetails();
-                btnSave.setEnabled(false);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }*/
+            hideSoftKeyboard(MyProfileActivity.this, btnSave);
             checkInternetAndUpdateProfile();
         });
 
@@ -316,8 +312,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)){
-            //allow update
-//            btnSave.setEnabled(false);
             updateDetails();
         }
         else
@@ -920,20 +914,22 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         for(int i=0;i<personAttributes.size();i++)
                         {
                             String attributeName = personAttributes.get(i).getAttributeTpe().getDisplay();
-                            if(attributeName.equalsIgnoreCase("phoneNumber")) {
+                            if(attributeName.equalsIgnoreCase("phoneNumber") && !personAttributes.get(i).isVoided()) {
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
                                 phoneAttributeUuid = personAttributes.get(i).getUuid();
                             }
-                            if(attributeName.equalsIgnoreCase("emailId")) {
+                            if(attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());
                                 prevEmail = personAttributes.get(i).getValue().toString();
                                 emailAttributeUuid = personAttributes.get(i).getUuid();
                             }
-                            if(attributeName.equalsIgnoreCase("countryCode")) {
-                                countryCodePicker.setCountryForPhoneCode(Integer.parseInt(personAttributes.get(i).getValue()));
-                                prevCountryCode = personAttributes.get(i).getValue().toString();
-                                countryCodeAttributeUuid = personAttributes.get(i).getUuid();
+                            if(attributeName.equalsIgnoreCase("countryCode") && !personAttributes.get(i).isVoided()) {
+                                if(isInteger(personAttributes.get(i).getValue())) {
+                                    countryCodePicker.setCountryForPhoneCode(Integer.parseInt(personAttributes.get(i).getValue()));
+                                    prevCountryCode = personAttributes.get(i).getValue().toString();
+                                    countryCodeAttributeUuid = personAttributes.get(i).getUuid();
+                                }
                             }
                         }
                     }
@@ -952,6 +948,22 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
+    }
+
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
     }
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
@@ -1006,7 +1018,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
     }
-
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
@@ -1256,8 +1267,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         btnSave.setEnabled(true);
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    public static void hideSoftKeyboard (Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

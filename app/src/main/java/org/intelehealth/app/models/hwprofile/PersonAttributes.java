@@ -19,6 +19,9 @@ public class PersonAttributes {
     @SerializedName("attributeType")
     @Expose
     private Role attributeTpe;
+    @SerializedName("voided")
+    @Expose
+    private boolean voided;
 
     public String getUuid() {
         return uuid;
@@ -50,5 +53,13 @@ public class PersonAttributes {
 
     public void setAttributeTpe(Role attributeTpe) {
         this.attributeTpe = attributeTpe;
+    }
+
+    public boolean isVoided() {
+        return voided;
+    }
+
+    public void setVoided(boolean voided) {
+        this.voided = voided;
     }
 }
