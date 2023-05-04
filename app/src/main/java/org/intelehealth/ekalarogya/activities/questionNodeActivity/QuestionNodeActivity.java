@@ -448,7 +448,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("text_hi", insertion_REG);
+                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
                       //  object.put("text_en", insertion_REG);
                         updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_update_regional: " + object.toString());

@@ -953,6 +953,10 @@ public class Node implements Serializable {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
+                    if (language.equalsIgnoreCase("hi"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "एच / ओ विशिष्ट बीमारी");
+                    // TODO: do it for all the other langs.
+
                     Log.v("insertion_tag", "associatedTest: " + associatedTest);
                     if (associatedTest != null
                             && (associatedTest.trim().equals("Associated symptoms")
@@ -3412,7 +3416,7 @@ public class Node implements Serializable {
                 if (!mOptions.get(i).isTerminal()) {
                     if (positiveAssociations.size() > 0) {
                         String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
-                                mOptions.get(i).formLanguage();
+                                mOptions.get(i).formLanguage(appLanguage); // using formLang(appLang) here so to work for regional Langs.
 
                         positiveAssociations.set(positiveAssociations.size() - 1, tempString);
                     }
