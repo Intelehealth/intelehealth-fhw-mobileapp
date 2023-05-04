@@ -989,7 +989,10 @@ public class Node implements Serializable {
                     } else {
                         if (!node_opt.getLanguage().isEmpty()) {
                             if (node_opt.getLanguage().equals("%")) {
-                                raw = raw + bullet + " " + node_opt.formLanguage(language) + next_line;
+                                if (language.equalsIgnoreCase("hi"))
+                                    raw = raw + bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language) + next_line;
+                                else
+                                    raw = raw + bullet + " " + node_opt.getDisplay() + " - " + node_opt.formLanguage(language) + next_line;
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " +
                                         node_opt.formLanguage(language)) + next_line;
@@ -1164,9 +1167,9 @@ public class Node implements Serializable {
         if (mOptions != null && !mOptions.isEmpty()) {
             for (int i = 0; i < mOptions.size(); i++) {
                 if (mOptions.get(i).isSelected()) {
-                    String test = mOptions.get(i).getLanguage();
+                    String test = mOptions.get(i).getLanguage();    // 100 varsh    // Pain radiates to
 
-                    if (language.equalsIgnoreCase("hi")) {
+                 /*   if (language.equalsIgnoreCase("hi")) {
                         test = mOptions.get(i).getDisplay_hindi();
                     } else if (language.equalsIgnoreCase("or")) {
                         test = mOptions.get(i).getDisplay_oriya();
@@ -1178,7 +1181,7 @@ public class Node implements Serializable {
                         test = mOptions.get(i).getDisplay_bengali();
                     }else if (language.equalsIgnoreCase("kn")) {
                         test = mOptions.get(i).getDisplay_kannada();
-                    }
+                    }*/
 
                     if (!test.isEmpty()) {
                         if (test.equals("%")) {
@@ -1206,29 +1209,34 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+
+                                    // in case not answered than
+                                  //  stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
                             } else {
-                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
-                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("[")) {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("")
+                                    /*&& mOptions.get(i).getInputType().equalsIgnoreCase("text")*/) {
+                                    if (language.equalsIgnoreCase("hi") /*&& !mOptions.get(i).getDisplay_hindi().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
-                                    } else if (language.equalsIgnoreCase("or") && !mOptions.get(i).getDisplay_oriya().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("or") /*&& !mOptions.get(i).getDisplay_oriya().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_oriya());
-                                    } else if (language.equalsIgnoreCase("gu") && !mOptions.get(i).getDisplay_gujarati().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("gu") /*&& !mOptions.get(i).getDisplay_gujarati().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_gujarati());
-                                    } else if (language.equalsIgnoreCase("as") && !mOptions.get(i).getDisplay_assamese().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("as") /*&& !mOptions.get(i).getDisplay_assamese().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_assamese());
-                                    } else if (language.equalsIgnoreCase("bn") && !mOptions.get(i).getDisplay_bengali().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("bn") /*&& !mOptions.get(i).getDisplay_bengali().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_bengali());
-                                    } else if (language.equalsIgnoreCase("kn") && !mOptions.get(i).getDisplay_kannada().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("kn") /*&& !mOptions.get(i).getDisplay_kannada().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_kannada());
                                     } else {
-                                        stringsList.add(mOptions.get(i).getLanguage());
+                                        stringsList.add(mOptions.get(i).getDisplay());
                                     }
+                                 //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
-                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                    stringsList.add(mOptions.get(i).getLanguage());
                                 }
 
                             }
@@ -1325,6 +1333,7 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+                                 //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
@@ -1349,6 +1358,8 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+                                  //  stringsList.add(mOptions.get(i).getLanguage());
+
                                 }
 
                             }
@@ -3392,9 +3403,9 @@ public class Node implements Serializable {
                         } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
                             positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
                         } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            positiveAssociations.add(mOptions.get(i).getText()); //
+                            positiveAssociations.add(mOptions.get(i).getDisplay()); //
                         } else {
-                            positiveAssociations.add(mOptions.get(i).getLanguage()); //
+                            positiveAssociations.add(mOptions.get(i).getDisplay()); //
                         }
                     }
                 }
@@ -3425,9 +3436,9 @@ public class Node implements Serializable {
                         } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
                             negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
                         } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            negativeAssociations.add(mOptions.get(i).getText()); //
+                            negativeAssociations.add(mOptions.get(i).getDisplay()); //
                         } else {
-                            negativeAssociations.add(mOptions.get(i).getLanguage()); //
+                            negativeAssociations.add(mOptions.get(i).getDisplay()); //
                         }
                     }
                 }
