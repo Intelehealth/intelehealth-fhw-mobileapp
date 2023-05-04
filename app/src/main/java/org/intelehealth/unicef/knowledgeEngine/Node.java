@@ -116,6 +116,9 @@ public class Node implements Serializable {
     private boolean subPopUp;
     private int associated_symptoms = 0;
 
+    private boolean enableExclusiveOption;
+    private boolean isExclusiveOption;
+
     private boolean isNoSelected;
 
     private List<String> imagePathList;
@@ -284,6 +287,9 @@ public class Node implements Serializable {
 
             this.required = jsonNode.optBoolean("isRequired");
 
+            this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
+            this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
+
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -327,6 +333,8 @@ public class Node implements Serializable {
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
+        this.enableExclusiveOption = source.enableExclusiveOption;
+        this.isExclusiveOption = source.isExclusiveOption;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -2322,6 +2330,21 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
+    public boolean isEnableExclusiveOption() {
+        return enableExclusiveOption;
+    }
+
+    public void setEnableExclusiveOption(boolean enableExclusiveOption) {
+        this.enableExclusiveOption = enableExclusiveOption;
+    }
+
+    public boolean isExclusiveOption() {
+        return isExclusiveOption;
+    }
+
+    public void setExclusiveOption(boolean exclusiveOption) {
+        isExclusiveOption = exclusiveOption;
+    }
 
     @Override
     public String toString() {

@@ -414,8 +414,29 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             } else {
                 Node.handleQuestion(question, this, adapter, null, null);
             }
+        }
 
+        /* Added by Arpan Sircar
+         // This code handles the enable-exclusive-option and is-exclusive-option attributes inside our json.
+         // We use these options when we want to add an option which should exclusively be allowed to select. And any one of the other remaining options should be selected.
+         // For example - Yes, No, and Take a picture. In this example, Take a picture should be exclusively allowed to select. And any one between Yes and No should be selected.
+         */
+        Node rootNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition);
+        boolean isCurrentSelectedOptionExclusive = rootNode.getOption(childPos).isExclusiveOption();
 
+        // Basically, this code will check if the parent node of the options are marked as exclusive.
+        if (rootNode.isEnableExclusiveOption()) {
+
+            // If it is marked as exclusive, it will loop through all the child options
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+
+                // While looping if the code finds the option that is currently marked as exclusive it will simply select that option.
+                // However, if the code finds the other options, i.e., non-exclusive options, we will simply highlight the one selected and set the other nodes as unselected.
+                if (!isCurrentSelectedOptionExclusive && !childNode.isExclusiveOption()) {
+                    unselectOtherNonExclusiveNodes(rootNode, rootNode.getOption(childPos).getId());
+                }
+            }
         }
 
         if (!question.isTerminal() && question.isSelected()) {
@@ -423,6 +444,15 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
+    // This option is responsible for un-selecting the other options which are marked as non-exclusive
+    private void unselectOtherNonExclusiveNodes(Node rootNode, String selectedId) {
+        for (int j = 0; j < rootNode.getOptionsList().size(); j++) {
+            Node childNode = rootNode.getOptionsList().get(j);
+            if (!childNode.isExclusiveOption() && !childNode.getId().equalsIgnoreCase(selectedId)) {
+                childNode.setUnselected();
+            }
+        }
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
