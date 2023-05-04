@@ -100,12 +100,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             animateViews();
             populatingLanguages();
         } else {*/
-        new Handler().postDelayed(new Runnable() {
+
+        //as we are implementing force update now thus commenting this.
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 nextActivity();
             }
-        }, 3000);
+        }, 3000);*/
         // }
         sessionManager.setAppLanguage("en");
         saveLanguage();
@@ -177,11 +179,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         });
                         alertDialogBuilder.show();
                     } else {
-//                         checkPerm();
+                         checkPerm();
                     }
                 } else {
-
-//                      checkPerm();
+                      checkPerm();
                 }
             }
         });
@@ -240,6 +241,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }, 2000);
             }
+        }
+        else
+        {
+            checkPerm();
         }
        /* PermissionListener permissionlistener = new PermissionListener() {
 
