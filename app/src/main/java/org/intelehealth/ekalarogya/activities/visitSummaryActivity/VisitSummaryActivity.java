@@ -327,6 +327,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Patient patient = new Patient();
     ObsDTO complaint = new ObsDTO();
+    ObsDTO complaint_REG = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
@@ -1447,8 +1448,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
             sugarFastAndMealView.setText("");
         }
 
-        if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+      /*  if (complaint.getValue() != null)
+            complaintView.setText(Html.fromHtml(complaint.getValue()));*/
+        if (complaint_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(complaint_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                complaintView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+              //  throw new RuntimeException(e);
+                if (complaint.getValue() != null)
+                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+            }
+
+        }
+
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -3437,6 +3451,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
+                break;
+            }
+            case UuidDictionary.CC_REG_LANG_VALUE: { //Current Complaint Regional
+                complaint_REG.setValue(value.replace("?<b>", Node.bullet_arrow));
                 break;
             }
             case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination
