@@ -130,7 +130,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             for (int j = 0; j < visitsDTOList.size(); j++) {
 
                 if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
-                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    listPatientUUID.add(visitsDTOList.get(j).getUuid());    // AEAT-456: get visitUUID instead of patientUUID.
                 }
             }
         }
@@ -150,7 +150,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(cDate);
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b  " +
+                "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
