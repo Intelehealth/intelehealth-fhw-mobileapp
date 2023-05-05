@@ -1052,5 +1052,6 @@
     <string name="setup_select_dropdown_village_msg">ड्रॉपडाउन से गांव का चयन करें</string>
     <string name="locations">स्थान</string>
     <string name="doctor_not_needed">डॉक्टर परामर्श नहीं चाहिए</string>
+    <string name="view_bill">बिल देखें</string>
 
 </resources>

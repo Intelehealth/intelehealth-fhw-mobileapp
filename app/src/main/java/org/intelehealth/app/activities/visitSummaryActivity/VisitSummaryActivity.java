@@ -934,6 +934,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
 
+        String billEncounterUuid = checkForOldBill();
+        if (!billEncounterUuid.equals("")) {
+            editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
+            generateBillBtn.setText(getResources().getString(R.string.view_bill));
+        }
+
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
 
@@ -5531,8 +5538,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void fetchBillDetails(String billEncounterUuid) {
         ArrayList selectedTests = new ArrayList<>();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
-        String[] visitArgs = {billEncounterUuid, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+        String visitSelection = "encounteruuid = ? and voided = ?";
+        String[] visitArgs = {billEncounterUuid, "0"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {

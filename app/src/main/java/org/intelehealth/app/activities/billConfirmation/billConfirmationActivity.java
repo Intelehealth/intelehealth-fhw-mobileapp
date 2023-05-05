@@ -117,7 +117,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV,
             bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected,
             temp_chargesTV, spo2_chargesTV, ecg_chargesTV;
-    ;
     String paymentStatus = "Paid";
     Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
@@ -637,31 +636,41 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     private void setPrices() {
         if (consultCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             consultChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (followUPCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Followup");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             followUpChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (glucoseRCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             glucoseRChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (glucoseFCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             glucoseFChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (glucosePPNCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             glucosePPNChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
@@ -674,44 +683,58 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
 
         if (spo2_charges_LL.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("SpO2_Bill");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             spo2_chargesTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (temp_charges_LL.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Temperature_Bill");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             temp_chargesTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (ecg_charges_LL.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("ECG_Bill");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             ecg_chargesTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
 
         if (uricAcidCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             uricAcidChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (haemoglobinCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             haemoglobinChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (cholesterolCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             cholesterolChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (bpCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("BP Test");
-            price = getPrice(price, price.indexOf('.'));
+            if(price.contains(".")) {
+                price = getPrice(price, price.indexOf('.'));
+            }
             bpChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
