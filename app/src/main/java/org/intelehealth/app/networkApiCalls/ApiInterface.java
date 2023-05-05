@@ -16,6 +16,10 @@ import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
+import org.intelehealth.app.models.hwprofile.Profile;
+import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
+import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
+import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
@@ -166,6 +170,8 @@ public interface ApiInterface {
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
 
+
+
     @POST
     Single<ResponseBody> PROVIDER_PROFILE_PIC_UPLOAD(@Url String url,
                                                    @Body ProviderProfile patientProfile,
@@ -175,4 +181,20 @@ public interface ApiInterface {
     @GET
     Observable<ResponseBody> PROVIDER_PROFILE_PIC_DOWNLOAD(@Url String url,
                                                          @Header("Authorization") String authHeader);
+
+    @GET
+    Observable<Profile> PROVIDER_PROFILE_DETAILS_DOWNLOAD(@Url String url,
+                                                          @Header("Authorization") String authHeader);
+
+    @POST("/openmrs/ws/rest/v1/person/{userUuid}")
+    Observable<ResponseBody> PROFILE_AGE_UPDATE(@Path("userUuid") String userUuid,
+                                                             @Body ProfileUpdateAge profileUpdateAge, @Header("Authorization") String authHeader);
+
+    @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
+    Observable<ResponseBody> PROFILE_ATTRIBUTE_CREATE(@Path("userUuid") String userUuid,
+                                                      @Body ProfileCreateAttribute profileCreateAttribute, @Header("Authorization") String authHeader);
+
+    @POST("attribute/{attributeUuid}")
+    Observable<ResponseBody> PROFILE_ATTRIBUTE_UPDATE(@Path("attributeUuid") String attributeUuid,
+                                                      @Body ProfileUpdateAttribute profileUpdateAttribute, @Header("Authorization") String authHeader);
 }

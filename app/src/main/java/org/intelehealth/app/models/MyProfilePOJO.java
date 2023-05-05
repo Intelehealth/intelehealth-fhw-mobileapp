@@ -158,14 +158,14 @@ public class MyProfilePOJO {
 
     public boolean hasDataChanged() {
         final boolean result = false;
-        if (!firstName.equalsIgnoreCase(newFirstName)) return true;
-        if (!lastName.equalsIgnoreCase(newLastName)) return true;
-        if (middleName==null || !middleName.equalsIgnoreCase(newMiddleName)) return true;
-        if (!gender.equalsIgnoreCase(newGender)) return true;
-        if (!dateOfBirth.equalsIgnoreCase(newDateOfBirth)) return true;
-        if (!countryCode.equalsIgnoreCase(newCountryCode)) return true;
-        if (!phoneNumber.equalsIgnoreCase(newPhoneNumber)) return true;
-        if (!email.equalsIgnoreCase(newEmail)) return true;
+        if (firstName!= null && !firstName.equalsIgnoreCase(newFirstName)) return true;
+        if (lastName!= null && !lastName.equalsIgnoreCase(newLastName)) return true;
+        if (middleName!= null && !middleName.equalsIgnoreCase(newMiddleName)) return true;
+        if (gender!= null && !gender.equalsIgnoreCase(newGender)) return true;
+        if (dateOfBirth!= null && !dateOfBirth.equalsIgnoreCase(newDateOfBirth)) return true;
+        if (countryCode!= null && !countryCode.equalsIgnoreCase(newCountryCode)) return true;
+        if (phoneNumber!= null && !phoneNumber.equalsIgnoreCase(newPhoneNumber)) return true;
+        if (email!= null && !email.equalsIgnoreCase(newEmail)) return true;
         return result;
     }
 
