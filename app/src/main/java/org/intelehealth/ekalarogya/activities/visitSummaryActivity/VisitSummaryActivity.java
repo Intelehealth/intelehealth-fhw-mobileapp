@@ -1454,19 +1454,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
       /*  if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));*/
-        if (complaint_REG.getValue() != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(complaint_REG.getValue());
-                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
-                complaintView.setText(Html.fromHtml(text));
-            } catch (JSONException e) {
-              //  throw new RuntimeException(e);
-                if (complaint.getValue() != null)
-                    complaintView.setText(Html.fromHtml(complaint.getValue()));
-            }
 
-        }
+        // Regional and Normal languages fetching....
+        complaintView.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint)));
+        patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory)));
+        famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory)));
+        physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam)));
 
+/*
         if (patHistory_REG.getValue() != null) {
             try {
                 JSONObject jsonObject = new JSONObject(patHistory_REG.getValue());
@@ -1477,7 +1472,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     patHistView.setText(Html.fromHtml(patHistory.getValue()));
             }
         }
+*/
 
+/*
         if (famHistory_REG.getValue() != null) {
             try {
                 JSONObject jsonObject = new JSONObject(famHistory_REG.getValue());
@@ -1488,7 +1485,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
             }
         }
+*/
 
+/*
         if (phyExam_REG.getValue() != null) {
             try {
                 JSONObject jsonObject = new JSONObject(phyExam_REG.getValue());
@@ -1499,6 +1498,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
             }
         }
+*/
 
 
       /*  if (famHistory.getValue() != null)
@@ -1547,8 +1547,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setView(convertView);
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
+*/
+                famHistText.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory)));
                 famHistText.setEnabled(false);
 
 /*
@@ -1660,9 +1663,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                if (complaint.getValue() != null) {
+/*                if (complaint.getValue() != null) {
                     complaintText.setText(Html.fromHtml(complaint.getValue()));
-                }
+                }*/
+                complaintText.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint)));
                 complaintText.setEnabled(false);
 
 /*
@@ -1771,8 +1775,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
+*/
+                physicalText.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam)));
                 physicalText.setEnabled(false);
 
 /*
@@ -1881,8 +1888,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setView(convertView);
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
+*/
+                historyText.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory)));
                 historyText.setEnabled(false);
 
 /*
@@ -2080,6 +2090,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
         getAppointmentDetails(visitUuid);
+    }
+
+    /**
+     * This function will read the regional lang from the json if the regional lang string is present for this current
+     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
+     * @param value_REG this obs object contains
+     * @param value
+     * @return
+     */
+    private String fetchObsValue_REG(ObsDTO value_REG, ObsDTO value) {
+        if (value_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value.getValue() != null)
+                    return value.getValue();
+            }
+        }
+        return (value.getValue() != null) ? value.getValue() : "";
     }
 
     /**
