@@ -105,7 +105,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     PhysicalExam physicalExamMap;
 
-    String physicalString;
+    String physicalString, physicalString_REG = "";
     Boolean complaintConfirmed = false;
     String encounterVitals;
     String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
@@ -280,12 +280,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     }
 
-    private boolean insertDb(String value) {
+    private boolean insertDb(String value, String conceptID) {
         Log.i(TAG, "insertDb: ");
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+        obsDTO.setConceptuuid(conceptID);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue(value));
@@ -323,6 +323,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (complaintConfirmed) {
 
                 physicalString = physicalExamMap.generateFindings();
+                physicalString_REG = physicalExamMap.generateFindings_REG(sessionManager.getAppLanguage()); // Regional langauge physical exam string for HW.
+
                 List<String> imagePathList = physicalExamMap.getImagePathList();
                 if (imagePathList != null) {
                     for (String imagePath : imagePathList) {
@@ -331,7 +333,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 }
 
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(physicalString);
+                    updateDatabase(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
+                    //regional - start
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
+                        updateDatabase(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_update_regional_physexam: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // regional - end
+
                     Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
@@ -350,7 +363,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     // intent.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent);
                 } else {
-                    boolean obsId = insertDb(physicalString);
+                    boolean obsId = insertDb(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
+                    //regional - start
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
+                        insertDb(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_insert_regional_physexam: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // regional - end
+
                     Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", visitUuid);
@@ -506,16 +530,15 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
-    private void updateDatabase(String string) {
+    private void updateDatabase(String string, String conceptID) {
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
-            obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+            obsDTO.setConceptuuid(conceptID);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.PHYSICAL_EXAMINATION));
-
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, conceptID));
             obsDAO.updateObs(obsDTO);
 
         } catch (DAOException dao) {

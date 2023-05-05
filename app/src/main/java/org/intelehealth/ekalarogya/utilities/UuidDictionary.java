@@ -11,6 +11,7 @@ public class UuidDictionary {
     public static final String CURRENT_COMPLAINT = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce";
     public static final String CC_REG_LANG_VALUE = "9cca1f28-c52c-461e-9305-7bec2d048d25";
     public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
+    public static final String PHYEXAM_REG_LANG_VALUE = "1ae67139-abb3-464c-9091-feab2e6e0fdb";
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String WEIGHT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";

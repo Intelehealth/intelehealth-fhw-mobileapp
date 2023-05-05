@@ -333,6 +333,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO patHistory = new ObsDTO();
     ObsDTO patHistory_REG = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
+    ObsDTO phyExam_REG = new ObsDTO();
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
@@ -1488,14 +1489,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
+        if (phyExam_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(phyExam_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                physFindingsView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (phyExam.getValue() != null)
+                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            }
+        }
+
+
       /*  if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));*/
 /*
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
 */
+
+/*
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+*/
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -3527,6 +3543,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination
                 phyExam.setValue(value);
+                break;
+            }
+            case UuidDictionary.PHYEXAM_REG_LANG_VALUE: { //Physical Examination
+                phyExam_REG.setValue(value);
                 break;
             }
             case UuidDictionary.HEIGHT: //Height
