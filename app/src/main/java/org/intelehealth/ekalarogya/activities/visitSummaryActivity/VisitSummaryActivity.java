@@ -330,6 +330,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO complaint_REG = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
+    ObsDTO patHistory_REG = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
@@ -383,7 +384,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView respiratoryText;
     TextView tempfaren;
     TextView tempcel;
-    String medHistory;
+    String medHistory, medHistory_REG;
     String baseDir;
     String filePathPhyExam;
     File obsImgdir;
@@ -1412,6 +1413,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mBMI = "";
         }
         patHistory.setValue(medHistory);
+     //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
 
@@ -1463,10 +1465,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
+        if (patHistory_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(patHistory_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                patHistView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (patHistory.getValue() != null)
+                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+            }
+
+        }
+
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
+/*
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
+*/
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
@@ -3374,29 +3390,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         try {
-            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+            String medHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) AND voided = 0";
 
-            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            String[] medHistArgs = {encounterUuidAdultIntial,
+                    UuidDictionary.RHK_MEDICAL_HISTORY_BLURB, UuidDictionary.PASTHIST_REG_LANG_VALUE};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-            medHistCursor.moveToLast();
-            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-            patHistory.setValue(medHistText);
-
-            if (medHistText != null && !medHistText.isEmpty()) {
-
-                medHistory = patHistory.getValue();
-
-
-                medHistory = medHistory.replace("\"", "");
-                medHistory = medHistory.replace("\n", "");
+            if (medHistCursor != null && medHistCursor.moveToFirst()) {
                 do {
-                    medHistory = medHistory.replace("  ", "");
-                } while (medHistory.contains("  "));
+                    String medConceptID = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                    if (medConceptID.equalsIgnoreCase(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)) {  // doctor to see pastmedHist.
+                        String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        patHistory.setValue(medHistText);
+
+                        if (medHistText != null && !medHistText.isEmpty()) {
+                            medHistory = patHistory.getValue();
+                            medHistory = medHistory.replace("\"", "");
+                            medHistory = medHistory.replace("\n", "");
+                            do {
+                                medHistory = medHistory.replace("  ", "");
+                            } while (medHistory.contains("  "));
+                        }
+                    }
+                    // Note: Regional Language.
+                    else if (medConceptID.equalsIgnoreCase(UuidDictionary.PASTHIST_REG_LANG_VALUE)) {
+                        // start
+                        String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        patHistory_REG.setValue(medHistText.replace("?<b>", Node.bullet_arrow));
+
+                        if (medHistText != null && !medHistText.isEmpty()) {
+                            medHistory_REG = patHistory_REG.getValue();
+                            medHistory_REG = medHistory_REG.replace("\"", "");
+                            medHistory_REG = medHistory_REG.replace("\n", "");
+                            do {
+                                medHistory_REG = medHistory_REG.replace("  ", "");
+                            } while (medHistory_REG.contains("  "));
+                        }
+                        //end
+                    }
+                }
+                while (medHistCursor.moveToNext());
             }
-            medHistCursor.close();
+
+            if (medHistCursor != null) {
+                medHistCursor.close();
+            }
+
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
+            patHistory_REG.setValue(""); // if medical history does not exist
         }
 //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";

@@ -25,6 +25,7 @@ public class UuidDictionary {
     public static final String SUGARLEVELAFTERMEAL = "ced96191-6064-4e2b-80b0-bed2fd37e047";
     public static final String BLOODGROUP = "a170929e-9e23-4689-98ed-074c0c4792bb";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
+    public static final String PASTHIST_REG_LANG_VALUE = "cf536c43-5aec-444c-a8a1-13f8d9c3e34d";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
     //m added
