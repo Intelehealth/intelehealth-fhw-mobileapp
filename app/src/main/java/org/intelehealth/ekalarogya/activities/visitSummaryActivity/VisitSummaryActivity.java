@@ -329,6 +329,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO complaint = new ObsDTO();
     ObsDTO complaint_REG = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
+    ObsDTO famHistory_REG = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
     ObsDTO patHistory_REG = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
@@ -1474,11 +1475,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (patHistory.getValue() != null)
                     patHistView.setText(Html.fromHtml(patHistory.getValue()));
             }
-
         }
 
-        if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+        if (famHistory_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(famHistory_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                famHistView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (famHistory.getValue() != null)
+                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            }
+        }
+
+      /*  if (famHistory.getValue() != null)
+            famHistView.setText(Html.fromHtml(famHistory.getValue()));*/
 /*
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
@@ -3378,15 +3389,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] columns = {"value", " conceptuuid"};
 
         try {
-            String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            String famHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) AND voided = 0";
+            String[] famHistArgs = {encounterUuidAdultIntial,
+                    UuidDictionary.RHK_FAMILY_HISTORY_BLURB, UuidDictionary.FAMHIST_REG_LANG_VALUE};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
-            famHistCursor.moveToLast();
-            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-            famHistory.setValue(famHistText);
-            famHistCursor.close();
+            if (famHistCursor != null && famHistCursor.moveToFirst()) {
+                do {
+                    String famConceptID = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                    if (famConceptID.equalsIgnoreCase(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)) {
+                        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistory.setValue(famHistText);
+                    }
+                    else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
+                        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistory_REG.setValue(famHistText);
+                    }
+
+                }
+                while (famHistCursor.moveToNext());
+            }
+//            famHistCursor.moveToLast();
+            if (famHistCursor != null)
+                famHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
+            famHistory_REG.setValue(""); // if family history does not exist
         }
 
         try {
@@ -3432,9 +3459,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 while (medHistCursor.moveToNext());
             }
 
-            if (medHistCursor != null) {
+            if (medHistCursor != null)
                 medHistCursor.close();
-            }
 
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist

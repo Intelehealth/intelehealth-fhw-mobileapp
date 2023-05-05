@@ -190,7 +190,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     }
 
                     if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
-                        insertDb(fhistory);
+                        insertDb(fhistory, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                     }
 
                     Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
@@ -547,9 +547,9 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 } else {
                     if (insertion.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>") || insertion.endsWith("? <br/> ")) {
                         insertion = "";
-                        updateDatabase(insertion);
+                        updateDatabase(insertion, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                     } else {
-                        updateDatabase(insertion);
+                        updateDatabase(insertion, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                     }
 
                     Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
@@ -582,7 +582,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                             fhistory = "";
                         }
 
-                        insertDb(fhistory);
+                        insertDb(fhistory, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                         checkFlag = true;
                     }
                     // insertDb(fhistory);
@@ -593,7 +593,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                         if (fhistory.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>") || insertion.endsWith("? <br/> ")) {
                             insertion = "";
                         }
-                        insertDb(insertion);
+                        insertDb(insertion, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                         checkFlag = true;
                     }
                     //insertDb(insertion); // new details of family history
@@ -627,7 +627,18 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(confirmationStr);
+                    updateDatabase(confirmationStr, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                    // regional language store in db to show on VS screen.
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
+                        updateDatabase(object.toString(), UuidDictionary.FAMHIST_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_update_regional_famhist: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // end
+
                     fabFlag = false;
                     Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -641,7 +652,17 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("hasPrescription", "false");
                     startActivity(intent);
                 } else {
-                    insertDb(confirmationStr);
+                    insertDb(confirmationStr, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                    //regional - start
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
+                        insertDb(object.toString(), UuidDictionary.FAMHIST_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_insert_regional_famhist_only: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // regional - end
                     flag = false;
                     fabFlag = false;
                     sessionManager.setReturning(false);
@@ -677,10 +698,10 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
     }
 
-    public boolean insertDb(String value) {
+    public boolean insertDb(String value, String conceptID) {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+        obsDTO.setConceptuuid(conceptID);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(org.intelehealth.ekalarogya.utilities.StringUtils.getValue(value));
@@ -705,16 +726,16 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
     }
 
-    private void updateDatabase(String string) {
+    private void updateDatabase(String string, String conceptID) {
 
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
-            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+            obsDTO.setConceptuuid(conceptID);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, conceptID));
 
             obsDAO.updateObs(obsDTO);
 
