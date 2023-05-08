@@ -38,7 +38,7 @@ public class PhysicalExaminationFragment extends Fragment {
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private PhysicalExam physicalExam;
     private VisitCreationActionListener mActionListener;
-
+    private boolean mIsEditMode = false;
     public PhysicalExaminationFragment() {
         // Required empty public constructor
     }
@@ -61,8 +61,9 @@ public class PhysicalExaminationFragment extends Fragment {
         });
     }
 
-    public static PhysicalExaminationFragment newInstance(Intent intent, PhysicalExam physicalExamMap) {
+    public static PhysicalExaminationFragment newInstance(Intent intent, boolean isEditMode, PhysicalExam physicalExamMap) {
         PhysicalExaminationFragment fragment = new PhysicalExaminationFragment();
+        fragment.mIsEditMode = isEditMode;
         fragment.physicalExam = physicalExamMap;
         return fragment;
     }
@@ -124,7 +125,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                     // }
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION,false, null);
                 }
 
             }
@@ -136,7 +137,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
             }
 
             @Override

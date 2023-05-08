@@ -41,14 +41,16 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private Node mCurrentNode;
+    private boolean mIsEditMode = false;
 
     public VisitReasonQuestionsFragment() {
         // Required empty public constructor
     }
 
 
-    public static VisitReasonQuestionsFragment newInstance(Intent intent, List<Node> nodeList) {
+    public static VisitReasonQuestionsFragment newInstance(Intent intent, boolean isEditMode, List<Node> nodeList) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
+        fragment.mIsEditMode = isEditMode;
         fragment.mChiefComplainRootNodeList = nodeList;
         fragment.mCurrentNode = fragment.mChiefComplainRootNodeList.get(fragment.mCurrentComplainNodeIndex);
         return fragment;
@@ -128,7 +130,6 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 VisitUtils.scrollNow(recyclerView, 1100, 0, 1100);
 
 
-
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             }
 
@@ -139,7 +140,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
             }
 
             @Override

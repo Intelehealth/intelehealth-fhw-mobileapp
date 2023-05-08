@@ -547,14 +547,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             } else {
                 //TODO : Hide for beta release
-                editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
-                cc_details_edit.setVisibility(View.VISIBLE);
-                ass_symp_edit.setVisibility(View.VISIBLE);
-                editPhysical.setVisibility(View.VISIBLE);
-                editFamHist.setVisibility(View.VISIBLE);
-                editMedHist.setVisibility(View.VISIBLE);
-                editAddDocs.setVisibility(View.VISIBLE);
                 /*editVitals.setVisibility(View.VISIBLE);
                 editComplaint.setVisibility(View.VISIBLE);
                 cc_details_edit.setVisibility(View.VISIBLE);
@@ -563,6 +555,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
                 editAddDocs.setVisibility(View.VISIBLE);*/
+                editVitals.setVisibility(View.VISIBLE);
+                editComplaint.setVisibility(View.VISIBLE);
+                cc_details_edit.setVisibility(View.VISIBLE);
+                ass_symp_edit.setVisibility(View.VISIBLE);
+                editPhysical.setVisibility(View.VISIBLE);
+                editFamHist.setVisibility(View.VISIBLE);
+                editMedHist.setVisibility(View.VISIBLE);
+                editAddDocs.setVisibility(View.VISIBLE);
 
                 add_additional_doc.setVisibility(View.VISIBLE);
 

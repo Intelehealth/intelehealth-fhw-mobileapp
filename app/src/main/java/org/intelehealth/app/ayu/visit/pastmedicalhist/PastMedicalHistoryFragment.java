@@ -43,7 +43,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static PastMedicalHistoryFragment newInstance(Intent intent, Node node, boolean isEditMode) {
+    public static PastMedicalHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
         PastMedicalHistoryFragment fragment = new PastMedicalHistoryFragment();
         fragment.mCurrentNode = node;
         fragment.mIsEditMode = isEditMode;
@@ -107,7 +107,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_FAMILY_HISTORY, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_FAMILY_HISTORY, false, null);
                 }
             }
 
@@ -118,7 +118,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
             }
 
             @Override

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,9 +26,13 @@ import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -102,19 +107,31 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                     type = "options";
                 }
+                Log.v(TAG, "type - " + type);
                 if (type.equalsIgnoreCase("text")) {
                     genericViewHolder.singleComponentContainer.removeAllViews();
                     genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
                     addTextEnterView(mItemList.get(position), genericViewHolder, position);
-                }
-                else {
+                } else if (type.equalsIgnoreCase("options") && mItemList.get(position).getOptionsList().size() == 1 && mItemList.get(position).getOptionsList().get(0).getOptionsList() == null) {
+                    String _type = mItemList.get(position).getOptionsList().get(0).getInputType();
+                    Log.v(TAG, "Single option - " + type);
+                    if (_type.equalsIgnoreCase("text")) {
+                        genericViewHolder.singleComponentContainer.removeAllViews();
+                        genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+                        addTextEnterView(mItemList.get(position).getOptionsList().get(0), genericViewHolder, position);
+                    } else if (_type.equalsIgnoreCase("date")) {
+                        genericViewHolder.singleComponentContainer.removeAllViews();
+                        genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+                        addDateView(mItemList.get(position).getOptionsList().get(0), genericViewHolder, position);
+                    }
+                } else {
                     genericViewHolder.singleComponentContainer.removeAllViews();
                     genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
                     Log.v(TAG, "onBindViewHolder options" + new Gson().toJson(mItemList.get(position).getOptionsList()));
                     if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                         genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                         genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                        genericViewHolder.isHavingDirectOption = mItemList.get(position).getLanguage() != null && mItemList.get(position).getLanguage().equalsIgnoreCase("%");
+                        //genericViewHolder.isHavingDirectOption = mItemList.get(position).getLanguage() != null && mItemList.get(position).getLanguage().equalsIgnoreCase("%");
 
                         HashMap<Integer, ComplainBasicInfo> rootComplainBasicInfoHashMap = new HashMap<>();
                         ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
@@ -179,8 +196,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
 
                         //}
-                    }
-                    else {
+                    } else {
                         genericViewHolder.recyclerView.setVisibility(View.GONE);
                     }
                 }
@@ -282,6 +298,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
+                holder.node.setSelected(false);
+                holder.node.setDataCaptured(false);
                 // scroll little bit
                 holder.recyclerView.postDelayed(new Runnable() {
                     @Override
@@ -309,10 +327,17 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         }
                         node.setSelected(true);
                         node.setDataCaptured(true);
+
+                        holder.node.setSelected(true);
+                        holder.node.setDataCaptured(true);
+
                     } else {
                         //if (node.isRequired()) {
                         node.setSelected(false);
                         node.setDataCaptured(false);
+
+                        holder.node.setSelected(false);
+                        holder.node.setDataCaptured(false);
                         //} else {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
@@ -362,6 +387,88 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         editText.setHorizontallyScrolling(false);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
         editText.setMinHeight(320);
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addDateView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_date, null);
+        final Button submitButton = view.findViewById(R.id.btn_submit);
+        final Button displayDateButton = view.findViewById(R.id.btn_view_date);
+        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // display the selected date by using a toast
+                int m = month + 1;
+                String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+                        + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+                displayDateButton.setText(date);
+            }
+        });
+        //holder.skipButton.setVisibility(View.GONE);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                //mOnItemSelection.onSelect(node, index);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String d = displayDateButton.getText().toString().trim();
+                if (!d.contains("-")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
+                } else {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                    Date date = cal.getTime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                    String dateString = simpleDateFormat.format(date);
+                    if (!dateString.equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        } else if (node.getLanguage().equalsIgnoreCase("%")) {
+                            node.addLanguage(dateString);
+                        } else {
+                            node.addLanguage(node.getLanguage() + " - " + dateString);
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                        holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        holder.node.setDataCaptured(true);
+                    } else {
+                        if (node.isRequired()) {
+                            node.setSelected(false);
+                        } else {
+                            node.setSelected(true);
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                            } else {
+                                node.addLanguage("Question not answered");
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        }
+                    }
+                    //notifyDataSetChanged();
+                    //mOnItemSelection.onSelect(node, index);
+                }
+            }
+        });
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
         holder.singleComponentContainer.addView(view);
     }
 }
