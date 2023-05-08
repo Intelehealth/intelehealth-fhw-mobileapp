@@ -309,7 +309,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen")) showSnackBarAndRemoveLater();
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater();
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
