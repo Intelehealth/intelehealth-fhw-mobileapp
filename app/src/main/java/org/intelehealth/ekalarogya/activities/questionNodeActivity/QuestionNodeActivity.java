@@ -384,6 +384,16 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             String complaint_REG = "";
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 complaint_REG = currentNode.getDisplay_hindi();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
+                complaint_REG = currentNode.getDisplay_bengali();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+                complaint_REG = currentNode.getDisplay_kannada();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+                complaint_REG = currentNode.getDisplay_oriya();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+                complaint_REG = currentNode.getDisplay_gujarati();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
+                complaint_REG = currentNode.getDisplay_assamese();
             else
                 complaint_REG = currentNode.getDisplay();
 
@@ -442,7 +452,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("\\[Describe]", "");
                     }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
                     Log.v("insertion_tag", "insertion_update: " + insertion);
                     updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
 
@@ -483,7 +494,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("\\[Describe]", "");
                     }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
                     Log.v("insertion_tag", "insertion_insert: " + insertion);
                     insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
 

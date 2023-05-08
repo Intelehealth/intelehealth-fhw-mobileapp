@@ -169,6 +169,16 @@ public class PhysicalExam extends Node {
             for (Node subNode : node.getOptionsList()) {
                 if (appLanguage.equalsIgnoreCase("hi"))
                     titles.add(node.getDisplay_hindi() + " : " + subNode.getDisplay_hindi());
+                else if (appLanguage.equalsIgnoreCase("bn"))
+                    titles.add(node.getDisplay_bengali() + " : " + subNode.getDisplay_bengali());
+                else if (appLanguage.equalsIgnoreCase("kn"))
+                    titles.add(node.getDisplay_kannada() + " : " + subNode.getDisplay_kannada());
+                else if (appLanguage.equalsIgnoreCase("or"))
+                    titles.add(node.getDisplay_oriya() + " : " + subNode.getDisplay_oriya());
+                else if (appLanguage.equalsIgnoreCase("gu"))
+                    titles.add(node.getDisplay_gujarati() + " : " + subNode.getDisplay_gujarati());
+                else if (appLanguage.equalsIgnoreCase("as"))
+                    titles.add(node.getDisplay_assamese() + " : " + subNode.getDisplay_assamese());
                 else
                     titles.add(node.getText() + " : " + subNode.getText());
             }
@@ -326,11 +336,27 @@ public class PhysicalExam extends Node {
             String levelOne = split[0];
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
+                String display_REG = "";
+                if (appLanguage.equalsIgnoreCase("hi"))
+                    display_REG = node.getDisplay_hindi();
+                else if (appLanguage.equalsIgnoreCase("bn"))
+                    display_REG = node.getDisplay_bengali();
+                else if (appLanguage.equalsIgnoreCase("kn"))
+                    display_REG = node.getDisplay_kannada();
+                else if (appLanguage.equalsIgnoreCase("or"))
+                    display_REG = node.getDisplay_oriya();
+                else if (appLanguage.equalsIgnoreCase("gu"))
+                    display_REG = node.getDisplay_gujarati();
+                else if (appLanguage.equalsIgnoreCase("as"))
+                    display_REG = node.getDisplay_assamese();
+                else
+                    display_REG = node.getDisplay();
 
                 if (checkSet)
-                    stringsList.add("<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getDisplay_hindi());
+                    stringsList.add("<b>"+levelOne + ": "+"</b>" + bullet + " " + display_REG);
                 else
-                    stringsList.add(bullet + " " + node.getDisplay_hindi());
+                    stringsList.add(bullet + " " + display_REG);
+
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage(appLanguage);
                     Log.i(TAG, "generateFindings: "+ lang);

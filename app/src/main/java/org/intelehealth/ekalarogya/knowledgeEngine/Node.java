@@ -954,8 +954,17 @@ public class Node implements Serializable {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (language.equalsIgnoreCase("hi"))
-                        associatedTest = associatedTest.replace("H/o specific illness", "एच / ओ विशिष्ट बीमारी");
-                    // TODO: do it for all the other langs.
+                        associatedTest = associatedTest.replace("H/o specific illness", "एच/ओ विशिष्ट बीमारी");
+                    else if (language.equalsIgnoreCase("bn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নির্দিষ্ট অসুস্থতা");
+                    else if (language.equalsIgnoreCase("kn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ನಿರ್ದಿಷ್ಟ ಅನಾರೋಗ್ಯ");
+                    else if (language.equalsIgnoreCase("or"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ନିର୍ଦ୍ଦିଷ୍ଟ ରୋଗ");
+                    else if (language.equalsIgnoreCase("gu"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ચોક્કસ બીમારી");
+                    else if (language.equalsIgnoreCase("as"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নিৰ্দিষ্ট ৰোগ");
 
                     Log.v("insertion_tag", "associatedTest: " + associatedTest);
                     if (associatedTest != null
@@ -995,6 +1004,16 @@ public class Node implements Serializable {
                             if (node_opt.getLanguage().equals("%")) {
                                 if (language.equalsIgnoreCase("hi"))
                                     raw = raw + bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language) + next_line;
+                                else if (language.equalsIgnoreCase("or"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("gu"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("as"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("bn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("kn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
                                 else
                                     raw = raw + bullet + " " + node_opt.getDisplay() + " - " + node_opt.formLanguage(language) + next_line;
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
@@ -3379,6 +3398,26 @@ public class Node implements Serializable {
             mLanguagePositive = "पेशेंट की रिपोर्ट -" + next_line;
             mLanguageNegative = "पेशेंट इनकार करता है -" + next_line;
         }
+        else if (appLanguage.equalsIgnoreCase("bn")) {
+            mLanguagePositive = "রোগীর রিপোর্ট -" + next_line;
+            mLanguageNegative = "রোগী অস্বীকার করে -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("kn")) {
+            mLanguagePositive = "ರೋಗಿಯ ವರದಿಗಳು -" + next_line;
+            mLanguageNegative = "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("or")) {
+            mLanguagePositive = "ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି -" + next_line;
+            mLanguageNegative = "ରୋଗୀ ମନା କରୁଛନ୍ତି -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("gu")) {
+            mLanguagePositive = "દર્દીના અહેવાલો -" + next_line;
+            mLanguageNegative = "દર્દી નકારે છે -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("as")) {
+            mLanguagePositive = "ৰোগীৰ ৰিপৰ্ট -" + next_line;
+            mLanguageNegative = "ৰোগীয়ে অস্বীকাৰ কৰিছে -" + next_line;
+        }
         else {
             mLanguagePositive = "Patient reports -" + next_line;
             mLanguageNegative = "Patient denies -" + next_line;
@@ -3391,27 +3430,30 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String pos_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        pos_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        pos_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        pos_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        pos_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        pos_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        pos_REG = mOptions.get(i).getDisplay_assamese();
+                    else
+                        pos_REG = mOptions.get(i).getDisplay();
 
-                    if (appLanguage.equalsIgnoreCase("hi")) {
                         if (mOptions.get(i).getLanguage().equals("%")) {
                         } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
                             positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
                         } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            positiveAssociations.add(mOptions.get(i).getDisplay_hindi()); //
+                            positiveAssociations.add(pos_REG); //
                         } else {
-                            positiveAssociations.add(mOptions.get(i).getDisplay_hindi()); //
+                            positiveAssociations.add(pos_REG); //
                         }
-                    }
-                    else {
-                        if (mOptions.get(i).getLanguage().equals("%")) {
-                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                            positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            positiveAssociations.add(mOptions.get(i).getDisplay()); //
-                        } else {
-                            positiveAssociations.add(mOptions.get(i).getDisplay()); //
-                        }
-                    }
                 }
                 if (!mOptions.get(i).isTerminal()) {
                     if (positiveAssociations.size() > 0) {
@@ -3424,27 +3466,30 @@ public class Node implements Serializable {
 
             } else if (mOptions.get(i).isNoSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String neg_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        neg_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        neg_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        neg_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        neg_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        neg_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        neg_REG = mOptions.get(i).getDisplay_assamese();
+                    else
+                        neg_REG = mOptions.get(i).getDisplay();
 
-                    if (appLanguage.equalsIgnoreCase("hi")) {
                         if (mOptions.get(i).getLanguage().equals("%")) {
                         } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
                             negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
                         } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            negativeAssociations.add(mOptions.get(i).getDisplay_hindi()); //
+                            negativeAssociations.add(neg_REG); //
                         } else {
-                            negativeAssociations.add(mOptions.get(i).getDisplay_hindi()); //
+                            negativeAssociations.add(neg_REG); //
                         }
-                    }
-                    else {
-                        if (mOptions.get(i).getLanguage().equals("%")) {
-                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                            negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            negativeAssociations.add(mOptions.get(i).getDisplay()); //
-                        } else {
-                            negativeAssociations.add(mOptions.get(i).getDisplay()); //
-                        }
-                    }
                 }
             }
 
