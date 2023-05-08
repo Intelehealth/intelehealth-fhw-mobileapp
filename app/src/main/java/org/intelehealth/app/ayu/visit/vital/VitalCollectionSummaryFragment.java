@@ -19,7 +19,6 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.models.VitalsObject;
-import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -117,7 +116,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         else
             ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
         if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() +" " + getResources().getString(R.string.bpm));
+            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
         else
             ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
 
@@ -145,25 +144,25 @@ public class VitalCollectionSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON,false, mVitalsObject);
             }
         });
         view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, true, mVitalsObject);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, true, mVitalsObject);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, true, mVitalsObject);
             }
         });
         ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
@@ -177,5 +176,6 @@ public class VitalCollectionSummaryFragment extends Fragment {
         });
         return view;
     }
+
     private ObjectAnimator syncAnimator;
 }

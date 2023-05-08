@@ -43,7 +43,7 @@ public class FamilyHistoryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static FamilyHistoryFragment newInstance(Intent intent, Node node, boolean isEditMode) {
+    public static FamilyHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
         FamilyHistoryFragment fragment = new FamilyHistoryFragment();
         fragment.mCurrentNode = node;
         fragment.mIsEditMode = isEditMode;
@@ -107,7 +107,7 @@ public class FamilyHistoryFragment extends Fragment {
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, false,null);
                 }
             }
 
@@ -118,7 +118,7 @@ public class FamilyHistoryFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY,false, null);
             }
 
             @Override

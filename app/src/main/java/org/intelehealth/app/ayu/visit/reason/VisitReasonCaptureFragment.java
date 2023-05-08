@@ -68,6 +68,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     private List<String> mFinalEnabledMMList = new ArrayList<>();
+    private boolean mIsEditMode = false;
 
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
@@ -81,8 +82,9 @@ public class VisitReasonCaptureFragment extends Fragment {
         sessionManager = new SessionManager(context);
     }
 
-    public static VisitReasonCaptureFragment newInstance(Intent intent) {
+    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode) {
         VisitReasonCaptureFragment fragment = new VisitReasonCaptureFragment();
+        fragment.mIsEditMode = isEditMode;
         fragment.patientUuid = intent.getStringExtra("patientUuid");
         fragment.visitUuid = intent.getStringExtra("visitUuid");
         fragment.encounterVitals = intent.getStringExtra("encounterUuidVitals");
@@ -125,7 +127,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false,null);
             }
         });
 
@@ -199,7 +201,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, mSelectedComplains); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION,false, mSelectedComplains); // send the selected mms
                 }
             }
         });

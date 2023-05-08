@@ -68,16 +68,18 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     private List<Integer> mHeightMasterList = new ArrayList<>();
     private List<Integer> mWeightMasterList = new ArrayList<>();
+    private boolean mIsEditMode = false;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
     }
 
 
-    public static VitalCollectionFragment newInstance(Intent intent, VitalsObject vitalsObject) {
+    public static VitalCollectionFragment newInstance(Intent intent, boolean isEditMode, VitalsObject vitalsObject) {
         VitalCollectionFragment fragment = new VitalCollectionFragment();
 
 
+        fragment.mIsEditMode = isEditMode;
         fragment.results = vitalsObject;
 
         fragment.patientUuid = intent.getStringExtra("patientUuid");
@@ -238,7 +240,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 //validate
                 if (validateTable()) {
                     mActionListener.onProgress(100);
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, results);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false,results);
                 }
                 break;
 
