@@ -549,6 +549,7 @@
                 android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:paddingStart="@dimen/common_button_padding_left"
+                android:enabled="false"
                 android:paddingTop="@dimen/common_button_padding_top"
                 android:paddingEnd="@dimen/common_button_padding_right"
                 android:paddingBottom="@dimen/common_button_padding_bottom"

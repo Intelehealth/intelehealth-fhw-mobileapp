@@ -105,7 +105,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -119,7 +119,7 @@
 
                     <TextView
                         android:id="@+id/national_ID"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/not_provided"
@@ -166,7 +166,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -180,7 +180,7 @@
 
                     <TextView
                         android:id="@+id/occupation"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Diabetes - 20 May 2021 | Current medication - Not taking any | Last measured blood sugar and HbA1C - Not known"
@@ -197,7 +197,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -211,7 +211,7 @@
 
                     <TextView
                         android:id="@+id/caste"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/not_provided"
@@ -228,7 +228,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -242,7 +242,7 @@
 
                     <TextView
                         android:id="@+id/education"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Graduation"
@@ -259,7 +259,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -273,7 +273,7 @@
 
                     <TextView
                         android:id="@+id/economicstatus"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="APL"

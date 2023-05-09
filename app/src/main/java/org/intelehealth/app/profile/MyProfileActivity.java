@@ -131,18 +131,19 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     String prevDOB = "", prevPhoneNum = null, prevEmail = null, prevCountryCode = null;
     String phoneAttributeUuid = null, emailAttributeUuid = null, countryCodeAttributeUuid = null;
     String gender = "F", personUuid = "";
+    RelativeLayout layoutChangePassword;
+    RadioGroup rgGroupGender;
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_ui2);
-
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
-
         networkUtils = new NetworkUtils(MyProfileActivity.this, this);
     }
 
@@ -175,6 +176,56 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         else
             fingerprintSwitch.setChecked(false);
 
+        ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        tvTitle.setText(getResources().getString(R.string.my_profile));
+
+        //initialize all input fields
+        etUsername = findViewById(R.id.et_username_profile);
+        etFirstName = findViewById(R.id.et_first_name_profile);
+        etMiddleName = findViewById(R.id.et_middle_name_profile);
+        etLastName = findViewById(R.id.et_last_name_profile);
+        etEmail = findViewById(R.id.et_email_profile);
+        etMobileNo = findViewById(R.id.et_mobile_no_profile);
+        tvDob = findViewById(R.id.tv_date_of_birth_profile);
+        tvAge = findViewById(R.id.tv_age_profile);
+        btnSave = findViewById(R.id.btn_save_profile);
+        layoutParent = findViewById(R.id.layout_parent_profile);
+        rbMale = findViewById(R.id.rb_male);
+        rbFemale = findViewById(R.id.rb_female);
+        rbOther = findViewById(R.id.rb_other);
+        countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
+        countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
+        countryCodePicker.setNumberAutoFormattingEnabled(false);
+        ivProfileImage = findViewById(R.id.iv_profilePic);
+        tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
+        tvErrorFirstName = findViewById(R.id.tv_firstname_error);
+        tvErrorLastName = findViewById(R.id.tv_lastname_error);
+        tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
+        layoutChangePassword = findViewById(R.id.view_change_password);
+        rgGroupGender = findViewById(R.id.radioGroup_gender_profile);
+
+        manageListeners();
+        setMobileNumberLimit();
+    }
+
+    private void manageListeners() {
+        Context context = MyProfileActivity.this;
+
+        refresh.setOnClickListener(v -> {
+            isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
+            if (isSynced)
+                fetchUserDetails();
+        });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -205,57 +256,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, HomeScreenActivity_New.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tvTitle.setText(getResources().getString(R.string.my_profile));
-
-        refresh.setOnClickListener(v -> {
-            isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
-            if (isSynced)
-                fetchUserDetails();
-        });
-
-        //initialize all input fields
-        etUsername = findViewById(R.id.et_username_profile);
-        etFirstName = findViewById(R.id.et_first_name_profile);
-        etMiddleName = findViewById(R.id.et_middle_name_profile);
-        etLastName = findViewById(R.id.et_last_name_profile);
-        etEmail = findViewById(R.id.et_email_profile);
-        etMobileNo = findViewById(R.id.et_mobile_no_profile);
-        tvDob = findViewById(R.id.tv_date_of_birth_profile);
-        tvAge = findViewById(R.id.tv_age_profile);
-        btnSave = findViewById(R.id.btn_save_profile);
-        layoutParent = findViewById(R.id.layout_parent_profile);
-        rbMale = findViewById(R.id.rb_male);
-        rbFemale = findViewById(R.id.rb_female);
-        rbOther = findViewById(R.id.rb_other);
-        countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
-        countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
-        countryCodePicker.setNumberAutoFormattingEnabled(false);
-        ivProfileImage = findViewById(R.id.iv_profilePic);
-        tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
-        tvErrorFirstName = findViewById(R.id.tv_firstname_error);
-        tvErrorLastName = findViewById(R.id.tv_lastname_error);
-        tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
-        RelativeLayout layoutChangePassword = findViewById(R.id.view_change_password);
-
-        //all click listeners
-
-        RadioGroup rgGroupGender = findViewById(R.id.radioGroup_gender_profile);
         rgGroupGender.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton checkedRadioButton = group.findViewById(checkedId);
             boolean isChecked = checkedRadioButton.isChecked();
             if (isChecked) {
                 String selectedGenderText = checkedRadioButton.getText().toString();
                 myProfilePOJO.setNewGender(String.valueOf(selectedGenderText.charAt(0)));
-                shouldActivateSaveButton();
 
                 switch (selectedGenderText) {
                     case "Male":
@@ -287,8 +293,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             startActivity(intent);
         });
 
-
         btnSave.setOnClickListener(v -> {
+            Log.i("Btn Save",": Clicked");
             hideSoftKeyboard(MyProfileActivity.this, btnSave);
             checkInternetAndUpdateProfile();
         });
@@ -302,13 +308,130 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 
-        // fetch user details if added
+        etFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    if (TextUtils.isEmpty(etFirstName.getText().toString())) {
+                        tvErrorFirstName.setVisibility(View.VISIBLE);
+                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+                        return;
+                    } else {
+                        tvErrorFirstName.setVisibility(View.GONE);
+                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewFirstName(s.toString());
+            }
+        });
+
+        etLastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewLastName(s.toString());
+                if (TextUtils.isEmpty(etLastName.getText().toString())) {
+                    tvErrorLastName.setVisibility(View.VISIBLE);
+                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+                    return;
+                } else {
+                    tvErrorLastName.setVisibility(View.GONE);
+                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
+                }
+            }
+        });
+
+        etMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewPhoneNumber(s.toString());
+                shouldActivateSaveButton();
+                if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
+                    tvErrorMobileNo.setVisibility(View.VISIBLE);
+                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    return;
+                } else {
+                    tvErrorMobileNo.setVisibility(View.GONE);
+                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                }
+            }
+        });
+
+        etMiddleName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewMiddleName(s.toString());
+            }
+        });
+
+
+        countryCodePicker.setOnCountryChangeListener(() -> {
+            myProfilePOJO.setNewCountryCode(countryCodePicker.getSelectedCountryCodeWithPlus());
+            shouldActivateSaveButton();
+        });
+
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myProfilePOJO.setNewEmail(s.toString());
+                shouldActivateSaveButton();
+
+            }
+        });
+
         fetchUserDetails();
-        manageListeners();
-        setMobileNumberLimit();
     }
-
-
 
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)){
@@ -430,7 +553,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
     }
-
 
     private void updateDOB(Integer updatedAge, String updatedDOB, String gender) {
         String serverUrl = "https://" + AppConstants.DEMO_URL;
@@ -944,6 +1066,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             @Override
             public void onComplete() {
+                btnSave.setEnabled(false);
                 Logger.logD(TAG, "complete");
             }
         });
@@ -1052,154 +1175,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         }
     }
 
-    private void manageListeners() {
-        Context context = MyProfileActivity.this;
-        etFirstName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    if (TextUtils.isEmpty(etFirstName.getText().toString())) {
-                        tvErrorFirstName.setVisibility(View.VISIBLE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
-                        return;
-                    } else {
-                        tvErrorFirstName.setVisibility(View.GONE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewFirstName(s.toString());
-                shouldActivateSaveButton();
-            }
-        });
-
-        etLastName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewLastName(s.toString());
-                shouldActivateSaveButton();
-                if (TextUtils.isEmpty(etLastName.getText().toString())) {
-                    tvErrorLastName.setVisibility(View.VISIBLE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
-                    return;
-                } else {
-                    tvErrorLastName.setVisibility(View.GONE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-
-                }
-            }
-        });
-
-
-        etMobileNo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewPhoneNumber(s.toString());
-                shouldActivateSaveButton();
-                if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
-                    tvErrorMobileNo.setVisibility(View.VISIBLE);
-                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
-                    return;
-                } else {
-                    tvErrorMobileNo.setVisibility(View.GONE);
-                    etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                }
-            }
-        });
-
-        etMiddleName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewMiddleName(s.toString());
-                shouldActivateSaveButton();
-            }
-        });
-
-        countryCodePicker.setOnCountryChangeListener(() -> {
-            myProfilePOJO.setNewCountryCode(countryCodePicker.getSelectedCountryCodeWithPlus());
-            shouldActivateSaveButton();
-        });
-
-        etMobileNo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewPhoneNumber(s.toString());
-                shouldActivateSaveButton();
-            }
-        });
-
-        etEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myProfilePOJO.setNewEmail(s.toString());
-                shouldActivateSaveButton();
-            }
-        });
-    }
-
     private boolean areInputFieldsValid() {
         boolean result = false;
         String firstName = etFirstName.getText().toString();
@@ -1235,7 +1210,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     @Override
     protected void onStart() {
         super.onStart();
-
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
