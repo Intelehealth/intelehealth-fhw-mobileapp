@@ -1528,20 +1528,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
-                        (mDOBEditText.getText().toString(), sessionManager.getAppLanguage());
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
+                String dob = StringUtils.hi_or__en_noEdit(mDOBEditText.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             } else {
-                int mUpdateFromAgeONly = getMonthNumber(dob_array[1]);
-      dob_indexValue=getMonthNumber(dob_array[1]);
-                Log.d("mAgeMonths", "1523>>>>" + mUpdateFromAgeONly);
+                dob_indexValue = getMonthNumber(StringUtils.hi_or__en_noEdit(dob_array[1], sessionManager.getAppLanguage()));
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
-//                String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob_value)));
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             }
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1EditText.getText().toString()));
