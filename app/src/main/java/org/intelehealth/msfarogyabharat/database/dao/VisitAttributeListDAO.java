@@ -112,7 +112,7 @@ public class VisitAttributeListDAO {
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+     //   db.close();
 
         Log.d("specc", "spec_4: "+ isValue);
         return  isValue;

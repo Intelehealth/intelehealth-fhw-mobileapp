@@ -107,7 +107,7 @@ public class ProviderAttributeLIstDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+      //  db.close();
         return listDTOArrayList;
     }
 
@@ -132,7 +132,7 @@ public class ProviderAttributeLIstDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+     //   db.close();
         return listDTOArrayList;
     }
 
