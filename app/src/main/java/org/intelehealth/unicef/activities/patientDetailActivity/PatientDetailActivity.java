@@ -670,14 +670,23 @@ public class PatientDetailActivity extends AppCompatActivity {
             addrFinalView.setText(addrFinalLine);
         }
         String country = mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage());
-        if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
-            phoneView.setText(String.format("+91 - %s", patient_new.getPhone_number()));
-        } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
-            phoneView.setText(String.format("+996 - %s", patient_new.getPhone_number()));
+
+        if (patient_new.getPhone_number() == null || patient_new.getPhone_number().isEmpty()) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                phoneView.setText("Не предоставлен");
+            } else {
+                phoneView.setText(getString(R.string.not_provided));
+            }
+        } else {
+            if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
+                phoneView.setText(String.format("+91 - %s", patient_new.getPhone_number()));
+            } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
+                phoneView.setText(String.format("+996 - %s", patient_new.getPhone_number()));
+            }
         }
 
 
-        if(patient_new!=null && patient_new.getCitizenID()!=null && !patient_new.getCitizenID().isEmpty()) {
+        if (patient_new != null && patient_new.getCitizenID() != null && !patient_new.getCitizenID().isEmpty()) {
             citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s",
                     patient_new.getCitizenID().substring(0, 1),
                     patient_new.getCitizenID().substring(1, 3),
@@ -690,24 +699,30 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
-        if (patient_new != null) {
-            if ((patient_new.getEducation_level() == null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                education_statusView.setText("Не предоставлен");
+        if (patient_new != null && patient_new.getEducation_level() != null) {
+            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") || patient_new.getEducation_level().equalsIgnoreCase("Select")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    education_statusView.setText("Не предоставлен");
+                } else {
+                    education_statusView.setText(getString(R.string.not_provided));
+                }
             } else {
-
                 education_statusView.setText(patient_new.getEducation_level());
-
             }
         }
-        // education_statusView.setText(patient_new.getEducation_level());
-        if ((patient_new.getEconomic_status() == null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            economic_statusView.setText("Не предоставлен");
-        } else {
-            economic_statusView.setText(patient_new.getEconomic_status());
 
-            // economic_statusView.setText(patient_new.getEconomic_status());
+        // education_statusView.setText(patient_new.getEducation_level());
+        if (patient_new != null && patient_new.getEconomic_status() != null) {
+            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") || patient_new.getEconomic_status().equalsIgnoreCase("Select")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    economic_statusView.setText("Не предоставлен");
+                } else {
+                    economic_statusView.setText(getString(R.string.not_provided));
+                }
+            } else {
+                economic_statusView.setText(patient_new.getEconomic_status());
+
+            }
         }
 
         /*if ((patient_new.getCaste()==null || patient_new.getCaste().equalsIgnoreCase("Not provided")) &&
@@ -734,13 +749,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             // casteView.setText(patient_new.getCaste());
         }*/
 
-        if (patient_new!=null && patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
+        if (patient_new != null && patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());
         } else {
             sdwRow.setVisibility(View.GONE);
         }
 //
-        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
+        if (patient_new.getOccupation() != null && !patient_new.getOccupation().
+
+                equals("")) {
             occuView.setText(patient_new.getOccupation());
         } else {
 //            occuRow.setVisibility(View.GONE);
@@ -855,15 +872,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        String seenon_str=getResources().getString(R.string.patientdetail_seen_on_str);
-        final String visitString = String.format(seenon_str+" (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        String seenon_str = getResources().getString(R.string.patientdetail_seen_on_str);
+        final String visitString = String.format(seenon_str + " (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
 
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
-                    String active_str=getString(R.string.active_tag_patientDetail);
+                    String active_str = getString(R.string.active_tag_patientDetail);
                     SpannableString spannableString = new SpannableString(visitString + active_str);
                     Object greenSpan = new BackgroundColorSpan(Color.GREEN);
                     Object underlineSpan = new UnderlineSpan();
@@ -1017,6 +1034,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             setTitle(idView.getText());
         }
+
     }
 
     public void familyHistory(TextView famHistView, String patientuuid,
@@ -1217,17 +1235,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
                                         //changes done below are to resolve the crashlytics encountered in firebase on 30 April 2022: By Nishita
-                                        if(comp.contains(colon)) {
-                                        try {
-                                            Log.d("colon", "colon: " + comp);
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                            Log.d("colon", "colon_visitvalue: " + visitValue);
-                                        } catch (StringIndexOutOfBoundsException e) {
-                                            System.out.println("String Index is out of bounds");
-                                        }
-                                    }
-                                    else
-                                        visitValue = visitValue + Node.bullet_arrow + comp;
+                                        if (comp.contains(colon)) {
+                                            try {
+                                                Log.d("colon", "colon: " + comp);
+                                                visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                                Log.d("colon", "colon_visitvalue: " + visitValue);
+                                            } catch (StringIndexOutOfBoundsException e) {
+                                                System.out.println("String Index is out of bounds");
+                                            }
+                                        } else
+                                            visitValue = visitValue + Node.bullet_arrow + comp;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
