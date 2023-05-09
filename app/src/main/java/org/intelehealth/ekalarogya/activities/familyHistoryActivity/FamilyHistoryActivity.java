@@ -366,6 +366,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     && !familyHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = familyHistoryMap.getOption(groupPosition);

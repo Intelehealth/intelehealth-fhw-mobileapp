@@ -296,6 +296,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
@@ -657,6 +658,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
 
                     optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
@@ -715,6 +718,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-bn", "সংশ্লিষ্ট উপসর্গ");
                 finalAssoSympObj.put("display-kn", "ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");

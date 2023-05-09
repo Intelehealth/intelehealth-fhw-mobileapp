@@ -1187,6 +1187,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
                         }
                     }
+
+/*
+                    if (mComplaint.contains("সংশ্লিষ্ট উপসর্গ")) {
+                        String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+                        for (String compla : cc) {
+                            mComplaint = mComplaint.substring(0, compla.indexOf("সংশ্লিষ্ট উপসর্গ") - 3);
+                        }
+                    }
+*/
 /*
                     if (mComplaint.contains("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
                         String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);

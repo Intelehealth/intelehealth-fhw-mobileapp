@@ -387,6 +387,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = patientHistoryMap.getOption(groupPosition);

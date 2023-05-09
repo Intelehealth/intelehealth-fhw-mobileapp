@@ -263,6 +263,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")
+                    || groupNode.getOption(groupPos).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
                 associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
@@ -319,6 +320,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
+                    || (groupNode.getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು") && thisNode.isNoSelected())
                     || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
@@ -336,6 +338,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         //null checking to avoid weird crashes.
                         if (groupNode.getText().equalsIgnoreCase("Associated symptoms")
                                 || groupNode.getText().equalsIgnoreCase("जुड़े लक्षण")
+                                || groupNode.getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                                 || groupNode.getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                         ) {
                             MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
