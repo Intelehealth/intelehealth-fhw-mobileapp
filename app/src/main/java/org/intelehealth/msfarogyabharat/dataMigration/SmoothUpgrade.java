@@ -222,6 +222,9 @@ public class SmoothUpgrade {
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        finally {
+            myDataBase.endTransaction();
+        }
     }
 
     private VisitDTO getPatientId(String id) {

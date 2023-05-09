@@ -214,7 +214,7 @@ public class EncounterDAO {
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        //db.beginTransaction();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "visituuid = ? AND encounter_type_uuid = ? ";
         String[] whereargs = {visitUuid, emergency_uuid};
@@ -223,14 +223,13 @@ public class EncounterDAO {
             values.put("sync", false);
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD("encounter", "description" + i);
-            // db.setTransactionSuccessful();
+             db.setTransactionSuccessful();
         } catch (SQLException sql) {
             Logger.logD("encounter", "encounter" + sql.getMessage());
             FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
-            //   db.endTransaction();
-
+               db.endTransaction();
         }
         if (emergencyChecked) {
             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -332,8 +331,6 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
 
         return isUpdated;

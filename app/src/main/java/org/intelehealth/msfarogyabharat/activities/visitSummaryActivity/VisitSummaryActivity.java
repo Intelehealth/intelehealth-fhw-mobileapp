@@ -2113,7 +2113,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean speciality_row_exist_check(String uuid) {
         boolean isExists = false;
 //        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-//        db.beginTransaction();
+        db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
 
         if (cursor.getCount() != 0) {
@@ -2122,8 +2122,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
         cursor.close();
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return isExists;
     }
 
