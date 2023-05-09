@@ -106,7 +106,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -120,7 +120,7 @@
 
                     <TextView
                         android:id="@+id/name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Kiran Devi Prakash"
@@ -137,7 +137,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -151,7 +151,7 @@
 
                     <TextView
                         android:id="@+id/gender"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Female"
@@ -168,7 +168,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -182,7 +182,7 @@
 
                     <TextView
                         android:id="@+id/dob"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="12th May 1988"
@@ -199,7 +199,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -213,7 +213,7 @@
 
                     <TextView
                         android:id="@+id/age"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="24 years"
@@ -230,7 +230,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -244,7 +244,7 @@
 
                     <TextView
                         android:id="@+id/phone"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="+91 9876543210"

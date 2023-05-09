@@ -105,7 +105,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -119,7 +119,7 @@
 
                     <TextView
                         android:id="@+id/postalcode"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="422101"
@@ -136,13 +136,13 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/country"
+                        android:text="@string/identification_screen_prompt_country"
                         android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
@@ -150,7 +150,7 @@
 
                     <TextView
                         android:id="@+id/country"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="India"
@@ -167,13 +167,13 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/state"
+                        android:text="@string/identification_screen_prompt_state"
                         android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
@@ -181,7 +181,7 @@
 
                     <TextView
                         android:id="@+id/state"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Maharashtra"
@@ -198,7 +198,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -212,7 +212,7 @@
 
                     <TextView
                         android:id="@+id/district"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Nashik"
@@ -229,13 +229,13 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/village_town_city"
+                        android:text="@string/identification_screen_prompt_city"
                         android:drawablePadding="5dp"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
@@ -243,7 +243,7 @@
 
                     <TextView
                         android:id="@+id/village"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Dwarka"
@@ -260,7 +260,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
@@ -274,7 +274,7 @@
 
                     <TextView
                         android:id="@+id/address1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="444, Kathe lane, Dwarka, Nasik"
