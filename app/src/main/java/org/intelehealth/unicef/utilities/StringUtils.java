@@ -481,7 +481,7 @@ public final class StringUtils {
         return mdob_text;
     }
 
-    public static String ru__or_dob(String dob) { //English dob is replaced to Odiya text.
+    public static String ru__or_dob(String dob) { //English dob is replaced to russian text.
         String mdob_text = dob
                 .replace("January", "Январь")
                 .replace("February", "Февраль")

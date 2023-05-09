@@ -289,6 +289,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
+            if (question.isHasPopUp()) {
+                currentNode.getOption(groupPosition).generatePopUp(this);
+            }
+
             Node rootNode = currentNode.getOption(groupPosition);
             if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
                 for (int i = 0; i < rootNode.getOptionsList().size(); i++) {

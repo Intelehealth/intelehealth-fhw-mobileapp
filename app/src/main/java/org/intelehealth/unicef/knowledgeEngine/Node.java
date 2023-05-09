@@ -629,6 +629,10 @@ public class Node implements Serializable {
         return pop_up;
     }
 
+    public boolean isHasPopUp() {
+        return hasPopUp;
+    }
+
     public boolean isSelected() {
         return selected;
     }
