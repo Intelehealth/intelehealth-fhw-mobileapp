@@ -210,7 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@string/district"
+                        android:text="@string/identification_screen_prompt_district"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null" />
 

@@ -95,6 +95,7 @@
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State*</string>
+    <string name="identification_screen_prompt_district">District*</string>
     <string name="identification_screen_prompt_caste">Caste</string>
     <string name="identification_screen_prompt_economic_status">Economic status</string>
     <string name="identification_screen_prompt_education">Education level</string>
@@ -2038,7 +2039,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="all_visits">All Visits</string>
     <string name="no_follow_up_data">No follow up data</string>
     <string name="title">Title</string>
-    <string name="district">District*</string>
+    <string name="district">District</string>
     <string name="corresponding_address_1">Corresponding Address 1</string>
     <string name="corresponding_address_2">Corresponding Address 2</string>
     <string name="patients_waiting_for_closure">3 Patients visits are waiting for closure, please end the visit.</string>
