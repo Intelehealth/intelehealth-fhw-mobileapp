@@ -774,58 +774,58 @@ public final class StringUtils {
 
                 //state of kirgistan
                 case "Bishkek":
-                    val = "Выбирать";
-                    break;
-                case "Tokmok":
                     val = "г. Бишкек";
                     break;
-                case "Kara–Balta":
+                case "Tokmok":
                     val = "г. Токмок";
                     break;
-                case "Chuy Oblast'":
+                case "Kara–Balta":
                     val = "г. Кара-Балта";
                     break;
-                case "Balykchi":
+                case "Chuy Oblast'":
                     val = "Чуйская область";
                     break;
-                case "Cholpon-Ata":
+                case "Balykchi":
                     val = "г. Балыкчи";
                     break;
-                case "Karakol":
+                case "Cholpon-Ata":
                     val = "г. Чолпон-Ата";
                     break;
-                case "Issyk-Kul' Oblast'":
+                case "Karakol":
                     val = "г. Каракол";
                     break;
-                case "Talas":
+                case "Issyk-Kul' Oblast'":
                     val = "Иссык-Кульская область";
                     break;
-                case "Talas Oblast'":
+                case "Talas":
                     val = "г. Талас";
                     break;
-                case "Dzhalalаbad":
+                case "Talas Oblast'":
                     val = "Таласская область";
                     break;
+                case "Dzhalalаbad":
+                    val = "г. Джалал-Абад";
+                    break;
                 case "Dzhalаlabad Oblast'":
-                    val = "г. Жалалабад";
+                    val = "Джалал-Абадская область";
                     break;
                 case "Osh":
-                    val = "Жалалабадская область";
-                    break;
-                case "Osh Oblast'":
                     val = "г. Ош";
                     break;
-                case "Naryn":
+                case "Osh Oblast'":
                     val = "Ошская область";
                     break;
-                case "Naryn Oblast'":
+                case "Naryn":
                     val = "г. Нарын";
                     break;
-                case "Batken":
+                case "Naryn Oblast'":
                     val = "Нарынская область";
                     break;
-                case "Batken Oblast'":
+                case "Batken":
                     val = "г. Баткен";
+                    break;
+                case "Batken Oblast'":
+                    val = "Баткенская область";
                     break;
 
             }
@@ -996,10 +996,10 @@ public final class StringUtils {
             case "Таласская область":
                 val = "Talas Oblast'";
                 break;
-            case "г. Жалалабад":
+            case "г. Джалал-Абад":
                 val = "Dzhalalаbad";
                 break;
-            case "Жалалабадская область":
+            case "Джалал-Абадская область":
                 val = "Dzhalаlabad Oblast'";
                 break;
             case "г. Ош":
@@ -1057,7 +1057,9 @@ public final class StringUtils {
 
         }
         return val;
-    }public static String getAppointmentBookStatus(String val, String locale) {
+    }
+
+    public static String getAppointmentBookStatus(String val, String locale) {
 
         if (locale.equalsIgnoreCase("ru")) {
 
