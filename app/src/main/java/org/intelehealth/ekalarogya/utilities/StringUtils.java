@@ -42,7 +42,10 @@ import java.util.Objects;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
+import org.intelehealth.ekalarogya.models.dto.ObsDTO;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -5744,4 +5747,47 @@ public final class StringUtils {
 
         return currentNodeVal;
     }
+
+    /**
+     * This function will read the regional lang from the json if the regional lang string is present for this current
+     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
+     * @param value_REG this obs object contains regional lang data.
+     * @param value this obs objet contains english lang data.
+     * @return either regional or english data as per need.
+     */
+    public static String fetchObsValue_REG(ObsDTO value_REG, ObsDTO value, SessionManager sessionManager) {
+        if (value_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value.getValue() != null)
+                    return value.getValue();
+            }
+        }
+        return (value.getValue() != null) ? value.getValue() : "";
+    }
+
+    /**
+     * This function will read the regional lang from the json if the regional lang string is present for this current
+     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
+     * @param value_REG this String object contains regional lang data.
+     * @param value this String objet contains english lang data.
+     * @return either regional or english data as per need.
+     */
+    public static String fetchValue_REG(String value_REG, String value, SessionManager sessionManager) {
+        if (value_REG != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG);
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value != null)
+                    return value;
+            }
+        }
+        return (value != null) ? value : "";
+    }
+
 }

@@ -1,5 +1,9 @@
 package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
+
+
+import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
+
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -1465,10 +1469,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             complaintView.setText(Html.fromHtml(complaint.getValue()));*/
 
         // Regional and Normal languages fetching....
-        complaintView.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint)));
-        patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory)));
-        famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory)));
-        physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam)));
+        complaintView.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint, sessionManager)));
+        patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
+        famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
+        physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
 
 /*
         if (patHistory_REG.getValue() != null) {
@@ -1560,7 +1564,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
 */
-                famHistText.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory)));
+                famHistText.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
                 famHistText.setEnabled(false);
 
 /*
@@ -1675,7 +1679,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 /*                if (complaint.getValue() != null) {
                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                 }*/
-                complaintText.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint)));
+                complaintText.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint, sessionManager)));
                 complaintText.setEnabled(false);
 
 /*
@@ -1788,7 +1792,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
 */
-                physicalText.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam)));
+                physicalText.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
                 physicalText.setEnabled(false);
 
 /*
@@ -1901,7 +1905,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
 */
-                historyText.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory)));
+                historyText.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
                 historyText.setEnabled(false);
 
 /*
@@ -2101,13 +2105,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getAppointmentDetails(visitUuid);
     }
 
-    /**
-     * This function will read the regional lang from the json if the regional lang string is present for this current
-     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
-     * @param value_REG this obs object contains
-     * @param value
-     * @return
-     */
+
+/*
     private String fetchObsValue_REG(ObsDTO value_REG, ObsDTO value) {
         if (value_REG.getValue() != null) {
             try {
@@ -2121,6 +2120,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         return (value.getValue() != null) ? value.getValue() : "";
     }
+*/
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
