@@ -264,6 +264,20 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_ru_economic(String val) {
+        switch (val) {
+            case "выше черты бедности":
+                val = "APL";
+                break;
+            case "За чертой бедностии":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_economic_edit(String val) {
         switch (val) {
             case "APL":
@@ -299,6 +313,20 @@ public final class StringUtils {
                 break;
             case "BPL":
                 val = "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ru_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "выше черты бедности";
+                break;
+            case "BPL":
+                val = "За чертой бедностии";
                 break;
             default:
                 return val;

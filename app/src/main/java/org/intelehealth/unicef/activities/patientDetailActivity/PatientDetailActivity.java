@@ -5,6 +5,7 @@ import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_Country_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_State_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic_edit;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -720,8 +721,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                     economic_statusView.setText(getString(R.string.not_provided));
                 }
             } else {
-                economic_statusView.setText(patient_new.getEconomic_status());
-
+                String economicStatus = patient_new.getEconomic_status();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    economicStatus = switch_ru_economic_edit(patient_new.getEconomic_status());
+                    economic_statusView.setText(economicStatus);
+                } else {
+                    economic_statusView.setText(economicStatus);
+                }
             }
         }
 
