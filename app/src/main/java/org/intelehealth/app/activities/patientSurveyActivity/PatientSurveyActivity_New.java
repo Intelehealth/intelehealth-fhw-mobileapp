@@ -96,7 +96,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
                 if (rating != null && !TextUtils.isEmpty(rating)) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
-                    endVisit();
+                    endVisit("Feedback screen with feedback");
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
                     return;
@@ -109,7 +109,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
         mSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                endVisit();
+                endVisit("Feedback screen without feedback");
             }
         });
 
@@ -215,7 +215,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
     /**
      * This function will end the visit for this patient.
      */
-    private void endVisit() {
+    private void endVisit(String tag) {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
@@ -228,7 +228,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
         Intent i = new Intent(this, HomeScreenActivity_New.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("intentTag", "Feedback screen");
+        i.putExtra("intentTag", tag);
         startActivity(i);
     }
 
