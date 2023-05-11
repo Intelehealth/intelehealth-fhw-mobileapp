@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -44,6 +45,7 @@ import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -242,10 +244,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }, 2000);
             }
         }
-        else
-        {
-            checkPerm();
-        }
+//        else
+//        {
+//            checkPerm();
+//        }
        /* PermissionListener permissionlistener = new PermissionListener() {
 
             @Override
@@ -553,6 +555,58 @@ public class SplashScreenActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
 }
