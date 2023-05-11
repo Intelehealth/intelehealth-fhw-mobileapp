@@ -340,7 +340,9 @@ public class Node implements Serializable {
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
 
-        node.setSelected(true);
+
+        node.setSelected(node.isSelected());
+
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
         final MaterialAlertDialogBuilder subQuestion = new MaterialAlertDialogBuilder(context);
@@ -417,7 +419,8 @@ public class Node implements Serializable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                node.setText(node.generateLanguage());
+                String language = node.generateLanguage();
+                if (language != null && !language.isEmpty()) node.setText(language);
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 if (node.anySubSelected() && node.anySubPopUp()) {
