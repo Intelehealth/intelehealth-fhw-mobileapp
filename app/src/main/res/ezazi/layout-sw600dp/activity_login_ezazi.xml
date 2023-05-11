@@ -21,9 +21,9 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="143dp"
+        android:layout_width="@dimen/login_logo_size"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/login_top_margin"
         android:src="@drawable/login_screen_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,6 @@
         android:id="@+id/clLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/std_135dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,9 @@
             style="@style/Theme.EZazi.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/input_height"
-            android:layout_marginTop="@dimen/std_69dp"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/form_top_margin"
+            android:layout_marginEnd="@dimen/screen_padding"
             android:text="@string/action_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +60,9 @@
             layout="@layout/view_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/std_31dp"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/form_top_margin"
+            android:layout_marginEnd="@dimen/screen_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 

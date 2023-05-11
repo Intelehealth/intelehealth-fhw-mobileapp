@@ -2,4 +2,15 @@
 <resources>
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
+    <dimen name="screen_title_size">@dimen/std_24sp</dimen>
+    <dimen name="screen_padding">@dimen/std_16dp</dimen>
+    <dimen name="input_top_margin">@dimen/std_16dp</dimen>
+    <dimen name="forgot_pwd_size">@dimen/std_12sp</dimen>
+    <dimen name="form_top_margin">@dimen/std_31dp</dimen>
+    <dimen name="input_label_size">@dimen/std_16sp</dimen>
+    <dimen name="screen_title_top_margin">@dimen/std_56dp</dimen>
+    <dimen name="actionbar_size">56dp</dimen>
+    <dimen name="button_text_size">@dimen/std_14sp</dimen>
+    <dimen name="login_logo_size">@dimen/std_56dp</dimen>
+    <dimen name="login_top_margin">@dimen/std_56dp</dimen>
 </resources>

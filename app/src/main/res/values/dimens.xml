@@ -80,8 +80,21 @@
     <dimen name="std_6sp">6sp</dimen>
     <dimen name="std_84dp">84dp</dimen>
     <dimen name="std_16dp">16dp</dimen>
-    <dimen name="std_21dp">21sp</dimen>
+    <dimen name="std_8dp">8dp</dimen>
+    <dimen name="std_4dp">4dp</dimen>
+    <dimen name="std_21sp">21sp</dimen>
+    <dimen name="std_24sp">24sp</dimen>
+    <dimen name="std_14sp">14sp</dimen>
+    <dimen name="std_16sp">16sp</dimen>
+    <dimen name="std_18sp">18sp</dimen>
+    <dimen name="std_12sp">12sp</dimen>
     <dimen name="std_25sp">25sp</dimen>
+    <dimen name="std_36sp">36sp</dimen>
+    <dimen name="std_150dp">150dp</dimen>
+    <dimen name="std_75dp">75dp</dimen>
+    <dimen name="std_56dp">56dp</dimen>
+    <dimen name="std_100dp">100dp</dimen>
+    <dimen name="std_143dp">143dp</dimen>
     <dimen name="input_stroke_size">2dp</dimen>
     <dimen name="input_box_corner_radius">12dp</dimen>
 
@@ -91,7 +104,7 @@
     <dimen name="splash_bottom_light_bg_height">282dp</dimen>
     <dimen name="splash_bottom_text_margin">42dp</dimen>
     <dimen name="splash_bottom_text_size">@dimen/text_18sp</dimen>
-    <dimen name="input_height">86dp</dimen>
+    <dimen name="input_height">56dp</dimen>
     <dimen name="std_69dp">69dp</dimen>
     <dimen name="std_31dp">31dp</dimen>
     <dimen name="std_120dp">120dp</dimen>

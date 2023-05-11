@@ -19,23 +19,34 @@
         <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
     </style>
 
-    <style name="Theme.EZazi.Input.Login.Password" parent="Theme.EZazi.Input">
+    <style name="Theme.EZazi.Input.Login.DropDown" parent="Theme.EZazi.Input.Login">
+        <item name="android:theme">
+            @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu
+        </item>
+        <item name="endIconDrawable">@drawable/ic_dropdown</item>
+        <item name="endIconMode">dropdown_menu</item>
+    </style>
+
+    <style name="Theme.EZazi.Input.Login.Password" parent="Theme.EZazi.Input.Login">
         <item name="endIconMode">password_toggle</item>
         <item name="iconEndPadding">16dp</item>
         <item name="endIconTint">@color/colorForgotPassword</item>
+<!--        <item name="passwordToggleTint">@color/colorForgotPassword</item>-->
+<!--        <item name="passwordToggleEnabled">true</item>-->
+<!--        <item name="passwordToggleTintMode">src_atop</item>-->
         <item name="endIconDrawable">@drawable/ic_password_toggle</item>
     </style>
 
-    <style name="SplashBottomTextTheme" parent="TextAppearance.AppCompat">
+    <style name="Theme.EZazi.Text.Content" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/splash_bottom_text_size</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
         <item name="android:gravity">center</item>
-        <item name="android:lineSpacingExtra">@dimen/std_6sp</item>
+        <item name="android:lineSpacingExtra">@dimen/std_4dp</item>
         <item name="android:layout_marginBottom">@dimen/splash_bottom_text_margin</item>
     </style>
 
     <style name="LabelStyle" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textSize">@dimen/std_21dp</item>
+        <item name="android:textSize">@dimen/input_label_size</item>
         <item name="android:textColor">@color/font_black_0</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
@@ -44,7 +55,7 @@
     <style name="Theme.EZazi.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/std_25sp</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
         <item name="rippleColor">@color/white</item>
         <item name="fontFamily">@font/dm_sans_bold</item>
         <item name="android:fontFamily">@font/dm_sans_bold</item>
@@ -54,14 +65,26 @@
 
     <style name="Theme.EZazi.TextButton" parent="Theme.EZazi.Button">
         <item name="android:theme">@style/Widget.MaterialComponents.Button.TextButton</item>
-        <item name="android:textSize">@dimen/std_21dp</item>
+        <item name="android:textSize">@dimen/forgot_pwd_size</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
         <item name="rippleColor">@color/colorAccent</item>
     </style>
 
     <style name="Theme.EZazi.Button.Next" parent="Theme.EZazi.Button">
         <item name="icon">@drawable/ic_arrow_next</item>
+        <item name="iconGravity">end</item>
+    </style>
+
+    <style name="Theme.EZazi.Screen.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/screen_title_size</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_bold</item>
+        <item name="android:fontFamily">@font/dm_sans_bold</item>
     </style>
 
 </resources>

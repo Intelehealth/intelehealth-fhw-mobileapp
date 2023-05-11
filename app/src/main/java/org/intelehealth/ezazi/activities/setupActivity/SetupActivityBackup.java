@@ -2,13 +2,12 @@ package org.intelehealth.ezazi.activities.setupActivity;
 
 import android.accounts.Account;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -18,12 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -44,23 +37,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.DownloadMindMapRes;
@@ -82,7 +70,14 @@ import org.intelehealth.ezazi.utilities.StringEncryption;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -95,9 +90,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SetupActivity extends AppCompatActivity {
+public class SetupActivityBackup extends AppCompatActivity {
 
-    private static final String TAG = SetupActivity.class.getSimpleName();
+    private static final String TAG = SetupActivityBackup.class.getSimpleName();
     private boolean isLocationFetched;
     String BASE_URL = "";
     private static final int PERMISSION_ALL = 1;
@@ -116,29 +111,26 @@ public class SetupActivity extends AppCompatActivity {
     public String[] FILES;
     //        private TestSetup mAuthTask = null;
     private List<Location> mLocations = new ArrayList<>();
-    private TextInputEditText mEmailView;
-    private TextInputEditText mPasswordView;
-    //    private EditText mAdminPasswordView;
-//    private EditText mUrlField;
+    private AutoCompleteTextView mEmailView;
+    private EditText mPasswordView;
+    private EditText mAdminPasswordView;
+    private EditText mUrlField;
     private Button mLoginButton;
-    private AutoCompleteTextView mDropdownLocation;
+    private Spinner mDropdownLocation;
     //    private Spinner spinner_state, spinner_district,
 //            spinner_sanch, spinner_village;
-//    private TextView mAndroidIdTextView;
-//    private RadioButton r1;
-//    private RadioButton r2;
+    private TextView mAndroidIdTextView;
+    private RadioButton r1;
+    private RadioButton r2;
     final Handler mHandler = new Handler();
     boolean click_box = false;
 
     Context context;
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
-
-    private String setupUrl = "";
-
     CustomProgressDialog customProgressDialog;
 
-    //    private BroadcastReceiver MyReceiver = null;
+//    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
     //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
@@ -151,26 +143,17 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_ezazi);
         getSupportActionBar();
-        sessionManager = new SessionManager(SetupActivity.this);
+        sessionManager = new SessionManager(SetupActivityBackup.this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
 
-        setupUrl = getString(R.string.setupUrl);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
 //        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
 //        toolbar.setTitleTextColor(Color.WHITE);
-        context = SetupActivity.this;
+        context = SetupActivityBackup.this;
         customProgressDialog = new CustomProgressDialog(context);
 
         // Set up the login form.
@@ -180,10 +163,10 @@ public class SetupActivity extends AppCompatActivity {
 
         mPasswordView = findViewById(R.id.et_password);
 
-//        mAdminPasswordView = findViewById(R.id.admin_password);
-//        mUrlField = findViewById(R.id.editText_URL);
+        mAdminPasswordView = findViewById(R.id.admin_password);
+        mUrlField = findViewById(R.id.editText_URL);
 
-        mLoginButton = findViewById(R.id.btnSetup);
+        mLoginButton = findViewById(R.id.setup_submit_button);
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,13 +174,14 @@ public class SetupActivity extends AppCompatActivity {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);
                 attemptLogin();
+
             }
         });
 
-//        r1 = findViewById(R.id.demoMindmap);
-//        r2 = findViewById(R.id.downloadMindmap);
+        r1 = findViewById(R.id.demoMindmap);
+        r2 = findViewById(R.id.downloadMindmap);
 
-        Button submitButton = findViewById(R.id.btnSetup);
+        Button submitButton = findViewById(R.id.setup_submit_button);
 
         mDropdownLocation = findViewById(R.id.spinner_location);
 //        spinner_state = findViewById(R.id.spinner_state);
@@ -220,20 +204,20 @@ public class SetupActivity extends AppCompatActivity {
 //            }
 //        };
 
-//        mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.admin_password || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.admin_password || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
-//        mAndroidIdTextView = findViewById(R.id.textView_Aid);
-//        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
-//        mAndroidIdTextView.setText(deviceID);
+        mAndroidIdTextView = findViewById(R.id.textView_Aid);
+        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
+        mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,79 +233,81 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        if (!setupUrl.trim().isEmpty() || !setupUrl.trim().equalsIgnoreCase("")) {
+        if(!mUrlField.getText().toString().trim().isEmpty() ||
+        !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
 
             isLocationFetched = false;
             mEmailView.setError(null);
 
             LocationArrayAdapter adapter = new LocationArrayAdapter
-                    (SetupActivity.this, new ArrayList<String>());
+                    (SetupActivityBackup.this, new ArrayList<String>());
             mDropdownLocation.setAdapter(adapter);
 
-            if (!setupUrl.trim().isEmpty() && setupUrl.length() >= 12) {
-                if (Patterns.WEB_URL.matcher(setupUrl).matches()) {
-                    String BASE_URL = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
-                    base_url = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
+            if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                    String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                     if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
 //                                value = getLocationFromServer(BASE_URL); //state wise locations...
                         getLocationFromServer(BASE_URL);
                     else
-                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetupActivityBackup.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                 }
             }
 
-        } else {
+        }
+        else {
 
         }
-//        mUrlField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                isLocationFetched = false;
-//                mEmailView.setError(null);
-////                state_count = 0;
-////                district_count = 0;
-////                sanch_count = 0;
-////                village_count = 0;
-////                empty_spinner("url");
-//                LocationArrayAdapter adapter = new LocationArrayAdapter
-//                        (SetupActivity.this, new ArrayList<String>());
-//                mDropdownLocation.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//                mHandler.removeCallbacksAndMessages(null);
-//                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
-//
-//
-//            }
-//
-//            Runnable userStoppedTyping = new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    // user didn't typed for 1.5 seconds, do whatever you want
-//                    if (!setupUrl.trim().isEmpty() && setupUrl.length() >= 12) {
-//                        if (Patterns.WEB_URL.matcher(setupUrl).matches()) {
-//                            String BASE_URL = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
-//                            base_url = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
-//                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
-////                                value = getLocationFromServer(BASE_URL); //state wise locations...
-//                                getLocationFromServer(BASE_URL);
-//                            else
-//                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//            };
-//
-//        });
+        mUrlField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isLocationFetched = false;
+                mEmailView.setError(null);
+//                state_count = 0;
+//                district_count = 0;
+//                sanch_count = 0;
+//                village_count = 0;
+//                empty_spinner("url");
+                LocationArrayAdapter adapter = new LocationArrayAdapter
+                        (SetupActivityBackup.this, new ArrayList<String>());
+                mDropdownLocation.setAdapter(adapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
+
+
+            }
+
+            Runnable userStoppedTyping = new Runnable() {
+
+                @Override
+                public void run() {
+                    // user didn't typed for 1.5 seconds, do whatever you want
+                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+//                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                                getLocationFromServer(BASE_URL);
+                            else
+                                Toast.makeText(SetupActivityBackup.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            };
+
+        });
 
 //        spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -620,23 +606,23 @@ public class SetupActivity extends AppCompatActivity {
 
 
         // Reset errors.
-//        mUrlField.setError(null);
+        mUrlField.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
-//        mAdminPasswordView.setError(null);
+        mAdminPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String url = setupUrl;
+        String url = mUrlField.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-//        String admin_password = mAdminPasswordView.getText().toString();
+        String admin_password = mAdminPasswordView.getText().toString();
 
 
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(url)) {
-//            focusView = mUrlField;
+            focusView = mUrlField;
             cancel = true;
         }
 
@@ -647,11 +633,11 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
         }
 
-//        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
-//            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mAdminPasswordView;
-//            cancel = true;
-//        }
+        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
+            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mAdminPasswordView;
+            cancel = true;
+        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -715,8 +701,8 @@ public class SetupActivity extends AppCompatActivity {
             // form field with an error.
             if (focusView != null) {
                 if (TextUtils.isEmpty(url)) {
-//                    mUrlField.requestFocus();
-//                    mUrlField.setError("Enter Url");
+                    mUrlField.requestFocus();
+                    mUrlField.setError("Enter Url");
                 }
 
                 focusView.requestFocus();
@@ -724,32 +710,34 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            //  if (location != null) {
-            //   Log.i(TAG, "location:: " + location.getDisplay());
-            String urlString = setupUrl;
+          //  if (location != null) {
+             //   Log.i(TAG, "location:: " + location.getDisplay());
+                String urlString = mUrlField.getText().toString();
             // as in ezazi we dont want to show locations dropdown so adding as static value.
             location.setDisplay("Remote");
             location.setUuid("eb374eaf-430e-465e-81df-fe94c2c515be");
-            TestSetup(urlString, email, password, location);
-            Log.d(TAG, "attempting setup");
-            //    }
+            TestSetup(urlString, email, password, admin_password, location);
+                Log.d(TAG, "attempting setup");
+        //    }
 
 //            if (village_name != null) {
-//                String urlString = setupUrl;
+//                String urlString = mUrlField.getText().toString();
 //                TestSetup(urlString, email, password, admin_password, village_name);
 //                Log.d(TAG, "attempting setup");
 //            }
         }
     }
 
-    public boolean isOnline() {
+    public boolean isOnline () {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
+        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
             return false;
-        } else {
+        }
+        else
+        {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
             return true;
@@ -775,7 +763,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private void showProgressbar() {
 // instantiate it within the onCreate method
-        mProgressDialog = new ProgressDialog(SetupActivity.this);
+        mProgressDialog = new ProgressDialog(SetupActivityBackup.this);
         mProgressDialog.setMessage(getString(R.string.download_protocols));
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -960,19 +948,19 @@ public class SetupActivity extends AppCompatActivity {
                                 Results<Location> locationList = locationResults;
                                 mLocations = locationList.getResults();
                                 List<String> items = getLocationStringList(locationList.getResults());
-                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityBackup.this, items);
                                 mDropdownLocation.setAdapter(adapter);
                                 isLocationFetched = true;
                             } else {
                                 isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SetupActivityBackup.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             isLocationFetched = false;
-                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetupActivityBackup.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -983,7 +971,7 @@ public class SetupActivity extends AppCompatActivity {
                     });
         } catch (IllegalArgumentException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-//            mUrlField.setError(getString(R.string.url_invalid));
+            mUrlField.setError(getString(R.string.url_invalid));
         }
 
     }
@@ -1096,125 +1084,125 @@ public class SetupActivity extends AppCompatActivity {
 
     public void onRadioClick(View v) {
 
-//        boolean checked = ((RadioButton) v).isChecked();
-//        switch (v.getId()) {
-//            case R.id.demoMindmap:
-//                if (checked) {
-//                    r2.setChecked(false);
-//                }
-//                break;
-//
-//            case R.id.downloadMindmap:
-//                if (NetworkConnection.isOnline(this)) {
-//                    if (checked) {
-//                        r1.setChecked(false);
-//                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-//                        LayoutInflater li = LayoutInflater.from(this);
-//                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-//
-//                        dialog.setTitle(getString(R.string.enter_license_key))
-//                                .setView(promptsView)
-//                                .setPositiveButton(getString(R.string.button_ok), null)
-//                                .setNegativeButton(getString(R.string.button_cancel), null);
-//
-//                        AlertDialog alertDialog = dialog.create();
-//                        alertDialog.setView(promptsView, 20, 0, 20, 0);
-//                        alertDialog.show();
-//                        alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
-//
-//                        // Get the alert dialog buttons reference
-//                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-//                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-//
-//                        // Change the alert dialog buttons text and background color
-//                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//
-//                        positiveButton.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                EditText text = promptsView.findViewById(R.id.licensekey);
-//                                EditText url = promptsView.findViewById(R.id.licenseurl);
-//
-//                                url.setError(null);
-//                                text.setError(null);
-//
-//                                //If both are not entered...
-//                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-//                                    url.requestFocus();
-//                                    url.setError(getResources().getString(R.string.enter_server_url));
-//                                    text.setError(getResources().getString(R.string.enter_license_key));
-//                                    return;
-//                                }
-//
-//                                //If Url is empty...key is not empty...
-//                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-//                                    url.requestFocus();
-//                                    url.setError(getResources().getString(R.string.enter_server_url));
-//                                    return;
-//                                }
-//
-//                                //If Url is not empty...key is empty...
-//                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-//                                    text.requestFocus();
-//                                    text.setError(getResources().getString(R.string.enter_license_key));
-//                                    return;
-//                                }
-//
-//                                //If Url has : in it...
-//                                if (url.getText().toString().trim().contains(":")) {
-//                                    url.requestFocus();
-//                                    url.setError(getResources().getString(R.string.invalid_url));
-//                                    return;
-//                                }
-//
-//                                //If url entered is Invalid...
-//                                if (!url.getText().toString().trim().isEmpty()) {
-//                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-//                                        String url_field = "https://" + url.getText().toString() + ":3004/";
-//                                        if (URLUtil.isValidUrl(url_field)) {
-//                                            key = text.getText().toString().trim();
-//                                            licenseUrl = url.getText().toString().trim();
-//
-//                                            sessionManager.setMindMapServerUrl(licenseUrl);
-//
-//                                            if (keyVerified(key)) {
-//                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
-//                                                alertDialog.dismiss();
-//                                            }
-//                                        } else {
-//                                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-//                                        }
-//
-//                                    } else {
-//                                        //invalid url || invalid url and key.
-//                                        Toast.makeText(SetupActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
-//                                    }
-//                                } else {
-//                                    Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//
-//                        negativeButton.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                alertDialog.dismiss();
-//                                r2.setChecked(false);
-//                                r1.setChecked(true);
-//                            }
-//                        });
-//
-//                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-//
-//
-//                    }
-//                } else {
-//                    ((RadioButton) v).setChecked(false);
-//                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//        }
+        boolean checked = ((RadioButton) v).isChecked();
+        switch (v.getId()) {
+            case R.id.demoMindmap:
+                if (checked) {
+                    r2.setChecked(false);
+                }
+                break;
+
+            case R.id.downloadMindmap:
+                if (NetworkConnection.isOnline(this)) {
+                    if (checked) {
+                        r1.setChecked(false);
+                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                        LayoutInflater li = LayoutInflater.from(this);
+                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+
+                        dialog.setTitle(getString(R.string.enter_license_key))
+                                .setView(promptsView)
+                                .setPositiveButton(getString(R.string.button_ok), null)
+                                .setNegativeButton(getString(R.string.button_cancel), null);
+
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.setView(promptsView, 20, 0, 20, 0);
+                        alertDialog.show();
+                        alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+
+                        // Get the alert dialog buttons reference
+                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                        // Change the alert dialog buttons text and background color
+                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EditText text = promptsView.findViewById(R.id.licensekey);
+                                EditText url = promptsView.findViewById(R.id.licenseurl);
+
+                                url.setError(null);
+                                text.setError(null);
+
+                                //If both are not entered...
+                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                    url.requestFocus();
+                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                    text.setError(getResources().getString(R.string.enter_license_key));
+                                    return;
+                                }
+
+                                //If Url is empty...key is not empty...
+                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                    url.requestFocus();
+                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                    return;
+                                }
+
+                                //If Url is not empty...key is empty...
+                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                    text.requestFocus();
+                                    text.setError(getResources().getString(R.string.enter_license_key));
+                                    return;
+                                }
+
+                                //If Url has : in it...
+                                if (url.getText().toString().trim().contains(":")) {
+                                    url.requestFocus();
+                                    url.setError(getResources().getString(R.string.invalid_url));
+                                    return;
+                                }
+
+                                //If url entered is Invalid...
+                                if (!url.getText().toString().trim().isEmpty()) {
+                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                                        String url_field = "https://" + url.getText().toString() + ":3004/";
+                                        if (URLUtil.isValidUrl(url_field)) {
+                                            key = text.getText().toString().trim();
+                                            licenseUrl = url.getText().toString().trim();
+
+                                            sessionManager.setMindMapServerUrl(licenseUrl);
+
+                                            if (keyVerified(key)) {
+                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                                                alertDialog.dismiss();
+                                            }
+                                        } else {
+                                            Toast.makeText(SetupActivityBackup.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    } else {
+                                        //invalid url || invalid url and key.
+                                        Toast.makeText(SetupActivityBackup.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(SetupActivityBackup.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        negativeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                                r2.setChecked(false);
+                                r1.setChecked(true);
+                            }
+                        });
+
+                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+
+                    }
+                } else {
+                    ((RadioButton) v).setChecked(false);
+                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     private boolean keyVerified(String key) {
@@ -1389,7 +1377,7 @@ public class SetupActivity extends AppCompatActivity {
 //
 //
 //    }
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, Location location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
         Log.i(TAG, "location:: " + location.getDisplay());
         ProgressDialog progress;
 
@@ -1398,7 +1386,7 @@ public class SetupActivity extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        progress = new ProgressDialog(SetupActivityBackup.this, R.style.AlertDialogStyle);
         ;//SetupActivity.this);
         progress.setTitle(getString(R.string.please_wait_progress));
         progress.setMessage(getString(R.string.logging_in));
@@ -1448,7 +1436,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setSetupComplete(true);
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-//                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
@@ -1475,8 +1463,7 @@ public class SetupActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException |
-                                                     UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 
@@ -1497,29 +1484,26 @@ public class SetupActivity extends AppCompatActivity {
                                                 sqLiteDatabase.endTransaction();
                                             }
                                             Log.i(TAG, "onPostExecute: Parse init");
-                                            Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
+                                            Intent intent = new Intent(SetupActivityBackup.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
-                                            sessionManager.setTriggerNoti("no");
-                                            startActivity(intent);
-                                            finish();
-//                                            if (r2.isChecked()) {
-//                                                if (!sessionManager.getLicenseKey().isEmpty()) {
-//                                                    sessionManager.setTriggerNoti("no");
-//                                                    startActivity(intent);
-//                                                    finish();
-//                                                } else {
-//                                                    Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
-//                                                }
-//                                            } else {
-//                                                sessionManager.setTriggerNoti("no");
-//                                                startActivity(intent);
-//                                                finish();
-//                                            }
+                                            if (r2.isChecked()) {
+                                                if (!sessionManager.getLicenseKey().isEmpty()) {
+                                                    sessionManager.setTriggerNoti("no");
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    Toast.makeText(SetupActivityBackup.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
+                                                }
+                                            } else {
+                                                sessionManager.setTriggerNoti("no");
+                                                startActivity(intent);
+                                                finish();
+                                            }
                                             progress.dismiss();
                                         }
 
                                         // here call Oxytocin api and save the result in sessionmanager.
-                                        if (sessionManager.getOxytocinValue() == null) {
+                                        if(sessionManager.getOxytocinValue() == null) {
                                             fetchOxytocinValueFromAPI();
                                         }
                                     }
@@ -1545,7 +1529,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                dialogUtils.showerrorDialog(SetupActivityBackup.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
             }
@@ -1565,12 +1549,12 @@ public class SetupActivity extends AppCompatActivity {
         call.enqueue(new Callback<OxytocinResponseModel>() {
             @Override
             public void onResponse(Call<OxytocinResponseModel> call, Response<OxytocinResponseModel> response) {
-                if (response.body() != null && response.body().getData() != null && response.isSuccessful()) {
+                if(response.body() != null && response.body().getData() != null && response.isSuccessful()) {
                     // ie. response is received successfully...
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        sessionManager.setOxytocinValue(response.body().getData().get(i).getValue());
-                    }
-                    Log.v(TAG, "oxytocin value: " + sessionManager.getOxytocinValue().toString());
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+                            sessionManager.setOxytocinValue(response.body().getData().get(i).getValue());
+                        }
+                        Log.v(TAG, "oxytocin value: " + sessionManager.getOxytocinValue().toString());
                 }
             }
 
@@ -1626,14 +1610,14 @@ public class SetupActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
+                                mTask = new DownloadMindMaps(context, mProgressDialog,"setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
 
                             } else {
 //                                Toast.makeText(SetupActivity.this, res.getMessage(), Toast.LENGTH_LONG).show();
-                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+                                Toast.makeText(SetupActivityBackup.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -1641,7 +1625,7 @@ public class SetupActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Log.e("MindMapURL", " " + e);
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            Toast.makeText(SetupActivityBackup.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -1700,7 +1684,6 @@ public class SetupActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
-
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -1727,7 +1710,7 @@ public class SetupActivity extends AppCompatActivity {
         return context;
     }
 
-    public void showMindmapFailedAlert() {
+    public void showMindmapFailedAlert(){
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
@@ -1735,8 +1718,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-//                r1.setChecked(true);
-//                r2.setChecked(false);
+                r1.setChecked(true);
+                r2.setChecked(false);
                 sessionManager.setLicenseKey("");
             }
         });
@@ -1744,12 +1727,12 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                if (NetworkConnection.isOnline(SetupActivity.this)) {
+                if (NetworkConnection.isOnline(SetupActivityBackup.this)) {
                     getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
-                } else {
+                }else {
                     dialog.dismiss();
-//                    r1.setChecked(true);
-//                    r2.setChecked(false);
+                    r1.setChecked(true);
+                    r2.setChecked(false);
                     sessionManager.setLicenseKey("");
                     Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }

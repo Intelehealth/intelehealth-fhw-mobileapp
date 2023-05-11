@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
-        txt_cant_login = findViewById(R.id.cant_login_id);
+        txt_cant_login = findViewById(R.id.tvActionForgotPassword);
         txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = findViewById(R.id.btnLogin);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,4 +6,5 @@
     <string name="action_forgot_password">Forgot Password?</string>
     <string name="hint_location">Start typing or select location</string>
     <string name="title_setup">Setup</string>
+    <string name="content_complete_setup">Please complete your one-time\nset-up activity</string>
 </resources>

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.EZazi" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.EZazi" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -13,4 +13,13 @@
         <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.EZazi.NoActionBar" parent="Theme.EZazi">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EZazi.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="Theme.EZazi.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
 </resources>
