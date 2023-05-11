@@ -165,9 +165,7 @@ import okhttp3.ResponseBody;
 public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
-
     SQLiteDatabase db;
-
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
