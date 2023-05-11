@@ -47,7 +47,6 @@
 
     <!-- dots active colors -->
     <color name="dot_light_screen1">#f98da5</color>
-    <color name="dot_light_screen2">#8cf9eb</color>
     <color name="dot_light_screen3">#93c6fd</color>
     <color name="dot_light_screen4">#e4b5fc</color>
 
@@ -62,4 +61,9 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="blinkCardColor">#EAE3F8</color>
+    <color name="darkGray">#7F7B92</color>
+    <color name="colorLoginInputBg">#F7F7FA</color>
+    <color name="colorLoginInputStroke">#807F7B92</color>
+    <color name="colorForgotPassword">#706D7A</color>
+    <color name="colorInputText">#1E1E1E</color>
 </resources>

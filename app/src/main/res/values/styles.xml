@@ -69,7 +69,7 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="MyEditTextTheme">
+    <style name="MyEditTextTheme" >
         <item name="colorControlNormal">#FFFFFF</item>
         <item name="colorControlActivated">#FFFFFF</item>
         <item name="colorControlHighlight">#FFFFFF</item>
@@ -111,13 +111,8 @@
     </style>
 
     <style name="am_tablet">
-        <item name="android:textSize">
-            20sp
-        </item>
-
-        <item name="android:textColor">
-            @color/colorPrimary
-        </item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
@@ -128,6 +123,5 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
-
 
 </resources>

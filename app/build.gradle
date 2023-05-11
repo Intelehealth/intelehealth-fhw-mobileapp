@@ -5,6 +5,8 @@ apply plugin: 'com.google.firebase.crashlytics'
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
+apply from: "../resdir.gradle"
+
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());

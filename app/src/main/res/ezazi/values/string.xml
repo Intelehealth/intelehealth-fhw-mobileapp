@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empowering_">Empowering labor management through\ndigital precision</string>
+    <string name="username">Username</string>
+    <string name="action_login">Login</string>
+    <string name="action_forgot_password">Forgot Password?</string>
+    <string name="hint_location">Start typing or select location</string>
+    <string name="title_setup">Setup</string>
+</resources>

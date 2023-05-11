@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_activity);
+        setContentView(R.layout.activity_splash_ezazi);
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
         //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));

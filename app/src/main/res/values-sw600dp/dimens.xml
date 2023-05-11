@@ -1,5 +1,7 @@
 <resources>
 
+    <dimen name="activity_horizontal_margin">56dp</dimen>
+    <dimen name="activity_vertical_margin">56dp</dimen>
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
     <!--New Design-->
@@ -26,4 +28,12 @@
     <dimen name="header_text_size_1">17sp</dimen>
     <dimen name="content_text_size">14sp</dimen>
     <dimen name="timeTextview_min_width">84dip</dimen>
+
+    <!--  Added by Mithun Vaghela  -->
+    <dimen name="splash_bottom_dark_bg_width">800</dimen>
+    <dimen name="splash_bottom_dark_bg_height">448dp</dimen>
+    <dimen name="splash_bottom_light_bg_width">800</dimen>
+    <dimen name="splash_bottom_light_bg_height">564dp</dimen>
+    <dimen name="splash_bottom_text_margin">84dp</dimen>
+    <dimen name="splash_bottom_text_size">@dimen/std_28sp</dimen>
 </resources>
