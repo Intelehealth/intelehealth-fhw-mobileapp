@@ -145,18 +145,16 @@
                     style="@style/label_misc_txt_14sp_dark_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:text="@string/associated_symptoms" />
 
                 <TextView
-                    android:id="@+id/tv_change"
+                    android:id="@+id/tv_change_associate_sympt"
                     style="@style/label_misc_txt_12sp_primary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_common_gray_round_stroke_bg"
                     android:drawableStart="@drawable/ui2_ic_edit"

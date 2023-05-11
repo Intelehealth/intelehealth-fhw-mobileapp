@@ -187,6 +187,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         showWeightListing();
 
+        if (mIsEditMode && results == null) {
+            loadSavedDateForEditFromDB();
+        }
 
         return view;
     }
@@ -240,7 +243,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 //validate
                 if (validateTable()) {
                     mActionListener.onProgress(100);
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false,results);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, results);
                 }
                 break;
 
@@ -329,14 +332,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // set existing data
         if (results != null) {
             if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
-                Log.v(TAG, "getHeight - "+results.getHeight());
-                Log.v(TAG, "getPosition - "+mHeightArrayAdapter.getPosition(results.getHeight()));
-                mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight()+ " cm"), true);
+                Log.v(TAG, "getHeight - " + results.getHeight());
+                Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " cm"), true);
             }
 
 
             if (results.getWeight() != null && !results.getWeight().isEmpty())
-                mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(results.getWeight() +" kg"), true);
+                mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(results.getWeight() + " kg"), true);
 
             /*if (results.getBmi() != null && !results.getBmi().isEmpty())
               pass*/
@@ -357,6 +360,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mTemperatureEditText.setText(convertCtoF(results.getTemperature()));
                 } else {
                     mTemperatureEditText.setText(results.getTemperature());
+                }
+                if (mTemperatureEditText.getText().toString().endsWith(".")) {
+                    mTemperatureEditText.setText(mTemperatureEditText.getText().toString().replace(".", ""));
                 }
             }
             if (results.getSpo2() != null && !results.getSpo2().isEmpty())
@@ -437,7 +443,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public void loadPrevious() {
+    public void loadSavedDateForEditFromDB() {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String[] columns = {"value", " conceptuuid"};
@@ -459,9 +465,19 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             case UuidDictionary.HEIGHT: //Height
                 heightvalue = value;
                 //mHeightTextView.setText(value);
+                if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
+                    Log.v(TAG, "getHeight - " + results.getHeight());
+                    Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                    mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " cm"), true);
+                }
+
+
+
                 break;
             case UuidDictionary.WEIGHT: //Weight
                 weightvalue = value;
+                if (weightvalue != null && !weightvalue.isEmpty())
+                    mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(weightvalue + " kg"), true);
                 //mWeightTextView.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse
@@ -475,8 +491,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
 
-                mTemperatureEditText.setText(value);
-
+                //mTemperatureEditText.setText(value);
+                if (new ConfigUtils(getActivity()).fahrenheit()) {
+                    mTemperatureEditText.setText(convertCtoF(value));
+                } else {
+                    mTemperatureEditText.setText(value);
+                }
+                if (mTemperatureEditText.getText().toString().endsWith(".")) {
+                    mTemperatureEditText.setText(mTemperatureEditText.getText().toString().replace(".", ""));
+                }
 
                 break;
             //    Respiratory added by mahiti dev team

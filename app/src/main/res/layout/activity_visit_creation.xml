@@ -78,7 +78,7 @@
         android:layout_marginTop="@dimen/margin_8"
         android:lineSpacingExtra="1sp"
         android:paddingHorizontal="@dimen/toolbar_margin_left"
-        android:text="1/4 Vitals"
+        android:text="@string/_1_4_vitals"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/toolbar_text_size"
         android:textStyle="bold" />

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,20 +19,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummarySingleViewAdapter;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -91,13 +87,13 @@ public class MedicalHistorySummaryFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT,true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT,true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
         ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
@@ -156,7 +152,12 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_SUMMARY_RESUME_BACK_FOR_EDIT, true, null);
+                        if(key.equalsIgnoreCase("Patient history")){
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                        }else if(key.equalsIgnoreCase("Family history")){
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        }
+
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);

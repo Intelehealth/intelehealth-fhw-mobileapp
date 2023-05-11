@@ -106,6 +106,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                    Log.v("onSelect", "Scrolling index - " + index);
                     VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
                     return;
                 }
@@ -119,15 +120,18 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
+                    linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
                         mQuestionsListingAdapter.addItem(mCurrentNode);
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
+                    linearLayoutManager.setStackFromEnd(true);
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
 
-                VisitUtils.scrollNow(recyclerView, 200, 0, 500);
-                VisitUtils.scrollNow(recyclerView, 1100, 0, 1100);
+                VisitUtils.scrollNow(recyclerView, 100, 0, 500);
+
+                VisitUtils.scrollNow(recyclerView, 1200, 0, 1000);
 
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
@@ -140,7 +144,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false, null);
             }
 
             @Override

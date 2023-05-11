@@ -82,7 +82,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         sessionManager = new SessionManager(context);
     }
 
-    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode) {
+    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode, boolean cleanEdit) {
         VisitReasonCaptureFragment fragment = new VisitReasonCaptureFragment();
         fragment.mIsEditMode = isEditMode;
         fragment.patientUuid = intent.getStringExtra("patientUuid");

@@ -64,6 +64,8 @@ import java.util.Locale;
  */
 public class Node implements Serializable {
 
+
+    private boolean havingNestedQuestion;
     private boolean isDataCaptured;
     private boolean optional;
     private String id;
@@ -339,6 +341,7 @@ public class Node implements Serializable {
 
             this.required = jsonNode.optBoolean("isRequired");
             this.optional = jsonNode.optBoolean("optional");
+            this.havingNestedQuestion = jsonNode.optBoolean("havingNestedQuestion");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -393,6 +396,7 @@ public class Node implements Serializable {
         this.negativeCondition = source.negativeCondition;
         this.optional = source.optional;
         this.isDataCaptured = source.isDataCaptured;
+        this.havingNestedQuestion = source.havingNestedQuestion;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -3187,5 +3191,14 @@ public class Node implements Serializable {
     public void setDataCaptured(boolean dataCaptured) {
         isDataCaptured = dataCaptured;
     }
+
+    public boolean isHavingNestedQuestion() {
+        return havingNestedQuestion;
+    }
+
+    public void setHavingNestedQuestion(boolean havingNestedQuestion) {
+        this.havingNestedQuestion = havingNestedQuestion;
+    }
+
 }
 

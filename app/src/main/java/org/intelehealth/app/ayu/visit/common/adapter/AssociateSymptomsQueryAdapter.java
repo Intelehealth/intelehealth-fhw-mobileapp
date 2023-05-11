@@ -82,7 +82,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
-            genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.getText());
+            genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.findDisplay());
             //genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
 
             if (mItemList.get(position).isNoSelected()) {

@@ -752,5 +752,8 @@
     <string name="duration_type_validation_txt">Please select the duration type</string>
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
+    <string name="describe_lbl">Describe</string>
+    <string name="patinet_history">4/4. Medical history: Patient history</string>
+    <string name="_1_4_vitals">1/4 Vitals</string>
 
 </resources>

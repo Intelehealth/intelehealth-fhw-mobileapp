@@ -12,7 +12,7 @@
         android:drawablePadding="@dimen/margin_8"
         android:gravity="center_vertical"
         android:lineSpacingExtra="1sp"
-        android:text="Describe"
+        android:text="@string/describe_lbl"
         android:textColor="@color/ui2_black_text_color"
         android:textSize="@dimen/txtsize_patdetail_14sp"
         app:drawableStartCompat="@drawable/ui2_next_icon_soft_rd" />
@@ -51,6 +51,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8" />
+
+    <LinearLayout
+        android:id="@+id/ll_single_component_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/ll_others_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:orientation="vertical" />
 </LinearLayout>
 
 

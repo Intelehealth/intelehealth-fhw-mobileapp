@@ -171,10 +171,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int rawPosition) {
         if (holder instanceof GenericViewHolder) {
             Log.v("showCameraView", "onBindViewHolder - " + rawPosition);
+            Log.v("showCameraView", "onBindViewHolder - " + mIndexMappingHashMap);
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(genericViewHolder.getAbsoluteAdapterPosition());
             genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
-            genericViewHolder.rootIndex = mIndexMappingHashMap.get(genericViewHolder.index);
+            genericViewHolder.rootIndex = mIndexMappingHashMap.getOrDefault(genericViewHolder.index, 0);
             int position = genericViewHolder.getAbsoluteAdapterPosition();
 
             genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
@@ -204,7 +205,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 String nodeText = parent_name + " : " + _mNode.findDisplay();
 
                 genericViewHolder.tvQuestion.setText(nodeText);
-                genericViewHolder.tvQuestionCounter.setText((position + 1) + " " + mContext.getString(R.string.of) + " " + mPhysicalExam.getTotalNumberOfExams() + " " +  mContext.getString(R.string.questions)); //"1 of 10 questions"
+                genericViewHolder.tvQuestionCounter.setText((position + 1) + " " + mContext.getString(R.string.of) + " " + mPhysicalExam.getTotalNumberOfExams() + " " + mContext.getString(R.string.questions)); //"1 of 10 questions"
 
                 if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
                     genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -691,10 +692,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    private void showOptionsData(Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
         holder.singleComponentContainer.removeAllViews();
+        Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
+//        Log.v(TAG, "showOptionsData options - " + options.size());
+        Log.v(TAG, "showOptionsData index - " + index);
         Log.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
-        if (options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+        if (!isSuperNested && options!=null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
             Log.v(TAG, "showOptionsData single option");
             if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -779,9 +783,20 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.skipButton.setVisibility(View.VISIBLE);
             }
             if (isSuperNested) {
+                boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
                 //holder.superNestedContainerLinearLayout.removeAllViews();
                 View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
+                v1.setTag(selectedNode.getId());
+                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
+                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(selectedNode.getId())) {
+                        return;
+                    }
+                }
+
                 RecyclerView recyclerView = v1.findViewById(R.id.rcv_nested_container);
+                TextView questionTextView = v1.findViewById(R.id.tv_question);
+                LinearLayout singleComponentContainerLinearLayout = v1.findViewById(R.id.ll_single_component_container);
+                LinearLayout othersContainerLinearLayout = v1.findViewById(R.id.ll_others_container);
                 FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
                 layoutManager.setFlexDirection(FlexDirection.ROW);
                 layoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -803,94 +818,127 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     skipButton.setVisibility(View.VISIBLE);
                 }*/
 
-                OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(recyclerView, mContext, selectedNode, options, new OptionsChipsGridAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(Node node) {
-                        selectedNode.setSelected(false);
-                        for (int i = 0; i < options.size(); i++) {
-                            if (options.get(i).isSelected()) {
-                                selectedNode.setSelected(true);
-                            }
-                        }
-                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
-                        String type = node.getInputType();
-
-                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                            type = "options";
-                        }
-                        if (!type.isEmpty()) {
-                            holder.singleComponentContainer.setVisibility(View.VISIBLE);
-                            //holder.singleComponentContainer.removeAllViews();
-                        } else {
-                            holder.singleComponentContainer.removeAllViews();
-                            if (!selectedNode.isMultiChoice()) {
-                                mOnItemSelection.onSelect(node, index);
-
-                            }
-                        }
-                        Log.v(TAG, "Type - " + type);
-                        switch (type) {
-                            case "text":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askText(questionNode, context, adapter);
-                                addTextEnterView(node, holder, index);
-                                break;
-                            case "date":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                //askDate(questionNode, context, adapter);
-                                addDateView(node, holder, index);
-                                break;
-                            case "location":
-                                //askLocation(questionNode, context, adapter);
-                                break;
-                            case "number":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
-                                break;
-                            case "area":
-                                // askArea(questionNode, context, adapter);
-                                break;
-                            case "duration":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askDuration(questionNode, context, adapter);
-                                addDurationView(node, holder, index);
-                                break;
-                            case "range":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askRange(questionNode, context, adapter);
-                                addRangeView(node, holder, index);
-                                break;
-                            case "frequency":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                //askFrequency(questionNode, context, adapter);
-                                addFrequencyView(node, holder, index);
-                                break;
-                            case "camera":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // openCamera(context, imagePath, imageName);
-                                Log.v("showCameraView", "showOptionsData 2");
-                                showCameraView(node, holder, index);
-                                break;
-
-                            case "options":
-                                // openCamera(context, imagePath, imageName);
-                                showOptionsData(node, holder, node.getOptionsList(), index, true);
-                                break;
-                        }
-                        //notifyDataSetChanged();
+                if (havingNestedQuestion) {
+                    //questionTextView.setText(options.get(0).findDisplay());
+                    for (int i = 0; i < options.size(); i++) {
+                        Log.v(TAG, "havingNestedQuestion - "+options.get(i).getText());
+                        showOptionsData(options.get(i), holder, options.get(i).getOptionsList(), index, true);
                     }
-                });
-                recyclerView.setAdapter(optionsChipsGridAdapter);
-                holder.superNestedContainerLinearLayout.addView(v1);
-                holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
+                } else {
+                    //questionTextView.setText(mContext.getString(R.string.describe_lbl));
+                    questionTextView.setText(selectedNode.findDisplay());
+
+
+                    OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(recyclerView, mContext, selectedNode, options, new OptionsChipsGridAdapter.OnItemSelection() {
+                        @Override
+                        public void onSelect(Node node) {
+                            if (!node.isSelected()) {
+                                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
+                                    Log.v(TAG, "TAG getChildAt- " + String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()));
+                                    Log.v(TAG, "TAG selected- " + node.getId());
+                                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(node.getId())) {
+                                        holder.superNestedContainerLinearLayout.removeViewAt(i);
+                                        break;
+                                    }
+                                }
+                            }
+                            selectedNode.setSelected(false);
+                            boolean isQuestionNode = options.size() == 1;
+                            if (isQuestionNode)
+                                for (int i = 0; i < options.get(0).getOptionsList().size(); i++) {
+                                    if (options.get(0).getOptionsList().get(i).isSelected()) {
+                                        selectedNode.setSelected(true);
+                                        options.get(0).setSelected(true);
+                                    }
+                                }
+                            else
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (options.get(i).isSelected()) {
+                                        selectedNode.setSelected(true);
+                                    }
+                                }
+
+                            //showOptionsData(node, holder, node.getOptionsList(), index, true);
+                            //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                            String type = node.getInputType();
+
+                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                                type = "options";
+                            }
+                            if (!type.isEmpty()) {
+                                holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                                //holder.singleComponentContainer.removeAllViews();
+                            } else {
+                                holder.singleComponentContainer.removeAllViews();
+                                if (!selectedNode.isMultiChoice()) {
+                                    mOnItemSelection.onSelect(node, index);
+
+                                }
+                            }
+                            Log.v(TAG, "Type - " + type);
+                            switch (type) {
+                                case "text":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askText(questionNode, context, adapter);
+                                    addTextEnterView(node, holder, index);
+                                    break;
+                                case "date":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    //askDate(questionNode, context, adapter);
+                                    addDateView(node, holder, index);
+                                    break;
+                                case "location":
+                                    //askLocation(questionNode, context, adapter);
+                                    break;
+                                case "number":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askNumber(questionNode, context, adapter);
+                                    addNumberView(node, holder, index);
+                                    break;
+                                case "area":
+                                    // askArea(questionNode, context, adapter);
+                                    break;
+                                case "duration":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askDuration(questionNode, context, adapter);
+                                    addDurationView(node, holder, index);
+                                    break;
+                                case "range":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askRange(questionNode, context, adapter);
+                                    addRangeView(node, holder, index);
+                                    break;
+                                case "frequency":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    //askFrequency(questionNode, context, adapter);
+                                    addFrequencyView(node, holder, index);
+                                    break;
+                                case "camera":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // openCamera(context, imagePath, imageName);
+                                    Log.v("showCameraView", "showOptionsData 2");
+                                    showCameraView(node, holder, index);
+                                    break;
+
+                                case "options":
+                                    // openCamera(context, imagePath, imageName);
+                                    showOptionsData(node, holder, node.getOptionsList(), index, true);
+                                    break;
+                            }
+                            //notifyDataSetChanged();
+                        }
+                    });
+                    recyclerView.setAdapter(optionsChipsGridAdapter);
+                    holder.superNestedContainerLinearLayout.addView(v1);
+                    holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
+                }
             } else {
                 Log.v(TAG, "showOptionsData multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);

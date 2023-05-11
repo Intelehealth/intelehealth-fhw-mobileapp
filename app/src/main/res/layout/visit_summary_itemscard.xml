@@ -548,7 +548,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:background="@null"
+                        android:background="@null" android:visibility="gone"
                         android:src="@drawable/edit_change_patdetail" />
                 </RelativeLayout>
 
@@ -587,7 +587,7 @@
                         android:textStyle="bold"
                         />
 
-                    <ImageButton
+                    <ImageButton android:visibility="gone"
                         android:id="@+id/ass_symp_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

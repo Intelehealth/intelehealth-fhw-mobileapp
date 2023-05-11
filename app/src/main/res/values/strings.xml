@@ -2108,4 +2108,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
     //IDA-913
     <string name="profile_update_requires_internet">Profile update requires a strong internet connection. You are not connected to internet, please try again later.</string>
+    <string name="describe_lbl">Describe</string>
+    <string name="patinet_history">4/4. Medical history: Patient history</string>
+    <string name="_1_4_vitals">1/4 Vitals</string>
 </resources>
