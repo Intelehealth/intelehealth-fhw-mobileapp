@@ -266,8 +266,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String[] cols = {"value"};
                 Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                        null, null, null);
+                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB}, null, null, null);
 
                 if (cursor.moveToFirst()) {
                     // rows present
@@ -275,8 +274,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         // so that null data is not appended
                         phistory = phistory + cursor.getString(0);
 
-                    }
-                    while (cursor.moveToNext());
+                    } while (cursor.moveToNext());
                     returning = true;
                     sessionManager.setReturning(returning);
                 }
@@ -409,10 +407,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -514,9 +509,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -570,13 +563,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
-        Glide.with(PatientDetailActivity.this)
-                .load(patient_new.getPatient_photo())
-                .thumbnail(0.3f)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(photoView);
+        Glide.with(PatientDetailActivity.this).load(patient_new.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             idView.setText(patient_new.getOpenmrs_id());
@@ -650,22 +637,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
                 addrFinalLine = String.format("%s, %s, %s, %s",
 //                        city_village, patient_new.getState_province(),
-                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
-                        patient_new.getPostal_code(), mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()), patient_new.getPostal_code(), mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
 //                        patient_new.getPostal_code(), patient_new.getCountry());
             } else {
                 addrFinalLine = String.format("%s, %s, %s",
 //                        city_village, patient_new.getState_province(),
-                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
-                        mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()), mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
 //                        patient_new.getCountry());
             }
             addrFinalView.setText(addrFinalLine);
         } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village,
-                    mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
-                    mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+            String addrFinalLine = String.format("%s, %s, %s", city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()), mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
 //                    patient_new.getState_province(),
 //                    patient_new.getCountry());
             addrFinalView.setText(addrFinalLine);
@@ -688,20 +670,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         if (patient_new != null && patient_new.getCitizenID() != null && !patient_new.getCitizenID().isEmpty()) {
-            citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s",
-                    patient_new.getCitizenID().substring(0, 1),
-                    patient_new.getCitizenID().substring(1, 3),
-                    patient_new.getCitizenID().substring(3, 6),
-                    patient_new.getCitizenID().substring(6, 10),
-                    patient_new.getCitizenID().substring(10, 14)
-            ));
+            citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s", patient_new.getCitizenID().substring(0, 1), patient_new.getCitizenID().substring(1, 3), patient_new.getCitizenID().substring(3, 6), patient_new.getCitizenID().substring(6, 10), patient_new.getCitizenID().substring(10, 14)));
         }
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
         if (patient_new != null && patient_new.getEducation_level() != null) {
-            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") || patient_new.getEducation_level().equalsIgnoreCase("Select")) {
+            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") || patient_new.getEducation_level().equalsIgnoreCase("Select") || patient_new.getEducation_level().equalsIgnoreCase("Выбирать")) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     education_statusView.setText("Не предоставлен");
                 } else {
@@ -714,7 +690,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         // education_statusView.setText(patient_new.getEducation_level());
         if (patient_new != null && patient_new.getEconomic_status() != null) {
-            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") || patient_new.getEconomic_status().equalsIgnoreCase("Select")) {
+            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") || patient_new.getEconomic_status().equalsIgnoreCase("Select") || patient_new.getEconomic_status().equalsIgnoreCase("Выбирать")) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     economic_statusView.setText("Не предоставлен");
                 } else {
@@ -817,53 +793,45 @@ public class PatientDetailActivity extends AppCompatActivity {
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientUuid);
-                        Logger.logD(TAG, file.toString());
-                    }
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, patientUuid);
+                Logger.logD(TAG, file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientUuid, AppConstants.IMAGE_PATH + patientUuid + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(PatientDetailActivity.this)
-                                    .load(AppConstants.IMAGE_PATH + patientUuid + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(photoView);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(patientUuid, AppConstants.IMAGE_PATH + patientUuid + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(PatientDetailActivity.this).load(AppConstants.IMAGE_PATH + patientUuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(photoView);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                        if (isImageDownloaded)
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 //                        else
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
-                    }
-                });
+            }
+        });
     }
 
     /**
@@ -927,8 +895,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 newVisit.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    newVisit.setBackgroundColor
-                            (getColor(R.color.divider));
+                    newVisit.setBackgroundColor(getColor(R.color.divider));
                     newVisit.setTextColor(getColor(R.color.white));
                 } else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
@@ -970,8 +937,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         textView.setTextSize(16);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 10, 0, 0);
         // textView.setLayoutParams(llp);
         textView.setTag(visit_id);
@@ -1043,8 +1009,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public void familyHistory(TextView famHistView, String patientuuid,
-                              String EncounterAdultInitials_LatestVisit) {
+    public void familyHistory(TextView famHistView, String patientuuid, String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
@@ -1113,8 +1078,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public void pastMedicalHistory(TextView medHistView, String patientuuid,
-                                   String EncounterAdultInitials_LatestVisit) {
+    public void pastMedicalHistory(TextView medHistView, String patientuuid, String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
@@ -1249,8 +1213,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                             } catch (StringIndexOutOfBoundsException e) {
                                                 System.out.println("String Index is out of bounds");
                                             }
-                                        } else
-                                            visitValue = visitValue + Node.bullet_arrow + comp;
+                                        } else visitValue = visitValue + Node.bullet_arrow + comp;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
