@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -287,6 +288,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
+            }
+
+            if (question.isSelected() && question.isHasPopUp()) {
+                generatePopup(question.getPop_up());
             }
 
             Node rootNode = currentNode.getOption(groupPosition);
@@ -859,5 +864,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
     }
 
-
+    private void generatePopup(String popupMessage) {
+        if (!popupMessage.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(popupMessage);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        }
+    }
 }

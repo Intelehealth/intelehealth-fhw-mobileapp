@@ -102,6 +102,12 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
                 return "Педиатр";
             } else if (speciality.equalsIgnoreCase("Neonatologist")) {
                 return "Неонатолог";
+            } else if (speciality.equalsIgnoreCase("Psychiatrist")) {
+                return "Психиатр";
+            } else if (speciality.equalsIgnoreCase("Endocrinologist")) {
+                return "Эндокринолог";
+            } else if (speciality.equalsIgnoreCase("Gastroenterologist")) {
+                return "Гастроэнтеролог";
             }
         } else {
             return speciality;

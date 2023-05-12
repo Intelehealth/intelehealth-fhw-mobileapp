@@ -10,6 +10,8 @@ import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_
 import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic_edit;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -563,6 +565,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     mEconomicStatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String economic = switch_ru_economic_edit(patient1.getEconomic_status());
                     mEconomicStatusSpinner.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatusSpinner.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -1528,20 +1533,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
-                        (mDOBEditText.getText().toString(), sessionManager.getAppLanguage());
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
+                String dob = StringUtils.hi_or__en_noEdit(mDOBEditText.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             } else {
-                int mUpdateFromAgeONly = getMonthNumber(dob_array[1]);
-      dob_indexValue=getMonthNumber(dob_array[1]);
-                Log.d("mAgeMonths", "1523>>>>" + mUpdateFromAgeONly);
+                dob_indexValue = getMonthNumber(StringUtils.hi_or__en_noEdit(dob_array[1], sessionManager.getAppLanguage()));
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
-//                String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob_value)));
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             }
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1EditText.getText().toString()));
@@ -1606,7 +1605,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
             //patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatusSpinner));
-            patientAttributesDTO.setValue(mEconomicStatusSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(switch_ru_economic(mEconomicStatusSpinner.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1979,13 +1978,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            /*patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
             //patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatusSpinner));
-            patientAttributesDTO.setValue(mEconomicStatusSpinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);*/
+            patientAttributesDTO.setValue(switch_ru_economic(mEconomicStatusSpinner.getSelectedItem().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

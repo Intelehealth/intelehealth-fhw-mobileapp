@@ -91,6 +91,12 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 specialityTextView.setText("Педиатр");
             } else if (speciality.equalsIgnoreCase("Neonatologist")) {
                 specialityTextView.setText("Неонатолог");
+            } else if (speciality.equalsIgnoreCase("Psychiatrist")) {
+                specialityTextView.setText("Психиатр");
+            } else if (speciality.equalsIgnoreCase("Endocrinologist")) {
+                specialityTextView.setText("Эндокринолог");
+            } else if (speciality.equalsIgnoreCase("Gastroenterologist")) {
+                specialityTextView.setText("Гастроэнтеролог");
             }
         }
 

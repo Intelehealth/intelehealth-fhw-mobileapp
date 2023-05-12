@@ -116,6 +116,9 @@ public class Node implements Serializable {
     private boolean subPopUp;
     private int associated_symptoms = 0;
 
+    private boolean enableExclusiveOption;
+    private boolean isExclusiveOption;
+
     private boolean isNoSelected;
 
     private List<String> imagePathList;
@@ -284,6 +287,9 @@ public class Node implements Serializable {
 
             this.required = jsonNode.optBoolean("isRequired");
 
+            this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
+            this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
+
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -327,12 +333,16 @@ public class Node implements Serializable {
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
+        this.enableExclusiveOption = source.enableExclusiveOption;
+        this.isExclusiveOption = source.isExclusiveOption;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
 
-        node.setSelected(true);
+
+        node.setSelected(node.isSelected());
+
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
         final MaterialAlertDialogBuilder subQuestion = new MaterialAlertDialogBuilder(context);
@@ -409,7 +419,8 @@ public class Node implements Serializable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                node.setText(node.generateLanguage());
+                String language = node.generateLanguage();
+                if (language != null && !language.isEmpty()) node.setText(language);
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 if (node.anySubSelected() && node.anySubPopUp()) {
@@ -619,6 +630,10 @@ public class Node implements Serializable {
 
     public String getPop_up() {
         return pop_up;
+    }
+
+    public boolean isHasPopUp() {
+        return hasPopUp;
     }
 
     public boolean isSelected() {
@@ -2322,6 +2337,21 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
+    public boolean isEnableExclusiveOption() {
+        return enableExclusiveOption;
+    }
+
+    public void setEnableExclusiveOption(boolean enableExclusiveOption) {
+        this.enableExclusiveOption = enableExclusiveOption;
+    }
+
+    public boolean isExclusiveOption() {
+        return isExclusiveOption;
+    }
+
+    public void setExclusiveOption(boolean exclusiveOption) {
+        isExclusiveOption = exclusiveOption;
+    }
 
     @Override
     public String toString() {
