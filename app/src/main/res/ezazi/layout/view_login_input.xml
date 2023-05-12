@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/screen_padding"
-    android:paddingEnd="@dimen/screen_padding">
+    android:paddingStart="@dimen/login_screen_padding"
+    android:paddingEnd="@dimen/login_screen_padding">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvLblUsername"
@@ -20,7 +20,7 @@
         style="@style/Theme.EZazi.Input.Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/input_top_margin"
+        android:layout_marginTop="@dimen/between_label_and_input_margin"
         app:layout_constraintTop_toBottomOf="@id/tvLblUsername">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -48,7 +48,7 @@
         style="@style/Theme.EZazi.Input.Login.Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/input_top_margin"
+        android:layout_marginTop="@dimen/between_label_and_input_margin"
         app:layout_constraintTop_toBottomOf="@id/tvLblPassword">
 
         <com.google.android.material.textfield.TextInputEditText

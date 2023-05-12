@@ -7,4 +7,6 @@
     <string name="hint_location">Start typing or select location</string>
     <string name="title_setup">Setup</string>
     <string name="content_complete_setup">Please complete your one-time\nset-up activity</string>
+    <string name="welcome_user">Hi! %1$s</string>
+    <string name="hint_search_cases">Search cases</string>
 </resources>

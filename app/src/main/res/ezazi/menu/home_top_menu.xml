@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/updateTimeItem"
+        android:title="Last updated on 12pm"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/restAppOption"
+        android:orderInCategory="150"
+        android:title="@string/reset_app" />
+    <item
+        android:id="@+id/logoutOption"
+        android:orderInCategory="175"
+        android:title="@string/menu_option_logout" />
+</menu>

@@ -20,7 +20,7 @@
         style="@style/Theme.EZazi.Screen.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginStart="@dimen/login_screen_padding"
         android:layout_marginTop="@dimen/screen_title_top_margin"
         android:text="@string/title_setup"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
             style="@style/LabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginStart="@dimen/login_screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             android:text="@string/location"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,9 +64,9 @@
             style="@style/Theme.EZazi.Input.Login.DropDown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginStart="@dimen/login_screen_padding"
             android:layout_marginTop="@dimen/input_top_margin"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             app:hintEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/tvLblLocation">
 
@@ -94,7 +94,7 @@
             layout="@layout/view_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/includeLoginInput" />
 
@@ -103,9 +103,9 @@
             style="@style/Theme.EZazi.Button.Next"
             android:layout_width="match_parent"
             android:layout_height="@dimen/input_height"
-            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginStart="@dimen/login_screen_padding"
             android:layout_marginTop="@dimen/form_top_margin"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             android:text="@string/custom_setup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

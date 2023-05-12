@@ -10,8 +10,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dip"
-        app:cardElevation="4dip"
+        app:cardCornerRadius="@dimen/input_box_corner_radius"
+        app:cardElevation="1dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 

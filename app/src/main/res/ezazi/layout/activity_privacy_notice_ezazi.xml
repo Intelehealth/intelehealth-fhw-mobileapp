@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.privacyNoticeActivity.PrivacyNotice_Activity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="@string/privacy_notice_title"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:elevation="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/accept"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:includeFontPadding="true"
+            android:background="@color/colorPrimary"
+            />
+
+        <Button
+            android:id="@+id/button_reject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:elevation="5dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/reject"
+            android:textColor="#000000"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:includeFontPadding="true"
+            android:layout_below="@id/button_accept"
+            android:background="@drawable/button_layerlist_nocorner"
+            android:layout_marginBottom="5dp"
+            />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttons"
+        android:layout_below="@+id/actionbar"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:layout_marginBottom="15dp"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@color/intro_next">
+        <!--Scrollable content here-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/privacy_text"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textFontWeight="1"
+                android:padding="10dp"
+                android:fontFamily="@font/lato_regular"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textAlignment="gravity"/>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_CHO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="5dp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

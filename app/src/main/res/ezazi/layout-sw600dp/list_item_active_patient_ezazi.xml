@@ -16,6 +16,7 @@
         app:cardUseCompatPadding="true">
 
         <LinearLayout
+            android:padding="@dimen/screen_container_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3pt"
@@ -27,15 +28,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+
                     android:orientation="vertical">
 
                     <TextView
@@ -46,7 +46,7 @@
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:textColor="@color/gray_7"
-                        android:textSize="@dimen/text_24sp"
+                        android:textSize="@dimen/header_text_size"
                         android:textStyle="bold"
                         tools:text="Patient Name" />
 
@@ -58,7 +58,7 @@
                         android:fontFamily="@font/lato_regular"
                         android:maxLines="1"
                         android:textColor="@color/gray_5"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/content_text_size"
                         tools:text="10LAM-3" />
 
                     <TextView
@@ -69,8 +69,19 @@
                         android:fontFamily="@font/lato_regular"
                         android:maxLines="1"
                         android:textColor="@color/gray_5"
-                        android:textSize="18sp"
-                        tools:text="24 years (Male)" />
+                        android:textSize="@dimen/content_text_size"
+                        tools:text="Age: 24 years" />
+
+                    <TextView
+                        android:id="@+id/tvBedNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:maxLines="1"
+                        android:textColor="@color/gray_5"
+                        android:textSize="@dimen/content_text_size"
+                        tools:text="Bed No: 2A" />
 
 
                 </LinearLayout>
@@ -113,10 +124,10 @@
 
                 <ImageView
                     android:id="@+id/iv_prescription"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/green_alert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_normal_alert"
                     android:tag="0" />
 
             </LinearLayout>
@@ -125,48 +136,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/common_padding"
-                android:layout_marginStart="5dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/btn_visit_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_corner_yellow"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center"
-                    android:minWidth="@dimen/button_min_width"
-                    android:padding="@dimen/common_padding"
-                    android:text="@string/visit_summary_patient_details"
-                    android:textColor="@color/gray_7"
-                    android:textSize="@dimen/text_18sp"
-                    android:textStyle="bold" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btn_visit_details"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@drawable/round_corner_yellow"-->
+                <!--                    android:fontFamily="@font/lato_bold"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:minWidth="@dimen/button_min_width"-->
+                <!--                    android:padding="@dimen/common_padding"-->
+                <!--                    android:text="@string/visit_summary_patient_details"-->
+                <!--                    android:textColor="@color/gray_7"-->
+                <!--                    android:textSize="@dimen/content_text_size"-->
+                <!--                    android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/btn_end_visit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/common_padding"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center"
-                    android:minWidth="@dimen/button_min_width"
-                    android:padding="@dimen/common_padding"
-                    android:text="@string/action_birthoutcome"
-                    android:textColor="@color/gray_7"
-                    android:textSize="@dimen/text_18sp"
-                    android:textStyle="bold" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btn_end_visit"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="@dimen/common_padding"-->
+                <!--                    android:fontFamily="@font/lato_bold"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:minWidth="@dimen/button_min_width"-->
+                <!--                    android:padding="@dimen/common_padding"-->
+                <!--                    android:text="@string/action_birthoutcome"-->
+                <!--                    android:textColor="@color/gray_7"-->
+                <!--                    android:textSize="@dimen/content_text_size"-->
+                <!--                    android:textStyle="bold" />-->
+
                 <TextView
                     android:id="@+id/tvStageName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/common_padding"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center"
-                    android:minWidth="@dimen/button_min_width"
-                    android:padding="@dimen/common_padding"
                     android:text="Stage-1"
                     android:textColor="@color/gray_7"
-                    android:textSize="@dimen/text_18sp"
+                    android:textSize="@dimen/content_text_size"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

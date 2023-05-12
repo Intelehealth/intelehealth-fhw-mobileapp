@@ -55,7 +55,7 @@
     <dimen name="footer_action_bar_height">52dip</dimen>
 
     <dimen name="edit_box_min_height">40dip</dimen>
-    <dimen name="edit_box_content_padding">8sp</dimen>
+    <dimen name="edit_box_content_padding">8dp</dimen>
 
     <dimen name="drawable_padding">16dip</dimen>
     <dimen name="common_padding">8dip</dimen>
@@ -82,19 +82,41 @@
     <dimen name="std_16dp">16dp</dimen>
     <dimen name="std_8dp">8dp</dimen>
     <dimen name="std_4dp">4dp</dimen>
+    <dimen name="std_20sp">20sp</dimen>
+    <dimen name="std_20dp">20dp</dimen>
+    <dimen name="std_22sp">22sp</dimen>
     <dimen name="std_21sp">21sp</dimen>
+    <dimen name="std_21dp">21dp</dimen>
     <dimen name="std_24sp">24sp</dimen>
+    <dimen name="std_24dp">24dp</dimen>
     <dimen name="std_14sp">14sp</dimen>
     <dimen name="std_16sp">16sp</dimen>
     <dimen name="std_18sp">18sp</dimen>
     <dimen name="std_12sp">12sp</dimen>
+    <dimen name="std_12dp">12dp</dimen>
     <dimen name="std_25sp">25sp</dimen>
     <dimen name="std_36sp">36sp</dimen>
     <dimen name="std_150dp">150dp</dimen>
     <dimen name="std_75dp">75dp</dimen>
     <dimen name="std_56dp">56dp</dimen>
+    <dimen name="std_50dp">50dp</dimen>
+    <dimen name="std_48dp">48dp</dimen>
+    <dimen name="std_40dp">40dp</dimen>
+    <dimen name="std_36dp">36dp</dimen>
+    <dimen name="std_32dp">32dp</dimen>
+    <dimen name="std_34dp">34dp</dimen>
+    <dimen name="std_60dp">60dp</dimen>
     <dimen name="std_100dp">100dp</dimen>
     <dimen name="std_143dp">143dp</dimen>
+    <dimen name="std_35sp">35sp</dimen>
+    <dimen name="std_23sp">23sp</dimen>
+    <dimen name="std_164dp">164dp</dimen>
+    <dimen name="std_82dp">82dp</dimen>
+    <dimen name="std_92dp">92dp</dimen>
+    <dimen name="std_72dp">72dp</dimen>
+    <dimen name="std_64dp">64dp</dimen>
+    <dimen name="std_32sp">32sp</dimen>
+    <dimen name="std_70dp">70dp</dimen>
     <dimen name="input_stroke_size">2dp</dimen>
     <dimen name="input_box_corner_radius">12dp</dimen>
 

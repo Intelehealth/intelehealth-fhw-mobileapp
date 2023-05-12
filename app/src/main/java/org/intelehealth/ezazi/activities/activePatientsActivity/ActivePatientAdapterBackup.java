@@ -36,7 +36,7 @@ import java.util.List;
  * Github : @dbarretto
  */
 
-public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
+public class ActivePatientAdapterBackup extends RecyclerView.Adapter<ActivePatientAdapterBackup.ActivePatientViewHolder> {
 
     public interface OnActionListener {
         void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription);
@@ -50,8 +50,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     ArrayList<String> listPatientUUID;
     SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels,List<ActivePatientModel> filteractivePatient, Context context,
-                                ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
+    public ActivePatientAdapterBackup(List<ActivePatientModel> activePatientModels, List<ActivePatientModel> filteractivePatient, Context context,
+                                      ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
@@ -122,13 +122,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         int count = activePatientModel.getAlertFlagTotal();
         if (count > 22) { // red
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
-            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_high_alert));
+            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.red_alert));
         } else if (count >= 15) { // yellow
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.yellow_alert));
         } else { // green
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
-            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_normal_alert));
+            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.green_alert));
         }
         // alert -> end
 
@@ -143,10 +143,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         if (activePatientModel.getBirthOutcomeValue() != null &&
                 !activePatientModel.getBirthOutcomeValue().equalsIgnoreCase("")) {
-//            holder.btnEndVisit.setVisibility(View.VISIBLE);
-//            holder.btnEndVisit.setText(activePatientModel.getBirthOutcomeValue());
+            holder.btnEndVisit.setVisibility(View.VISIBLE);
+            holder.btnEndVisit.setText(activePatientModel.getBirthOutcomeValue());
         } else {
-//            holder.btnEndVisit.setVisibility(View.GONE);
+            holder.btnEndVisit.setVisibility(View.GONE);
         }
 
 //            // indicator for next interval
@@ -286,7 +286,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             }
         };
 //        holder.getRootView().setOnClickListener(listener);
-//        holder.btnVisitDetails.setOnClickListener(listener);
+        holder.btnVisitDetails.setOnClickListener(listener);
 
         boolean enableEndVisit = true;
 /*
@@ -304,7 +304,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         } else {
             holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_yellow);
         }*/
-//        holder.btnVisitDetails.setBackgroundResource(R.drawable.round_corner_yellow);
+        holder.btnVisitDetails.setBackgroundResource(R.drawable.round_corner_yellow);
         //  holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
 
         //  holder.btnEndVisit.setEnabled(enableEndVisit);
@@ -358,6 +358,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        TextView btnEndVisit, btnVisitDetails;
         TextView tvAgeGender, tvStageNameTextView;
         private CardView cardView_todaysVisit;
 
@@ -369,8 +370,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
-//            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
-//            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
+            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
+            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
             tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
             cardView_todaysVisit = itemView.findViewById(R.id.cardView_todaysVisit);
             rootView = itemView;

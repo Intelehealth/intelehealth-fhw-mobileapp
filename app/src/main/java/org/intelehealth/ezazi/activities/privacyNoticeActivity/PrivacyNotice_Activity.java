@@ -50,7 +50,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_privacy_notice_2);
+        setContentView(R.layout.activity_privacy_notice_ezazi);
         setTitle(getString(R.string.privacy_notice_title));
 
         /*

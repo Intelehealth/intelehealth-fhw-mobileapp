@@ -47,9 +47,9 @@
             style="@style/Theme.EZazi.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/input_height"
-            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginStart="@dimen/login_screen_padding"
             android:layout_marginTop="@dimen/form_top_margin"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             android:text="@string/action_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_padding"
             android:layout_marginTop="@dimen/form_top_margin"
-            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/login_screen_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 

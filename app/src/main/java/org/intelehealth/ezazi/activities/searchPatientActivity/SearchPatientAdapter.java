@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -25,11 +26,7 @@ import org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActi
 
 public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdapter.Myholder> {
     List<PatientDTO> patients;
-    Context context;
-    LayoutInflater layoutInflater;
-    VisitsDAO visitsDAO = new VisitsDAO();
-    String visitUUID = "";
-    String patientfullName = "";
+    private Context context;
 
     public SearchPatientAdapter(List<PatientDTO> patients, Context context) {
         this.patients = patients;
@@ -40,7 +37,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     @Override
     public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.list_item_search, parent, false);
+        View row = inflater.inflate(R.layout.list_item_patient_history, parent, false);
         return new Myholder(row);
     }
 
@@ -48,55 +45,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     public void onBindViewHolder(@NonNull SearchPatientAdapter.Myholder holder, int position) {
         final PatientDTO patinet = patients.get(position);
         if (patinet != null) {
-            //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
-
-            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
-            //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
-            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
-
-            if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + "\n" + patinet.getOpenmrsId());
-            else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
-
-            holder.bodyTextView.setText(body);
-
+            holder.bind(patinet);
         }
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                visitUUID = visitsDAO.fetchVisitUUIDFromPatientUUID(patinet.getUuid());
-                // For Timeline Title...
-                if (patinet.getMiddlename() != null && !patinet.getMiddlename().equalsIgnoreCase("")
-                        && !patinet.getMiddlename().isEmpty()) {
-                    patientfullName = patinet.getFirstname() + " " + patinet.getMiddlename() + " " + patinet.getLastname();
-                } else {
-                    patientfullName = patinet.getFirstname() + " " + patinet.getLastname();
-                }
-                // end...
 
-                if(visitUUID != null && visitUUID.equalsIgnoreCase("")) { // visit is not yet created for this user.
-                    Log.d("search adapter", "patientuuid" + patinet.getUuid());
-                    String patientStatus = "returning";
-                    Intent intent = new Intent(context, PatientDetailActivity.class);
-                    intent.putExtra("patientUuid", patinet.getUuid());
-                    intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
-                    intent.putExtra("status", patientStatus);
-                    intent.putExtra("tag", "search");
-                    intent.putExtra("hasPrescription", "false");
-                    context.startActivity(intent);
-                }
-                else {
-                    Intent intent = new Intent(context, TimelineVisitSummaryActivity.class);
-                    intent.putExtra("patientUuid", patinet.getUuid());
-                    intent.putExtra("visitUuid", visitUUID);
-                    intent.putExtra("name", patinet.getFirstname() + " " + patinet.getLastname());
-                    intent.putExtra("patientNameTimeline", patientfullName);
-                    intent.putExtra("tag", "exisiting");
-                    context.startActivity(intent);
-                }
             }
         });
     }
@@ -106,16 +61,90 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         return patients.size();
     }
 
-    class Myholder extends RecyclerView.ViewHolder {
-        LinearLayout linearLayout;
-        private TextView headTextView;
-        private TextView bodyTextView;
+    class Myholder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ConstraintLayout linearLayout;
+        private TextView tvPatientName;
+        private TextView tvPatientId;
+        private TextView tvPatientAge;
+        private TextView tvPatientBedNo;
+        private TextView tvPatientNoOfAlert;
+        private TextView tvPatientStage;
 
         public Myholder(View itemView) {
             super(itemView);
-            headTextView = itemView.findViewById(R.id.list_item_head);
-            bodyTextView = itemView.findViewById(R.id.list_item_body);
+            tvPatientName = itemView.findViewById(R.id.tvPatientName);
+            tvPatientId = itemView.findViewById(R.id.tvPatientId);
+            tvPatientAge = itemView.findViewById(R.id.tvPatientAge);
+            tvPatientBedNo = itemView.findViewById(R.id.tvBedNumber);
+            tvPatientNoOfAlert = itemView.findViewById(R.id.tvNoOfAlert);
+            tvPatientStage = itemView.findViewById(R.id.tvStageName);
             linearLayout = itemView.findViewById(R.id.searchlinear);
+        }
+
+        public void bind(PatientDTO patient) {
+            linearLayout.setTag(patient);
+            linearLayout.setOnClickListener(this);
+
+            String age = DateAndTimeUtils.getAgeInYearMonth(patient.getDateofbirth(), context);
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            String patientName = patient.getFirstname() + " " + patient.getLastname();
+
+            tvPatientAge.setText(body);
+            tvPatientName.setText(patientName);
+            tvPatientId.setVisibility(View.VISIBLE);
+
+            if (patient.getOpenmrsId() != null)
+                tvPatientId.setText(patient.getOpenmrsId());
+            else
+                tvPatientId.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onClick(View view) {
+            PatientDTO patient = (PatientDTO) view.getTag();
+            onPatientClicked(patient);
+        }
+
+        private void onPatientClicked(PatientDTO patient) {
+            String visitId = getVisitUuid(patient);
+            String patientName = getPatientName(patient);
+            startNextActivity(patient, visitId, patientName);
+        }
+
+        private String getVisitUuid(PatientDTO patient) {
+            VisitsDAO visitsDAO = new VisitsDAO();
+            return visitsDAO.fetchVisitUUIDFromPatientUUID(patient.getUuid());
+        }
+
+        private String getPatientName(PatientDTO patient) {
+            if (patient.getMiddlename() != null && !patient.getMiddlename().equalsIgnoreCase("")
+                    && !patient.getMiddlename().isEmpty()) {
+                return patient.getFirstname() + " " + patient.getMiddlename() + " " + patient.getLastname();
+            } else {
+                return patient.getFirstname() + " " + patient.getLastname();
+            }
+        }
+
+        private void startNextActivity(PatientDTO patient, String visitUUID, String patientName) {
+            if (visitUUID != null && visitUUID.equalsIgnoreCase("")) { // visit is not yet created for this user.
+                Log.d("search adapter", "patientuuid" + patient.getUuid());
+                String patientStatus = "returning";
+                Intent intent = new Intent(context, PatientDetailActivity.class);
+                intent.putExtra("patientUuid", patient.getUuid());
+                intent.putExtra("patientName", patient.getFirstname() + "" + patient.getLastname());
+                intent.putExtra("status", patientStatus);
+                intent.putExtra("tag", "search");
+                intent.putExtra("hasPrescription", "false");
+                context.startActivity(intent);
+            } else {
+                Intent intent = new Intent(context, TimelineVisitSummaryActivity.class);
+                intent.putExtra("patientUuid", patient.getUuid());
+                intent.putExtra("visitUuid", visitUUID);
+                intent.putExtra("name", patient.getFirstname() + " " + patient.getLastname());
+                intent.putExtra("patientNameTimeline", patientName);
+                intent.putExtra("tag", "exisiting");
+                context.startActivity(intent);
+            }
         }
     }
 

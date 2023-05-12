@@ -7,42 +7,32 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.ezazi.app.AppConstants;
@@ -52,12 +42,14 @@ import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
-
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
-public class SearchPatientActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class SearchPatientActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;
@@ -70,13 +62,14 @@ public class SearchPatientActivity extends AppCompatActivity {
     FloatingActionButton new_patient;
     int limit = 10, offset = 0;
     boolean fullyLoaded = false;
-    EditText toolbarET;
-    ImageView toolbarClear, toolbarSearch, toolbarFilter;
+    //    EditText toolbarET;
+//    ImageView toolbarClear, toolbarSearch, toolbarFilter;
     LinearLayoutManager reLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_patient);
+        setContentView(R.layout.activity_search_patient_ezazi);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
@@ -85,62 +78,65 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
 
 
         //toolbar views
-        toolbarET = findViewById(R.id.toolbar_ET);
-        toolbarClear = findViewById(R.id.toolbar_clear);
-        toolbarSearch = findViewById(R.id.toolbar_search);
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(this);
+//        toolbarET = findViewById(R.id.etvSearchVisit);
+//        toolbarClear = findViewById(R.id.toolbar_clear);
+//        toolbarSearch = findViewById(R.id.toolbar_search);
 //        toolbarFilter = findViewById(R.id.toolbar_filter);
-        toolbarET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                toolbarClear.setVisibility(View.VISIBLE);
-                toolbarSearch.setVisibility(View.VISIBLE);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (toolbarET.getText().toString().isEmpty()){
-                    toolbarET.clearFocus();
-                    toolbarClear.setVisibility(View.GONE);
-                    toolbarSearch.setVisibility(View.GONE);
-                    firstQuery();
-                }
-            }
-        });
-        toolbarClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toolbarET.setText(null);
-                toolbarET.clearFocus();
-                toolbarClear.setVisibility(View.GONE);
-                toolbarSearch.setVisibility(View.GONE);
-                firstQuery();
-            }
-        });
-        toolbarSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toolbarET.clearFocus();
-                String text = toolbarET.getText().toString();
-                if(text!=null || !text.isEmpty() || text.equalsIgnoreCase(" "))
-                {
-                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions
-                            (SearchPatientActivity.this,
-                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-                    suggestions.clearHistory();
-                    query = text;
-                    doQuery(text);
-                }
-            }
-        });
+//        toolbarET.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+////                toolbarClear.setVisibility(View.VISIBLE);
+////                toolbarSearch.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (toolbarET.getText().toString().isEmpty()) {
+//                    toolbarET.clearFocus();
+////                    toolbarClear.setVisibility(View.GONE);
+////                    toolbarSearch.setVisibility(View.GONE);
+//                    firstQuery();
+//                }
+//            }
+//        });
+//        toolbarClear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toolbarET.setText(null);
+//                toolbarET.clearFocus();
+//                toolbarClear.setVisibility(View.GONE);
+//                toolbarSearch.setVisibility(View.GONE);
+//                firstQuery();
+//            }
+//        });
+//        toolbarSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toolbarET.clearFocus();
+//                String text = toolbarET.getText().toString();
+//                if (text != null || !text.isEmpty() || text.equalsIgnoreCase(" ")) {
+//                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions
+//                            (SearchPatientActivity.this,
+//                                    SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+//                    suggestions.clearHistory();
+//                    query = text;
+//                    doQuery(text);
+//                }
+//            }
+//        });
 
 //        toolbarFilter.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -186,7 +182,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 if (recycler.patients != null && recycler.patients.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
                     Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
@@ -274,7 +270,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                         return;
                     }
 
-                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() -1) {
+                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
                         Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                         offset += limit;
                         List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
@@ -468,15 +464,15 @@ public class SearchPatientActivity extends AppCompatActivity {
                 if (isChecked) {
                     // If the user checked the item, add it to the selected items
 //                    if (finalCreator_uuid != null) {
-                        selectedItems.add(finalCreator_uuid[which]);
+                    selectedItems.add(finalCreator_uuid[which]);
 //                    }
 
-                }   else if (selectedItems.contains(finalCreator_uuid[which])) {
-                // Else, if the item is already in the array, remove it
-                selectedItems.remove(finalCreator_uuid[which]);
+                } else if (selectedItems.contains(finalCreator_uuid[which])) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(finalCreator_uuid[which]);
 
 
-            }
+                }
 
             }
         });
@@ -488,17 +484,19 @@ public class SearchPatientActivity extends AppCompatActivity {
                 Logger.logD(TAG, "onclick" + i);
 //                doQueryWithProviders(query, selectedItems);
 //            }
-                if(selectedItems.isEmpty())
+                if (selectedItems.isEmpty())
                     firstQuery();
                 else
-                    doQueryWithProviders(selectedItems);            }
+                    doQueryWithProviders(selectedItems);
+            }
         });
 
 //        dialogBuilder.setNegativeButton(R.string.generic_cancel, null);
         dialogBuilder.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                firstQuery(); }
+                firstQuery();
+            }
         });
         //dialogBuilder.show();
         AlertDialog alertDialog = dialogBuilder.create();
@@ -523,7 +521,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         List<String> patientUUID_List = new ArrayList<>();
 
         final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
-                new String[] {search} );
+                new String[]{search});
         /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
          * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
          * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
@@ -539,8 +537,8 @@ public class SearchPatientActivity extends AppCompatActivity {
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        Log.d("patientUUID_list", "list: "+ patientUUID_List.toString());
-        if(patientUUID_List.size() != 0) {
+        Log.d("patientUUID_list", "list: " + patientUUID_List.toString());
+        if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
                         new String[]{patientUUID_List.get(i)});
@@ -564,8 +562,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
-        }
-        else {
+        } else {
             final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
                     null);
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
@@ -591,55 +588,55 @@ public class SearchPatientActivity extends AppCompatActivity {
         return modelList;
     }
 
-//    private void doQueryWithProviders(String querytext, List<String> providersuuids) {
-private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
-    List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
+    //    private void doQueryWithProviders(String querytext, List<String> providersuuids) {
+    private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
+        List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
 //        if (querytext == null) {
 //            List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
-            String query =
-                    "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
-                            "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                            "group by a.uuid order by b.uuid ASC";
-            Logger.logD(TAG, query);
-            final Cursor cursor = db.rawQuery(query, null);
-            Logger.logD(TAG, "Cursour count" + cursor.getCount());
+        String query =
+                "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
+                        "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                        "group by a.uuid order by b.uuid ASC";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+        Logger.logD(TAG, "Cursour count" + cursor.getCount());
 
-            try {
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
-                        do {
-                            PatientDTO model = new PatientDTO();
-                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                            model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                            model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                            model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
-                            model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                            model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
-                            modelListwihtoutQuery.add(model);
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        PatientDTO model = new PatientDTO();
+                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                        model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                        model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                        model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                        model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                        model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                        modelListwihtoutQuery.add(model);
 
-                        } while (cursor.moveToNext());
-                    }
+                    } while (cursor.moveToNext());
                 }
-                if (cursor != null) {
-                    cursor.close();
-                }
-
-            } catch (DAOException e) {
-                e.printStackTrace();
+            }
+            if (cursor != null) {
+                cursor.close();
             }
 
-            try {
-                recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
 //            Log.i("db data", "" + getQueryPatients(query));
             /*    recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
                         DividerItemDecoration.VERTICAL));*/
-                recyclerView.setAdapter(recycler);
+            recyclerView.setAdapter(recycler);
 
-            } catch (Exception e) {
-                Logger.logE("doquery", "doquery", e);
-            }
+        } catch (Exception e) {
+            Logger.logE("doquery", "doquery", e);
+        }
 //        }else {
 //            String search = querytext.trim().replaceAll("\\s", "");
 //            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
@@ -693,7 +690,7 @@ private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
 //                Logger.logE("doquery", "doquery", e);
 //            }
 //        }
-    return modelListwihtoutQuery;
+        return modelListwihtoutQuery;
 
     }
 
@@ -719,6 +716,25 @@ private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        if (s.isEmpty()) firstQuery();
+        else {
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions
+                    (SearchPatientActivity.this,
+                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+            suggestions.clearHistory();
+            query = s;
+            doQuery(s);
+        }
+        return false;
     }
 }
 

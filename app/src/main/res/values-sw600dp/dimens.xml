@@ -1,7 +1,7 @@
 <resources>
 
-    <dimen name="activity_horizontal_margin">56dp</dimen>
-    <dimen name="activity_vertical_margin">56dp</dimen>
+    <dimen name="activity_horizontal_margin">@dimen/std_50dp</dimen>
+    <dimen name="activity_vertical_margin">@dimen/std_50dp</dimen>
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
     <!--New Design-->

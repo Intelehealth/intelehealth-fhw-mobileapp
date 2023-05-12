@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/etvSearchVisit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_corner_gray_stroke_light"
+    android:drawableEnd="@drawable/ic_search_24dp"
+    android:drawablePadding="@dimen/drawable_padding"
+    android:hint="@string/hint_search_cases"
+    android:inputType="text"
+    android:minHeight="@dimen/edit_box_min_height"
+    android:padding="@dimen/edit_box_content_padding"
+    android:textColorHint="@color/colorSearchContent"
+    android:textSize="@dimen/content_text_size" />

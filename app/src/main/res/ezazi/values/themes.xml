@@ -22,4 +22,24 @@
     <style name="Theme.EZazi.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="Theme.EZazi.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
+
+    <style name="Theme.EZazi.MenuOverflow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_menu</item>
+    </style>
+
+    <style name="Theme.EZazi.MenuText" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/action_menu_text_size</item>
+        <item name="android:textColor">@color/font_black_0</item>
+    </style>
+
+    <style name="Theme.EZazi.ActionBar.Padding" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:paddingTop">@dimen/actionbar_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/actionbar_vertical_padding</item>
+        <item name="android:paddingRight">@dimen/actionbar_horizontol_padding</item>
+        <item name="android:paddingEnd">@dimen/actionbar_horizontol_padding</item>
+        <item name="android:paddingLeft">@dimen/actionbar_horizontol_padding</item>
+        <item name="android:paddingStart">@dimen/actionbar_horizontol_padding</item>
+    </style>
 </resources>

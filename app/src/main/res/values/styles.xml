@@ -15,9 +15,12 @@
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
         <item name="fontFamily">@font/lato_regular</item>
+        <item name="actionOverflowButtonStyle">@style/Theme.EZazi.MenuOverflow</item>
+        <item name="actionMenuTextAppearance">@style/Theme.EZazi.MenuText</item>
+        <item name="actionMenuTextColor">@color/font_black_0</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -76,7 +79,7 @@
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/dm_sans_bold</item>
     </style>
 
     <style name="AppTheme.TextAppearance.Popup" parent="TextAppearance.MaterialComponents.Caption">

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/screen_padding">
+
+    <View
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/actionbar_vertical_padding"
+        android:background="@drawable/container_bg"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeUser" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/home_logo_size"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/home_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvWelcomeUser"
+        style="@style/Theme.EZazi.Screen.Welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo"
+        tools:text="Hi! Nurse Jane" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEndShift"
+        style="@style/Theme.EZazi.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/small_btn_horizontal_padding"
+        android:paddingVertical="@dimen/small_btn_vertical_padding"
+        android:text="@string/end_shift"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/tvWelcomeUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvWelcomeUser" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvActiveVisitLabel"
+        style="@style/Theme.EZazi.Screen.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/actionbar_vertical_padding"
+        android:layout_marginTop="@dimen/actionbar_horizontol_padding"
+        android:text="@string/active_cases"
+        android:textSize="@dimen/subheading_text_size"
+        app:layout_constraintStart_toStartOf="@id/container"
+        app:layout_constraintTop_toTopOf="@id/container"
+        tools:text="Active Cases (8)" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        style="@style/Theme.EZazi.Search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/screen_container_padding"
+        android:layout_marginTop="@dimen/actionbar_vertical_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/container"
+        app:layout_constraintTop_toBottomOf="@id/tvActiveVisitLabel" />
+    <!--        <include-->
+    <!--            android:id="@+id/includeSearchView"-->
+    <!--            layout="@layout/search_view"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="@dimen/std_16dp"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/tvActiveVisitLabel" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvActiveVisits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/screen_container_padding"
+        android:layout_marginTop="@dimen/actionbar_vertical_padding"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="@id/container"
+        app:layout_constraintStart_toStartOf="@id/container"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:spanCount="2"
+        tools:itemCount="10"
+        tools:listitem="@layout/list_item_active_patient_ezazi" />
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/don_t_have_any_active_visit"
+        android:textColor="@color/gray_3"
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

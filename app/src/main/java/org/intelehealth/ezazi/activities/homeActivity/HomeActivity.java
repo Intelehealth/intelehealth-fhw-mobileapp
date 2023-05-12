@@ -59,15 +59,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -144,7 +148,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -160,8 +164,8 @@ public class HomeActivity extends AppCompatActivity {
     TextView lastSyncAgo;
     CardView manualSyncButton;
 
-    EditText etvSearchVisit;
-    ImageView ivFilterAction;
+    //    EditText etvSearchVisit;
+    //    ImageView ivFilterAction;
     CharSequence search = "";
     //IntentFilter filter;
     //Myreceiver reMyreceive;
@@ -198,6 +202,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView mEndShiftTextView;
 
+    private BottomNavigationView bottomNavigationView;
     /*eZazi End*/
 
     private void saveToken() {
@@ -300,15 +305,19 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home_ezazi);
         sessionManager = new SessionManager(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
         DeviceInfoUtils.saveDeviceInfo(this);
 
         catchFCMMessageData();
+        // Added by Mithun Vaghela
+        TextView welcomeUser = findViewById(R.id.tvWelcomeUser);
+        welcomeUser.setText(getString(R.string.welcome_user, sessionManager.getChwname()));
+
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -318,7 +327,7 @@ public class HomeActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        setTitle(R.string.title_activity_login);
+        setTitle("");
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
         mResetSyncDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
@@ -334,9 +343,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         /*NEW*/
-        mEndShiftTextView = findViewById(R.id.tvEndShift);
+        mEndShiftTextView = findViewById(R.id.btnEndShift);
         mActiveVisitsRecyclerView = findViewById(R.id.rcvActiveVisits);
-        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager reLayoutManager = getLayoutManager();
         mActiveVisitsRecyclerView.setLayoutManager(reLayoutManager);
         /*mActiveVisitsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -361,83 +370,71 @@ public class HomeActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         loadVisits();
 
-        findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*//Loads the config file values and check for the boolean value of privacy key.
-                ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
-                if (configUtils.privacy_notice()) {
-                    Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
-                    startActivity(intent);
-                } else {
-                    //Clear HouseHold UUID from Session for new registration
-                    //  sessionManager.setHouseholdUuid("");
-                    Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
-                    startActivity(intent);
-                }*/
-
-                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
-                startActivity(intent);
-            }
-        });
+        initBottomMenu();
+//        findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                /*//Loads the config file values and check for the boolean value of privacy key.
+//                ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
+//                if (configUtils.privacy_notice()) {
+//                    Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
+//                    startActivity(intent);
+//                } else {
+//                    //Clear HouseHold UUID from Session for new registration
+//                    //  sessionManager.setHouseholdUuid("");
+//                    Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
+//                    startActivity(intent);
+//                }*/
+//
+//                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         //Search pateint code
-        etvSearchVisit = findViewById(R.id.etvSearchVisit);
-        ivFilterAction = findViewById(R.id.ivFilterAction);
-        ivFilterAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        etvSearchVisit = findViewById(R.id.etvSearchVisit);
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(this);
+//        ivFilterAction = findViewById(R.id.ivFilterAction);
+//        ivFilterAction.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
-            }
-        });
-
-        etvSearchVisit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mActivePatientAdapter.getFilter().filter(charSequence);
-                search = charSequence;
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
+//        etvSearchVisit.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                mActivePatientAdapter.getFilter().filter(charSequence);
+//                search = charSequence;
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//            }
+//        });
 
 
-        findViewById(R.id.tvHelpMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
-                String message =
-                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                getString(R.string.i_need_assistance);
-
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
-            }
-        });
-        findViewById(R.id.tvSyncMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isNetworkConnected()) {
-                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-                    //ivSync.clearAnimation();
-                    //syncAnimator.start();
-                    syncUtils.syncForeground("home");
-                } else {
-                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        findViewById(R.id.tvHelpMenu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+//        findViewById(R.id.tvSyncMenu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         mEndShiftTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -693,6 +690,53 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private LinearLayoutManager getLayoutManager() {
+        if (getResources().getBoolean(R.bool.isTablet))
+            return new GridLayoutManager(getApplicationContext(), 2);
+        else return new LinearLayoutManager(getApplicationContext());
+    }
+
+    private void initBottomMenu() {
+        bottomNavigationView = findViewById(R.id.bottomNavMenu);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.action_add_patient) {
+                    Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.action_refresh) {
+                    sync();
+                } else if (item.getItemId() == R.id.action_help) {
+                    help();
+                } else return false;
+                return false;
+            }
+        });
+    }
+
+    private void help() {
+        String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
+        String message =
+                getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+                        getString(R.string.i_need_assistance);
+
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(
+                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                phoneNumberWithCountryCode, message))));
+    }
+
+    private void sync() {
+        if (isNetworkConnected()) {
+            Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+            //ivSync.clearAnimation();
+            //syncAnimator.start();
+            syncUtils.syncForeground("home");
+        } else {
+            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private String mLastSelectedNurseUUID = "";
     private boolean mPendingForLogout = false;
 
@@ -726,7 +770,7 @@ public class HomeActivity extends AppCompatActivity {
                                     visitsDAO.updateVisitCreator(visitUUIDList.get(j), mLastSelectedNurseUUID);
                                 }
                                 mPendingForLogout = true;
-                                findViewById(R.id.tvSyncMenu).performClick();
+                                bottomNavigationView.getChildAt(2).performClick();
                                 Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
 
                             } catch (DAOException e) {
@@ -1119,7 +1163,6 @@ public class HomeActivity extends AppCompatActivity {
         mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
         setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -1946,7 +1989,7 @@ public class HomeActivity extends AppCompatActivity {
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.creator = '" +myCreatorUUID+"'"+
+                "AND a.creator = '" + myCreatorUUID + "'" +
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate DESC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -2167,4 +2210,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String charSequence) {
+        mActivePatientAdapter.getFilter().filter(charSequence);
+        search = charSequence;
+        return false;
+    }
 }

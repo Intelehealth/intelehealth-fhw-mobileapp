@@ -829,7 +829,7 @@
     <string name="am15">06:15 AM</string>
     <string name="am30">06:30 AM</string>
     <string name="am45">06:45 AM</string>
-    <string name="search_visits_hint">Search visits...</string>
+    <string name="search_visits_hint">Search cases...</string>
     <string name="daughter_wife_of">Daughter/Wife of</string>
     <string name="total_birth_count_val_txt">Please enter the total birth count</string>
     <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>
@@ -888,5 +888,8 @@
     <string name="enter_sex_of_baby">Enter Sex of baby</string>
     <string name="enter_baby_status">Enter Baby Status</string>
     <string name="enter_mother_status">Enter Mother Status</string>
+    <string name="lbl_help">Help</string>
+    <string name="don_t_have_any_active_visit">Don\'t have any active visit!</string>
+    <string name="active_cases">Active Cases</string>
 
 </resources>
