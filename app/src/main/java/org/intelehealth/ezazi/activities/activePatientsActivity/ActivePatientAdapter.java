@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
@@ -50,13 +51,26 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     ArrayList<String> listPatientUUID;
     SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels,List<ActivePatientModel> filteractivePatient, Context context,
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, List<ActivePatientModel> filteractivePatient, Context context,
                                 ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.sessionManager = sessionManager;
-        this.filteractivePatient=filteractivePatient;
+        this.filteractivePatient = filteractivePatient;
+    }
+
+    /**
+     * Added by Vaghela Mithun
+     * To calculate the total active cases
+     */
+    public int activeCasesCount() {
+        int count = 0;
+        for (ActivePatientModel activePatientModel : activePatientModels) {
+            if (activePatientModel.getObsExistsFlag()) count++;
+        }
+
+        return count;
     }
 
     @Override
@@ -120,15 +134,19 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         // alert -> start
         int count = activePatientModel.getAlertFlagTotal();
+        holder.ivPriscription.setText(String.valueOf(count));
         if (count > 22) { // red
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
-            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_high_alert));
+            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_high_alert));
+            holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorHighAlert));
         } else if (count >= 15) { // yellow
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
-            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.yellow_alert));
+            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.yellow_alert));
+            holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorMediumAlert));
         } else { // green
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
-            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_normal_alert));
+            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_normal_alert));
+            holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorNormalAlert));
         }
         // alert -> end
 
@@ -138,7 +156,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             anim.setRepeatMode(Animation.INFINITE);
             anim.setRepeatCount(Animation.INFINITE);
             holder.cardView_todaysVisit.startAnimation(anim);
-             holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
+            holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
         }
 
         if (activePatientModel.getBirthOutcomeValue() != null &&
@@ -356,7 +374,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
-        private ImageView ivPriscription;
+        private TextView ivPriscription;
         private TextView tv_not_uploaded;
         TextView tvAgeGender, tvStageNameTextView;
         private CardView cardView_todaysVisit;
@@ -367,7 +385,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             headTextView = itemView.findViewById(R.id.list_item_head_text_view);
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
-            ivPriscription = itemView.findViewById(R.id.iv_prescription);
+            ivPriscription = itemView.findViewById(R.id.tvAlertCount);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
 //            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
 //            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
@@ -417,34 +435,33 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         this.actionListener = actionListener;
     }
 
-    public Filter getFilter(){
+    public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
 
-                String Key=charSequence.toString();
-                if (Key.isEmpty()){
-                    filteractivePatient=activePatientModels;
+                String Key = charSequence.toString();
+                if (Key.isEmpty()) {
+                    filteractivePatient = activePatientModels;
 
-                }
-                else {
-                    List<ActivePatientModel> listfiltered=new ArrayList<>();
-                    for (ActivePatientModel row :activePatientModels){
+                } else {
+                    List<ActivePatientModel> listfiltered = new ArrayList<>();
+                    for (ActivePatientModel row : activePatientModels) {
                         if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase()) || row.getLast_name().toLowerCase().contains(Key.toLowerCase())) {
                             listfiltered.add(row);
                         }
                     }
-                    filteractivePatient=listfiltered;
+                    filteractivePatient = listfiltered;
                 }
-                FilterResults filterResults=new FilterResults();
-                filterResults.values=filteractivePatient;
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteractivePatient;
                 return filterResults;
 
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteractivePatient=(List<ActivePatientModel>)filterResults.values;
+                filteractivePatient = (List<ActivePatientModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

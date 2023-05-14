@@ -6,10 +6,12 @@
     <dimen name="screen_padding">@dimen/activity_horizontal_margin</dimen>
     <dimen name="login_screen_padding">@dimen/std_135dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_20dp</dimen>
-    <dimen name="list_container_padding">@dimen/std_8dp</dimen>
+    <dimen name="list_container_padding">@dimen/std_10dp</dimen>
     <dimen name="input_height">86dp</dimen>
+    <dimen name="max_input_height">86dp</dimen>
     <dimen name="input_top_margin">@dimen/std_21sp</dimen>
     <dimen name="input_label_size">@dimen/std_21sp</dimen>
+    <dimen name="input_inner_size">@dimen/std_24sp</dimen>
     <dimen name="forgot_pwd_size">@dimen/std_21sp</dimen>
     <dimen name="form_top_margin">@dimen/std_69dp</dimen>
     <dimen name="screen_title_top_margin">@dimen/std_150dp</dimen>
@@ -19,7 +21,8 @@
     <dimen name="login_top_margin">@dimen/std_143dp</dimen>
     <dimen name="welcome_text_size">@dimen/std_35sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_23sp</dimen>
-    <dimen name="home_logo_size">@dimen/std_164dp</dimen>
+    <dimen name="home_logo_width">@dimen/std_164dp</dimen>
+    <dimen name="home_logo_height">@dimen/std_65dp</dimen>
     <dimen name="action_menu_text_size">@dimen/std_16sp</dimen>
     <dimen name="small_btn_horizontal_padding">@dimen/std_31dp</dimen>
     <dimen name="small_btn_vertical_padding">@dimen/std_16dp</dimen>
@@ -38,7 +41,14 @@
     <dimen name="alert_text_size">@dimen/std_32sp</dimen>
     <dimen name="between_label_and_input_margin">@dimen/std_21dp</dimen>
     <dimen name="actionbar_vertical_padding">@dimen/std_34dp</dimen>
-    <dimen name="actionbar_horizontol_padding">@dimen/std_70dp</dimen>
+    <dimen name="actionbar_horizontal_padding">@dimen/std_70dp</dimen>
+    <dimen name="back_button_size">@dimen/std_64dp</dimen>
     <dimen name="between_button_margin">@dimen/std_36dp</dimen>
     <dimen name="search_view_height">@dimen/std_60dp</dimen>
+    <dimen name="small_button_text_size">@dimen/std_20sp</dimen>
+    <dimen name="input_box_corner_radius">@dimen/std_20dp</dimen>
+    <dimen name="small_button_padding">@dimen/std_12dp</dimen>
+    <dimen name="bottom_vector_tran_y">@dimen/std_120dp</dimen>
+    <dimen name="input_inner_text_size">@dimen/std_22sp</dimen>
+    <dimen name="home_container_top_margin">@dimen/std_27dp</dimen>
 </resources>

@@ -7,12 +7,15 @@
     android:background="@color/white"
     tools:context=".activities.homeActivity.HomeActivity">
 
-    <include layout="@layout/content_home_ezazi" />
+    <include
+        layout="@layout/content_home_ezazi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <!--<include layout="@layout/content_home" />-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_size"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
@@ -23,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            app:navigationIcon="@drawable/home_logo"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
         </androidx.appcompat.widget.Toolbar>

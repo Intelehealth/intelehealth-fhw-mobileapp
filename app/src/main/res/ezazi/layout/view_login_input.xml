@@ -20,13 +20,14 @@
         style="@style/Theme.EZazi.Input.Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/between_label_and_input_margin"
+        android:layout_marginTop="@dimen/screen_container_padding"
         app:layout_constraintTop_toBottomOf="@id/tvLblUsername">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/input_height"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/max_input_height"
             android:hint="@string/enter_username"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
@@ -48,13 +49,14 @@
         style="@style/Theme.EZazi.Input.Login.Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/between_label_and_input_margin"
+        android:layout_marginTop="@dimen/screen_container_padding"
         app:layout_constraintTop_toBottomOf="@id/tvLblPassword">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/input_height"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/max_input_height"
             android:hint="@string/enter_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"

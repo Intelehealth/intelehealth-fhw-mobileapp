@@ -13,8 +13,7 @@
         android:padding="@dimen/screen_container_padding"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/input_box_corner_radius"
-        app:cardElevation="4dip"
-        app:cardUseCompatPadding="true"
+        app:cardElevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_list_item"
-            android:padding="@dimen/screen_padding">
+            android:padding="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -83,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Stage-1"
+                android:padding="@dimen/screen_container_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,7 @@ public class SearchPatientActivity extends AppCompatActivity implements SearchVi
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
-    FloatingActionButton new_patient;
+    ImageView new_patient;
     int limit = 10, offset = 0;
     boolean fullyLoaded = false;
     //    EditText toolbarET;

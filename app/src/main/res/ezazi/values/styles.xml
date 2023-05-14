@@ -8,9 +8,11 @@
         <item name="boxCornerRadiusTopEnd">@dimen/input_box_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/input_box_corner_radius</item>
         <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
         <item name="boxStrokeErrorColor">@color/red</item>
         <item name="android:textColor">@color/colorInputText</item>
         <item name="iconEndPadding">@dimen/std_16dp</item>
+        <item name="android:textSize">@dimen/input_inner_size</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login" parent="Theme.EZazi.Input">
@@ -52,7 +54,7 @@
         <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
 
-    <style name="Theme.EZazi.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Theme.EZazi.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:minHeight">@dimen/input_height</item>
@@ -62,7 +64,14 @@
         <item name="android:fontFamily">@font/dm_sans_bold</item>
         <item name="backgroundTint">@color/btn_blue_color_selector</item>
         <item name="cornerRadius">@dimen/input_box_corner_radius</item>
-        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Small" parent="Theme.EZazi.Button">
+        <item name="android:textSize">@dimen/small_button_text_size</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingTop">@dimen/small_button_padding</item>
+        <item name="android:paddingBottom">@dimen/small_button_padding</item>
     </style>
 
     <style name="Theme.EZazi.Button.White" parent="Theme.EZazi.Button">
@@ -77,15 +86,15 @@
     <style name="Theme.EZazi.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textSize">@dimen/forgot_pwd_size</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
         <item name="android:paddingStart">0dp</item>
         <item name="android:paddingEnd">0dp</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingTop">@dimen/small_btn_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/small_btn_vertical_padding</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
-        <item name="rippleColor">@color/colorAccent</item>
+        <item name="rippleColor">@color/gray_2</item>
     </style>
 
     <style name="Theme.EZazi.Button.Next" parent="Theme.EZazi.Button">
@@ -140,11 +149,11 @@
 
     <style name="Theme.EZazi.Search" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
-        <item name="iconifiedByDefault">true</item>
-        <item name="android:layoutDirection">rtl</item>
+        <item name="iconifiedByDefault">false</item>
         <item name="searchIcon">@drawable/ic_search_24dp</item>
         <item name="queryHint">@string/hint_search_cases</item>
         <item name="defaultQueryHint">@string/hint_search_cases</item>
         <item name="android:minHeight">@dimen/search_view_height</item>
+        <item name="android:focusable">false</item>
     </style>
 </resources>

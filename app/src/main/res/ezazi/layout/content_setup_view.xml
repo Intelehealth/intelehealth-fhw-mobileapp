@@ -4,24 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/ivTopLightVector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/setup_top_vector"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvSetupTitle"
         style="@style/Theme.EZazi.Screen.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/login_screen_padding"
-        android:layout_marginTop="@dimen/screen_title_top_margin"
         android:text="@string/title_setup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +19,7 @@
         style="@style/Theme.EZazi.Text.Content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/input_top_margin"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:gravity="start"
         android:text="@string/content_complete_setup"
         android:textColor="@color/font_black_0"
@@ -65,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/login_screen_padding"
-            android:layout_marginTop="@dimen/input_top_margin"
+            android:layout_marginTop="@dimen/screen_container_padding"
             android:layout_marginEnd="@dimen/login_screen_padding"
             app:hintEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/tvLblLocation">
@@ -73,10 +61,11 @@
             <AutoCompleteTextView
                 android:id="@+id/spinner_location"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/input_height"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner_white_with_gray_stroke"
                 android:hint="@string/login_location_select"
                 android:inputType="none"
+                android:minHeight="@dimen/max_input_height"
                 android:padding="@dimen/std_16dp" />
 
         </com.google.android.material.textfield.TextInputLayout>

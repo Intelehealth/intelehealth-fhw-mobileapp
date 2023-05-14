@@ -2,14 +2,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
-    <dimen name="screen_title_size">@dimen/std_24sp</dimen>
+    <dimen name="screen_title_size">@dimen/std_18sp</dimen>
     <dimen name="screen_padding">@dimen/std_16dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_8dp</dimen>
-    <dimen name="list_container_padding">0dp</dimen>
+    <dimen name="list_container_padding">4dp</dimen>
     <dimen name="input_top_margin">@dimen/std_16dp</dimen>
     <dimen name="forgot_pwd_size">@dimen/std_12sp</dimen>
     <dimen name="form_top_margin">@dimen/std_16dp</dimen>
-    <dimen name="input_label_size">@dimen/std_14sp</dimen>
+    <dimen name="input_label_size">@dimen/std_12sp</dimen>
+    <dimen name="input_inner_size">@dimen/std_16sp</dimen>
     <dimen name="screen_title_top_margin">@dimen/std_56dp</dimen>
     <dimen name="actionbar_size">56dp</dimen>
     <dimen name="button_text_size">@dimen/std_14sp</dimen>
@@ -17,14 +18,15 @@
     <dimen name="login_top_margin">@dimen/std_56dp</dimen>
     <dimen name="welcome_text_size">@dimen/std_21sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_16sp</dimen>
-    <dimen name="home_logo_size">@dimen/std_82dp</dimen>
+    <dimen name="home_logo_width">@dimen/std_120dp</dimen>
+    <dimen name="home_logo_height">@dimen/std_48dp</dimen>
     <dimen name="action_menu_text_size">@dimen/std_12sp</dimen>
     <dimen name="login_screen_padding">@dimen/std_64dp</dimen>
     <dimen name="small_btn_horizontal_padding">@dimen/std_16dp</dimen>
-    <dimen name="small_btn_vertical_padding">@dimen/std_8dp</dimen>
+    <dimen name="small_btn_vertical_padding">0dp</dimen>
     <dimen name="bottom_menu_text_size">@dimen/std_12sp</dimen>
     <dimen name="bottom_menu_icon_size">@dimen/std_24dp</dimen>
-    <dimen name="alert_icon_size">@dimen/std_48dp</dimen>
+    <dimen name="alert_icon_size">@dimen/std_36dp</dimen>
     <dimen name="heading1">@dimen/std_18sp</dimen>
     <dimen name="heading2">@dimen/std_16sp</dimen>
     <dimen name="body">@dimen/std_14sp</dimen>
@@ -35,9 +37,15 @@
     <dimen name="container_corner_radius">@dimen/std_12dp</dimen>
     <dimen name="alert_text_size">@dimen/std_18sp</dimen>
     <dimen name="between_label_and_input_margin">@dimen/std_8dp</dimen>
-    <dimen name="actionbar_vertical_padding">@dimen/std_16dp</dimen>
-    <dimen name="actionbar_horizontol_padding">@dimen/std_16dp</dimen>
+    <dimen name="actionbar_vertical_padding">@dimen/std_8dp</dimen>
+    <dimen name="actionbar_horizontal_padding">@dimen/std_16dp</dimen>
+    <dimen name="back_button_size">@dimen/std_32dp</dimen>
     <dimen name="between_button_margin">@dimen/std_16dp</dimen>
     <dimen name="search_view_height">@dimen/std_40dp</dimen>
-    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/std_64dp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/std_56dp</dimen>
+    <dimen name="small_button_text_size">@dimen/std_12sp</dimen>
+    <dimen name="small_button_padding">@dimen/std_6dp</dimen>
+    <dimen name="bottom_vector_tran_y">@dimen/std_72dp</dimen>
+    <dimen name="input_inner_text_size">@dimen/std_16sp</dimen>
+    <dimen name="home_container_top_margin">@dimen/std_8dp</dimen>
 </resources>

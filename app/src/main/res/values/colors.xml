@@ -69,4 +69,7 @@
     <color name="colorInputText">#1E1E1E</color>
     <color name="colorContainer">#F7F7FA</color>
     <color name="colorSearchContent">#ED1A56</color>
+    <color name="colorHighAlert">#FD1053</color>
+    <color name="colorMediumAlert">#FD8C3E</color>
+    <color name="colorNormalAlert">#019283</color>
 </resources>
