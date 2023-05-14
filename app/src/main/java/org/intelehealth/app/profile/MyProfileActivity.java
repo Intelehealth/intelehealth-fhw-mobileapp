@@ -1157,7 +1157,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             String[] splitedDate = selectedDate.split("/");
 
             Log.d(TAG, "getSelectedDate: age : " + age);
-            if (age != null && !age.isEmpty() && Integer.parseInt(age) > 10) {
+            if (age != null && !age.isEmpty()/* && Integer.parseInt(age) > 10*/) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
