@@ -1,0 +1,267 @@
+@startmindmap
+'https://plantuml.com/mindmap-diagram
+
+caption Architecture
+title Android Mobile Architecture
+
+* app
+** manifest
+***_ AndroidManifest.xml
+
+** java
+*** android.print
+****_ PdfPrint.java
+
+*** org.intelehealth.ekalarogya
+**** activities
+***** activePatientsActivity
+******_ ActivePatientActivity.java
+******_ ActivePatientAdapter.java
+
+***** additionalDocumentsActivity
+******_ AdditionalDocumentAdapter.java
+******_ AdditionalDocumentsActivity.java
+******_ AdditionalDocumentViewHolder.java
+
+***** cameraActivity
+******_ CameraActivity.java
+
+***** chmProfileActivity
+******_ HwProfileActivity.java
+
+***** chooseLanguageActivity
+******_ ChooseLanguageActivity.java
+******_ LanguageListAdapter.java
+
+***** complaintNodeActivity
+******_ ComplaintNodeActivity.java
+******_ ComplaintNodeListAdapter.java
+******_ CustomArrayAdapter.java
+
+***** familyHistoryActivity
+******_ FamilyHistoryActivity.java
+
+***** homeActivity
+******_ HomeActivity.java
+******_ HomeAdapter.java
+
+***** identificationActivity
+****** adapters
+*******_ AlcoholConsumptionHistoryAdapter.java
+*******_ MedicalHistoryAdapter.java
+*******_ SmokingHistoryAdapter.java
+*******_ TobaccoHistoryAdapter.java
+
+****** callback
+*******_ AlcoholConsumptionCallback.java
+*******_ MedicalHistoryCallback.java
+*******_ SmokingHistoryCallback.java
+*******_ TobaccoHistoryCallback.java
+*******_ ViewPagerCallback.java
+
+****** data_classes
+*******_ AlcoholConsumptionHistory.java
+*******_ MedicalHistory.java
+*******_ SmokingHistory.java
+*******_ TobaccoHistory.java
+
+****** dialogs
+*******_ IdentificationActivity.java
+
+***** introActivity
+******_ IntroActivity.java
+
+***** loginActivity
+******_ LoginActivity.java
+
+***** pastMedicalHistoryActivity
+******_ PastMedicalHistoryActivity.java
+
+***** patientDetailActivity
+******_ FamilyMemberAdapter.java
+******_ PatientDetailActivity.java
+
+***** patientSurveyActivity
+******_ PatientSurveyActivity.java
+
+***** physicalExamActivity
+******_ CustomExpandableListAdapter.java
+******_ PhysicalExamActivity.java
+
+***** privacyNoticeActivity
+******_ PrivacyNotice_Activity.java
+
+***** questionNodeActivity
+****** adapters
+*******_ AssociatedSysAdapter.java
+******_ QuestionNodeActivity.java
+******_ QuestionsAdapter.java
+
+***** searchPatientActivity
+******_ SearchPatientActivity.java
+******_ SearchPatientAdapter.java
+******_ SearchSuggestionProvider.java
+
+***** settingsActivity
+******_ SettingsActivity.java
+
+***** setupActivity
+******_ SetupActivity.java
+******_ LocationArrayAdapter.java
+
+***** splash_activity
+******_ SplashActivity.java
+
+***** surveyActivity
+****** fragments
+*******_ FirstScreenFragment.java
+*******_ SecondScreenFragment.java
+*******_ ThirdScreenFragment.java
+******_ SurveyActivity.java
+
+***** todayPatientActivity
+******_ TodayPatientActivity.java
+******_ TodayPatientAdapter.java
+
+***** videoLibraryActivity
+******_ VideoLibraryActivity.java
+******_ VideoLibraryAdapter.java
+******_ VideoLibraryFragment.java
+
+***** visitSummaryActivity
+******_ HorizontalAdapter.java
+******_ MyViewHolder.java
+******_ VisitSummaryActivity.java
+
+***** vitalActivity
+******_ VitalActivity.java
+
+**** app
+*****_ AppConstants.java
+*****_ IntelehealthApplication.java
+
+**** appointment
+***** adapter
+******_ AppointmentListingAdapter.java
+******_ SlotListingAdapter.java
+***** api
+***** dao
+***** model
+***** sync
+***** utils
+*****_ AppointmentListingActivity.java
+*****_ ScheduleListingActivity.java
+
+**** database
+***** dao
+*****_ InteleHealthDatabaseHelper.java
+
+**** dataMigration
+*****_ SmoothUpgrade.java
+
+**** knowledgeEngine
+*****_ Node.java
+*****_ PhysicalExam.java
+
+**** models
+***** download
+
+**** networkApiCalls
+*****_ ApiClient.java
+*****_ ApiInterface.java
+
+**** services
+***** firebase_services
+******_ CallListenerBackgroundService.java
+*****_ DownloadProtocolsTask.java
+*****_ DownloadService.java
+*****_ LastSyncIntentService.java
+*****_ MyIntentService.java
+*****_ RunAfterBootService.java
+*****_ UpdateDownloadPrescriptionService.java
+
+**** syncModule
+*****_ BootCompleteReceiver.java
+*****_ LastSyncWork.java
+*****_ SyncUtils.java
+*****_ SyncWorkManager.java
+*****_ VisitSummaryWork.java
+
+**** utilities
+***** authJWT_API
+***** expection
+***** pageindicator
+*****_ AdminPassword.java
+*****_ AutoFitGridRecyclerView.java
+
+**** widget.materialprogressbar
+*****_ CircleProgressBar.java
+*****_ CustomProgressDialog.java
+*****_ MaterialProgressDrawable.java
+
+** assets
+*** engines
+****_ AbdominalPain.json
+*** fonts
+****_ almondita.ttf
+*** physicalExamAssets
+****_ abnormalnails.json
+***_ config.json
+***_ famHist.json
+***_ patHist.json
+***_ physExam.json
+***_ physExam_1.json
+***_ state_district_tehsil.json
+
+** res
+*** anim
+****_ bottom_up.xml
+****_ scale_with_alpha.xml
+*** drawable
+****_ avatar.png
+*** font
+****_ lato_bold.ttf
+*** layout
+****_ activity_active_patient.xml
+*** menu
+****_ camera.xml
+*** mipmap
+*** values
+****_ arrays.xml
+****_ attrs.xml
+****_ colors.xml
+**** dimes
+****_ pref_keys.xml
+**** strings
+**** styles
+*** xml
+****_ account_preferences.xml
+****_ authenticator.xml
+****_ network_security_configuration.xml
+****_ pref_data_sync.xml
+****_ pref_headers.xml
+****_ pref_languages.xml
+****_ pref_notification.xml
+****_ searchable.xml
+
+* webrtc
+** manifest
+** java
+** res
+
+* Gradle Scripts
+**_ build.gradle (Project: Android-Mobile-Client)
+**_ build.gradle (Module:app)
+**_ build.gradle (Module:webrtc)
+**_ gradle.properties (Project Properties)
+**_ gradle-wrapper.properties (Gradle Version)
+**_ settings.gradle (Project Settings)
+
+
+header
+- Prajwal Maruti Waingankar on 14th May 2023
+endheader
+
+
+
+@endmindmap
