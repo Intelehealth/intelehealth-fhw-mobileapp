@@ -109,7 +109,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String patientHistory, patientHistoryHindi, patientHistoryOdiya,
             patientHistoryGujrati,patientHistoryAssamese,
     patientHistoryBengali, patientHistoryKannada;
-    String phistory = "";
+    String phistory = "", pHistoryOnly_REG = "";
 
     boolean flag = false;
 
@@ -200,12 +200,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         medHistCursor.close();
                     } catch (CursorIndexOutOfBoundsException e) {
                         phistory = ""; // if medical history does not exist
+                        pHistoryOnly_REG = "";
                     }
 
                     // skip
                     flag = false;
                     if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
-                        insertDb(phistory);
+                        insertDb(phistory, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                     }
 
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
@@ -386,6 +387,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = patientHistoryMap.getOption(groupPosition);
@@ -494,9 +496,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     //updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                 }
 
+                /**
+                 * Note: On edit, pastmedhist will never be empty as all the questions are mandatory to be answered
+                 * so no need to add regional here in the below block of if().
+                 */
                 if (patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
                     patientHistory = "";
-                    updateDatabase(patientHistory);
+                    updateDatabase(patientHistory, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
@@ -535,18 +541,22 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         ConfirmationDialog(patientHistory, patientHistory);
                     }
                 } else {
+                    /**
+                     * Note: On edit, pastmedhist will never be empty as all the questions are mandatory to be answered
+                     * so no need to add regional here in the below block of if().
+                     */
                     if (patientHistory == null || patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
                         patientHistory = "";
                         if (flag == true) { // only if OK clicked, collect this new info (old patient)
                             phistory = phistory + patientHistory; // only PMH updated
                             sessionManager.setReturning(true);
                             phistory = Node.dateformate_hi_or_gu_as_en(phistory, sessionManager);
-                            insertDb(phistory);
+                            insertDb(phistory, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                             // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                         } else  // new patient, directly insert into database
                         {
                             patientHistory = Node.dateformate_hi_or_gu_as_en(patientHistory, sessionManager);
-                            insertDb(patientHistory);
+                            insertDb(patientHistory, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                         }
                         Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
@@ -581,6 +591,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         patHist=Node.dateformate_hi_or_gu_as_en(patHist,sessionManager);
         phistory=Node.dateformate_hi_or_gu_as_en(phistory,sessionManager);
         String finalPatHist = patHist;
+        String finalPatHist_REG = displayStr;
 
         alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
 
@@ -589,17 +600,53 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent;
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(finalPatHist);
+                    updateDatabase(finalPatHist, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+
+                    // regional language store in db to show on VS screen.
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), finalPatHist_REG);
+                        updateDatabase(object.toString(), UuidDictionary.PASTHIST_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_update_regional_pathist: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // end
+
                     intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                 } else {
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + finalPatHist; // only PMH updated
                         sessionManager.setReturning(true);
-                        insertDb(phistory);
+
+                        //regional - start
+                        pHistoryOnly_REG = pHistoryOnly_REG + finalPatHist_REG;
+                        JSONObject object = new JSONObject();
+                        try {
+                            object.put("text_" + sessionManager.getAppLanguage(), pHistoryOnly_REG);
+                            insertDb(object.toString(), UuidDictionary.PASTHIST_REG_LANG_VALUE);    // updating regional data.
+                            Log.v("insertion_tag", "insertion_insert_regional_pathist_only: " + object.toString());
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // regional - end
+
+                        insertDb(phistory, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                     } else  // new patient, directly insert into database
                     {
-                        insertDb(finalPatHist);
+                        //regional - start
+                        JSONObject object = new JSONObject();
+                        try {
+                            object.put("text_" + sessionManager.getAppLanguage(), finalPatHist_REG);
+                            insertDb(object.toString(), UuidDictionary.PASTHIST_REG_LANG_VALUE);    // updating regional data.
+                            Log.v("insertion_tag", "insertion_insert_regional_pathist: " + object.toString());
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // regional - end
+
+                        insertDb(finalPatHist, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                     }
                     intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class); // earlier it was vitals
                 }
@@ -638,10 +685,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
      * @param value variable of type String
      * @return long
      */
-    public boolean insertDb(String value) {
+    public boolean insertDb(String value, String conceptID) {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+        obsDTO.setConceptuuid(conceptID);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue(value));
@@ -673,16 +720,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
      * @param string variable of type String
      * @return void
      */
-    private void updateDatabase(String string) {
+    private void updateDatabase(String string, String conceptID) {
 
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
-            obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+            obsDTO.setConceptuuid(conceptID);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB));
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, conceptID));
 
             obsDAO.updateObs(obsDTO);
 

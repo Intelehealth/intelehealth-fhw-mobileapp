@@ -1275,13 +1275,31 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (encounterCursor != null) {
                         encounterCursor.close();
                     }
-                    String famHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] famHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                    String famHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) And voided!='1'";
+                    String[] famHistArgs = {EncounterAdultInitials_LatestVisit,
+                            UuidDictionary.RHK_FAMILY_HISTORY_BLURB, UuidDictionary.FAMHIST_REG_LANG_VALUE};
                     String[] famHistColumns = {"value", " conceptuuid"};
                     Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
-                    famHistCursor.moveToLast();
-                    String famHistValue;
+                  //  famHistCursor.moveToLast();
+                    String famHistValue = "", famHistValue_REG = "";
 
+                    if (famHistCursor != null && famHistCursor.moveToFirst()) {
+                        do {
+                            String famConceptID = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                            if (famConceptID.equalsIgnoreCase(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)) {
+                                famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                            }
+                            else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
+                                famHistValue_REG = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                            }
+                        }
+                        while (famHistCursor.moveToNext());
+                    }
+
+                    if (famHistCursor != null)
+                        famHistCursor.close();
+
+/*
                     try {
                         famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
                     } catch (Exception e) {
@@ -1289,9 +1307,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } finally {
                         famHistCursor.close();
                     }
-
-                    if (famHistValue != null && !famHistValue.equals("")) {
-                        famHistView.setText(Html.fromHtml(famHistValue));
+*/
+                    String value = fetchValue_REG(famHistValue_REG, famHistValue, sessionManager);
+                    if (value != null && !value.equals("")) {
+                        famHistView.setText(Html.fromHtml(value));
                     } else {
                         famHistView.setText(getString(R.string.string_no_hist));
                     }
@@ -1345,14 +1364,30 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (encounterCursor != null) {
                         encounterCursor.close();
                     }
-                    String medHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] medHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                    String medHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) And voided!='1'";
+                    String[] medHistArgs = {EncounterAdultInitials_LatestVisit,
+                            UuidDictionary.RHK_MEDICAL_HISTORY_BLURB, UuidDictionary.PASTHIST_REG_LANG_VALUE};
                     String[] medHistColumms = {"value", " conceptuuid"};
                     Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
-                    medHistCursor.moveToLast();
+                  //  medHistCursor.moveToLast();
 
-                    String medHistValue;
+                    String medHistValue = "", medHistValue_REG = "";
+                    if (medHistCursor != null && medHistCursor.moveToFirst()) {
+                        do {
+                            String medHistConceptID = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                            if (medHistConceptID.equalsIgnoreCase(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)) {
+                                medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                            }
+                            else if (medHistConceptID.equalsIgnoreCase(UuidDictionary.PASTHIST_REG_LANG_VALUE)) {
+                                medHistValue_REG = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                            }
+                        }
+                        while (medHistCursor.moveToNext());
+                    }
 
+                    if (medHistCursor != null)
+                        medHistCursor.close();
+/*
                     try {
                         medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
                     } catch (Exception e) {
@@ -1360,13 +1395,22 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } finally {
                         medHistCursor.close();
                     }
+*/
 
                     Log.v(TAG, medHistValue);
-                    if (medHistValue != null && !medHistValue.equals("")) {
-                        medHistView.setText(Html.fromHtml(medHistValue));
+                    String value = fetchValue_REG(medHistValue_REG, medHistValue, sessionManager);
+                    if (value != null && !value.equals("")) {
+                        medHistView.setText(Html.fromHtml(value));
                     } else {
                         medHistView.setText(getString(R.string.string_no_hist));
                     }
+
+                  /*  if (medHistValue != null && !medHistValue.equals("")) {
+                        medHistView.setText(Html.fromHtml(medHistValue));
+                    } else {
+                        medHistView.setText(getString(R.string.string_no_hist));
+                    }*/
+
                 } while (visitCursor.moveToPrevious());
             }
             visitCursor.close();

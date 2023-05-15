@@ -103,7 +103,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     boolean nodeComplete = false;
 
     int lastExpandedPosition = -1;
-    String insertion = "";
+    String insertion = "", insertion_REG = "";
     private SharedPreferences prefs;
     private String encounterVitals;
     private String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
@@ -296,6 +296,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                     && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
@@ -379,22 +380,34 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
+            String complaintString_REG = currentNode.generateRegional_Language(sessionManager.getAppLanguage());
+            String complaint = currentNode.getText();
+            String complaint_REG = "";
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                complaint_REG = currentNode.getDisplay_hindi();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
+                complaint_REG = currentNode.getDisplay_bengali();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+                complaint_REG = currentNode.getDisplay_kannada();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+                complaint_REG = currentNode.getDisplay_oriya();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+                complaint_REG = currentNode.getDisplay_gujarati();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
+                complaint_REG = currentNode.getDisplay_assamese();
+            else
+                complaint_REG = currentNode.getDisplay();
 
             if (complaintString != null && !complaintString.isEmpty()) {
-                //     String complaintFormatted = complaintString.replace("?,", "?:");
-
-                String complaint = currentNode.getText();
-                //    complaintDetails.put(complaint, complaintFormatted);
-
-//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+                insertion_REG = insertion_REG.concat(Node.bullet_arrow + "<b>" + complaint_REG + "</b>" + ": " + Node.next_line + complaintString_REG + " ");
             } else {
-                String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
-//                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                     insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                    insertion_REG = insertion_REG.concat(Node.bullet_arrow + "<b>" + complaint_REG + "</b>" + ": " + Node.next_line + " ");
                 }
             }
+
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
@@ -434,9 +447,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("\\[Describe]", "");
                     }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
+                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
+                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
+                                .replaceAll("Other \\[Describe]", "")
+                                .replaceAll("\\[Describe]", "");
+                    }
 
-                    updateDatabase(insertion);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
+                    Log.v("insertion_tag", "insertion_update: " + insertion);
+                    updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
+
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
+                      //  object.put("text_en", insertion_REG);
+                        updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
+                        Log.v("insertion_tag", "insertion_update_regional: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
@@ -458,9 +489,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("Other \\[Describe]", "")
                                 .replaceAll("\\[Describe]", "");
                     }
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager);
+                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
+                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
+                                .replaceAll("Other \\[Describe]", "")
+                                .replaceAll("\\[Describe]", "");
+                    }
 
-                    insertDb(insertion);
+                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
+                    Log.v("insertion_tag", "insertion_insert: " + insertion);
+                    insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
+
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
+                     //   object.put("text_en", insertion_REG);
+                        insertDb(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // inserting regional data.
+                        Log.v("insertion_tag", "insertion_insert_regional: " + object.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     Intent intent = new Intent
                             (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -495,12 +544,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      * @param value String to put into DB
      * @return DB Row number, never used
      */
-    private boolean insertDb(String value) {
+    private boolean insertDb(String value, String conceptID) {
 
-        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + conceptID);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+        obsDTO.setConceptuuid(conceptID);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue1(value));
@@ -527,20 +576,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
     }
 
-    private void updateDatabase(String string) {
-        Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-//        }
+    private void updateDatabase(String string, String conceptID) {
+        Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + conceptID);
+
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
-            obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+            obsDTO.setConceptuuid(conceptID);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT));
-
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, conceptID));
             obsDAO.updateObs(obsDTO);
-
         } catch (DAOException dao) {
             FirebaseCrashlytics.getInstance().recordException(dao);
         }
@@ -552,7 +599,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
     }
 
     /**
@@ -585,10 +631,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
             question_recyclerView.setAdapter(adapter);
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-      /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
-        questionListView.setAdapter(adapter);
-        questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-        questionListView.expandGroup(0);*/
             setTitle(patientName + ": " + currentNode.findDisplay());
         }
         else {
@@ -615,6 +657,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
 
@@ -674,6 +718,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-bn", "সংশ্লিষ্ট উপসর্গ");
                 finalAssoSympObj.put("display-kn", "ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");

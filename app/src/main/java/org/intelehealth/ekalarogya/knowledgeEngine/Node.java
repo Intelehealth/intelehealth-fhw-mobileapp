@@ -873,6 +873,7 @@ public class Node implements Serializable {
                     if (associatedTest != null
                             && (associatedTest.trim().equals("Associated symptoms")
                             || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                             || associatedTest.trim().equals("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                             || (associatedTest.trim().equals("H/o specific illness"))
                             || associatedTest.trim().equals("સંકળાયેલ લક્ષણો")
@@ -881,6 +882,7 @@ public class Node implements Serializable {
 
                         if ((associatedTest.trim().equals("Associated symptoms"))
                                 || associatedTest.trim().equals("जुड़े लक्षण")
+                                || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                                 || associatedTest.trim().equals("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                                 || associatedTest.trim().equals("સંકળાયેલ લક્ષણો")
                                 || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
@@ -915,11 +917,148 @@ public class Node implements Serializable {
                             && (associatedTest.trim().equals("Associated symptoms")
                             || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ"))
                             || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                             || associatedTest.trim().equals("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
                             || associatedTest.trim().equals("સંકળાયેલ લક્ષણો")
                             || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    public String generateRegional_Language(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (language.equalsIgnoreCase("hi"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "एच/ओ विशिष्ट बीमारी");
+                    else if (language.equalsIgnoreCase("bn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নির্দিষ্ট অসুস্থতা");
+                    else if (language.equalsIgnoreCase("kn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ನಿರ್ದಿಷ್ಟ ಅನಾರೋಗ್ಯ");
+                    else if (language.equalsIgnoreCase("or"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ନିର୍ଦ୍ଦିଷ୍ଟ ରୋଗ");
+                    else if (language.equalsIgnoreCase("gu"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ચોક્કસ બીમારી");
+                    else if (language.equalsIgnoreCase("as"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নিৰ্দিষ্ট ৰোগ");
+
+                    Log.v("insertion_tag", "associatedTest: " + associatedTest);
+                    if (associatedTest != null
+                            && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
+                            || (associatedTest.trim().equals("H/o specific illness"))
+                            || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
+                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                            || (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ"))
+                            || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                            || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms"))
+                                || associatedTest.trim().equals("जुड़े लक्षण")
+                                || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
+                                || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                                || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
+                                || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                                || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                                || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ"))) {
+
+                            if (!generateAssociatedSymptomsOrHistory_REG(language, node_opt).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " +
+                                    generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                if (language.equalsIgnoreCase("hi"))
+                                    raw = raw + bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language) + next_line;
+                                else if (language.equalsIgnoreCase("or"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("gu"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("as"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("bn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("kn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else
+                                    raw = raw + bullet + " " + node_opt.getDisplay() + " - " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " +
+                                        node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("hi")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("or")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("gu")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("as")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("bn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("kn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else {
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                                }
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null
+                            && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
+                            || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")) ||
+                            (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+                        if (!generateAssociatedSymptomsOrHistory_REG(language, node_opt).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
                             raw = raw.substring(6);
                             Log.e("FinalText= ", raw);
                         } else {
@@ -956,6 +1095,7 @@ public class Node implements Serializable {
                     if (associatedTest != null
                             && (associatedTest.trim().equals("Associated symptoms")
                             || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                             || (associatedTest.trim().equals("H/o specific illness"))
                             || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                             || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
@@ -966,11 +1106,13 @@ public class Node implements Serializable {
 
                         if ((associatedTest.trim().equals("Associated symptoms"))
                                 || associatedTest.trim().equals("जुड़े लक्षण")
+                                || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                                 || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                                 || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
                                 || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
                                 || (associatedTest.trim().equals("संबंधित लक्षणे"))
                                 || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ"))) {
+
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -1017,6 +1159,7 @@ public class Node implements Serializable {
                     if (associatedTest != null
                             && (associatedTest.trim().equals("Associated symptoms")
                             || associatedTest.trim().equals("जुड़े लक्षण")
+                            || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ")
                             || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                             || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
                             (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
@@ -1056,9 +1199,9 @@ public class Node implements Serializable {
         if (mOptions != null && !mOptions.isEmpty()) {
             for (int i = 0; i < mOptions.size(); i++) {
                 if (mOptions.get(i).isSelected()) {
-                    String test = mOptions.get(i).getLanguage();
+                    String test = mOptions.get(i).getLanguage();    // 100 varsh    // Pain radiates to
 
-                    if (language.equalsIgnoreCase("hi")) {
+                 /*   if (language.equalsIgnoreCase("hi")) {
                         test = mOptions.get(i).getDisplay_hindi();
                     } else if (language.equalsIgnoreCase("or")) {
                         test = mOptions.get(i).getDisplay_oriya();
@@ -1070,7 +1213,7 @@ public class Node implements Serializable {
                         test = mOptions.get(i).getDisplay_bengali();
                     }else if (language.equalsIgnoreCase("kn")) {
                         test = mOptions.get(i).getDisplay_kannada();
-                    }
+                    }*/
 
                     if (!test.isEmpty()) {
                         if (test.equals("%")) {
@@ -1098,29 +1241,34 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+
+                                    // in case not answered than
+                                  //  stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
                             } else {
-                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
-                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("[")) {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("")
+                                    /*&& mOptions.get(i).getInputType().equalsIgnoreCase("text")*/) {
+                                    if (language.equalsIgnoreCase("hi") /*&& !mOptions.get(i).getDisplay_hindi().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
-                                    } else if (language.equalsIgnoreCase("or") && !mOptions.get(i).getDisplay_oriya().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("or") /*&& !mOptions.get(i).getDisplay_oriya().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_oriya());
-                                    } else if (language.equalsIgnoreCase("gu") && !mOptions.get(i).getDisplay_gujarati().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("gu") /*&& !mOptions.get(i).getDisplay_gujarati().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_gujarati());
-                                    } else if (language.equalsIgnoreCase("as") && !mOptions.get(i).getDisplay_assamese().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("as") /*&& !mOptions.get(i).getDisplay_assamese().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_assamese());
-                                    } else if (language.equalsIgnoreCase("bn") && !mOptions.get(i).getDisplay_bengali().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("bn") /*&& !mOptions.get(i).getDisplay_bengali().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_bengali());
-                                    } else if (language.equalsIgnoreCase("kn") && !mOptions.get(i).getDisplay_kannada().startsWith("[")) {
+                                    } else if (language.equalsIgnoreCase("kn") /*&& !mOptions.get(i).getDisplay_kannada().startsWith("[")*/) {
                                         stringsList.add(mOptions.get(i).getDisplay_kannada());
                                     } else {
-                                        stringsList.add(mOptions.get(i).getLanguage());
+                                        stringsList.add(mOptions.get(i).getDisplay());
                                     }
+                                 //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
-                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                    stringsList.add(mOptions.get(i).getLanguage());
                                 }
 
                             }
@@ -1217,6 +1365,7 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+                                 //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
@@ -1241,6 +1390,8 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
+                                  //  stringsList.add(mOptions.get(i).getLanguage());
+
                                 }
 
                             }
@@ -2910,7 +3061,7 @@ public class Node implements Serializable {
                         } else if (test.substring(0, 1).equals("%")) {
                             stringsList.add(test.substring(1));
                         } else {
-                            stringsList.add(test);
+                            stringsList.add(test);    // here it will come displayhindi
                         }
                     }
 
@@ -3240,6 +3391,164 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
+    private String generateAssociatedSymptomsOrHistory_REG(String appLanguage, Node associatedSymptomNode) {
+
+        List<String> positiveAssociations = new ArrayList<>();
+        List<String> negativeAssociations = new ArrayList<>();
+        List<String> finalTexts = new ArrayList<>();
+        List<Node> mOptions = associatedSymptomNode.getOptionsList();
+        boolean flagPositive = false;
+        boolean flagNegative = false;
+
+        String mLanguagePositive = "";
+        String mLanguageNegative = "";
+
+        if (appLanguage.equalsIgnoreCase("hi")) {
+            mLanguagePositive = "पेशेंट की रिपोर्ट -" + next_line;
+            mLanguageNegative = "पेशेंट इनकार करता है -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("bn")) {
+            mLanguagePositive = "রোগীর রিপোর্ট -" + next_line;
+            mLanguageNegative = "রোগী অস্বীকার করে -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("kn")) {
+            mLanguagePositive = "ರೋಗಿಯ ವರದಿಗಳು -" + next_line;
+            mLanguageNegative = "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("or")) {
+            mLanguagePositive = "ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି -" + next_line;
+            mLanguageNegative = "ରୋଗୀ ମନା କରୁଛନ୍ତି -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("gu")) {
+            mLanguagePositive = "દર્દીના અહેવાલો -" + next_line;
+            mLanguageNegative = "દર્દી નકારે છે -" + next_line;
+        }
+        else if (appLanguage.equalsIgnoreCase("as")) {
+            mLanguagePositive = "ৰোগীৰ ৰিপৰ্ট -" + next_line;
+            mLanguageNegative = "ৰোগীয়ে অস্বীকাৰ কৰিছে -" + next_line;
+        }
+        else {
+            mLanguagePositive = "Patient reports -" + next_line;
+            mLanguageNegative = "Patient denies -" + next_line;
+        }
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
+
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String pos_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        pos_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        pos_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        pos_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        pos_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        pos_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        pos_REG = mOptions.get(i).getDisplay_assamese();
+                    else
+                        pos_REG = mOptions.get(i).getDisplay();
+
+                        if (mOptions.get(i).getLanguage().equals("%")) {
+                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                            positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                            positiveAssociations.add(pos_REG); //
+                        } else {
+                            positiveAssociations.add(pos_REG); //
+                        }
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
+                                mOptions.get(i).formLanguage(appLanguage); // using formLang(appLang) here so to work for regional Langs.
+
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
+                }
+
+            } else if (mOptions.get(i).isNoSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String neg_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        neg_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        neg_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        neg_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        neg_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        neg_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        neg_REG = mOptions.get(i).getDisplay_assamese();
+                    else
+                        neg_REG = mOptions.get(i).getDisplay();
+
+                        if (mOptions.get(i).getLanguage().equals("%")) {
+                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                            negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                            negativeAssociations.add(neg_REG); //
+                        } else {
+                            negativeAssociations.add(neg_REG); //
+                        }
+                }
+            }
+
+        }
+
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                if (!flagPositive) {
+                    flagPositive = true;
+                    finalTexts.add(mLanguagePositive + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                if (!flagNegative) {
+                    flagNegative = true;
+                    finalTexts.add(mLanguageNegative + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+        String final_language = "";
+
+        if (!finalTexts.isEmpty()) {
+            for (int l = 0; l < finalTexts.size(); l++) {
+                final_language = final_language + ", " + finalTexts.get(l);
+            }
+        }
+
+        final_language = final_language.replaceAll("- ,", "- ");
+        final_language = final_language.replaceAll("of,", "of");
+        final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory_REG: " + final_language);
+
+        return final_language;
+    }
+
+
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
 
         List<String> positiveAssociations = new ArrayList<>();
@@ -3258,8 +3567,6 @@ public class Node implements Serializable {
 
 
         for (int i = 0; i < mOptions.size(); i++) {
-
-
             if (mOptions.get(i).isSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
                     if (mOptions.get(i).getLanguage().equals("%")) {
@@ -3293,17 +3600,6 @@ public class Node implements Serializable {
                 }
             }
 
-
-//            else {
-//                if (mOptions.get(i).getLanguage().equals("%")) {
-//                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-//                    negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
-//                } else if (mOptions.get(i).getLanguage().isEmpty()) {
-//                    negativeAssociations.add(mOptions.get(i).getText());
-//                } else {
-//                    negativeAssociations.add(mOptions.get(i).getLanguage());
-//                }
-//            }
         }
 
         if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
@@ -3366,6 +3662,7 @@ public class Node implements Serializable {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
@@ -3402,6 +3699,7 @@ public class Node implements Serializable {
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))

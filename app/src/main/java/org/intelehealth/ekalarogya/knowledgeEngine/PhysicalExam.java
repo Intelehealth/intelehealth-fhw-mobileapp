@@ -162,6 +162,30 @@ public class PhysicalExam extends Node {
 
         return titles;
     }
+    private String determineTitles_REG(String appLanguage, int index) {
+        List<String> titles = new ArrayList<>();
+
+        for (Node node : selectedNodes) {
+            for (Node subNode : node.getOptionsList()) {
+                if (appLanguage.equalsIgnoreCase("hi"))
+                    titles.add(node.getDisplay_hindi() + " : " + subNode.getDisplay_hindi());
+                else if (appLanguage.equalsIgnoreCase("bn"))
+                    titles.add(node.getDisplay_bengali() + " : " + subNode.getDisplay_bengali());
+                else if (appLanguage.equalsIgnoreCase("kn"))
+                    titles.add(node.getDisplay_kannada() + " : " + subNode.getDisplay_kannada());
+                else if (appLanguage.equalsIgnoreCase("or"))
+                    titles.add(node.getDisplay_oriya() + " : " + subNode.getDisplay_oriya());
+                else if (appLanguage.equalsIgnoreCase("gu"))
+                    titles.add(node.getDisplay_gujarati() + " : " + subNode.getDisplay_gujarati());
+                else if (appLanguage.equalsIgnoreCase("as"))
+                    titles.add(node.getDisplay_assamese() + " : " + subNode.getDisplay_assamese());
+                else
+                    titles.add(node.getText() + " : " + subNode.getText());
+            }
+        }
+
+        return titles.get(index);
+    }
 
     public int getTotalNumberOfExams() {
         return totalExams;
@@ -280,6 +304,72 @@ public class PhysicalExam extends Node {
         }
 
 //        mLanguage = removeCharsFindings(mLanguage);
+        mLanguage = mLanguage.replaceAll("\\. -", ".");
+        mLanguage = mLanguage.replaceAll("\\.", "\\. ");
+        mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
+        mLanguage = mLanguage.replaceAll("% - ", "");
+        mLanguage = mLanguage.replace(next_line,"-");
+        mLanguage = mLanguage.replaceAll("-"+ bullet, next_line + bullet);
+        mLanguage = mLanguage.replaceAll("-"+"<b>", next_line +"<b>");
+        mLanguage = mLanguage.replaceAll("</b>"+ bullet,"</b>"+ next_line + bullet);
+
+        if(StringUtils.right(mLanguage,2).equals(" -")){
+            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        }
+
+        mLanguage = mLanguage.replaceAll("%-"," ");
+        return mLanguage;
+    }
+
+    public String generateFindings_REG(String appLanguage) {
+        String mLanguage = "";
+        Set<String> rootStrings = new HashSet<>();
+        List<String> stringsList = new ArrayList<>();
+
+        int total = this.totalExams;
+        for (int i = 0; i < total; i++) {
+            Node node = getExamNode(i);
+
+//            String title = getTitle(i);
+            String title = determineTitles_REG(appLanguage, i);
+            String[] split = title.split(" : ");
+            String levelOne = split[0];
+            if ((node.isSelected() | node.anySubSelected())) {
+                boolean checkSet = rootStrings.add(levelOne);
+                String display_REG = "";
+                if (appLanguage.equalsIgnoreCase("hi"))
+                    display_REG = node.getDisplay_hindi();
+                else if (appLanguage.equalsIgnoreCase("bn"))
+                    display_REG = node.getDisplay_bengali();
+                else if (appLanguage.equalsIgnoreCase("kn"))
+                    display_REG = node.getDisplay_kannada();
+                else if (appLanguage.equalsIgnoreCase("or"))
+                    display_REG = node.getDisplay_oriya();
+                else if (appLanguage.equalsIgnoreCase("gu"))
+                    display_REG = node.getDisplay_gujarati();
+                else if (appLanguage.equalsIgnoreCase("as"))
+                    display_REG = node.getDisplay_assamese();
+                else
+                    display_REG = node.getDisplay();
+
+                if (checkSet)
+                    stringsList.add("<b>"+levelOne + ": "+"</b>" + bullet + " " + display_REG);
+                else
+                    stringsList.add(bullet + " " + display_REG);
+
+                if (!node.isTerminal()) {
+                    String lang = node.formLanguage(appLanguage);
+                    Log.i(TAG, "generateFindings: "+ lang);
+                    stringsList.add(lang);
+                }
+            }
+        }
+
+        String languageSeparator = next_line;
+        for (int i = 0; i < stringsList.size(); i++) {
+            mLanguage = mLanguage.concat(stringsList.get(i) + languageSeparator);
+        }
+
         mLanguage = mLanguage.replaceAll("\\. -", ".");
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");

@@ -1,5 +1,9 @@
 package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
+
+
+import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
+
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -327,9 +331,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Patient patient = new Patient();
     ObsDTO complaint = new ObsDTO();
+    ObsDTO complaint_REG = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
+    ObsDTO famHistory_REG = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
+    ObsDTO patHistory_REG = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
+    ObsDTO phyExam_REG = new ObsDTO();
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
@@ -382,7 +390,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView respiratoryText;
     TextView tempfaren;
     TextView tempcel;
-    String medHistory;
+    String medHistory, medHistory_REG;
     String baseDir;
     String filePathPhyExam;
     File obsImgdir;
@@ -1183,6 +1191,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
                         }
                     }
+
+/*
+                    if (mComplaint.contains("সংশ্লিষ্ট উপসর্গ")) {
+                        String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+                        for (String compla : cc) {
+                            mComplaint = mComplaint.substring(0, compla.indexOf("সংশ্লিষ্ট উপসর্গ") - 3);
+                        }
+                    }
+*/
 /*
                     if (mComplaint.contains("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
                         String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -1411,6 +1428,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mBMI = "";
         }
         patHistory.setValue(medHistory);
+     //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
 
@@ -1447,14 +1465,66 @@ public class VisitSummaryActivity extends AppCompatActivity {
             sugarFastAndMealView.setText("");
         }
 
-        if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
-        if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+      /*  if (complaint.getValue() != null)
+            complaintView.setText(Html.fromHtml(complaint.getValue()));*/
+
+        // Regional and Normal languages fetching....
+        complaintView.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint, sessionManager)));
+        patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
+        famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
+        physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
+
+/*
+        if (patHistory_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(patHistory_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                patHistView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (patHistory.getValue() != null)
+                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+            }
+        }
+*/
+
+/*
+        if (famHistory_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(famHistory_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                famHistView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (famHistory.getValue() != null)
+                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            }
+        }
+*/
+
+/*
+        if (phyExam_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(phyExam_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                physFindingsView.setText(Html.fromHtml(text));
+            } catch (JSONException e) {
+                if (phyExam.getValue() != null)
+                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            }
+        }
+*/
+
+
+      /*  if (famHistory.getValue() != null)
+            famHistView.setText(Html.fromHtml(famHistory.getValue()));*/
+/*
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
+*/
+
+/*
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+*/
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -1490,8 +1560,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setView(convertView);
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
+*/
+                famHistText.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
                 famHistText.setEnabled(false);
 
 /*
@@ -1603,9 +1676,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                if (complaint.getValue() != null) {
+/*                if (complaint.getValue() != null) {
                     complaintText.setText(Html.fromHtml(complaint.getValue()));
-                }
+                }*/
+                complaintText.setText(Html.fromHtml(fetchObsValue_REG(complaint_REG, complaint, sessionManager)));
                 complaintText.setEnabled(false);
 
 /*
@@ -1714,8 +1788,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
+*/
+                physicalText.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
                 physicalText.setEnabled(false);
 
 /*
@@ -1824,8 +1901,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setView(convertView);
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
+/*
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
+*/
+                historyText.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
                 historyText.setEnabled(false);
 
 /*
@@ -2024,6 +2104,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
         getAppointmentDetails(visitUuid);
     }
+
+
+/*
+    private String fetchObsValue_REG(ObsDTO value_REG, ObsDTO value) {
+        if (value_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value.getValue() != null)
+                    return value.getValue();
+            }
+        }
+        return (value.getValue() != null) ? value.getValue() : "";
+    }
+*/
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
@@ -3348,41 +3445,82 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] columns = {"value", " conceptuuid"};
 
         try {
-            String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            String famHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) AND voided = 0";
+            String[] famHistArgs = {encounterUuidAdultIntial,
+                    UuidDictionary.RHK_FAMILY_HISTORY_BLURB, UuidDictionary.FAMHIST_REG_LANG_VALUE};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
-            famHistCursor.moveToLast();
-            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-            famHistory.setValue(famHistText);
-            famHistCursor.close();
+            if (famHistCursor != null && famHistCursor.moveToFirst()) {
+                do {
+                    String famConceptID = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                    if (famConceptID.equalsIgnoreCase(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)) {
+                        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistory.setValue(famHistText);
+                    }
+                    else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
+                        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistory_REG.setValue(famHistText);
+                    }
+
+                }
+                while (famHistCursor.moveToNext());
+            }
+//            famHistCursor.moveToLast();
+            if (famHistCursor != null)
+                famHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
+            famHistory_REG.setValue(""); // if family history does not exist
         }
 
         try {
-            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+            String medHistSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) AND voided = 0";
 
-            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            String[] medHistArgs = {encounterUuidAdultIntial,
+                    UuidDictionary.RHK_MEDICAL_HISTORY_BLURB, UuidDictionary.PASTHIST_REG_LANG_VALUE};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-            medHistCursor.moveToLast();
-            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-            patHistory.setValue(medHistText);
-
-            if (medHistText != null && !medHistText.isEmpty()) {
-
-                medHistory = patHistory.getValue();
-
-
-                medHistory = medHistory.replace("\"", "");
-                medHistory = medHistory.replace("\n", "");
+            if (medHistCursor != null && medHistCursor.moveToFirst()) {
                 do {
-                    medHistory = medHistory.replace("  ", "");
-                } while (medHistory.contains("  "));
+                    String medConceptID = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("conceptuuid"));
+                    if (medConceptID.equalsIgnoreCase(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)) {  // doctor to see pastmedHist.
+                        String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        patHistory.setValue(medHistText);
+
+                        if (medHistText != null && !medHistText.isEmpty()) {
+                            medHistory = patHistory.getValue();
+                            medHistory = medHistory.replace("\"", "");
+                            medHistory = medHistory.replace("\n", "");
+                            do {
+                                medHistory = medHistory.replace("  ", "");
+                            } while (medHistory.contains("  "));
+                        }
+                    }
+                    // Note: Regional Language.
+                    else if (medConceptID.equalsIgnoreCase(UuidDictionary.PASTHIST_REG_LANG_VALUE)) {
+                        // start
+                        String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        patHistory_REG.setValue(medHistText.replace("?<b>", Node.bullet_arrow));
+
+                        if (medHistText != null && !medHistText.isEmpty()) {
+                            medHistory_REG = patHistory_REG.getValue();
+                            medHistory_REG = medHistory_REG.replace("\"", "");
+                            medHistory_REG = medHistory_REG.replace("\n", "");
+                            do {
+                                medHistory_REG = medHistory_REG.replace("  ", "");
+                            } while (medHistory_REG.contains("  "));
+                        }
+                        //end
+                    }
+                }
+                while (medHistCursor.moveToNext());
             }
-            medHistCursor.close();
+
+            if (medHistCursor != null)
+                medHistCursor.close();
+
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
+            patHistory_REG.setValue(""); // if medical history does not exist
         }
 //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";
@@ -3439,8 +3577,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
                 break;
             }
+            case UuidDictionary.CC_REG_LANG_VALUE: { //Current Complaint Regional
+                complaint_REG.setValue(value.replace("?<b>", Node.bullet_arrow));
+                break;
+            }
             case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination
                 phyExam.setValue(value);
+                break;
+            }
+            case UuidDictionary.PHYEXAM_REG_LANG_VALUE: { //Physical Examination
+                phyExam_REG.setValue(value);
                 break;
             }
             case UuidDictionary.HEIGHT: //Height
