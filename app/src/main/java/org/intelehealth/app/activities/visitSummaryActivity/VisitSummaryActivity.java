@@ -843,8 +843,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setAdapter(stringArrayAdapter);
 
             if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
-//                speciality_spinner.setSelection(9); // wrong implementation
-                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.general_physician)));
+                //for skip protocol option no complaints are registered and thus the visit should be uploaded to no doctor.
+                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.doctor_not_needed)));
                 if (isVisitSpecialityExists)
                     speciality_spinner.setEnabled(false);
             } else {
@@ -1134,6 +1134,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
                                         endVisit();
+
 
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +

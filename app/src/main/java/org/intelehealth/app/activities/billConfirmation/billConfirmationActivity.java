@@ -255,7 +255,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
             confirmBillCV.setVisibility(View.GONE);
-            makePaymentCV.setVisibility(View.VISIBLE);
+            //temporarily hiding this option because of the razorpay new on-boarding restriction imposed by RBI.
+//            makePaymentCV.setVisibility(View.VISIBLE);
             printCV.setVisibility(View.VISIBLE);
             downloadCV.setVisibility(View.VISIBLE);
             shareCV.setVisibility(View.VISIBLE);
@@ -306,7 +307,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                     confirmBillCV.setVisibility(View.GONE);
                     if (not_paying_reasonTIL.getVisibility() == View.VISIBLE)
                         not_paying_reasonTIL.setVisibility(View.GONE);
-                    makePaymentCV.setVisibility(View.VISIBLE);
+                    //temporarily hiding this option because of the razorpay new on-boarding restriction imposed by RBI.
+//                    makePaymentCV.setVisibility(View.VISIBLE);
                     printCV.setVisibility(View.VISIBLE);
                     downloadCV.setVisibility(View.VISIBLE);
                     shareCV.setVisibility(View.VISIBLE);
@@ -580,11 +582,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounter_uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Visit Billing Details"));
-        try {
-            encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        encounterDTO.setEncounterTime(thisDate);
         encounterDTO.setVisituuid(patientVisitID);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
