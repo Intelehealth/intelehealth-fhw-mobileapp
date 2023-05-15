@@ -9,7 +9,7 @@
     <dimen name="list_container_padding">@dimen/std_10dp</dimen>
     <dimen name="input_height">86dp</dimen>
     <dimen name="max_input_height">86dp</dimen>
-    <dimen name="input_top_margin">@dimen/std_21sp</dimen>
+    <dimen name="input_top_margin">@dimen/std_21dp</dimen>
     <dimen name="input_label_size">@dimen/std_21sp</dimen>
     <dimen name="input_inner_size">@dimen/std_24sp</dimen>
     <dimen name="forgot_pwd_size">@dimen/std_21sp</dimen>
@@ -48,7 +48,7 @@
     <dimen name="small_button_text_size">@dimen/std_20sp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_20dp</dimen>
     <dimen name="small_button_padding">@dimen/std_12dp</dimen>
-    <dimen name="bottom_vector_tran_y">@dimen/std_120dp</dimen>
+    <dimen name="bottom_vector_tran_y">@dimen/std_150dp</dimen>
     <dimen name="input_inner_text_size">@dimen/std_22sp</dimen>
     <dimen name="home_container_top_margin">@dimen/std_27dp</dimen>
 </resources>

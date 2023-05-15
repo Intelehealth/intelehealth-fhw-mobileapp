@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/splash_bottom_dark_bg" />
+        app:srcCompat="@drawable/login_bottom_dark_vector" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivBottomLightVector"
@@ -24,5 +24,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/splash_bottom_ligh_bg" />
+        app:srcCompat="@drawable/login_bottom_light_vector" />
 </androidx.constraintlayout.widget.ConstraintLayout>

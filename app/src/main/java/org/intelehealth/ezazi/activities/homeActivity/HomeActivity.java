@@ -917,8 +917,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, filteractivePatient, HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
-            String activeCases = getString(R.string.active_cases, mActivePatientAdapter.activeCasesCount());
-            ((TextView) findViewById(R.id.tvActiveVisitLabel)).setText(activeCases);
+
+            setActiveCasesCount();
+
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
                 public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
@@ -1056,6 +1057,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
 
+    }
+
+    private void setActiveCasesCount() {
+        String activeCases = getString(R.string.active_cases, mActivePatientAdapter.activeCasesCount());
+        ((TextView) findViewById(R.id.tvActiveVisitLabel)).setText(activeCases);
     }
 
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
