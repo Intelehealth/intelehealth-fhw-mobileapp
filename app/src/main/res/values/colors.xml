@@ -72,4 +72,7 @@
     <color name="colorHighAlert">#FD1053</color>
     <color name="colorMediumAlert">#FD8C3E</color>
     <color name="colorNormalAlert">#019283</color>
+    <color name="darkGray_50_perc">#807B7793</color>
+    <color name="colorSelectedListItem">#D7D4EA</color>
+    <color name="colorScrollbar">#C0C0C0</color>
 </resources>

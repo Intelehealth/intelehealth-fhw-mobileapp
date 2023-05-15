@@ -48,4 +48,8 @@
     <dimen name="bottom_vector_tran_y">@dimen/std_72dp</dimen>
     <dimen name="input_inner_text_size">@dimen/std_16sp</dimen>
     <dimen name="home_container_top_margin">@dimen/std_8dp</dimen>
+    <dimen name="dialog_btn_text_size">@dimen/std_18sp</dimen>
+    <dimen name="dialog_btn_horizontal_margin">@dimen/std_24dp</dimen>
+    <dimen name="dialog_btn_vertical_margin">@dimen/std_8dp</dimen>
+    <dimen name="scrollbar_width">@dimen/std_2dp</dimen>
 </resources>

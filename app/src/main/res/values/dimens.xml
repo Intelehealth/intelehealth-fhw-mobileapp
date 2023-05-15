@@ -104,7 +104,9 @@
     <dimen name="std_65dp">65dp</dimen>
     <dimen name="std_50dp">50dp</dimen>
     <dimen name="std_48dp">48dp</dimen>
+    <dimen name="std_47dp">47dp</dimen>
     <dimen name="std_40dp">40dp</dimen>
+    <dimen name="std_29dp">29dp</dimen>
     <dimen name="std_36dp">36dp</dimen>
     <dimen name="std_32dp">32dp</dimen>
     <dimen name="std_34dp">34dp</dimen>
@@ -121,6 +123,7 @@
     <dimen name="std_64dp">64dp</dimen>
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
+    <dimen name="std_2dp">2dp</dimen>
     <dimen name="input_stroke_size">2dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 
