@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.utilities;
 
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
+
 import android.util.Log;
 
 
@@ -143,7 +145,7 @@ public class PatientsFrameJson {
 
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
-            encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
+            encounterProvider.setEncounterRole(ENCOUNTER_ROLE);
           //  encounterProvider.setProvider(session.getProviderID());
             encounterProvider.setProvider(encounterDTO.getProvideruuid());
             Log.d("DTO","DTO:frame "+ encounterProvider.getProvider());

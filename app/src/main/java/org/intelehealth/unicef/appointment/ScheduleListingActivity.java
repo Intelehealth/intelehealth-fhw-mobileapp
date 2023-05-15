@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.appointment;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -11,6 +12,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +23,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
 import org.intelehealth.unicef.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.unicef.appointment.model.AppointmentInfo;
 import org.intelehealth.unicef.appointment.model.BookAppointmentRequest;
-import org.intelehealth.unicef.appointment.model.CancelRequest;
-import org.intelehealth.unicef.appointment.model.CancelResponse;
 import org.intelehealth.unicef.appointment.model.SlotInfo;
 import org.intelehealth.unicef.appointment.model.SlotInfoResponse;
 import org.intelehealth.unicef.appointment.utils.MyDatePicker;
@@ -89,6 +91,12 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 specialityTextView.setText("Педиатр");
             } else if (speciality.equalsIgnoreCase("Neonatologist")) {
                 specialityTextView.setText("Неонатолог");
+            } else if (speciality.equalsIgnoreCase("Psychiatrist")) {
+                specialityTextView.setText("Психиатр");
+            } else if (speciality.equalsIgnoreCase("Endocrinologist")) {
+                specialityTextView.setText("Эндокринолог");
+            } else if (speciality.equalsIgnoreCase("Gastroenterologist")) {
+                specialityTextView.setText("Гастроэнтеролог");
             }
         }
 
@@ -160,10 +168,58 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         return context;
     }
 
-    private void bookAppointment(SlotInfo slotInfo) {
+
+    private void askReason(final SlotInfo slotInfo) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.appointment_cancel_reason_view);
+
+        final TextView titleTextView = (TextView) dialog.findViewById(R.id.titleTv);
+        titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
+        final EditText reasonEtv = dialog.findViewById(R.id.reasonEtv);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioGroup optionsRadioGroup = dialog.findViewById(R.id.reasonRG);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbR1) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                } else if (checkedId == R.id.rbR2) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                } else if (checkedId == R.id.rbR3) {
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final TextView textView = dialog.findViewById(R.id.submitTV);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                String reason = reasonEtv.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    Toast.makeText(ScheduleListingActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                bookAppointment(slotInfo, reason);
+            }
+        });
+
+        dialog.show();
+
+    }
+
+
+    private void bookAppointment(SlotInfo slotInfo, String reason) {
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
+            request.setReason(reason);
         }
         request.setSlotDay(slotInfo.getSlotDay());
         request.setSlotDate(slotInfo.getSlotDate());
@@ -182,7 +238,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "";  //to handle Illegal Argument Exception
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().equalsIgnoreCase(""))
+            baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        else return;
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .bookAppointment(url, request)
@@ -191,7 +250,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
 
-                        if (appointmentDetailsResponse==null || !appointmentDetailsResponse.isStatus()) {
+                        if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
                             Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
                             getSlots();
                         } else {
@@ -214,7 +273,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     private void getSlots() {
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = ""; //to handle Illegal Argument Exception
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().equalsIgnoreCase(""))
+            baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        else return;
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {
@@ -230,7 +292,11 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                                 //------before reschedule need to cancel appointment----
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                bookAppointment(slotInfo);
+                                if (appointmentId != 0) {
+                                    askReason(slotInfo);
+                                } else {
+                                    bookAppointment(slotInfo, null);
+                                }
 
                             }
                         });

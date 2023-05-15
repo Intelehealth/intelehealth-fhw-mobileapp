@@ -81,7 +81,7 @@ public class CallListenerBackgroundService extends Service {
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))
@@ -99,7 +99,8 @@ public class CallListenerBackgroundService extends Service {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
+        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() +
+                new SessionManager(this).getProviderID() + "/VIDEO_CALL");
         if (myRef != null)
             //myRef.setValue("Hello, World!");
             // Read from the database

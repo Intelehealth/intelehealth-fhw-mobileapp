@@ -14,6 +14,8 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -95,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
@@ -257,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        startActivity(Intent.createChooser(intent, "Send Email"));
 //                        //add email function here !
 
-                        String phoneNumberWithCountryCode = "+917005308163";
+                        String phoneNumberWithCountryCode = AppConstants.SUPPORT_CONTACT_NUMBER;
                         String message =
                                 getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
                                         /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);

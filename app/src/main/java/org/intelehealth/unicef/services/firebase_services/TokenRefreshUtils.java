@@ -28,11 +28,19 @@ public class TokenRefreshUtils {
                             return;
                         }
                         // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
-
-                        // Log and toast
-                        Logger.logV(TAG, "FCM token: " + token);
+                        try {
+                            if (task.isSuccessful()) {
+                                //If task is successful ie. if the token is successfully generated and
+                                // fetched in that case only fetch the result - Prajwal.
+                                String token = task.getResult().getToken();
+                                IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+                                // Log and toast
+                                Logger.logV(TAG, "FCM token: " + token);
+                            }
+                        }
+                        catch (Exception e) {
+                            Logger.logE(TAG, "getInstanceId failed", e);
+                        }
                     }
                 });
     }

@@ -3,6 +3,7 @@ package org.intelehealth.unicef.utilities;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import org.intelehealth.unicef.R;
 

@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
@@ -44,6 +46,7 @@ import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.database.dao.VisitsDAO;
 import org.intelehealth.unicef.knowledgeEngine.Node;
+import org.intelehealth.unicef.models.AnswerResult;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -60,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -172,7 +176,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
 
@@ -286,6 +290,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
+            if (question.isSelected() && question.isHasPopUp()) {
+                generatePopup(question.getPop_up());
+            }
+
+            Node rootNode = currentNode.getOption(groupPosition);
+            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+            }
+            Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (!childNode.getId().equals(question.getId())) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+
+            }
+
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
                     if (!filePath.exists()) {
@@ -316,6 +344,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      */
     private void fabClick() {
         nodeComplete = true;
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(QuestionNodeActivity.this);
+        if (!answerResult.result) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, (dialogInterface, i) -> dialogInterface.dismiss());
+            Dialog alertDialog = alertDialogBuilder.show();
+            return;
+        }
 
         if (!complaintConfirmed) {
             questionsMissing();
@@ -587,6 +624,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-ru", "У вас есть следующие симптомы?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
+                assoSympObj.put("multi-choice", true);
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
@@ -637,8 +675,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setMessage(Html.fromHtml(
                     currentNode.formQuestionAnswer(0)
                             .replace("Question not answered", getString(R.string.question_not_answered))
-                            .replace("Patient reports -", getString(R.string.patient_reports) + "-")
-                            .replace("Patient denies -", getString(R.string.patient_denies) + "-")
+                            .replace("Patient reports", getString(R.string.patient_reports))
+                            .replace("Patient denies", getString(R.string.patient_denies))
                             .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
                             .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
                             .replace("Years", getString(R.string.years))
@@ -646,7 +684,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             .replace("time per day", getString(R.string.per_Day))
                             .replace("times per week", getString(R.string.per_Hour))
                             .replace("times per month", getString(R.string.per_Month))
-                            .replace("times per year", getString(R.string.per_Year)) ));
+                            .replace("times per year", getString(R.string.per_Year))));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String a = currentNode.formQuestionAnswer(0);
             Log.d("tag", a);
@@ -826,5 +864,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
     }
 
-
+    private void generatePopup(String popupMessage) {
+        if (!popupMessage.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(popupMessage);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        }
+    }
 }

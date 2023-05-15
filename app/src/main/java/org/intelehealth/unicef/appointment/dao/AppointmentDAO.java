@@ -6,8 +6,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.model.AppointmentInfo;
+import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.utilities.UuidGenerator;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -102,7 +105,7 @@ public class AppointmentDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments", new String[]{});
-
+        EncounterDAO encounterDAO = new EncounterDAO();
 
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -121,7 +124,15 @@ public class AppointmentDAO {
                 appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
                 appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name")));
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
-                appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                try {
+                    if(!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    }else{
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
                 appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);

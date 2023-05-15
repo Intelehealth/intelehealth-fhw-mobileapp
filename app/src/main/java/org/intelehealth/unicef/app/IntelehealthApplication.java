@@ -51,7 +51,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         return sIntelehealthApplication;
     }
 
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -118,12 +117,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     @Override
     public void onActivityStarted(Activity activity) {
-
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-
     }
 
     @Override

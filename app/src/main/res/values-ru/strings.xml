@@ -74,6 +74,7 @@
     <string name="menu_option_settings" translatable="false">Настройки</string>
     <string name="menu_option_end_of_day" translatable="false">Конец дня</string>
     <string name="menu_option_logout" translatable="false">Выход из системы</string>
+    <string name="menu_option_app_lock">Блокировка приложения</string>
 
 
     //Identification Screen
@@ -197,7 +198,8 @@
     <string name="visit_summary_follow_up_date" translatable="false">Дата последующего наблюдения</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Напомните пациенту дату последующего наблюдения: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Пожалуйста, сначала загрузите информацию, прежде чем пытаться завершить визит.</string>
-
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Пожалуйста, загрузите сначала, прежде чем пытаться дать рецепт.</string>
+    <string name="visit_summary_prescription_already_given">Рецепт уже выдан. Пожалуйста, скачайте рецепт.</string>
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Выберите диагностический тест</string>
@@ -684,7 +686,7 @@
     <string name="notification_title">Синхронизация в реальном времени включена!</string>
     <string name="notification_message"></string>
     <string name="ticker_text">Ищу новую задачу</string>
-    <string name="identification_screen_prompt_citizen_id">ПИН (*)</string>
+    <string name="identification_screen_prompt_citizen_id">ПИН</string>
     <string name="citizen_id_validation_message">Пожалуйста введите 14 цифр вашего ПИН</string>
 
     <string name="country_matching_String_forIndia">Индия</string>
@@ -717,6 +719,47 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
+    <string name="startVisitNote">Начать визит</string>
+    <string name="prescGivenSuccessfully">Спасибо! Рецепт выдан успешно</string>
+    <string name="morethanonefollowupnotallowed">Пожалуйста, предоставляйте только одно наблюдение за раз.</string>
+
+    <string name="diagnosis">Диагностика</string>
+    <string name="primary">Начальный</string>
+    <string name="provisiona">Предварительный</string>
+    <string name="confirmed">Подтвержденный</string>
+    <string name="recommended_medication">Рекомендуемое лекарство</string>
+    <string name="medication">Медикамент</string>
+    <string name="strength">Сила</string>
+    <string name="units">Единицы (например: мг)</string>
+    <string name="units_tab">Единицы (например: Таблетка / Сироп)</string>
+    <string name="for_duration">На длительность</string>
+    <string name="units_eg_days_weeks_etc">Единицы (например: дни / недели и т. Д.)</string>
+    <string name="additional_instruction">Дополнительная инструкция</string>
+    <string name="recommended_tests">Рекомендуемые тесты</string>
+    <string name="test">Контрольная работа</string>
+    <string name="advice_or_refer_patient">Посоветуйте или направьте пациента</string>
+    <string name="notes">Примечания</string>
+    <string name="notes_not_shared_with_the_patient">Примечания (не передаются пациенту)</string>
+    <string name="follow_up">Следовать за</string>
+    <string name="sign_and_submit">Войти и отправить</string>
+    <string name="add_test">Добавить тест</string>
+    <string name="add_advice">Добавить совет</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="schedule_a_follow_up">Запланировать продолжение</string>
+    <string name="submit">Представлять на рассмотрение</string>
+    <string name="add_meds">Добавить лекарства</string>
+    <string name="add_diagnosis">Добавить диагноз</string>
+    <string name="amount">Количество</string>
+    <string name="frequency">Частота</string>
+    <string name="route_optional">Маршрут (необязательно)</string>
+    <string name="reason_optional">Причина (необязательно)</string>
+    <string name="choose_a_date">Выберите дату</string>
+    <string name="follow_up_remark">Следующее замечание</string>
+
+    //UK-62
+    <string name="what_to_do_next">Что вы хотите сделать дальше?</string>
+    <string name="sign_submit">Подпишите и отправьте</string>
+    <string name="edit_presc">Редактировать Рецепт</string>
     <!--appointment module strings -->
     <string name="book_appointment">Записаться на Прием</string>
     <string name="reschedule_appointment">Перенесите Встречу</string>
@@ -741,5 +784,22 @@
     <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
     <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
     <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
+
+    <string name="answer_following_questions">Ниже приведены обязательные вопросы, пожалуйста, ответьте на них.</string>
+    <string name="please_select_your_reschedule_reason">Пожалуйста, выберите причину переноса</string>
+    <string name="please_select_your_cancel_reason">Пожалуйста, выберите причину отмены</string>
+    <string name="doctor_is_not_available">Доктор недоступен</string>
+    <string name="patient_is_not_available">Пациент недоступен</string>
+    <string name="others">Другие</string>
+    <string name="please_enter_the_reason_details">Пожалуйста, введите детали причины</string>
+    <string name="save_amp_proceed">Сохранить и продолжить</string>
+    <string name="please_enter_reason_txt">Пожалуйста, укажите причину!</string>
+
+    <string name="patientdetail_seen_on_str">Видел на</string>
+
+    <!--Hospital Type-->
+    <string name="hospital_type">Тип больницы</string>
+    <string name="secondary">Вторичный</string>
+    <string name="tertiary">третичный</string>
 
 </resources>

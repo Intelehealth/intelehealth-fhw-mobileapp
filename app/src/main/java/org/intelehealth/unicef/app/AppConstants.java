@@ -119,5 +119,7 @@ public class AppConstants {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
+
+    public static final String SUPPORT_CONTACT_NUMBER = "+996990655777";//"+917005308163";
 }
 

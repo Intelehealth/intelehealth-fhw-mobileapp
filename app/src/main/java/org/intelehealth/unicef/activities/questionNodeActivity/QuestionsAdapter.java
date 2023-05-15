@@ -146,14 +146,23 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             } else {
                 holder.physical_exam_image_view.setVisibility(View.GONE);
             }
-            holder.tvQuestion.setText(_mNode.findDisplay());
+
+            String physicalExamQuestion = _mNode.findDisplay();
+            holder.tvQuestion.setText(physicalExamQuestion);
+            if (_mNode.isRequired() && !(physicalExamQuestion.charAt(physicalExamQuestion.length() - 1) == '*'))
+                holder.tvQuestion.append("*");
         } else {
             _mNode = currentNode;
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-                holder.tvQuestion.setText(_mNode.getOptionsList().get(0).findDisplay());
+                Node tempNode = _mNode.getOptionsList().get(0);
+                holder.tvQuestion.setText(tempNode.findDisplay());
+                if (tempNode.isRequired()) holder.tvQuestion.append("*");
             } else {
-                holder.tvQuestion.setText(_mNode.getOptionsList().get(position).findDisplay());
+                Node tempNode = _mNode.getOptionsList().get(position);
+                holder.tvQuestion.setText(tempNode.findDisplay());
+                if (tempNode.isRequired()) holder.tvQuestion.append("*");
             }
+
             holder.physical_exam_image_view.setVisibility(View.GONE);
             holder.physical_exam_text_view.setVisibility(View.GONE);
         }
@@ -314,26 +323,35 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             Node groupNode = mGroupNode.getOption(mGroupPos);
             if (groupNode == null) return;
 
+            /*below line is to handle the following crash in firebase crashlytics: Fatal Exception: java.lang.NullPointerException
+            Attempt to invoke virtual method 'boolean java.lang.String.equalsIgnoreCase(java.lang.String)' on a null object reference
+            Version No. 1.8.13(23)
 
-            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_white, 0, 0, 0);
+            - By Nishita Goyal on 26th April 2022
+            */
+
+            if (groupNode.getText() == null) return;
+            else {
+                if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                    if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_white, 0, 0, 0);
+                    } else {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                    }
                 } else {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                    //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
+                    //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                    if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_blue, 0, 0, 0);
+                    } else {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
-                }
-            } else {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
-                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_blue, 0, 0, 0);
-                } else {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-
+                    }
                 }
             }
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 
 import android.text.util.Linkify;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_2);
         setTitle(getString(R.string.privacy_notice_title));

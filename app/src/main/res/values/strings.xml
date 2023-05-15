@@ -73,6 +73,7 @@
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="menu_option_app_lock">App Lock</string>
 
 
     //Identification Screen
@@ -196,7 +197,8 @@
     <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
-
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
+    <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
@@ -681,7 +683,7 @@
     <string name="notification_title">Realtime sync is ON!</string>
     <string name="notification_message"></string>
     <string name="ticker_text">Looking for new task</string>
-    <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
+    <string name="identification_screen_prompt_citizen_id">Citizen ID</string>
     <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
     <string name="country_matching_String_forIndia">India</string>
     <string name="country_matching_String_forPhilippines">Philippines</string>
@@ -741,4 +743,61 @@
     <string name="postal_code_invalid_txt">Please enter valid postal code</string>
     <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
     <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
+    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
+    <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
+    <string name="patient_interaction">Patient Interaction</string>
+
+    <string name="diagnosis">Diagnosis</string>
+    <string name="primary">Primary</string>
+    <string name="provisiona">Provisional</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="recommended_medication">Recommended Medication</string>
+    <string name="medication">Medication</string>
+    <string name="strength">Strength</string>
+    <string name="units">Units (eg: mg)</string>
+    <string name="units_tab">Units (eg: Tab/Syrup)</string>
+    <string name="for_duration">For Duration</string>
+    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>
+    <string name="additional_instruction">Additional Instruction</string>
+    <string name="recommended_tests">Recommended Tests</string>
+    <string name="test">Test</string>
+    <string name="advice_or_refer_patient">Advice or Refer Patient</string>
+    <string name="notes">Notes</string>
+    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>
+    <string name="follow_up">Follow Up</string>
+    <string name="sign_and_submit">Sign and Submit</string>
+    <string name="add_test">Add Test</string>
+    <string name="add_advice">Add Advice</string>
+    <string name="add_note">Add Note</string>
+    <string name="schedule_a_follow_up">Schedule a follow up</string>
+    <string name="submit">Submit</string>
+    <string name="add_meds">Add Meds</string>
+    <string name="add_diagnosis">Add Diagnosis</string>
+    <string name="startVisitNote">Start Visit Note</string>
+    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
+    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
+    <string name="amount">Amount</string>
+    <string name="frequency">Frequency</string>
+    <string name="route_optional">Route (Optional)</string>
+    <string name="reason_optional">Reason (Optional)</string>
+    <string name="choose_a_date">Choose a date</string>
+    <string name="follow_up_remark">Follow up remark</string>
+
+    //UK-62
+    <string name="what_to_do_next">What do you wish to do next?</string>
+    <string name="sign_submit">Sign and Submit</string>
+    <string name="edit_presc">Edit Prescription</string>
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
+
+    <string name="patientdetail_seen_on_str">Seen on</string>
+    <string name="hospital_type">Hospital Type</string>
+    <string name="secondary">Secondary</string>
+    <string name="tertiary">Tertiary</string>
 </resources>

@@ -264,6 +264,20 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_ru_economic(String val) {
+        switch (val) {
+            case "выше черты бедности":
+                val = "APL";
+                break;
+            case "За чертой бедностии":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_economic_edit(String val) {
         switch (val) {
             case "APL":
@@ -299,6 +313,20 @@ public final class StringUtils {
                 break;
             case "BPL":
                 val = "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ru_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "выше черты бедности";
+                break;
+            case "BPL":
+                val = "За чертой бедностии";
                 break;
             default:
                 return val;
@@ -481,7 +509,7 @@ public final class StringUtils {
         return mdob_text;
     }
 
-    public static String ru__or_dob(String dob) { //English dob is replaced to Odiya text.
+    public static String ru__or_dob(String dob) { //English dob is replaced to russian text.
         String mdob_text = dob
                 .replace("January", "Январь")
                 .replace("February", "Февраль")
@@ -774,58 +802,58 @@ public final class StringUtils {
 
                 //state of kirgistan
                 case "Bishkek":
-                    val = "Выбирать";
-                    break;
-                case "Tokmok":
                     val = "г. Бишкек";
                     break;
-                case "Kara–Balta":
+                case "Tokmok":
                     val = "г. Токмок";
                     break;
-                case "Chuy Oblast'":
+                case "Kara–Balta":
                     val = "г. Кара-Балта";
                     break;
-                case "Balykchi":
+                case "Chuy Oblast'":
                     val = "Чуйская область";
                     break;
-                case "Cholpon-Ata":
+                case "Balykchi":
                     val = "г. Балыкчи";
                     break;
-                case "Karakol":
+                case "Cholpon-Ata":
                     val = "г. Чолпон-Ата";
                     break;
-                case "Issyk-Kul' Oblast'":
+                case "Karakol":
                     val = "г. Каракол";
                     break;
-                case "Talas":
+                case "Issyk-Kul' Oblast'":
                     val = "Иссык-Кульская область";
                     break;
-                case "Talas Oblast'":
+                case "Talas":
                     val = "г. Талас";
                     break;
-                case "Dzhalalаbad":
+                case "Talas Oblast'":
                     val = "Таласская область";
                     break;
+                case "Dzhalalаbad":
+                    val = "г. Джалал-Абад";
+                    break;
                 case "Dzhalаlabad Oblast'":
-                    val = "г. Жалалабад";
+                    val = "Джалал-Абадская область";
                     break;
                 case "Osh":
-                    val = "Жалалабадская область";
-                    break;
-                case "Osh Oblast'":
                     val = "г. Ош";
                     break;
-                case "Naryn":
+                case "Osh Oblast'":
                     val = "Ошская область";
                     break;
-                case "Naryn Oblast'":
+                case "Naryn":
                     val = "г. Нарын";
                     break;
-                case "Batken":
+                case "Naryn Oblast'":
                     val = "Нарынская область";
                     break;
-                case "Batken Oblast'":
+                case "Batken":
                     val = "г. Баткен";
+                    break;
+                case "Batken Oblast'":
+                    val = "Баткенская область";
                     break;
 
             }
@@ -996,10 +1024,10 @@ public final class StringUtils {
             case "Таласская область":
                 val = "Talas Oblast'";
                 break;
-            case "г. Жалалабад":
+            case "г. Джалал-Абад":
                 val = "Dzhalalаbad";
                 break;
-            case "Жалалабадская область":
+            case "Джалал-Абадская область":
                 val = "Dzhalаlabad Oblast'";
                 break;
             case "г. Ош":
@@ -1057,7 +1085,9 @@ public final class StringUtils {
 
         }
         return val;
-    }public static String getAppointmentBookStatus(String val, String locale) {
+    }
+
+    public static String getAppointmentBookStatus(String val, String locale) {
 
         if (locale.equalsIgnoreCase("ru")) {
 

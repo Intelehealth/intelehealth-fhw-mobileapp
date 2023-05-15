@@ -50,6 +50,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.multidex.MultiDex;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -244,6 +245,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
@@ -320,7 +322,7 @@ public class HomeActivity extends AppCompatActivity {
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+917005308163";
+                String phoneNumberWithCountryCode = AppConstants.SUPPORT_CONTACT_NUMBER;
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
                                 /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
@@ -527,6 +529,9 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        boolean isChecked = sessionManager.isEnableAppLock();
+        MenuItem item = menu.findItem(R.id.fingerprintLock);
+        item.setChecked(isChecked);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -751,8 +756,17 @@ public class HomeActivity extends AppCompatActivity {
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
                 return true;
+
+            case R.id.fingerprintLock:
+                if(item.isChecked()) {
+                    sessionManager.setEnableAppLock(false);
+                    item.setChecked(false);
+                }
+                else {
+                    sessionManager.setEnableAppLock(true);
+                    item.setChecked(true);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

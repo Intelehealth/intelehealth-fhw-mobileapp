@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.physcialExamActivity;
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -32,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -70,8 +73,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -166,16 +167,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
-            Log.d(TAG, TAG+" - selectedExams - "+selectedExams);
-            Log.d(TAG, TAG+" - encounterAdultIntials - "+encounterAdultIntials);
+            Log.d(TAG, TAG + " - selectedExams - " + selectedExams);
+            Log.d(TAG, TAG + " - encounterAdultIntials - " + encounterAdultIntials);
             ObsDAO obsDAO = new ObsDAO();
             try {
                 mSelectedComplainName = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
-                Log.v(TAG, "mSelectedComplainName - "+mSelectedComplainName);
-                if(mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
-                        mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича") ){
-                    mFileName = "physExam1.json";
+                if (mSelectedComplainName != null) {
+                    Log.v(TAG, "mSelectedComplainName - " + mSelectedComplainName);
+                    if (mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
+                            mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича")) {
+                        mFileName = "physExam.json";
 
+                    }
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -185,18 +188,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
-        Log.v(TAG, "mFileName - "+mFileName);
+        Log.v(TAG, "mFileName - " + mFileName);
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
         } else {
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
-            Log.d(TAG, selectedExamsList.toString());
+            //Log.d(TAG, selectedExamsList.toString());
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
-            Log.d(TAG, selectedExamsList.toString());
+            /*Log.d(TAG, selectedExamsList.toString());
             for (String string : selectedExamsList)
-                Log.d(TAG, string);
+                Log.d(TAG, string);*/
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -206,7 +209,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (hasLicense) {
                 try {
                     JSONObject currentFile = null;
-                    currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
+                    String content = FileUtils.readFileRoot(mFileName, this);
+                    if (content == null) finish();
+                    currentFile = new JSONObject(content);
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -215,7 +220,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
             }
         }
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
@@ -275,6 +280,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
 
         mgender = fetch_gender(patientUuid);
+        if (physicalExamMap == null) {
+            finish();
+        }
 
         if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
@@ -320,10 +328,10 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            if(sessionManager.getAppLanguage().equals("ru")){
-                physicalString =  physicalString.replace("General exams", "Общие экзамены");
-                physicalString =  physicalString.replace("Neonate", "Новорожденный");
-                physicalString =  physicalString.replace("Child", "Ребенок");
+            if (sessionManager.getAppLanguage().equals("ru")) {
+                physicalString = physicalString.replace("General exams", "Общие экзамены");
+                physicalString = physicalString.replace("Neonate", "Новорожденный");
+                physicalString = physicalString.replace("Child", "Ребенок");
             }
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
@@ -406,8 +414,29 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             } else {
                 Node.handleQuestion(question, this, adapter, null, null);
             }
+        }
 
+        /* Added by Arpan Sircar
+         // This code handles the enable-exclusive-option and is-exclusive-option attributes inside our json.
+         // We use these options when we want to add an option which should exclusively be allowed to select. And any one of the other remaining options should be selected.
+         // For example - Yes, No, and Take a picture. In this example, Take a picture should be exclusively allowed to select. And any one between Yes and No should be selected.
+         */
+        Node rootNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition);
+        boolean isCurrentSelectedOptionExclusive = rootNode.getOption(childPos).isExclusiveOption();
 
+        // Basically, this code will check if the parent node of the options are marked as exclusive.
+        if (rootNode.isEnableExclusiveOption()) {
+
+            // If it is marked as exclusive, it will loop through all the child options
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+
+                // While looping if the code finds the option that is currently marked as exclusive it will simply select that option.
+                // However, if the code finds the other options, i.e., non-exclusive options, we will simply highlight the one selected and set the other nodes as unselected.
+                if (!isCurrentSelectedOptionExclusive && !childNode.isExclusiveOption()) {
+                    unselectOtherNonExclusiveNodes(rootNode, rootNode.getOption(childPos).getId());
+                }
+            }
         }
 
         if (!question.isTerminal() && question.isSelected()) {
@@ -415,6 +444,15 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
+    // This option is responsible for un-selecting the other options which are marked as non-exclusive
+    private void unselectOtherNonExclusiveNodes(Node rootNode, String selectedId) {
+        for (int j = 0; j < rootNode.getOptionsList().size(); j++) {
+            Node childNode = rootNode.getOptionsList().get(j);
+            if (!childNode.isExclusiveOption() && !childNode.getId().equalsIgnoreCase(selectedId)) {
+                childNode.setUnselected();
+            }
+        }
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -679,7 +717,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             case android.R.id.home:
                 if (intentTag != null && intentTag.equals("edit")) {
                     finish();
-                }else {
+                } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
                     dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -689,7 +727,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 int count = visitsDAO.deleteByVisitUUID(visitUuid);
-                                if(count!=0) {
+                                if (count != 0) {
 
                                     ObsDAO obsDAO = new ObsDAO();
                                     obsDAO.deleteByEncounterUud(encounterAdultIntials);

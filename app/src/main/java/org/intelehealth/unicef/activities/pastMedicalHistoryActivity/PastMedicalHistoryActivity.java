@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -240,7 +241,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         setTitle(getString(R.string.title_activity_patient_history));
         setTitle(getTitle() + ": " + patientName);
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_medical_history);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -344,7 +345,25 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         } else {
             patientHistoryMap.getOption(groupPosition).setUnselected();
         }
-        adapter.notifyDataSetChanged();
+
+        Node rootNode = patientHistoryMap.getOption(groupPosition);
+        if (rootNode.isMultiChoice() && !rootNode.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                    patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
+
+        if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && clickedNode.isExcludedFromMultiChoice() && clickedNode.isSelected())) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (!childNode.getId().equals(clickedNode.getId())) {
+                    patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
 
         if (clickedNode.getInputType() != null) {
             if (!clickedNode.getInputType().equals("camera")) {
@@ -360,6 +379,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
         }
 
+        adapter.notifyDataSetChanged();
     }
 
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.adapter.AppointmentListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -81,8 +82,20 @@ public class AppointmentListingActivity extends AppCompatActivity {
     }
 
     private void getSlots() {
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        /* below changes are done to handle the following crash in firebase crashlytics
+            Fatal Exception: java.lang.RuntimeException
+            Unable to start activity ComponentInfo{org.intelehealth.unicef/org.intelehealth.unicef.activities.homeActivity.HomeActivity}:
+            java.lang.IllegalArgumentException: Invalid URL host: ""
+             Version No. 1.8.15(25)
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+            - By Nishita Goyal on 30th May 2022
+         */
+
+        String baseurl = "";
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().equalsIgnoreCase(""))
+            baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        else return;
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
 

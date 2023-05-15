@@ -11,6 +11,10 @@ import org.intelehealth.unicef.models.dto.ResponseDTO;
 import org.intelehealth.unicef.models.loginModel.LoginModel;
 import org.intelehealth.unicef.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.unicef.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescResponse;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.unicef.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.unicef.models.statewise_location.District_Sanch_Village;
@@ -21,6 +25,7 @@ import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -101,4 +106,30 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<EndVisitResponseBody> END_VISIT_RESPONSE_BODY_OBSERVABLE(
+            @Url String url,
+            @Body EndVisitEncounterPrescription endVisitEncounterPrescription,
+            @Header("Authorization") String authHeader);
+
+    @POST
+    Observable<ObsPrescResponse> OBS_PRESCRIPTION_UPLOAD
+            (@Url String url,
+             @Body ObsPrescription prescription,
+             @Header("Authorization") String authHeader);
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<ResponseBody> OBS_SIGNANDSUBMIT_STATUS(
+            @Url String url,
+            @Body EndVisitEncounterPrescription prescription,
+            @Header("Authorization") String authHeader);
+
+    @DELETE
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
+            @Url String url,
+            @Header("Authorization") String authHeader);
+
 }
