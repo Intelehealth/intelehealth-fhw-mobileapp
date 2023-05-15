@@ -162,6 +162,19 @@ public class VisitReasonCaptureFragment extends Fragment {
                 String name = (String) adapterView.getItemAtPosition(position);
                 if (name != null && !name.isEmpty()) {
                     mSelectedComplains.add(name);
+                    // cross check for list also to keep on sync both selected
+                    for (int i = 0; i < mVisitReasonItemList.size(); i++) {
+                        List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
+                        for (int j = 0; j < reasonDataList.size(); j++) {
+                            ReasonData reasonData = reasonDataList.get(j);
+                            if (reasonData.getReasonName().equalsIgnoreCase(name)) {
+                                mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
+                                break;
+                            }
+                        }
+                    }
+                    mReasonListingAdapter.refresh(mVisitReasonItemList);
+
                     showSelectedComplains();
                     mVisitReasonAutoCompleteTextView.setText("");
                 }

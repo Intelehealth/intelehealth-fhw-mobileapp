@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -95,7 +96,7 @@ public class PhysicalExaminationFragment extends Fragment {
         complainBasicInfo.setPhysicalExam(true);
         mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
                 // avoid the scroll for old data change
