@@ -47,13 +47,6 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         if (patinet != null) {
             holder.bind(patinet);
         }
-
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override

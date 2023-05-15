@@ -200,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     ObsDAO obsDAO = new ObsDAO();
     List<ObsDTO> obsDTOList = null;
 
-    private TextView mEndShiftTextView;
+    private Button mEndShiftTextView;
 
     private BottomNavigationView bottomNavigationView;
     /*eZazi End*/

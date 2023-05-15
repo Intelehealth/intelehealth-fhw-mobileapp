@@ -303,7 +303,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 context.startActivity(intent);*/
             }
         };
-//        holder.getRootView().setOnClickListener(listener);
+        holder.getRootView().setOnClickListener(listener);
 //        holder.btnVisitDetails.setOnClickListener(listener);
 
         boolean enableEndVisit = true;
