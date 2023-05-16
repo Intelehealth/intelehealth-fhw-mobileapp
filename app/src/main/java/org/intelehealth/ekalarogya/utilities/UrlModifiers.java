@@ -72,10 +72,12 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
+/*
     public String auth_jwt_url(String SETUP_URL) {
         String BASE_URL = "https://" + SETUP_URL + ":3030/auth/login";
         return BASE_URL;
     }
+*/
 
 
 }

@@ -515,7 +515,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                             sessionManager.setMindMapServerUrl(url);
-                            getMindmapDownloadURL("https://" + url + ":3030/", key);
+                            getMindmapDownloadURL("https://" + url + ":3004/", key);
                             // as per new jwt implementation -> changing port from 3004 -> 3030 - Prajwal.
 
                         }
@@ -792,9 +792,13 @@ public class HomeActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
+            /*Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {*/
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
             resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<DownloadMindMapRes>() {
+
                 @Override
                 public void onNext(DownloadMindMapRes res) {
                     customProgressDialog.dismiss();

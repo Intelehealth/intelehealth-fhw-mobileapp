@@ -1362,14 +1362,14 @@ public class SetupActivity extends AppCompatActivity {
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
 
                 if (authencated) {
-
-                    /**
-                     * Here, the entered login creds is Authenticated so we will now call JWT authentication api
-                     * by passing the login creds entered during setup screen of HW and rememberMe: True status.
-                     */
-                    // Start
-                    ApiCallUtils.auth_login_jwt_token(context, CLEAN_URL, USERNAME, PASSWORD);
-                    // End
+//
+//                    /**
+//                     * Here, the entered login creds is Authenticated so we will now call JWT authentication api
+//                     * by passing the login creds entered during setup screen of HW and rememberMe: True status.
+//                     */
+//                    // Start
+//                    ApiCallUtils.auth_login_jwt_token(context, CLEAN_URL, USERNAME, PASSWORD);
+//                    // End
 
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
@@ -1543,7 +1543,8 @@ public class SetupActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
+         //   Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, sessionManager.getJwtAuthToken());
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ApiCallUtils {
     public static final String TAG = ApiCallUtils.class.getName();
 
+/*
     public static void auth_login_jwt_token(Context context, String BASE_URL, String username, String password) {
 
         UrlModifiers urlModifiers = new UrlModifiers();
@@ -54,4 +55,5 @@ public class ApiCallUtils {
                     }
                 });
     }
+*/
 }
