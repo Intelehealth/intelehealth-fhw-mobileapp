@@ -2,13 +2,12 @@ package org.intelehealth.ezazi.activities.setupActivity;
 
 import android.accounts.Account;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -18,49 +17,31 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.Patterns;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.webkit.URLUtil;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.Patterns;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.URLUtil;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.DownloadMindMapRes;
@@ -71,7 +52,8 @@ import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
-import org.intelehealth.ezazi.utilities.AdminPassword;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
@@ -79,10 +61,18 @@ import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringEncryption;
+import org.intelehealth.ezazi.utilities.TextThemeUtils;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -162,7 +152,7 @@ public class SetupActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                finish();
             }
         });
 
@@ -198,6 +188,8 @@ public class SetupActivity extends AppCompatActivity {
 //        r2 = findViewById(R.id.downloadMindmap);
 
         Button submitButton = findViewById(R.id.btnSetup);
+        MaterialButton forgotPassword = findViewById(R.id.includeForgotPassword);
+        TextThemeUtils.applyUnderline(forgotPassword);
 
         mDropdownLocation = findViewById(R.id.spinner_location);
 //        spinner_state = findViewById(R.id.spinner_state);
@@ -246,8 +238,9 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+
+        showInternetConfirmationDialog();
+
 
         if (!setupUrl.trim().isEmpty() || !setupUrl.trim().equalsIgnoreCase("")) {
 
@@ -529,6 +522,20 @@ public class SetupActivity extends AppCompatActivity {
 
 
         showProgressbar();
+    }
+
+    // Replaced by Mithun Vaghela
+    private void showInternetConfirmationDialog() {
+        DialogArg<String> args = new DialogArg<>();
+        args.setTitle(R.string.generic_warning);
+        args.setPositiveBtnLabel(R.string.generic_ok);
+        args.setContent(getString(R.string.setup_internet));
+        ConfirmationDialogFragment dialogFragment = ConfirmationDialogFragment.getInstance(args);
+        dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getCanonicalName());
+
+
+//        DialogUtils dialogUtils = new DialogUtils();
+//        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
     }
 
 //    private void empty_spinner(String value) {
@@ -961,6 +968,7 @@ public class SetupActivity extends AppCompatActivity {
                                 mLocations = locationList.getResults();
                                 List<String> items = getLocationStringList(locationList.getResults());
                                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                                mDropdownLocation.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
                                 mDropdownLocation.setAdapter(adapter);
                                 isLocationFetched = true;
                             } else {

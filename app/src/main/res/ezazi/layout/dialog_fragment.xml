@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="title"
+            type="Integer" />
+
+        <variable
+            name="submitLabel"
+            type="Integer" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -24,8 +37,10 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDialogTitle"
                 style="@style/Theme.EZazi.Text.Dialog.Title"
+                stringRes="@{title}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Yes" />
@@ -38,15 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDialogTitle">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    style="Theme.EZazi.Scrollbar.Thumb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/single_choice_dialog_item" />
+                <include layout="@layout/dialog_confirmation_view" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,7 +78,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/reject"
+                android:contentDescription="@string/cancel"
+                android:text="@string/cancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/includeLoginInput" />
@@ -79,11 +87,13 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubmit"
                 style="@style/Theme.EZazi.Dialog.Button.Next"
+                stringRes="@{submitLabel}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dialog_btn_horizontal_margin"
                 android:layout_weight="1"
-                android:text="@string/accept"
+                android:contentDescription="@string/submit"
+                android:text="@string/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/includeLoginInput" />

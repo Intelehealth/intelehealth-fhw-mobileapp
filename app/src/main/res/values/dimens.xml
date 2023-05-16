@@ -124,7 +124,7 @@
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
     <dimen name="std_2dp">2dp</dimen>
-    <dimen name="input_stroke_size">2dp</dimen>
+    <dimen name="input_stroke_size">0.5dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 
     <dimen name="splash_bottom_dark_bg_width">400</dimen>
@@ -134,7 +134,7 @@
     <dimen name="splash_bottom_text_margin">42dp</dimen>
     <dimen name="splash_bottom_text_size">@dimen/std_14sp</dimen>
     <dimen name="input_height">56dp</dimen>
-    <dimen name="max_input_height">48dp</dimen>
+    <dimen name="max_input_height">@dimen/std_48dp</dimen>
     <dimen name="std_69dp">69dp</dimen>
     <dimen name="std_31dp">31dp</dimen>
     <dimen name="std_120dp">120dp</dimen>

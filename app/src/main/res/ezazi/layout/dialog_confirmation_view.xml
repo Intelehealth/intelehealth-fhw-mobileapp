@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="title"
+            type="Integer" />
+
+        <variable
+            name="content"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingTop="@dimen/screen_container_padding"
+        android:paddingEnd="@dimen/screen_padding"
+        android:paddingBottom="@dimen/screen_padding">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvAlertTitle"
+            style="@style/Theme.EZazi.Text.Dialog.Alert.Title"
+            stringRes="@{title}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/screen_container_padding"
+            android:textColor="@color/red"
+            android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/emergency" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{content}"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAlertTitle"
+            tools:text="@string/setup_internet" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

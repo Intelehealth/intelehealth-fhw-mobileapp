@@ -9,4 +9,6 @@
     <string name="content_complete_setup">Please complete your one-time\nset-up activity</string>
     <string name="welcome_user">Hi! %1$s</string>
     <string name="hint_search_cases">Search cases</string>
+    <string name="select_all">Select All</string>
+    <string name="emergency">Emergency!</string>
 </resources>

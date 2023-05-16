@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -47,6 +48,7 @@ import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringEncryption;
+import org.intelehealth.ezazi.utilities.TextThemeUtils;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
@@ -104,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
 
         setTitle(R.string.title_activity_login);
+
+        MaterialButton forgotPassword = findViewById(R.id.tvActionForgotPassword);
+        TextThemeUtils.applyUnderline(forgotPassword);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
         txt_cant_login = findViewById(R.id.tvActionForgotPassword);

@@ -1,11 +1,9 @@
-<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    style="@style/LabelStyle"
+    android:background="@drawable/rounded_corner_white_with_gray_stroke"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/std_16dp"
-    android:background="@drawable/dropdown_item_selector"
     android:ellipsize="marquee"
-    android:text="@string/title_setup"
-    android:fontFamily="@font/lato_regular"
-    android:singleLine="true" />
+    android:padding="@dimen/std_16dp"
+    android:singleLine="true"
+    android:text="@string/title_setup" />

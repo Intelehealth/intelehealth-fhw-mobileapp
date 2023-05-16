@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.dialog;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +17,30 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.DialogFragmentBinding;
 import org.intelehealth.ezazi.ui.dialog.listener.OnDialogActionListener;
+import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
 
 /**
  * Created by Vaghela Mithun R. on 15-05-2023 - 15:22.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class BaseDialogFragment extends AppCompatDialogFragment implements OnDialogActionListener, View.OnClickListener {
+abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements OnDialogActionListener, View.OnClickListener {
+    public static final String ARGS = "dialog_args";
+    protected DialogArg<T> args;
+
+    public static Bundle getDialogArgument(DialogArg<?> arg) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARGS, arg);
+        return bundle;
+    }
+
     private DialogFragmentBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DialogFragmentBinding.inflate(inflater, container, false);
+        setDialogArguments();
         return binding.getRoot();
     }
 
@@ -36,15 +49,35 @@ abstract class BaseDialogFragment extends AppCompatDialogFragment implements OnD
         binding.clDataContainer.addView(getDataContentView());
         binding.btnDismiss.setOnClickListener(this);
         binding.btnSubmit.setOnClickListener(this);
+        binding.tvDialogTitle.setVisibility(hasTitle() ? View.VISIBLE : View.GONE);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                .TRANSPARENT));
+        return dialog;
+    }
+
+    private void setDialogArguments() {
+        if (getArguments() != null) {
+            args = (DialogArg<T>) getArguments().getSerializable(ARGS);
+            if (hasTitle()) binding.setTitle(args.getTitle());
+            binding.setSubmitLabel(args.getPositiveBtnLabel());
+        }
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnSubmit) {
             onSubmit();
+            dismiss();
         } else if (view.getId() == R.id.btnDismiss) {
             onDismiss();
+            dismiss();
         }
     }
 
@@ -68,6 +101,10 @@ abstract class BaseDialogFragment extends AppCompatDialogFragment implements OnD
         return params;
     }
 
+    public void changeSubmitButtonState(boolean isActive) {
+        binding.btnSubmit.setEnabled(isActive);
+    }
+
     /**
      * Data Container child view for dialog, it will be recycler view,
      * simple alert content. This view implemented on child class of [BaseDialogFragment]
@@ -75,4 +112,6 @@ abstract class BaseDialogFragment extends AppCompatDialogFragment implements OnD
      * @return view
      */
     abstract View getContentView();
+
+    abstract boolean hasTitle();
 }

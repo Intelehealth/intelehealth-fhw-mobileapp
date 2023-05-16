@@ -12,6 +12,9 @@ public class FamilyMemberRes {
     @Expose
     private String name;
 
+    // Added by Mithun Vaghela
+    private String visitUuid;
+
     public String getOpenMRSID() {
         return openMRSID;
     }
@@ -26,5 +29,13 @@ public class FamilyMemberRes {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getVisitUuid() {
+        return visitUuid;
+    }
+
+    public void setVisitUuid(String visitUuid) {
+        this.visitUuid = visitUuid;
     }
 }

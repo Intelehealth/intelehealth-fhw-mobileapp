@@ -451,6 +451,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         Logger.logV(TAG, "creatorUuid - " + creatorUuid);
                         PatientsDAO patientsDAO = new PatientsDAO();
                         FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(i).getPatientuuid());
+                        patientNameInfo.setVisitUuid(visitUid);
                         String patientNameString = patientNameInfo.getOpenMRSID() + "\n" + patientNameInfo.getName();
                         Logger.logV(TAG, "patientNameString - " + patientNameString);
                         patients[i] = patientNameString;

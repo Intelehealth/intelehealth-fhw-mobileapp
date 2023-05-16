@@ -14,7 +14,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     public LocationArrayAdapter(Context context, List<String> objects) {
         super(context, R.layout.spinner_textview, objects);
-        setDropDownViewResource(R.layout.spinner_checked_textview);
+//        setDropDownViewResource(R.layout.spinner_checked_textview);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         } else {
             v = super.getDropDownView(position, null, parent);
         }
-        parent.setVerticalScrollBarEnabled(false);
+        parent.setVerticalScrollBarEnabled(true);
         return v;
     }
 

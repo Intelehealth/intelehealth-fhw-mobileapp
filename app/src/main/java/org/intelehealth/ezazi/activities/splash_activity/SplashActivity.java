@@ -29,6 +29,7 @@ import org.intelehealth.ezazi.activities.IntroActivity.IntroActivity;
 import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
+import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.dataMigration.SmoothUpgrade;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
@@ -276,7 +277,7 @@ public class SplashActivity extends AppCompatActivity {
 
             } else {
                 Logger.logD(LOG_TAG, "Starting setup");
-                Intent intent = new Intent(this, IntroActivity.class);
+                Intent intent = new Intent(this, SetupActivity.class);
                 startActivity(intent);
                 finish();
             }

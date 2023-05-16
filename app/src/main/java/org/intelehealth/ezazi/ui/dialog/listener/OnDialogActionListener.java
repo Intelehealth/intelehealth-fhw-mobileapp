@@ -7,5 +7,9 @@ package org.intelehealth.ezazi.ui.dialog.listener;
  **/
 public interface OnDialogActionListener {
     void onSubmit();
-    void onDismiss();
+
+    default void onDismiss() {
+    }
+
+    ;
 }

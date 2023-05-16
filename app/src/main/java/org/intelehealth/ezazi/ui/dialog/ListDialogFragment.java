@@ -12,7 +12,7 @@ import org.intelehealth.ezazi.databinding.DialogListViewBinding;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class ListDialogFragment extends BaseDialogFragment {
+abstract class ListDialogFragment<T> extends BaseDialogFragment<T> implements View.OnClickListener {
 
     @Override
     View getContentView() {
@@ -22,5 +22,10 @@ abstract class ListDialogFragment extends BaseDialogFragment {
         return listViewBinding.getRoot();
     }
 
-    abstract <VH extends RecyclerView.ViewHolder> RecyclerView.Adapter<VH> getAdapter();
+    abstract RecyclerView.Adapter<?> getAdapter();
+
+    @Override
+    boolean hasTitle() {
+        return true;
+    }
 }

@@ -21,9 +21,14 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
     private LayoutInflater inflater;
     private List<String> choices;
 
-    public SingleChoiceAdapter(Context context, List<String> choices) {
+    private int selected = -1;
+
+    private View.OnClickListener clickListener;
+
+    public SingleChoiceAdapter(Context context, List<String> choices, View.OnClickListener clickListener) {
         inflater = LayoutInflater.from(context);
         this.choices = choices;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -36,6 +41,8 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
     @Override
     public void onBindViewHolder(@NonNull SingleChoiceViewHolder holder, int position) {
         holder.bind(getItem(position));
+        holder.setSelected(position == selected);
+        holder.setClickListener(clickListener);
     }
 
     @Override
@@ -46,10 +53,18 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
     private String getItem(int position) {
         return choices.get(position);
     }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
 }
 
 class SingleChoiceViewHolder extends RecyclerView.ViewHolder {
-    private SingleChoiceDialogItemBinding binding;
+    private final SingleChoiceDialogItemBinding binding;
 
     public SingleChoiceViewHolder(@NonNull SingleChoiceDialogItemBinding binding) {
         super(binding.getRoot());
@@ -58,5 +73,14 @@ class SingleChoiceViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(String choice) {
         binding.setValue(choice);
+    }
+
+    public void setSelected(boolean isSelected) {
+        binding.tvChoice.setSelected(isSelected);
+    }
+
+    public void setClickListener(View.OnClickListener listener) {
+        binding.tvChoice.setTag(getAdapterPosition());
+        binding.tvChoice.setOnClickListener(listener);
     }
 }
