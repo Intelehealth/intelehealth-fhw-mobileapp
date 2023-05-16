@@ -283,7 +283,8 @@
                 android:textAppearance="@style/registr_error_msg"
                 android:textColor="@color/red"
                 android:textSize="@null"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -419,6 +420,22 @@
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_info_text_size" />
             </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_dob_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.02"
+                    android:layout_gravity="end"
+                    android:textAlignment="viewEnd"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/hw_min_age"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
             <TextView
                 android:layout_width="wrap_content"

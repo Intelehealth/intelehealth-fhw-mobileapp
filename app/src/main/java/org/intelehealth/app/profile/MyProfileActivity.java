@@ -110,7 +110,7 @@ import okhttp3.ResponseBody;
 public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
-    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob;
     LinearLayout layoutParent;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
@@ -203,6 +203,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
         layoutChangePassword = findViewById(R.id.view_change_password);
         rgGroupGender = findViewById(R.id.radioGroup_gender_profile);
+        tvErrorDob = findViewById(R.id.tv_dob_error);
 
         manageListeners();
         setMobileNumberLimit();
@@ -1157,13 +1158,23 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             String[] splitedDate = selectedDate.split("/");
 
             Log.d(TAG, "getSelectedDate: age : " + age);
-            if (age != null && !age.isEmpty() && Integer.parseInt(age) > 10) {
+            if (age != null && !age.isEmpty() && Integer.parseInt(age) >= 18) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
+                if(tvErrorDob.getVisibility()==View.VISIBLE)
+                    tvErrorDob.setVisibility(View.GONE);
                 shouldActivateSaveButton();
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-            } else {
+            }
+            else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
+                tvAge.setText("");
+                tvDob.setText("");
+                tvErrorDob.setVisibility(View.VISIBLE);
+                btnSave.setEnabled(false);
+
+            }
+            else {
                 tvAge.setText("");
                 tvDob.setText("");
 
