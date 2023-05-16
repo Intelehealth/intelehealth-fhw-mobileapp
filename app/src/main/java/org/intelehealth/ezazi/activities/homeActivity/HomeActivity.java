@@ -32,6 +32,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -40,6 +41,8 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -57,7 +60,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -103,12 +105,6 @@ import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
-import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
-import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
-import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
-import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
-import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -129,7 +125,6 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -449,8 +444,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     Logger.logV(TAG, "myCreatorUUID - " + myCreatorUUID);
                     final List<VisitDTO> visitDTOList = new VisitsDAO().getAllActiveVisitsForMe(myCreatorUUID);
                     String[] patients = new String[visitDTOList.size()];
-
-                    ArrayList<MultiChoiceItem> items = new ArrayList<>();
                     for (int i = 0; i < visitDTOList.size(); i++) {
                         String visitUid = visitDTOList.get(i).getUuid();
                         String creatorUuid = visitDTOList.get(i).getCreatoruuid();
@@ -459,47 +452,37 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         PatientsDAO patientsDAO = new PatientsDAO();
                         FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(i).getPatientuuid());
                         patientNameInfo.setVisitUuid(visitUid);
-                        items.add(patientNameInfo);
                         String patientNameString = patientNameInfo.getOpenMRSID() + "\n" + patientNameInfo.getName();
                         Logger.logV(TAG, "patientNameString - " + patientNameString);
                         patients[i] = patientNameString;
                     }
-//                    if (patients.length == 0) {
-//                        Toast.makeText(context, getString(R.string.no_more_visits_to_assign), Toast.LENGTH_SHORT).show();
-//                        showLogoutAlert();
-//                        return;
-//                    }
-
-                    if (items.size() == 0) {
+                    if (patients.length == 0) {
                         Toast.makeText(context, getString(R.string.no_more_visits_to_assign), Toast.LENGTH_SHORT).show();
                         showLogoutAlert();
                         return;
                     }
+                    List<String> visitUUIDList = new ArrayList<>();
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(HomeActivity.this);
 
-                    showPatientChoiceDialog(items);
-
-//                    List<String> visitUUIDList = new ArrayList<>();
-//                    AlertDialog.Builder builder =
-//                            new AlertDialog.Builder(HomeActivity.this);
-//
-//                    builder.setTitle("Select patients to assign any nurse!")
-//                            .setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    showNurseAssignDialog(visitUUIDList);
-//                                }
-//                            })
-//                            .setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                                    if (isChecked) {
-//                                        visitUUIDList.add(visitDTOList.get(which).getUuid());
-//                                    } else {
-//                                        visitUUIDList.remove(visitDTOList.get(which).getUuid());
-//                                    }
-//                                }
-//                            });
-//                    builder.create().show();
+                    builder.setTitle("Select patients to assign any nurse!")
+                            .setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    showNurseAssignDialog(visitUUIDList);
+                                }
+                            })
+                            .setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                    if (isChecked) {
+                                        visitUUIDList.add(visitDTOList.get(which).getUuid());
+                                    } else {
+                                        visitUUIDList.remove(visitDTOList.get(which).getUuid());
+                                    }
+                                }
+                            });
+                    builder.create().show();
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
@@ -708,35 +691,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
-        SelectAllMultiChoice selectAll = new SelectAllMultiChoice();
-        selectAll.setHeader("Select All");
-        items.add(0, selectAll);
-        MultiChoiceDialogFragment<MultiChoiceItem> dialog = new MultiChoiceDialogFragment.Builder<MultiChoiceItem>()
-                .title(R.string.select_patient)
-                .positiveButtonLabel(R.string.next)
-                .build();
-
-        dialog.setAdapter(new PatientMultiChoiceAdapter(this, items));
-        dialog.setListener(selectedItems -> {
-            if (selectedItems.size() > 0) showNextShiftNursesDialog(selectedItems);
-        });
-
-        dialog.show(getSupportFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
-    }
-
-    private void showNextShiftNursesDialog(List<MultiChoiceItem> items) {
-        List<String> visitUuids = new ArrayList<>();
-        Log.e(TAG, "Selected patients : " + items.size());
-        for (MultiChoiceItem item : items) {
-            if (item instanceof FamilyMemberRes) {
-                visitUuids.add(((FamilyMemberRes) item).getVisitUuid());
-                Log.e(TAG, "Visit Uuid =>" + ((FamilyMemberRes) item).getVisitUuid());
-            }
-        }
-        showNurseAssignDialog(visitUuids);
-    }
-
     private LinearLayoutManager getLayoutManager() {
         if (getResources().getBoolean(R.bool.isTablet))
             return new GridLayoutManager(getApplicationContext(), 2);
@@ -804,68 +758,38 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 }
 
             }
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(HomeActivity.this);
 
-            showNurseSelectionDialog(visitUUIDList, nurseNames, nurseUUID);
-//            AlertDialog.Builder builder =
-//                    new AlertDialog.Builder(HomeActivity.this);
-//
-//            builder.setTitle("Select nurse to assign!")
-//                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            try {
-//                                VisitsDAO visitsDAO = new VisitsDAO();
-//                                for (int j = 0; j < visitUUIDList.size(); j++) {
-//                                    visitsDAO.updateVisitCreator(visitUUIDList.get(j), mLastSelectedNurseUUID);
-//                                }
-//                                mPendingForLogout = true;
-//                                bottomNavigationView.getChildAt(2).performClick();
-//                                Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
-//
-//                            } catch (DAOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//                    })
-//                    .setSingleChoiceItems(nurseNames, 0, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            mLastSelectedNurseUUID = nurseUUID[which];
-//
-//                        }
-//                    });
-//            builder.create().show();
+            builder.setTitle("Select nurse to assign!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                for (int j = 0; j < visitUUIDList.size(); j++) {
+                                    visitsDAO.updateVisitCreator(visitUUIDList.get(j), mLastSelectedNurseUUID);
+                                }
+                                mPendingForLogout = true;
+                                bottomNavigationView.getChildAt(2).performClick();
+                                Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
+
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    })
+                    .setSingleChoiceItems(nurseNames, 0, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mLastSelectedNurseUUID = nurseUUID[which];
+
+                        }
+                    });
+            builder.create().show();
         } catch (DAOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void showNurseSelectionDialog(List<String> visitUUIDList, String[] nurseNames, String[] nurseUUID) {
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder()
-                .title(R.string.select_nurse)
-                .positiveButtonLabel(R.string.save_button)
-                .content(Arrays.asList(nurseNames))
-                .build();
-
-        dialog.setListener((position, value) -> {
-            assignNurseToPatient(visitUUIDList, nurseUUID[position]);
-        });
-
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-    }
-
-    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
-        try {
-            VisitsDAO visitsDAO = new VisitsDAO();
-            for (int j = 0; j < visitUUIDList.size(); j++) {
-                visitsDAO.updateVisitCreator(visitUUIDList.get(j), selectedNurseUuid);
-            }
-            mPendingForLogout = true;
-            sync();
-            Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -1239,15 +1163,13 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-//    private MenuItem mLastUpdateMenuItem;
-
-    private TextView tvLastSyncStatus;
+    private MenuItem mLastUpdateMenuItem;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
-//        mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
+        mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
         setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         return super.onCreateOptionsMenu(menu);
     }
@@ -1485,40 +1407,24 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    private void showConfirmationDialog(@StringRes int contentId,
-                                        ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder()
-                .positiveButtonLabel(R.string.yes)
-                .content(getString(contentId))
-                .build();
-
-        dialog.setListener(listener);
-
-        dialog.show(getSupportFragmentManager(), ConfirmationDialogFragment.class.getCanonicalName());
-    }
-
     private void showLogoutAlert() {
 
-        showConfirmationDialog(R.string.sure_to_logout, () -> {
-            logout();
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.sure_to_logout);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                logout();
+            }
         });
-
-//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-//        alertdialogBuilder.setMessage(R.string.sure_to_logout);
-//        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                logout();
-//            }
-//        });
-//        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-//        AlertDialog alertDialog = alertdialogBuilder.create();
-//        alertDialog.show();
-//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     /**
@@ -1655,33 +1561,31 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 .setNegativeButton("No", null)
                 .show();
 */
-        showConfirmationDialog(R.string.sure_to_exit, () -> moveTaskToBack(true));
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
-//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-//
-//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-//        alertdialogBuilder.setMessage(R.string.sure_to_exit);
-//        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                moveTaskToBack(true);
-//                // finish();
-//            }
-//        });
-//        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-//
-//        AlertDialog alertDialog = alertdialogBuilder.create();
-//        alertDialog.show();
-//
-//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//
-//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//
-//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.sure_to_exit);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveTaskToBack(true);
+                // finish();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -2019,50 +1923,45 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void setLastSyncTime(String lastSyncTime) {
         String convertedString = getFullMonthName(lastSyncTime);
-        String status = lastSyncTime;
-        tvLastSyncStatus = findViewById(R.id.tvLastSyncStatus);
-//        if (mLastUpdateMenuItem != null) {
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            status = en__hi_dob(convertedString); //to show text of English into Hindi...
-//                tvLastSyncStatus.setText(sync_text);
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            status = en__or_dob(convertedString); //to show text of English into Odiya...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            status = en__bn_dob(convertedString); //to show text of English into Odiya...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            status = en__gu_dob(convertedString); //to show text of English into Gujarati...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            status = en__te_dob(convertedString); //to show text of English into telugu...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            status = en__mr_dob(convertedString); //to show text of English into telugu...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            status = en__as_dob(convertedString); //to show text of English into telugu...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            status = en__ml_dob(convertedString); //to show text of English into telugu...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            status = en__kn_dob(convertedString); //to show text of English into telugu...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            status = en__ru_dob(convertedString); //to show text of English into Russian...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            status = en__ta_dob(convertedString); //to show text of English into Tamil...
-//                mLastUpdateMenuItem.setTitle(sync_text);
-        } else {
-            status = lastSyncTime;
-//                mLastUpdateMenuItem.setTitle(lastSyncTime);
-        }
 
-        tvLastSyncStatus.setText(status);
-//        }
+        if (mLastUpdateMenuItem != null) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else {
+                mLastUpdateMenuItem.setTitle(lastSyncTime);
+            }
+        }
 
         loadVisits();
     }

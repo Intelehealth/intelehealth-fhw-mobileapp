@@ -1,6 +1,5 @@
 package org.intelehealth.ezazi.ui.dialog;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,8 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -58,10 +57,8 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                .TRANSPARENT));
         return dialog;
     }
 
@@ -117,43 +114,4 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     abstract View getContentView();
 
     abstract boolean hasTitle();
-
-    public abstract static class BaseBuilder<T, D extends BaseDialogFragment<T>> {
-        private int title;
-        private int positiveBtnLabel;
-        private int negativeBtnLabel;
-
-        private T content;
-
-        public BaseBuilder<T, D> title(@StringRes int title) {
-            this.title = title;
-            return this;
-        }
-
-        public BaseBuilder<T, D> positiveButtonLabel(@StringRes int positiveBtnLabel) {
-            this.positiveBtnLabel = positiveBtnLabel;
-            return this;
-        }
-
-        public BaseBuilder<T, D> negativeButtonLabel(@StringRes int negativeBtnLabel) {
-            this.negativeBtnLabel = negativeBtnLabel;
-            return this;
-        }
-
-        public BaseBuilder<T, D> content(T content) {
-            this.content = content;
-            return this;
-        }
-
-        public abstract D build();
-
-        protected Bundle bundle() {
-            DialogArg<T> args = new DialogArg<>();
-            args.setTitle(title);
-            args.setPositiveBtnLabel(positiveBtnLabel);
-            args.setNegativeBtnLabel(negativeBtnLabel);
-            args.setContent(content);
-            return getDialogArgument(args);
-        }
-    }
 }

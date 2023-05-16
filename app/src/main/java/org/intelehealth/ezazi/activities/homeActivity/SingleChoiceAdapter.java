@@ -59,13 +59,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
     }
 
     public void setSelected(int selected) {
-        if (this.selected > -1)
-            notifyItemChanged(this.selected);
-
         this.selected = selected;
-
-        if (selected != -1)
-            notifyItemChanged(selected);
     }
 }
 

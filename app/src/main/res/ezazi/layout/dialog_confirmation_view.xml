@@ -20,8 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/screen_padding"
+        android:paddingTop="@dimen/screen_container_padding"
         android:paddingEnd="@dimen/screen_padding"
-        android:paddingBottom="@dimen/screen_container_padding">
+        android:paddingBottom="@dimen/screen_padding">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvAlertTitle"
@@ -30,9 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingStart="@dimen/screen_container_padding"
-            android:paddingTop="@dimen/screen_container_padding"
-            android:paddingEnd="@dimen/screen_container_padding"
+            android:padding="@dimen/screen_container_padding"
             android:textColor="@color/red"
             android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/screen_container_padding"
             android:text="@{content}"
             android:textColor="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"

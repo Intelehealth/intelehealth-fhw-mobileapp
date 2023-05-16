@@ -526,13 +526,12 @@ public class SetupActivity extends AppCompatActivity {
 
     // Replaced by Mithun Vaghela
     private void showInternetConfirmationDialog() {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder()
-                .title(R.string.generic_warning)
-                .positiveButtonLabel(R.string.generic_ok)
-                .content(getString(R.string.setup_internet))
-                .build();
-
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+        DialogArg<String> args = new DialogArg<>();
+        args.setTitle(R.string.generic_warning);
+        args.setPositiveBtnLabel(R.string.generic_ok);
+        args.setContent(getString(R.string.setup_internet));
+        ConfirmationDialogFragment dialogFragment = ConfirmationDialogFragment.getInstance(args);
+        dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getCanonicalName());
 
 
 //        DialogUtils dialogUtils = new DialogUtils();

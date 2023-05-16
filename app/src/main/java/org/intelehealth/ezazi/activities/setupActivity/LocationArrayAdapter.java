@@ -14,7 +14,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     public LocationArrayAdapter(Context context, List<String> objects) {
         super(context, R.layout.spinner_textview, objects);
-        setDropDownViewResource(R.layout.spinner_textview);
+//        setDropDownViewResource(R.layout.spinner_checked_textview);
     }
 
     @Override

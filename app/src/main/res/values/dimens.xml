@@ -90,8 +90,6 @@
     <dimen name="std_21sp">21sp</dimen>
     <dimen name="std_21dp">21dp</dimen>
     <dimen name="std_24sp">24sp</dimen>
-    <dimen name="std_26sp">26sp</dimen>
-    <dimen name="std_26dp">26dp</dimen>
     <dimen name="std_24dp">24dp</dimen>
     <dimen name="std_14sp">14sp</dimen>
     <dimen name="std_16sp">16sp</dimen>
@@ -115,7 +113,6 @@
     <dimen name="std_60dp">60dp</dimen>
     <dimen name="std_100dp">100dp</dimen>
     <dimen name="std_10dp">10dp</dimen>
-    <dimen name="std_10sp">10sp</dimen>
     <dimen name="std_143dp">143dp</dimen>
     <dimen name="std_35sp">35sp</dimen>
     <dimen name="std_23sp">23sp</dimen>
@@ -123,12 +120,11 @@
     <dimen name="std_82dp">82dp</dimen>
     <dimen name="std_92dp">92dp</dimen>
     <dimen name="std_72dp">72dp</dimen>
-    <dimen name="std_90dp">90dp</dimen>
     <dimen name="std_64dp">64dp</dimen>
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
     <dimen name="std_2dp">2dp</dimen>
-    <dimen name="input_stroke_size">1dp</dimen>
+    <dimen name="input_stroke_size">0.5dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 
     <dimen name="splash_bottom_dark_bg_width">400</dimen>
@@ -142,11 +138,4 @@
     <dimen name="std_69dp">69dp</dimen>
     <dimen name="std_31dp">31dp</dimen>
     <dimen name="std_120dp">120dp</dimen>
-    <dimen name="std_660dp">660dp</dimen>
-    <dimen name="std_814dp">814dp</dimen>
-    <dimen name="std_330dp">330dp</dimen>
-    <dimen name="std_407dp">407dp</dimen>
-    <dimen name="stage_stroke_size">0.5dp</dimen>
-    <dimen name="std_130dp">130dp</dimen>
-    <dimen name="std_30sp">30sp</dimen>
 </resources>

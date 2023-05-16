@@ -1,6 +1,9 @@
 package org.intelehealth.ezazi.ui.dialog.model;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
+
+import org.intelehealth.ezazi.R;
 
 import java.io.Serializable;
 
@@ -14,9 +17,6 @@ public class DialogArg<T> implements Serializable {
     private int title;
     @StringRes
     private int positiveBtnLabel;
-
-    @StringRes
-    private int negativeBtnLabel;
 
     private T content;
 
@@ -35,14 +35,6 @@ public class DialogArg<T> implements Serializable {
 
     public void setPositiveBtnLabel(int positiveBtnLabel) {
         this.positiveBtnLabel = positiveBtnLabel;
-    }
-
-    public void setNegativeBtnLabel(int negativeBtnLabel) {
-        this.negativeBtnLabel = negativeBtnLabel;
-    }
-
-    public int getNegativeBtnLabel() {
-        return negativeBtnLabel;
     }
 
     public T getContent() {

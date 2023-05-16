@@ -63,9 +63,9 @@
                 style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:dropDownSelector="@drawable/dropdown_item_selector"
                 android:hint="@string/login_location_select"
                 android:inputType="none"
-                android:dropDownSelector="@color/white"
                 android:minHeight="@dimen/max_input_height"
                 android:textSize="@dimen/input_inner_size" />
 

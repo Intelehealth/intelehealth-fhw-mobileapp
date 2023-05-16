@@ -4,8 +4,10 @@
         <shape android:shape="oval">
             <solid android:color="@android:color/transparent" />
             <padding
+                android:bottom="@dimen/list_container_padding"
                 android:left="@dimen/list_container_padding"
-                android:right="@dimen/list_container_padding" />
+                android:right="@dimen/list_container_padding"
+                android:top="@dimen/list_container_padding" />
         </shape>
     </item>
     <item android:drawable="@drawable/ic_dropdown" />

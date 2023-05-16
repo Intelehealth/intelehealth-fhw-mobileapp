@@ -3,9 +3,7 @@ package org.intelehealth.ezazi.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
-
-public class FamilyMemberRes implements MultiChoiceItem {
+public class FamilyMemberRes {
 
     @SerializedName("openMRSID")
     @Expose
@@ -39,10 +37,5 @@ public class FamilyMemberRes implements MultiChoiceItem {
 
     public void setVisitUuid(String visitUuid) {
         this.visitUuid = visitUuid;
-    }
-
-    @Override
-    public boolean isHeader() {
-        return false;
     }
 }
