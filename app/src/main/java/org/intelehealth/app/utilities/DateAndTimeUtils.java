@@ -144,6 +144,9 @@ public class DateAndTimeUtils {
             age = tyears;
             Log.d("TAG", "getAge_FollowUp: s : " + age);
         }
+        else {
+            age = "0";
+        }
 
         return age;
     }

@@ -934,7 +934,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 e.printStackTrace();
             }
             loadFragment(fragment, tag);
-            menuItem.setChecked(true);
             // setTitle(menuItem.getTitle());
         }
 
