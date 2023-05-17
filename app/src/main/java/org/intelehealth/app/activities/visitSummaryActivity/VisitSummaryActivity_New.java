@@ -1255,8 +1255,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1393,14 +1393,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
-                        //    intent1.putStringArrayListExtra("exams", physicalExams);
-                        for (String string : physicalExams)
-                            Log.i(TAG, "onClick: " + string);
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1524,21 +1520,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("edit_PatHist", "edit_PatHist");
                         intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                      /*  if(EncounterAdultInitial_LatestVisit != null &&
-                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
-                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                        }
-                        else {
-                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }*/
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1676,19 +1663,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("edit_FamHist", "edit_FamHist");
-                        intent1.putExtra("gender", patientGender);
-                     /*   if(EncounterAdultInitial_LatestVisit != null &&
-                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
-                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                        }
-                        else {
-                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }*/
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }

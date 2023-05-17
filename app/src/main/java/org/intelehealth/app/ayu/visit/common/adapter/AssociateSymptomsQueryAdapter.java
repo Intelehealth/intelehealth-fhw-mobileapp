@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
@@ -43,13 +44,13 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
 
-    public interface OnItemSelection {
+    public interface AssociateSymptomsOnItemSelection {
         public void onSelect(Node data);
     }
 
-    private OnItemSelection mOnItemSelection;
+    private AssociateSymptomsOnItemSelection mOnItemSelection;
 
-    public AssociateSymptomsQueryAdapter(RecyclerView recyclerView, Context context, List<Node> itemList, OnItemSelection onItemSelection) {
+    public AssociateSymptomsQueryAdapter(RecyclerView recyclerView, Context context, List<Node> itemList, AssociateSymptomsOnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
@@ -82,7 +83,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
-            genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.getText());
+            genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.findDisplay());
             //genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
 
             if (mItemList.get(position).isNoSelected()) {
@@ -140,7 +141,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         else
                             complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
-                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
+                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new OnItemSelection() {
                             @Override
                             public void onSelect(Node node, int index) {
                                 Log.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);

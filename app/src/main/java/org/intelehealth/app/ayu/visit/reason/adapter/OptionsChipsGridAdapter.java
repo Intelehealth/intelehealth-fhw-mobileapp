@@ -57,7 +57,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
-            genericViewHolder.tvName.setText(mItemList.get(position).getText());
+            genericViewHolder.tvName.setText(mItemList.get(position).findDisplay());
 
             //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
 

@@ -82,7 +82,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         sessionManager = new SessionManager(context);
     }
 
-    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode) {
+    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode, boolean cleanEdit) {
         VisitReasonCaptureFragment fragment = new VisitReasonCaptureFragment();
         fragment.mIsEditMode = isEditMode;
         fragment.patientUuid = intent.getStringExtra("patientUuid");
@@ -162,6 +162,19 @@ public class VisitReasonCaptureFragment extends Fragment {
                 String name = (String) adapterView.getItemAtPosition(position);
                 if (name != null && !name.isEmpty()) {
                     mSelectedComplains.add(name);
+                    // cross check for list also to keep on sync both selected
+                    for (int i = 0; i < mVisitReasonItemList.size(); i++) {
+                        List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
+                        for (int j = 0; j < reasonDataList.size(); j++) {
+                            ReasonData reasonData = reasonDataList.get(j);
+                            if (reasonData.getReasonName().equalsIgnoreCase(name)) {
+                                mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
+                                break;
+                            }
+                        }
+                    }
+                    mReasonListingAdapter.refresh(mVisitReasonItemList);
+
                     showSelectedComplains();
                     mVisitReasonAutoCompleteTextView.setText("");
                 }

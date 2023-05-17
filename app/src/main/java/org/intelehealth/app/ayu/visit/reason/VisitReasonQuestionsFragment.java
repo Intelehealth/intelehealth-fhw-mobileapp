@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
@@ -100,12 +101,13 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 complainBasicInfo.setAssociateSymptom(true);
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new QuestionsListingAdapter.OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index) {
                 Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                    Log.v("onSelect", "Scrolling index - " + index);
                     VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
                     return;
                 }
@@ -119,15 +121,18 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
+                    linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
                         mQuestionsListingAdapter.addItem(mCurrentNode);
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
+                    linearLayoutManager.setStackFromEnd(true);
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
 
-                VisitUtils.scrollNow(recyclerView, 200, 0, 500);
-                VisitUtils.scrollNow(recyclerView, 1100, 0, 1100);
+                VisitUtils.scrollNow(recyclerView, 100, 0, 500);
+
+                VisitUtils.scrollNow(recyclerView, 1200, 0, 1000);
 
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
@@ -140,7 +145,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false, null);
             }
 
             @Override
