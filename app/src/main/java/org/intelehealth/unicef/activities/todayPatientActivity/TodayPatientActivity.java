@@ -58,7 +58,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
-   MaterialAlertDialogBuilder dialogBuilder;
+    MaterialAlertDialogBuilder dialogBuilder;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -122,7 +122,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
         if (encounterDTOList.size() > 0) {
             for (int i = 0; i < encounterDTOList.size(); i++) {
-                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("a85f96d1-1246-4263-bfd0-00780c27a018")) {
                     encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
                 }
             }
@@ -164,6 +164,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    Boolean hasPrescription = hasPrescription(cursor);
                     try {
                         TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
@@ -176,7 +177,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription);
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         todayPatientList.add(model
                         );
@@ -382,7 +384,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void doQueryWithProviders(List<String> providersuuids) {
@@ -401,6 +403,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    Boolean hasPrescription = hasPrescription(cursor);
                     try {
                         TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
@@ -413,7 +416,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription);
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         todayPatientList.add(model
                         );
@@ -491,7 +495,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
@@ -520,8 +524,15 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return phone;
     }
+
+    private boolean hasPrescription(Cursor cursor) {
+        boolean hasPrescription = false;
+        String query = "SELECT COUNT(*) FROM tbl_encounter WHERE encounter_type_uuid = 'a85f96d1-1246-4263-bfd0-00780c27a018' AND visituuid = ?";
+        Cursor countCursor = db.rawQuery(query, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
+        countCursor.moveToFirst();
+        int count = countCursor.getInt(0);
+        countCursor.close();
+        if (count == 1) hasPrescription = true;
+        return hasPrescription;
+    }
 }
-
-
-
-
