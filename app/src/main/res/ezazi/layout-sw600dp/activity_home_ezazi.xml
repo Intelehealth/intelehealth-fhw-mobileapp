@@ -30,6 +30,13 @@
             app:navigationIcon="@drawable/ic_home_logo"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <TextView
+                android:id="@+id/tvLastSyncStatus"
+                style="@style/Theme.EZazi.LastSync.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end" />
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

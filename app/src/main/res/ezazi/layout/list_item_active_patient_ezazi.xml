@@ -44,59 +44,46 @@
 
                         <TextView
                             android:id="@+id/list_item_head_text_view"
+                            style="@style/Theme.EZazi.Heading1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:includeFontPadding="false"
                             android:maxLines="1"
-                            android:textColor="@color/gray_7"
-                            android:textSize="@dimen/header_text_size"
-                            android:textStyle="bold"
                             tools:text="Patient Name" />
 
                         <TextView
                             android:id="@+id/list_item_body_text_view"
+                            style="@style/Theme.EZazi.Body"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="@font/lato_regular"
+                            android:layout_marginTop="@dimen/std_4dp"
                             android:maxLines="1"
-                            android:textColor="@color/gray_5"
-                            android:textSize="@dimen/content_text_size"
                             tools:text="10LAM-3" />
 
                         <TextView
                             android:id="@+id/tv_age_gender"
+                            style="@style/Theme.EZazi.Body"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="@font/lato_regular"
+                            android:layout_marginTop="@dimen/std_4dp"
                             android:maxLines="1"
-                            android:textColor="@color/gray_5"
-                            android:textSize="@dimen/content_text_size"
                             tools:text="Age: 24 years" />
 
                         <TextView
                             android:id="@+id/tvBedNumber"
+                            style="@style/Theme.EZazi.Body"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="@font/lato_regular"
+                            android:layout_marginTop="@dimen/std_4dp"
                             android:maxLines="1"
-                            android:textColor="@color/gray_5"
-                            android:textSize="@dimen/content_text_size"
                             tools:text="Bed No: 2A" />
 
                         <TextView
                             android:id="@+id/tvStageName"
+                            style="@style/Theme.EZazi.Heading2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="@font/lato_bold"
-                            android:text="Stage-1"
-                            android:textColor="@color/gray_7"
-                            android:textSize="@dimen/content_text_size"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="@dimen/std_4dp"
+                            android:text="Stage-1" />
                     </LinearLayout>
 
                     <LinearLayout

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingEnd="@dimen/screen_padding"
-    android:paddingStart="@dimen/screen_padding">
+    android:paddingStart="@dimen/screen_padding"
+    android:paddingEnd="@dimen/screen_padding">
 
     <View
         android:id="@+id/container"
@@ -52,16 +52,39 @@
         app:layout_constraintTop_toTopOf="@id/container"
         tools:text="Active Cases (8)" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        style="@style/Theme.EZazi.Search"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSearchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_container_padding"
         android:layout_marginTop="@dimen/actionbar_vertical_padding"
+        android:background="@drawable/round_corner_gray_stroke_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/container"
-        app:layout_constraintTop_toBottomOf="@id/tvActiveVisitLabel" />
+        app:layout_constraintTop_toBottomOf="@id/tvActiveVisitLabel">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            style="@style/Theme.EZazi.Search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.EZazi.Search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivSearchIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSearchIcon"
+            style="@style/Theme.EZazi.Search.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hint_search_cases"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!--        <include-->
     <!--            android:id="@+id/includeSearchView"-->
     <!--            layout="@layout/search_view"-->
@@ -76,15 +99,15 @@
         android:id="@+id/rcvActiveVisits"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/screen_container_padding"
         android:layout_margin="@dimen/list_container_padding"
+        android:paddingTop="@dimen/screen_container_padding"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="@id/container"
         app:layout_constraintStart_toStartOf="@id/container"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
-        tools:itemCount="10"
+        app:layout_constraintTop_toBottomOf="@id/clSearchContainer"
         app:spanCount="2"
+        tools:itemCount="10"
         tools:listitem="@layout/list_item_active_patient_ezazi" />
 
     <TextView

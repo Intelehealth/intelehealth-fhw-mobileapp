@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.EZazi.AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="cornerRadius">@dimen/container_corner_radius</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Theme.EZazi.Dialog.Button.Next</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.EZazi.Dialog.Button.Cancel</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Theme.EZazi.Dialog.Button.Cancel</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:padding">@dimen/screen_container_padding</item>
+    </style>
+
+</resources>

@@ -11,4 +11,6 @@
     <string name="hint_search_cases">Search cases</string>
     <string name="select_all">Select All</string>
     <string name="emergency">Emergency!</string>
+    <string name="select_patient">Select patients to assign any nurse</string>
+    <string name="select_nurse">Select nurse to assign</string>
 </resources>
