@@ -9,7 +9,6 @@
 
     <include layout="@layout/simple_appbar" />
 
-    <include layout="@layout/content_privacy_notice" />
-
+    <include layout="@layout/content_timeline_ezazi" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

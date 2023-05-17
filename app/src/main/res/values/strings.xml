@@ -161,6 +161,7 @@
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
+    <string name="title_search_patient">Search Patient</string>
 
     //Past Medical History Screen
     <string name="title_activity_patient_history">Past Medical History</string>

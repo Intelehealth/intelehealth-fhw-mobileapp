@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.EZazi.Bottom.Menu.Text"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/design_bottom_navigation_height"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    tools:ignore="PrivateResource">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/endStageButton"
+        style="@style/Theme.EZazi.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/endStageButton"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fabc"
+        style="@style/Theme.EZazi.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fabv"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="40dip"-->
+    <!--        android:layout_toStartOf="@+id/fabc"-->
+    <!--        android:contentDescription="@string/chat_fab"-->
+    <!--        android:src="@drawable/ic_baseline_videocam_24"-->
+    <!--        app:backgroundTint="@color/colorYellow_2" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fabSOS"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="40dip"-->
+    <!--        android:layout_toStartOf="@+id/fabv"-->
+    <!--        android:contentDescription="@string/chat_fab"-->
+    <!--        android:src="@drawable/ic_baseline_sos_24"-->
+    <!--        app:backgroundTint="@color/red" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/outcomeTV"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="45dp"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"-->
+    <!--        android:layout_marginBottom="40dp"-->
+    <!--        android:fontFamily="@font/lato_bold"-->
+    <!--        android:gravity="center"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:textColor="@color/colorPrimary"-->
+    <!--        android:textSize="20sp"-->
+    <!--        android:visibility="gone" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

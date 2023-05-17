@@ -46,7 +46,14 @@
         <item name="android:paddingEnd">@dimen/actionbar_horizontal_padding</item>
         <item name="android:paddingLeft">@dimen/actionbar_horizontal_padding</item>
         <item name="android:paddingStart">@dimen/actionbar_horizontal_padding</item>
+        <item name="titleTextColor">@color/font_black_0</item>
+        <item name="titleTextAppearance">@style/Theme.EZazi.ActionBar.Title.Text</item>
     </style>
 
+    <style name="Theme.EZazi.ActionBar.Title.Text" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/actionbar_screen_title_size</item>
+        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
 
 </resources>
