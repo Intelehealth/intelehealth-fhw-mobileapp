@@ -54,7 +54,7 @@
     <dimen name="home_container_top_margin">@dimen/std_27dp</dimen>
     <dimen name="dialog_btn_text_size">@dimen/std_28sp</dimen>
     <dimen name="dialog_btn_horizontal_margin">@dimen/std_47dp</dimen>
-    <dimen name="dialog_btn_vertical_margin">@dimen/std_29dp</dimen>
+    <dimen name="dialog_btn_vertical_margin">@dimen/std_16dp</dimen>
     <dimen name="scrollbar_width">@dimen/std_6dp</dimen>
     <dimen name="input_stroke_size">1dp</dimen>
     <dimen name="dialog_max_width">@dimen/std_660dp</dimen>

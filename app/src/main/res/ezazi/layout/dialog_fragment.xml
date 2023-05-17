@@ -18,16 +18,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clDialogContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/white_child_container_bg"
-            android:maxWidth="@dimen/dialog_max_width"
             android:maxHeight="@dimen/dialog_max_height"
+            android:minWidth="@dimen/dialog_max_width"
             android:paddingStart="@dimen/screen_container_padding"
             android:paddingTop="@dimen/screen_container_padding"
             android:paddingEnd="@dimen/screen_container_padding"
@@ -44,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/screen_container_padding"
                 android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Yes" />
@@ -52,10 +52,10 @@
                 android:id="@+id/clDataContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDialogTitle">
 
-                <include layout="@layout/dialog_confirmation_view" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,8 +69,8 @@
             android:paddingVertical="@dimen/dialog_btn_vertical_margin"
             android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/clDialogContainer"
-            app:layout_constraintStart_toStartOf="@id/clDialogContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clDialogContainer">
 
 
