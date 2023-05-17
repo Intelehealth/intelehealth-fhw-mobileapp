@@ -57,6 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -722,9 +723,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showNextShiftNursesDialog(List<MultiChoiceItem> items) {
         List<String> visitUuids = new ArrayList<>();
+        Log.e(TAG, "Selected patients : " + items.size());
         for (MultiChoiceItem item : items) {
             if (item instanceof FamilyMemberRes) {
                 visitUuids.add(((FamilyMemberRes) item).getVisitUuid());
+                Log.e(TAG, "Visit Uuid =>" + ((FamilyMemberRes) item).getVisitUuid());
             }
         }
         showNurseAssignDialog(visitUuids);
@@ -844,6 +847,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         dialog.setListener((position, value) -> {
             assignNurseToPatient(visitUUIDList, nurseUUID[position]);
         });
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
@@ -853,7 +858,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 visitsDAO.updateVisitCreator(visitUUIDList.get(j), selectedNurseUuid);
             }
             mPendingForLogout = true;
-            bottomNavigationView.getChildAt(2).performClick();
+            sync();
             Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             throw new RuntimeException(e);
@@ -1476,18 +1481,23 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    private void showLogoutAlert() {
-
+    private void showConfirmationDialog(@StringRes int contentId,
+                                        ConfirmationDialogFragment.OnConfirmationActionListener listener) {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder()
                 .positiveButtonLabel(R.string.yes)
-                .content(getString(R.string.sure_to_logout))
+                .content(getString(contentId))
                 .build();
 
-        dialog.setListener(() -> {
-            logout();
-        });
+        dialog.setListener(listener);
 
         dialog.show(getSupportFragmentManager(), ConfirmationDialogFragment.class.getCanonicalName());
+    }
+
+    private void showLogoutAlert() {
+
+        showConfirmationDialog(R.string.sure_to_logout, () -> {
+            logout();
+        });
 
 //        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 //        alertdialogBuilder.setMessage(R.string.sure_to_logout);
@@ -1641,31 +1651,33 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 .setNegativeButton("No", null)
                 .show();
 */
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        showConfirmationDialog(R.string.sure_to_exit, () -> moveTaskToBack(true));
 
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(R.string.sure_to_exit);
-        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                moveTaskToBack(true);
-                // finish();
-            }
-        });
-        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+//
+//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+//        alertdialogBuilder.setMessage(R.string.sure_to_exit);
+//        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                moveTaskToBack(true);
+//                // finish();
+//            }
+//        });
+//        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+//
+//        AlertDialog alertDialog = alertdialogBuilder.create();
+//        alertDialog.show();
+//
+//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//
+//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 

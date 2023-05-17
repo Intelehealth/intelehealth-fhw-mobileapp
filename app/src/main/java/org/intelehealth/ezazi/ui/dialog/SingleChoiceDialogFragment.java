@@ -46,7 +46,7 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
             int selected = (int) view.getTag();
             if (previousSelection == selected) selected = -1;
             adapter.setSelected(selected);
-            changeSubmitButtonState(adapter.getSelected() == -1);
+            changeSubmitButtonState(adapter.getSelected() != -1);
         } else super.onClick(view);
     }
 
