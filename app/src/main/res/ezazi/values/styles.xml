@@ -214,6 +214,9 @@
         <item name="android:scrollbars">vertical</item>
         <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
         <item name="android:scrollbarThumbVertical">@color/colorScrollbar</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+<!--        <item name="android:fadeScrollbars">false</item>-->
+<!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
 
     <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">
