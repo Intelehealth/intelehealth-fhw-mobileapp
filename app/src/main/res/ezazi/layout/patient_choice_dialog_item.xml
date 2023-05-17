@@ -11,21 +11,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
         android:id="@+id/clChoiceRoot"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_container_padding"
         android:background="@drawable/selector_dialog_list_item"
-        android:paddingStart="@dimen/small_btn_horizontal_padding"
-        android:paddingTop="@dimen/small_btn_horizontal_padding"
-        android:paddingBottom="@dimen/small_btn_horizontal_padding">
+        android:paddingStart="@dimen/screen_container_padding"
+        android:paddingTop="@dimen/screen_container_padding"
+        android:paddingBottom="@dimen/screen_container_padding">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvPatientName"
             style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:text="@{patient.name}"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

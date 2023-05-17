@@ -3,12 +3,10 @@ package org.intelehealth.ezazi.ui.dialog;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import org.intelehealth.ezazi.databinding.DialogConfirmationViewBinding;
-import org.intelehealth.ezazi.databinding.DialogListViewBinding;
 import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
+
+import java.util.List;
 
 /**
  * Created by Vaghela Mithun R. on 15-05-2023 - 16:14.
@@ -57,5 +55,15 @@ public class ConfirmationDialogFragment extends BaseDialogFragment<String> imple
     @Override
     public void onDismiss() {
         if (listener != null) listener.onDecline();
+    }
+
+    public static final class Builder extends BaseBuilder<String, ConfirmationDialogFragment> {
+
+        @Override
+        public ConfirmationDialogFragment build() {
+            ConfirmationDialogFragment fragment = new ConfirmationDialogFragment();
+            fragment.setArguments(bundle());
+            return fragment;
+        }
     }
 }

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="value"
+            name="header"
             type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_dialog_list_item"
@@ -20,18 +19,20 @@
 
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvPatientId"
+            android:id="@+id/tvSelectAll"
             style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_all"
+            android:text="@{header}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/select_all" />
 
 
         <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbSelectAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="0dp"

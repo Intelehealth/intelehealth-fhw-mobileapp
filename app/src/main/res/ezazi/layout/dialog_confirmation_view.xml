@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/screen_padding"
-        android:paddingTop="@dimen/screen_container_padding"
         android:paddingEnd="@dimen/screen_padding"
         android:paddingBottom="@dimen/screen_padding">
 

@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.ui.dialog.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,9 +15,9 @@ import java.util.Collection;
  * Mob   : +919727206702
  **/
 abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<VH> {
-    private final ArrayList<T> selectedItems = new ArrayList();
-    private ArrayList<T> items;
+        extends RecyclerView.Adapter<VH> implements View.OnClickListener {
+    private final ArrayList<T> selectedItems = new ArrayList<>();
+    private final ArrayList<T> items;
     protected Context context;
     protected LayoutInflater inflater;
 

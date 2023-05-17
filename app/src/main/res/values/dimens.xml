@@ -138,4 +138,8 @@
     <dimen name="std_69dp">69dp</dimen>
     <dimen name="std_31dp">31dp</dimen>
     <dimen name="std_120dp">120dp</dimen>
+    <dimen name="std_660dp">660dp</dimen>
+    <dimen name="std_814dp">814dp</dimen>
+    <dimen name="std_330dp">330dp</dimen>
+    <dimen name="std_407dp">407dp</dimen>
 </resources>

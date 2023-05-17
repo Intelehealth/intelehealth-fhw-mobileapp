@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,9 +16,7 @@
             type="Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent">
@@ -26,8 +26,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/white_child_container_bg"
+            android:maxWidth="@dimen/dialog_max_width"
+            android:maxHeight="@dimen/dialog_max_height"
             android:paddingStart="@dimen/screen_container_padding"
-            android:paddingTop="@dimen/actionbar_vertical_padding"
+            android:paddingTop="@dimen/screen_container_padding"
             android:paddingEnd="@dimen/screen_container_padding"
             android:paddingBottom="@dimen/screen_container_padding"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +42,7 @@
                 stringRes="@{title}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/screen_container_padding"
                 android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,7 +52,6 @@
                 android:id="@+id/clDataContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/actionbar_vertical_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDialogTitle">
 

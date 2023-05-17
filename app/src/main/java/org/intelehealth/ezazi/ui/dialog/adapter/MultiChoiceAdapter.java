@@ -1,9 +1,13 @@
 package org.intelehealth.ezazi.ui.dialog.adapter;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.intelehealth.ezazi.R;
 
 import java.util.ArrayList;
 
@@ -12,15 +16,32 @@ import java.util.ArrayList;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class MultiChoiceAdapter<T, VH extends RecyclerView.ViewHolder> extends
-        BaseSelectedRecyclerViewAdapter<T, VH> implements CompoundButton.OnCheckedChangeListener {
+public abstract class MultiChoiceAdapter<T, VH extends RecyclerView.ViewHolder> extends
+        BaseSelectedRecyclerViewAdapter<T, VH> {
 
     public MultiChoiceAdapter(Context context, ArrayList<T> objectsList) {
         super(context, objectsList);
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+    public void onClick(View view) {
+        if (view.getTag() instanceof CheckBox) {
+            CheckBox checkBox = (CheckBox) view.getTag();
+            int checkedPosition = (int) view.getTag(R.id.clChoiceRoot);
+            if (view instanceof CompoundButton) {
+                CompoundButton button = (CompoundButton) view;
+                button.setChecked(!button.isChecked());
+            }
 
+            manageSelection(checkBox.isChecked(), checkedPosition);
+        }
+    }
+
+    private void manageSelection(boolean isChecked, int checkedPosition) {
+        if (isChecked) {
+            removeSelection(getItem(checkedPosition));
+        } else {
+            selectItem(getItem(checkedPosition));
+        }
     }
 }

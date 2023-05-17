@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -114,4 +114,43 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     abstract View getContentView();
 
     abstract boolean hasTitle();
+
+    public abstract static class BaseBuilder<T, D extends BaseDialogFragment<T>> {
+        private int title;
+        private int positiveBtnLabel;
+        private int negativeBtnLabel;
+
+        private T content;
+
+        public BaseBuilder<T, D> title(@StringRes int title) {
+            this.title = title;
+            return this;
+        }
+
+        public BaseBuilder<T, D> positiveButtonLabel(@StringRes int positiveBtnLabel) {
+            this.positiveBtnLabel = positiveBtnLabel;
+            return this;
+        }
+
+        public BaseBuilder<T, D> negativeButtonLabel(@StringRes int negativeBtnLabel) {
+            this.negativeBtnLabel = negativeBtnLabel;
+            return this;
+        }
+
+        public BaseBuilder<T, D> content(T content) {
+            this.content = content;
+            return this;
+        }
+
+        public abstract D build();
+
+        protected Bundle bundle() {
+            DialogArg<T> args = new DialogArg<>();
+            args.setTitle(title);
+            args.setPositiveBtnLabel(positiveBtnLabel);
+            args.setNegativeBtnLabel(negativeBtnLabel);
+            args.setContent(content);
+            return getDialogArgument(args);
+        }
+    }
 }
