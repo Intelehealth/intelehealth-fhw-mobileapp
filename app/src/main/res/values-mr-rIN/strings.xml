@@ -1037,5 +1037,7 @@
     <string name="locations">स्थान</string>
     <string name="doctor_not_needed">डॉक्टरांचा सल्ला आवश्यक नाही</string>
     <string name="view_bill">बिल पहा</string>
+    <string name="generate_bill_before_end_today_visit">तुम्ही बिल तयार केले नाही! बिल तयार करण्यासाठी "विजिट डिटेल्स" वर क्लिक करा.</string>
+    <string name="generate_bill_before_end_visit_summary">तुम्ही बिल तयार केले नाही! भेट संपण्यापूर्वी, प्रथम बिल तयार करा.</string>
 
 </resources>

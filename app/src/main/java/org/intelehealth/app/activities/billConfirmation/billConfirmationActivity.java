@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -71,6 +73,7 @@ import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
@@ -84,6 +87,7 @@ import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,7 +110,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
     ArrayList<String> selectedTests = new ArrayList<>();
     TextView patientDetailsTV;
-    String patientDetails;
+    String patientDetails, tag, patientUuid, encounterVitals, encounterAdultinitials;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
     LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV,
@@ -122,7 +126,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     private ProgressBar pb_connect;
     int total_amount = 0;
     RadioButton yes, no;
-    String not_paying_reason = "";
     EditText not_paying_reasonET;
     TextInputLayout not_paying_reasonTIL;
     RadioGroup radioGroup;
@@ -138,7 +141,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
     private PrinterFactory printerFactory;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 50;
-    private String printStr;
     private TextSetting textSetting;
     private String mChartsetName = "UTF-8";
     private ESCFontTypeEnum curESCFontType = null;
@@ -240,7 +242,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
             receiptNum = intent.getStringExtra("receiptNum");
             billDateString = intent.getStringExtra("receiptDate");
             billType = intent.getStringExtra("billType");
+            tag = intent.getStringExtra("tag");
             selectedTests = (ArrayList<String>) intent.getSerializableExtra("testsList");
+            patientUuid = intent.getStringExtra("patientUUID");
+            encounterVitals = intent.getStringExtra("encounterVitals");
+            encounterAdultinitials = intent.getStringExtra("encounterAdultinitials");
         }
 
         patientDetails = getString(R.string.receipt_no) + receiptNum + "\n" + getString(R.string.client_name) +
@@ -302,6 +308,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 boolean billSuccess = syncBillToServer();
                 if (billSuccess) {
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
+                    if(tag.equalsIgnoreCase("endVisitClicked"))
+                    endVisit();
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
                     confirmBillCV.setVisibility(View.GONE);
@@ -340,6 +348,22 @@ public class billConfirmationActivity extends AppCompatActivity implements Payme
                 shareFile();
             }
         });
+    }
+
+    private void endVisit() {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        if (patientVisitID == null || patientVisitID.isEmpty()) {
+                String visitIDorderBy = "startdate";
+                String visitIDSelection = "uuid = ?";
+                String[] visitIDArgs = {patientVisitID};
+                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                    visitIDCursor.moveToFirst();
+                    patientVisitID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (visitIDCursor != null) visitIDCursor.close();
+            }
+            VisitUtils.endVisit(billConfirmationActivity.this, patientVisitID, patientUuid, "No follow up", encounterVitals, encounterAdultinitials, "", patientName, "");
     }
 
     private void textPrint() throws UnsupportedEncodingException {
