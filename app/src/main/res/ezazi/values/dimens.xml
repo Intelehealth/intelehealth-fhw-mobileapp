@@ -52,4 +52,26 @@
     <dimen name="dialog_btn_horizontal_margin">@dimen/std_24dp</dimen>
     <dimen name="dialog_btn_vertical_margin">@dimen/std_8dp</dimen>
     <dimen name="scrollbar_width">@dimen/std_2dp</dimen>
+
+    <!-- Added by Kaveri-->
+
+    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_6dp</dimen>
+    <dimen name="custom_appbar_title_size">@dimen/std_18sp</dimen>
+
+
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="icon_36dp">36dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="line_66dp">66dp</dimen>
+    <dimen name="common_edittext_margin_top">8dp</dimen>
+    <dimen name="card_appointment_card_elevation">2dp</dimen>
+
+    <!-- add patient screen-->
+
+    <dimen  name="layout_profile_padding">24dp</dimen>
+    <dimen name="iv_profile_drawer_width">90dp</dimen>
+    <dimen name="iv_profile_drawer_height">90dp</dimen>
+<dimen  name="apps_details_profile_iv_radius">20dp</dimen>
+    <dimen name="iv_camera_width">35dp</dimen>
+    <dimen name="iv_camera_height">35dp</dimen>
 </resources>

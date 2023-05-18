@@ -75,4 +75,9 @@
     <color name="darkGray_50_perc">#807B7793</color>
     <color name="colorSelectedListItem">#D7D4EA</color>
     <color name="colorScrollbar">#C0C0C0</color>
+    <color name="colorAddPatientInput">#33B2AFBE</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#D8D5EB</color>
+
+
 </resources>

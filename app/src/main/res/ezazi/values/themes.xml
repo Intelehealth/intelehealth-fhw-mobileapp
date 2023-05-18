@@ -42,4 +42,13 @@
         <item name="android:paddingLeft">@dimen/actionbar_horizontal_padding</item>
         <item name="android:paddingStart">@dimen/actionbar_horizontal_padding</item>
     </style>
+
+    <style name="Theme.EZazi.Custom.ActionBar.Padding" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:paddingTop">@dimen/actionbar_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/actionbar_vertical_padding</item>
+        <item name="android:paddingRight">@dimen/custom_actionbar_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/custom_actionbar_horizontal_padding</item>
+        <item name="android:paddingLeft">@dimen/actionbar_horizontal_padding</item>
+        <item name="android:paddingStart">@dimen/actionbar_horizontal_padding</item>
+    </style>
 </resources>

@@ -55,4 +55,11 @@
     <dimen name="dialog_btn_horizontal_margin">@dimen/std_47dp</dimen>
     <dimen name="dialog_btn_vertical_margin">@dimen/std_29dp</dimen>
     <dimen name="scrollbar_width">@dimen/std_6dp</dimen>
+
+    <!-- Added by Kaveri-->
+
+    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_64dp</dimen>
+    <dimen name="custom_appbar_title_size">@dimen/std_28sp</dimen>
+
+    <!-- add patient screen-->
 </resources>
