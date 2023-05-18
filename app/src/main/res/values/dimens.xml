@@ -91,6 +91,7 @@
     <dimen name="std_21dp">21dp</dimen>
     <dimen name="std_24sp">24sp</dimen>
     <dimen name="std_26sp">26sp</dimen>
+    <dimen name="std_26dp">26dp</dimen>
     <dimen name="std_24dp">24dp</dimen>
     <dimen name="std_14sp">14sp</dimen>
     <dimen name="std_16sp">16sp</dimen>

@@ -64,4 +64,5 @@
     <dimen name="icon_btn_height">@dimen/std_16dp</dimen>
     <dimen name="stage_stroke_width">1dp</dimen>
     <dimen name="timeline_time_width">@dimen/std_84dp</dimen>
+    <dimen name="actionbar_title_left_margin">@dimen/std_16dp</dimen>
 </resources>

@@ -69,4 +69,5 @@
     <dimen name="stage_stroke_size">1dp</dimen>
     <dimen name="stage_stroke_width">2.5dp</dimen>
     <dimen name="timeline_time_width">@dimen/std_130dp</dimen>
+    <dimen name="actionbar_title_left_margin">@dimen/std_26dp</dimen>
 </resources>
