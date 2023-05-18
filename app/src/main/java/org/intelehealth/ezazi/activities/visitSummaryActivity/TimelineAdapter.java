@@ -157,15 +157,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.summaryNoteTextview.setText(context.getResources().getText(R.string.tap_here_to_capture_obs));
                         holder.ivEdit.setVisibility(View.GONE);
                     } else {
-//                        holder.cardview.setClickable(false);
-//                        holder.cardview.setEnabled(false);
+                        holder.cardview.setClickable(false);
+                        holder.cardview.setEnabled(false);
 
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1 || isMissed == 3) {
-//                            holder.cardview.setEnabled(false);
+                            holder.cardview.setEnabled(false);
                             holder.cardview.setActivated(false);
                             holder.circle.setActivated(false);
                             holder.circle.setEnabled(false);
@@ -234,8 +234,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
                         holder.ivEdit.setVisibility(View.GONE);
                     } else {
-//                        holder.cardview.setClickable(false);
-//                        holder.cardview.setEnabled(false);
+                        holder.cardview.setClickable(false);
+                        holder.cardview.setEnabled(false);
                         //  holder.cardview.setCardElevation(0);
 
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
@@ -265,8 +265,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
-//                    holder.cardview.setClickable(false);
-//                    holder.cardview.setEnabled(false);
+                    holder.cardview.setClickable(false);
+                    holder.cardview.setEnabled(false);
                     holder.cardview.setActivated(true);
                     holder.cardview.setEnabled(true);
                     holder.cardview.setActivated(true);

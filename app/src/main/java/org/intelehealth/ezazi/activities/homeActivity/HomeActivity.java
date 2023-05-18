@@ -108,6 +108,7 @@ import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
+import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -708,6 +709,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
+        SelectAllMultiChoice selectAll = new SelectAllMultiChoice();
+        selectAll.setHeader("Select All");
+        items.add(0, selectAll);
         MultiChoiceDialogFragment<MultiChoiceItem> dialog = new MultiChoiceDialogFragment.Builder<MultiChoiceItem>()
                 .title(R.string.select_patient)
                 .positiveButtonLabel(R.string.next)

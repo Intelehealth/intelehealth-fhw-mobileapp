@@ -73,6 +73,8 @@
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".homeActivity.HomeActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         <activity
             android:name=".prescription.PrescriptionActivity"
             android:configChanges="uiMode"
