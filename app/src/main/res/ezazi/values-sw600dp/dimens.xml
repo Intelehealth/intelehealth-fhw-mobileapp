@@ -68,4 +68,5 @@
     <dimen name="icon_btn_height">@dimen/std_32dp</dimen>
     <dimen name="stage_stroke_size">1dp</dimen>
     <dimen name="stage_stroke_width">2.5dp</dimen>
+    <dimen name="timeline_time_width">@dimen/std_130dp</dimen>
 </resources>

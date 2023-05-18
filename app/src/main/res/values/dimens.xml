@@ -121,6 +121,7 @@
     <dimen name="std_82dp">82dp</dimen>
     <dimen name="std_92dp">92dp</dimen>
     <dimen name="std_72dp">72dp</dimen>
+    <dimen name="std_90dp">90dp</dimen>
     <dimen name="std_64dp">64dp</dimen>
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
@@ -144,4 +145,5 @@
     <dimen name="std_330dp">330dp</dimen>
     <dimen name="std_407dp">407dp</dimen>
     <dimen name="stage_stroke_size">0.5dp</dimen>
+    <dimen name="std_130dp">130dp</dimen>
 </resources>

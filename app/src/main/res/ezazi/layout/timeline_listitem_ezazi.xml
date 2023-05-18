@@ -11,15 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="@dimen/screen_padding"
         android:text="@string/stage_1"
-        android:layout_marginBottom="@dimen/actionbar_vertical_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/hl_1"
-        android:layout_width="30dp"
+        android:layout_width="0dp"
         android:layout_height="@dimen/stage_stroke_width"
         android:background="@color/colorStageStroke"
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
@@ -31,13 +31,11 @@
         android:id="@+id/vl_1"
         android:layout_width="@dimen/stage_stroke_width"
         android:layout_height="0dp"
-        android:layout_marginStart="21dp"
-        android:layout_toEndOf="@id/time1"
         android:background="@color/colorStageStroke"
-        app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
-        app:layout_constraintEnd_toStartOf="@id/hl_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cardview_parent"
         app:layout_constraintStart_toEndOf="@id/time1"
-        app:layout_constraintTop_toTopOf="@id/cardview_parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvStage" />
 
     <View
         android:id="@+id/circle1"
@@ -51,13 +49,12 @@
 
     <TextView
         android:id="@+id/time1"
-        android:layout_width="wrap_content"
+        style="@style/Theme.EZazi.Heading1"
+        android:layout_width="@dimen/timeline_time_width"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="06:00 PM"
-        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/stage_text_size"
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
-        app:layout_constraintEnd_toStartOf="@id/vl_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/cardview_parent" />
 
@@ -65,12 +62,14 @@
         android:id="@+id/cardview_parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:layout_marginBottom="@dimen/screen_container_padding"
         android:background="@drawable/timeline_card_bg"
         android:padding="@dimen/screen_container_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/hl_1"
-        app:layout_constraintTop_toBottomOf="@id/tvStage">
+        app:layout_constraintTop_toBottomOf="@id/tvStage"
+        app:layout_constraintWidth_percent="0.7">
 
         <TextView
             android:id="@+id/summary_note_textview"
