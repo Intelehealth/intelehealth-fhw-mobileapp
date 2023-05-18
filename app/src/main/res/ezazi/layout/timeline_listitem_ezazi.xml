@@ -31,7 +31,7 @@
         android:id="@+id/vl_1"
         android:layout_width="@dimen/stage_stroke_width"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/screen_padding"
+        android:layout_marginEnd="@dimen/screen_container_padding"
         android:background="@color/colorStageStroke"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/cardview_parent"
@@ -56,8 +56,8 @@
         android:text="06:00 PM"
         android:textSize="@dimen/stage_text_size"
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/vl_1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/cardview_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvStage"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintWidth_percent="0.67">
 
         <TextView
             android:id="@+id/summary_note_textview"

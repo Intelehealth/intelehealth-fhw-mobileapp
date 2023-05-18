@@ -10,7 +10,7 @@
         android:id="@+id/recyclerview_timeline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/endStageButton"
+        android:layout_above="@+id/btnEndStage"
         android:fadeScrollbars="false"
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/colorAccent"
@@ -20,20 +20,20 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/endStageButton"
+        android:layout_above="@+id/btnEndStage"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/darker_gray" />
 
     <Button
-        android:id="@+id/endStageButton"
+        android:id="@+id/btnEndStage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
-        android:layout_toStartOf="@+id/fabSOS"
+        android:layout_toStartOf="@+id/btnSOS"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center" android:padding="8dip"
         android:text="@string/endStageButton"
@@ -42,7 +42,7 @@
         android:textSize="14sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabc"
+        android:id="@+id/btnChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -54,25 +54,25 @@
         android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabv"
+        android:id="@+id/btnVideoCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="40dip"
-        android:layout_toStartOf="@+id/fabc"
+        android:layout_toStartOf="@+id/btnChat"
         android:contentDescription="@string/chat_fab"
         android:src="@drawable/ic_baseline_videocam_24"
         app:backgroundTint="@color/colorYellow_2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSOS"
+        android:id="@+id/btnSOS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="40dip"
-        android:layout_toStartOf="@+id/fabv"
+        android:layout_toStartOf="@+id/btnVideoCall"
         android:contentDescription="@string/chat_fab"
         android:src="@drawable/ic_baseline_sos_24"
         app:backgroundTint="@color/red" />

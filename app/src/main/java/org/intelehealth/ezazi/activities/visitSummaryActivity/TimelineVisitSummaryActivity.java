@@ -37,7 +37,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.apprtc.ChatActivity;
@@ -277,7 +276,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.timeline_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        Button btn = menu.findItem(R.id.action_view_partogram).getActionView().findViewById(R.id.btnViewPartogram);
+        btn.setOnClickListener(view -> {
+            onOptionsItemSelected(menu.findItem(R.id.action_view_partogram));
+        });
+        return true;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -299,7 +302,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Map<String, String> log = new HashMap<>();
         log.put("TAG", TAG);
         log.put("action", "showEpartogram");
-        TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager manager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         Logger.logV("PHONE_TYPE_NONE", String.valueOf(Objects.requireNonNull(manager).getPhoneType()));
         /*if (getResources().getBoolean(R.bool.isTablet)) {
             Intent intent = new Intent(context, Epartogram.class);
@@ -340,9 +343,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("epartog", "Device Size: " + diagonalInches);
 */
 
-      //  if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
-            //Device is a 8" tablet
-            // Call webview here...
+        //  if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
+        //Device is a 8" tablet
+        // Call webview here...
           /*  Intent intent = new Intent(context, Epartogram.class);
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
@@ -356,14 +359,14 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        fabSOS = findViewById(R.id.fabSOS);
-        fabv = findViewById(R.id.fabv);
+        fabSOS = findViewById(R.id.btnSOS);
+        fabv = findViewById(R.id.btnVideoCall);
         outcomeTV = findViewById(R.id.outcomeTV);
-        fabc = findViewById(R.id.fabc);
+        fabc = findViewById(R.id.btnChat);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
-        endStageButton = findViewById(R.id.endStageButton);
+        endStageButton = findViewById(R.id.btnEndStage);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;

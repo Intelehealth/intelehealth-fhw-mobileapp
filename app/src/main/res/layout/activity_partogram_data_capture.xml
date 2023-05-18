@@ -55,7 +55,7 @@
         android:padding="16dip" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabc"
+        android:id="@+id/btnChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -67,10 +67,10 @@
         android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabv"
+        android:id="@+id/btnVideoCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fabc"
+        android:layout_above="@+id/btnChat"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
