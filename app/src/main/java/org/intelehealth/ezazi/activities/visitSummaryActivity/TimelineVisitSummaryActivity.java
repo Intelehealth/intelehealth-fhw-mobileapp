@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +93,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     int stageNo = 0;
     String value = "";
     String isVCEPresent = "";
-    FloatingActionButton fabc, fabv, fabSOS;
+    Button fabc, fabv, fabSOS;
     private SQLiteDatabase db;
     TextView outcomeTV;
     String valueStage = "";
@@ -123,7 +125,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline_visit_summary);
+        setContentView(R.layout.activity_timeline_ezazi);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
@@ -272,14 +276,15 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_viewepartogram, menu);
+        inflater.inflate(R.menu.timeline_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.epartogramView:
+            case R.id.action_view_partogram:
                 showEpartogram();
                 break;
             case android.R.id.home:

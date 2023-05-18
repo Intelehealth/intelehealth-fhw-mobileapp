@@ -58,4 +58,9 @@
     <dimen name="search_icon_padding">@dimen/std_8dp</dimen>
     <dimen name="small_btn_min_width">@dimen/std_72dp</dimen>
     <dimen name="actionbar_screen_title_size">@dimen/std_14sp</dimen>
+    <dimen name="icon_btn_padding">@dimen/std_10dp</dimen>
+    <dimen name="stage_text_size">@dimen/std_18sp</dimen>
+    <dimen name="icon_btn_width">@dimen/std_16dp</dimen>
+    <dimen name="icon_btn_height">@dimen/std_16dp</dimen>
+    <dimen name="stage_stroke_width">1dp</dimen>
 </resources>

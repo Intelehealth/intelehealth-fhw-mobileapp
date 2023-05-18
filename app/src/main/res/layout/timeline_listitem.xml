@@ -63,7 +63,6 @@
                 android:id="@+id/vl_1"
                 android:layout_width="2dp"
                 android:layout_height="100dp"
-                android:layout_above="@+id/vl_2"
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@id/time1"
                 android:background="@color/gray_2" />

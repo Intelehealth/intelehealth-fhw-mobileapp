@@ -892,5 +892,7 @@
     <string name="lbl_help">Help</string>
     <string name="don_t_have_any_active_visit">Don\'t have any active visit!</string>
     <string name="active_cases">Active Cases (%1$d)</string>
-
+    <string name="lbl_sos">SOS</string>
+    <string name="stage_1">Stage 1</string>
+    <string name="stage_2">Stage 2</string>
 </resources>

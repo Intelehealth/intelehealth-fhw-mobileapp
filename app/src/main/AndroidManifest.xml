@@ -60,6 +60,7 @@
             android:name="org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         <activity
             android:name="org.intelehealth.ezazi.activities.prescription.PrescriptionActivity"

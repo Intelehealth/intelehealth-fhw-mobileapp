@@ -77,5 +77,8 @@ class PatientMultiChoiceViewHolder extends RecyclerView.ViewHolder {
 
     public void setCheckedItem(boolean isChecked) {
         binding.cbPatientSelection.setChecked(isChecked);
+        binding.cbPatientSelection.setActivated(true);
+        binding.cbPatientSelection.setSelected(true);
+        binding.cbPatientSelection.setActivated(true);
     }
 }

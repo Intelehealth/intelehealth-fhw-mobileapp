@@ -113,7 +113,6 @@
         <item name="android:paddingTop">@dimen/small_btn_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/small_btn_vertical_padding</item>
         <item name="android:textAllCaps">false</item>
-
         <item name="android:fontFamily">@font/dm_sans_medium</item>
         <item name="rippleColor">@color/gray_2</item>
     </style>
@@ -215,8 +214,8 @@
         <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
         <item name="android:scrollbarThumbVertical">@color/colorScrollbar</item>
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
-<!--        <item name="android:fadeScrollbars">false</item>-->
-<!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
+        <!--        <item name="android:fadeScrollbars">false</item>-->
+        <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
@@ -227,5 +226,48 @@
         <item name="fontFamily">@font/dm_sans_bold</item>
         <item name="android:fontFamily">@font/dm_sans_bold</item>
         <item name="android:gravity">start</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon" parent="Theme.EZazi.Button.Small">
+        <item name="strokeWidth">@dimen/input_stroke_size</item>
+        <item name="cornerRadius">@dimen/small_btn_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon.Blue" parent="Theme.EZazi.Button.Icon">
+        <item name="backgroundTint">@color/btn_blue_color_selector</item>
+        <item name="strokeColor">@color/color_icon_btn_stroke</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:paddingStart">@dimen/icon_btn_padding</item>
+        <item name="android:paddingEnd">@dimen/icon_btn_padding</item>
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Button.Emergency" parent="Theme.EZazi.Button.Icon">
+        <item name="backgroundTint">@color/colorEmergencyBg</item>
+        <item name="strokeColor">?attr/colorAccent</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textSize">@dimen/std_16sp</item>
+        <item name="android:paddingStart">@dimen/icon_btn_padding</item>
+        <item name="android:paddingEnd">@dimen/icon_btn_padding</item>
+    </style>
+
+    <style name="Theme.EZazi.Text.Stage" parent="Theme.EZazi.Heading1">
+        <item name="android:textSize">@dimen/stage_text_size</item>
+        <item name="android:textColor">@color/colorStageText</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon.Edit" parent="Theme.EZazi.Button.Icon.Blue">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/colorSelectedListItem</item>
+        <item name="strokeWidth">0dp</item>
+<!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+<!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Text.Timeline.Status" parent="Theme.EZazi.Heading1">
+        <item name="android:textColor">@color/color_timeline_stroke</item>
     </style>
 </resources>

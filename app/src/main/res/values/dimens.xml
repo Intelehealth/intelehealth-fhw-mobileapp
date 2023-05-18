@@ -90,6 +90,7 @@
     <dimen name="std_21sp">21sp</dimen>
     <dimen name="std_21dp">21dp</dimen>
     <dimen name="std_24sp">24sp</dimen>
+    <dimen name="std_26sp">26sp</dimen>
     <dimen name="std_24dp">24dp</dimen>
     <dimen name="std_14sp">14sp</dimen>
     <dimen name="std_16sp">16sp</dimen>
@@ -124,7 +125,7 @@
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
     <dimen name="std_2dp">2dp</dimen>
-    <dimen name="input_stroke_size">0.5dp</dimen>
+    <dimen name="input_stroke_size">1dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 
     <dimen name="splash_bottom_dark_bg_width">400</dimen>
@@ -142,4 +143,5 @@
     <dimen name="std_814dp">814dp</dimen>
     <dimen name="std_330dp">330dp</dimen>
     <dimen name="std_407dp">407dp</dimen>
+    <dimen name="stage_stroke_size">0.5dp</dimen>
 </resources>
