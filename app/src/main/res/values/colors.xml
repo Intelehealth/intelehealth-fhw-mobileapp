@@ -12,7 +12,7 @@
     <color name="titleBar_cardview">#2e1e91</color>
     <color name="divider">#BDBDBD</color>
     <color name="green">#4CAF50</color>
-    <color name="red">#ED1A56</color>
+    <color name="red">#F44336</color>
     <color name="yellow">#FFEB3B</color>
     <color name="amber">#FFC107</color>
     <color name="gray">#444440</color>
@@ -75,8 +75,9 @@
     <color name="darkGray_50_perc">#807B7793</color>
     <color name="colorSelectedListItem">#D7D4EA</color>
     <color name="colorScrollbar">#C0C0C0</color>
-    <color name="colorIconButtonBg">#302E1E91</color>
-    <color name="colorEmergencyBg">#FFD7E2</color>
-    <color name="colorStageText">#8D8D8D</color>
-    <color name="colorStageStroke">#2E1E9166</color>
+    <color name="colorAddPatientInput">#33B2AFBE</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#D8D5EB</color>
+
+
 </resources>

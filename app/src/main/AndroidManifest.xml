@@ -42,34 +42,44 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
-
         <activity
-            android:name="org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity"
+            android:name=".activities.addNewPatient.AddNewPatientActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".epartogramActivity.EpartogramViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_epartogram"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity"
+            android:name=".visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
+            android:parentActivityName=".homeActivity.HomeActivity" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.prescription.PrescriptionActivity"
+            android:name=".prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity" />
+        <activity android:name=".chooseLanguageActivity.ChooseLanguageActivity" />
         <activity
             android:name="org.intelehealth.ezazi.appointment.AppointmentListingActivity"
             android:exported="true"
@@ -89,72 +99,72 @@
         </receiver>
 
         <activity
-            android:name="org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:name=".privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+            android:name=".additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.patientSurveyActivity.PatientSurveyActivity"
+            android:name=".patientSurveyActivity.PatientSurveyActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.physcialExamActivity.PhysicalExamActivity"
+            android:name=".physcialExamActivity.PhysicalExamActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_physical_exam"
-            android:parentActivityName="org.intelehealth.ezazi.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:name=".familyHistoryActivity.FamilyHistoryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_family_history"
-            android:parentActivityName="org.intelehealth.ezazi.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:name=".pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_past_medical_history"
-            android:parentActivityName="org.intelehealth.ezazi.activities.questionNodeActivity.QuestionNodeActivity"
+            android:parentActivityName=".questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.questionNodeActivity.QuestionNodeActivity"
+            android:name=".questionNodeActivity.QuestionNodeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.complaintNodeActivity.ComplaintNodeActivity"
+            android:name=".complaintNodeActivity.ComplaintNodeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_complaint_node"
-            android:parentActivityName="org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity"
+            android:parentActivityName=".identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.IntroActivity.IntroActivity"
+            android:name=".IntroActivity.IntroActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.visitSummaryActivity.VisitSummaryActivity"
+            android:name=".visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName="org.intelehealth.ezazi.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -162,48 +172,48 @@
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ezazi.activities.vitalActivity.VitalsActivity"
+            android:name=".vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity"
+            android:name=".patientDetailActivity.PatientDetailActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.cameraActivity.CameraActivity"
+            android:name=".cameraActivity.CameraActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.activitySync.ActivitySync"
+            android:name=".activitySync.ActivitySync"
             android:configChanges="uiMode"
             android:label="@string/title_activity_sync"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.videoLibraryActivity.VideoLibraryActivity"
+            android:name=".videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientActivity"
+            android:name=".activePatientsActivity.ActivePatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.todayPatientActivity.TodayPatientActivity"
+            android:name=".todayPatientActivity.TodayPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity"
+            android:name=".searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
@@ -220,29 +230,29 @@
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity"
+            android:name=".identificationActivity.IdentificationActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity"
+            android:name=".settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.intelehealth.ezazi.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".homeActivity.HomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ezazi.activities.loginActivity.LoginActivity"
+            android:name=".loginActivity.LoginActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.homeActivity.HomeActivity"
+            android:name=".homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -258,24 +268,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.intelehealth.ezazi.activities.splash_activity.SplashActivity"
+            android:name=".splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="org.intelehealth.ezazi.activities.setupActivity.SetupActivity"
+            android:name=".setupActivity.SetupActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ezazi.activities.followuppatients.FollowUpPatientActivity"
+            android:name=".followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"

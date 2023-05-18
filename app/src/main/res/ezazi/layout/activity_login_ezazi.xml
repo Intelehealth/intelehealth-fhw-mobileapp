@@ -40,7 +40,9 @@
 
         <include
             android:id="@+id/includeLoginInput"
-            layout="@layout/view_login_input" />
+            layout="@layout/view_login_input"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"

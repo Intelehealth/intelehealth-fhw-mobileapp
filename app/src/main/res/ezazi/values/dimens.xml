@@ -10,7 +10,7 @@
     <dimen name="forgot_pwd_size">@dimen/std_12sp</dimen>
     <dimen name="form_top_margin">@dimen/std_16dp</dimen>
     <dimen name="input_label_size">@dimen/std_12sp</dimen>
-    <dimen name="input_inner_size">@dimen/std_14sp</dimen>
+    <dimen name="input_inner_size">@dimen/std_16sp</dimen>
     <dimen name="screen_title_top_margin">@dimen/std_56dp</dimen>
     <dimen name="actionbar_size">56dp</dimen>
     <dimen name="button_text_size">@dimen/std_14sp</dimen>
@@ -18,19 +18,18 @@
     <dimen name="login_top_margin">@dimen/std_56dp</dimen>
     <dimen name="welcome_text_size">@dimen/std_21sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_16sp</dimen>
-    <dimen name="home_logo_width">@dimen/std_100dp</dimen>
-    <dimen name="home_logo_height">@dimen/std_36dp</dimen>
+    <dimen name="home_logo_width">@dimen/std_120dp</dimen>
+    <dimen name="home_logo_height">@dimen/std_48dp</dimen>
     <dimen name="action_menu_text_size">@dimen/std_12sp</dimen>
     <dimen name="login_screen_padding">@dimen/std_64dp</dimen>
     <dimen name="small_btn_horizontal_padding">@dimen/std_16dp</dimen>
     <dimen name="small_btn_vertical_padding">0dp</dimen>
-    <dimen name="small_btn_radius">@dimen/std_4dp</dimen>
     <dimen name="bottom_menu_text_size">@dimen/std_12sp</dimen>
     <dimen name="bottom_menu_icon_size">@dimen/std_24dp</dimen>
     <dimen name="alert_icon_size">@dimen/std_36dp</dimen>
-    <dimen name="heading1">@dimen/std_16sp</dimen>
-    <dimen name="heading2">@dimen/std_14sp</dimen>
-    <dimen name="body">@dimen/std_12sp</dimen>
+    <dimen name="heading1">@dimen/std_18sp</dimen>
+    <dimen name="heading2">@dimen/std_16sp</dimen>
+    <dimen name="body">@dimen/std_14sp</dimen>
     <dimen name="caption">@dimen/std_12sp</dimen>
     <dimen name="between_text_margin">@dimen/std_4dp</dimen>
     <dimen name="fab_size">@dimen/std_48dp</dimen>
@@ -49,25 +48,30 @@
     <dimen name="bottom_vector_tran_y">@dimen/std_72dp</dimen>
     <dimen name="input_inner_text_size">@dimen/std_16sp</dimen>
     <dimen name="home_container_top_margin">@dimen/std_8dp</dimen>
-    <dimen name="dialog_btn_text_size">@dimen/std_14sp</dimen>
-    <dimen name="dialog_btn_horizontal_margin">@dimen/std_16dp</dimen>
+    <dimen name="dialog_btn_text_size">@dimen/std_18sp</dimen>
+    <dimen name="dialog_btn_horizontal_margin">@dimen/std_24dp</dimen>
     <dimen name="dialog_btn_vertical_margin">@dimen/std_8dp</dimen>
     <dimen name="scrollbar_width">@dimen/std_2dp</dimen>
-    <dimen name="dialog_max_width">@dimen/std_330dp</dimen>
-    <dimen name="dialog_max_height">@dimen/std_407dp</dimen>
-    <dimen name="search_icon_padding">@dimen/std_8dp</dimen>
-    <dimen name="small_btn_min_width">@dimen/std_72dp</dimen>
-    <dimen name="actionbar_screen_title_size">@dimen/std_14sp</dimen>
-    <dimen name="icon_btn_padding">@dimen/std_8dp</dimen>
-    <dimen name="stage_text_size">@dimen/std_18sp</dimen>
-    <dimen name="icon_btn_width">@dimen/std_16dp</dimen>
-    <dimen name="icon_btn_height">@dimen/std_16dp</dimen>
-    <dimen name="stage_stroke_width">1dp</dimen>
-    <dimen name="timeline_time_width">@dimen/std_84dp</dimen>
-    <dimen name="actionbar_title_left_margin">@dimen/std_16dp</dimen>
-    <dimen name="timeline_bottom_menu_horizontal_padding">@dimen/std_12dp</dimen>
-    <dimen name="timeline_btn_height">@dimen/std_48dp</dimen>
-    <dimen name="sos_text_size">@dimen/std_18sp</dimen>
-    <dimen name="bottom_menu_min_height">@dimen/std_56dp</dimen>
-    <dimen name="small_input_text_size">@dimen/std_10sp</dimen>
+
+    <!-- Added by Kaveri-->
+
+    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_6dp</dimen>
+    <dimen name="custom_appbar_title_size">@dimen/std_18sp</dimen>
+
+
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="icon_36dp">36dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="line_66dp">66dp</dimen>
+    <dimen name="common_edittext_margin_top">8dp</dimen>
+    <dimen name="card_appointment_card_elevation">2dp</dimen>
+
+    <!-- add patient screen-->
+
+    <dimen  name="layout_profile_padding">24dp</dimen>
+    <dimen name="iv_profile_drawer_width">90dp</dimen>
+    <dimen name="iv_profile_drawer_height">90dp</dimen>
+<dimen  name="apps_details_profile_iv_radius">20dp</dimen>
+    <dimen name="iv_camera_width">35dp</dimen>
+    <dimen name="iv_camera_height">35dp</dimen>
 </resources>
