@@ -1053,5 +1053,8 @@
     <string name="locations">स्थान</string>
     <string name="doctor_not_needed">डॉक्टर परामर्श नहीं चाहिए</string>
     <string name="view_bill">बिल देखें</string>
+    <string name="generate_bill_before_end_today_visit">आपने बिल जनरेट नहीं किया है! बिल जनरेट करने के लिए "विजिट डिटेल्स" पर क्लिक करें।</string>
+    <string name="generate_bill_before_end_visit_summary">आपने बिल जनरेट नहीं किया है! विजिट समाप्त करने से पहले, पहले बिल जनरेट करें।</string>
+
 
 </resources>

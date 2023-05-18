@@ -37,6 +37,7 @@ import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -150,7 +151,10 @@ public class TodayPatientActivity extends AppCompatActivity {
             todayPatientAdapter.setActionListener(new TodayPatientAdapter.OnActionListener() {
                 @Override
                 public void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription) {
-                    onEndVisit(todayPatientModel, hasPrescription);
+                    if (checkForOldBill(todayPatientModel.getUuid()) == "")
+                        showDialogToGenerateBill();
+                    else
+                        onEndVisit(todayPatientModel, hasPrescription);
                 }
             });
         }
@@ -164,7 +168,6 @@ public class TodayPatientActivity extends AppCompatActivity {
         super.onDestroy();
         mTodayPatientList.clearOnScrollListeners();
     }
-
 
     private void getVisits() {
 
@@ -208,7 +211,6 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
     }
 
-
     private List<TodayPatientModel> doQuery(int offset) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
@@ -230,7 +232,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                     mCount.moveToFirst();
                     int count = mCount.getInt(0);
                     mCount.close();
-                    if(count==1)
+                    if (count == 1)
                         hasPrescription = true;
                     try {
                         TodayPatientModel model = new TodayPatientModel(
@@ -312,7 +314,6 @@ public class TodayPatientActivity extends AppCompatActivity {
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
-//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 followupdate = dbValue;
             } while (visitCursor.moveToNext());
@@ -397,7 +398,6 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
     }
 
-
     private void displaySingleSelectionDialog() {
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
@@ -480,7 +480,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                     mCount.moveToFirst();
                     int count = mCount.getInt(0);
                     mCount.close();
-                    if(count==1)
+                    if (count == 1)
                         hasPrescription = true;
                     try {
                         TodayPatientModel model = new TodayPatientModel(
@@ -528,7 +528,6 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
 
     }
-
 
     private void endAllVisit() {
 
@@ -578,9 +577,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     }
 
     private boolean endVisit(String patientID, String patientName, String visitUUID) {
-
         return visitUUID != null;
-
     }
 
     private String phoneNumber(String patientuuid) throws DAOException {
@@ -600,6 +597,38 @@ public class TodayPatientActivity extends AppCompatActivity {
         idCursor.close();
 
         return phone;
+    }
+
+    public String checkForOldBill(String visitUuid) {
+        String billEncounterUuid = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+        }
+        return billEncounterUuid;
+    }
+
+    public void showDialogToGenerateBill() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.generate_bill_before_end_today_visit));
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        alertDialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 }
 

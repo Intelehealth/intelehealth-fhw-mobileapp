@@ -199,7 +199,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 visitSummary.putExtra("patientLastName", patientLName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", "");
+                visitSummary.putExtra("tag", getVisitType(visit_id));
                 visitSummary.putExtra("pastVisit", past_visit);
 
                 if (holder.ivPriscription.getTag().equals("1")) {
@@ -280,6 +280,28 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     @Override
     public int getItemCount() {
         return activePatientModels.size();
+    }
+
+    private String getVisitType(String visit_id) {
+        String encounterlocalAdultintial = "";
+        String encounterIDSelection = "visituuid = ? AND sync!=?";
+        String[] encounterIDArgs = {visit_id, "false"};
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+        }
+        encounterCursor.close();
+        if(!encounterlocalAdultintial.equalsIgnoreCase(""))
+            return "";
+        else
+            return "skipComplaint";
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {

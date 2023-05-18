@@ -1048,5 +1048,7 @@
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
     <string name="locations">Locations</string>
     <string name="view_bill">View Bill</string>
+    <string name="generate_bill_before_end_today_visit">You have not generated the bill! Click on "Visit Details" to generate the bill.</string>
+    <string name="generate_bill_before_end_visit_summary">You have not generated the bill! Before ending the visit, first generate the bill.</string>
 
 </resources>
