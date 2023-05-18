@@ -335,7 +335,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button generateBillBtn;
     String receiptNum, receiptDate, patientFName, patientLName;
     String receiptPaymentStatus = "NA";
-    String special_value = "";
+    String special_value = "", billEncounterUuid = "";
 
 
 
@@ -923,7 +923,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
 
-        String billEncounterUuid = checkForOldBill();
+        billEncounterUuid = checkForOldBill();
         if (!billEncounterUuid.equals("")) {
             editVitals.setVisibility(View.GONE);
             editDiagnostics.setVisibility(View.GONE);
@@ -966,6 +966,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
+            /* This is because we shouldn't allow user to generate bill after ending visit thus it is better to hide this option. They should only be allowed to access existing bills (if any).
+            After ending bill generation is not allowed, because when we generate bill encounter is created and encounter time should always be between visit start and end time.
+            Thus, no encounter can be created after ending the visit. */
+            if (!billEncounterUuid.equals(""))
+                generateBillBtn.setVisibility(View.VISIBLE);
+            else
+                generateBillBtn.setVisibility(View.GONE);
             if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                 card_share.setVisibility(View.VISIBLE);
                 card_print.setVisibility(View.VISIBLE);
@@ -3500,11 +3507,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void endVisit() {
 
-        /*String billEncounterUuid = checkForOldBill();
-        if (billEncounterUuid.equals("")) {
-            showDialogToGenerateBill();
-
-        } else {*/
             if (visitUUID == null || visitUUID.isEmpty()) {
                 String visitIDorderBy = "startdate";
                 String visitIDSelection = "uuid = ?";
@@ -3517,7 +3519,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (visitIDCursor != null) visitIDCursor.close();
             }
             VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
-        //}
     }
 
     private void showDialogToGenerateBill() {
@@ -5313,7 +5314,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void generateBill(String tag) {
-        String billEncounterUuid = checkForOldBill();
         if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
         } else {
@@ -5467,7 +5467,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private String checkForOldBill() {
-        String billEncounterUuid = "";
+        String billEncounterUuid1 = "";
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
@@ -5476,20 +5476,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
                 if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    billEncounterUuid1 = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
             } while (encounterCursor.moveToNext());
 
         }
-        return billEncounterUuid;
+        return billEncounterUuid1;
 
     }
 
-    private void fetchBillDetails(String billEncounterUuid) {
+    private void fetchBillDetails(String billEncounterUuid1) {
         ArrayList selectedTests = new ArrayList<>();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ?";
-        String[] visitArgs = {billEncounterUuid, "0"}; // so that the deleted values dont come in the presc.
+        String[] visitArgs = {billEncounterUuid1, "0"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
