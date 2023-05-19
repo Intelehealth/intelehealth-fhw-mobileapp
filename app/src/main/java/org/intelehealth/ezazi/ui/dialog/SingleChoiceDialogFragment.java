@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -47,10 +48,20 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
             if (previousSelection == selected) selected = -1;
             adapter.setSelected(selected);
             changeSubmitButtonState(adapter.getSelected() != -1);
+
+            if (args.getPositiveBtnLabel() == null && adapter.getSelected() != -1) {
+                listener.onItemSelected(adapter.getSelected(), adapter.getItem(adapter.getSelected()));
+                dismiss();
+            }
         } else super.onClick(view);
     }
 
-    public static final class Builder extends BaseBuilder<List<String>, SingleChoiceDialogFragment> {
+    public static class Builder extends BaseBuilder<List<String>, SingleChoiceDialogFragment> {
+
+        public Builder(Context context) {
+            super(context);
+        }
+
         @Override
         public SingleChoiceDialogFragment build() {
             SingleChoiceDialogFragment fragment = new SingleChoiceDialogFragment();

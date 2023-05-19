@@ -9,11 +9,15 @@
 
         <variable
             name="title"
-            type="Integer" />
+            type="String" />
 
         <variable
             name="submitLabel"
-            type="Integer" />
+            type="String" />
+
+        <variable
+            name="dismissLabel"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,11 +42,11 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDialogTitle"
                 style="@style/Theme.EZazi.Text.Dialog.Title"
-                stringRes="@{title}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/screen_container_padding"
-                android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
+                android:text="@{title}"
+                android:visibility="@{title == null || title.length() == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -65,8 +69,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dialog_btn_horizontal_margin"
-            android:paddingVertical="@dimen/dialog_btn_vertical_margin"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            android:paddingVertical="@dimen/actionbar_vertical_padding"
             android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,24 +85,27 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="@string/cancel"
-                android:text="@string/cancel"
+                android:text="@{dismissLabel}"
+                android:visibility="@{dismissLabel == null || dismissLabel.length() == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/includeLoginInput" />
+                app:layout_constraintTop_toBottomOf="@id/includeLoginInput"
+                tools:text="@string/cancel" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubmit"
                 style="@style/Theme.EZazi.Dialog.Button.Next"
-                stringRes="@{submitLabel}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dialog_btn_horizontal_margin"
                 android:layout_weight="1"
                 android:contentDescription="@string/submit"
-                android:text="@string/submit"
+                android:text="@{submitLabel}"
+                android:visibility="@{submitLabel == null || submitLabel.length() == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/includeLoginInput" />
+                app:layout_constraintTop_toBottomOf="@id/includeLoginInput"
+                tools:text="@string/submit" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

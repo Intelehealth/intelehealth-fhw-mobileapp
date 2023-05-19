@@ -225,13 +225,13 @@
         <item name="android:textColor">@color/font_black_0</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
-        <item name="android:lineHeight">@dimen/std_31dp</item>
+        <item name="lineHeight">@dimen/std_31dp</item>
 
     </style>
 
 
     <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/input_focuse_color</item>
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
         <item name="boxCornerRadiusBottomStart">8dp</item>
@@ -239,9 +239,6 @@
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="hintTextColor">@color/darkGray</item>
         <item name="boxBackgroundColor">@color/white</item>
-
-
-
     </style>
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
@@ -306,5 +303,36 @@
         <item name="android:textSize">@dimen/small_input_text_size</item>
         <item name="android:textColor">@color/darkGray</item>
         <item name="android:padding">@dimen/screen_container_padding</item>
+    </style>
+
+    <style name="Theme.EZazi.Input.NoLabel" parent="Theme.EZazi.Input">
+        <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
+        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">false</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Wrap" parent="Theme.EZazi.Button">
+        <item name="android:textSize">@dimen/dialog_btn_text_size</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Wrap.White" parent="Theme.EZazi.Button.White">
+        <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
+<!--        <item name="android:textSize">@dimen/dialog_btn_text_size</item>-->
+<!--        <item name="android:paddingTop">0dp</item>-->
+<!--        <item name="android:paddingBottom">0dp</item>-->
+<!--        <item name="android:paddingStart">0dp</item>-->
+<!--        <item name="android:paddingEnd">0dp</item>-->
+<!--        <item name="android:minHeight">0dp</item>-->
+<!--        <item name="android:minWidth">0dp</item>-->
     </style>
 </resources>

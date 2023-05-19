@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,7 +39,7 @@ public class ConfirmationDialogFragment extends BaseDialogFragment<String> imple
     View getContentView() {
         DialogConfirmationViewBinding binding = DialogConfirmationViewBinding.inflate(getLayoutInflater(), null, false);
         binding.setContent(args.getContent());
-        binding.setTitle(args.getTitle());
+        binding.setHeading(args.getTitle());
         return binding.getRoot();
     }
 
@@ -58,6 +59,10 @@ public class ConfirmationDialogFragment extends BaseDialogFragment<String> imple
     }
 
     public static final class Builder extends BaseBuilder<String, ConfirmationDialogFragment> {
+
+        public Builder(Context context) {
+            super(context);
+        }
 
         @Override
         public ConfirmationDialogFragment build() {

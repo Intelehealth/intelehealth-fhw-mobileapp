@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/screen_container_padding"
-    android:background="@drawable/container_bg"
+    android:background="@drawable/container_bg_rounded"
     android:padding="@dimen/screen_container_padding">
 
     <TextView

@@ -712,7 +712,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         SelectAllMultiChoice selectAll = new SelectAllMultiChoice();
         selectAll.setHeader("Select All");
         items.add(0, selectAll);
-        MultiChoiceDialogFragment<MultiChoiceItem> dialog = new MultiChoiceDialogFragment.Builder<MultiChoiceItem>()
+        MultiChoiceDialogFragment<MultiChoiceItem> dialog = new MultiChoiceDialogFragment.Builder<MultiChoiceItem>(this)
                 .title(R.string.select_patient)
                 .positiveButtonLabel(R.string.next)
                 .build();
@@ -842,7 +842,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void showNurseSelectionDialog(List<String> visitUUIDList, String[] nurseNames, String[] nurseUUID) {
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder()
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_nurse)
                 .positiveButtonLabel(R.string.save_button)
                 .content(Arrays.asList(nurseNames))
@@ -1487,7 +1487,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showConfirmationDialog(@StringRes int contentId,
                                         ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder()
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
                 .positiveButtonLabel(R.string.yes)
                 .content(getString(contentId))
                 .build();

@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="title"
-            type="Integer" />
+            name="heading"
+            type="String" />
 
         <variable
             name="content"
@@ -26,15 +26,15 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvAlertTitle"
             style="@style/Theme.EZazi.Text.Dialog.Alert.Title"
-            stringRes="@{title}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingStart="@dimen/screen_container_padding"
             android:paddingTop="@dimen/screen_container_padding"
             android:paddingEnd="@dimen/screen_container_padding"
+            android:text="@{heading}"
             android:textColor="@color/red"
-            android:visibility="@{title == 0 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{heading == null || heading.length() == 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

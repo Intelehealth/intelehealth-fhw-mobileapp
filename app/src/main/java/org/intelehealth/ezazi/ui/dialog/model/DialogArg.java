@@ -10,38 +10,35 @@ import java.io.Serializable;
  * Mob   : +919727206702
  **/
 public class DialogArg<T> implements Serializable {
-    @StringRes
-    private int title;
-    @StringRes
-    private int positiveBtnLabel;
+    private String title;
+    private String positiveBtnLabel;
 
-    @StringRes
-    private int negativeBtnLabel;
+    private String negativeBtnLabel;
 
     private T content;
 
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public int getPositiveBtnLabel() {
+    public String getPositiveBtnLabel() {
         return positiveBtnLabel;
     }
 
-    public void setPositiveBtnLabel(int positiveBtnLabel) {
+    public void setPositiveBtnLabel(String positiveBtnLabel) {
         this.positiveBtnLabel = positiveBtnLabel;
     }
 
-    public void setNegativeBtnLabel(int negativeBtnLabel) {
+    public void setNegativeBtnLabel(String negativeBtnLabel) {
         this.negativeBtnLabel = negativeBtnLabel;
     }
 
-    public int getNegativeBtnLabel() {
+    public String getNegativeBtnLabel() {
         return negativeBtnLabel;
     }
 

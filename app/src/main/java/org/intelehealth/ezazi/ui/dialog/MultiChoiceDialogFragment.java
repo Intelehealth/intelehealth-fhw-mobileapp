@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.ui.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,6 +52,10 @@ public class MultiChoiceDialogFragment<T> extends ListDialogFragment<List<T>> {
     }
 
     public static final class Builder<T> extends BaseBuilder<List<T>, MultiChoiceDialogFragment<T>> {
+
+        public Builder(Context context) {
+            super(context);
+        }
 
         @Override
         public MultiChoiceDialogFragment<T> build() {

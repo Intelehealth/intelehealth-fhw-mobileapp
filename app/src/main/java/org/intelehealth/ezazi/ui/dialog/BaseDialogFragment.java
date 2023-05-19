@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.FragmentManager;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.DialogFragmentBinding;
@@ -70,6 +72,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             args = (DialogArg<T>) getArguments().getSerializable(ARGS);
             if (hasTitle()) binding.setTitle(args.getTitle());
             binding.setSubmitLabel(args.getPositiveBtnLabel());
+            binding.setDismissLabel(args.getNegativeBtnLabel());
         }
     }
 
@@ -119,23 +122,45 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     abstract boolean hasTitle();
 
     public abstract static class BaseBuilder<T, D extends BaseDialogFragment<T>> {
-        private int title;
-        private int positiveBtnLabel;
-        private int negativeBtnLabel;
+
+        private final Context context;
+
+        private String title;
+        private String positiveBtnLabel;
+        private String negativeBtnLabel;
 
         private T content;
 
+        public BaseBuilder(Context context) {
+            this.context = context;
+        }
+
         public BaseBuilder<T, D> title(@StringRes int title) {
+            this.title = context.getResources().getString(title);
+            return this;
+        }
+
+        public BaseBuilder<T, D> title(String title) {
             this.title = title;
             return this;
         }
 
         public BaseBuilder<T, D> positiveButtonLabel(@StringRes int positiveBtnLabel) {
+            this.positiveBtnLabel = context.getResources().getString(positiveBtnLabel);
+            return this;
+        }
+
+        public BaseBuilder<T, D> positiveButtonLabel(String positiveBtnLabel) {
             this.positiveBtnLabel = positiveBtnLabel;
             return this;
         }
 
         public BaseBuilder<T, D> negativeButtonLabel(@StringRes int negativeBtnLabel) {
+            this.negativeBtnLabel = context.getResources().getString(negativeBtnLabel);
+            return this;
+        }
+
+        public BaseBuilder<T, D> negativeButtonLabel(String negativeBtnLabel) {
             this.negativeBtnLabel = negativeBtnLabel;
             return this;
         }

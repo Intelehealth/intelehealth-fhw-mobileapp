@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
@@ -25,6 +26,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -118,7 +120,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showAutoComplete_EditText(final View tempView, final int position, final int positionChild, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData);
-        dataEditText.setAdapter(new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, mContext.getResources().getStringArray(R.array.medications)));
+        dataEditText.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        dataEditText.setAdapter(new ArrayAdapter(mContext, R.layout.spinner_textview, mContext.getResources().getStringArray(R.array.medications)));
         dataEditText.setThreshold(1);
 
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
@@ -238,22 +241,34 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onClick(View v) {
                 final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
+                String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
+                SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                        .title(title)
+                        .content(Arrays.asList(items))
+                        .build();
 
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
+                dialog.setListener((pos, value) -> {
+                    dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[pos]);
+                    mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[pos]);
+                });
 
-                builder.setTitle("Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName())
-                        .setItems(items, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
-                                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
-                                dialog.dismiss();
-                            }
-                        });
+                dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
-
-                builder.create().show();
+//                AlertDialog.Builder builder =
+//                        new AlertDialog.Builder(mContext);
+//
+//                builder.setTitle("Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName())
+//                        .setItems(items, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
+//                                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//
+//                builder.create().show();
             }
         });
 

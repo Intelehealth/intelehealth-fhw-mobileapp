@@ -18,4 +18,5 @@
     <string name="you_have_captured_obs">You have captured the observations</string>
     <string name="you_have_missed_obs">You have missed the collection of observations</string>
     <string name="pending_obs">Pending!</string>
+    <string name="observations">Observations</string>
 </resources>

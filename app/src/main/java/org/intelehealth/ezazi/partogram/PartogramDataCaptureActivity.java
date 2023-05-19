@@ -70,7 +70,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("History Collection");
+        getSupportActionBar().setTitle(getString(R.string.observations));
         mSaveTextView = findViewById(R.id.btnSave);
         mEpartogramTextView = findViewById(R.id.btnView);
         mRecyclerView = findViewById(R.id.rvQuery);

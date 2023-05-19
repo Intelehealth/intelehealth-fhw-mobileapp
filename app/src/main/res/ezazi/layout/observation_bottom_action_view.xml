@@ -14,9 +14,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
-        style="@style/Theme.EZazi.Dialog.Button.Next"
+        style="@style/Theme.EZazi.Button.Wrap"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:text="@string/save_button"
         android:visibility="visible"
@@ -27,17 +27,16 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnView"
-        style="@style/Theme.EZazi.Dialog.Button.Cancel"
+        style="@style/Theme.EZazi.Button.Wrap.White"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/action_view"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnSave"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="?attr/colorPrimary"
-        app:strokeWidth="@dimen/input_stroke_size" />
+        app:strokeColor="?attr/colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnChat"

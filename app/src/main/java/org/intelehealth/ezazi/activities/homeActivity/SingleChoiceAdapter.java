@@ -50,7 +50,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
         return choices.size();
     }
 
-    private String getItem(int position) {
+    public String getItem(int position) {
         return choices.get(position);
     }
 

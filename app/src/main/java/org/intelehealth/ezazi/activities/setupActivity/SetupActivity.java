@@ -526,7 +526,7 @@ public class SetupActivity extends AppCompatActivity {
 
     // Replaced by Mithun Vaghela
     private void showInternetConfirmationDialog() {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder()
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
                 .title(R.string.generic_warning)
                 .positiveButtonLabel(R.string.generic_ok)
                 .content(getString(R.string.setup_internet))

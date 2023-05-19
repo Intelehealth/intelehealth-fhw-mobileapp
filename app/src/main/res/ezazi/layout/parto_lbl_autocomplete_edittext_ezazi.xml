@@ -27,9 +27,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.NoLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,12 +37,15 @@
 
             <AutoCompleteTextView
                 android:id="@+id/etvData"
-                style="@style/Theme.EZazi.EditText"
+                style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:hint="Enter Value:"
-                android:inputType="numberDecimal" />
+                android:hint="@string/enter_value"
+                android:padding="@dimen/screen_container_padding"
+                android:inputType="none"
+                android:dropDownSelector="@color/white"
+                android:textSize="@dimen/small_input_text_size" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
