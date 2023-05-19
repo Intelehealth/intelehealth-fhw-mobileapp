@@ -1,5 +1,6 @@
 package org.intelehealth.app.dialog;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +12,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +22,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.BluetoothDeviceAdapter;
 
 import java.util.ArrayList;
@@ -109,6 +116,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
                 }
                 mContext.registerReceiver(mBluetoothReceiver, mBluetoothIntentFilter);
                 mRegistered = true;
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+                    }
+                }
                 mBluetoothAdapter.startDiscovery();
             }
         });
@@ -116,6 +128,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
         lvPairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+                    }
+                }
                 mBluetoothAdapter.cancelDiscovery();
                 if (mRegistered) {
                     mContext.unregisterReceiver(mBluetoothReceiver);
@@ -128,6 +145,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
         lvFoundDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+                    }
+                }
                 mBluetoothAdapter.cancelDiscovery();
                 if (mRegistered) {
                     mContext.unregisterReceiver(mBluetoothReceiver);
@@ -140,11 +162,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
         btn_hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isHidePairedDevlist){//当前是隐藏
+                if (isHidePairedDevlist) {//当前是隐藏
                     isHidePairedDevlist = false;
                     lvPairedDevices.setVisibility(View.VISIBLE);
                     btn_hide.setText("Hide_↑↑↑");
-                }else{//当前是可见
+                } else {//当前是可见
                     isHidePairedDevlist = true;
                     lvPairedDevices.setVisibility(View.GONE);
                     btn_hide.setText("Show_↓↓↓");
@@ -155,6 +177,13 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
 
     private void initData() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        //this change is done to handle the crash occured on crahslytics dated 19.05.23
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+            }
+        }
         pairedDeviceList = new ArrayList<>(mBluetoothAdapter.getBondedDevices());
         if (pairedDeviceList.size() == 0) {
             tvPairedDeviceEmpty.setVisibility(View.VISIBLE);
@@ -166,6 +195,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+            }
+        }
         mBluetoothAdapter.cancelDiscovery();
         if (mRegistered) {
             mContext.unregisterReceiver(mBluetoothReceiver);
@@ -189,6 +223,11 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                    }
+                }
                 int devType = device.getBluetoothClass().getMajorDeviceClass();
                 if(devType != BluetoothClass.Device.Major.IMAGING){
                     return;
@@ -207,6 +246,31 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
                 if (foundDeviceList.size() == 0) {
                     tvFoundDeviceEmpty.setVisibility(View.VISIBLE);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 2) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(mContext, getResources().getString(R.string.bluetooth_connect_permission_granted), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(mContext, getResources().getString(R.string.bluetooth_connect_permission_denied), Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (requestCode == 3) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(mContext, getResources().getString(R.string.bluetooth_scan_permission_granted), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(mContext, getResources().getString(R.string.bluetooth_scan_permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }

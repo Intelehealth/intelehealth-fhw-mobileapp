@@ -5487,6 +5487,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void fetchBillDetails(String billEncounterUuid1) {
         ArrayList selectedTests = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ?";
         String[] visitArgs = {billEncounterUuid1, "0"}; // so that the deleted values dont come in the presc.

@@ -1039,5 +1039,9 @@
     <string name="view_bill">बिल पहा</string>
     <string name="generate_bill_before_end_today_visit">तुम्ही बिल तयार केले नाही! बिल तयार करण्यासाठी "विजिट डिटेल्स" वर क्लिक करा.</string>
     <string name="generate_bill_before_end_visit_summary">तुम्ही बिल तयार केले नाही! भेट संपण्यापूर्वी, प्रथम बिल तयार करा.</string>
+    <string name="bluetooth_connect_permission_granted">ब्लूटूथ कनेक्ट परवानगी दिली!</string>
+    <string name="bluetooth_connect_permission_denied">ब्लूटूथ कनेक्ट परवानगी नाकारली!</string>
+    <string name="bluetooth_scan_permission_granted">ब्लूटूथ स्कॅन परवानगी दिली!</string>
+    <string name="bluetooth_scan_permission_denied">ब्लूटूथ स्कॅन परवानगी नाकारली!</string>
 
 </resources>
