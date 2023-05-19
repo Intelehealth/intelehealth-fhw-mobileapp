@@ -71,7 +71,7 @@ class PatientMultiChoiceViewHolder extends RecyclerView.ViewHolder {
         binding.clChoiceRoot.setOnClickListener(listener);
 
         binding.cbPatientSelection.setTag(binding.cbPatientSelection);
-        binding.cbPatientSelection.setTag(R.id.clChoiceRoot, getAdapterPosition());
+        binding.cbPatientSelection.setTag(R.id.cbPatientSelection, getAdapterPosition());
         binding.cbPatientSelection.setOnClickListener(listener);
     }
 

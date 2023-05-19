@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_now">Chat now</string>
+    <string name="video_call">Video Call now</string>
+    <string name="emergency_call">Dial Emergency now</string>
+</resources>

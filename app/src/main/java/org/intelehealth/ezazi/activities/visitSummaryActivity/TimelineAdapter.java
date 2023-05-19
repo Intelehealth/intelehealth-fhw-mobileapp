@@ -265,7 +265,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
-                    holder.cardview.setClickable(false);
                     holder.cardview.setEnabled(false);
                     holder.cardview.setActivated(true);
                     holder.cardview.setEnabled(true);

@@ -176,7 +176,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             DialogArg<T> args = new DialogArg<>();
             args.setTitle(title);
             args.setPositiveBtnLabel(positiveBtnLabel);
-            args.setNegativeBtnLabel(negativeBtnLabel);
+            args.setNegativeBtnLabel(negativeBtnLabel == null ? context.getResources().getString(R.string.cancel) : negativeBtnLabel);
             args.setContent(content);
             return getDialogArgument(args);
         }

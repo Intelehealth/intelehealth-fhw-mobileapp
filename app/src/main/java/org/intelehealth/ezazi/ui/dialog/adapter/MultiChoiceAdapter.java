@@ -27,7 +27,7 @@ public abstract class MultiChoiceAdapter<T, VH extends RecyclerView.ViewHolder> 
     public void onClick(View view) {
         if (view.getTag() instanceof CheckBox) {
             CheckBox checkBox = (CheckBox) view.getTag();
-            int checkedPosition = (int) view.getTag(R.id.clChoiceRoot);
+            int checkedPosition = (int) view.getTag(view.getId());
             if (view instanceof CompoundButton) {
                 CompoundButton button = (CompoundButton) view;
                 button.setChecked(!button.isChecked());

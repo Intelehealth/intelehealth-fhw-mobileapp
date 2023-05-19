@@ -69,10 +69,10 @@
 
     <!-- add patient screen-->
 
-    <dimen  name="layout_profile_padding">24dp</dimen>
+    <dimen name="layout_profile_padding">24dp</dimen>
     <dimen name="iv_profile_drawer_width">90dp</dimen>
     <dimen name="iv_profile_drawer_height">90dp</dimen>
-<dimen  name="apps_details_profile_iv_radius">20dp</dimen>
+    <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="iv_camera_width">35dp</dimen>
     <dimen name="iv_camera_height">35dp</dimen>
     <dimen name="dialog_max_width">@dimen/std_330dp</dimen>
@@ -81,15 +81,16 @@
     <dimen name="small_btn_min_width">@dimen/std_72dp</dimen>
     <dimen name="actionbar_screen_title_size">@dimen/std_14sp</dimen>
     <dimen name="icon_btn_padding">@dimen/std_8dp</dimen>
-    <dimen name="stage_text_size">@dimen/std_18sp</dimen>
+    <dimen name="stage_text_size">@dimen/std_16sp</dimen>
     <dimen name="icon_btn_width">@dimen/std_16dp</dimen>
     <dimen name="icon_btn_height">@dimen/std_16dp</dimen>
     <dimen name="stage_stroke_width">1dp</dimen>
-    <dimen name="timeline_time_width">@dimen/std_84dp</dimen>
-    <dimen name="actionbar_title_left_margin">@dimen/std_16dp</dimen>
+    <dimen name="timeline_time_width">@dimen/std_80dp</dimen>
+    <dimen name="actionbar_title_left_margin">@dimen/std_8dp</dimen>
     <dimen name="timeline_bottom_menu_horizontal_padding">@dimen/std_12dp</dimen>
-    <dimen name="timeline_btn_height">@dimen/std_48dp</dimen>
+    <dimen name="timeline_btn_height">@dimen/std_36dp</dimen>
     <dimen name="sos_text_size">@dimen/std_18sp</dimen>
     <dimen name="bottom_menu_min_height">@dimen/std_56dp</dimen>
     <dimen name="small_input_text_size">@dimen/std_10sp</dimen>
+    <dimen name="obs_input_min_width">0.50</dimen>
 </resources>

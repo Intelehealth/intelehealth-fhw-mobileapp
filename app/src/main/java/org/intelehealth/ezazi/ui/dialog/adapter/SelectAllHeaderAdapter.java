@@ -48,7 +48,7 @@ abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.cbSelectAll || view.getId() == R.id.tvSelectAll) {
+        if (view.getId() == R.id.cbSelectAll) {
             SelectAllDialogItemHeaderBinding binding = (SelectAllDialogItemHeaderBinding) view.getTag();
             if (binding.cbSelectAll.isChecked()) {
                 clearSelection();
@@ -60,7 +60,7 @@ abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem
 }
 
 class SelectAllViewHolder extends RecyclerView.ViewHolder {
-    private SelectAllDialogItemHeaderBinding binding;
+    private final SelectAllDialogItemHeaderBinding binding;
 
     public SelectAllViewHolder(@NonNull SelectAllDialogItemHeaderBinding binding) {
         super(binding.getRoot());
@@ -79,7 +79,5 @@ class SelectAllViewHolder extends RecyclerView.ViewHolder {
     public void setClickListener(View.OnClickListener listener) {
         binding.cbSelectAll.setTag(binding);
         binding.cbSelectAll.setOnClickListener(listener);
-        binding.tvSelectAll.setTag(binding);
-        binding.tvSelectAll.setOnClickListener(listener);
     }
 }

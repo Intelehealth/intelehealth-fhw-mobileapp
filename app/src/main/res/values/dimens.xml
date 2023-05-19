@@ -120,12 +120,16 @@
     <dimen name="std_23sp">23sp</dimen>
     <dimen name="std_164dp">164dp</dimen>
     <dimen name="std_82dp">82dp</dimen>
+    <dimen name="std_80dp">80dp</dimen>
     <dimen name="std_92dp">92dp</dimen>
     <dimen name="std_72dp">72dp</dimen>
     <dimen name="std_64dp">64dp</dimen>
     <dimen name="std_32sp">32sp</dimen>
     <dimen name="std_70dp">70dp</dimen>
     <dimen name="std_2dp">2dp</dimen>
+    <dimen name="std_26dp">26dp</dimen>
+    <dimen name="std_130dp">130dp</dimen>
+    <dimen name="std_30sp">30sp</dimen>
     <dimen name="input_stroke_size">1dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 

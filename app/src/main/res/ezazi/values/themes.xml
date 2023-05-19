@@ -48,6 +48,7 @@
         <item name="android:paddingStart">@dimen/actionbar_horizontal_padding</item>
         <item name="titleTextColor">@color/font_black_0</item>
         <item name="titleTextAppearance">@style/Theme.EZazi.ActionBar.Title.Text</item>
+        <item name="titleMarginStart">@dimen/actionbar_title_left_margin</item>
     </style>
 
     <style name="Theme.EZazi.ActionBar.Title.Text" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">

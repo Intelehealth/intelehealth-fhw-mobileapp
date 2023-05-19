@@ -33,11 +33,12 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:hint="Enter Value"
+            app:drawableEndCompat="@drawable/ic_space"
             android:inputType="numberDecimal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.62" />
+            app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

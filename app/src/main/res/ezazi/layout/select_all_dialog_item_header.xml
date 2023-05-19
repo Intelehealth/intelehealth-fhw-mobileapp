@@ -15,29 +15,32 @@
         android:layout_margin="@dimen/list_container_padding"
         android:background="@drawable/selector_dialog_list_item"
         android:paddingStart="@dimen/small_btn_horizontal_padding"
-        android:paddingTop="@dimen/small_btn_horizontal_padding"
-        android:paddingBottom="@dimen/small_btn_horizontal_padding">
+        android:paddingTop="@dimen/screen_container_padding"
+        android:paddingBottom="@dimen/screen_container_padding">
 
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvSelectAll"
-            style="@style/Theme.EZazi.Text.Dialog.Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select All"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/select_all" />
+        <!--        <com.google.android.material.textview.MaterialTextView-->
+        <!--            android:id="@+id/tvSelectAll"-->
+        <!--            style="@style/Theme.EZazi.Text.Dialog.Content"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Select All"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:text="@string/select_all" />-->
 
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbSelectAll"
-            android:layout_width="wrap_content"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
             android:minWidth="0dp"
             android:minHeight="0dp"
+            android:text="@string/select_all"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
