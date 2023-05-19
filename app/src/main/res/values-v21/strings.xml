@@ -11,6 +11,7 @@
     <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
     <string name="healthcube">HealthCube</string>
     <string name="thermalprinter_device_info">Device Info</string>
+    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
     <string name="thermal_printer">Printer</string>
     <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>

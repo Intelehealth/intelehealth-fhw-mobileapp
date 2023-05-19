@@ -1297,7 +1297,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     complaintxt1.setLayoutParams(layoutParams);
                     if (visitValue != null && !visitValue.equals("")) {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
+                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow +
+                                "Associated symptoms", ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }
@@ -1344,7 +1345,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     TextView complaintxt1 = new TextView(this);
                     if (visitValue != null && !visitValue.equals("")) {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
+                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow +
+                                "Associated symptoms", ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }
