@@ -75,4 +75,11 @@
     <dimen name="icon_btn_height">@dimen/std_32dp</dimen>
     <dimen name="stage_stroke_size">1dp</dimen>
     <dimen name="stage_stroke_width">2.5dp</dimen>
+    <dimen name="timeline_time_width">@dimen/std_130dp</dimen>
+    <dimen name="actionbar_title_left_margin">@dimen/std_26dp</dimen>
+    <dimen name="timeline_bottom_menu_horizontal_padding">@dimen/std_24dp</dimen>
+    <dimen name="timeline_btn_height">@dimen/std_65dp</dimen>
+    <dimen name="sos_text_size">@dimen/std_30sp</dimen>
+    <dimen name="bottom_menu_min_height">@dimen/std_135dp</dimen>
+    <dimen name="small_input_text_size">@dimen/std_14sp</dimen>
 </resources>

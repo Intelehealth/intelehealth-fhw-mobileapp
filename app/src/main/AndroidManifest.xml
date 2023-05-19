@@ -67,6 +67,7 @@
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
             android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".visitSummaryActivity.TimelineVisitSummaryActivity"
