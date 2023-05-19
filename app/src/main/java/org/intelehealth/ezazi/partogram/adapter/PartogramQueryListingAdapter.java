@@ -55,7 +55,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.parto_list_item_view, parent, false);
+                .inflate(R.layout.parto_list_item_view_ezazi, parent, false);
         return new GenericViewHolder(itemView);
     }
 
@@ -78,18 +78,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE)
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_1_DIG_TYPE)
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_2_DIG_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE))
-                {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_etv_view, null);
+                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE)) {
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_etv_view_ezazi, null);
                     showUserInputBox(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.DROPDOWN_SINGLE_SELECT_TYPE)) {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_dropdown_view, null);
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_dropdown_view_ezazi, null);
                     showListOptions(tempView, position, i);
                     genericViewHolder.containerLinearLayout.addView(tempView);
-                }
-                else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT)) {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_autocomplete_edittext, null);
+                } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT)) {
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_autocomplete_edittext_ezazi, null);
                     showAutoComplete_EditText(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 }
@@ -200,7 +198,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty()  && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
+                if (!s.toString().trim().isEmpty() && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
                         .get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
 
                     if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
@@ -216,10 +214,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (dataEditText.getText().toString().endsWith(".")){
+                if (dataEditText.getText().toString().endsWith(".")) {
                     dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-                }
-                else{
+                } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
             }
@@ -231,8 +228,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView dropdownTextView = tempView.findViewById(R.id.tvData);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
-                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty())
-        {
+                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()
                     [Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues())
                     .indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);

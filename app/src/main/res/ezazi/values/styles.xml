@@ -89,8 +89,8 @@
         <item name="android:textSize">@dimen/small_button_text_size</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
-<!--        <item name="android:paddingStart">@dimen/small_button_padding</item>-->
-<!--        <item name="android:paddingEnd">@dimen/small_button_padding</item>-->
+        <!--        <item name="android:paddingStart">@dimen/small_button_padding</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/small_button_padding</item>-->
         <item name="cornerRadius">@dimen/small_btn_radius</item>
         <item name="android:paddingTop">@dimen/small_button_padding</item>
         <item name="android:paddingBottom">@dimen/small_button_padding</item>
@@ -245,8 +245,8 @@
         <item name="iconPadding">0dp</item>
         <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
         <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>
-<!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
-<!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
     </style>
 
     <style name="Theme.EZazi.Button.Emergency" parent="Theme.EZazi.Button.Icon">
@@ -256,8 +256,8 @@
         <item name="android:textSize">@dimen/sos_text_size</item>
         <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
         <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>
-<!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
-<!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
     </style>
 
     <style name="Theme.EZazi.Text.Stage" parent="Theme.EZazi.Heading1">
@@ -275,5 +275,12 @@
 
     <style name="Theme.EZazi.Text.Timeline.Status" parent="Theme.EZazi.Heading1">
         <item name="android:textColor">@color/color_timeline_stroke</item>
+    </style>
+
+    <style name="Theme.EZazi.EditText">
+        <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
+        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:padding">@dimen/screen_container_padding</item>
     </style>
 </resources>

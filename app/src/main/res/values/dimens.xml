@@ -115,6 +115,7 @@
     <dimen name="std_60dp">60dp</dimen>
     <dimen name="std_100dp">100dp</dimen>
     <dimen name="std_10dp">10dp</dimen>
+    <dimen name="std_10sp">10sp</dimen>
     <dimen name="std_143dp">143dp</dimen>
     <dimen name="std_35sp">35sp</dimen>
     <dimen name="std_23sp">23sp</dimen>
