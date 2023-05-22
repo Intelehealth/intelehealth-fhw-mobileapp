@@ -1292,7 +1292,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
-            patientNationalID.setText("Not Provided");
+            patientNationalID.setText(getResources().getString(R.string.not_provided));
         }
 
         // setting occupation value

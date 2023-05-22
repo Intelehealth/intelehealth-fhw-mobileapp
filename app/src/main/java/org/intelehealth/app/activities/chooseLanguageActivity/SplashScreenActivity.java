@@ -75,16 +75,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screenactivity_ui2);
-
         sessionManager = new SessionManager(SplashScreenActivity.this);
-
         rvSelectLanguage = findViewById(R.id.rv_select_language);
         layoutLanguage = findViewById(R.id.layout_panel);
         layoutParent = findViewById(R.id.layout_parent);
         layoutHeader = findViewById(R.id.layout_child1);
-
-        //        Getting App language through the session manager
-        sessionManager = new SessionManager(this);
         //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -98,19 +93,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         TokenRefreshUtils.refreshToken(this);
          initFirebaseRemoteConfig();
 
-        /*if (sessionManager.isFirstTimeLaunch()) {
+        if (sessionManager.isFirstTimeLaunch()) {
+            checkPerm();
             animateViews();
             populatingLanguages();
-        } else {*/
+        } else {
 
         //as we are implementing force update now thus commenting this.
-        /*new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 nextActivity();
             }
-        }, 3000);*/
-        // }
+        }, 3000);
+        }
         sessionManager.setAppLanguage("en");
         saveLanguage();
 
@@ -138,7 +134,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent.putExtra("password", "");
                     startActivity(intent);*/
 
-                    nextActivity();
+//                    nextActivity();
                 }
                 finish(); // TODO: uncomment
                 // testing...
@@ -227,7 +223,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() { //Do something after 100ms
-                        nextActivity();
+//                        nextActivity();
                     }
                 }, 2000);
             } else {
@@ -238,7 +234,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashScreenActivity.this);
                         boolean smoothupgrade = smoothUpgrade.checkingDatabase();
                         if (smoothupgrade) {
-                            nextActivity();
+//                            nextActivity();
                         }
                     }
                 }, 2000);
@@ -388,7 +384,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("en"));
             itemList.add(jsonObject);
 
-            jsonObject = new JSONObject();
+            /*jsonObject = new JSONObject();
             jsonObject.put("name", "ଓଡିଆ");
             jsonObject.put("code", "or");
 
@@ -456,7 +452,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             jsonObject.put("code", "ta");
 
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
-            itemList.add(jsonObject);
+            itemList.add(jsonObject);*/
 
             ChooseLanguageAdapterNew languageListAdapter = new ChooseLanguageAdapterNew(SplashScreenActivity.this,
                     itemList, new ItemSelectionListener() {

@@ -163,7 +163,7 @@
     //Patient Search Screen
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
-    <string name="alert_none_found">Please check username and pasword entered</string>
+    <string name="alert_none_found">Please check username and password entered</string>
 
     //Past Medical History Screen
     <string name="title_activity_patient_history">Past Medical History</string>
@@ -913,6 +913,7 @@
     <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
     <string name="okay">Okay</string>
     <string name="my_achievements">My Achievements</string>
+    <string name="achievements">Achievements</string>
     <string name="my_profile">My profile</string>
     <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
     <string name="no_network_tooltip">No network!</string>
@@ -1915,6 +1916,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="exit_app">Exit App</string>
     <string name="last_sync">Last sync</string>
     <string name="help_center">Help center</string>
+    <string name="help_footer">Help</string>
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>

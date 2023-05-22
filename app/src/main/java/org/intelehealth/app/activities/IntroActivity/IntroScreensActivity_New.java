@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.IntroActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +21,9 @@ import androidx.viewpager.widget.ViewPager;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.utilities.SessionManager;
+
+import java.util.Locale;
 
 public class IntroScreensActivity_New extends AppCompatActivity {
     private static final String TAG = "IntroScreensActivityNew";
@@ -32,6 +36,8 @@ public class IntroScreensActivity_New extends AppCompatActivity {
     private int page = 0;
     private Handler handler;
     private int delay = 7000;
+    String appLanguage;
+    SessionManager sessionManager = null;
 
     Runnable runnable = new Runnable() {
         public void run() {
@@ -48,10 +54,10 @@ public class IntroScreensActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screens_new_ui2);
-
         viewPager = findViewById(R.id.pager_intro_screens);
         dotsLayout = findViewById(R.id.layoutDots_intro);
         Button btnSkip = findViewById(R.id.btn_skip_intro);
+        sessionManager = new SessionManager(IntroScreensActivity_New.this);
         ImageView ivBack = findViewById(R.id.iv_back_arrow);
         /*ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +67,11 @@ public class IntroScreensActivity_New extends AppCompatActivity {
                finish();
             }
         });*/
+
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,5 +185,14 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             dots1[currentPage].setBackgroundResource(R.drawable.ui2_ic_slider_bar);
 
         }
+    }
+
+    public void setLocale(String appLanguage) {
+        // here comes en, hi, mr
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 }

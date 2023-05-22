@@ -367,7 +367,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             } else {
                 totalUpcomingApps = 0;
             }
-            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " upcoming");
+            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " " + getResources().getString(R.string.upcoming));
 
         } catch (
                 Exception e) {
