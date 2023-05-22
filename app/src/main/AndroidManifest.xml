@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.intelehealth.app">
+    package="org.intelehealth.unicef">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
@@ -28,7 +28,7 @@
         android:required="false" />
 
     <application
-        android:name=".app.IntelehealthApplication"
+        android:name="org.intelehealth.unicef.app.IntelehealthApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -42,7 +42,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".profile.MyProfileActivity"
+            android:name="org.intelehealth.unicef.profile.MyProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -51,11 +51,11 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ayu.visit.VisitCreationActivity"
+            android:name="org.intelehealth.unicef.ayu.visit.VisitCreationActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
         <activity
-            android:name=".activities.chatHelp.ChatHelpActivity_New"
+            android:name="org.intelehealth.unicef.activities.chatHelp.ChatHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -64,7 +64,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
+            android:name="org.intelehealth.unicef.ui2.calendarviewcustom.CalendarViewDemoActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -73,7 +73,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.aboutus.AboutUsActivity"
+            android:name="org.intelehealth.unicef.activities.aboutus.AboutUsActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -81,7 +81,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.settingsActivity.Language_ProtocolsActivity"
+            android:name="org.intelehealth.unicef.activities.settingsActivity.Language_ProtocolsActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -89,7 +89,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.patientSurveyActivity.PatientSurveyActivity_New"
+            android:name="org.intelehealth.unicef.activities.patientSurveyActivity.PatientSurveyActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -97,14 +97,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".horizontalcalendar.HorizontalCalendarActivity"
+            android:name="org.intelehealth.unicef.horizontalcalendar.HorizontalCalendarActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.visit.PrescriptionActivity"
+            android:name="org.intelehealth.unicef.activities.visit.PrescriptionActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -113,7 +113,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.visit.EndVisitActivity"
+            android:name="org.intelehealth.unicef.activities.visit.EndVisitActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -122,7 +122,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.visit.VisitActivity"
+            android:name="org.intelehealth.unicef.activities.visit.VisitActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -131,7 +131,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
+            android:name="org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -140,7 +140,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.patientDetailActivity.PatientDetailActivity2"
+            android:name="org.intelehealth.unicef.activities.patientDetailActivity.PatientDetailActivity2"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
@@ -149,7 +149,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.identificationActivity.IdentificationActivity_New"
+            android:name="org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
@@ -158,37 +158,37 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".appointmentNew.AppointmentDetailsActivity"
+            android:name="org.intelehealth.unicef.appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".appointmentNew.MyAppointmentActivity"
+            android:name="org.intelehealth.unicef.appointmentNew.MyAppointmentActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.help.activities.ChatSupportHelpActivity_New"
+            android:name="org.intelehealth.unicef.activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.help.activities.FAQActivity_New"
+            android:name="org.intelehealth.unicef.activities.help.activities.FAQActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.help.activities.MostSearchedVideosActivity_New"
+            android:name="org.intelehealth.unicef.activities.help.activities.MostSearchedVideosActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.forgotPasswordNew.ChangePasswordActivity_New"
+            android:name="org.intelehealth.unicef.activities.forgotPasswordNew.ChangePasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:name="org.intelehealth.unicef.activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -199,39 +199,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.notification.NotificationActivity"
+            android:name="org.intelehealth.unicef.activities.notification.NotificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.visit.VisitDetailsActivity"
+            android:name="org.intelehealth.unicef.activities.visit.VisitDetailsActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.followuppatients.FollowUpPatientActivity_New"
+            android:name="org.intelehealth.unicef.activities.followuppatients.FollowUpPatientActivity_New"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.onboarding.PrivacyPolicyActivity_New"
+            android:name="org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.onboarding.TermsAndConditionsActivity_New"
+            android:name="org.intelehealth.unicef.activities.onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.homeActivity.HomeScreenActivity_New"
+            android:name="org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="FCM_PLUGIN_HOME_ACTIVITY" />
 
@@ -239,17 +239,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.loginActivity.LoginActivityNew"
+            android:name="org.intelehealth.unicef.activities.loginActivity.LoginActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.forgotPasswordNew.ResetPasswordActivity_New"
+            android:name="org.intelehealth.unicef.activities.forgotPasswordNew.ResetPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
+            android:name="org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -257,33 +257,33 @@
 
         </activity>
         <activity
-            android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
+            android:name="org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.prescription.PrescriptionActivity"
+            android:name="org.intelehealth.unicef.activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"
+            android:name="org.intelehealth.unicef.activities.chooseLanguageActivity.ChooseLanguageActivity"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".appointment.AppointmentListingActivity"
+            android:name="org.intelehealth.unicef.appointment.AppointmentListingActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".appointment.ScheduleListingActivity"
+            android:name="org.intelehealth.unicef.appointment.ScheduleListingActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
 
         <receiver
-            android:name=".services.firebase_services.RTCMessageReceiver"
+            android:name="org.intelehealth.unicef.services.firebase_services.RTCMessageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -292,7 +292,7 @@
         </receiver>
 
         <receiver
-            android:name=".services.CameraOpenRequestReceiver"
+            android:name="org.intelehealth.unicef.services.CameraOpenRequestReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -301,118 +301,118 @@
         </receiver>
 
         <activity
-            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:name="org.intelehealth.unicef.activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+            android:name="org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
+            android:name="org.intelehealth.unicef.activities.patientSurveyActivity.PatientSurveyActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.physcialExamActivity.PhysicalExamActivity"
+            android:name="org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_physical_exam"
-            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:name="org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_family_history"
-            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:name="org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_past_medical_history"
-            android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".activities.questionNodeActivity.QuestionNodeActivity"
+            android:name="org.intelehealth.unicef.activities.questionNodeActivity.QuestionNodeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
+            android:name="org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_complaint_node"
-            android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.IntroActivity.IntroActivity"
+            android:name="org.intelehealth.unicef.activities.IntroActivity.IntroActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
+            android:name="org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName=".activities.homeActivity.HomeActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
+                android:value="org.intelehealth.unicef.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.vitalActivity.VitalsActivity"
+            android:name="org.intelehealth.unicef.activities.vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.patientDetailActivity.PatientDetailActivity"
+            android:name="org.intelehealth.unicef.activities.patientDetailActivity.PatientDetailActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.activitySync.ActivitySync"
+            android:name="org.intelehealth.unicef.activities.activitySync.ActivitySync"
             android:configChanges="uiMode"
             android:label="@string/title_activity_sync"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
+            android:name="org.intelehealth.unicef.activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.activePatientsActivity.ActivePatientActivity"
+            android:name="org.intelehealth.unicef.activities.activePatientsActivity.ActivePatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.todayPatientActivity.TodayPatientActivity"
+            android:name="org.intelehealth.unicef.activities.todayPatientActivity.TodayPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.searchPatientActivity.SearchPatientActivity"
+            android:name="org.intelehealth.unicef.activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:exported="false"
             android:label="@string/title_activity_search_patient"
@@ -428,34 +428,34 @@
                 android:resource="@xml/searchable" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
+                android:value="org.intelehealth.unicef.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.identificationActivity.IdentificationActivity"
+            android:name="org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.settingsActivity.SettingsActivity"
+            android:name="org.intelehealth.unicef.activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.homeActivity.HomeActivity"
+            android:parentActivityName="org.intelehealth.unicef.activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
+                android:value="org.intelehealth.unicef.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.loginActivity.LoginActivity"
+            android:name="org.intelehealth.unicef.activities.loginActivity.LoginActivity"
             android:configChanges="uiMode"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.homeActivity.HomeActivity"
+            android:name="org.intelehealth.unicef.activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
@@ -463,38 +463,38 @@
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
+                android:value="org.intelehealth.unicef.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.splash_activity.SplashActivity"
+            android:name="org.intelehealth.unicef.activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.IntroActivity.IntroScreensActivity_New"
+            android:name="org.intelehealth.unicef.activities.IntroActivity.IntroScreensActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.setupActivity.SetupActivityNew"
+            android:name="org.intelehealth.unicef.activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
+            android:name="org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.setupActivity.SetupActivity"
+            android:name="org.intelehealth.unicef.activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".activities.followuppatients.FollowUpPatientActivity"
+            android:name="org.intelehealth.unicef.activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
@@ -502,12 +502,12 @@
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
         <activity
-            android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
+            android:name="org.intelehealth.unicef.activities.searchPatientActivity.SearchPatientActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
-            android:name=".appointmentNew.ScheduleAppointmentActivity_New"
+            android:name="org.intelehealth.unicef.appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -517,7 +517,7 @@
         </activity>
 
         <service
-            android:name=".utilities.OpenMRSAccountAuthenticatorService"
+            android:name="org.intelehealth.unicef.utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -528,13 +528,13 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name=".services.RunAfterBootService"
+            android:name="org.intelehealth.unicef.services.RunAfterBootService"
             android:enabled="true"
             android:exported="false"
             android:permission="" />
 
         <receiver
-            android:name=".syncModule.BootCompleteReceiver"
+            android:name="org.intelehealth.unicef.syncModule.BootCompleteReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -544,12 +544,12 @@
         <!-- android:name="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider" -->
         <!-- android:authorities="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider" -->
         <!-- android:exported="false" /> -->
-        <service android:name=".services.DownloadService" />
-        <service android:name=".services.MyIntentService" />
-        <service android:name=".services.LastSyncIntentService" />
-        <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
+        <service android:name="org.intelehealth.unicef.services.DownloadService" />
+        <service android:name="org.intelehealth.unicef.services.MyIntentService" />
+        <service android:name="org.intelehealth.unicef.services.LastSyncIntentService" />
+        <service android:name="org.intelehealth.unicef.services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
-            android:name=".services.firebase_services.MyFirebaseMessagingService"
+            android:name="org.intelehealth.unicef.services.firebase_services.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -569,7 +569,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
         <receiver
-            android:name=".services.firebase_services.CallRTCNotifyReceiver"
+            android:name="org.intelehealth.unicef.services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">
             <intent-filter android:priority="100">
                 <action
@@ -578,7 +578,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".services.firebase_services.RestartServiceReceiver"
+            android:name="org.intelehealth.unicef.services.firebase_services.RestartServiceReceiver"
             android:exported="false">
             <intent-filter android:priority="99">
                 <action
@@ -593,7 +593,7 @@
         </receiver>
 
         <service
-            android:name=".services.firebase_services.CallListenerBackgroundService"
+            android:name="org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
 
