@@ -55,7 +55,7 @@
 
     <!-- Added by Kaveri-->
 
-    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_6dp</dimen>
+    <dimen name="custom_actionbar_horizontal_padding">8dp</dimen>
     <dimen name="custom_appbar_title_size">@dimen/std_18sp</dimen>
 
 
@@ -67,11 +67,43 @@
     <dimen name="card_appointment_card_elevation">2dp</dimen>
 
     <!-- add patient screen-->
-
-    <dimen  name="layout_profile_padding">24dp</dimen>
+    <dimen name="layout_profile_padding">24dp</dimen>
     <dimen name="iv_profile_drawer_width">90dp</dimen>
     <dimen name="iv_profile_drawer_height">90dp</dimen>
-<dimen  name="apps_details_profile_iv_radius">20dp</dimen>
+    <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="iv_camera_width">35dp</dimen>
     <dimen name="iv_camera_height">35dp</dimen>
+    <dimen name="input_add_patient_height">48dp</dimen>
+    <dimen name="input_add_patient_margin_top">10dp</dimen>
+    <dimen name="input_add_patient_padding_top">11dp</dimen>
+    <dimen name="spinners_add_patient_height">52dp</dimen>
+    <dimen name="add_patient_padding_start">8dp</dimen>
+    <dimen name="add_patient_padding_top">8dp</dimen>
+    <dimen name="add_patient_padding_end">8dp</dimen>
+    <dimen name="layout_stages_margin_top">25dp</dimen>
+    <dimen name="layout_stages_icon_height">45dp</dimen>
+    <dimen name="layout_stages_icon_width">40dp</dimen>
+    <dimen name="layout_stages_icon_padding">2dp</dimen>
+    <dimen name="layout_stages_text_margin_top">15dp</dimen>
+    <dimen name="layout_stages_line_height">5dp</dimen>
+    <dimen name="stages_line_margin_start">7dp</dimen>
+    <dimen name="stages_line_margin_top">20dp</dimen>
+    <dimen name="stages_line_margin_end">3dp</dimen>
+    <dimen name="layout_stages_line_width">40dp</dimen>
+    <dimen name="add_patient_frame_margin_start">20dp</dimen>
+    <dimen name="add_patient_frame_margin_top">20dp</dimen>
+    <dimen name="add_patient_frame_margin_end">20dp</dimen>
+    <dimen name="profile_layout_size">100dp</dimen>
+    <dimen name="profile_layout_margin_bottom">10dp</dimen>
+    <dimen name="card_profile_width">70dp</dimen>
+    <dimen name="card_profile_height">70dp</dimen>
+    <dimen name="card_profile_corner_radius">12dp</dimen>
+    <dimen name="card_profile_icon_height">60dp</dimen>
+    <dimen name="card_profile_icon_width">60dp</dimen>
+    <dimen name="card_profile_icon_size">28dp</dimen>
+    <dimen name="card_profile_icon_max_size">15dp</dimen>
+    <dimen name="address_padding">12dp</dimen>
+    <dimen name="button_add_patient_margin">10dp</dimen>
+    <dimen name="button_add_patient_margin_bottom">30dp</dimen>
+
 </resources>

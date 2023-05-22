@@ -10,11 +10,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbars="none"
         android:layout_above="@+id/btn_next_first_screen"
         android:layout_alignParentTop="true"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,22 +24,22 @@
 
             <FrameLayout
                 android:id="@+id/layout_profile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/profile_layout_size"
+                android:layout_height="@dimen/profile_layout_size"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="@dimen/profile_layout_margin_bottom">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="70dp"
+                    android:layout_width="@dimen/card_profile_width"
+                    android:layout_height="@dimen/card_profile_height"
                     android:layout_gravity="center"
-                    android:layout_height="70dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardCornerRadius="@dimen/card_profile_corner_radius">
 
                     <ImageView
                         android:id="@+id/profilePic"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="@dimen/card_profile_icon_height"
+                        android:layout_height="@dimen/card_profile_icon_width"
                         android:layout_gravity="bottom|center_horizontal"
                         android:src="@drawable/dummy_profile_icon" />
 
@@ -47,14 +47,14 @@
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="@dimen/card_profile_icon_size"
+                    android:layout_height="@dimen/card_profile_icon_size"
                     android:layout_gravity="bottom|end"
                     android:scaleType="center"
                     android:visibility="visible"
                     app:backgroundTint="@color/colorGray"
-                    app:fabCustomSize="28dp"
-                    app:maxImageSize="15dp"
+                    app:fabCustomSize="@dimen/card_profile_icon_size"
+                    app:maxImageSize="@dimen/card_profile_icon_max_size"
                     app:srcCompat="@drawable/ic_camera_edit_photo"
                     app:tint="@color/colorPrimary" />
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
                 android:gravity="center"
-                android:text="Add a picture"
+                android:text="@string/add_a_picture"
                 android:textColor="@color/darkGray"
                 android:textSize="14sp" />
 
@@ -73,153 +73,207 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_profile"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/container_bg_rounded"
                 android:orientation="vertical"
                 android:paddingStart="12dp"
-                android:layout_marginTop="15dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="12dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="First Name*"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:maxLines="1"
-                        android:layout_weight="400"
-                        android:singleLine="true"
-                        android:textColor="@color/colorBlack" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:hint="Middle Name"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:gravity="center_vertical"
+                            android:hint="@string/first_name"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="Last Name*"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
+                        android:layout_height="match_parent">
 
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/middle_name"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="Date of Birth*"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
+                        android:layout_height="match_parent">
 
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/last_name"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:drawablePadding="30dp"
-                        android:hint="Age*"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        app:drawableEndCompat="@drawable/ic_calendar_new" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/date_of_birth"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="Mobile Number"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_no_ofdays_staff"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:drawablePadding="30dp"
+                            android:hint="@string/age"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true"
+                            app:drawableEndCompat="@drawable/ic_calendar_new" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="15dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputet_no_of_days_expense"
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="Alternate Mobile Number"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/mobile_number"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/input_add_patient_margin_top"
+                    android:layout_marginBottom="15dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        style="@style/Theme.EZazi.Input.Add.Patient"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputet_no_of_days_expense"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_add_patient_height"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/alternate_mobile_no"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/input_add_patient_padding_top"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
         </LinearLayout>
@@ -229,10 +283,11 @@
         android:id="@+id/btn_next_first_screen"
         style="@style/Theme.EZazi.Button"
         android:layout_width="match_parent"
-        android:backgroundTint="@color/darkGray"
         android:layout_height="@dimen/input_height"
         android:layout_alignParentBottom="true"
-        android:text="Next"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:enabled="false"
+        android:text="@string/next"
         app:rippleColor="@color/white" />
 </RelativeLayout>

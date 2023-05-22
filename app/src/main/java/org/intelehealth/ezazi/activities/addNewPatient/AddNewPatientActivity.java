@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,7 +54,24 @@ public class AddNewPatientActivity extends AppCompatActivity {
                 .replace(R.id.frame_add_patient, new PatientPersonalInfoFragment())
                 .commit();
 
-    }
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+
+              String  patient_detail = intent.getStringExtra("ScreenEdit");
+
+                Bundle args = intent.getBundleExtra("BUNDLE");
+                if (patient_detail.equalsIgnoreCase("personal_edit")) {
+                    setScreen(new PatientPersonalInfoFragment());
+                } else if (patient_detail.equalsIgnoreCase("address_edit")) {
+                    setScreen(new PatientAddressInfoFragment());
+                } else if (patient_detail.equalsIgnoreCase("others_edit")) {
+                    setScreen(new PatientOtherInfoFragment());
+                }
+
+            }
+        }
+
 
     private void setScreen(Fragment fragment) {
 
