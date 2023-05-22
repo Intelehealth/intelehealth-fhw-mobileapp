@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Telemed KG</string>
     <string name="notification_title">Intelehealth</string>
     <string name="notification_title_1">Application is active!</string>
     //Generic
@@ -885,7 +885,7 @@
     <string name="close_visits">Close Visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
+    <string name="who_we_are_intro">Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -894,11 +894,11 @@
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">The platform is powered by Ayu, a programmable digital assistant that supports frontline health workers with evidence-based protocols for primary healthcare in regional languages</string>
+    <string name="take_patient_visits_intro"> Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history.</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
     <string name="share_prescriptions">Share the prescription</string>
 
-    <string name="provide_prescriptions_intro">The cloud-based open-source platform designed for a low-resource environment combined with a customized implementation strategy creates a digital health solution for impactful health outcomes</string>
+    <string name="provide_prescriptions_intro">The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.</string>
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
     <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>

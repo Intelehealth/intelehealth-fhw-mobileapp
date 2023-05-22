@@ -321,7 +321,7 @@
     <dimen name="select_language">16sp</dimen>
     <dimen name="intelehealth_logo_height">92dp</dimen>
     <dimen name="intelehealth_logo_margin_top">12dp</dimen>
-    <dimen name="iv_intele_logo_height">88dp</dimen>
+    <dimen name="iv_intele_logo_height">100dp</dimen>
     <dimen name="iv_intele_logo_margin_top">20dp</dimen>
     <dimen name="iv_intele_logo_margin_start">20dp</dimen>
     <dimen name="iv_intele_logo_margin_end">20dp</dimen>
@@ -340,6 +340,8 @@
     <dimen name="btn_next_lang_margin_start">32dp</dimen>
     <dimen name="btn_next_lang_margin_end">24dp</dimen>
 
+    <dimen name="iv_unicef_logo_height">140dp</dimen>
+    <dimen name="iv_unicef_logo_width">140dp</dimen>
 
     <!-- Intro screens -->
     <dimen name="back_arrow_intro_height">24dp</dimen>
