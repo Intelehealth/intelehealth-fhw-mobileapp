@@ -168,8 +168,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.rootIndex = mIndexMappingHashMap.getOrDefault(genericViewHolder.index, 0);
             int position = genericViewHolder.getAbsoluteAdapterPosition();
 
-            genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
-            genericViewHolder.bodyLayout.setVisibility(View.GONE);
 
             genericViewHolder.otherContainerLinearLayout.removeAllViews();
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -296,16 +294,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    genericViewHolder.spinKitView.setVisibility(View.GONE);
-                    genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
-                    //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
+            if (position == mItemList.size() - 1) {
+                genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
+                genericViewHolder.bodyLayout.setVisibility(View.GONE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericViewHolder.spinKitView.setVisibility(View.GONE);
+                        genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                        //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
 
-                }
-            }, 1000);
+                    }
+                }, 1000);
+            } else {
+                genericViewHolder.spinKitView.setVisibility(View.GONE);
+                genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+            }
 
             if (!mItemList.get(position).getImagePathList().isEmpty()) {
                 Log.v("showCameraView", "onBindViewHolder 1");
@@ -344,7 +349,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -376,7 +381,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     node.setSelected(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, false);
                 }
             }
         });
@@ -423,7 +428,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -450,7 +455,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     node.setSelected(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, false);
                 }
             }
         });
@@ -819,9 +824,20 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //}else {
             nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, holder.nestedRecyclerView, selectedNode, 0, index, new OnItemSelection() {
                 @Override
-                public void onSelect(Node node, int index) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index);
-                    mOnItemSelection.onSelect(node, index);
+                public void onSelect(Node node, int index, boolean isSkipped) {
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getText());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.getText());
+                    if (isSkipped) {
+                        mItemList.get(index).setSelected(false);
+                        mItemList.get(index).setDataCaptured(false);
+                        selectedNode.setSelected(false);
+                        selectedNode.setDataCaptured(false);
+                        notifyItemChanged(index);
+                        if (selectedNode.isRequired()) return;
+                    }
+
+                    mOnItemSelection.onSelect(node, index, isSkipped);
                 }
 
                 @Override
@@ -915,7 +931,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
-                                mOnItemSelection.onSelect(node, index);
+                                mOnItemSelection.onSelect(node, index, false);
                             }
 
                             if (mItemList.get(index).isRequired()) {
@@ -989,21 +1005,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.recyclerView.setAdapter(optionsChipsGridAdapter);
 
             }
-            for (int i = 0; i < options.size(); i++) {
+            /*for (int i = 0; i < options.size(); i++) {
                 String type = options.get(i).getInputType();
                 if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
                     // openCamera(context, imagePath, imageName);
                     Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
                     showCameraView(options.get(i), holder, index);
                 }
-            }
+            }*/
         }
 
     }
 
-    private synchronized void showCameraView(Node node, GenericViewHolder holder, int index) {
-        Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
-        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+    private void showCameraView(Node node, GenericViewHolder holder, int index) {
+        Log.v("showCameraView", "QLA " + new Gson().toJson(node));
+        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1030,12 +1046,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
 
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, false);
             }
         });
 
         RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
         imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+
+        if (node.getImagePathList().isEmpty()) {
+            Log.v("showCameraView", "QLA Images check - empty");
+            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+            submitButton.setVisibility(View.GONE);
+            imagesRcv.setVisibility(View.GONE);
+        } else {
+            Log.v("showCameraView", "QLA Images check - having data");
+            newImageCaptureLinearLayout.setVisibility(View.GONE);
+            submitButton.setVisibility(View.VISIBLE);
+            imagesRcv.setVisibility(View.VISIBLE);
+        }
 
         if (!node.getImagePathList().isEmpty()) {
             ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
@@ -1051,19 +1079,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             imagesRcv.setAdapter(imageGridAdapter);
+            imageGridAdapter.addNull();
             Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
         }
 
-
-        if (imagesRcv.getAdapter() == null || imagesRcv.getAdapter().getItemCount() < 1) {
-            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
-            submitButton.setVisibility(View.GONE);
-            imagesRcv.setVisibility(View.GONE);
-        } else {
-            newImageCaptureLinearLayout.setVisibility(View.GONE);
-            submitButton.setVisibility(View.VISIBLE);
-            imagesRcv.setVisibility(View.VISIBLE);
-        }
 
         holder.otherContainerLinearLayout.addView(view);
         holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -1094,7 +1113,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -1185,7 +1204,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.node.setDataCaptured(true);
 
                 //notifyDataSetChanged();
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, false);
             }
         });
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
@@ -1265,7 +1284,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -1308,7 +1327,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, false);
                 }
             }
         });
@@ -1342,7 +1361,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 node.setSelected(false);
                 node.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -1384,7 +1403,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, false);
                 }
             }
         });
@@ -1430,7 +1449,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index);
+                mOnItemSelection.onSelect(node, index, true);
             }
         });
 
@@ -1473,7 +1492,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, false);
                 }
             }
         });
@@ -1535,7 +1554,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, index);
+                        mOnItemSelection.onSelect(node, index, false);
                     else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
@@ -1546,8 +1565,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     mItemList.get(index).setSelected(false);
                     mItemList.get(index).setDataCaptured(false);
+                    if (mItemList.get(index).getOptionsList() != null && mItemList.get(index).getOptionsList().size() > 0)
+                        for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
+                            mItemList.get(index).getOptionsList().get(i).setSelected(false);
+                            mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
+                        }
 
-                    mOnItemSelection.onSelect(node, index);
+                    mOnItemSelection.onSelect(node, index, true);
 
                 }
             });
