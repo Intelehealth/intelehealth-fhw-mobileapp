@@ -243,7 +243,8 @@ public class ChatActivity extends AppCompatActivity {
             inputJsonObject.put("patientId", patientUUId);
             inputJsonObject.put("message", message);
             mLoadingLinearLayout.setVisibility(View.VISIBLE);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject,
+                    new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.v(TAG, "postMessages - response - " + response.toString());
@@ -346,7 +347,8 @@ public class ChatActivity extends AppCompatActivity {
                                     Intent intent = new Intent(ACTION_NAME);
                                     intent.putExtra("visit_uuid", mVisitUUID);
                                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
+                                    intent.setComponent(new ComponentName(packageName,
+                                            "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
 
                                     getApplicationContext().sendBroadcast(intent);
                                     getAllMessages();
