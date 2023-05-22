@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,15 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.DialogFragmentBinding;
 import org.intelehealth.ezazi.ui.dialog.listener.OnDialogActionListener;
 import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
+
+import java.util.Objects;
 
 /**
  * Created by Vaghela Mithun R. on 15-05-2023 - 15:22.
@@ -50,10 +54,15 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding.clDataContainer.addView(getDataContentView());
+        binding.clDialogContainer.setBackground(getDialogBackground());
         binding.btnDismiss.setOnClickListener(this);
         binding.btnSubmit.setOnClickListener(this);
         binding.tvDialogTitle.setVisibility(hasTitle() ? View.VISIBLE : View.GONE);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public Drawable getDialogBackground() {
+        return ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.white_child_container_bg);
     }
 
     @NonNull
@@ -131,6 +140,8 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
 
         private T content;
 
+        private View view;
+
         public BaseBuilder(Context context) {
             this.context = context;
         }
@@ -170,6 +181,11 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             return this;
         }
 
+        public BaseBuilder<T, D> view(View view) {
+            this.view = view;
+            return this;
+        }
+
         public abstract D build();
 
         protected Bundle bundle() {
@@ -179,6 +195,10 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             args.setNegativeBtnLabel(negativeBtnLabel == null ? context.getResources().getString(R.string.cancel) : negativeBtnLabel);
             args.setContent(content);
             return getDialogArgument(args);
+        }
+
+        protected View getView() {
+            return view;
         }
     }
 }

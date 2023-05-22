@@ -185,8 +185,10 @@
         <item name="defaultQueryHint">@string/hint_search_cases</item>
         <item name="android:minHeight">@dimen/search_view_height</item>
         <item name="android:focusable">false</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textSize">@dimen/caption</item>
+        <item name="hintTextAppearance">@style/Theme.EZazi.Caption</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="android:editTextColor">@color/font_black_0</item>
         <item name="android:textColorHint">@color/colorSearchContent</item>
     </style>
 

@@ -41,8 +41,8 @@ abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem
         if (getItem(position).isHeader() && holder instanceof SelectAllViewHolder) {
             SelectAllViewHolder selectAllViewHolder = (SelectAllViewHolder) holder;
             selectAllViewHolder.bind((SelectAllMultiChoice) getItem(position));
-            selectAllViewHolder.setCheckedAll(getSelectedItems().size() == getItems().size());
             selectAllViewHolder.setClickListener(this);
+            selectAllViewHolder.setCheckedAll(getSelectedItems().size() == getItems().size());
         } else super.bindViewHolder(holder, position);
     }
 

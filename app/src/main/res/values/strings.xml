@@ -903,4 +903,11 @@
     <string name="are_you_sure_want_to_end_stage_1">Are you sure you want to End Stage 1?</string>
     <string name="are_you_sure_want_to_refer_other">Are you sure you want to \"Refer to other hospital\"?</string>
     <string name="are_you_sure_want_to_self_discharge">Are you sure patient wants to \"Self discharge against Medical Advice\"?</string>
+    <string name="hospital_name">Hospital Name</string>
+    <string name="doctor_name">Doctor Name</string>
+    <string name="note">Note</string>
+    <string name="enter_hospital_name">Enter Hospital Name</string>
+    <string name="enter_doctor_name">Enter Doctor Name</string>
+    <string name="enter_note">Enter Note</string>
+    <string name="search_patients">Search Patients</string>
 </resources>

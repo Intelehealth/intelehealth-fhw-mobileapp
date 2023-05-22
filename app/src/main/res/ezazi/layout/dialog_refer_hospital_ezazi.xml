@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_child_container_bg"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvHospitalName"
+                style="@style/LabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hospital_name"
+                android:textSize="@dimen/caption"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/refer_hospitalName"
+                style="@style/Theme.EZazi.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_hospital_name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:nextFocusForward="@id/refer_doctorName"
+                app:drawableEndCompat="@drawable/ic_space"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/white_child_container_bg"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvDoctorName"
+                style="@style/LabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/doctor_name"
+                android:textSize="@dimen/caption"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/refer_doctorName"
+                style="@style/Theme.EZazi.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_doctor_name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:nextFocusForward="@id/referNote"
+                app:drawableEndCompat="@drawable/ic_space"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/white_child_container_bg"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvNote"
+                style="@style/LabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/note"
+                android:textSize="@dimen/caption"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/referNote"
+                style="@style/Theme.EZazi.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_note"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                app:drawableEndCompat="@drawable/ic_space"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>
