@@ -70,7 +70,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
-            android:paddingVertical="@dimen/actionbar_vertical_padding"
+            android:paddingVertical="@dimen/screen_container_padding"
             android:visibility="@{submitLabel == null || submitLabel.length() == 0 ? View.GONE : View.VISIBLE}"
             android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
