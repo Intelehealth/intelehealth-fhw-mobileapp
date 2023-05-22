@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <item name="wrap_content" format="integer" type="dimen">-2</item>
+
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
     <dimen name="screen_title_size">@dimen/std_18sp</dimen>
@@ -93,4 +96,6 @@
     <dimen name="bottom_menu_min_height">@dimen/std_56dp</dimen>
     <dimen name="small_input_text_size">@dimen/std_10sp</dimen>
     <dimen name="obs_input_min_width">0.50</dimen>
+    <dimen name="splash_logo_width">180dp</dimen>
+    <dimen name="splash_logo_height">100dp</dimen>
 </resources>

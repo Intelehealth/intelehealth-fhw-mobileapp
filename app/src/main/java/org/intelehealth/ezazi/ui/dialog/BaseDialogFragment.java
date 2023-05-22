@@ -107,12 +107,19 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
         return view;
     }
 
+    /**
+     * To set container child layout params to match with container height and width
+     * @return LayoutParams
+     */
     private LayoutParams getConstraintLayoutParams() {
+        int height = getResources().getDimensionPixelOffset(R.dimen.dialog_max_height);
+        int padding = getResources().getDimensionPixelOffset(R.dimen.screen_container_padding) * 5;
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         params.topToTop = ConstraintSet.PARENT_ID;
         params.bottomToBottom = ConstraintSet.PARENT_ID;
         params.startToStart = ConstraintSet.PARENT_ID;
         params.endToEnd = ConstraintSet.PARENT_ID;
+        params.matchConstraintMaxHeight = height - (binding.tvDialogTitle.getHeight() + padding);
         return params;
     }
 

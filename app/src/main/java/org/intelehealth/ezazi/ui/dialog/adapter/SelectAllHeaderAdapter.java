@@ -1,8 +1,10 @@
 package org.intelehealth.ezazi.ui.dialog.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +21,8 @@ import java.util.ArrayList;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem, RecyclerView.ViewHolder> {
+abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem, RecyclerView.ViewHolder>
+        implements CompoundButton.OnCheckedChangeListener {
 
     protected static final int ITEM_HEADER = 1000;
 
@@ -41,21 +44,18 @@ abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem
         if (getItem(position).isHeader() && holder instanceof SelectAllViewHolder) {
             SelectAllViewHolder selectAllViewHolder = (SelectAllViewHolder) holder;
             selectAllViewHolder.bind((SelectAllMultiChoice) getItem(position));
-            selectAllViewHolder.setClickListener(this);
             selectAllViewHolder.setCheckedAll(getSelectedItems().size() == getItems().size());
+            selectAllViewHolder.setCheckedListener(this);
         } else super.bindViewHolder(holder, position);
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.cbSelectAll) {
-            SelectAllDialogItemHeaderBinding binding = (SelectAllDialogItemHeaderBinding) view.getTag();
-            if (binding.cbSelectAll.isChecked()) {
-                clearSelection();
-            } else {
-                selectAllItem();
-            }
-        } else super.onClick(view);
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        Log.d("SelectAllHeaderAdapter", "Select all clicked");
+        if (compoundButton.getId() == R.id.cbSelectAll) {
+            if (b) selectAllItem();
+            else clearSelection();
+        }
     }
 }
 
@@ -69,15 +69,15 @@ class SelectAllViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(SelectAllMultiChoice item) {
         binding.setHeader(item.getHeader());
-        binding.executePendingBindings();
     }
 
     public void setCheckedAll(boolean isCheckedAll) {
+        Log.d("SelectAllViewHolder", "Select all clicked=>" + isCheckedAll);
         binding.cbSelectAll.setChecked(isCheckedAll);
     }
 
-    public void setClickListener(View.OnClickListener listener) {
+    public void setCheckedListener(CompoundButton.OnCheckedChangeListener listener) {
         binding.cbSelectAll.setTag(binding);
-        binding.cbSelectAll.setOnClickListener(listener);
+        binding.cbSelectAll.setOnCheckedChangeListener(listener);
     }
 }

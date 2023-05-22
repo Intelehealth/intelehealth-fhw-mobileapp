@@ -49,7 +49,7 @@ public class PatientMultiChoiceAdapter extends SelectAllHeaderAdapter {
             patientHolder.bind((FamilyMemberRes) getItem(position));
             patientHolder.setCheckedItem(isItemSelected(position));
             patientHolder.setClickListener(this);
-        }
+        } else super.onBindViewHolder(holder, position);
     }
 }
 

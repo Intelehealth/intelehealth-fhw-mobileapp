@@ -29,6 +29,7 @@ abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHo
     public BaseSelectedRecyclerViewAdapter(Context context, ArrayList<T> objectsList) {
         inflater = LayoutInflater.from(context);
         items = objectsList;
+        setHasStableIds(true);
     }
 
     public T getItem(int position) {

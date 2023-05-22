@@ -59,9 +59,9 @@
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbPatientSelection"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:minWidth="0dp"
-            android:minHeight="@dimen/std_48dp"
+            android:minHeight="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
