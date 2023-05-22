@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 public class CallListenerBackgroundService extends Service {
-    private static final String CHANNEL_ID = "N221";
+    private static final String CHANNEL_ID = "NAS221";
     private static final int ONGOING_NOTIFICATION_ID = 1001;
     private static final String TAG = CallListenerBackgroundService.class.getName();
     public String refreshedFCMTokenID = "";
@@ -90,6 +90,7 @@ public class CallListenerBackgroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false)
                 .setNotificationSilent()
+                .setOngoing(true)
                 //.setTicker(getText(R.string.ticker_text))
                 .build();
 

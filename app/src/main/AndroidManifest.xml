@@ -83,11 +83,11 @@
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".utilities.RTCMessageReceiver"
+            android:name=".services.firebase_services.RTCMessageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />
+                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
             </intent-filter>
         </receiver>
 
@@ -375,6 +375,17 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
+
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
     </application>
 
 </manifest>

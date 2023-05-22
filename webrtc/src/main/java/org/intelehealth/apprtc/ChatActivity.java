@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -129,9 +131,9 @@ public class ChatActivity extends AppCompatActivity {
         // test nurseid / from userid - 28cea4ab-3188-434a-82f0-055133090a38
         //patientId  - a286e0de-eba0-4ad5-b698-900657d8ac75
         //Doctor id - a4ac4fee-538f-11e6-9cfe-86f436325720
-        connectTOSocket();
 
-        getAllMessages();
+
+
         //postMessages(FROM_UUID, TO_UUID, PATIENT_UUID, "hell.. mobile test - " + System.currentTimeMillis());
         mMessageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -216,8 +218,10 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(mChatList, new Comparator<JSONObject>() {
             public int compare(JSONObject o1, JSONObject o2) {
                 try {
-                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
-                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    //Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
+                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o1.getString("createdAt"));
+                    //Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o2.getString("createdAt"));
                     return b.compareTo(a);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -288,10 +292,11 @@ public class ChatActivity extends AppCompatActivity {
                         in.putExtra("isInComingRequest", true);
                         in.putExtra("doctorname", jsonObject.getString("doctorName"));
                         in.putExtra("nurseId", jsonObject.getString("nurseId"));
-                        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                        //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                        // not required bcz from firebase listener it working fine
+                        /*if (callState == TelephonyManager.CALL_STATE_IDLE) {
                             startActivity(in);
-                        }
+                        }*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -335,14 +340,19 @@ public class ChatActivity extends AppCompatActivity {
                                     connectionInfoObject.put("toUUID", mToUUId);
                                     connectionInfoObject.put("patientUUID", mPatientUUid);
 
+                                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                    String packageName = pInfo.packageName;
+
                                     Intent intent = new Intent(ACTION_NAME);
                                     intent.putExtra("visit_uuid", mVisitUUID);
                                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
 
                                     getApplicationContext().sendBroadcast(intent);
                                     getAllMessages();
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (PackageManager.NameNotFoundException e) {
                                     e.printStackTrace();
                                 }
 
@@ -403,7 +413,8 @@ public class ChatActivity extends AppCompatActivity {
                 jsonObject.put("type", Constants.LEFT_ITEM);
             }
             if (!jsonObject.has("createdAt")) {
-                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
                 rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
             }
@@ -428,9 +439,22 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         if (mSocket != null) {
             mSocket.disconnect();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connectTOSocket();
+        getAllMessages();
     }
 
     public void sendMessageNow(View view) {
@@ -447,12 +471,12 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -470,5 +494,6 @@ public class ChatActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

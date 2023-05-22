@@ -1,5 +1,10 @@
 package org.intelehealth.apprtc;
 
+import static org.webrtc.SessionDescription.Type.ANSWER;
+import static org.webrtc.SessionDescription.Type.OFFER;
+import static io.socket.client.Socket.EVENT_CONNECT;
+import static io.socket.client.Socket.EVENT_DISCONNECT;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -54,22 +59,39 @@ import org.webrtc.VideoTrack;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import static io.socket.client.Socket.EVENT_CONNECT;
-import static io.socket.client.Socket.EVENT_DISCONNECT;
-import static org.webrtc.SessionDescription.Type.ANSWER;
-import static org.webrtc.SessionDescription.Type.OFFER;
 
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
     private static final int RC_CALL = 111;
     public static final String VIDEO_TRACK_ID = "ARDAMSv0";
-    public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 2;
-    public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 2;
-    public static final int FPS = 30;
+    public static final String AUDIO_TRACK_ID = "ARDAMSa0";
+    public static final String VIDEO_TRACK_TYPE = "video";
+    private static final String VIDEO_CODEC_VP8 = "VP8";
+    private static final String VIDEO_CODEC_VP9 = "VP9";
+    private static final String VIDEO_CODEC_H264 = "H264";
+    private static final String AUDIO_CODEC_OPUS = "opus";
+    private static final String AUDIO_CODEC_ISAC = "ISAC";
+    private static final String VIDEO_CODEC_PARAM_START_BITRATE = "x-google-start-bitrate";
+    private static final String VIDEO_FLEXFEC_FIELDTRIAL = "WebRTC-FlexFEC-03/Enabled/";
+    private static final String AUDIO_CODEC_PARAM_BITRATE = "maxaveragebitrate";
+    private static final String AUDIO_ECHO_CANCELLATION_CONSTRAINT = "googEchoCancellation";
+    private static final String AUDIO_AUTO_GAIN_CONTROL_CONSTRAINT = "googAutoGainControl";
+    private static final String AUDIO_HIGH_PASS_FILTER_CONSTRAINT = "googHighpassFilter";
+    private static final String AUDIO_NOISE_SUPPRESSION_CONSTRAINT = "googNoiseSuppression";
+    private static final String AUDIO_LEVEL_CONTROL_CONSTRAINT = "levelControl";
+    private static final String DTLS_SRTP_KEY_AGREEMENT_CONSTRAINT = "DtlsSrtpKeyAgreement";
+    private static final int HD_VIDEO_WIDTH = 1280;
+    private static final int HD_VIDEO_HEIGHT = 720;
+    private static final int BPS_IN_KBPS = 1000;
+
+    public static final int VIDEO_RESOLUTION_WIDTH = 1280 / 3;
+    public static final int VIDEO_RESOLUTION_HEIGHT = 720 / 3;
+    public static final int FPS = 24;
 
     private Socket socket;
     private boolean isInitiator;
@@ -122,6 +144,9 @@ public class CompleteActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     boolean mMicrophonePluggedIn = false;
 
+    private BroadcastReceiver mCallEndBroadcastReceiver;
+    public static final String CALL_END_FROM_WEB_INTENT_ACTION = "org.intelehealth.apprtc.CALL_END_FROM_WEB_INTENT_ACTION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +175,7 @@ public class CompleteActivity extends AppCompatActivity {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId);
+
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -159,6 +184,8 @@ public class CompleteActivity extends AppCompatActivity {
 
                     initializePeerConnections();
 
+
+                    socket.emit("create or join", mRoomId);
                     startStreamingVideo();
                 }
                 stopRinging();
@@ -187,14 +214,7 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (localAudioTrack != null) {
-                    localAudioTrack.setEnabled(!localAudioTrack.enabled());
-                    if (localAudioTrack.enabled()) {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_24);
-                        Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
-                    } else {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_off_24);
-                        Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
-                    }
+                    setAudioStatus(!localAudioTrack.enabled(), true);
                 }
             }
         });
@@ -202,8 +222,8 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (socket != null)
-                    socket.emit("bye");
-                //disconnectAll();
+                    socket.emit("bye", "app");
+                disconnectAll();
 
             }
         });
@@ -213,11 +233,13 @@ public class CompleteActivity extends AppCompatActivity {
                 if (videoTrackFromCamera != null) {
                     videoTrackFromCamera.setEnabled(!videoTrackFromCamera.enabled());
                     if (videoTrackFromCamera.enabled()) {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(1.0f);
                     } else {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_off_24);
+                        binding.videoImv.setImageResource(R.drawable.vc_new_v_camera_icon);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_off_lbl), Toast.LENGTH_SHORT).show();
+                        binding.videoImv.setAlpha(0.2f);
                     }
                 }
             }
@@ -225,12 +247,13 @@ public class CompleteActivity extends AppCompatActivity {
         binding.flipImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean lastStatusOfAudioEnabled = localAudioTrack.enabled();
                 mIsReverseCamera = !mIsReverseCamera;
                 // recreate the video track
                 createVideoTrackFromCameraAndShowIt();
                 // start again the video streaming
                 startStreamingVideo();
-
+                setAudioStatus(lastStatusOfAudioEnabled, false);
             }
         });
 
@@ -259,7 +282,41 @@ public class CompleteActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
+
+
+        mCallEndBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
+        registerReceiver(mCallEndBroadcastReceiver, filterSend);
     }
+
+    private void setAudioStatus(boolean targetAudioStatus, boolean showToast) {
+        if (localAudioTrack != null) {
+            localAudioTrack.setEnabled(targetAudioStatus);
+            if (localAudioTrack.enabled()) {
+                binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
+                if (showToast)
+                    Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
+                binding.audioImv.setAlpha(1.0f);
+            } else {
+                binding.audioImv.setImageResource(R.drawable.vc_new_call_mic_icon);
+                if (showToast)
+                    Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
+                binding.audioImv.setAlpha(0.2f);
+            }
+        }
+    }
+
 
     private void stopRinging() {
         if (mRingtone != null && mRingtone.isPlaying())
@@ -276,8 +333,7 @@ public class CompleteActivity extends AppCompatActivity {
         alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (socket != null)
-                    socket.emit("bye");
+                binding.inCallRejectImv.performClick();
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.no, null);
@@ -312,7 +368,9 @@ public class CompleteActivity extends AppCompatActivity {
                 start();
             } else {
                 Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
-                finish();
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
             }
 
         }
@@ -320,9 +378,20 @@ public class CompleteActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        disconnectAll();
+        if (socket != null) {
+            socket.disconnect();
+            socket = null;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         try {
             unregisterReceiver(mPhoneStateBroadcastReceiver);
+            unregisterReceiver(mCallEndBroadcastReceiver);
+            unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -333,40 +402,52 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
-        if (socket != null) {
-            socket.disconnect();
-            socket = null;
+        try {
+            if (socket != null) {
+                socket.disconnect();
+                socket = null;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            if (peerConnection != null) {
+                peerConnection.dispose();
+                peerConnection = null;
+            }
+            if (videoSource != null) {
+                videoSource.dispose();
+                videoSource = null;
+            }
+            if (localVideoTrack != null) {
+                localVideoTrack.dispose();
+                localVideoTrack = null;
+            }
+            if (surfaceTextureHelper != null) {
+                surfaceTextureHelper.dispose();
+                surfaceTextureHelper = null;
+            }
+
+            stopRinging();
+
+            //unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                Thread.sleep(500);
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        if (peerConnection != null) {
-            peerConnection.dispose();
-            peerConnection = null;
-        }
-        if (videoSource != null) {
-            videoSource.dispose();
-            videoSource = null;
-        }
-        if (localVideoTrack != null) {
-            localVideoTrack.dispose();
-            localVideoTrack = null;
-        }
-        if (surfaceTextureHelper != null) {
-            surfaceTextureHelper.dispose();
-            surfaceTextureHelper = null;
-        }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
-            }
-        });
-        stopRinging();
-        try {
-            unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        finish();
 
     }
 
@@ -412,7 +493,7 @@ public class CompleteActivity extends AppCompatActivity {
     private void connectToSignallingServer() {
         try {
             String url = Constants.BASE_URL + "?userId=" + mNurseId + "&name=" + mNurseId;
-            Log.v("url", url);
+            Log.v(TAG, "connectToSignallingServer - " + url);
             socket = IO.socket(url);
 
             //socket emitter "call", you can listen on it after connection;
@@ -434,14 +515,28 @@ public class CompleteActivity extends AppCompatActivity {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");
             }).on("bye", args -> {
                 Log.d(TAG, "connectToSignallingServer: bye");
-                disconnectAll();
+                //socket.emit("bye");
+                //disconnectAll();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
 
             }).on("call", args -> {
                 Log.d(TAG, "connectToSignallingServer: call");
                 socket.emit("create or join", mRoomId);
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
-                disconnectAll();
+                // socket.emit("bye");
+                //disconnectAll();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.callEndImv.performClick();
+                    }
+                });
             }).on("created", args -> {
                 Log.d(TAG, "connectToSignallingServer: created");
                 isInitiator = true;
@@ -508,7 +603,10 @@ public class CompleteActivity extends AppCompatActivity {
 
                     }
                 });
-                finish();
+
+                if (!CompleteActivity.this.isFinishing()) {
+                    finish();
+                }
             });
             socket.connect();
         } catch (URISyntaxException e) {
@@ -571,7 +669,7 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
     private void sendMessage(Object message) {
-        if (socket != null) socket.emit("message", message);
+        socket.emit("message", message);
     }
 
     private void initializeSurfaceViews() {
