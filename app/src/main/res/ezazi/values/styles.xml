@@ -194,7 +194,7 @@
 
     <style name="Theme.EZazi.Search.Icon">
         <item name="android:padding">@dimen/search_icon_padding</item>
-        <item name="srcCompat">@drawable/ic_search_24dp</item>
+        <item name="srcCompat">@drawable/ic_search</item>
     </style>
 
 

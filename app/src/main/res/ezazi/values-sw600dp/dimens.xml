@@ -143,8 +143,8 @@
 
     <!-- Added by Kaveri-->
 
-<!--    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_64dp</dimen>-->
-<!--    <dimen name="custom_appbar_title_size">@dimen/std_28sp</dimen>-->
+    <!--    <dimen name="custom_actionbar_horizontal_padding">@dimen/std_64dp</dimen>-->
+    <!--    <dimen name="custom_appbar_title_size">@dimen/std_28sp</dimen>-->
 
     <!-- add patient screen-->
     <dimen name="dialog_max_width">@dimen/std_660dp</dimen>
@@ -168,4 +168,6 @@
     <dimen name="obs_input_min_width">0.62</dimen>
     <dimen name="splash_logo_width">@dimen/wrap_content</dimen>
     <dimen name="splash_logo_height">@dimen/wrap_content</dimen>
+    <dimen name="search_icon_width">@dimen/std_20dp</dimen>
+    <dimen name="search_icon_height">@dimen/std_18dp</dimen>
 </resources>
