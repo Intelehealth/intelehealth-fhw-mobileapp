@@ -914,7 +914,24 @@
     <string name="address_line1">Address Line 1</string>
     <string name="address_line2">Address Line 2</string>
     <string name="postal_code">Postal Code</string>
-
+    <string name="admission_date">Admission Date &amp; Time*</string>
+    <string name="date">Date*</string>
+    <string name="time">Time*</string>
+    <string name="parity">Parity*</string>
+    <string name="total_birth">Total Birth</string>
+    <string name="total_miscarriage">Total Miscarriage</string>
+    <string name="labor_onset">Labor Onset*</string>
+    <string name="spontaneous">Spontaneous*</string>
+    <string name="induced">Induced*</string>
+    <string name="when_diagnosed">When was active labor diagnosed?</string>
+    <string name="sac_ruptured">When was the amniotic sac ruptured?*</string>
+    <string name="risk_factors">Risk Factors</string>
+    <string name="hospital_maternity">Hospital/Maternity?</string>
+    <string name="primary_doctor">Primary Doctor*</string>
+    <string name="secondary_doctor">Secondary Doctor*</string>
+    <string name="bed_number">Bed Number*</string>
+    <string name="hospital">Hospital</string>
+    <string name="maternity">Maternity</string>
 
 
 

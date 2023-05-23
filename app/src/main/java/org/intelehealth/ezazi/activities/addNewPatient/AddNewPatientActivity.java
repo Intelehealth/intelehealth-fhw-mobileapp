@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import org.intelehealth.ezazi.R;
 
 import java.io.Serializable;
@@ -30,6 +32,7 @@ public class AddNewPatientActivity extends AppCompatActivity {
         ImageView ivPersonalInfo = findViewById(R.id.iv_personal_info);
         ImageView ivAddressInfo = findViewById(R.id.iv_address_info);
         ImageView ivOtherInfo = findViewById(R.id.iv_other_info);
+
 
         ivPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +58,7 @@ public class AddNewPatientActivity extends AppCompatActivity {
                 .commit();
 
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
+       /* Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
 
               String  patient_detail = intent.getStringExtra("ScreenEdit");
@@ -69,7 +72,7 @@ public class AddNewPatientActivity extends AppCompatActivity {
                     setScreen(new PatientOtherInfoFragment());
                 }
 
-            }
+            }*/
         }
 
 

@@ -6,6 +6,7 @@
     android:orientation="horizontal">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
@@ -28,6 +29,7 @@
         style="@style/Theme.EZazi.Screen.Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:text="Add New Patient" />
 

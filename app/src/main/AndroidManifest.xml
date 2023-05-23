@@ -246,7 +246,7 @@
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".loginActivity.LoginActivity"
+            android:name=".activities.loginActivity.LoginActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

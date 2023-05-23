@@ -105,5 +105,12 @@
     <dimen name="address_padding">12dp</dimen>
     <dimen name="button_add_patient_margin">10dp</dimen>
     <dimen name="button_add_patient_margin_bottom">30dp</dimen>
+    <dimen name="input_label_size_add_patient">@dimen/std_16sp</dimen>
+    <dimen name="admission_date_margin_top">5dp</dimen>
+    <dimen name="admission_date_margin_end">10dp</dimen>
+    <dimen name="other_all_controls_margin_top">5dp</dimen>
+    <dimen name="date_margin_end">10dp</dimen>
+    <dimen name="time_margin_start">10dp</dimen>
+    <dimen name="titles_margin_top">12dp</dimen>
 
 </resources>
