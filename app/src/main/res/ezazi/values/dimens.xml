@@ -69,6 +69,22 @@
     <dimen name="line_66dp">66dp</dimen>
     <dimen name="common_edittext_margin_top">8dp</dimen>
     <dimen name="card_appointment_card_elevation">2dp</dimen>
+    <dimen name="actionbar_vertical_padding_new">@dimen/std_4dp</dimen>
+    <dimen name="actionbar_horizontal_padding_new">@dimen/std_8dp</dimen>
+
+    <!--Custom toolbar UI2.0-->
+    <dimen name="custom_tool_margin_start">10dp</dimen>
+    <dimen name="custom_tool_margin_top">16dp</dimen>
+    <dimen name="custom_tool_title_margin_top">15dp</dimen><!-- 17-->
+    <dimen name="toolbar_home_tv_title_size">18sp</dimen>
+
+    <dimen name="hamburger_width">40dp</dimen>
+    <dimen name="hamburger_height">40dp</dimen>
+    <dimen name="hamburger_margin_end">10dp</dimen>
+    <dimen name="hamburger_margin_top">18dp</dimen> <!--15-->
+    <dimen name="hamburger_margin_start">8dp</dimen>
+    <dimen name="common_all_card_start_margin">12dp</dimen>
+    <dimen name="common_header_text_size">18sp</dimen>
 
     <!-- add patient screen-->
 
@@ -78,6 +94,60 @@
     <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="iv_camera_width">35dp</dimen>
     <dimen name="iv_camera_height">35dp</dimen>
+
+    <dimen name="input_add_patient_height">48dp</dimen>
+    <dimen name="input_add_patient_margin_top">10dp</dimen>
+    <dimen name="input_add_patient_padding_top">11dp</dimen>
+    <dimen name="spinners_add_patient_height">52dp</dimen>
+    <dimen name="add_patient_padding_start">8dp</dimen>
+    <dimen name="add_patient_padding_top">8dp</dimen>
+    <dimen name="add_patient_padding_end">8dp</dimen>
+    <dimen name="layout_stages_margin_top">25dp</dimen>
+    <dimen name="layout_stages_icon_height">45dp</dimen>
+    <dimen name="layout_stages_icon_width">40dp</dimen>
+    <dimen name="layout_stages_icon_padding">2dp</dimen>
+    <dimen name="layout_stages_text_margin_top">15dp</dimen>
+    <dimen name="layout_stages_line_height">5dp</dimen>
+    <dimen name="stages_line_margin_start">7dp</dimen>
+    <dimen name="stages_line_margin_bottom">20dp</dimen>
+    <dimen name="stages_line_margin_end">3dp</dimen>
+    <dimen name="layout_stages_line_width">40dp</dimen>
+    <dimen name="add_patient_frame_margin_start">20dp</dimen>
+    <dimen name="add_patient_frame_margin_top">20dp</dimen>
+    <dimen name="add_patient_frame_margin_end">20dp</dimen>
+    <dimen name="profile_layout_size">100dp</dimen>
+    <dimen name="profile_layout_margin_bottom">10dp</dimen>
+    <dimen name="card_profile_width">70dp</dimen>
+    <dimen name="card_profile_height">70dp</dimen>
+    <dimen name="card_profile_corner_radius">12dp</dimen>
+    <dimen name="card_profile_icon_height">60dp</dimen>
+    <dimen name="card_profile_icon_width">60dp</dimen>
+    <dimen name="card_profile_icon_size">28dp</dimen>
+    <dimen name="card_profile_icon_max_size">15dp</dimen>
+    <dimen name="address_padding">12dp</dimen>
+    <dimen name="button_add_patient_margin">10dp</dimen>
+    <dimen name="button_add_patient_margin_bottom">30dp</dimen>
+    <dimen name="input_label_size_add_patient">@dimen/std_12sp</dimen>
+    <dimen name="admission_date_margin_top">5dp</dimen>
+    <dimen name="admission_date_margin_end">10dp</dimen>
+    <dimen name="other_all_controls_margin_top">5dp</dimen>
+    <dimen name="date_margin_end">10dp</dimen>
+    <dimen name="time_margin_start">10dp</dimen>
+    <dimen name="titles_margin_top">12dp</dimen>
+    <dimen name="layout_stages_padding">10dp</dimen>
+    <dimen name="add_picture_text_size">14sp</dimen>
+    <dimen name="layout_add_patient_padding_start">12dp</dimen>
+    <dimen name="layout_add_patient_padding_top">10dp</dimen>
+    <dimen name="layout_add_patient_padding_end">12dp</dimen>
+    <dimen name="layout_add_patient_margin_top">15dp</dimen>
+    <dimen name="add_patient_button_margin_top">30dp</dimen>
+    <dimen name="add_patient_button_margin_bottom">30dp</dimen>
+    <dimen name="add_patient_tabs_margin_start">60dp</dimen>
+    <dimen name="add_patient_tabs_margin_end">60dp</dimen>
+    <dimen name="add_patient_tabs_margin_top">30dp</dimen>
+    <dimen name="when_diagnosed_margin_top">8dp</dimen>
+    <dimen name="when_diagnosed_margin_bottom">-5dp</dimen>
+    <dimen name="when_diagnosed_margin_height">30dp</dimen>
     <dimen name="dialog_max_width">@dimen/std_330dp</dimen>
     <dimen name="dialog_max_height">@dimen/std_407dp</dimen>
     <dimen name="search_icon_padding">@dimen/std_8dp</dimen>

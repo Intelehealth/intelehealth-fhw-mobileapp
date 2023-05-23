@@ -4,11 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingStart="8dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="8dp">
+    android:paddingStart="@dimen/add_patient_padding_start"
+    android:paddingTop="@dimen/add_patient_padding_top"
+    android:paddingEnd="@dimen/add_patient_padding_end">
 
-    <include layout="@layout/custom_appbar" />
+    <include layout="@layout/custom_appbar"
+        android:id="@+id/toolbar_common"
+        />
+
+    <include layout="@layout/add_patient_tabs" />
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -121,7 +126,6 @@
             android:gravity="center_horizontal|top"
             android:layout_below="@+id/iv_other_info"
             android:layout_marginTop="15dp"
-
             android:layout_toEndOf="@+id/line_22"
             android:text="Other" />
 
@@ -132,8 +136,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_text"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginStart="@dimen/add_patient_frame_margin_start"
+        android:layout_marginTop="@dimen/add_patient_frame_margin_top"
+        android:layout_marginEnd="@dimen/add_patient_frame_margin_end" />
+
 
 </LinearLayout>
