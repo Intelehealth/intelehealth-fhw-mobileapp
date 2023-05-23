@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Vaghela Mithun R. on 16-05-2023 - 11:24.
  * Email : mithun@intelehealth.org
- * Mob   : +919727206702
+ * Mob   : +919727206702Im
  **/
 public class PatientMultiChoiceAdapter extends SelectAllHeaderAdapter {
 
@@ -25,6 +25,11 @@ public class PatientMultiChoiceAdapter extends SelectAllHeaderAdapter {
 
     public PatientMultiChoiceAdapter(Context context, ArrayList<MultiChoiceItem> objectsList) {
         super(context, objectsList);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).hashCode();
     }
 
     @Override

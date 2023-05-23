@@ -30,6 +30,11 @@ abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem
         super(context, objectsList);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).hashCode();
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
