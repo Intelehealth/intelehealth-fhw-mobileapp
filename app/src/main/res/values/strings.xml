@@ -892,6 +892,47 @@
     <string name="lbl_help">Help</string>
     <string name="don_t_have_any_active_visit">Don\'t have any active visit!</string>
     <string name="active_cases">Active Cases (%1$d)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Add Patient -->
+    <string name="add_patient">Add New Patient</string>
+    <string name="personal">Personal</string>
+    <string name="address">Address</string>
+    <string name="other">Other</string>
+    <string name="add_a_picture">Add a picture</string>
+    <string name="first_name">First Name*</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name*</string>
+    <string name="date_of_birth">Date of Birth*</string>
+    <string name="age">Age*</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="alternate_mobile_no">Alternate Mobile Number</string>
+    <string name="back">Back</string>
+    <string name="country">Country</string>
+    <string name="state">State</string>
+    <string name="village_town_city">Village/Town/City*</string>
+    <string name="address_line1">Address Line 1</string>
+    <string name="address_line2">Address Line 2</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="admission_date">Admission Date &amp; Time*</string>
+    <string name="date">Date*</string>
+    <string name="time">Time*</string>
+    <string name="parity">Parity*</string>
+    <string name="total_birth">Total Birth</string>
+    <string name="total_miscarriage">Total Miscarriage</string>
+    <string name="labor_onset">Labor Onset*</string>
+    <string name="spontaneous">Spontaneous*</string>
+    <string name="induced">Induced*</string>
+    <string name="when_diagnosed">When was active labor diagnosed?</string>
+    <string name="sac_ruptured">When was the amniotic sac ruptured?*</string>
+    <string name="risk_factors">Risk Factors</string>
+    <string name="hospital_maternity">Hospital/Maternity?</string>
+    <string name="primary_doctor">Primary Doctor*</string>
+    <string name="secondary_doctor">Secondary Doctor*</string>
+    <string name="bed_number">Bed Number*</string>
+    <string name="hospital">Hospital</string>
+    <string name="maternity">Maternity</string>
     <string name="lbl_sos">SOS</string>
     <string name="stage_1">Stage 1</string>
     <string name="stage_2">Stage 2</string>

@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_toolbar_home"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/custom_tool_margin_start"
+    android:layout_marginTop="@dimen/custom_tool_margin_top"
     android:orientation="horizontal">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent"
-        android:theme="@style/Theme.EZazi.AppBarOverlay"
-        app:elevation="0dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Theme.EZazi.Custom.ActionBar.Padding"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            app:navigationIcon="@drawable/selector_actionbar_back"
-            app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <ImageView
+        android:id="@+id/iv_back_arrow_common"
+        android:layout_width="@dimen/hamburger_width"
+        android:layout_height="@dimen/hamburger_height"
+        android:layout_marginStart="@dimen/common_all_card_start_margin"
+        android:layout_marginEnd="@dimen/hamburger_margin_top"
+        android:background="?attr/selectableItemBackground"
+        android:foregroundGravity="center_horizontal"
+        android:visibility="visible"
+        app:srcCompat="@drawable/selector_actionbar_back" />
 
     <TextView
-        style="@style/Theme.EZazi.Screen.Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Add New Patient" />
+        android:id="@+id/tv_screen_title_common"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:hint="Title"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/common_header_text_size"
+        android:textStyle="bold" />
 
 </LinearLayout>
