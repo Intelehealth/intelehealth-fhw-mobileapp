@@ -18,6 +18,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -186,7 +187,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             //Clear HouseHold UUID from Session for new registration
             sessionManager.setHouseholdUuid("");
 
-            Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AddNewPatientActivity.class);
             intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
             Log.d("Privacy", "selected radio: " + accept.getText().toString());
             startActivity(intent);

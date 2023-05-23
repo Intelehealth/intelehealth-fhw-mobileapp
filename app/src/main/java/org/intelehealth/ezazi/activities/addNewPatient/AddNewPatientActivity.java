@@ -81,8 +81,6 @@ public class AddNewPatientActivity extends AppCompatActivity {
             }*/
         }
 
-    }
-
     private void setScreen(Fragment fragment) {
 
         getSupportFragmentManager()
