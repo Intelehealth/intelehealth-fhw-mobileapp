@@ -74,7 +74,7 @@
     <string name="menu_option_sync">Refresh Data</string>
     <string name="menu_option_settings">Settings</string>
     <string name="menu_option_end_of_day">End of Day</string>
-    <string name="menu_option_logout">Logout</string>
+    <string name="menu_option_logout">Log-out</string>
 
 
     //Identification Screen
@@ -161,6 +161,7 @@
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
+    <string name="title_search_patient">Search Patient</string>
 
     //Past Medical History Screen
     <string name="title_activity_patient_history">Past Medical History</string>
@@ -690,7 +691,7 @@
 
 
     //----------reset app strings-------------
-    <string name="reset_app">Reset App</string>
+    <string name="reset_app">Reset app</string>
     <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting App</string>
     <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
@@ -848,7 +849,7 @@
     <string name="missed_interval"><u>Missed</u></string>
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
-    <string name="title_activity_epartogram">Epartogram</string>
+    <string name="title_activity_epartogram">Partogram View</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="live_birth">Live Birth</string>
@@ -932,7 +933,22 @@
     <string name="bed_number">Bed Number*</string>
     <string name="hospital">Hospital</string>
     <string name="maternity">Maternity</string>
+    <string name="lbl_sos">SOS</string>
+    <string name="stage_1">Stage 1</string>
+    <string name="stage_2">Stage 2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_value">Enter Value:</string>
 
-
-
+    <string name="are_you_sure_to_capture_emergency_data">Are you sure to capture the emergency data now?</string>
+    <string name="are_you_sure_want_to_end_stage_1">Are you sure you want to End Stage 1?</string>
+    <string name="are_you_sure_want_to_refer_other">Are you sure you want to \"Refer to other hospital\"?</string>
+    <string name="are_you_sure_want_to_self_discharge">Are you sure patient wants to \"Self discharge against Medical Advice\"?</string>
+    <string name="hospital_name">Hospital Name</string>
+    <string name="doctor_name">Doctor Name</string>
+    <string name="note">Note</string>
+    <string name="enter_hospital_name">Enter Hospital Name</string>
+    <string name="enter_doctor_name">Enter Doctor Name</string>
+    <string name="enter_note">Enter Note</string>
+    <string name="search_patients">Search Patients</string>
 </resources>

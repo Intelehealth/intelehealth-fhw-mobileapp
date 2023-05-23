@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.IntroActivity.IntroActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.json.JSONException;
@@ -67,7 +68,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
                 if (sessionManager.isFirstTimeLaunch()) {
                     Logger.logD(LOG_TAG, "Starting setup");
 //                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
-                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
+                    Intent intent = new Intent(ChooseLanguageActivity.this, SetupActivity.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
                 } else {

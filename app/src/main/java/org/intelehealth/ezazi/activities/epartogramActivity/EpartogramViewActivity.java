@@ -1,11 +1,14 @@
 package org.intelehealth.ezazi.activities.epartogramActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -13,26 +16,28 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 
-
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
 public class EpartogramViewActivity extends AppCompatActivity {
-    WebView webView;
-    String patientUuid, visitUuid;
-    Intent intent;
-    public static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
+    private WebView webView;
+    private String patientUuid, visitUuid;
+    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
+    //    https://ezazi.intelehealth.org/intelehealth/index.html#/dashboard/visit-summary/af35030a-cbf0-426c-9c61-4b9677ccb3b2
     // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
-    CustomProgressDialog customProgressDialog;
+    private CustomProgressDialog customProgressDialog;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_epartogram);
+        setContentView(R.layout.activity_epartogram_ezazi);
 
-        intent = this.getIntent();
+        setupActionBar();
+
+        Intent intent = this.getIntent();
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientuuid");
             visitUuid = intent.getStringExtra("visituuid");
@@ -50,6 +55,7 @@ public class EpartogramViewActivity extends AppCompatActivity {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setDomStorageEnabled(true);
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
@@ -75,32 +81,30 @@ public class EpartogramViewActivity extends AppCompatActivity {
         });
 
         customProgressDialog.show();
-        webView.loadUrl(URL + patientUuid + "/" + visitUuid);
-        Log.v("epartog", "webviewUrl: " + URL + patientUuid + "/" + visitUuid);
-        
-        mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        webView.reload();
-                    }
-                });
+        webView.loadUrl(URL + visitUuid);
+        Log.v("epartog", "webviewUrl: " + URL + visitUuid);
+        mySwipeRefreshLayout.setOnRefreshListener(() -> webView.reload());
 
+    }
+
+    private void setupActionBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view -> {
+            super.onBackPressed();
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mySwipeRefreshLayout.getViewTreeObserver().addOnScrollChangedListener(mOnScrollChangedListener =
-                new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        if (webView.getScrollY() == 0)
-                            mySwipeRefreshLayout.setEnabled(true);
-                        else
-                            mySwipeRefreshLayout.setEnabled(false);
+                () -> {
+                    if (webView.getScrollY() == 0)
+                        mySwipeRefreshLayout.setEnabled(true);
+                    else
+                        mySwipeRefreshLayout.setEnabled(false);
 
-                    }
                 });
     }
 

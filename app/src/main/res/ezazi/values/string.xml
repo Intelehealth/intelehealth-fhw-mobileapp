@@ -9,4 +9,14 @@
     <string name="content_complete_setup">Please complete your one-time\nset-up activity</string>
     <string name="welcome_user">Hi! %1$s</string>
     <string name="hint_search_cases">Search cases</string>
+    <string name="select_all">Select All</string>
+    <string name="emergency">Emergency!</string>
+    <string name="select_patient">Select patients to assign any nurse</string>
+    <string name="select_nurse">Select nurse to assign</string>
+    <string name="action_view">View</string>
+    <string name="tap_here_to_capture_obs">Tap here to capture the observations</string>
+    <string name="you_have_captured_obs">You have captured the observations</string>
+    <string name="you_have_missed_obs">You have missed the collection of observations</string>
+    <string name="pending_obs">Pending!</string>
+    <string name="observations">Observations</string>
 </resources>

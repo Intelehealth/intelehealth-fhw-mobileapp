@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
@@ -25,6 +26,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +57,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.parto_list_item_view, parent, false);
+                .inflate(R.layout.parto_list_item_view_ezazi, parent, false);
         return new GenericViewHolder(itemView);
     }
 
@@ -78,18 +80,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE)
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_1_DIG_TYPE)
                         || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_2_DIG_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE))
-                {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_etv_view, null);
+                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE)) {
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_etv_view_ezazi, null);
                     showUserInputBox(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.DROPDOWN_SINGLE_SELECT_TYPE)) {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_dropdown_view, null);
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_dropdown_view_ezazi, null);
                     showListOptions(tempView, position, i);
                     genericViewHolder.containerLinearLayout.addView(tempView);
-                }
-                else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT)) {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_autocomplete_edittext, null);
+                } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT)) {
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_autocomplete_edittext_ezazi, null);
                     showAutoComplete_EditText(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 }
@@ -120,7 +120,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showAutoComplete_EditText(final View tempView, final int position, final int positionChild, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData);
-        dataEditText.setAdapter(new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, mContext.getResources().getStringArray(R.array.medications)));
+        dataEditText.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        dataEditText.setAdapter(new ArrayAdapter(mContext, R.layout.spinner_textview, mContext.getResources().getStringArray(R.array.medications)));
         dataEditText.setThreshold(1);
 
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
@@ -200,7 +201,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty()  && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
+                if (!s.toString().trim().isEmpty() && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
                         .get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
 
                     if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
@@ -216,10 +217,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (dataEditText.getText().toString().endsWith(".")){
+                if (dataEditText.getText().toString().endsWith(".")) {
                     dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-                }
-                else{
+                } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
             }
@@ -231,8 +231,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView dropdownTextView = tempView.findViewById(R.id.tvData);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
-                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty())
-        {
+                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()
                     [Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues())
                     .indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
@@ -242,22 +241,34 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onClick(View v) {
                 final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
+                String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
+                SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                        .title(title)
+                        .content(Arrays.asList(items))
+                        .build();
 
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
+                dialog.setListener((pos, value) -> {
+                    dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[pos]);
+                    mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[pos]);
+                });
 
-                builder.setTitle("Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName())
-                        .setItems(items, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
-                                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
-                                dialog.dismiss();
-                            }
-                        });
+                dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
-
-                builder.create().show();
+//                AlertDialog.Builder builder =
+//                        new AlertDialog.Builder(mContext);
+//
+//                builder.setTitle("Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName())
+//                        .setItems(items, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
+//                                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//
+//                builder.create().show();
             }
         });
 

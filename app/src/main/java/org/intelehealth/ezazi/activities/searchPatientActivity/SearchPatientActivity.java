@@ -78,10 +78,11 @@ public class SearchPatientActivity extends AppCompatActivity implements SearchVi
 //        toolbar.setOverflowIcon(drawable);
 
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle(getString(R.string.title_search_patient));
         // Get the intent, verify the action and get the query
 
 

@@ -5,6 +5,7 @@
     <item
         android:id="@+id/updateTimeItem"
         android:title="Last updated on 12pm"
+        android:visible="false"
         app:showAsAction="always" />
 
     <group android:id="@+id/main_menu_group">
@@ -13,10 +14,11 @@
         <!--android:title="@string/menu_option_sync"-->
         <!--android:orderInCategory="50" />-->
 
-        <item android:visible="false"
+        <item
             android:id="@+id/settingsOption"
             android:orderInCategory="100"
-            android:title="@string/change_languages" />
+            android:title="@string/change_languages"
+            android:visible="false" />
 
         <!--<item-->
         <!--android:id="@+id/endOfDayOption"-->

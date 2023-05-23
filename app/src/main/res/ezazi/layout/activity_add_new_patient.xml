@@ -15,6 +15,122 @@
     <include layout="@layout/add_patient_tabs" />
 
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/iv_personal_info"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_personal_info" />
+
+        <TextView
+            android:id="@+id/tv_personal_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/body"
+            android:gravity="center_horizontal|top"
+            android:layout_below="@+id/iv_personal_info"
+            android:layout_marginTop="15dp"
+            android:textColor="#2E1E91"
+            android:textStyle="bold"
+            android:fontFamily="@font/dm_sans_medium"
+            android:text="Personal" />
+
+
+        <ImageView
+            android:id="@+id/line_1"
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toEndOf="@+id/iv_personal_info"
+            android:background="@drawable/ic_dashed_line" />
+
+        <ImageView
+            android:id="@+id/iv_address_info"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/line_1"
+            android:padding="2dp"
+            android:src="@drawable/ic_address_info" />
+
+        <ImageView
+            android:id="@+id/line_11"
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_below="@+id/iv_address_info"
+            android:layout_gravity="center"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toEndOf="@+id/iv_personal_info"
+            android:src="@drawable/ic_dashed_line"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_address_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/body"
+            android:gravity="center_horizontal|top"
+            android:layout_below="@+id/iv_address_info"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/line_11"
+            android:text="Address" />
+
+
+        <ImageView
+            android:id="@+id/line_2"
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toEndOf="@+id/iv_address_info"
+            android:src="@drawable/ic_dashed_line" />
+
+        <ImageView
+            android:id="@+id/iv_other_info"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/line_2"
+            android:padding="2dp"
+            android:src="@drawable/ic_other_info" />
+
+        <ImageView
+            android:id="@+id/line_22"
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_below="@+id/iv_address_info"
+            android:layout_gravity="center"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toEndOf="@+id/tv_address_info"
+            android:src="@drawable/ic_dashed_line"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_other_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/body"
+            android:gravity="center_horizontal|top"
+            android:layout_below="@+id/iv_other_info"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/line_22"
+            android:text="Other" />
+
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/frame_add_patient"
         android:layout_width="match_parent"
@@ -23,5 +139,6 @@
         android:layout_marginStart="@dimen/add_patient_frame_margin_start"
         android:layout_marginTop="@dimen/add_patient_frame_margin_top"
         android:layout_marginEnd="@dimen/add_patient_frame_margin_end" />
+
 
 </LinearLayout>

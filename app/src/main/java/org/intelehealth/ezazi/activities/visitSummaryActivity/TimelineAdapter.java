@@ -12,7 +12,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
@@ -73,7 +77,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @NonNull
     @Override
     public TimelineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_listitem, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_listitem_ezazi, parent, false);
         return new TimelineViewHolder(view);
     }
 
@@ -87,17 +91,23 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 if (encounterDTOList.get(position).getEncounterTypeUuid()
                         .equalsIgnoreCase("ee560d18-34a1-4ad8-87c8-98aed99c663d")) {
                     holder.stage1start.setVisibility(View.VISIBLE);
+                    holder.stage1start.setText(context.getResources().getText(R.string.stage_1));
+                } else if (encounterDTOList.get(position).getEncounterTypeUuid()
+                        .equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
+                    holder.stage1start.setVisibility(View.VISIBLE);
+                    holder.stage1start.setText(context.getResources().getText(R.string.stage_2));
                 } else {
                     holder.stage1start.setVisibility(View.GONE);
                 }
 
                 // Stage 2
-                if (encounterDTOList.get(position).getEncounterTypeUuid()
-                        .equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
-                    holder.stage2start.setVisibility(View.VISIBLE);
-                } else {
-                    holder.stage2start.setVisibility(View.GONE);
-                }
+//                if (encounterDTOList.get(position).getEncounterTypeUuid()
+//                        .equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
+//                    holder.stage1start.setVisibility(View.VISIBLE);
+//                    holder.stage1start.setText(context.getResources().getText(R.string.stage_2));
+//                } else {
+//                    holder.stage1start.setVisibility(View.GONE);
+//                }
 
                 String time = encounterDTOList.get(position).getEncounterTime();
                 SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -140,9 +150,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
-                        holder.summary_textview.setText("Pending!");
-                        holder.summaryNoteTextview.setText("Tap here to collect the history data!");
-                        holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_orange_dark));
+                        holder.cardview.setActivated(false);
+                        holder.circle.setActivated(false);
+                        holder.circle.setEnabled(true);
+                        holder.summary_textview.setText(context.getResources().getText(R.string.pending_obs));
+                        holder.summaryNoteTextview.setText(context.getResources().getText(R.string.tap_here_to_capture_obs));
                         holder.ivEdit.setVisibility(View.GONE);
                     } else {
                         holder.cardview.setClickable(false);
@@ -153,16 +165,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                          If no obs created than create Missed Enc obs for this disabled encounter. */
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1 || isMissed == 3) {
-                            holder.summaryNoteTextview.setText("You have missed to collect the history data.");
+                            holder.cardview.setEnabled(false);
+                            holder.cardview.setActivated(false);
+                            holder.circle.setActivated(false);
+                            holder.circle.setEnabled(false);
+                            holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_missed_obs));
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
-                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                            holder.summary_textview.setEnabled(false);
                             holder.ivEdit.setVisibility(View.GONE);
                         } else if (isMissed == 2) {
-                            holder.summaryNoteTextview.setText("You have submitted the history data.");
+                            holder.cardview.setEnabled(true);
+                            holder.cardview.setActivated(true);
+                            holder.circle.setActivated(true);
+                            holder.circle.setEnabled(true);
+                            holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_captured_obs));
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
-
-
+                            holder.summary_textview.setActivated(true);
                             holder.ivEdit.setVisibility(View.VISIBLE);
 
                         }
@@ -210,6 +228,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
+                        holder.cardview.setActivated(true);
+                        holder.circle.setEnabled(true);
+                        holder.circle.setActivated(true);
                         //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
                         holder.ivEdit.setVisibility(View.GONE);
                     } else {
@@ -223,11 +244,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1 || isMissed == 3) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
-                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                            holder.summary_textview.setEnabled(false);
+                            holder.summary_textview.setActivated(false);
+                            holder.cardview.setEnabled(false);
+                            holder.cardview.setActivated(false);
                             holder.ivEdit.setVisibility(View.GONE);
                         } else if (isMissed == 2) {
+                            holder.summary_textview.setEnabled(true);
+                            holder.summary_textview.setActivated(true);
+                            holder.cardview.setEnabled(true);
+                            holder.cardview.setActivated(true);
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                             holder.ivEdit.setVisibility(View.VISIBLE);
                         }
                     }
@@ -238,11 +265,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
-                    holder.cardview.setClickable(false);
                     holder.cardview.setEnabled(false);
+                    holder.cardview.setActivated(true);
+                    holder.cardview.setEnabled(true);
+                    holder.cardview.setActivated(true);
                     holder.summaryNoteTextview.setText("You have submitted the history data.");
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                    holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                    holder.summary_textview.setActivated(true);
                     holder.ivEdit.setVisibility(View.VISIBLE);
                     Log.v("timeline", "minutes enc time: " + time);
                     Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
@@ -276,10 +305,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     }
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
-        CardView cardview;
-        TextView timeTextview, summary_textview, stage1start, stage2start, summaryNoteTextview;
-        FrameLayout frame1, frame2, frame3, frame4;
-        ImageView ivEdit;
+        ConstraintLayout cardview;
+        TextView timeTextview, summary_textview, stage1start, summaryNoteTextview;
+        //        FrameLayout frame1, frame2, frame3, frame4;
+        MaterialButton ivEdit;
+        View circle;
         int index;
 
         public TimelineViewHolder(@NonNull View itemView) {
@@ -291,10 +321,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
-            stage1start = itemView.findViewById(R.id.stage1start);
-            stage2start = itemView.findViewById(R.id.stage2start);
+            stage1start = itemView.findViewById(R.id.tvStage);
+            circle = itemView.findViewById(R.id.circle1);
             summary_textview = itemView.findViewById(R.id.summary_textview);
-            frame1 = itemView.findViewById(R.id.frame1);
+//            frame1 = itemView.findViewById(R.id.frame1);
             ivEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -310,7 +340,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         }
 
         void nextIntent(boolean isEditMode) {
-            Log.v("nextIntent", "nextIntent isEditMode - "+isEditMode);
+            Log.v("nextIntent", "nextIntent isEditMode - " + isEditMode);
             int type = 10;
             int stage = 1;
             String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");

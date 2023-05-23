@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -29,13 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.apprtc.ChatActivity;
@@ -51,12 +53,17 @@ import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
+import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
+import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -67,6 +74,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -91,11 +99,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     int stageNo = 0;
     String value = "";
     String isVCEPresent = "";
-    FloatingActionButton fabc, fabv, fabSOS;
+    Button fabc, fabv, fabSOS;
     private SQLiteDatabase db;
     TextView outcomeTV;
-    String valueStage = "";
-    int positionStage = -1;
+    //    String valueStage = "";
+//    int positionStage = -1;
     public static final String TAG = "TimelineVisitSummary";
     boolean isAdded = false;
 
@@ -123,7 +131,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline_visit_summary);
+        setContentView(R.layout.activity_timeline_ezazi);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
@@ -141,39 +151,41 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                     v.vibrate(1000);
                 }
 
-                MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
-                alertDialog.setTitle("Emergency!");
-                alertDialog.setMessage("Are you sure to capture the emergency data now?");
-                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-                        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-                        Log.v(TAG, "latestEncounterName - " + latestEncounterName);
-                        if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
-                            return;
-                        String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
-                        if (parts.length != 3) return;
-                        int stageNumber = Integer.parseInt(parts[0]);
-                        int hourNumber = Integer.parseInt(parts[1]) + 1;
-                        int cardNumber = 1;//Integer.parseInt(parts[2]);
+                showEmergencyDialog();
 
-
-                        String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
-                        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-
-                        createNewEncounter(visitUuid, nextEncounterTypeName);
-                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
-
-                    }
-                });
-                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alertDialog.show();
+//                MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+//                alertDialog.setTitle("Emergency!");
+//                alertDialog.setMessage("Are you sure to capture the emergency data now?");
+//                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+//                        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+//                        Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+//                        if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
+//                            return;
+//                        String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+//                        if (parts.length != 3) return;
+//                        int stageNumber = Integer.parseInt(parts[0]);
+//                        int hourNumber = Integer.parseInt(parts[1]) + 1;
+//                        int cardNumber = 1;//Integer.parseInt(parts[2]);
+//
+//
+//                        String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
+//                        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+//
+//                        createNewEncounter(visitUuid, nextEncounterTypeName);
+//                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+//
+//                    }
+//                });
+//                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+//                alertDialog.show();
             }
         });
         fabc.setOnClickListener(new View.OnClickListener() {
@@ -269,17 +281,54 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_viewepartogram, menu);
-        return super.onCreateOptionsMenu(menu);
+    private void showEmergencyDialog() {
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .title(R.string.emergency)
+                .positiveButtonLabel(R.string.yes)
+                .content(getString(R.string.are_you_sure_to_capture_emergency_data))
+                .build();
+
+        dialog.setListener(this::collectEmergencyData);
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    private void collectEmergencyData() {
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+        Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+        if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
+            return;
+        String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+        if (parts.length != 3) return;
+        int stageNumber = Integer.parseInt(parts[0]);
+        int hourNumber = Integer.parseInt(parts[1]) + 1;
+        int cardNumber = 1;//Integer.parseInt(parts[2]);
+
+
+        String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
+        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+
+        createNewEncounter(visitUuid, nextEncounterTypeName);
+        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.timeline_menu, menu);
+        Button btn = menu.findItem(R.id.action_view_partogram).getActionView().findViewById(R.id.btnViewPartogram);
+        btn.setOnClickListener(view -> {
+            onOptionsItemSelected(menu.findItem(R.id.action_view_partogram));
+        });
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.epartogramView:
+            case R.id.action_view_partogram:
                 showEpartogram();
                 break;
             case android.R.id.home:
@@ -294,7 +343,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Map<String, String> log = new HashMap<>();
         log.put("TAG", TAG);
         log.put("action", "showEpartogram");
-        TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager manager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         Logger.logV("PHONE_TYPE_NONE", String.valueOf(Objects.requireNonNull(manager).getPhoneType()));
         /*if (getResources().getBoolean(R.bool.isTablet)) {
             Intent intent = new Intent(context, Epartogram.class);
@@ -335,9 +384,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("epartog", "Device Size: " + diagonalInches);
 */
 
-      //  if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
-            //Device is a 8" tablet
-            // Call webview here...
+        //  if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
+        //Device is a 8" tablet
+        // Call webview here...
           /*  Intent intent = new Intent(context, Epartogram.class);
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
@@ -351,14 +400,14 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        fabSOS = findViewById(R.id.fabSOS);
-        fabv = findViewById(R.id.fabv);
+        fabSOS = findViewById(R.id.btnSOS);
+        fabv = findViewById(R.id.btnVideoCall);
         outcomeTV = findViewById(R.id.outcomeTV);
-        fabc = findViewById(R.id.fabc);
+        fabc = findViewById(R.id.btnChat);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
-        endStageButton = findViewById(R.id.endStageButton);
+        endStageButton = findViewById(R.id.btnEndStage);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
@@ -433,8 +482,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
+            Log.e(TAG, "endStageButton stage = " + stageNo);
             if (stageNo == 1) {
-                singleSelectionDialog_stage1();
+                showEndShiftDialog();
                 // cancelStage1_ConfirmationDialog();// cancel and start stage 2
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome also show extra options like: Refer to other hospital & Self Discharge
@@ -444,124 +494,228 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         mCountDownTimer.start();
     }
 
-    private void singleSelectionDialog_stage1() {
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
-        dialogBuilder.setTitle(R.string.select_an_option);
-        final CharSequence stage1Options[] = {getString(R.string.move_to_stage2),
+    private void showEndShiftDialog() {
+        Log.e(TAG, "showEndShiftDialog");
+        final String stage1Options[] = {getString(R.string.move_to_stage2),
                 getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
-        dialogBuilder.setSingleChoiceItems(stage1Options, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position) {
-                valueStage = String.valueOf(stage1Options[position]);
-                positionStage = position;
-            }
-        });
 
-        dialogBuilder.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                boolean isInserted = false;
-                if (positionStage == 0)
-                    cancelStage1_ConfirmationDialog(); // cancel and start stage 2
-                else if (positionStage == 1) // refer other hospital // call visit complete enc.
-                    referOtherHospitalDialog(valueStage);
-                else if (positionStage == 2) { // self discharge // call visit complete enc.
-                    try {
-                        isInserted = insertVisitComplete_Obs(visitUuid, valueStage, UuidDictionary.REFER_TYPE);
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-                    if (isInserted) {
-                        Toast.makeText(context, context.getString(R.string.self_discharge_successful), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, HomeActivity.class);
-                        startActivity(intent);
-                        checkInternetAndUploadVisit_Encounter();
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                    dialog.dismiss();
-                } else
-                    Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
+                .title(R.string.select_an_option)
+                .positiveButtonLabel(R.string.yes)
+                .content(Arrays.asList(stage1Options))
+                .build();
 
-            }
-        });
+        dialog.setListener(this::manageStageSelection);
 
-        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-            }
-        });
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
-        AlertDialog dialog = dialogBuilder.show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+//        dialogBuilder.setTitle(R.string.select_an_option);
+//
+//        dialogBuilder.setSingleChoiceItems(stage1Options, -1, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int position) {
+//                valueStage = String.valueOf(stage1Options[position]);
+//                positionStage = position;
+//            }
+//        });
 
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+//        dialogBuilder.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                boolean isInserted = false;
+//                if (positionStage == 0)
+//                    cancelStage1_ConfirmationDialog(); // cancel and start stage 2
+//                else if (positionStage == 1) // refer other hospital // call visit complete enc.
+//                    referOtherHospitalDialog(valueStage);
+//                else if (positionStage == 2) { // self discharge // call visit complete enc.
+//                    try {
+//                        isInserted = insertVisitComplete_Obs(visitUuid, valueStage, UuidDictionary.REFER_TYPE);
+//                    } catch (DAOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    if (isInserted) {
+//                        Toast.makeText(context, context.getString(R.string.self_discharge_successful), Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(context, HomeActivity.class);
+//                        startActivity(intent);
+//                        checkInternetAndUploadVisit_Encounter();
+//                    } else {
+//                        Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+//                    }
+//                    dialog.dismiss();
+//                } else
+//                    Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
+//        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                dialog.dismiss();
+//            }
+//        });
+
+//        AlertDialog dialog = dialogBuilder.show();
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
+    private void manageStageSelection(int position, String value) {
+        if (position == 0)
+            cancelStage1ConfirmationDialog(); // cancel and start stage 2
+        else if (position == 1) // refer other hospital // call visit complete enc.
+            showReferToOtherHospitalConfirmationDialog(value);
+        else if (position == 2) { // self discharge // call visit complete enc.
+            showSelfDischargeConfirmationDialog(value);
+        } else
+            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showReferToOtherHospitalConfirmationDialog(String value) {
+        showConfirmationDialog(R.string.are_you_sure_want_to_refer_other, () -> {
+            referOtherHospitalDialog(value);
+        });
+    }
+
+    private void showSelfDischargeConfirmationDialog(String value) {
+        showConfirmationDialog(R.string.are_you_sure_want_to_self_discharge, () -> {
+            selfDischarge(value);
+        });
+    }
+
+    private void selfDischarge(String value) {
+        boolean isInserted = false;
+        try {
+            isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.REFER_TYPE);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isInserted) {
+            Toast.makeText(context, context.getString(R.string.self_discharge_successful), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, HomeActivity.class);
+            startActivity(intent);
+            checkInternetAndUploadVisit_Encounter();
+        } else {
+            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showConfirmationDialog(@StringRes int content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(content))
+                .positiveButtonLabel(R.string.yes)
+                .build();
+
+        dialog.setListener(listener);
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    private void showCustomViewDialog(@StringRes int title, View view, CustomViewDialogFragment.OnConfirmationActionListener listener) {
+        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
+                .title(title)
+                .positiveButtonLabel(R.string.yes)
+                .view(view)
+                .build();
+
+        dialog.setListener(listener);
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
     private void referOtherHospitalDialog(String referType) {
-        positionStage = -1;
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
-        String referOptions[] = {getString(R.string.refer_hospital_name), getString(R.string.refer_doctor_name), getString(R.string.refer_note)};
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_refer_hospital, null);
-        dialogBuilder.setView(view);
-        dialogBuilder.setTitle(R.string.refer_section);
-        EditText refer_hospitalName = view.findViewById(R.id.refer_hospitalName);
-        EditText refer_doctorName = view.findViewById(R.id.refer_doctorName);
-        EditText referNote = view.findViewById(R.id.referNote);
+//        String referOptions[] = {getString(R.string.refer_hospital_name), getString(R.string.refer_doctor_name), getString(R.string.refer_note)};
 
-        dialogBuilder.setPositiveButton(context.getString(R.string.submit), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                boolean isInserted = false;
-                String hospitalName = refer_hospitalName.getText().toString(),
-                        doctorName = refer_doctorName.getText().toString(),
-                        note = referNote.getText().toString();
+        DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(getLayoutInflater(), null, false);
 
-                // call visitcompleteenc and add obs for refer type and referal values entered...
-                try {
-                    isInserted = insertVisitCompleteEncounterAndObs_ReferHospital(visitUuid, referType, hospitalName, doctorName, note);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
+        showCustomViewDialog(R.string.refer_section, binding.getRoot(), () -> {
+            boolean isInserted = false;
+            String hospitalName = binding.referHospitalName.getText().toString(),
+                    doctorName = binding.referDoctorName.getText().toString(),
+                    note = binding.referNote.getText().toString();
 
-                Log.v(TAG, "referValue: " + "visit uuid: " + visitUuid + ", " + referType + ", "
-                        + hospitalName + ", " + doctorName + ", " + note);
+            // call visitcompleteenc and add obs for refer type and referal values entered...
+            try {
+                isInserted = insertVisitCompleteEncounterAndObs_ReferHospital(visitUuid, referType, hospitalName, doctorName, note);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
 
-                if (isInserted) {
-                    Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, HomeActivity.class);
-                    startActivity(intent);
-                    checkInternetAndUploadVisit_Encounter();
-                } else {
-                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
+            Log.v(TAG, "referValue: " + "visit uuid: " + visitUuid + ", " + referType + ", "
+                    + hospitalName + ", " + doctorName + ", " + note);
+
+            if (isInserted) {
+                Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
-        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = dialogBuilder.show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+//        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+//
+//        View view = LayoutInflater.from(context).inflate(R.layout.dialog_refer_hospital, null);
+//        dialogBuilder.setView(view);
+//        dialogBuilder.setTitle(R.string.refer_section);
+//        EditText refer_hospitalName = view.findViewById(R.id.refer_hospitalName);
+//        EditText refer_doctorName = view.findViewById(R.id.refer_doctorName);
+//        EditText referNote = view.findViewById(R.id.referNote);
+//
+//        dialogBuilder.setPositiveButton(context.getString(R.string.submit), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                boolean isInserted = false;
+//                String hospitalName = refer_hospitalName.getText().toString(),
+//                        doctorName = refer_doctorName.getText().toString(),
+//                        note = referNote.getText().toString();
+//
+//                // call visitcompleteenc and add obs for refer type and referal values entered...
+//                try {
+//                    isInserted = insertVisitCompleteEncounterAndObs_ReferHospital(visitUuid, referType, hospitalName, doctorName, note);
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Log.v(TAG, "referValue: " + "visit uuid: " + visitUuid + ", " + referType + ", "
+//                        + hospitalName + ", " + doctorName + ", " + note);
+//
+//                if (isInserted) {
+//                    Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(context, HomeActivity.class);
+//                    startActivity(intent);
+//                    checkInternetAndUploadVisit_Encounter();
+//                } else {
+//                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+//                }
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        AlertDialog dialog = dialogBuilder.show();
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
@@ -619,74 +773,119 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
 
     private void birthOutcomeSelectionDialog() {
-        positionStage = -1;
-        final CharSequence[] items = {getString(R.string.live_birth), getString(R.string.still_birth),
-                getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
-        value = "";
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
-        alertDialog.setTitle(R.string.select_birth_outcome);
-        alertDialog.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position) {
-                value = String.valueOf(items[position]);
-                positionStage = position;
-            }
-        });
 
-        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        boolean isInserted = false;
-                        // Birth Outcome
-                        if (positionStage == 0 || positionStage == 1) {
-                            Log.v("birthoutcome", "value: " + value);
-                            stage2_captureAdditionalData(value);
-                            Log.v("isInserted", "isInserted_livebirth: " + isInserted);
+//        positionStage = -1;
+        final String[] items = {getString(R.string.live_birth), getString(R.string.still_birth),
+                getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
+                .title(R.string.select_birth_outcome)
+                .positiveButtonLabel(R.string.yes)
+                .content(Arrays.asList(items))
+                .build();
+
+        dialog.setListener(this::manageBirthOutcomeSelection);
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+
+//        value = "";
+//        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+//        alertDialog.setTitle(R.string.select_birth_outcome);
+//        alertDialog.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int position) {
+//                value = String.valueOf(items[position]);
+//                positionStage = position;
+//            }
+//        });
+
+//        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        boolean isInserted = false;
+//                        // Birth Outcome
+//                        if (positionStage == 0 || positionStage == 1) {
+//                            Log.v("birthoutcome", "value: " + value);
+//                            stage2_captureAdditionalData(value);
+//                            Log.v("isInserted", "isInserted_livebirth: " + isInserted);
+///*                            try {
+//                                isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
+//                            } catch (DAOException e) {
+//                                e.printStackTrace();
+//                                Log.e("birthoutcome", "insert visit complete: " + e);
+//                            }*/
+//                        } else if (positionStage == 2) // refer other hospital // call visit complete enc.
+//                            referOtherHospitalDialog(valueStage);
+//                        else if (positionStage == 3) { // self discharge // call visit complete enc.
+//                            try {
+//                                isInserted = insertVisitComplete_Obs(visitUuid,
+//                                        context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+//                            } catch (DAOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        } else
+//                            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+//
+//
+//                        if (isInserted) {
+//                            cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
+//                            Intent intent = new Intent(context, HomeActivity.class);
+//                            startActivity(intent);
+//                            checkInternetAndUploadVisit_Encounter();
+//                        }
+//                        dialog.dismiss();
+//                    }
+//                });
+
+//        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        AlertDialog dialog = alertDialog.show();
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private void manageBirthOutcomeSelection(int position, String value) {
+        boolean isInserted = false;
+        // Birth Outcome
+        if (position == 0 || position == 1) {
+            Log.v("birthoutcome", "value: " + value);
+            stage2captureAdditionalData(value);
+            Log.v("isInserted", "isInserted_livebirth: " + isInserted);
 /*                            try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
                             } catch (DAOException e) {
                                 e.printStackTrace();
                                 Log.e("birthoutcome", "insert visit complete: " + e);
                             }*/
-                        } else if (positionStage == 2) // refer other hospital // call visit complete enc.
-                            referOtherHospitalDialog(valueStage);
-                        else if (positionStage == 3) { // self discharge // call visit complete enc.
-                            try {
-                                isInserted = insertVisitComplete_Obs(visitUuid,
-                                        context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
-                            } catch (DAOException e) {
-                                e.printStackTrace();
-                            }
-                        } else
-                            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
-
-
-                        if (isInserted) {
-                            cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
-                            Intent intent = new Intent(context, HomeActivity.class);
-                            startActivity(intent);
-                            checkInternetAndUploadVisit_Encounter();
-                        }
-                        dialog.dismiss();
-                    }
-                });
-
-        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
+        } else if (position == 2) // refer other hospital // call visit complete enc.
+            referOtherHospitalDialog(value);
+        else if (position == 3) { // self discharge // call visit complete enc.
+            try {
+                isInserted = insertVisitComplete_Obs(visitUuid,
+                        context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-        });
+        } else
+            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
 
-        AlertDialog dialog = alertDialog.show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
 
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        if (isInserted) {
+            cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
+            Intent intent = new Intent(context, HomeActivity.class);
+            startActivity(intent);
+            checkInternetAndUploadVisit_Encounter();
+        }
     }
 
     private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar_1min, String apgar_5min,
@@ -822,66 +1021,91 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         return isInserted;
     }
 
-    private boolean stage2_captureAdditionalData(String value) {
+    private boolean stage2captureAdditionalData(String value) {
         isAdded = false;
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
-        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
-                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_stage2_additional_data, null);
-        dialogBuilder.setView(view);
-        dialogBuilder.setTitle(R.string.additional_information);
-        EditText birth_weight = view.findViewById(R.id.birth_weight);
-        EditText apgar_1min = view.findViewById(R.id.apgar_1min);
-        EditText apgar_5min = view.findViewById(R.id.apgar_5min);
-        EditText sex = view.findViewById(R.id.sex);
-        EditText baby_status = view.findViewById(R.id.baby_status);
-        EditText mother_status = view.findViewById(R.id.mother_status);
+//        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+//        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
+//                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
+        DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, false);
+        showCustomViewDialog(R.string.additional_information, binding.getRoot(), () -> {
+            String birthW = binding.birthWeight.getText().toString(),
+                    apgar1min = binding.apgar1min.getText().toString(),
+                    apgar5min = binding.apgar5min.getText().toString(),
+                    sexValue = binding.sex.getText().toString(),
+                    babyStatus = binding.babyStatus.getText().toString(),
+                    motherStatus = binding.motherStatus.getText().toString();
 
-        dialogBuilder.setPositiveButton(context.getString(R.string.submit), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String birthW = birth_weight.getText().toString(),
-                        apgar1min = apgar_1min.getText().toString(),
-                        apgar5min = apgar_5min.getText().toString(),
-                        sexValue = sex.getText().toString(),
-                        babyStatus = baby_status.getText().toString(),
-                        motherStatus = mother_status.getText().toString();
+            // call visitcompleteenc and add obs for additional values entered...
+            try {
+                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
 
-                // call visitcompleteenc and add obs for additional values entered...
-                try {
-                    isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-
-                if (isAdded) {
-                    Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, HomeActivity.class);
-                    startActivity(intent);
-                    checkInternetAndUploadVisit_Encounter();
-                } else {
-                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                }
-                dialogInterface.dismiss();
+            if (isAdded) {
+                Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
-        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = dialogBuilder.show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+//        View view = LayoutInflater.from(context).inflate(R.layout.dialog_stage2_additional_data, null);
+//        dialogBuilder.setView(view);
+//        dialogBuilder.setTitle(R.string.additional_information);
+//        EditText birth_weight = view.findViewById(R.id.birth_weight);
+//        EditText apgar_1min = view.findViewById(R.id.apgar_1min);
+//        EditText apgar_5min = view.findViewById(R.id.apgar_5min);
+//        EditText sex = view.findViewById(R.id.sex);
+//        EditText baby_status = view.findViewById(R.id.baby_status);
+//        EditText mother_status = view.findViewById(R.id.mother_status);
+//
+//        dialogBuilder.setPositiveButton(context.getString(R.string.submit), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                String birthW = birth_weight.getText().toString(),
+//                        apgar1min = apgar_1min.getText().toString(),
+//                        apgar5min = apgar_5min.getText().toString(),
+//                        sexValue = sex.getText().toString(),
+//                        babyStatus = baby_status.getText().toString(),
+//                        motherStatus = mother_status.getText().toString();
+//
+//                // call visitcompleteenc and add obs for additional values entered...
+//                try {
+//                    isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                if (isAdded) {
+//                    Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(context, HomeActivity.class);
+//                    startActivity(intent);
+//                    checkInternetAndUploadVisit_Encounter();
+//                } else {
+//                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+//                }
+//                dialogInterface.dismiss();
+//            }
+//        });
+//
+//        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        AlertDialog dialog = dialogBuilder.show();
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
         return isAdded;
     }
@@ -929,40 +1153,49 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     // Timeline stage 1 end confirmation dialog
-    private void cancelStage1_ConfirmationDialog() {
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
-        alertDialog.setTitle("Are you sure you want to End Stage 1?");
-        // alertDialog.setMessage("");
-        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
-                        //triggerAlarm_Stage2_every15mins(visitUuid);
-                        //cancelStage1_Alarm(); // cancel's stage 1 alarm
-                        createNewEncounter(visitUuid, "Stage2_Hour1_1");
-                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
-                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
-                        dialog.dismiss();
-                    }
-                });
-
-
-        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-            }
+    private void cancelStage1ConfirmationDialog() {
+        showConfirmationDialog(R.string.are_you_sure_want_to_end_stage_1, () -> {
+            // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
+            //triggerAlarm_Stage2_every15mins(visitUuid);
+            //cancelStage1_Alarm(); // cancel's stage 1 alarm
+            createNewEncounter(visitUuid, "Stage2_Hour1_1");
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+            endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
         });
 
-        AlertDialog dialog = alertDialog.show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+//        alertDialog.setTitle(R.string.are_you_sure_you_want_to_end_stage_1);
+//        // alertDialog.setMessage("");
+//        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
+//                        //triggerAlarm_Stage2_every15mins(visitUuid);
+//                        //cancelStage1_Alarm(); // cancel's stage 1 alarm
+//                        createNewEncounter(visitUuid, "Stage2_Hour1_1");
+//                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+//                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//
+//        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int i) {
+//                dialog.dismiss();
+//            }
+//        });
 
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+//        AlertDialog dialog = alertDialog.show();
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     private void cancelStage2_Alarm() { // visituuid : 0 - 5

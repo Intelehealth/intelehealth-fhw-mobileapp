@@ -10,15 +10,15 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import org.intelehealth.apprtc.ChatActivity;
@@ -36,7 +36,6 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -47,7 +46,7 @@ import java.util.List;
 
 public class PartogramDataCaptureActivity extends AppCompatActivity {
 
-    private TextView mSaveTextView, mEpartogramTextView;
+    private Button mSaveTextView, mEpartogramTextView;
     private RecyclerView mRecyclerView;
     private String mVisitUUID = "";
     private String mEncounterUUID = "";
@@ -67,11 +66,13 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_partogram_data_capture);
+        setContentView(R.layout.activity_partogram_data_capture_ezazi);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("History Collection");
-        mSaveTextView = findViewById(R.id.tvSave);
-        mEpartogramTextView = findViewById(R.id.tvEpartogram);
+        getSupportActionBar().setTitle(getString(R.string.observations));
+        mSaveTextView = findViewById(R.id.btnSave);
+        mEpartogramTextView = findViewById(R.id.btnView);
         mRecyclerView = findViewById(R.id.rvQuery);
         mVisitUUID = getIntent().getStringExtra("visitUuid");
         mEncounterUUID = getIntent().getStringExtra("encounterUuid");
@@ -156,8 +157,8 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
         });
 
-        FloatingActionButton fabc = findViewById(R.id.fabc);
-        fabc.setOnClickListener(new View.OnClickListener() {
+        Button btnChat = findViewById(R.id.btnChat);
+        btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -184,8 +185,8 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 startActivity(chatIntent);
             }
         });
-        FloatingActionButton fabv = findViewById(R.id.fabv);
-        fabv.setOnClickListener(new View.OnClickListener() {
+        Button btnVideoCall = findViewById(R.id.btnVideoCall);
+        btnVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EncounterDAO encounterDAO = new EncounterDAO();

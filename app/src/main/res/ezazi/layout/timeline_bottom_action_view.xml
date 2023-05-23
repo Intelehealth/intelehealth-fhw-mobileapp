@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_menu_bg"
+    android:minHeight="@dimen/bottom_menu_min_height"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/actionbar_vertical_padding"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/actionbar_vertical_padding"
+    tools:ignore="PrivateResource">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEndStage"
+        style="@style/Theme.EZazi.Button.Small"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:text="@string/endStageButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChat"
+        style="@style/Theme.EZazi.Button.Icon.Blue"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:contentDescription="@string/chat_now"
+        app:icon="@drawable/ic_chat"
+        app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnEndStage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVideoCall"
+        style="@style/Theme.EZazi.Button.Icon.Blue"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:contentDescription="@string/video_call"
+        app:icon="@drawable/ic_video_call"
+        app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/btnChat"
+        app:layout_constraintStart_toEndOf="@id/btnSOS"
+        app:layout_constraintTop_toTopOf="@id/btnEndStage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSOS"
+        style="@style/Theme.EZazi.Button.Emergency"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:contentDescription="@string/emergency_call"
+        android:text="@string/lbl_sos"
+        app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
+        app:layout_constraintEnd_toStartOf="@id/btnVideoCall"
+        app:layout_constraintStart_toEndOf="@id/btnEndStage"
+        app:layout_constraintTop_toTopOf="@id/btnEndStage" />
+
+    <TextView
+        android:id="@+id/outcomeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/heading1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

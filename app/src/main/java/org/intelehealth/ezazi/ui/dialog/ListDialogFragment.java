@@ -12,15 +12,30 @@ import org.intelehealth.ezazi.databinding.DialogListViewBinding;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class ListDialogFragment extends BaseDialogFragment {
+abstract class ListDialogFragment<T> extends BaseDialogFragment<T> {
+
+    private DialogListViewBinding listViewBinding;
 
     @Override
     View getContentView() {
-        DialogListViewBinding listViewBinding = DialogListViewBinding.inflate(getLayoutInflater(), null, false);
+        listViewBinding = DialogListViewBinding.inflate(getLayoutInflater(), null, false);
         listViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        listViewBinding.recyclerView.setAdapter(getAdapter());
+        if (getAdapter() != null)
+            listViewBinding.recyclerView.setAdapter(getAdapter());
         return listViewBinding.getRoot();
     }
 
-    abstract <VH extends RecyclerView.ViewHolder> RecyclerView.Adapter<VH> getAdapter();
+    public RecyclerView.Adapter<?> getAdapter() {
+        return null;
+    }
+
+    public void setRecyclerAdapter(RecyclerView.Adapter<?> adapter) {
+        listViewBinding.recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    boolean hasTitle() {
+        return true;
+    }
+
 }

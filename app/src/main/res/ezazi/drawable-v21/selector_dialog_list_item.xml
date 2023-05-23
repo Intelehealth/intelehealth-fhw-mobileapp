@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/colorSelectedListItem">
-    <item android:drawable="@drawable/rounded_corner_white_with_gray_stroke" />
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/selected_dialog_list_item"
+                android:state_selected="true" />
+            <item android:drawable="@drawable/rounded_corner_white_with_gray_stroke" />
+        </selector>
+    </item>
 </ripple>

@@ -1,8 +1,13 @@
 package org.intelehealth.ezazi.ui.dialog;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.SingleChoiceAdapter;
 
 import java.util.List;
 
@@ -11,25 +16,57 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class SingleChoiceDialogFragment extends ListDialogFragment {
-    private List<String> choices;
+public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>> {
 
-    public SingleChoiceDialogFragment(List<String> choices) {
-        this.choices = choices;
+    public interface OnChoiceListener {
+        void onItemSelected(int position, String value);
+    }
+
+    private OnChoiceListener listener;
+    private SingleChoiceAdapter adapter;
+
+    public void setListener(OnChoiceListener listener) {
+        this.listener = listener;
     }
 
     @Override
-    <VH extends RecyclerView.ViewHolder> RecyclerView.Adapter<VH> getAdapter() {
-        return null;
+    public RecyclerView.Adapter<?> getAdapter() {
+        adapter = new SingleChoiceAdapter(getContext(), args.getContent(), this);
+        return adapter;
     }
 
     @Override
     public void onSubmit() {
-
+        listener.onItemSelected(adapter.getSelected(), args.getContent().get(adapter.getSelected()));
     }
 
     @Override
-    public void onDismiss() {
+    public void onClick(View view) {
+        if (view.getId() == R.id.tvChoice) {
+            int previousSelection = adapter.getSelected();
+            int selected = (int) view.getTag();
+            if (previousSelection == selected) selected = -1;
+            adapter.setSelected(selected);
+            changeSubmitButtonState(adapter.getSelected() != -1);
 
+            if (args.getPositiveBtnLabel() == null && adapter.getSelected() != -1) {
+                listener.onItemSelected(adapter.getSelected(), adapter.getItem(adapter.getSelected()));
+                dismiss();
+            }
+        } else super.onClick(view);
+    }
+
+    public static class Builder extends BaseBuilder<List<String>, SingleChoiceDialogFragment> {
+
+        public Builder(Context context) {
+            super(context);
+        }
+
+        @Override
+        public SingleChoiceDialogFragment build() {
+            SingleChoiceDialogFragment fragment = new SingleChoiceDialogFragment();
+            fragment.setArguments(bundle());
+            return fragment;
+        }
     }
 }

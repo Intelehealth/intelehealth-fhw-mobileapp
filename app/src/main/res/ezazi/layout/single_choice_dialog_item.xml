@@ -16,6 +16,7 @@
         android:paddingVertical="@dimen/list_container_padding">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvChoice"
             style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="patient"
+            type="org.intelehealth.ezazi.models.FamilyMemberRes" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/clChoiceRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_container_padding"
+        android:background="@drawable/selector_dialog_list_item"
+        android:paddingStart="@dimen/screen_container_padding"
+        android:paddingTop="@dimen/screen_container_padding"
+        android:paddingBottom="@dimen/screen_container_padding">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPatientName"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{patient.name}"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Patient Name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPatientId"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_4dp"
+            android:text="@{patient.openMRSID}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPatientName"
+            tools:text="10LAM-3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvBedNumber"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_4dp"
+            android:text="Bed No: 2A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPatientId"
+            tools:text="Bed No: 2A" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbPatientSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

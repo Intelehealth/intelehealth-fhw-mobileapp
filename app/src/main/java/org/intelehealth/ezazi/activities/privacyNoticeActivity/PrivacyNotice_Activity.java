@@ -51,15 +51,16 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_ezazi);
-        setTitle(getString(R.string.privacy_notice_title));
+//        setTitle(getString(R.string.privacy_notice_title));
 
         /*
          * Toolbar which displays back arrow on action bar
          * Add the below lines for every activity*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(getString(R.string.privacy_notice_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

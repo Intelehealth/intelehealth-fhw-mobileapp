@@ -4,11 +4,11 @@
     <solid android:color="@color/white" />
     <corners android:radius="@dimen/container_corner_radius" />
     <stroke
-        android:width="1dp"
-        android:color="@color/darkGray_50_perc" />
+        android:width="@dimen/input_stroke_size"
+        android:color="@color/input_focus_color" />
     <padding
-        android:bottom="@dimen/std_16dp"
-        android:left="@dimen/std_16dp"
-        android:right="@dimen/std_16dp"
-        android:top="@dimen/std_16dp" />
+        android:bottom="@dimen/screen_container_padding"
+        android:left="@dimen/screen_container_padding"
+        android:right="@dimen/screen_container_padding"
+        android:top="@dimen/screen_container_padding" />
 </shape>

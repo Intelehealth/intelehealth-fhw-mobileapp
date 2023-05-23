@@ -60,13 +60,14 @@
 
             <AutoCompleteTextView
                 android:id="@+id/spinner_location"
+                style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner_white_with_gray_stroke"
                 android:hint="@string/login_location_select"
                 android:inputType="none"
+                android:dropDownSelector="@color/white"
                 android:minHeight="@dimen/max_input_height"
-                android:padding="@dimen/std_16dp" />
+                android:textSize="@dimen/input_inner_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

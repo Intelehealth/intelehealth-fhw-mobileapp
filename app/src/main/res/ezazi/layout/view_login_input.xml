@@ -27,11 +27,12 @@
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/max_input_height"
             android:hint="@string/enter_username"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
-            android:maxLength="100" />
+            android:maxLength="100"
+            android:minHeight="@dimen/max_input_height"
+            android:textSize="@dimen/input_inner_size" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,11 +57,12 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/max_input_height"
             android:hint="@string/enter_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:maxLength="100" />
+            android:maxLength="100"
+            android:minHeight="@dimen/max_input_height"
+            android:textSize="@dimen/input_inner_size" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

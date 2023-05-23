@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true">
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorPrimary" />
+            <size android:width="@dimen/screen_container_padding" android:height="@dimen/screen_container_padding" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="@color/colorEmergencyBg" />
+            <size android:width="@dimen/screen_container_padding" android:height="@dimen/screen_container_padding" />
+            <stroke android:width="@dimen/stage_stroke_size" android:color="?attr/colorAccent" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorAccent" />
+            <size android:width="@dimen/screen_container_padding" android:height="@dimen/screen_container_padding" />
+        </shape>
+    </item>
+</selector>

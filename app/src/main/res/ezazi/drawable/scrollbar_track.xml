@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/screen_container_padding"
+        android:left="@dimen/screen_container_padding"
+        android:right="@dimen/screen_container_padding"
+        android:top="@dimen/screen_container_padding">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorSelectedListItem" />
+            <stroke
+                android:width="@dimen/input_stroke_size"
+                android:color="@color/colorSelectedListItem" />
+        </shape>
+    </item>
+</layer-list>

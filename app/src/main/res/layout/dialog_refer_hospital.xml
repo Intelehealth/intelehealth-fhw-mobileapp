@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp"
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/refer_hospitalName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Hospital Name"
         android:gravity="center_horizontal"
-        android:paddingVertical="20dp"/>
+        android:hint="Enter Hospital Name"
+        android:paddingVertical="20dp" />
 
     <EditText
         android:id="@+id/refer_doctorName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Doctor Name"
         android:gravity="center_horizontal"
-        android:paddingVertical="20dp"/>
+        android:hint="Enter Doctor Name"
+        android:paddingVertical="20dp" />
 
     <EditText
         android:id="@+id/referNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Note"
         android:gravity="center_horizontal"
-        android:paddingVertical="20dp"/>
+        android:hint="Enter Note"
+        android:paddingVertical="20dp" />
 
 </LinearLayout>

@@ -13,19 +13,20 @@
         <item name="android:textColor">@color/colorInputText</item>
         <item name="iconEndPadding">@dimen/std_16dp</item>
         <item name="android:textSize">@dimen/input_inner_size</item>
+        <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
+        <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login" parent="Theme.EZazi.Input">
         <item name="boxBackgroundColor">@color/colorLoginInputBg</item>
-        <item name="boxStrokeColor">@color/input_focuse_color</item>
-        <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
+        <item name="boxStrokeColor">@color/input_focus_color</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login.DropDown" parent="Theme.EZazi.Input.Login">
         <item name="android:theme">
             @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu
         </item>
-        <item name="endIconDrawable">@drawable/ic_dropdown</item>
+        <item name="endIconDrawable">@drawable/ic_dropdown_spinner</item>
         <item name="endIconMode">dropdown_menu</item>
     </style>
 
@@ -61,6 +62,13 @@
     <style name="Theme.EZazi.Text.Dialog.Content" parent="@style/LabelStyle">
         <item name="fontFamily">@font/dm_sans_regular</item>
         <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="android:textSize">@dimen/input_inner_size</item>
+    </style>
+
+    <style name="Theme.EZazi.Text.Dialog.Alert.Title" parent="@style/LabelStyle">
+        <item name="fontFamily">@font/dm_sans_bold</item>
+        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="android:textSize">@dimen/alert_text_size</item>
     </style>
 
     <style name="Theme.EZazi.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -71,6 +79,8 @@
         <item name="rippleColor">@color/white</item>
         <item name="fontFamily">@font/dm_sans_bold</item>
         <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
         <item name="backgroundTint">@color/btn_blue_color_selector</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
     </style>
@@ -79,6 +89,9 @@
         <item name="android:textSize">@dimen/small_button_text_size</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+        <!--        <item name="android:paddingStart">@dimen/small_button_padding</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/small_button_padding</item>-->
+        <item name="cornerRadius">@dimen/small_btn_radius</item>
         <item name="android:paddingTop">@dimen/small_button_padding</item>
         <item name="android:paddingBottom">@dimen/small_button_padding</item>
     </style>
@@ -89,7 +102,7 @@
         <item name="rippleColor">@color/gray_2</item>
         <item name="backgroundTint">@color/white</item>
         <item name="strokeColor">@color/gray_2</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="strokeWidth">@dimen/input_stroke_size</item>
     </style>
 
     <style name="Theme.EZazi.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -109,6 +122,11 @@
     <style name="Theme.EZazi.Button.Next" parent="Theme.EZazi.Button">
         <item name="icon">@drawable/ic_arrow_next</item>
         <item name="iconGravity">end</item>
+        <item name="android:gravity">center</item>
+        <item name="iconPadding">-16dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingEnd">@dimen/screen_container_padding</item>
     </style>
 
     <style name="Theme.EZazi.Screen.Title" parent="TextAppearance.AppCompat">
@@ -156,23 +174,34 @@
         <item name="android:textSize">@dimen/caption</item>
     </style>
 
-    <style name="Theme.EZazi.Search" parent="Widget.AppCompat.Light.SearchView">
-        <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
+    <style name="Theme.EZazi.Search" parent="">
         <item name="iconifiedByDefault">false</item>
-        <item name="searchIcon">@drawable/ic_search_24dp</item>
+        <item name="searchIcon">@null</item>
+        <item name="background">@null</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="android:editTextBackground">@null</item>
         <item name="queryHint">@string/hint_search_cases</item>
+        <item name="hintTextColor">@color/colorSearchContent</item>
         <item name="defaultQueryHint">@string/hint_search_cases</item>
         <item name="android:minHeight">@dimen/search_view_height</item>
         <item name="android:focusable">false</item>
+        <item name="android:textSize">@dimen/caption</item>
+        <item name="hintTextAppearance">@style/Theme.EZazi.Caption</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="android:editTextColor">@color/font_black_0</item>
+        <item name="android:textColorHint">@color/colorSearchContent</item>
+    </style>
+
+    <style name="Theme.EZazi.Search.Icon">
+        <item name="android:padding">@dimen/search_icon_padding</item>
+        <item name="srcCompat">@drawable/ic_search_24dp</item>
     </style>
 
 
-    <style name="Theme.EZazi.Dialog.Button.Next" parent="Theme.EZazi.Button.Next">
+    <style name="Theme.EZazi.Dialog.Button.Next" parent="Theme.EZazi.Button">
         <item name="android:textSize">@dimen/dialog_btn_text_size</item>
         <item name="android:paddingTop">@dimen/actionbar_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/actionbar_vertical_padding</item>
-        <item name="android:minHeight">0dp</item>
-        <item name="android:minWidth">0dp</item>
     </style>
 
     <style name="Theme.EZazi.Dialog.Button.Cancel" parent="Theme.EZazi.Button.White">
@@ -180,14 +209,126 @@
         <item name="strokeWidth">0dp</item>
         <item name="android:paddingTop">@dimen/actionbar_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/actionbar_vertical_padding</item>
-        <item name="android:minHeight">0dp</item>
-        <item name="android:minWidth">0dp</item>
+        <!--        <item name="android:minHeight">0dp</item>-->
+        <!--        <item name="android:minWidth">0dp</item>-->
     </style>
 
     <style name="Theme.EZazi.Scrollbar.Thumb" parent="">
         <item name="android:scrollbars">vertical</item>
         <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
         <item name="android:scrollbarThumbVertical">@color/colorScrollbar</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <!--        <item name="android:fadeScrollbars">false</item>-->
+        <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/custom_appbar_title_size</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="lineHeight">@dimen/std_31dp</item>
+
+    </style>
+
+
+    <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="hintTextColor">@color/darkGray</item>
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:paddingEnd">@dimen/screen_container_padding</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_bold</item>
+        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon" parent="Theme.EZazi.Button.Small">
+        <item name="strokeWidth">@dimen/input_stroke_size</item>
+        <item name="cornerRadius">@dimen/small_btn_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+        <item name="minWidth">@dimen/timeline_btn_height</item>
+        <item name="minHeight">@dimen/timeline_btn_height</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon.Blue" parent="Theme.EZazi.Button.Icon">
+        <item name="backgroundTint">@color/colorIconButtonBg</item>
+        <item name="strokeColor">@color/color_icon_btn_stroke</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Button.Emergency" parent="Theme.EZazi.Button.Icon">
+        <item name="backgroundTint">@color/colorEmergencyBg</item>
+        <item name="strokeColor">?attr/colorAccent</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textSize">@dimen/sos_text_size</item>
+        <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Text.Stage" parent="Theme.EZazi.Heading1">
+        <item name="android:textSize">@dimen/stage_text_size</item>
+        <item name="android:textColor">@color/colorStageText</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon.Edit" parent="Theme.EZazi.Button.Icon.Blue">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/colorSelectedListItem</item>
+        <item name="strokeWidth">0dp</item>
+        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
+        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
+    </style>
+
+    <style name="Theme.EZazi.Text.Timeline.Status" parent="Theme.EZazi.Heading1">
+        <item name="android:textColor">@color/color_timeline_stroke</item>
+    </style>
+
+    <style name="Theme.EZazi.EditText">
+        <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
+        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:padding">@dimen/screen_container_padding</item>
+    </style>
+
+    <style name="Theme.EZazi.Input.NoLabel" parent="Theme.EZazi.Input">
+        <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
+        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">false</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Wrap" parent="Theme.EZazi.Button">
+        <item name="android:textSize">@dimen/dialog_btn_text_size</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Wrap.White" parent="Theme.EZazi.Button.White">
+        <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
     </style>
 
     <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">
