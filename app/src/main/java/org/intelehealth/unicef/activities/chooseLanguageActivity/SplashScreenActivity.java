@@ -184,7 +184,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -194,10 +193,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
-        }
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
