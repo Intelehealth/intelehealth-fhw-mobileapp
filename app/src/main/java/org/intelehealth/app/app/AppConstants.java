@@ -31,7 +31,8 @@ public class AppConstants {
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";
-    public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
+    public static final String dbfilepath = Environment.getExternalStorageDirectory() +
+            File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
     public static final int CAMERA_PERMISSIONS = 897;
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
@@ -130,7 +131,8 @@ public class AppConstants {
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
 
-    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-3-0-default-rtdb.firebaseio.com/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://nashik-arogya-sampada-master-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_TEXT_CHAT_CONN_INFO = "TEXT_CHAT/";

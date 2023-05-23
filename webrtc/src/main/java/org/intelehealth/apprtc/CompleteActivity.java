@@ -221,10 +221,10 @@ public class CompleteActivity extends AppCompatActivity {
         binding.callEndImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket != null)
-                    socket.emit("bye", "app");
-                disconnectAll();
-
+                if (socket != null) {
+                    socket.emit("bye");
+                    disconnectAll();
+                }
             }
         });
         binding.videoImv.setOnClickListener(new View.OnClickListener() {
