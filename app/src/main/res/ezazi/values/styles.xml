@@ -330,4 +330,14 @@
     <style name="Theme.EZazi.Button.Wrap.White" parent="Theme.EZazi.Button.White">
         <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
     </style>
+
+    <style name="TimePickerDialogStyle" parent="Widget.MaterialComponents.TimePicker">
+        <item name="keyboardIcon">@null</item>
+        <item name="clockHandColor">?attr/colorPrimary</item>
+        <item name="headerLayout">@layout/simple_appbar</item>
+        <item name="clockNumberTextColor">#ff2d6073</item>
+        <item name="colorAccent">#ff2d6073</item> <!-- colorAccent here seems to work just fine? -->
+
+        <item name="android:headerBackground">#ff2d6073</item>
+    </style>
 </resources>
