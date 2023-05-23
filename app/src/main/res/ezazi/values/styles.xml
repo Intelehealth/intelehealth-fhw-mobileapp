@@ -232,7 +232,7 @@
     </style>
 
 
-    <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+   <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">?attr/colorPrimary</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
@@ -241,7 +241,7 @@
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="hintTextColor">@color/darkGray</item>
         <item name="boxBackgroundColor">@color/white</item>
-    </style>
+    </style>-->
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
         <item name="android:textAllCaps">false</item>
@@ -341,16 +341,16 @@
 <!--    </style>-->
 
 
-<!--    <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
-<!--        <item name="boxStrokeColor">@color/white</item>-->
-<!--        <item name="boxStrokeWidth">0dp</item>-->
-<!--        <item name="boxCornerRadiusBottomEnd">8dp</item>-->
-<!--        <item name="boxCornerRadiusBottomStart">8dp</item>-->
-<!--        <item name="boxCornerRadiusTopEnd">8dp</item>-->
-<!--        <item name="boxCornerRadiusTopStart">8dp</item>-->
-<!--        <item name="hintTextColor">@color/darkGray</item>-->
-<!--        <item name="boxBackgroundColor">@color/white</item>-->
-<!--    </style>-->
+    <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="hintTextColor">@color/darkGray</item>
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
 
     <style name="Theme.EZazi.Material.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">8dp</item>

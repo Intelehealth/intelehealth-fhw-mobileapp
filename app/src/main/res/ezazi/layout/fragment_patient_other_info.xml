@@ -74,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/time_margin_start"
                 android:layout_marginTop="@dimen/admission_date_margin_top"
-                android:layout_marginEnd="@dimen/admission_date_margin_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="1"
@@ -712,3 +711,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
