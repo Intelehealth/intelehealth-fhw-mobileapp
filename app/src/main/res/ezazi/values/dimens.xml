@@ -168,6 +168,6 @@
     <dimen name="obs_input_min_width">0.50</dimen>
     <dimen name="splash_logo_width">180dp</dimen>
     <dimen name="splash_logo_height">100dp</dimen>
-    <dimen name="search_icon_width">@dimen/std_14dp</dimen>
-    <dimen name="search_icon_height">12.6dp</dimen>
+    <dimen name="search_icon_width">@dimen/std_16dp</dimen>
+    <dimen name="search_icon_height">14.4dp</dimen>
 </resources>
