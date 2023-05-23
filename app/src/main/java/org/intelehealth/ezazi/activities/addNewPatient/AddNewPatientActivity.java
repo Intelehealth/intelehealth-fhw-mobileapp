@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -33,6 +34,9 @@ public class AddNewPatientActivity extends AppCompatActivity {
         ImageView ivAddressInfo = findViewById(R.id.iv_address_info);
         ImageView ivOtherInfo = findViewById(R.id.iv_other_info);
 
+        View toolbar = findViewById(R.id.toolbar_common);
+        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
+        tvTitle.setText(getResources().getString(R.string.add_patient));
 
         ivPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override

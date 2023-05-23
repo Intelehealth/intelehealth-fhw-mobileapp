@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/textView4"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -104,7 +104,7 @@
 
             <TextView
                 android:id="@+id/textView5"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -187,7 +187,7 @@
 
             <TextView
                 android:id="@+id/textView6"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -271,12 +271,14 @@
             <RelativeLayout
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/when_diagnosed_margin_height"
+                android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
+                android:layout_marginTop="@dimen/when_diagnosed_margin_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_labour_onset">
 
                 <TextView
-                    style="@style/LabelStyle"
+                    style="@style/LabelStyleAddPatient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -376,7 +378,7 @@
 
             <TextView
                 android:id="@+id/textView8"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -463,7 +465,7 @@
 
             <TextView
                 android:id="@+id/textView9"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -503,7 +505,7 @@
 
             <TextView
                 android:id="@+id/textView10"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -549,7 +551,7 @@
 
             <TextView
                 android:id="@+id/textView11"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -592,7 +594,7 @@
 
             <TextView
                 android:id="@+id/textView12"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
@@ -633,7 +635,7 @@
 
             <TextView
                 android:id="@+id/textView13"
-                style="@style/LabelStyle"
+                style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"

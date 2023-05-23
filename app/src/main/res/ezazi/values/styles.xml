@@ -247,4 +247,11 @@
 
     </style>
 
+    <style name="LabelStyleAddPatient" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/input_label_size_add_patient</item>
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
+
 </resources>
