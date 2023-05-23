@@ -44,9 +44,9 @@
         tools:replace="allowBackup">
         <activity
             android:name=".activities.addNewPatient.AddNewPatientActivity"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="adjustNothing|adjustPan">
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -58,9 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".epartogramActivity.EpartogramViewActivity"
-        </activity>
+
         <activity
             android:name=".activities.epartogramActivity.EpartogramViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -281,20 +279,19 @@
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        </activity>
-<!--        <activity-->
-<!--            android:name=".ui.TempActivity"-->
-<!--            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@style/AppTheme.NoActionBar">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--        <activity-->
+        <!--            android:name=".ui.TempActivity"-->
+        <!--            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:theme="@style/AppTheme.NoActionBar">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
         <activity
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
