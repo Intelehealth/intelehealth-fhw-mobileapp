@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +104,12 @@ public class SetupActivityNew extends AppCompatActivity {
     ImageView questionIV;
     private TextView mLocationErrorTextView, mUserNameErrorTextView, mPasswordErrorTextView;
     TooltipWindow tipWindow;
+    RadioGroup rgConnectingServer;
+    RadioButton rbProduction, rbTesting;
+
+    private final String productionServerBaseURL = "tele.med.kg";
+    private final String testingServerBaseURL = "uniceftraining.intelehealth.org";
+    private String finalBaseUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +134,9 @@ public class SetupActivityNew extends AppCompatActivity {
         etUsername.addTextChangedListener(new MyTextWatcher(etUsername));
         etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
+        rgConnectingServer = findViewById(R.id.radioGroup_connecting_server);
+        rbProduction = findViewById(R.id.rb_production);
+        rbTesting = findViewById(R.id.rb_testing);
 
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -156,8 +166,20 @@ public class SetupActivityNew extends AppCompatActivity {
             }
         });
 
-        getLocationFromServer();
+        rgConnectingServer.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == rbProduction.getId()) {
+                finalBaseUrl = productionServerBaseURL;
+            }
 
+            if (checkedId == rbTesting.getId()) {
+                finalBaseUrl = testingServerBaseURL;
+            }
+
+            autotvLocations.setText("");
+            getLocationFromServer();
+        });
+
+        rbProduction.setChecked(true);
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -340,7 +362,7 @@ public class SetupActivityNew extends AppCompatActivity {
         // perform the user login attempt.
         if (location != null) {
             Log.i(TAG, location.getDisplay());
-            TestSetup(AppConstants.DEMO_URL, userName, password, admin_password, location);
+            TestSetup(finalBaseUrl, userName, password, admin_password, location);
             Log.d(TAG, "attempting setup");
         }
 
@@ -543,7 +565,7 @@ public class SetupActivityNew extends AppCompatActivity {
 
     private void getLocationFromServer() {
         isLocationFetched = false;
-        String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "https://" + finalBaseUrl + "/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
 //                                value = getLocationFromServer(BASE_URL); //state wise locations...
 
