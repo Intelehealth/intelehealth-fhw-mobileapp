@@ -536,6 +536,15 @@ public class IdentificationActivity extends AppCompatActivity implements
             showAlertDialogButtonClicked(e.toString());
         }
 
+        // aeat 524: hoh already set radiobtn - start
+        try {
+            checkIfPatientIsHoHOrNot(sessionManager.getHouseholdUuid());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        // aeat 524: hoh already set radiobtn - end
+
+
         //setting the fields when user clicks edit details
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
@@ -1257,7 +1266,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 cardview_household.setVisibility(View.VISIBLE);
                 //sessionManager.setHOH_checkbox(false);
             } else {
-                hohNo.setChecked(false);
+                hohNo.setChecked(true);
                 cardview_household.setVisibility(View.GONE);
             }
 
@@ -6160,4 +6169,41 @@ public class IdentificationActivity extends AppCompatActivity implements
         tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(tobaccoHistoryViewPager);
     }
+
+    private void checkIfPatientIsHoHOrNot(String householduuid) throws DAOException {
+        String hhUUID = sessionManager.getHouseholdUuid();
+        if (!hhUUID.isEmpty() || !hhUUID.equalsIgnoreCase("")) {    // hhuuid is not empty ie. this is a fam members.
+            List<String> patientUUIDList = null;
+            patientUUIDList = new ArrayList<>(patientsDAO.getPatientUUIDs(householduuid));
+            Log.e("HoH?", "List of patient: " + patientUUIDList);
+
+            // now, traverse each arraylist item of patientUuid and check if the value of hohRelationShip.
+            String hoh_relationship_uuid = patientsDAO.getUuidForAttribute("hohRelationship");  // 7bc0540f-6bcf-4fdd-a0c5-4068a3c922f9
+
+            for (int i = 0; i < patientUUIDList.size(); i++) {
+                String patientUUID = patientUUIDList.get(i);
+                String hohRelationShip_value = "";
+                hohRelationShip_value = patientsDAO.getValueFromPatientAttrbTable(patientUUID, hoh_relationship_uuid);
+
+                if (hohRelationShip_value.equalsIgnoreCase("-")) {
+                    // That means in this family already HoH is registered so break loop and set No radiobtn checked so that for
+                    // each rest of the fam members we dont again ask are you hoh? question.
+                    binding.hohNo.setChecked(true);
+
+                    if (patientID_edit == null || patientID_edit.isEmpty()) {
+                        binding.hohYes.setEnabled(false);
+                        binding.hohNo.setEnabled(false);
+                    }
+
+                    binding.cardviewHousehold.setVisibility(View.GONE);
+                    binding.cardviewHohRelationship.setVisibility(View.VISIBLE);
+
+                    return;
+                }
+            }
+
+
+        }
+    }
+
 }

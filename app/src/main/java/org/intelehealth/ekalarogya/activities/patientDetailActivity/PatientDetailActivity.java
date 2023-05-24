@@ -139,6 +139,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Context context;
     private Context updatedContext;
     float float_ageYear_Month;
+    public static final String HOUSEHOLD_ATTR_UUID = "10720d1a-1471-431b-be28-285d64767093";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +210,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String houseHoldValue = "";
                 try {
-                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+                    houseHoldValue = patientsDAO.getValueFromPatientAttrbTable(patientUuid, HOUSEHOLD_ATTR_UUID);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -409,7 +410,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String houseHoldValue = "";
         try {
-            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+            houseHoldValue = patientsDAO.getValueFromPatientAttrbTable(patientUuid, HOUSEHOLD_ATTR_UUID);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
