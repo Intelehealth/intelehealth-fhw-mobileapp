@@ -97,6 +97,7 @@ import org.intelehealth.ezazi.models.prescriptionUpload.EndVisitEncounterPrescri
 import org.intelehealth.ezazi.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.apprtc.ChatActivity;
 
@@ -548,7 +549,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+                Intent chatIntent = new Intent(VisitSummaryActivity.this, EzaziChatActivity.class);
                 chatIntent.putExtra("patientName", patientName);
                 chatIntent.putExtra("visitUuid", visitUuid);
                 chatIntent.putExtra("patientUuid", patientUuid);

@@ -73,7 +73,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
@@ -103,6 +102,7 @@ import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
@@ -247,7 +247,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
                     chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     chatIntent.putExtra("patientName", patientName);
                     chatIntent.putExtra("visitUuid", visitUUID);

@@ -8,9 +8,9 @@
     android:paddingTop="@dimen/add_patient_padding_top"
     android:paddingEnd="@dimen/add_patient_padding_end">
 
-    <include layout="@layout/custom_appbar"
+    <include
         android:id="@+id/toolbar_common"
-        />
+        layout="@layout/custom_appbar" />
 
     <include layout="@layout/add_patient_tabs" />
 

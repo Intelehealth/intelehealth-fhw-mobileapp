@@ -170,4 +170,17 @@
     <dimen name="splash_logo_height">100dp</dimen>
     <dimen name="search_icon_width">@dimen/std_16dp</dimen>
     <dimen name="search_icon_height">14.4dp</dimen>
+    <dimen name="send_icon_size">@dimen/std_24dp</dimen>
+    <dimen name="video_call_action_btn_min_size">@dimen/std_56dp</dimen>
+    <dimen name="call_end_icon_width">@dimen/std_36dp</dimen>
+    <dimen name="call_end_icon_height">@dimen/std_16dp</dimen>
+    <dimen name="rtc_video_icon_width">@dimen/std_36dp</dimen>
+    <dimen name="rtc_video_icon_height">@dimen/std_27dp</dimen>
+    <dimen name="rtc_mic_icon_size">@dimen/std_36dp</dimen>
+    <dimen name="rtc_margin_action_view">@dimen/std_40dp</dimen>
+    <dimen name="rtc_self_view_width">@dimen/std_106dp</dimen>
+    <dimen name="rtc_self_view_height">@dimen/std_142dp</dimen>
+    <dimen name="rtc_self_profile_size">@dimen/std_48dp</dimen>
+    <dimen name="rtc_partner_profile_size">@dimen/std_84dp</dimen>
+    <dimen name="std_106dp">106dp</dimen>
 </resources>

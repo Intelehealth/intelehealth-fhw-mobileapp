@@ -31,7 +31,7 @@
         android:minHeight="36dip"
         android:padding="16dip"
         android:text="@string/dummy_text"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlackTransparent_1"
         android:textSize="13sp" />
 
     <TextView

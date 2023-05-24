@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Theme.EZazi.Button.Icon.Blue"
+    android:id="@+id/action_video_call"
+    android:layout_width="@dimen/timeline_btn_height"
+    android:layout_height="@dimen/timeline_btn_height"
+    android:contentDescription="@string/video_call"
+    app:icon="@drawable/ic_video_call"
+    app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
+    app:layout_constraintDimensionRatio="1:1" />
+
+

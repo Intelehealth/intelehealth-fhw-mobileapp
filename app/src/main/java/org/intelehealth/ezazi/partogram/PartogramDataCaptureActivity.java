@@ -36,6 +36,7 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -165,7 +166,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, ChatActivity.class);
+                Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
                 chatIntent.putExtra("patientName", mPatientName);
                 chatIntent.putExtra("visitUuid", mVisitUUID);
                 chatIntent.putExtra("patientUuid", mPatientUuid);

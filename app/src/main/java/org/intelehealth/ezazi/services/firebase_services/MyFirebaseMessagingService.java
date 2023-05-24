@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -88,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     connectionInfoObject.put("patientUUID", patientUUid);
 
 
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
                     chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     chatIntent.putExtra("patientName", patientName);
                     chatIntent.putExtra("visitUuid", visitUUID);

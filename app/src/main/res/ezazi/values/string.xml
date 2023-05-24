@@ -3,6 +3,9 @@
     <string name="empowering_">Empowering labor management through\ndigital precision</string>
     <string name="username">Username</string>
     <string name="action_login">Login</string>
+    <string name="chat_now">Chat now</string>
+    <string name="video_call">Video Call now</string>
+    <string name="emergency_call">Dial Emergency now</string>
     <string name="action_forgot_password">Forgot Password?</string>
     <string name="hint_location">Start typing or select location</string>
     <string name="title_setup">Setup</string>
@@ -19,4 +22,6 @@
     <string name="you_have_missed_obs">You have missed the collection of observations</string>
     <string name="pending_obs">Pending!</string>
     <string name="observations">Observations</string>
+    <string name="follow_the_instruction">Follow the instructions below to use\nyou account again.</string>
+    <string name="type_message_here">Type message here</string>
 </resources>

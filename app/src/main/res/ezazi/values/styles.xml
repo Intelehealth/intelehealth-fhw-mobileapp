@@ -232,16 +232,16 @@
     </style>
 
 
-   <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">?attr/colorPrimary</item>
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="hintTextColor">@color/darkGray</item>
-        <item name="boxBackgroundColor">@color/white</item>
-    </style>-->
+    <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+         <item name="boxStrokeColor">?attr/colorPrimary</item>
+         <item name="boxStrokeWidth">1dp</item>
+         <item name="boxCornerRadiusBottomEnd">8dp</item>
+         <item name="boxCornerRadiusBottomStart">8dp</item>
+         <item name="boxCornerRadiusTopEnd">8dp</item>
+         <item name="boxCornerRadiusTopStart">8dp</item>
+         <item name="hintTextColor">@color/darkGray</item>
+         <item name="boxBackgroundColor">@color/white</item>
+     </style>-->
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
         <item name="android:textAllCaps">false</item>
@@ -268,8 +268,6 @@
         <item name="iconPadding">0dp</item>
         <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
         <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>
-        <!--        <item name="android:paddingBottom">@dimen/icon_btn_padding</item>-->
-        <!--        <item name="android:paddingTop">@dimen/icon_btn_padding</item>-->
     </style>
 
     <style name="Theme.EZazi.Button.Emergency" parent="Theme.EZazi.Button.Icon">
@@ -331,14 +329,14 @@
         <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
     </style>
 
-<!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
-<!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
-<!--        <item name="android:textColor">@color/font_black_0</item>-->
-<!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
+    <!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
+    <!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
+    <!--        <item name="android:textColor">@color/font_black_0</item>-->
+    <!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
 
-<!--    </style>-->
+    <!--    </style>-->
 
 
     <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -404,5 +402,15 @@
         <item name="colorAccent">#ff2d6073</item> <!-- colorAccent here seems to work just fine? -->
 
         <item name="android:headerBackground">#ff2d6073</item>
+    </style>
+
+    <style name="Theme.EZazi.Button.Icon.Activate.State" parent="Theme.EZazi.Button.Icon.Blue">
+        <item name="backgroundTint">@color/color_activated_deactived_action</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
+        <item name="cornerSize">10%</item>
     </style>
 </resources>

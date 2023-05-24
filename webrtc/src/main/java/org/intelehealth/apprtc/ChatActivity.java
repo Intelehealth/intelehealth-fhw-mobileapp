@@ -1,10 +1,8 @@
 package org.intelehealth.apprtc;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -15,11 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,11 +75,19 @@ public class ChatActivity extends AppCompatActivity {
     private EditText mMessageEditText;
     private TextView mEmptyTextView;
 
-    @Override
+    protected @LayoutRes int getContentResourceId() {
+        return R.layout.activity_chat;
+    }
 
+    protected void setupActionBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(mPatientName);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(getContentResourceId());
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
         }
@@ -100,16 +108,15 @@ public class ChatActivity extends AppCompatActivity {
         Log.v("mToUUId", String.valueOf(mToUUId));
         Log.v("mVisitUUID", String.valueOf(mVisitUUID));
         Log.v("mPatientName", String.valueOf(mPatientName));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mPatientName);
+        setupActionBar();
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
 
         mEmptyTextView = findViewById(R.id.empty_tv);
-        mMessageEditText = findViewById(R.id.text_etv);
+        mMessageEditText = findViewById(R.id.etMessageInput);
         mLoadingLinearLayout = findViewById(R.id.loading_layout);
         mEmptyLinearLayout = findViewById(R.id.empty_view);
-        mRecyclerView = findViewById(R.id.chats_rcv);
+        mRecyclerView = findViewById(R.id.rvConversation);
         mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -146,7 +153,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getBooleanExtra("isForVideo",false)){
+        if (getIntent().getBooleanExtra("isForVideo", false)) {
 
         }
     }
@@ -455,6 +462,9 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_menu, menu);
+        menu.findItem(R.id.video_call_menu).getActionView().setOnClickListener(view -> {
+            onOptionsItemSelected(menu.findItem(R.id.video_call_menu));
+        });
         return super.onCreateOptionsMenu(menu);
     }
 

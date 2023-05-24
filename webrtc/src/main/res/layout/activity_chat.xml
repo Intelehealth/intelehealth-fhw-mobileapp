@@ -35,7 +35,7 @@
             app:srcCompat="@drawable/ic_baseline_photo_camera_24_blue" />
 
         <ImageView
-            android:id="@+id/send_imv"
+            android:id="@+id/btnSendMessage"
             android:layout_width="36dip"
             android:layout_height="36dip"
             android:layout_alignParentEnd="true"
@@ -66,15 +66,15 @@
 
 
         <EditText
-            android:id="@+id/text_etv"
+            android:id="@+id/etMessageInput"
             android:layout_width="match_parent"
             android:layout_height="36dip"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dip"
             android:layout_marginEnd="16dip"
             android:layout_marginRight="16dip"
-            android:layout_toStartOf="@+id/send_imv"
-            android:layout_toLeftOf="@+id/send_imv"
+            android:layout_toStartOf="@+id/btnSendMessage"
+            android:layout_toLeftOf="@+id/btnSendMessage"
             android:layout_toEndOf="@+id/camera_imv"
             android:layout_toRightOf="@+id/camera_imv"
             android:background="@drawable/round_corner_16_gray_light"
@@ -92,7 +92,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chats_rcv"
+        android:id="@+id/rvConversation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/footer_layout"

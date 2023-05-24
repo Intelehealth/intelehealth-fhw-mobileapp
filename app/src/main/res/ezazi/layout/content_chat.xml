@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/screen_padding"
+    android:paddingBottom="@dimen/screen_padding"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvConversation"
+        style="@style/Theme.EZazi.Scrollbar.Thumb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/actionbar_vertical_padding"
+        android:background="@drawable/container_bg_rounded"
+        android:elevation="@dimen/std_2dp"
+        android:fadeScrollbars="false"
+        android:padding="@dimen/screen_container_padding"
+        app:layout_constraintBottom_toTopOf="@id/clMessageSendContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clMessageSendContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/container_bg_rounded"
+        android:padding="@dimen/screen_container_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/audio_rec_imv"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:minWidth="@dimen/timeline_btn_height"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_mic_none_24_blue"
+            app:tint="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/camera_imv"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_toEndOf="@+id/audio_rec_imv"
+            android:layout_toRightOf="@+id/audio_rec_imv"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:minWidth="@dimen/timeline_btn_height"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/audio_rec_imv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24_blue"
+            app:tint="@color/colorPrimary" />
+
+        <EditText
+            android:id="@+id/etMessageInput"
+            style="@style/Theme.EZazi.EditText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:hint="@string/type_message_here"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnSendMessage"
+            app:layout_constraintStart_toEndOf="@id/camera_imv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSendMessage"
+            style="@style/Theme.EZazi.Button.Wrap"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:minWidth="@dimen/timeline_btn_height"
+            app:icon="@drawable/ic_send"
+            app:iconGravity="textStart"
+            app:iconPadding="-4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/etMessageInput"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/screen_container_padding"
+            android:gravity="center"
+            android:minWidth="@dimen/timeline_btn_height"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/etMessageInput"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner_16_blue_light"
+                android:padding="@dimen/screen_container_padding" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="@dimen/screen_container_padding"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            app:srcCompat="@drawable/message_icon" />
+
+        <TextView
+            android:id="@+id/empty_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_no_messages_start_sending_messages_now"
+            android:textColor="@color/gray_3"
+            android:textSize="12sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
