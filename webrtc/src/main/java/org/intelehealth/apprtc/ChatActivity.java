@@ -475,14 +475,17 @@ public class ChatActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (itemId == R.id.video_call_menu) {
-            startActivity(new Intent(this, CompleteActivity.class)
-                    .putExtra("roomId", mPatientUUid)
-                    .putExtra("nurseId", mFromUUId)
-            );
+            Intent videoIntent = getVideoIntent().putExtra("roomId", mPatientUUid)
+                    .putExtra("nurseId", mFromUUId);
+            startActivity(videoIntent);
 
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected Intent getVideoIntent() {
+        return new Intent(this, CompleteActivity.class);
     }
 
 }

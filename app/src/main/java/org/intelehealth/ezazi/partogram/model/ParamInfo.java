@@ -14,6 +14,8 @@ public class ParamInfo implements Serializable {
     private String capturedValue;
     private String conceptUUID;
 
+    private int currentStage;
+
     public String getParamSectionName() {
         return paramSectionName;
     }
@@ -92,5 +94,13 @@ public class ParamInfo implements Serializable {
 
     public void setOnlyOneHourField(boolean onlyOneHourField) {
         isOnlyOneHourField = onlyOneHourField;
+    }
+
+    public void setCurrentStage(int currentStage) {
+        this.currentStage = currentStage;
+    }
+
+    public int getCurrentStage() {
+        return currentStage;
     }
 }

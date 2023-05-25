@@ -1,5 +1,8 @@
 package org.intelehealth.ezazi.partogram;
 
+import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_1;
+import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_2;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,8 +58,8 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
-    private static final int STAGE_1 = 1;
-    private static final int STAGE_2 = 2;
+//    private static final int STAGE_1 = 1;
+//    private static final int STAGE_2 = 2;
     private int mQueryFor = HOURLY;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private int mStageNumber = STAGE_1;
@@ -314,7 +317,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         mItemList.clear();
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
-            List<ParamInfo> paramInfoList = PartogramConstants.getSectionParamInfoMasterMap().get(section);
+            List<ParamInfo> paramInfoList = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section);
             PartogramItemData partogramItemData = new PartogramItemData();
             partogramItemData.setParamSectionName(section);
             partogramItemData.setParamInfoList(paramInfoList);
@@ -338,11 +341,13 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
             List<ParamInfo> paramInfoList = new ArrayList<>();
-            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap().get(section).size(); j++) {
-                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isHalfHourField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
-                } else if (mStageNumber == STAGE_2 && !PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isOnlyOneHourField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
+            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
+                ParamInfo paramInfo = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j);
+                paramInfo.setCurrentStage(mStageNumber);
+                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()) {
+                    paramInfoList.add(paramInfo);
+                } else if (mStageNumber == STAGE_2 && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()) {
+                    paramInfoList.add(paramInfo);
                 }
             }
             if (!paramInfoList.isEmpty()) {
@@ -371,9 +376,9 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
             List<ParamInfo> paramInfoList = new ArrayList<>();
-            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap().get(section).size(); j++) {
-                if (PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
+            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
+                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
                 }
             }
             if (!paramInfoList.isEmpty()) {

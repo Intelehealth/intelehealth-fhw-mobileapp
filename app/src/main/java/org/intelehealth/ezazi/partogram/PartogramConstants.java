@@ -23,6 +23,9 @@ public class PartogramConstants {
 
     private static SessionManager sessionManager = null;
 
+    public static final int STAGE_1 = 1;
+    public static final int STAGE_2 = 2;
+
     public static String[] SECTION_LIST = {
             "Supportive care",
             "BABY",
@@ -34,7 +37,7 @@ public class PartogramConstants {
 //            "Initials"
     };
 
-    public static TreeMap<String, List<ParamInfo>> getSectionParamInfoMasterMap() {
+    public static TreeMap<String, List<ParamInfo>> getSectionParamInfoMasterMap(int stage) {
         TreeMap<String, List<ParamInfo>> sectionParamInfoMap = new TreeMap<>();
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         //Supportive care
@@ -212,6 +215,10 @@ public class PartogramConstants {
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"10", "9", "8", "7", "6", "5"});
         paramInfo.setValues(new String[]{"10", "9", "8", "7", "6", "5"});
+        if (stage == STAGE_2) {
+            paramInfo.setOptions(new String[]{"10"});
+            paramInfo.setValues(new String[]{"P"});
+        }
         paramInfo.setConceptUUID("9d316ab5-538f-11e6-9cfe-86f436325720");
         paramInfo.setFifteenMinField(true);
         stringList.add(paramInfo);
@@ -232,7 +239,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
-        if(sessionManager.getOxytocinValue() != null)
+        if (sessionManager.getOxytocinValue() != null)
             paramInfo.setParamName("Oxytocin (" + sessionManager.getOxytocinValue() + ")");
         else
             paramInfo.setParamName("Oxytocin (U/L, drops/min)");
