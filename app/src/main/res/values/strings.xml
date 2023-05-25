@@ -1731,7 +1731,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="notifi_reminders">Reminders</string>
     <string name="notifi_incompl_activity">Incomplete activity</string>
     <string name="notifi_archived_notifi">Archived notifications</string>
-    <string name="five_presc_received">%1$d prescriptions received</string>
+    <string name="five_presc_received">%1$s prescriptions received</string>
     <string name="no_visit_created">No visit created</string>
 
     <string name="add_new_patient">Add new patient</string>
@@ -2119,5 +2119,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="presc_pending">Prescription pending</string>
     <string name="seconds">seconds</string>
     <string name="no_data_added">No data added</string>
+    <string name="open_prescription">Open Prescription</string>
 
 </resources>

@@ -5,9 +5,13 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,12 +69,31 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
     }
 
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
-
+        setLocale(getContext());
         return view;
     }
 
@@ -268,7 +291,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: homefragen");
+        setLocale(getContext());
         initUI();
 
     }

@@ -4,12 +4,18 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -43,6 +49,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by: Prajwal Waingankar On: 29/Aug/2022
@@ -112,7 +119,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     //dividerView.setVisibility(View.GONE);
                     //allPatientsTV.setVisibility(View.GONE);
                     String text = mSearchEditText.getText().toString();
-                    allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        allPatientsTV.setText( "\"" + text + "\"" + " " + getResources().getString(R.string.results_for));
+                    else
+                        allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
                     mSearchEditText.setTextColor(getResources().getColor(R.color.white));
                     managePreviousSearchStorage(text);
 //                  sessionManager.setPreviousSearchQuery(text); // previous search feature.
@@ -197,6 +207,30 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         } else {
             searchData_Unavailable();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private void previous_SearchResults() {

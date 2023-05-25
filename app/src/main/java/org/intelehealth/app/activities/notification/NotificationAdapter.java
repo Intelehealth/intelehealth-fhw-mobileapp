@@ -100,10 +100,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class MyHolderView extends RecyclerView.ViewHolder {
         TextView search_name;
-        LinearLayout scroll_layout;
+        LinearLayout scroll_layout, open_presc_btn;
         CardView fu_cardview_item;
         RelativeLayout delete_relative, scroll_relative;
-        ImageView delete_imgview, open_presc_btn;
+        ImageView delete_imgview;
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);

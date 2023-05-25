@@ -1,6 +1,12 @@
 package org.intelehealth.app.activities.help.activities;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.ChatSupportAdapter_New;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.SessionManager;
+
+import java.util.Locale;
 
 public class ChatSupportHelpActivity_New extends AppCompatActivity {
 
@@ -33,6 +42,30 @@ public class ChatSupportHelpActivity_New extends AppCompatActivity {
         rvChatSupport.setLayoutManager(layoutManager);
         ChatSupportAdapter_New chatSupportAdapter_new = new ChatSupportAdapter_New(this);
         rvChatSupport.setAdapter(chatSupportAdapter_new);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     @Override

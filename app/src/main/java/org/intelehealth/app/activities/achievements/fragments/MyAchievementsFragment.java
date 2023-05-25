@@ -7,8 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +39,8 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.util.Locale;
+
 public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAchievementsFragmentN";
     View view;
@@ -56,6 +63,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
+        setLocale(getContext());
         return view;
     }
 
@@ -63,6 +71,25 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public void onResume() {
         super.onResume();
         initUI();
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private void initUI() {

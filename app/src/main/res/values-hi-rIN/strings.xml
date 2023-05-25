@@ -1140,7 +1140,7 @@
     <string name="notifi_reminders">रिमाइंडर</string>
     <string name="notifi_incompl_activity">अधूरी गतिविधि</string>
     <string name="notifi_archived_notifi">संगृहीत नोटिफिकेशन</string>
-    <string name="five_presc_received">%1$D प्रिस्क्रिप्शन प्राप्त हुए</string>
+    <string name="five_presc_received">%1$s प्रिस्क्रिप्शन प्राप्त हुए</string>
     <string name="add_new_patient">नया रोगी शामिल करें</string>
     <string name="caption">नाम</string>
     <string name="visit_intelehealth_for_more">अधिक जानकारी के लिए हमारी वेबसाइट intelehealth.org देखें</string>
@@ -1328,7 +1328,7 @@
     <string name="qualification">योग्यता</string>
     <string name="advice">सलाह</string>
     <string name="referred_specialist">"विशेषज्ञ को रिफर किया गया "</string>
-    <string name="no_follow_up_suggested">\\u2022 किसी फॉलो अप की सलाह नहीं</string>
+    <string name="no_follow_up_suggested">\u2022 किसी फॉलो अप की सलाह नहीं</string>
     <string name="clear">साफ करें</string>
     <string name="agree_to">“से सहमत \"</string>
     <string name="and_setup">“ और \"</string>
@@ -1418,4 +1418,5 @@
     <string name="presc_pending">प्रिस्क्रिप्शन लंबित</string>
     <string name="seconds">सेकंड</string>
     <string name="no_data_added">कोई डेटा नहीं जोड़ा गया</string>
+    <string name="open_prescription">प्रिस्क्रिप्शन खोलो</string>
 </resources>
