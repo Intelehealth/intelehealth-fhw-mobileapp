@@ -945,8 +945,7 @@
     <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
         Privacy Policy aligns with Generally Accepted
         Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
-        national and international privacy laws, regulations and good business practices.\n\n
-In case of any privacy related complaints/grievances, please fill and submit this Privacy
+        national and international privacy laws, regulations and good business practices.\n\nIn case of any privacy related complaints/grievances, please fill and submit this Privacy
         Complaint Form to privacy@intelehealth.io\n\n<font color='#201560' size='16'><b>Introduction</b></font>\n\nIntelehealth endeavours to meet leading standards for data protection and privacy.
         While our reasons are founded in ethical and corporate responsibility,
         our privacy practices as outlined in this policy enable the following:
@@ -970,7 +969,7 @@ In case of any privacy related complaints/grievances, please fill and submit thi
         <font color='#201560' size='16'><b>\nPurpose\n\n</b></font>This Policy defines requirements to ensure compliance with laws and regulations applicable to
         Intelehealth’s collection, use, and transmission of Personal Data.\n\n
 
-   <font color='#201560' size='16'><b>\Scope\n\n</b></font>This policy is applicable to all Intelehealth employees, joint venture employees, contractors,
+   <font color='#201560' size='16'><b>Scope\n\n</b></font>This policy is applicable to all Intelehealth employees, joint venture employees, contractors,
         vendors, interns, customers, end users and business partners who, as part of valid
         business operations, may receive personal information from Intelehealth, have access
         to personal information collected or processed by Intelehealth, or who provide information to Intelehealth.
@@ -1012,8 +1011,7 @@ In case of any privacy related complaints/grievances, please fill and submit thi
         to any individuals we do not manage or employ, unless otherwise contractually agreed upon between
         the third party and Intelehealth.
 
-<font color='#201560' size='16'><b>\n\nObjective\n\n</b></font>
-The main objectives of the Enterprise Privacy Policy are:\n
+<font color='#201560' size='16'><b>\n\nObjective\n\n</b></font>The main objectives of the Enterprise Privacy Policy are:\n
 
 \n<li>To ensure that all of the personal data or personal information in Intelehealth’s custody is adequately
             protected against threats to maintain its security.</li>
@@ -1036,7 +1034,7 @@ The main objectives of the Enterprise Privacy Policy are:\n
 \n\n<li>To ensure that all applicable regulations and contracts regarding the maintenance of privacy and protection
             of personal data or personal information are adhered to.</li>
 
-<font color='#201560' size='16'><b>\n\nPolicy</b></font>
+<font color='#201560' size='16'><b>\n\nPolicy\n\n</b></font>
 <font color='#EA315B' size='14'><b>\nMANAGEMENT</b></font>\nDevelop and maintain an Enterprise Privacy Policy that documents the privacy principles and practices
         followed by Intelehealth.
 
@@ -1056,7 +1054,7 @@ A Privacy Request procedure shall be defined to process complaints and requests 
 \nAppropriate notice shall be provided at the time an individual is asked to give consent to the collection
         or processing of personal information and whenever personal information is collected.
 
-        \n<ol>The Privacy Notice shall provide the following information:
+        \n\n<ol>The Privacy Notice shall provide the following information:
 
             <li>\nPurposes for which personal information is collected, used and disclosed;</li>
 
@@ -1313,8 +1311,7 @@ The disclosure of personal information to third parties shall be only for identi
     </li>
 </string>
     <string name="terms_and_conditions_content">Intelehealth on behalf of itself and its affiliates/group companies including
-        Intelehealth and Telehealth Innovations Foundation under the brand \"Intelehealth\" (\"Intelehealth\" or \"Us\"or \"We\"),
-        is the author and publisher of the websites www.intelehealth.org, www.covidhelp.in and the mobile
+        Intelehealth and Telehealth Innovations Foundation under the brand \"Intelehealth\" (\"Intelehealth\" or \"Us\"or \"We\"), is the author and publisher of the websites www.intelehealth.org, www.covidhelp.in and the mobile
         applications \'Intelehealth\', \'InteleSafe\' and \'InteleCare\' (together, \"Website\").\n\n
 
         Intelehealth owns and operates the services provided through the Website.\n\n
@@ -2115,4 +2112,12 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="describe_lbl">Describe</string>
     <string name="patinet_history">4/4. Medical history: Patient history</string>
     <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="close_all">Close all</string>
+    <string name="open_all">Open all</string>
+    <string name="go_to_website">Go to website</string>
+    <string name="presc_received">Prescription received</string>
+    <string name="presc_pending">Prescription pending</string>
+    <string name="seconds">seconds</string>
+    <string name="no_data_added">No data added</string>
+
 </resources>

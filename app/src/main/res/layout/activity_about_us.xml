@@ -194,7 +194,14 @@
                         android:layout_marginTop="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_24"
-                        android:background="@drawable/aboutus_btn" />
+                        android:background="@drawable/blue_common_bg_button"
+                        android:drawableEnd="@drawable/globe"
+                        android:fontFamily="@font/dm_sans"
+                        android:paddingStart="@dimen/margin_30"
+                        android:paddingEnd="@dimen/margin_14"
+                        android:text="@string/go_to_website"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize_patdetail_16sp" />
 
                 </RelativeLayout>
             </FrameLayout>

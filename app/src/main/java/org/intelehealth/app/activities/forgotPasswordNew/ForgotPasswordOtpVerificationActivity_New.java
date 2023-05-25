@@ -312,7 +312,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                String time = resendTime + " " + millisUntilFinished / 1000 + " seconds";
+                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
                 tvResendOtp.setText(time);
             }
 

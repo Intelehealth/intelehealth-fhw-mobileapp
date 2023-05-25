@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -162,7 +163,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview;
         private ImageView profile_image, fu_priority_tag;
-        private ImageButton shareicon;
+        private LinearLayout shareicon;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -171,7 +172,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
-            shareicon = itemView.findViewById(R.id.shareicon);
+            shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }
 

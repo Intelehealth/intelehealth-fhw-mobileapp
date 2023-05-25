@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -85,7 +86,7 @@ public class VisitReceivedFragment extends Fragment {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
-        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override

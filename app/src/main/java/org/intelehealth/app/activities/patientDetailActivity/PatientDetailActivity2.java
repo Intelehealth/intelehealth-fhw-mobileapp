@@ -148,7 +148,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     String patientName, mGender;
     ImagesDAO imagesDAO = new ImagesDAO();
     float float_ageYear_Month;
-    ImageView profile_image, personal_edit, address_edit, others_edit;
+    ImageView profile_image;
+    LinearLayout personal_edit, address_edit, others_edit;
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;

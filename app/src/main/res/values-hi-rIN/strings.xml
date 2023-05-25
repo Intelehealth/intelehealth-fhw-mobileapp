@@ -883,13 +883,13 @@
     <string name="valid_dob_msg">कृपया मान्य जन्म तिथि चुनें!</string>
     <string name="all_patients_txt">सभी रोगी</string>
     <string name="alert_label_txt">अलर्ट!</string>
-    <string name="describe_hint_txt">Describe...</string>
+    <string name="describe_hint_txt">वर्णन करें....</string>
     <string name="duration_validation_txt">कृपया अवधि संख्या चुनें</string>
     <string name="duration_type_validation_txt">कृपया अवधि का प्रकार चुनें</string>
     <string name="select_date_hint">तारीख का चयन करें</string>
     <string name="error_field_valid_village_required">कृपया गांव का मान्य नाम दर्ज करें (न्यूनतम 3 वर्ण)</string>
     <string name="app_sync_dialog_title">ऐप सिंक किया जा रहा है</string>
-    <string name="describe_lbl">Describe</string>
+    <string name="describe_lbl">वर्णन करें</string>
     <string name="patinet_history">4/4. मेडिकल हिस्ट्री : रोगी हिस्ट्री</string>
     <string name="_1_4_vitals">"1/4. वायटल्स "</string>
     <string name="who_we_are">हम कौन हैं?</string>
@@ -1409,4 +1409,13 @@
     <string name="last_name">उपनाम</string>
     <string name="change_photo"><u>फोटो बदलें</u></string>
     <string name="aboutus_termscondition">हमारे <a href="https://intelehealth.org/terms-of-use">नियम व शर्तें देखें</a></string>
+    <string name="hw_min_age">HW की आयु 18 वर्ष से कम नहीं हो सकती</string>
+    <string name="profile_update_requires_internet">प्रोफाइल अपडेट के लिए एक मजबूत इंटरनेट कनेक्शन की आवश्यकता होती है। आप इंटरनेट से कनेक्ट नहीं हैं, कृपया बाद में पुनः प्रयास करें।</string>
+    <string name="close_all">सब बंद करें</string>
+    <string name="open_all">सभी खुले</string>
+    <string name="go_to_website">वेबसाइट पर जाएं</string>
+    <string name="presc_received">प्रिस्क्रिप्शन प्राप्त हुआ</string>
+    <string name="presc_pending">प्रिस्क्रिप्शन लंबित</string>
+    <string name="seconds">सेकंड</string>
+    <string name="no_data_added">कोई डेटा नहीं जोड़ा गया</string>
 </resources>

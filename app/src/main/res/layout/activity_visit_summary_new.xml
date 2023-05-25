@@ -356,7 +356,7 @@
                 android:layout_below="@+id/cardview_head"
                 android:layout_marginTop="@dimen/margin_40dp">
 
-                <ImageButton
+                <Button
                     android:id="@+id/openall_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -364,9 +364,13 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:background="@null"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
+                    android:drawablePadding="2dp"
                     android:onClick="openAll"
-                    android:src="@drawable/close_all_btn" />
-
+                    android:text="@string/close_all"
+                    android:textColor="#7F7B92"
+                    android:textSize="@dimen/txtsize_patdetail_14sp" />
+<!--                android:src="@drawable/close_all_btn"-->
                 <include layout="@layout/visit_summary_itemscard" />
 
             </RelativeLayout>

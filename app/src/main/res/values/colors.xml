@@ -99,6 +99,7 @@
 
     <color name="cardTintDarkBlue">#2F1E96</color>
     <color name="cardTintLightGreen">#E6FFF3</color>
+    <color name="cardTintLightOrange">#FFF0E8</color>
 
     <color name="search_followup">#7F7B92</color>
     <color name="header_title_color">#1B163A</color>
