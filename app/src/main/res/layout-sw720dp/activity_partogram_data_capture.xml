@@ -53,7 +53,7 @@
         android:padding="16dip" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnChat"
+        android:id="@+id/btnFlipCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -65,10 +65,10 @@
         android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnVideoCall"
+        android:id="@+id/btnVideoOnOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnChat"
+        android:layout_above="@+id/btnFlipCamera"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"

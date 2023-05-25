@@ -97,9 +97,8 @@ import org.intelehealth.ezazi.models.prescriptionUpload.EndVisitEncounterPrescri
 import org.intelehealth.ezazi.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
-import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.utilities.Base64Utils;
-import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.utilities.VisitUtils;

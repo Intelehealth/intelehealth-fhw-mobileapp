@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout>
 
-    <include layout="@layout/simple_appbar" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <include layout="@layout/content_video_call" />
+        <include
+            android:id="@+id/actionBarView"
+            layout="@layout/simple_appbar" />
 
-    <include layout="@layout/view_incoming_call_ringing" />
+        <include
+            android:id="@+id/videoCallView"
+            layout="@layout/content_video_call" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include
+            android:id="@+id/incomingCallView"
+            layout="@layout/view_incoming_call_ringing" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

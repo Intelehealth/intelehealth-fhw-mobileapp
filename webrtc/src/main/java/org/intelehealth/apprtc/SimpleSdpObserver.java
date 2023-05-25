@@ -3,7 +3,7 @@ package org.intelehealth.apprtc;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 
-class SimpleSdpObserver implements SdpObserver {
+public class SimpleSdpObserver implements SdpObserver {
 
     @Override
     public void onCreateSuccess(SessionDescription sessionDescription) {

@@ -102,13 +102,14 @@ import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
+import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -258,7 +259,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, CompleteActivity.class);
+                    Intent in = new Intent(this, VideoCallActivity.class);
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");

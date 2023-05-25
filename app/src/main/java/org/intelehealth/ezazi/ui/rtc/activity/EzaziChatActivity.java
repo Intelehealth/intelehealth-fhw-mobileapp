@@ -1,4 +1,4 @@
-package org.intelehealth.ezazi.ui.activity;
+package org.intelehealth.ezazi.ui.rtc.activity;
 
 import android.os.Bundle;
 

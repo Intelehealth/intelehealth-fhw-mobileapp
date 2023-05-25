@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
@@ -36,7 +34,8 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -158,7 +157,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
         });
 
-        Button btnChat = findViewById(R.id.btnChat);
+        Button btnChat = findViewById(R.id.btnFlipCamera);
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,7 +185,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 startActivity(chatIntent);
             }
         });
-        Button btnVideoCall = findViewById(R.id.btnVideoCall);
+        Button btnVideoCall = findViewById(R.id.btnVideoOnOff);
         btnVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,7 +193,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent in = new Intent(PartogramDataCaptureActivity.this, CompleteActivity.class);
+                Intent in = new Intent(PartogramDataCaptureActivity.this, VideoCallActivity.class);
                 String roomId = mPatientUuid;
                 String doctorName = "";
                 String nurseId = encounterDTO.getProvideruuid();

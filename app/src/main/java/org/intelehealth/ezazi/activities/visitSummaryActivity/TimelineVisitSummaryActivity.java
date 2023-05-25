@@ -19,13 +19,11 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +37,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -59,10 +56,11 @@ import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.activity.EzaziChatActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -249,7 +247,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                                     EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                                     RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                                     RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, CompleteActivity.class);
+                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, VideoCallActivity.class);
                                     String roomId = patientUuid;
                                     String doctorName = doctNames[which];
                                     String nurseId = encounterDTO.getProvideruuid();
@@ -400,9 +398,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     private void initUI() {
         fabSOS = findViewById(R.id.btnSOS);
-        fabv = findViewById(R.id.btnVideoCall);
+        fabv = findViewById(R.id.btnVideoOnOff);
         outcomeTV = findViewById(R.id.outcomeTV);
-        fabc = findViewById(R.id.btnChat);
+        fabc = findViewById(R.id.btnFlipCamera);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);

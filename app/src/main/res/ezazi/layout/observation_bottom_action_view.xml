@@ -22,7 +22,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnView"
-        app:layout_constraintStart_toEndOf="@id/btnChat"
+        app:layout_constraintStart_toEndOf="@id/btnFlipCamera"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
@@ -39,7 +39,7 @@
         app:strokeColor="?attr/colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnChat"
+        android:id="@+id/btnFlipCamera"
         style="@style/Theme.EZazi.Button.Icon.Blue"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -50,11 +50,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/btnSave"
-        app:layout_constraintStart_toEndOf="@id/btnVideoCall"
+        app:layout_constraintStart_toEndOf="@id/btnVideoOnOff"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVideoCall"
+        android:id="@+id/btnVideoOnOff"
         style="@style/Theme.EZazi.Button.Icon.Blue"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -63,7 +63,7 @@
         app:icon="@drawable/ic_video_call"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/btnChat"
+        app:layout_constraintEnd_toStartOf="@id/btnFlipCamera"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

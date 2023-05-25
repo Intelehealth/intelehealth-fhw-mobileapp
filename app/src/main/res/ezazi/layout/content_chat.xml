@@ -14,9 +14,9 @@
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/actionbar_vertical_padding"
         android:background="@drawable/container_bg_rounded"
-        android:elevation="@dimen/std_2dp"
         android:fadeScrollbars="false"
         android:padding="@dimen/screen_container_padding"
+        app:elevation="1dp"
         app:layout_constraintBottom_toTopOf="@id/clMessageSendContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:minWidth="@dimen/timeline_btn_height"
+            android:onClick="sendMessageNow"
             app:icon="@drawable/ic_send"
             app:iconGravity="textStart"
             app:iconPadding="-4dp"
@@ -130,16 +131,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            app:srcCompat="@drawable/message_icon" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_rtc_chat" />
 
         <TextView
             android:id="@+id/empty_tv"
+            style="@style/Theme.EZazi.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/you_have_no_messages_start_sending_messages_now"
-            android:textColor="@color/gray_3"
-            android:textSize="12sp" />
+            android:layout_marginTop="@dimen/actionbar_vertical_padding"
+            android:gravity="center"
+            android:text="@string/you_have_no_messages_start_sending_messages_now" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,7 +43,7 @@
     <string name="connecting">Connecting...</string>
     <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
-    <string name="you_have_no_messages_start_sending_messages_now">You have no messages! Start sending messages now.</string>
+    <string name="you_have_no_messages_start_sending_messages_now">You have no messages!\nStart sending messages now.</string>
     <string name="empty_message_txt">Please write your message!</string>
     <string name="loading">Loading...</string>
     <string name="video_call">Video Call</string>
