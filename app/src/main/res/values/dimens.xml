@@ -87,6 +87,7 @@
     <dimen name="std_20sp">20sp</dimen>
     <dimen name="std_20dp">20dp</dimen>
     <dimen name="std_22sp">22sp</dimen>
+    <dimen name="std_22dp">22dp</dimen>
     <dimen name="std_21sp">21sp</dimen>
     <dimen name="std_21dp">21dp</dimen>
     <dimen name="std_24sp">24sp</dimen>

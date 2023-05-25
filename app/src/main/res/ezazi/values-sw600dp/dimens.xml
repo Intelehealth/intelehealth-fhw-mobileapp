@@ -183,4 +183,5 @@
     <dimen name="rtc_partner_profile_size">@dimen/std_154dp</dimen>
     <dimen name="rtc_self_view_height">280dp</dimen>
     <dimen name="mic_off_indicator_size">@dimen/std_21dp</dimen>
+    <dimen name="checkbox_size">@dimen/std_22dp</dimen>
 </resources>

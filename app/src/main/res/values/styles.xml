@@ -18,6 +18,7 @@
         <item name="actionOverflowButtonStyle">@style/Theme.EZazi.MenuOverflow</item>
         <item name="actionMenuTextAppearance">@style/Theme.EZazi.MenuText</item>
         <item name="actionMenuTextColor">@color/font_black_0</item>
+        <item name="checkboxStyle">@style/Theme.EZazi.CheckBox</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
