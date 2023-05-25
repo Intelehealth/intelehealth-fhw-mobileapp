@@ -151,8 +151,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     TextView tvTitleHomeScreenCommon, tvAppLastSync;
     BottomNavigationView bottomNav;
     private CardView survey_snackbar_cv;
-    ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon;
-    TextView tvEditProfile, tvAppVersion, tvUsername, tvUserId;
+    ImageView imageViewIsNotification, ivCloseDrawer;
+    //    ImageView ivProfileIcon;
+    TextView tvAppVersion;
+    //    TextView tvUsername, tvUserId, tvEditProfile,;
     LinearLayout menuResetApp;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     String firstLogin = "";
@@ -308,7 +310,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater();
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback"))
+                    showSnackBarAndRemoveLater();
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
@@ -340,18 +343,18 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             startActivity(intent);
         });
 
-        tvEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-
-               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
-                Fragment fragment = new MyProfileFragment_New();
-                loadFragment(fragment);*/
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+//        tvEditProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mDrawerLayout.closeDrawer(GravityCompat.START);
+//
+//               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
+//                Fragment fragment = new MyProfileFragment_New();
+//                loadFragment(fragment);*/
+//                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
@@ -570,10 +573,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         mNavigationView = findViewById(R.id.navigationview);
         View headerView = mNavigationView.getHeaderView(0);
         ivCloseDrawer = headerView.findViewById(R.id.iv_close_drawer);
-        ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
-        tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
-        tvUserId = headerView.findViewById(R.id.tv_userid);
-        tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
+//        ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
+//        tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
+//        tvUserId = headerView.findViewById(R.id.tv_userid);
+//        tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
 
         setupDrawerContent(mNavigationView);
 
@@ -950,7 +953,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
-        updateNavHeaderUserDetails();
+//        updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
         Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
@@ -1071,7 +1074,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             tvAppLastSync.setText(lastSync);
 
             //ui2.0 update user details in  nav header
-            updateNavHeaderUserDetails();
+//            updateNavHeaderUserDetails();
 
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
@@ -1247,43 +1250,43 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
 
     private void updateNavHeaderUserDetails() {
-        try {
-            ProviderDAO providerDAO = new ProviderDAO();
-            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
-            if (providerDTO != null) {
-                boolean firstname = isValidField(providerDTO.getFamilyName());
-                boolean lastname = isValidField(providerDTO.getGivenName());
-                String userFullName = "";
-                if (firstname && lastname) {
-                    userFullName = providerDTO.getGivenName() + " " + providerDTO.getFamilyName();
-                } else if (firstname) {
-                    userFullName = providerDTO.getGivenName();
-                } else if (lastname) {
-                    userFullName = providerDTO.getFamilyName();
-
-                }
-                tvUsername.setText(userFullName);
-                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
-
-                if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-
-                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
-
-
-                }
-
-                // if imagepath is not available in local db
-
-                if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
-                    if (NetworkConnection.isOnline(this)) {
-                        profilePicDownloaded(providerDTO);
-                    }
-                }
-
-            }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ProviderDAO providerDAO = new ProviderDAO();
+//            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+//            if (providerDTO != null) {
+//                boolean firstname = isValidField(providerDTO.getFamilyName());
+//                boolean lastname = isValidField(providerDTO.getGivenName());
+//                String userFullName = "";
+//                if (firstname && lastname) {
+//                    userFullName = providerDTO.getGivenName() + " " + providerDTO.getFamilyName();
+//                } else if (firstname) {
+//                    userFullName = providerDTO.getGivenName();
+//                } else if (lastname) {
+//                    userFullName = providerDTO.getFamilyName();
+//
+//                }
+//                tvUsername.setText(userFullName);
+//                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
+//
+////                if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+////
+////                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+////
+////
+////                }
+//
+//                // if imagepath is not available in local db
+//
+//                if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+//                    if (NetworkConnection.isOnline(this)) {
+//                        profilePicDownloaded(providerDTO);
+//                    }
+//                }
+//
+//            }
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public boolean isValidField(String fieldName) {
@@ -1333,57 +1336,57 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
 
-    public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
-        SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String uuid = sessionManager.getProviderID();
-        String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
-
-
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-
-        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
-            @Override
-            public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
-                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                downloadFilesUtils.saveToDisk(file, uuid);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                Logger.logD(TAG, e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                ProviderDAO providerDAO = new ProviderDAO();
-                boolean updated = false;
-                try {
-                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
-
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                if (updated) {
-                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
-                }
-                ImagesDAO imagesDAO = new ImagesDAO();
-                boolean isImageDownloaded = false;
-                try {
-                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
-
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-        });
-    }
+//    public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
+//        Log.d(TAG, "profilePicDownloaded: ");
+//        SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
+//        UrlModifiers urlModifiers = new UrlModifiers();
+//        String uuid = sessionManager.getProviderID();
+//        String url = urlModifiers.getProviderProfileImageUrl(uuid);
+//        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+//
+//
+//        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+//
+//        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+//            @Override
+//            public void onNext(ResponseBody file) {
+//                Log.d(TAG, "onNext: ");
+//                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+//                downloadFilesUtils.saveToDisk(file, uuid);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                Logger.logD(TAG, e.getMessage());
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                ProviderDAO providerDAO = new ProviderDAO();
+//                boolean updated = false;
+//                try {
+//                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
+//
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//                if (updated) {
+//                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+//                }
+//                ImagesDAO imagesDAO = new ImagesDAO();
+//                boolean isImageDownloaded = false;
+//                try {
+//                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
+//
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//            }
+//        });
+//    }
 
     //update ui as per internet availability
     @Override
