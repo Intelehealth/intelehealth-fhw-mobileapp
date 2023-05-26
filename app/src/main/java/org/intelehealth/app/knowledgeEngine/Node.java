@@ -963,9 +963,20 @@ public class Node implements Serializable {
                     //TODO:: Check if the language is actually what is intended to be displayed
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
+
+     /*   datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+*/
+        // for rest other than physexam screen the maxdate will be todays date so that future dates isnt allowed.
+      //  if (!context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
+        if (!node.getText().contains("follow-up"))
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+      //  if (context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
+        if (node.getText().contains("follow-up"))
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
 
         datePickerDialog.setOnCancelListener(dialog -> {
             Logger.logD("String", dateString.get());
@@ -1621,8 +1632,19 @@ public class Node implements Serializable {
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+
+       /* datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());  // To avoid showing Future dates.
+        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);*/
+
+        // for rest other than physexam screen the maxdate will be todays date so that future dates isnt allowed.
+        //  if (!context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
+        if (!node.getText().contains("follow-up"))
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+        //  if (context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
+        if (node.getText().contains("follow-up"))
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
         datePickerDialog.show();
     }
 
