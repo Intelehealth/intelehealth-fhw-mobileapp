@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_admission_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:backgroundTint="@color/white"
@@ -86,6 +87,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_admission_time"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:backgroundTint="@color/white"
@@ -136,6 +138,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_total_birth"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -168,6 +171,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_total_miscarriage"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -219,6 +223,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_spontaneous"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -251,6 +256,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_induced"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -271,8 +277,8 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/when_diagnosed_margin_height"
-                android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
                 android:layout_marginTop="@dimen/when_diagnosed_margin_top"
+                android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_labour_onset">
 
@@ -285,7 +291,7 @@
                     android:textColor="@color/colorBlack" />
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/mUnknownMembraneRupturedCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/input_add_patient_height"
                     android:layout_alignParentEnd="true"
@@ -323,6 +329,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_labor_diagnosed_date"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -357,6 +364,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_labor_diagnosed_time"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -410,6 +418,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_sac_ruptured_date"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -444,6 +453,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_sac_ruptured_time"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -473,6 +483,7 @@
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_sac_ruptured" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/dropdown_risk_factors"
                 style="@style/Theme.EZazi.Material.CardView"
@@ -491,6 +502,7 @@
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
+                        android:id="@+id/autotv_risk_factors"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
@@ -514,6 +526,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dropdown_risk_factors" />
 
+
             <LinearLayout
                 android:id="@+id/card_options"
                 android:layout_width="match_parent"
@@ -524,29 +537,77 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10">
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Theme.EZazi.Button.White_Options"
-                    android:layout_width="0dp"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/activity_main_togglebutton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="@string/hospital" />
+                    app:checkedButton="@id/activity_main_button1"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Theme.EZazi.Button.White_Options"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="@string/maternity" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/activity_main_button1"
+                        style="@style/Theme.EZazi.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Button 1" />
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Theme.EZazi.Button.White_Options"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/other" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/activity_main_button2"
+                        style="@style/Theme.EZazi.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Button 2" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/activity_main_button3"
+                        style="@style/Theme.EZazi.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Button 3" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
+            <!--
+                        <LinearLayout
+                            android:id="@+id/card_options"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/other_all_controls_margin_top"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/option_hospital"
+                                style="@style/Theme.EZazi.Button.White_Options"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:text="@string/hospital" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/option_maternity"
+                                style="@style/Theme.EZazi.Button.White_Options"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:text="@string/maternity" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/option_other"
+                                style="@style/Theme.EZazi.Button.White_Options"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/other" />
+                        </LinearLayout>
+            -->
 
             <TextView
                 android:id="@+id/textView11"
@@ -579,7 +640,7 @@
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
-                        android:id="@+id/spinner_location"
+                        android:id="@+id/autotv_primary_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
@@ -621,6 +682,7 @@
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
+                        android:id="@+id/autotv_secondary_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
@@ -660,6 +722,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_bed_number"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:backgroundTint="@color/white"
@@ -688,6 +751,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back_other"
             style="@style/Theme.EZazi.Button.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -696,6 +760,7 @@
             android:text="@string/back" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next_other"
             style="@style/Theme.EZazi.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

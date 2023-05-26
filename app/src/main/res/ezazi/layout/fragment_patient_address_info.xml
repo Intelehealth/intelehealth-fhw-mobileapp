@@ -35,7 +35,7 @@
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
-                        android:id="@+id/spinner_location"
+                        android:id="@+id/autotv_country"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:backgroundTint="@color/white"
@@ -63,6 +63,7 @@
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
+                        android:id="@+id/autotv_state"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:hint="@string/state"
@@ -78,27 +79,25 @@
         <com.google.android.material.card.MaterialCardView
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/spinners_add_patient_height"
             android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Theme.EZazi.Input.Add.Patient"
+                style="@style/Theme.EZazi.Input.Add.Patient.DropDown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputet_no_of_days_expense"
+                <AutoCompleteTextView
+                    android:id="@+id/autotv_city"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_add_patient_height"
-                    android:backgroundTint="@color/white"
                     android:hint="@string/village_town_city"
-                    android:imeOptions="actionNext"
-                    android:importantForAutofill="no"
-                    android:maxLines="1"
-                    android:paddingTop="@dimen/input_add_patient_padding_top"
-                    android:singleLine="true" />
+                    android:paddingTop="@dimen/input_add_patient_padding_top" />
+
             </com.google.android.material.textfield.TextInputLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -115,6 +114,7 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_address1"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_add_patient_height"
                     android:backgroundTint="@color/white"
@@ -140,6 +140,7 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_address2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_add_patient_height"
                     android:backgroundTint="@color/white"
@@ -154,7 +155,6 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_prescription"
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -167,6 +167,7 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_postal_code"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/input_add_patient_height"
                     android:backgroundTint="@color/white"
@@ -189,6 +190,7 @@
         android:weightSum="2">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back_address"
             style="@style/Theme.EZazi.Button.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -197,6 +199,7 @@
             android:text="@string/back" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next_address"
             style="@style/Theme.EZazi.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -204,7 +207,6 @@
             android:layout_weight="1"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:drawableTint="@color/white"
-            android:enabled="false"
             android:text="@string/next">
 
         </com.google.android.material.button.MaterialButton>

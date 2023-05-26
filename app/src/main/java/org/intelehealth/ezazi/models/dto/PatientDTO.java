@@ -4,9 +4,10 @@ package org.intelehealth.ezazi.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PatientDTO {
+public class PatientDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose

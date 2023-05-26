@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_next_first_screen"
+        android:layout_above="@+id/btn_save_update_first"
         android:layout_alignParentTop="true"
         android:fillViewport="true"
         android:orientation="vertical"
@@ -37,7 +37,7 @@
                     app:cardCornerRadius="@dimen/card_profile_corner_radius">
 
                     <ImageView
-                        android:id="@+id/profilePic"
+                        android:id="@+id/iv_profile_photo"
                         android:layout_width="@dimen/card_profile_icon_height"
                         android:layout_height="@dimen/card_profile_icon_width"
                         android:layout_gravity="bottom|center_horizontal"
@@ -46,7 +46,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab"
+                    android:id="@+id/fab_update_photo"
                     android:layout_width="@dimen/card_profile_icon_size"
                     android:layout_height="@dimen/card_profile_icon_size"
                     android:layout_gravity="bottom|end"
@@ -81,7 +81,6 @@
                 android:paddingEnd="@dimen/layout_add_patient_padding_end">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,6 +94,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
+                            android:id="@+id/et_first_name"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
                             android:gravity="center_vertical"
@@ -122,8 +122,8 @@
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
                             android:layout_width="match_parent"
+                            android:id="@+id/et_middle_name"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
                             android:hint="@string/middle_name"
@@ -136,22 +136,20 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
                     <com.google.android.material.textfield.TextInputLayout
-
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
+                            android:id="@+id/et_last_name"
                             android:backgroundTint="@color/white"
                             android:hint="@string/last_name"
                             android:imeOptions="actionNext"
@@ -163,21 +161,19 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
                     <com.google.android.material.textfield.TextInputLayout
-
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
                             android:layout_width="match_parent"
+                            android:id="@+id/et_dob"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
                             android:hint="@string/date_of_birth"
@@ -190,20 +186,18 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
                     <com.google.android.material.textfield.TextInputLayout
-
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
+                            android:id="@+id/et_age"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -219,7 +213,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,7 +225,7 @@
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
+                            android:id="@+id/et_mobile_no"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -247,7 +240,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -261,7 +253,7 @@
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inputet_no_of_days_expense"
+                            android:id="@+id/et_alternate_mobile"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
@@ -280,14 +272,13 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next_first_screen"
+        android:id="@+id/btn_save_update_first"
         style="@style/Theme.EZazi.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/input_height"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:enabled="false"
         android:text="@string/next"
         app:rippleColor="@color/white" />
 </RelativeLayout>

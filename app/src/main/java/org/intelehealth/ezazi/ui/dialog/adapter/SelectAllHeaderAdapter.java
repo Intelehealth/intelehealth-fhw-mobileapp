@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem, RecyclerView.ViewHolder>
+public abstract class SelectAllHeaderAdapter extends MultiChoiceAdapter<MultiChoiceItem, RecyclerView.ViewHolder>
         implements CompoundButton.OnCheckedChangeListener {
 
     protected static final int ITEM_HEADER = 1000;

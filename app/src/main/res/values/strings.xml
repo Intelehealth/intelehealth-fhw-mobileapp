@@ -936,6 +936,8 @@
     <string name="lbl_sos">SOS</string>
     <string name="stage_1">Stage 1</string>
     <string name="stage_2">Stage 2</string>
+    <string name="select_risk_factors">Select Risk Factors</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_value">Enter Value:</string>
