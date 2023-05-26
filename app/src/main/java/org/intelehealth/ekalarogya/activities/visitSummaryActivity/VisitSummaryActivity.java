@@ -1113,7 +1113,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (complaint.getValue() == null) {
+                if (complaint.getValue() == null || complaint.getValue().isEmpty() || complaint.getValue().equalsIgnoreCase("")) {
                     Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
                     return;
                 }
