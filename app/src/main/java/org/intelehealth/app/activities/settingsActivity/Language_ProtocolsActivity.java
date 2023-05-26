@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +64,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Language_ProtocolsActivity extends AppCompatActivity {
     private Spinner lang_spinner;
-    private ImageButton reset_btn, update_protocols_btn, btRefresh;
+    private ImageButton btRefresh;
+    private RelativeLayout reset_btn, update_protocols_btn;
     private String selected_language = "English";
     private Context context;
     private ArrayAdapter<String> langAdapter;
@@ -106,7 +108,33 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         snackbar_text = findViewById(R.id.snackbar_text);
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
         btRefresh = findViewById(R.id.refresh);
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("intentType")!= null && intent.getStringExtra("intentType").equalsIgnoreCase("refresh"))
+            showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
+
+        setLocale();
     }
+
+    private void setLocale() {
+        SessionManager sessionManager1 = new SessionManager(Language_ProtocolsActivity.this);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = Language_ProtocolsActivity.this.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        Language_ProtocolsActivity.this.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return;
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -138,7 +166,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
 
-        String l = sessionManager.getCurrentLang();
+        String l = sessionManager.getAppLanguage();
         if (l.equalsIgnoreCase("en"))
             l = "English";
         if (l.equalsIgnoreCase("hi"))
@@ -174,7 +202,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         reset_btn.setOnClickListener(v -> {
             sessionManager.setAppLanguage("en");
             lang_spinner.setSelection(0, false);
-            //  showSnackBarAndRemoveLater("Language successfully changed to English!");
+            setLocale("en", "English");
         });
 
         // language spinner - end
@@ -374,8 +402,13 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
+        Intent refresh = new Intent(this, Language_ProtocolsActivity.class);
+        refresh.putExtra("intentType", "refresh");
+        startActivity(refresh);
+        finish();
         // show snackbar view
         showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed) + " " + language + "!");
+
     }
 
     // show snackbar

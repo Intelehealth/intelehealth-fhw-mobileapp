@@ -901,7 +901,7 @@
     <string name="provide_prescriptions_intro">The cloud-based open-source platform designed for a low-resource environment combined with a customized implementation strategy creates a digital health solution for impactful health outcomes</string>
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
     <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
-    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font> and <font color='#2F1E91'><u>privacy policy</u></font></string>
+    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>Terms &amp; Conditions</u></font> and <font color='#2F1E91'><u>Privacy Policy</u></font></string>
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -941,7 +941,7 @@
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
     <string name="total_time_spent">Total time spent</string>
-
+    <string name="privacy_policy_content_old">•Personal Information\nHealth Worker will collect personal information and health information from you for your medical records.\n\n•Use\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here https://www.intelehealth.org/privacy-policy.\n\n•Protection Measures\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n•Access and Correction\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>
     <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
         Privacy Policy aligns with Generally Accepted
         Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
@@ -1310,303 +1310,6 @@ The disclosure of personal information to third parties shall be only for identi
         referred to the Data Privacy Officer for resolution.\n\n
     </li>
 </string>
-    <string name="terms_and_conditions_content">Intelehealth on behalf of itself and its affiliates/group companies including
-        Intelehealth and Telehealth Innovations Foundation under the brand \"Intelehealth\" (\"Intelehealth\" or \"Us\"or \"We\"), is the author and publisher of the websites www.intelehealth.org, www.covidhelp.in and the mobile
-        applications \'Intelehealth\', \'InteleSafe\' and \'InteleCare\' (together, \"Website\").\n\n
-
-        Intelehealth owns and operates the services provided through the Website.\n\n
-
-        Website is operated by or on behalf of Intelehealth. We are a platform providing telemedicine technology for hard-to-reach and
-        poor populations and we are funded exclusively through the generosity of our supporters.;\n\n
-
-        <font color='#201560' size='16'><b>NATURE AND APPLICABILITY OF TERMS</b></font>\n\n
-
-        Please carefully go through these terms and conditions<font color='#000000'><b>(\"Terms\")</b></font> and the privacy policy available at
-        <font color='#201560'><b>https://www.intelehealth.org/privacy-policy</b></font> <font color='#000000'><b>(\"Privacy Policy\")</b></font> before you decide to access the
-        Website or avail the services made available on the Website by Intelehealth. These Terms and the
-        Privacy Policy together constitute a legal agreement <font color='#000000'><b>(\"Agreement\")</b></font> between you and Intelehealth
-        in connection with your visit to the Website and your use of the Services
-        (as briefly defined below) through the Website.\n\n
-
-        By downloading or accessing or installing the Website,
-        you <font color='#000000'><b>(\"User\" or \"you\")</b></font> irrevocably accept all the terms
-        and conditions stipulated in this Agreement and Privacy
-        Policy, as available on the Website, and agree to abide
-        by them. It is clarified that Users shall include all
-        patients and doctors/registered medical
-        practitioners/caregivers/ health workers
-        (where applicable) using the Intelehealth technological
-        platform.\n\n
-
-        This Agreement supersedes all previous oral and written
-        terms and conditions (if any) communicated to you relating to your
-        use of the Website to avail the Services.\n\n
-
-        By availing any Service, you signify your acceptance of the terms of this Agreement.
-
-        \n\nThis Agreement applies to those services made available
-        by Intelehealth on the Website, which are offered free of
-        charge to the Users <font color='#000000'><b>(\"Services\")</b></font>, including the following:
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u00201. Storing and processing data on health information as may be required for
-        rendering Services, and general
-        education to improve patient awareness
-
-         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u00202. Dissemination of health messages from appropriate health authorities
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u00203. Providing patients with resources and tools for self-empowerment
-        The Services may change from time to time, at the sole discretion of Intelehealth, and the Agreement will apply to your visit to and your use of the Website to avail the Service, as well as to all information provided by you on the Website at any given point in time.\n\nThis Agreement defines the terms and conditions under which you
-        are allowed to use the Website and describes the manner in which
-        we shall treat your account while you are registered as a member
-        with us. If you have any questions about any part of the Agreement,
-        feel free to contact us at support@intelehealth.io.\n\nWe reserve the right to modify or terminate any portion
-        of this Agreement for any reason and at any time, and such
-        modifications shall be updated on our Website in writing and
-        you should read the Agreement at regular intervals. Your use
-        of the Website following any such modification constitutes
-        your agreement to follow and be bound by the Agreement so modified.\n\n
-
-        You acknowledge that you will be bound by this Agreement for availing any
-        of the Services offered by us. If you do not agree with any part of
-        the Agreement, please do not use the Website or avail any Services.\n\n
-        Your access to use of the Website and the Services will be solely at
-        the discretion of Intelehealth.\n\n
-
-        The Agreement is published in compliance of, and is governed by the provisions
-        of Indian law.\n\n
-
-        The information may contain technical inaccuracies or
-        typographical errors. Intelehealth reserves the right to make changes,
-        corrections and/or improvements to the Information, and to the products
-        and programmes described in such information, at any time without notice.\n\n
-
-        Intelehealth site contains information on its services,
-        not all of which are available in every location. A reference to a
-        Intelehealth service on the website does not imply that such
-        product or service is or will be available in your location.\n\n
-
-        <font color='#201560' size='16'><b>CONDITIONS OF USE</b></font>\n
-        You must be 18 years of age or older to register, use the
-        Services, or visit or use or install or access the Website
-        in any manner. By registering, visiting and using the Website
-        or accepting this Agreement, you represent and warrant to Intelehealth
-        that you are 18 years of age or older, and that you have the right,
-        authority and capacity to use the Website and the Services available
-        through the Website, and agree to and abide by this Agreement.
-
-       \n\n <font color='#201560' size='16'><b>TERMS OF USE APPLICABLE TO USERS RELATING TO USER ACCOUNT</b></font>\n
-END-USER ACCOUNT AND DATA PRIVACY\nThe terms \npersonal information\n and \nsensitive personal data or information\n are defined under the Rules framed under the Information Technology Act 2000\n\n
-
-        Intelehealth may by its Services collect personal information
-        and sensitive personal data or information relating to you and
-        may also collect information relating to the devices through which
-        you access the Website, and anonymous data of your usage. The collected
-        information will be used in accordance with Privacy Policy and the terms
-        and conditions of this Terms of Use. It is clarified that Intelehealth is
-        an intermediary under the Information Technology Act, 2000.\n\n
-
-        The Website allows Intelehealth to have access to Users\'
-        personal email or phone number or location or medical records,
-        if so submitted and or permitted by the User, for communication
-        purpose so as to provide the User services accordingly.
-
-        \n\n<font color='#201560' size='16'><b>The Privacy Policy sets out, inter-alia:</b></font>
-
- \n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. The type of information collected from Users, including sensitive personal data or information;
-\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. The purpose, means and modes of usage of such information;
-\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. How and to whom Intelehealth will disclose such information\n
-
-        \nThe User is expected to read and understand the Privacy Policy, so as to ensure that he or she has the knowledge of, inter-alia:
-
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. the fact that certain information is being collected;
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. the purpose for which the information is being collected;
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. the intended recipients of the information;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iv. the nature of collection and retention of the information; and
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020v. the name and address of the agency that is collecting the information and the agency that will retain the information; and
-      \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. the various rights available to such Users in respect of such information.\n
-
-        \nIntelehealth shall not be responsible in any manner
-        for the authenticity of the information or personal information or
-        sensitive personal data or information supplied by the User to Intelehealth
-        or to any other person acting on behalf of Intelehealth.\n\n
-
-        The User is responsible for maintaining the confidentiality of the User’s
-        account access information and password, if the User is registered
-        on the Website. The User shall be responsible for all usage of the User’s
-        account and password, whether or not authorized by the User. The User shall
-        immediately notify Intelehealth of any actual or suspected unauthorized use
-        of the User’s account or password. Although Intelehealth will not be liable
-        for your losses caused by any unauthorized use of your account, you may be
-        liable for the losses of Intelehealth or such other parties as the case may be,
-        due to any unauthorized use of your account.\n\n
-
-        In addition to what is provided hereinafter, if a User provides any information that is untrue, inaccurate, not current or incomplete (or becomes untrue, inaccurate, not current or incomplete), or Intelehealth has reasonable grounds to suspect that such information is untrue, inaccurate, not current or incomplete, Intelehealth has the right to discontinue the Services to the User at its sole discretion and such User shall be liable to any consequences thereof.\n\n
-
-        Intelehealth may use such information collected from the Users from time to time for the purposes of debugging customer support related issues.\n
-
-In the course of availing the services you may be provided access to certain services for which you may see a ‘show number’ option. When you choose this option, you choose to call the numbers telephone provided on the Website, and the records of such calls are recorded and stored in Intelehealth’s servers. Such call may also have have an IVR message stating the purpose of recording your calls and your consent to such recordings which are dealt with as per the Privacy Policy. Such records may be accessed by Intelehealth or its associated or partner entities/organisations or medical practitioners or health workers for quality control and support related purposes or to provide educational guidance or provide consultation by Registered Medical Practitioners and are dealt with only in accordance with the terms of the Privacy Policy. Such call facility provided to you by Intelehealth should be used at your own discretion and any consultation or educational information provided by the recipient of the call to the User, Intelehealth accepts no liability Intelehealth shall not be liable for any advice/consultation provided on such call/communication. In case you choose to not provide your consent to recording your calls that may have personal information required for the said purposes, Intelehealth reserves the right to not provide the Services for which such personal information is sought.
-
-
-        \n\n<font color='#201560' size='16'><b>LISTING CONTENT AND DISSEMINATING INFORMATION</b></font>
-
-
-        \nIntelehealth collects, directly or indirectly, and displays on the Website, relevant information regarding services offered by Intelehealth, educational information regarding viruses, epidemics, etc., and provide links to third party websites including websites of government bodies, non profit organisations, global health organisations etc.. This Website contains links to websites operated by other parties and Intelehealth does not control such websites and Intelehealth take no responsibility for, and will not incur any liability in respect of, their content. Our inclusion of links to such websites does not imply any endorsement of views, statements or information contained in such websites. Intelehealth takes reasonable efforts to ensure that such information is updated at frequent intervals.
-
-        \n\nAlthough Intelehealth screens and vets the information, it cannot be held liable for any inaccuracies or incompleteness represented from it, despite such reasonable efforts.
-
-        \n\nWhere this Website contains links to other sites and resources provided by third parties, such links are provided for your information only. We have no control over the contents of third party sites or materials and accept no responsibility for them or for any loss or damage that may arise from your use of them.
-
-
-        \n\nFrom time to time we are likely to update sections of this site. However, at any given time any of the content or information on this site may be out of date and we are under no obligation to update that content or information.
-
-        \n\nIf the need arises, we may suspend access to or close indefinitely part or the whole of Website. We will not be liable if for any reason Website is unavailable for any time at any period.
-
-        \n\nCommentary, suggestions, results of any survey, report generated through questioner and other materials posted or created as a result of usage of Services on the Website is not an advice or consultation and is not intended to amount to advice/consultation on which reliance should be placed.
-
-        \n\nWe do not accept any liability or responsibility arising from any reliance placed on such materials by any visitor or User, or by anyone who may be informed by any of its contents.
-
-        \n\nFrom time to time, we may restrict access to some parts of this site to users who have registered with us
-
-The Services provided by Intelehealth or any of its licensors or service providers are provided on an \"as is\" and “as available’ basis, and without any warranties or conditions (express or implied, including the implied warranties of merchantability, accuracy, fitness for a particular purpose, title and non-infringement, arising by statute or otherwise in law or from a course of dealing or usage or trade). Intelehealth does not provide or make any representation, warranty or guarantee, express or implied about the Website or the Services. Intelehealth does not guarantee the accuracy or completeness of any content or information provided by Users on the Website. To the fullest extent permitted by law, Intelehealth disclaims all liability arising out of the User’s use or reliance upon the Website, the Services, representations and warranties made by other Users, the content or information provided by the Users on the Website, or any opinion or suggestion given or expressed by Intelehealth or any User in relation to any User or services provided by such User. Intelehealth does not warrant that Website will be interrupted or error-free, that defects in materials or functions will be corrected, or that this site or its servers are free of viruses or bugs.
-
-        \n\nThe Website may be linked to the website of third parties, affiliates and partners. Intelehealth has no control over, and not liable or responsible for content, accuracy, validity, reliability, quality of such websites or made available by/through our Website.
-
-        \n\nInclusion of any link on the Website does not imply that Intelehealth endorses the linked site. User may use the links and these services at User’s own risk and discretion.
-
-        \n\nIntelehealth assumes no responsibility, and shall not be liable for, any damages to, or viruses that may infect User’s equipment on account of User’s access to, use of, or browsing the Website or third party websites link of which provided on the Website or by the downloading of any material, data, text, images, video content, or audio content from the Website or such third party websites. If a User is dissatisfied with the Website, User’s sole remedy is to discontinue using the Website.
-
-\n\nIf Intelehealth determines that you have provided fraudulent, inaccurate, or incomplete information, including through feedback, Intelehealth reserves the right to immediately suspend your access to the Website or any of your accounts with Intelehealth. You shall be liable to indemnify Intelehealth for any losses incurred as a result of your misrepresentations or fraudulent feedback that has adversely affected Intelehealth.
-
-        \n\nIntelehealth has published or may publish certain information for guidance purpose and does not or may not have the ability to ascertain accuracy of the data based on which the information has been or may be published and nor does it have any duty to disclose to anyone the source of the underlying data sets based on which this information has been published. Intelehealth is not liable in any manner for any consequence whatsoever arising out of any use of the information published on the Website by usage of Services or as a result of the questioner or forms filled in by the User.
-\n\nThe results of any search Users perform on the Website for any query or question or information, should not be construed as an advice given by Intelehealth. If the User decides to act basis the result, the User shall be doing so at his/her own risk.
-
-        \n\nWithout prejudice to the generality of the above, Intelehealth is not involved in providing any healthcare or medical advice or diagnosis and hence is not responsible for any act or omissions of the User basis the accessing or using the Services and Website. User understands and agrees that Intelehealth will not be liable for User deciding whether to or not to avail any medical treatment after using the Services; or availing medical treatment after using the Services or accessing the Website including:
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. User interactions and associated issues User has with any medical professional or organisations or other persons such as health workers, nurses ;
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. the ability or intent of a practitioner(s) approached or consulted by the User or the lack of it, in fulfilling their obligations towards Users;
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. any wrong medication or quality of treatment being given by any practitioner(s) approached or consulted by the User, or any medical negligence on part of any practitioner(s) approached or consulted by the User;
-          \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iv. inappropriate treatment, or similar difficulties or any type of inconvenience suffered by the User due to a failure on the part of any practitioner or person approached or consulted by the User;
-\n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020v. any misconduct or inappropriate behaviour by any practitioner approached or consulted by the User or such practitioner’s staff;\n\n
-
-        Users may be allowed to provide feedback about the Services, the User shall ensure that, the same is provided in accordance with applicable law. User however understands that, Intelehealth shall not be obliged to act in such manner as may be required to give effect to the content of Users feedback.
-
-         \n\n<font color='#201560' size='16'><b>NO DOCTOR-PATIENT RELATIONSHIP</b></font>
-
-        \n\nPlease note that the content, text, data, graphics, images,
-        information, suggestions, guidance, and other material (collectively, \"Information\") that may be available on the Website (including information provided in direct response to your questions or postings) may be provided basis our analysis and or by individuals in the medical profession. The provision of such Information does not create a medical professional/patient relationship of whatsoever nature, between Intelehealth and you and does not constitute an opinion, medical advice, or diagnosis or treatment of any particular condition, but is only provided to assist you with locating or identifying appropriate medical care from a qualified practitioner and to provide you an option to be educated if you so desire on certain medical conditions and treatment from health workers, BDS, MDS etc.. Intelehealth is a technological platform rendering Services and may facilitate a User if he so desires to connect with identified registered medical practitioners and we do not provide any medical advisory/ consultation services whatsoever in our own capacity.
-
-        \n\nIt is hereby expressly clarified that, the Information that you obtain or receive from Intelehealth, and its employees, contractors, partners, sponsors, advertisers, licensors or otherwise on the Website is for informational purposes only. We make no guarantees, representations or warranties, whether expressed or implied, with respect to professional qualifications, quality of work, expertise or other information provided on the Website. In no event shall we be liable to you or anyone else for any decision made or action taken by you in reliance on such information.
-
-        \n\nThe Services are not intended to be a substitute for getting in touch with healthcare.
-
-         \n\n<font color='#201560' size='16'><b>CONTENT OWNERSHIP AND COPYRIGHT CONDITIONS OF ACCESS</b></font>
-
-        \n\nThe contents listed on the Website are (i) User generated content, or (ii) belong to Intelehealth or its associates, partner entities, licensors etc. . The information that is collected by Intelehealth directly or indirectly from the Users shall belong to Intelehealth. Copying of the copyrighted content published by Intelehealth on the Website for any commercial purpose or for the purpose of earning profit will be a violation of copyright and Intelehealth reserves its rights under applicable law accordingly.
-
-\n\nIntelehealth site may contain or reference trademarks, patents, proprietary information, technologies, products, processes or other proprietary rights of Intelehealth and/or other parties. No license to or right in any such trademarks, patents, trade secrets, technologies, products, processes and other proprietary rights of Intelehealth and/or other parties is granted to or conferred upon you.
-
-        \n\nIntelehealth authorizes the User to view and access the content available on or from the Website solely for ordering, receiving, delivering and communicating only as per this Agreement. The contents of the Website, information, text, graphics, images, logos, button icons, software code, design, and the collection, arrangement and assembly of content on the Website (collectively, “Intelehealth Content”), are the property of Intelehealth and are protected under copyright, trademark and other laws unless clearly labeled as ‘Free and Open Source Software’ (FOSS) released under an appropriate FOSS license. User shall not modify the Intelehealth Content or reproduce, display, publicly perform, distribute, or otherwise use the Intelehealth Content in any way for any public or commercial purpose or for personal gain.
-
-        \n\nAll Components labelled, as \'Free and Open Source Software\' shall be governed by the purview of the Mozilla Public License 2.0. The full text of the license is at https://www.mozilla.org/en-US/MPL/2.0/.
-
-        \n\nThe source code of all component labelled as \'Free Software\' will contain the following lines – \'This program is free software; you can redistribute it and/or modify it under the terms of theMozilla Public License 2.0 and additional Healthcare disclaimer. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-        of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\'
-
-                 \n\n<font color='#201560' size='16'><b>HEALTHCARE DISCLAIMER FOR FOSS SOFTWARE</b></font>
-
-        \n\nIn the United States, or any other jurisdictions where they may apply, the following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
-
-        \n\nNo warranties of any kind whatsoever are made as to the results that You will obtain from relying upon the covered code (or any information or content obtained by way of the covered code), including but not limited to compliance with privacy laws or regulations or clinical care industry standards and protocols. Use of the covered code is not a substitute for a health care provider’s standard practice or professional judgment. Any decision with regard to the appropriateness of treatment, or the validity or reliability of information or content made available by the covered code, is the sole responsibility of the health care provider. Consequently, it is incumbent upon each health care provider to verify all medical history and treatment plans with each patient.
-Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license, be liable to You for any indirect, special, incidental, consequential damages of any character including, without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated with the use or inability to use the covered content (including, without limitation, the use of information or content made available by the covered code, all documentation associated therewith, and the failure of the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols), even if such party shall have been informed of the possibility of such damages.
-
-        \n\nUnder no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license, be liable to You for any indirect, special, incidental, consequential damages of any character including, without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated with the use or inability to use the covered content (including, without limitation, the use of information or content made available by the covered code, all documentation associated therewith, and the failure of the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols), even if such party shall have been informed of the possibility of such damages.
-
-        \n\nUser shall not access the Services for purposes of monitoring their availability, performance or functionality, or for any other benchmarking or competitive purposes.
-
-        \n\nAny communication or material you transmit to the Website by electronic mail or otherwise, including any data, questions, feedback, ideas, queries, comments, suggestions or the like is, and will be treated as, non-confidential and non-proprietary. Anything you transmit or post becomes the property of Intelehealth or its affiliates and may be used for any purpose, including, but not limited to, reproduction, disclosure, transmission, publication, broadcast and posting. Furthermore, Intelehealth is free to use any ideas, concepts, know-how, or techniques contained in any communication you send to the Website for any purpose whatsoever including, but not limited to, developing, manufacturing and marketing products using such information.
-                         \n\n<font color='#201560' size='16'><b>REVIEWS AND FEEDBACK</b></font>
-\n\nBy using this Website, you agree that any information shared by you with Intelehealth will be subject to our Privacy Policy.
-
-
-\n\nYou are solely responsible for the content that you choose to submit for publication on the Website, including any feedback, ratings, or reviews (\"Critical Content\") relating to Services.
-
-        \n\nYou hereby agree not to post or publish any content on the Website that (a) infringes any third-party intellectual property or publicity or privacy rights, or (b) violates any applicable law or regulation, including but not limited to the provisions of applicable laws. Intelehealth, at its sole discretion, may choose not to publish your reviews and feedback, if so required by applicable law.
-
-                         \n\n<font color='#201560' size='16'><b>RECORDS</b></font>
-        \nIntelehealth may as part of the Services offered retain medical records and may provide access to registered medical practitioners, government authorities or health organisations analysis or records of the users in order to comply with applicable guidelines, improve and or analyse the data to take appropriate steps in relation to public health.
-
-                                 \n\n<font color='#201560' size='16'><b>INTELEHEALTH MEDICINE INFORMATION</b></font>
-        \n\n<font color='#201560' size='16'><b>Intelehealth Q&amp;A</b></font>
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. The Q&amp;A Platform is a platform for exchange of information which is of general nature in a question and answer format.
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. Any Q&amp;A interaction cannot be construed as a medical consultation and/ or advice with any medical practitioner, in any manner whatsoever.
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. Users may answer any question forming part of a questioner on the Website, and as result thereof Intelehealth may provide suggestion. Such suggestions do not create any doctor-patient relationship between Us and User, in any manner whatsoever.
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iv. The Service may provide probable views, recommendations, suggestions and solutions basis the answers. However, it is expressly clarified that any such view, recommendation, suggestion and solution shall not be construed as medical advice. The User is advised to consult with a doctor in this regard.
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020v. User understands that the views, suggestions, recommendations etc. as a result of User filling in the questioner is not:
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020a. medical diagnosis;
-                \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020a. issuance of a prescription;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. Any liability arising out of the response as result of the User answering questioner will be borne solely by the User. &amp; Platform is only a platform interface provided by Intelehealth for sharing and exchanging information purposes.
-         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. The personally identifiable information of the User may be anonymized by Intelehealth prior to analysing the answers to the questioner;
-
-        \n\n<font color='#201560' size='18'><b>RIGHTS AND OBLIGATIONS RELATING TO CONTENT</b></font>
-        \n As mandated by applicable Regulation, Intelehealth hereby informs Users that they are not permitted to host, display, upload, modify, publish, transmit, update or share any information that:
-
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. belongs to another person and to which the User does not have any right to;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. is grossly harmful, harassing, blasphemous, defamatory, obscene, pornographic, pedophilic, libelous, invasive of another’s privacy, hateful, or racially, ethnically objectionable, disparaging, relating or encouraging money laundering or gambling, or otherwise unlawful in any manner whatever;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. harm minors in any way;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iv. infringes any patent, trademark, copyright or other proprietary rights;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020v. violates any law for the time being in force;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. deceives or misleads the addressee about the origin of such messages or communicates any information which is grossly offensive or menacing in nature;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vii. impersonate another person;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. contains software viruses or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer resource;
-        \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vii. threatens the unity, integrity, defence, security or sovereignty of India, friendly relations with foreign states, or public order or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting any other nation.
-
-        \nUsers are also prohibited from:
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. violating or attempting to violate the integrity or security of the Website or any Intelehealth Content;
-         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. transmitting any information (including job posts, messages and hyperlinks) on or through the Website that is disruptive or competitive to the provision of Services by Intelehealth;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iii. intentionally submitting on the Website any incomplete, false or inaccurate information;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020iv. making any unsolicited communications to other Users;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020v. using any engine, software, tool, agent or other device or mechanism (such as spiders, robots, avatars or intelligent agents) to navigate or search the Website;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. attempting to decipher, decompile, disassemble or reverse engineer any part of the Website;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vii. copying or duplicating in any manner any of the Intelehealth Content or other information available from the Website;
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020viii. framing or hot linking or deep linking any Intelehealth Content.
- \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ix. circumventing or disabling any digital rights management, usage rules, or other security features of the Software.
-
-        \n\nIntelehealth, upon obtaining knowledge by itself or been brought to actual knowledge by an affected person in writing or through email signed with electronic signature about any such information as mentioned above, shall be entitled to disable such information that is in contravention of these Clauses. Intelehealth shall also be entitled to preserve such information and associated records for at least 90 (ninety) days for production to governmental authorities for investigation purposes.
-
-\n\nIn case of non-compliance with any applicable laws, rules or regulations, or the Agreement (including the Privacy Policy) by a User, Intelehealth has the right to immediately terminate the access or usage rights of the User to the Website and Services and to remove non-compliant information from the Website.
-
-        \n\nIntelehealth may disclose or transfer User generated information to its affiliates or governmental authorities in such manner as permitted or required by applicable law, and you hereby consent to such transfer.
-
-        \n\nIntelehealth respects the intellectual property rights of others and we do not hold any responsibility for any violations of any intellectual property rights
-
-        \n\n<font color='#201560' size='16'><b>REPRESENTATIONS OF DOCTORS/ REGISTERED MEDICAL PRACTITIONERS USING THE INTELEHEALTH PLATFORM</b></font>
-
-        \n\nthat they are duly registered with the national councils or respective state medical council/s and comply with their relevant provisions.
-
-\n\nthat when information is to be provided they shall provide their correct personal details and medical qualifications to Intelehealth including but not limited to their name, qualification and registration number, contact details, any pending medico-legal cases against them etc.
-
-        \n\nthey have read, understood and shall comply with the Telemedicine Practice Guidelines dated 25th March, 2020 and Indian Medical Council Act, 1956 and any all other related laws, rules, regulations and guidelines alongwith any amendments made thereto from time to time. The Telemedicine Practice Guidelines may be found at: https://www.mohfw.gov.in/pdf/Telemedicine.pdf
-
-        \n\nthat they hold valid medical licenses and have no pending medical misconduct cases against them.
-
-        \n\nthat they have completed the mandatory online/ offline courses and trainings offered by Intelehealth.
-
-         \n\n<font color='#201560' size='16'><b>INDEMNIFICATION</b></font>
-
-\n\nYou agree to defend, indemnify and hold us and our affiliates and
-        our affiliates, directors, officers, employees and agents harmless
-        from any and all claims, liabilities, costs and expenses, including
-        attorneys fees, arising in any way from your use of the Website,
-        your placement or transmission of any message, content, information,
-        software or other materials through the Website, or your breach or violation
-        of the law or of these Terms and Conditions. We reserve the right, at our own
-        expense, to assume the exclusive defense and control of any matter otherwise
-        subject to indemnification by you, and in such case, you agree to cooperate
-        with our defense of such claim.
-    </string>
-
     <!-- My Profile UI2.0-->
     <string name="change_photo"><u>Change photo</u></string>
     <string name="first_name">First name</string>
@@ -1923,7 +1626,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="about_app">About App</string>
     <string name="sure_change_language">Are you sure you want to change language to</string>
     <string name="change_language">Change language?</string>
-    <string name="language_successfully_changed">Language successfully changed to</string>
+    <string name="language_successfully_changed">Language successfully changed!</string>
     <string name="changing_protocols">Changing protocols</string>
     <string name="wait_while_protocols_changing">Please wait while the protocols are being changed.</string>
     <string name="protocols_successfully_changed">Protocols have been successfully changed!</string>
@@ -2120,5 +1823,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="seconds">seconds</string>
     <string name="no_data_added">No data added</string>
     <string name="open_prescription">Open Prescription</string>
-
+    <string name="reset">Reset</string>
+    <string name="update_button">Update</string>
 </resources>

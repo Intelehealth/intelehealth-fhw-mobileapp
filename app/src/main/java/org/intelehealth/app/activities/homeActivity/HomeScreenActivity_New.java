@@ -290,23 +290,25 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         DeviceInfoUtils.saveDeviceInfo(this);
         catchFCMMessageData();
 
-
         loadFragment(new HomeFragment_New(), TAG_HOME);
-        // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        // tx.replace(R.id.fragment_container, new HomeFragment_New());
-        // tx.commit();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
         sessionManager = new SessionManager(this);
-        initUI();
-        //}
-        clickListeners();
-//        awsAuth();
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
+        Log.d("onCreate: ", "I m called! " + sessionManager.getAppLanguage());
+        initUI();
+        clickListeners();
     }
 
     private void clickListeners() {
@@ -318,19 +320,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            //drawer is open
-            //  getWindow().setStatusBarColor(Color.CYAN);
         }
-
-
-        /*tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
         imageViewIsNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,7 +350,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 startActivity(intent);
             }
         });
-
 
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -965,7 +956,14 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     @Override
+    protected void onRestart() {
+        Log.d("onRestart: ", "I m called! " + sessionManager.getAppLanguage());
+        super.onRestart();
+    }
+
+    @Override
     protected void onResume() {
+        Log.d("onResume: ", "I m called! " + sessionManager.getAppLanguage());
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
@@ -999,6 +997,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("onStart: ", "I m called! " + sessionManager.getAppLanguage());
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         requestPermission();
@@ -1516,4 +1515,15 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
         }
     }
+
+    public void setLocale(String locale_code) {
+        sessionManager.setAppLanguage(locale_code);
+        // here comes en, hi, mr
+        Locale locale = new Locale(locale_code);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+    }
+
 }

@@ -937,6 +937,7 @@
     <string name="treat_cough_at_home">कफ का इलाज घर में करें</string>
     <string name="touch_fingerprint">लॉगिन करने के लिए फ़िंगरप्रिंट सेंसर टच करें</string>
     <string name="total_time_spent">बिताया गया कुल समय</string>
+    <string name="privacy_policy_content_old">•व्यक्तिगत जानकारी\nसेविका आपके मेडिकल रिकॉर्ड के लिए आपसे व्यक्तिगत जानकारी और स्वास्थ्य जानकारी एकत्र करेगी।\n\n•उपयोग\nआपकी जानकारी का उपयोग। \n- आपके निदान और उपचार के लिए उपयोग किया जाता है। \n- आपको याद दिलाने, दवाई के पर्चे की जानकारी और अन्य संबंधित संचार भेजने के लिए उपयोग किया जाता है। \n\nआपकी व्यक्तिगत जानकारी को खोज और सेवाओं को बेहतर बनाने में मदद करने के लिए अनुसंधान, रोग की जानकारी और विश्लेषण में उपयोग के लिए आपका नाम हटा कर उपयोग किया जाएगा| यहाँ हम दी गई कुछ विशेष परिस्थितियों में आपकी व्यक्तिगत जानकारी का खुलासा कर सकते हैं https://www.intelehealth.org/privacy-policy।\n\n• सुरक्षा के उपाय\nहम भौतिक, इलेक्ट्रॉनिक और प्रक्रियात्मक सुरक्षा उपायों की जानकारी देते हैं, जिनकी हम प्रक्रिया और रखरखाव करते हैं। \n\n• पहुँच और सुधार\nआपके पास हमारे बारे में रखने वाली किसी भी व्यक्तिगत जानकारी की एक प्रति के लिए पूछने का अधिकार है, साथ ही अगर आपको लगता है कि यह गलत है तो इसे ठीक करने के लिए कहें।\n\nयदि आप हमारे द्वारा प्रदान किए गए अपने व्यक्तिगत डेटा को हटाना या संशोधित करना चाहते हैं, तो कृपया support@intelehealth.io पर डेटा गोपनीयता अधिकारी से संपर्क करें और हम उचित समय में जवाब देंगे। \n\nस्वीकार करें पर क्लिक करने पर, मैं अपने व्यक्तिगत डेटा के संग्रह और उपयोग के लिए सहमति देता हूं, जिसमें स्वास्थ्य जानकारी शामिल है, और उपर्युक्त संस्थाओं तक पहुंच प्रदान करना है।</string>
     <string name="how_to_register_ans">रोगी पंजीकृत करने के लिए, होम स्क्रीन पर \”रोगी शामिल करें\” टैब पर क्लिक करें। रोगी से संबंधित गोपनीयता नीति पढ़ाएं। यदि वे स्वीकार करते हैं, तो रोगी को सफलतापूर्वक पंजीकृत करने के लिए सभी विवरण भरें।</string>
     <string name="today_at">आज</string>
     <string name="todays">आज का</string>
@@ -957,7 +958,6 @@
     <string name="thank_you_for_feedback">आपके फीडबैक के लिए आपका धन्यवाद!</string>
     <string name="th">गुरू</string>
     <string name="terms_of_use">इस्तेमाल की शर्तें</string>
-    <string name="terms_and_conditions">नियम व शर्तें</string>
     <string name="terms_conditions">नियम व शर्तें</string>
     <string name="intro_text_1">हमारा टेलिमेडिसिन ऐप प्राथमिक हेल्थकेयर में आने वाले ग्रामीण आबादी के लिए विशेषज्ञ डॉक्टर का परामर्श उपलब्ध करता है। ऐप का उपयोग करके, HWs रोगी के दवा का विवरण, डायग्नॉस्टिक्स, प्रिक्रिप्शन और इलाज के विवरण लेने में सक्षम होते हैं। इसके बाद इन सभी विवरणों को हमने परामर्श प्रदान करने के लिए दूरस्थ डॉक्टरों के साथ साझा किया किया जाता है। यह रोगियों को हेल्थकेयर के लिए मीलों दूर तक जाने से बचाता है।</string>
     <string name="why_intelehealth_exist_ans">इंटेलिहेल्थ के टीम का विजन है \”सभी के लिए स्वास्थ्य\” इस प्रकार, सर्वव्यापी स्वास्थ्य पहुंच के इस विजन को साकार करने के लिए इंटेलिहेल्थ अस्तित्व में है। यह इस बात को हासिल करने का प्रयास करता है कि इस दुनिया का हर एक नागरिक को किसी वित्तीय कठिनाई का सामना किए बिना, जब और जहां जरूरत हो, उन्हें स्वास्थ्य सेवाएं मिले।</string>
@@ -986,8 +986,8 @@
     <string name="not_connected_txt">इंटरनेट से कनेक्ट नहीं है।</string>
     <string name="have_you_spoken_with_the_patient_directly">क्या आपने रोगी से सीधे बात की है?</string>
     <string name="patient_interaction">रोगी से बातचीत</string>
-    <string name="password">यूजरनेम</string>
-    <string name="please_login">पासवर्ड</string>
+    <string name="password">पासवर्ड</string>
+    <string name="please_login">अपना काम जारी रखने के लिए \nकृपया लॉगिन करें</string>
     <string name="enter_login_details">कृपया अपना लॉगिन विवरण एंटर करें</string>
     <string name="enter_username1">अपना यूजरनेम एंटर करें</string>
     <string name="enter_password1">अपना पासवर्ड एंटर करें</string>
@@ -1032,6 +1032,7 @@
     <string name="ayu_intro">डिज़िटल स्वास्थ्य सहायता।\nआइए शुरू करें!</string>
     <string name="setup">सेटअप</string>
     <string name="agree_to_terms">नियम व शर्तों और गोपनीयता नीति से सहमति</string>
+    <string name="terms_and_conditions">नियम व शर्तों</string>
     <string name="privacy_policy">गोपनीयता नीति</string>
     <string name="decline">इनकार करें</string>
     <string name="accept_new">स्वीकार करें</string>
@@ -1242,7 +1243,7 @@
     <string name="about_app">ऐप का परिचय</string>
     <string name="sure_change_language">क्या आप वाकई भाषा बदलना चाहते हैं</string>
     <string name="change_language">भाषा बदलें?</string>
-    <string name="language_successfully_changed">भाषा सफलतापूर्वक बदल दी गई</string>
+    <string name="language_successfully_changed">भाषा सफलतापूर्वक बदल दी गई हैं!</string>
     <string name="changing_protocols">प्रोटोकॉल बदलना</string>
     <string name="wait_while_protocols_changing">प्रोटोकॉल बदले जाने तक कृपया प्रतीक्षा करें।</string>
     <string name="protocols_successfully_changed">प्रोटोकॉल सफलतापूर्वक बदल दिए गए हैं!</string>
@@ -1250,7 +1251,7 @@
     <string name="overall">समग्र</string>
     <string name="daily">दैनिक</string>
     <string name="date_range">तिथि सीमा</string>
-    <string name="prescription_received">का प्रिस्क्रिप्शन प्राप्त हुआ</string>
+    <string name="prescription_received">" का प्रिस्क्रिप्शन प्राप्त हुआ"</string>
     <string name="patient_registered">पंजीकृत रोगी</string>
     <string name="does_patient_start_visit_now">क्या रोगी अभी विज़िट शुरू करना चाहते हैं?</string>
     <string name="no_address_added">पता नहीं जुड़ा है</string>
@@ -1333,7 +1334,7 @@
     <string name="agree_to">“से सहमत \"</string>
     <string name="and_setup">“ और \"</string>
     <string name="privacy_policy_setup">गोपनीयता नीति</string>
-    <string name="splash_desc">जहां डॉक्टर नहीं हैं वहां गुणवत्तापूर्ण स्वास्थ्य देखभाल प्रदान करें</string>
+    <string name="splash_desc">जहां डॉक्टर नहीं हैं वहां गुणवत्तापूर्ण \nस्वास्थ्य देखभाल प्रदान करें</string>
     <string name="select_language">भाषा चुनें</string>
     <string name="my_visits">मेरे विज़िट</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
@@ -1409,14 +1410,16 @@
     <string name="last_name">उपनाम</string>
     <string name="change_photo"><u>फोटो बदलें</u></string>
     <string name="aboutus_termscondition">हमारे <a href="https://intelehealth.org/terms-of-use">नियम व शर्तें देखें</a></string>
-    <string name="hw_min_age">HW की आयु 18 वर्ष से कम नहीं हो सकती</string>
+    <string name="hw_min_age">स्वास्थ्यकर्मी की आयु 18 वर्ष से कम नहीं हो सकती</string>
     <string name="profile_update_requires_internet">प्रोफाइल अपडेट के लिए एक मजबूत इंटरनेट कनेक्शन की आवश्यकता होती है। आप इंटरनेट से कनेक्ट नहीं हैं, कृपया बाद में पुनः प्रयास करें।</string>
     <string name="close_all">सब बंद करें</string>
-    <string name="open_all">सभी खुले</string>
+    <string name="open_all">सब को खोलें</string>
     <string name="go_to_website">वेबसाइट पर जाएं</string>
     <string name="presc_received">प्रिस्क्रिप्शन प्राप्त हुआ</string>
-    <string name="presc_pending">प्रिस्क्रिप्शन लंबित</string>
+    <string name="presc_pending">प्रिस्क्रिप्शन अभी नहीं मिला है</string>
     <string name="seconds">सेकंड</string>
     <string name="no_data_added">कोई डेटा नहीं जोड़ा गया</string>
     <string name="open_prescription">प्रिस्क्रिप्शन खोलो</string>
+    <string name="reset">रीसेट</string>
+    <string name="update_button">अपडेट</string>
 </resources>
